@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.2.0-beta.1"
+	moduleVersion = "v2.4.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -56,7 +56,7 @@ func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 
 // AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication,
 // so should not be used except in emergencies. 'Cassandra' is the default password based
-// authentication. The default is 'Cassandra'. 'Ldap' is in preview.
+// authentication. The default is 'Cassandra'.
 type AuthenticationMethod string
 
 const (
@@ -198,22 +198,6 @@ func PossibleConnectorOfferValues() []ConnectorOffer {
 	}
 }
 
-// ContinuousTier - Enum to indicate type of Continuous backup tier.
-type ContinuousTier string
-
-const (
-	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
-	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
-)
-
-// PossibleContinuousTierValues returns the possible values for the ContinuousTier const type.
-func PossibleContinuousTierValues() []ContinuousTier {
-	return []ContinuousTier{
-		ContinuousTierContinuous30Days,
-		ContinuousTierContinuous7Days,
-	}
-}
-
 // CreateMode - Enum to indicate the mode of account creation.
 type CreateMode string
 
@@ -247,23 +231,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-type DataTransferComponent string
-
-const (
-	DataTransferComponentAzureBlobStorage  DataTransferComponent = "AzureBlobStorage"
-	DataTransferComponentCosmosDBCassandra DataTransferComponent = "CosmosDBCassandra"
-	DataTransferComponentCosmosDBSQL       DataTransferComponent = "CosmosDBSql"
-)
-
-// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
-func PossibleDataTransferComponentValues() []DataTransferComponent {
-	return []DataTransferComponent{
-		DataTransferComponentAzureBlobStorage,
-		DataTransferComponentCosmosDBCassandra,
-		DataTransferComponentCosmosDBSQL,
 	}
 }
 
@@ -331,24 +298,6 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	}
 }
 
-// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
-type EnableFullTextQuery string
-
-const (
-	EnableFullTextQueryNone  EnableFullTextQuery = "None"
-	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
-	EnableFullTextQueryFalse EnableFullTextQuery = "False"
-)
-
-// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
-func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
-	return []EnableFullTextQuery{
-		EnableFullTextQueryNone,
-		EnableFullTextQueryTrue,
-		EnableFullTextQueryFalse,
-	}
-}
-
 // IndexKind - Indicates the type of index.
 type IndexKind string
 
@@ -405,6 +354,26 @@ func PossibleKeyKindValues() []KeyKind {
 	}
 }
 
+// Kind - Kind of the connection string key
+type Kind string
+
+const (
+	KindPrimary           Kind = "Primary"
+	KindPrimaryReadonly   Kind = "PrimaryReadonly"
+	KindSecondary         Kind = "Secondary"
+	KindSecondaryReadonly Kind = "SecondaryReadonly"
+)
+
+// PossibleKindValues returns the possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{
+		KindPrimary,
+		KindPrimaryReadonly,
+		KindSecondary,
+		KindSecondaryReadonly,
+	}
+}
+
 // ManagedCassandraProvisioningState - The status of the resource at the time the operation was called.
 type ManagedCassandraProvisioningState string
 
@@ -442,6 +411,25 @@ func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraReso
 	return []ManagedCassandraResourceIdentityType{
 		ManagedCassandraResourceIdentityTypeNone,
 		ManagedCassandraResourceIdentityTypeSystemAssigned,
+	}
+}
+
+// MinimalTLSVersion - Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's,
+// which only work with Tls 1.2.
+type MinimalTLSVersion string
+
+const (
+	MinimalTLSVersionTLS   MinimalTLSVersion = "Tls"
+	MinimalTLSVersionTls11 MinimalTLSVersion = "Tls11"
+	MinimalTLSVersionTls12 MinimalTLSVersion = "Tls12"
+)
+
+// PossibleMinimalTLSVersionValues returns the possible values for the MinimalTLSVersion const type.
+func PossibleMinimalTLSVersionValues() []MinimalTLSVersion {
+	return []MinimalTLSVersion{
+		MinimalTLSVersionTLS,
+		MinimalTLSVersionTls11,
+		MinimalTLSVersionTls12,
 	}
 }
 
@@ -534,7 +522,6 @@ type OperationType string
 const (
 	OperationTypeCreate          OperationType = "Create"
 	OperationTypeDelete          OperationType = "Delete"
-	OperationTypeRecreate        OperationType = "Recreate"
 	OperationTypeReplace         OperationType = "Replace"
 	OperationTypeSystemOperation OperationType = "SystemOperation"
 )
@@ -544,7 +531,6 @@ func PossibleOperationTypeValues() []OperationType {
 	return []OperationType{
 		OperationTypeCreate,
 		OperationTypeDelete,
-		OperationTypeRecreate,
 		OperationTypeReplace,
 		OperationTypeSystemOperation,
 	}
@@ -763,21 +749,25 @@ func PossibleSpatialTypeValues() []SpatialType {
 	}
 }
 
-// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
-type ThroughputPolicyType string
+// Status - Enum to indicate current buildout status of the region.
+type Status string
 
 const (
-	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
-	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
-	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+	StatusDeleting        Status = "Deleting"
+	StatusInitializing    Status = "Initializing"
+	StatusInternallyReady Status = "InternallyReady"
+	StatusOnline          Status = "Online"
+	StatusUninitialized   Status = "Uninitialized"
 )
 
-// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
-func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
-	return []ThroughputPolicyType{
-		ThroughputPolicyTypeCustom,
-		ThroughputPolicyTypeEqual,
-		ThroughputPolicyTypeNone,
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusDeleting,
+		StatusInitializing,
+		StatusInternallyReady,
+		StatusOnline,
+		StatusUninitialized,
 	}
 }
 
@@ -816,6 +806,36 @@ func PossibleTriggerTypeValues() []TriggerType {
 	return []TriggerType{
 		TriggerTypePost,
 		TriggerTypePre,
+	}
+}
+
+// Type - Type of the connection string
+type Type string
+
+const (
+	TypeCassandra                  Type = "Cassandra"
+	TypeCassandraConnectorMetadata Type = "CassandraConnectorMetadata"
+	TypeGremlin                    Type = "Gremlin"
+	TypeGremlinV2                  Type = "GremlinV2"
+	TypeMongoDB                    Type = "MongoDB"
+	TypeSQL                        Type = "Sql"
+	TypeSQLDedicatedGateway        Type = "SqlDedicatedGateway"
+	TypeTable                      Type = "Table"
+	TypeUndefined                  Type = "Undefined"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeCassandra,
+		TypeCassandraConnectorMetadata,
+		TypeGremlin,
+		TypeGremlinV2,
+		TypeMongoDB,
+		TypeSQL,
+		TypeSQLDedicatedGateway,
+		TypeTable,
+		TypeUndefined,
 	}
 }
 

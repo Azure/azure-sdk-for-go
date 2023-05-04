@@ -1,24 +1,15 @@
 # Release History
 
-## 2.0.0-beta.1 (2022-05-24)
-### Breaking Changes
+## 1.1.1 (2023-04-14)
+### Bug Fixes
 
-- Type of `Encryption.KeySource` has been changed from `*string` to `*KeySource`
+- Fix serialization bug of empty value of `any` type.
 
+
+## 1.1.0 (2023-04-07)
 ### Features Added
 
-- New const `TLSVersionOne2`
-- New const `KeySourceMicrosoftKeyVault`
-- New const `TLSVersionOne1`
-- New const `PublicNetworkAccessDisabled`
-- New const `TLSVersionOne0`
-- New const `PublicNetworkAccessSecuredByPerimeter`
-- New const `PublicNetworkAccessEnabled`
-- New function `PossibleKeySourceValues() []KeySource`
-- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
-- New function `PossibleTLSVersionValues() []TLSVersion`
-- New field `MinimumTLSVersion` in struct `SBNamespaceProperties`
-- New field `PublicNetworkAccess` in struct `SBNamespaceProperties`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-17)

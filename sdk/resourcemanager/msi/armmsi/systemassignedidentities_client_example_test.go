@@ -24,11 +24,11 @@ func ExampleSystemAssignedIdentitiesClient_GetByScope() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewSystemAssignedIdentitiesClient(cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetByScope(ctx, "scope", nil)
+	res, err := clientFactory.NewSystemAssignedIdentitiesClient().GetByScope(ctx, "scope", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

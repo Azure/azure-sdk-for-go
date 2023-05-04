@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,62 +24,55 @@ import (
 // ReservationOrderAliasClient contains the methods for the ReservationOrderAlias group.
 // Don't use this type directly, use NewReservationOrderAliasClient() instead.
 type ReservationOrderAliasClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewReservationOrderAliasClient creates a new instance of ReservationOrderAliasClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReservationOrderAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationOrderAliasClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ReservationOrderAliasClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReservationOrderAliasClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// reservationOrderAliasName - Name of the reservation order alias
-// body - Request body for creating a reservation order alias
-// options - ReservationOrderAliasClientBeginCreateOptions contains the optional parameters for the ReservationOrderAliasClient.BeginCreate
-// method.
+//   - reservationOrderAliasName - Name of the reservation order alias
+//   - body - Request body for creating a reservation order alias
+//   - options - ReservationOrderAliasClientBeginCreateOptions contains the optional parameters for the ReservationOrderAliasClient.BeginCreate
+//     method.
 func (client *ReservationOrderAliasClient) BeginCreate(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*runtime.Poller[ReservationOrderAliasClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, reservationOrderAliasName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationOrderAliasClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationOrderAliasClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ReservationOrderAliasClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReservationOrderAliasClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *ReservationOrderAliasClient) create(ctx context.Context, reservationOrderAliasName string, body ReservationOrderAliasRequest, options *ReservationOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, reservationOrderAliasName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +89,7 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter reservationOrderAliasName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderAliasName}", url.PathEscape(reservationOrderAliasName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,16 +102,17 @@ func (client *ReservationOrderAliasClient) createCreateRequest(ctx context.Conte
 
 // Get - Get a reservation order alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// reservationOrderAliasName - Name of the reservation order alias
-// options - ReservationOrderAliasClientGetOptions contains the optional parameters for the ReservationOrderAliasClient.Get
-// method.
+//   - reservationOrderAliasName - Name of the reservation order alias
+//   - options - ReservationOrderAliasClientGetOptions contains the optional parameters for the ReservationOrderAliasClient.Get
+//     method.
 func (client *ReservationOrderAliasClient) Get(ctx context.Context, reservationOrderAliasName string, options *ReservationOrderAliasClientGetOptions) (ReservationOrderAliasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, reservationOrderAliasName, options)
 	if err != nil {
 		return ReservationOrderAliasClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReservationOrderAliasClientGetResponse{}, err
 	}
@@ -137,7 +129,7 @@ func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter reservationOrderAliasName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderAliasName}", url.PathEscape(reservationOrderAliasName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

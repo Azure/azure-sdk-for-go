@@ -15,7 +15,7 @@ import (
 )
 
 func IdleFastReconnect(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("IdleFastReconnect")
+	sc := shared.MustCreateStressContext("IdleFastReconnect", nil)
 
 	topicName := fmt.Sprintf("topic-%s", sc.Nano)
 

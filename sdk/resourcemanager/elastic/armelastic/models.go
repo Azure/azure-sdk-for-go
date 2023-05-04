@@ -118,8 +118,14 @@ type DeploymentInfoClientListOptions struct {
 
 // DeploymentInfoResponse - The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
 type DeploymentInfoResponse struct {
+	// READ-ONLY; Deployment URL of the elasticsearch in Elastic cloud deployment.
+	DeploymentURL *string `json:"deploymentUrl,omitempty" azure:"ro"`
+
 	// READ-ONLY; Disk capacity of the elasticsearch in Elastic cloud deployment.
 	DiskCapacity *string `json:"diskCapacity,omitempty" azure:"ro"`
+
+	// READ-ONLY; Marketplace SaaS Info of the resource.
+	MarketplaceSaasInfo *MarketplaceSaaSInfo `json:"marketplaceSaasInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; RAM capacity of the elasticsearch in Elastic cloud deployment.
 	MemoryCapacity *string `json:"memoryCapacity,omitempty" azure:"ro"`
@@ -226,6 +232,24 @@ type LogRules struct {
 	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
 }
 
+// MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
+type MarketplaceSaaSInfo struct {
+	// Subscription Details: Marketplace SAAS Name
+	MarketplaceName *string `json:"marketplaceName,omitempty"`
+
+	// Subscription Details: Marketplace Resource URI
+	MarketplaceResourceID *string `json:"marketplaceResourceId,omitempty"`
+
+	// Marketplace Subscription Id
+	MarketplaceSubscription *MarketplaceSaaSInfoMarketplaceSubscription `json:"marketplaceSubscription,omitempty"`
+}
+
+// MarketplaceSaaSInfoMarketplaceSubscription - Marketplace Subscription Id
+type MarketplaceSaaSInfoMarketplaceSubscription struct {
+	// Marketplace Subscription Id. This is a GUID-formatted string.
+	ID *string `json:"id,omitempty"`
+}
+
 // MonitorClientBeginUpgradeOptions contains the optional parameters for the MonitorClient.BeginUpgrade method.
 type MonitorClientBeginUpgradeOptions struct {
 	// Elastic Monitor Upgrade Parameters
@@ -274,6 +298,9 @@ type MonitorResource struct {
 
 	// The tags of the monitor resource.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Flag to determine if User API Key has to be generated and shared.
+	GenerateAPIKey *bool `json:"generateApiKey,omitempty" azure:"ro"`
 
 	// READ-ONLY; ARM id of the monitor resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -330,7 +357,7 @@ type MonitoredResourceListResponse struct {
 	Value []*MonitoredResource `json:"value,omitempty"`
 }
 
-// MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.List method.
+// MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.NewListPager method.
 type MonitoredResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -390,12 +417,13 @@ type MonitorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup method.
+// MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
+// method.
 type MonitorsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MonitorsClientListOptions contains the optional parameters for the MonitorsClient.List method.
+// MonitorsClientListOptions contains the optional parameters for the MonitorsClient.NewListPager method.
 type MonitorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -445,9 +473,15 @@ type OperationResult struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
+type OrganizationsClientGetAPIKeyOptions struct {
+	// Email Id parameter of the User Organization, of which the API Key must be returned
+	Body *UserEmailID
 }
 
 // Properties - Elastic Resource Properties.
@@ -503,7 +537,7 @@ type TagRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
+// TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
 type TagRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -576,6 +610,19 @@ type UpgradableVersionsList struct {
 	UpgradableVersions []*string `json:"upgradableVersions,omitempty"`
 }
 
+// UserAPIKeyResponse - The User Api Key created for the Organization associated with the User Email Id that was passed in
+// the request
+type UserAPIKeyResponse struct {
+	// The User Api Key Generated based on ReturnApiKey flag. This is applicable for non-Portal clients only.
+	APIKey *string `json:"apiKey,omitempty"`
+}
+
+// UserEmailID - Email Id of the User Organization, of which the API Key must be returned
+type UserEmailID struct {
+	// The User email Id
+	EmailID *string `json:"emailId,omitempty"`
+}
+
 // UserInfo - User Information to be passed to partners.
 type UserInfo struct {
 	// Company information of the user to be passed to partners.
@@ -609,7 +656,7 @@ type VMCollectionUpdate struct {
 	VMResourceID *string `json:"vmResourceId,omitempty"`
 }
 
-// VMHostClientListOptions contains the optional parameters for the VMHostClient.List method.
+// VMHostClientListOptions contains the optional parameters for the VMHostClient.NewListPager method.
 type VMHostClientListOptions struct {
 	// placeholder for future optional parameters
 }

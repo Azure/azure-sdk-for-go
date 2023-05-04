@@ -32,7 +32,10 @@ func TestNewSigner(t *testing.T) {
 	keyName, key := "foo", "superSecret"
 	signer := NewSigner(keyName, key)
 	before := time.Now().UTC().Add(-2 * time.Second)
-	sigStr, expiry, err := signer.SignWithDuration("http://microsoft.com", 1*time.Hour)
+
+	// the URL is lowercased and escaped when used as the audience in our signature.
+	sigStr, expiry, err := signer.SignWithDuration("http://MiCrosoft.com", 1*time.Hour)
+
 	require.NoError(t, err)
 	nixExpiry, err := strconv.ParseInt(expiry, 10, 64)
 	require.NoError(t, err)

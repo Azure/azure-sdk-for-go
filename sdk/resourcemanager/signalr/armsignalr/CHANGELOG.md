@@ -1,8 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (2022-11-03)
+## 1.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 1.1.0 (2023-03-24)
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New struct `ServerlessSettings`
 - New field `Serverless` in struct `Properties`
 

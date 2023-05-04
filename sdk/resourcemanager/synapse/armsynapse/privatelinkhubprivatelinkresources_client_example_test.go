@@ -24,11 +24,11 @@ func ExamplePrivateLinkHubPrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("ExampleResourceGroup", "ExamplePrivateLinkHub", nil)
+	pager := clientFactory.NewPrivateLinkHubPrivateLinkResourcesClient().NewListPager("ExampleResourceGroup", "ExamplePrivateLinkHub", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,11 +64,11 @@ func ExamplePrivateLinkHubPrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubPrivateLinkResourcesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ExampleResourceGroup", "ExamplePrivateLinkHub", "sql", nil)
+	res, err := clientFactory.NewPrivateLinkHubPrivateLinkResourcesClient().Get(ctx, "ExampleResourceGroup", "ExamplePrivateLinkHub", "sql", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -28,47 +26,39 @@ import (
 // AlertsClient contains the methods for the Alerts group.
 // Don't use this type directly, use NewAlertsClient() instead.
 type AlertsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AlertsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AlertsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // ChangeState - Change the state of an alert.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// alertID - Unique ID of an alert instance.
-// newState - New state of the alert.
-// options - AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
+//   - alertID - Unique ID of an alert instance.
+//   - newState - New state of the alert.
+//   - options - AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
 func (client *AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState, options *AlertsClientChangeStateOptions) (AlertsClientChangeStateResponse, error) {
 	req, err := client.changeStateCreateRequest(ctx, alertID, newState, options)
 	if err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
@@ -89,7 +79,7 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 		return nil, errors.New("parameter alertID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,9 +107,9 @@ func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (Aler
 // NewGetAllPager - List all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g.
 // time range). The results can then be sorted on the basis specific fields, with the default being
 // lastModifiedDateTime.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// options - AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
+//   - options - AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.NewGetAllPager method.
 func (client *AlertsClient) NewGetAllPager(options *AlertsClientGetAllOptions) *runtime.Pager[AlertsClientGetAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsClientGetAllResponse]{
 		More: func(page AlertsClientGetAllResponse) bool {
@@ -136,7 +126,7 @@ func (client *AlertsClient) NewGetAllPager(options *AlertsClientGetAllOptions) *
 			if err != nil {
 				return AlertsClientGetAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AlertsClientGetAllResponse{}, err
 			}
@@ -155,7 +145,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,15 +218,16 @@ func (client *AlertsClient) getAllHandleResponse(resp *http.Response) (AlertsCli
 
 // GetByID - Get information related to a specific alert
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// alertID - Unique ID of an alert instance.
-// options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
 func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options *AlertsClientGetByIDOptions) (AlertsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, alertID, options)
 	if err != nil {
 		return AlertsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsClientGetByIDResponse{}, err
 	}
@@ -257,7 +248,7 @@ func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID st
 		return nil, errors.New("parameter alertID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,15 +271,16 @@ func (client *AlertsClient) getByIDHandleResponse(resp *http.Response) (AlertsCl
 // GetHistory - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert state
 // changes (New/Acknowledged/Closed).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// alertID - Unique ID of an alert instance.
-// options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
 func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, options *AlertsClientGetHistoryOptions) (AlertsClientGetHistoryResponse, error) {
 	req, err := client.getHistoryCreateRequest(ctx, alertID, options)
 	if err != nil {
 		return AlertsClientGetHistoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsClientGetHistoryResponse{}, err
 	}
@@ -309,7 +301,7 @@ func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID
 		return nil, errors.New("parameter alertID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,16 +324,17 @@ func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response) (Alert
 // GetSummary - Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
 // count of alerts for each severity).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// groupby - This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated fields supported).
-// For example, groupby=severity or groupby=severity,alertstate.
-// options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
+//   - groupby - This parameter allows the result set to be grouped by input fields (Maximum 2 comma separated fields supported).
+//     For example, groupby=severity or groupby=severity,alertstate.
+//   - options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
 func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (AlertsClientGetSummaryResponse, error) {
 	req, err := client.getSummaryCreateRequest(ctx, groupby, options)
 	if err != nil {
 		return AlertsClientGetSummaryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsClientGetSummaryResponse{}, err
 	}
@@ -358,7 +351,7 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -414,15 +407,16 @@ func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response) (Alert
 
 // MetaData - List alerts meta data information based on value of identifier parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-05-preview
-// identifier - Identification of the information to be retrieved by API call.
-// options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
+//   - identifier - Identification of the information to be retrieved by API call.
+//   - options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
 func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (AlertsClientMetaDataResponse, error) {
 	req, err := client.metaDataCreateRequest(ctx, identifier, options)
 	if err != nil {
 		return AlertsClientMetaDataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertsClientMetaDataResponse{}, err
 	}
@@ -435,7 +429,7 @@ func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier,
 // metaDataCreateRequest creates the MetaData request.
 func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.AlertsManagement/alertsMetaData"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

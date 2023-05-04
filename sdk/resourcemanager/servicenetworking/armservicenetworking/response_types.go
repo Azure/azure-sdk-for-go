@@ -9,12 +9,12 @@
 
 package armservicenetworking
 
-// AssociationsInterfaceClientCreateOrUpdateResponse contains the response from method AssociationsInterfaceClient.CreateOrUpdate.
+// AssociationsInterfaceClientCreateOrUpdateResponse contains the response from method AssociationsInterfaceClient.BeginCreateOrUpdate.
 type AssociationsInterfaceClientCreateOrUpdateResponse struct {
 	Association
 }
 
-// AssociationsInterfaceClientDeleteResponse contains the response from method AssociationsInterfaceClient.Delete.
+// AssociationsInterfaceClientDeleteResponse contains the response from method AssociationsInterfaceClient.BeginDelete.
 type AssociationsInterfaceClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,7 +24,7 @@ type AssociationsInterfaceClientGetResponse struct {
 	Association
 }
 
-// AssociationsInterfaceClientListByTrafficControllerResponse contains the response from method AssociationsInterfaceClient.ListByTrafficController.
+// AssociationsInterfaceClientListByTrafficControllerResponse contains the response from method AssociationsInterfaceClient.NewListByTrafficControllerPager.
 type AssociationsInterfaceClientListByTrafficControllerResponse struct {
 	AssociationListResult
 }
@@ -34,12 +34,12 @@ type AssociationsInterfaceClientUpdateResponse struct {
 	Association
 }
 
-// FrontendsInterfaceClientCreateOrUpdateResponse contains the response from method FrontendsInterfaceClient.CreateOrUpdate.
+// FrontendsInterfaceClientCreateOrUpdateResponse contains the response from method FrontendsInterfaceClient.BeginCreateOrUpdate.
 type FrontendsInterfaceClientCreateOrUpdateResponse struct {
 	Frontend
 }
 
-// FrontendsInterfaceClientDeleteResponse contains the response from method FrontendsInterfaceClient.Delete.
+// FrontendsInterfaceClientDeleteResponse contains the response from method FrontendsInterfaceClient.BeginDelete.
 type FrontendsInterfaceClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -49,7 +49,7 @@ type FrontendsInterfaceClientGetResponse struct {
 	Frontend
 }
 
-// FrontendsInterfaceClientListByTrafficControllerResponse contains the response from method FrontendsInterfaceClient.ListByTrafficController.
+// FrontendsInterfaceClientListByTrafficControllerResponse contains the response from method FrontendsInterfaceClient.NewListByTrafficControllerPager.
 type FrontendsInterfaceClientListByTrafficControllerResponse struct {
 	FrontendListResult
 }
@@ -59,17 +59,17 @@ type FrontendsInterfaceClientUpdateResponse struct {
 	Frontend
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// TrafficControllerInterfaceClientCreateOrUpdateResponse contains the response from method TrafficControllerInterfaceClient.CreateOrUpdate.
+// TrafficControllerInterfaceClientCreateOrUpdateResponse contains the response from method TrafficControllerInterfaceClient.BeginCreateOrUpdate.
 type TrafficControllerInterfaceClientCreateOrUpdateResponse struct {
 	TrafficController
 }
 
-// TrafficControllerInterfaceClientDeleteResponse contains the response from method TrafficControllerInterfaceClient.Delete.
+// TrafficControllerInterfaceClientDeleteResponse contains the response from method TrafficControllerInterfaceClient.BeginDelete.
 type TrafficControllerInterfaceClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -79,12 +79,12 @@ type TrafficControllerInterfaceClientGetResponse struct {
 	TrafficController
 }
 
-// TrafficControllerInterfaceClientListByResourceGroupResponse contains the response from method TrafficControllerInterfaceClient.ListByResourceGroup.
+// TrafficControllerInterfaceClientListByResourceGroupResponse contains the response from method TrafficControllerInterfaceClient.NewListByResourceGroupPager.
 type TrafficControllerInterfaceClientListByResourceGroupResponse struct {
 	TrafficControllerListResult
 }
 
-// TrafficControllerInterfaceClientListBySubscriptionResponse contains the response from method TrafficControllerInterfaceClient.ListBySubscription.
+// TrafficControllerInterfaceClientListBySubscriptionResponse contains the response from method TrafficControllerInterfaceClient.NewListBySubscriptionPager.
 type TrafficControllerInterfaceClientListBySubscriptionResponse struct {
 	TrafficControllerListResult
 }

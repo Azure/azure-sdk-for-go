@@ -11,7 +11,7 @@ package armfluidrelay
 
 const (
 	moduleName    = "armfluidrelay"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.1"
 )
 
 // CmkIdentityType - Values can be SystemAssigned or UserAssigned

@@ -25,11 +25,11 @@ func ExampleIPFirewallRulesClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIPFirewallRulesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("ExampleResourceGroup", "ExampleWorkspace", nil)
+	pager := clientFactory.NewIPFirewallRulesClient().NewListByWorkspacePager("ExampleResourceGroup", "ExampleWorkspace", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -54,11 +54,11 @@ func ExampleIPFirewallRulesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIPFirewallRulesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", armsynapse.IPFirewallRuleInfo{
+	poller, err := clientFactory.NewIPFirewallRulesClient().BeginCreateOrUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", armsynapse.IPFirewallRuleInfo{
 		Properties: &armsynapse.IPFirewallRuleProperties{
 			EndIPAddress:   to.Ptr("10.0.0.254"),
 			StartIPAddress: to.Ptr("10.0.0.0"),
@@ -93,11 +93,11 @@ func ExampleIPFirewallRulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIPFirewallRulesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", nil)
+	poller, err := clientFactory.NewIPFirewallRulesClient().BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -127,11 +127,11 @@ func ExampleIPFirewallRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIPFirewallRulesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", nil)
+	res, err := clientFactory.NewIPFirewallRulesClient().Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,11 +157,11 @@ func ExampleIPFirewallRulesClient_BeginReplaceAll() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIPFirewallRulesClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginReplaceAll(ctx, "ExampleResourceGroup", "ExampleWorkspace", armsynapse.ReplaceAllIPFirewallRulesRequest{
+	poller, err := clientFactory.NewIPFirewallRulesClient().BeginReplaceAll(ctx, "ExampleResourceGroup", "ExampleWorkspace", armsynapse.ReplaceAllIPFirewallRulesRequest{
 		IPFirewallRules: map[string]*armsynapse.IPFirewallRuleProperties{
 			"AnotherExampleFirewallRule": {
 				EndIPAddress:   to.Ptr("10.0.1.254"),

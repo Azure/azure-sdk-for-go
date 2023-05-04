@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,46 +25,38 @@ import (
 // JoinRequestsClient contains the methods for the JoinRequests group.
 // Don't use this type directly, use NewJoinRequestsClient() instead.
 type JoinRequestsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewJoinRequestsClient creates a new instance of JoinRequestsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewJoinRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*JoinRequestsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".JoinRequestsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &JoinRequestsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Approve - Approve student joining the redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientApproveOptions contains the optional parameters for the JoinRequestsClient.Approve method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - joinRequestName - Join name
+//   - options - JoinRequestsClientApproveOptions contains the optional parameters for the JoinRequestsClient.Approve method.
 func (client *JoinRequestsClient) Approve(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientApproveOptions) (JoinRequestsClientApproveResponse, error) {
 	req, err := client.approveCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
 		return JoinRequestsClientApproveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JoinRequestsClientApproveResponse{}, err
 	}
@@ -95,7 +85,7 @@ func (client *JoinRequestsClient) approveCreateRequest(ctx context.Context, bill
 		return nil, errors.New("parameter joinRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{joinRequestName}", url.PathEscape(joinRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,18 +98,19 @@ func (client *JoinRequestsClient) approveCreateRequest(ctx context.Context, bill
 
 // Deny - Deny student joining the redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientDenyOptions contains the optional parameters for the JoinRequestsClient.Deny method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - joinRequestName - Join name
+//   - options - JoinRequestsClientDenyOptions contains the optional parameters for the JoinRequestsClient.Deny method.
 func (client *JoinRequestsClient) Deny(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientDenyOptions) (JoinRequestsClientDenyResponse, error) {
 	req, err := client.denyCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
 		return JoinRequestsClientDenyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JoinRequestsClientDenyResponse{}, err
 	}
@@ -148,7 +139,7 @@ func (client *JoinRequestsClient) denyCreateRequest(ctx context.Context, billing
 		return nil, errors.New("parameter joinRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{joinRequestName}", url.PathEscape(joinRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,18 +152,19 @@ func (client *JoinRequestsClient) denyCreateRequest(ctx context.Context, billing
 
 // Get - get student join requests
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientGetOptions contains the optional parameters for the JoinRequestsClient.Get method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - joinRequestName - Join name
+//   - options - JoinRequestsClientGetOptions contains the optional parameters for the JoinRequestsClient.Get method.
 func (client *JoinRequestsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientGetOptions) (JoinRequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
 		return JoinRequestsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JoinRequestsClientGetResponse{}, err
 	}
@@ -201,7 +193,7 @@ func (client *JoinRequestsClient) getCreateRequest(ctx context.Context, billingA
 		return nil, errors.New("parameter joinRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{joinRequestName}", url.PathEscape(joinRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -222,12 +214,12 @@ func (client *JoinRequestsClient) getHandleResponse(resp *http.Response) (JoinRe
 }
 
 // NewListPager - get student join requests
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.List method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - invoiceSectionName - Invoice section name.
+//   - options - JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.NewListPager method.
 func (client *JoinRequestsClient) NewListPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *JoinRequestsClientListOptions) *runtime.Pager[JoinRequestsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JoinRequestsClientListResponse]{
 		More: func(page JoinRequestsClientListResponse) bool {
@@ -244,7 +236,7 @@ func (client *JoinRequestsClient) NewListPager(billingAccountName string, billin
 			if err != nil {
 				return JoinRequestsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return JoinRequestsClientListResponse{}, err
 			}
@@ -271,7 +263,7 @@ func (client *JoinRequestsClient) listCreateRequest(ctx context.Context, billing
 		return nil, errors.New("parameter invoiceSectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -185,7 +185,7 @@ type AvailabilityGroupListenersClientGetOptions struct {
 	Expand *string
 }
 
-// AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.ListByGroup
+// AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.NewListByGroupPager
 // method.
 type AvailabilityGroupListenersClientListByGroupOptions struct {
 	// placeholder for future optional parameters
@@ -278,12 +278,13 @@ type GroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupsClientListByResourceGroupOptions contains the optional parameters for the GroupsClient.ListByResourceGroup method.
+// GroupsClientListByResourceGroupOptions contains the optional parameters for the GroupsClient.NewListByResourceGroupPager
+// method.
 type GroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupsClientListOptions contains the optional parameters for the GroupsClient.List method.
+// GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
 type GroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -354,7 +355,7 @@ type Operation struct {
 	Origin *OperationOrigin `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties map[string]any `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Display metadata associated with the operation.
@@ -381,7 +382,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -620,19 +621,19 @@ type SQLVirtualMachinesClientGetOptions struct {
 	Expand *string
 }
 
-// SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListByResourceGroup
+// SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListByResourceGroupPager
 // method.
 type SQLVirtualMachinesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListBySQLVMGroup
+// SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListBySQLVMGroupPager
 // method.
 type SQLVirtualMachinesClientListBySQLVMGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.List method.
+// SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListPager method.
 type SQLVirtualMachinesClientListOptions struct {
 	// placeholder for future optional parameters
 }

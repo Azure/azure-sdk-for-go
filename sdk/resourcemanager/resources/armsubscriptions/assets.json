@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/resources/armsubscriptions",
+  "Tag": "go/resourcemanager/resources/armsubscriptions_a86b3d5d3c"
+}

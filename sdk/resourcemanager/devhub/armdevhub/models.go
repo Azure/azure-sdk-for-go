@@ -283,13 +283,14 @@ type WorkflowClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowClientListByResourceGroupOptions contains the optional parameters for the WorkflowClient.ListByResourceGroup method.
+// WorkflowClientListByResourceGroupOptions contains the optional parameters for the WorkflowClient.NewListByResourceGroupPager
+// method.
 type WorkflowClientListByResourceGroupOptions struct {
 	// The ManagedCluster resource associated with the workflows.
 	ManagedClusterResource *string
 }
 
-// WorkflowClientListOptions contains the optional parameters for the WorkflowClient.List method.
+// WorkflowClientListOptions contains the optional parameters for the WorkflowClient.NewListPager method.
 type WorkflowClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -8,5 +8,5 @@ package azcontainerregistry
 
 const (
 	moduleName    = "azcontainerregistry"
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.1.2"
 )

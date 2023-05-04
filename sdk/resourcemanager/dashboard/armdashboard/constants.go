@@ -11,7 +11,7 @@ package armdashboard
 
 const (
 	moduleName    = "armdashboard"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.1"
 )
 
 type APIKey string

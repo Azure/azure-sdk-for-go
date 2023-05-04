@@ -14,76 +14,76 @@ import "time"
 // Attestation - An attestation resource.
 type Attestation struct {
 	// REQUIRED; Properties for the attestation.
-	Properties *AttestationProperties `json:"properties,omitempty"`
+	Properties *AttestationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AttestationEvidence - A piece of evidence supporting the compliance state set in the attestation.
 type AttestationEvidence struct {
 	// The description for this piece of evidence.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The URI location of the evidence.
-	SourceURI *string `json:"sourceUri,omitempty"`
+	SourceURI *string
 }
 
 // AttestationListResult - List of attestations.
 type AttestationListResult struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of attestation definitions.
-	Value []*Attestation `json:"value,omitempty" azure:"ro"`
+	Value []*Attestation
 }
 
 // AttestationProperties - The properties of an attestation resource.
 type AttestationProperties struct {
 	// REQUIRED; The resource ID of the policy assignment that the attestation is setting the state for.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// The time the evidence was assessed
-	AssessmentDate *time.Time `json:"assessmentDate,omitempty"`
+	AssessmentDate *time.Time
 
 	// Comments describing why this attestation was created.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 
 	// The compliance state that should be set on the resource.
-	ComplianceState *ComplianceState `json:"complianceState,omitempty"`
+	ComplianceState *ComplianceState
 
 	// The evidence supporting the compliance state set in this attestation.
-	Evidence []*AttestationEvidence `json:"evidence,omitempty"`
+	Evidence []*AttestationEvidence
 
 	// The time the compliance state should expire.
-	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
+	ExpiresOn *time.Time
 
 	// Additional metadata for this attestation
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata any
 
 	// The person responsible for setting the state of the resource. This value is typically an Azure Active Directory object
 	// ID.
-	Owner *string `json:"owner,omitempty"`
+	Owner *string
 
 	// The policy definition reference ID from a policy set definition that the attestation is setting the state for. If the policy
 	// assignment assigns a policy set definition the attestation can choose a
 	// definition within the set definition with this property or omit this and set the state for the entire set definition.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 
 	// READ-ONLY; The time the compliance state was last changed in this attestation.
-	LastComplianceStateChangeAt *time.Time `json:"lastComplianceStateChangeAt,omitempty" azure:"ro"`
+	LastComplianceStateChangeAt *time.Time
 
 	// READ-ONLY; The status of the attestation.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
@@ -142,18 +142,19 @@ type AttestationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.ListForResourceGroup
+// AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
 // method.
 type AttestationsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.ListForResource method.
+// AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.NewListForResourcePager
+// method.
 type AttestationsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.ListForSubscription
+// AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.NewListForSubscriptionPager
 // method.
 type AttestationsClientListForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -163,259 +164,259 @@ type AttestationsClientListForSubscriptionOptions struct {
 // evaluated.
 type CheckManagementGroupRestrictionsRequest struct {
 	// The list of fields and values that should be evaluated for potential restrictions.
-	PendingFields []*PendingField `json:"pendingFields,omitempty"`
+	PendingFields []*PendingField
 
 	// The information about the resource that will be evaluated.
-	ResourceDetails *CheckRestrictionsResourceDetails `json:"resourceDetails,omitempty"`
+	ResourceDetails *CheckRestrictionsResourceDetails
 }
 
 // CheckRestrictionsRequest - The check policy restrictions parameters describing the resource that is being evaluated.
 type CheckRestrictionsRequest struct {
 	// REQUIRED; The information about the resource that will be evaluated.
-	ResourceDetails *CheckRestrictionsResourceDetails `json:"resourceDetails,omitempty"`
+	ResourceDetails *CheckRestrictionsResourceDetails
 
 	// The list of fields and values that should be evaluated for potential restrictions.
-	PendingFields []*PendingField `json:"pendingFields,omitempty"`
+	PendingFields []*PendingField
 }
 
 // CheckRestrictionsResourceDetails - The information about the resource that will be evaluated.
 type CheckRestrictionsResourceDetails struct {
 	// REQUIRED; The resource content. This should include whatever properties are already known and can be a partial set of all
 	// resource properties.
-	ResourceContent interface{} `json:"resourceContent,omitempty"`
+	ResourceContent any
 
 	// The api-version of the resource content.
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// The scope where the resource is being created. For example, if the resource is a child resource this would be the parent
 	// resource's resource ID.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 }
 
 // CheckRestrictionsResult - The result of a check policy restrictions evaluation on a resource.
 type CheckRestrictionsResult struct {
 	// READ-ONLY; Evaluation results for the provided partial resource content.
-	ContentEvaluationResult *CheckRestrictionsResultContentEvaluationResult `json:"contentEvaluationResult,omitempty" azure:"ro"`
+	ContentEvaluationResult *CheckRestrictionsResultContentEvaluationResult
 
 	// READ-ONLY; The restrictions that will be placed on various fields in the resource by policy.
-	FieldRestrictions []*FieldRestrictions `json:"fieldRestrictions,omitempty" azure:"ro"`
+	FieldRestrictions []*FieldRestrictions
 }
 
 // CheckRestrictionsResultContentEvaluationResult - Evaluation results for the provided partial resource content.
 type CheckRestrictionsResultContentEvaluationResult struct {
 	// Policy evaluation results against the given resource content. This will indicate if the partial content that was provided
 	// will be denied as-is.
-	PolicyEvaluations []*PolicyEvaluationResult `json:"policyEvaluations,omitempty"`
+	PolicyEvaluations []*PolicyEvaluationResult
 }
 
 // ComplianceDetail - The compliance state rollup.
 type ComplianceDetail struct {
 	// The compliance state.
-	ComplianceState *string `json:"complianceState,omitempty"`
+	ComplianceState *string
 
 	// Summarized count value for this compliance state.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 }
 
 // ComponentEventDetails - Component event details.
 type ComponentEventDetails struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Component Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Component name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Policy definition action, i.e. effect.
-	PolicyDefinitionAction *string `json:"policyDefinitionAction,omitempty"`
+	PolicyDefinitionAction *string
 
 	// Principal object ID for the user who initiated the resource component operation that triggered the policy event.
-	PrincipalOid *string `json:"principalOid,omitempty"`
+	PrincipalOid *string
 
 	// Tenant ID for the policy event record.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Timestamp for component policy event record.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// Component type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ComponentStateDetails - Component state details.
 type ComponentStateDetails struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Component compliance state.
-	ComplianceState *string `json:"complianceState,omitempty"`
+	ComplianceState *string
 
 	// Component Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Component name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Component compliance evaluation timestamp.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// Component type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// READ-ONLY; Additional scenario specific error details.
-	AdditionalInfo []*TypedErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*TypedErrorInfo
 
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinition `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDefinition
 
 	// READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorDefinitionAutoGenerated - Error definition.
 type ErrorDefinitionAutoGenerated struct {
 	// READ-ONLY; Additional scenario specific error details.
-	AdditionalInfo []*TypedErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*TypedErrorInfo
 
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinitionAutoGenerated `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDefinitionAutoGenerated
 
 	// READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorDefinitionAutoGenerated2 - Error definition.
 type ErrorDefinitionAutoGenerated2 struct {
 	// READ-ONLY; Additional scenario specific error details.
-	AdditionalInfo []*TypedErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*TypedErrorInfo
 
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinitionAutoGenerated2 `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDefinitionAutoGenerated2
 
 	// READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Error response.
 type ErrorResponse struct {
 	// The error details.
-	Error *ErrorDefinition `json:"error,omitempty"`
+	Error *ErrorDefinition
 }
 
 // ErrorResponseAutoGenerated - Error response.
 type ErrorResponseAutoGenerated struct {
 	// The error details.
-	Error *ErrorDefinitionAutoGenerated `json:"error,omitempty"`
+	Error *ErrorDefinitionAutoGenerated
 }
 
 // ErrorResponseAutoGenerated2 - Error response.
 type ErrorResponseAutoGenerated2 struct {
 	// The error details.
-	Error *ErrorDefinitionAutoGenerated2 `json:"error,omitempty"`
+	Error *ErrorDefinitionAutoGenerated2
 }
 
 // ExpressionEvaluationDetails - Evaluation details of policy language expressions.
 type ExpressionEvaluationDetails struct {
 	// Expression evaluated.
-	Expression *string `json:"expression,omitempty"`
+	Expression *string
 
 	// Value of the expression.
-	ExpressionValue interface{} `json:"expressionValue,omitempty"`
+	ExpressionValue any
 
 	// Operator to compare the expression value and the target value.
-	Operator *string `json:"operator,omitempty"`
+	Operator *string
 
 	// Property path if the expression is a field or an alias.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Evaluation result.
-	Result *string `json:"result,omitempty"`
+	Result *string
 
 	// Target value to be compared with the expression value.
-	TargetValue interface{} `json:"targetValue,omitempty"`
+	TargetValue any
 
 	// READ-ONLY; The kind of expression that was evaluated.
-	ExpressionKind *string `json:"expressionKind,omitempty" azure:"ro"`
+	ExpressionKind *string
 }
 
 // FieldRestriction - The restrictions on a field imposed by a specific policy.
 type FieldRestriction struct {
 	// READ-ONLY; The value that policy will set for the field if the user does not provide a value.
-	DefaultValue *string `json:"defaultValue,omitempty" azure:"ro"`
+	DefaultValue *string
 
 	// READ-ONLY; The details of the policy that is causing the field restriction.
-	Policy *PolicyReference `json:"policy,omitempty" azure:"ro"`
+	Policy *PolicyReference
 
 	// READ-ONLY; The type of restriction that is imposed on the field.
-	Result *FieldRestrictionResult `json:"result,omitempty" azure:"ro"`
+	Result *FieldRestrictionResult
 
 	// READ-ONLY; The values that policy either requires or denies for the field.
-	Values []*string `json:"values,omitempty" azure:"ro"`
+	Values []*string
 }
 
 // FieldRestrictions - The restrictions that will be placed on a field in the resource by policy.
 type FieldRestrictions struct {
 	// The restrictions placed on that field by policy.
-	Restrictions []*FieldRestriction `json:"restrictions,omitempty"`
+	Restrictions []*FieldRestriction
 
 	// READ-ONLY; The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
-	Field *string `json:"field,omitempty" azure:"ro"`
+	Field *string
 }
 
 // IfNotExistsEvaluationDetails - Evaluation details of IfNotExists effect.
 type IfNotExistsEvaluationDetails struct {
 	// ID of the last evaluated resource for IfNotExists effect.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Total number of resources to which the existence condition is applicable.
-	TotalResources *int32 `json:"totalResources,omitempty"`
+	TotalResources *int32
 }
 
 // Operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Operation description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -426,242 +427,242 @@ type OperationsClientListOptions struct {
 // OperationsListResults - List of available operations.
 type OperationsListResults struct {
 	// OData entity count; represents the number of operations returned.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// List of available operations.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // PendingField - A field that should be evaluated against Azure Policy to determine restrictions.
 type PendingField struct {
 	// REQUIRED; The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
-	Field *string `json:"field,omitempty"`
+	Field *string
 
 	// The list of potential values for the field that should be evaluated against Azure Policy.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // PolicyAssignmentSummary - Policy assignment summary.
 type PolicyAssignmentSummary struct {
 	// Policy assignment ID.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// Policy definitions summary.
-	PolicyDefinitions []*PolicyDefinitionSummary `json:"policyDefinitions,omitempty"`
+	PolicyDefinitions []*PolicyDefinitionSummary
 
 	// Policy definition group summary.
-	PolicyGroups []*PolicyGroupSummary `json:"policyGroups,omitempty"`
+	PolicyGroups []*PolicyGroupSummary
 
 	// Policy set definition ID, if the policy assignment is for a policy set.
-	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty"`
+	PolicySetDefinitionID *string
 
 	// Compliance summary for the policy assignment.
-	Results *SummaryResults `json:"results,omitempty"`
+	Results *SummaryResults
 }
 
 // PolicyDefinitionSummary - Policy definition summary.
 type PolicyDefinitionSummary struct {
 	// Policy effect, i.e. policy definition action.
-	Effect *string `json:"effect,omitempty"`
+	Effect *string
 
 	// Policy definition group names.
-	PolicyDefinitionGroupNames []*string `json:"policyDefinitionGroupNames,omitempty"`
+	PolicyDefinitionGroupNames []*string
 
 	// Policy definition ID.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// Policy definition reference ID.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 
 	// Compliance summary for the policy definition.
-	Results *SummaryResults `json:"results,omitempty"`
+	Results *SummaryResults
 }
 
 // PolicyDetails - The policy details.
 type PolicyDetails struct {
 	// READ-ONLY; The display name of the policy assignment.
-	PolicyAssignmentDisplayName *string `json:"policyAssignmentDisplayName,omitempty" azure:"ro"`
+	PolicyAssignmentDisplayName *string
 
 	// READ-ONLY; The ID of the policy assignment.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty" azure:"ro"`
+	PolicyAssignmentID *string
 
 	// READ-ONLY; The scope of the policy assignment.
-	PolicyAssignmentScope *string `json:"policyAssignmentScope,omitempty" azure:"ro"`
+	PolicyAssignmentScope *string
 
 	// READ-ONLY; The ID of the policy definition.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty" azure:"ro"`
+	PolicyDefinitionID *string
 
 	// READ-ONLY; The policy definition reference ID within the policy set definition.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty" azure:"ro"`
+	PolicyDefinitionReferenceID *string
 
 	// READ-ONLY; The ID of the policy set definition.
-	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty" azure:"ro"`
+	PolicySetDefinitionID *string
 }
 
 // PolicyEvaluationDetails - Policy evaluation details.
 type PolicyEvaluationDetails struct {
 	// Details of the evaluated expressions.
-	EvaluatedExpressions []*ExpressionEvaluationDetails `json:"evaluatedExpressions,omitempty"`
+	EvaluatedExpressions []*ExpressionEvaluationDetails
 
 	// Evaluation details of IfNotExists effect.
-	IfNotExistsDetails *IfNotExistsEvaluationDetails `json:"ifNotExistsDetails,omitempty"`
+	IfNotExistsDetails *IfNotExistsEvaluationDetails
 }
 
 // PolicyEvaluationResult - The result of a non-compliant policy evaluation against the given resource content.
 type PolicyEvaluationResult struct {
 	// READ-ONLY; The detailed results of the policy expressions and values that were evaluated.
-	EvaluationDetails *PolicyEvaluationDetails `json:"evaluationDetails,omitempty" azure:"ro"`
+	EvaluationDetails *PolicyEvaluationDetails
 
 	// READ-ONLY; The result of the policy evaluation against the resource. This will typically be 'NonCompliant' but may contain
 	// other values if errors were encountered.
-	EvaluationResult *string `json:"evaluationResult,omitempty" azure:"ro"`
+	EvaluationResult *string
 
 	// READ-ONLY; The details of the policy that was evaluated.
-	PolicyInfo *PolicyReference `json:"policyInfo,omitempty" azure:"ro"`
+	PolicyInfo *PolicyReference
 }
 
 // PolicyEvent - Policy event record.
 type PolicyEvent struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compliance state of the resource.
-	ComplianceState *string `json:"complianceState,omitempty"`
+	ComplianceState *string
 
 	// Components events records populated only when URL contains $expand=components clause.
-	Components []*ComponentEventDetails `json:"components,omitempty"`
+	Components []*ComponentEventDetails
 
 	// Effective parameters for the policy assignment.
-	EffectiveParameters *string `json:"effectiveParameters,omitempty"`
+	EffectiveParameters *string
 
 	// Flag which states whether the resource is compliant against the policy assignment it was evaluated against.
-	IsCompliant *bool `json:"isCompliant,omitempty"`
+	IsCompliant *bool
 
 	// Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
-	ManagementGroupIDs *string `json:"managementGroupIds,omitempty"`
+	ManagementGroupIDs *string
 
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity ID; always set to null since policy event records do not have an entity ID.
-	ODataID *string `json:"@odata.id,omitempty"`
+	ODataID *string
 
 	// Policy assignment ID.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// Policy assignment name.
-	PolicyAssignmentName *string `json:"policyAssignmentName,omitempty"`
+	PolicyAssignmentName *string
 
 	// Policy assignment owner.
-	PolicyAssignmentOwner *string `json:"policyAssignmentOwner,omitempty"`
+	PolicyAssignmentOwner *string
 
 	// Policy assignment parameters.
-	PolicyAssignmentParameters *string `json:"policyAssignmentParameters,omitempty"`
+	PolicyAssignmentParameters *string
 
 	// Policy assignment scope.
-	PolicyAssignmentScope *string `json:"policyAssignmentScope,omitempty"`
+	PolicyAssignmentScope *string
 
 	// Policy definition action, i.e. effect.
-	PolicyDefinitionAction *string `json:"policyDefinitionAction,omitempty"`
+	PolicyDefinitionAction *string
 
 	// Policy definition category.
-	PolicyDefinitionCategory *string `json:"policyDefinitionCategory,omitempty"`
+	PolicyDefinitionCategory *string
 
 	// Policy definition ID.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// Policy definition name.
-	PolicyDefinitionName *string `json:"policyDefinitionName,omitempty"`
+	PolicyDefinitionName *string
 
 	// Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 
 	// Policy set definition category, if the policy assignment is for a policy set.
-	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
+	PolicySetDefinitionCategory *string
 
 	// Policy set definition ID, if the policy assignment is for a policy set.
-	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty"`
+	PolicySetDefinitionID *string
 
 	// Policy set definition name, if the policy assignment is for a policy set.
-	PolicySetDefinitionName *string `json:"policySetDefinitionName,omitempty"`
+	PolicySetDefinitionName *string
 
 	// Policy set definition owner, if the policy assignment is for a policy set.
-	PolicySetDefinitionOwner *string `json:"policySetDefinitionOwner,omitempty"`
+	PolicySetDefinitionOwner *string
 
 	// Policy set definition parameters, if the policy assignment is for a policy set.
-	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
+	PolicySetDefinitionParameters *string
 
 	// Principal object ID for the user who initiated the resource operation that triggered the policy event.
-	PrincipalOid *string `json:"principalOid,omitempty"`
+	PrincipalOid *string
 
 	// Resource group name.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Resource ID.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Resource location.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// List of resource tags.
-	ResourceTags *string `json:"resourceTags,omitempty"`
+	ResourceTags *string
 
 	// Resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Subscription ID.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Tenant ID for the policy event record.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Timestamp for the policy event record.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 }
 
-// PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
+// PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyEventsClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicyDefinition
+// PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicyDefinitionPager
 // method.
 type PolicyEventsClientListQueryResultsForPolicyDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicySetDefinition
+// PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicySetDefinitionPager
 // method.
 type PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+// PolicyEventsClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
 type PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResourceGroup
+// PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyEventsClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResource
+// PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyEventsClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+// PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
 type PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForSubscription
+// PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyEventsClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -670,40 +671,40 @@ type PolicyEventsClientListQueryResultsForSubscriptionOptions struct {
 // PolicyEventsQueryResults - Query results.
 type PolicyEventsQueryResults struct {
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity count; represents the number of policy event records returned.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// Odata next link; URL to get the next set of results.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// Query results.
-	Value []*PolicyEvent `json:"value,omitempty"`
+	Value []*PolicyEvent
 }
 
 // PolicyGroupSummary - Policy definition group summary.
 type PolicyGroupSummary struct {
 	// Policy group name.
-	PolicyGroupName *string `json:"policyGroupName,omitempty"`
+	PolicyGroupName *string
 
 	// Compliance summary for the policy definition group.
-	Results *SummaryResults `json:"results,omitempty"`
+	Results *SummaryResults
 }
 
 // PolicyMetadata - Policy metadata resource definition.
 type PolicyMetadata struct {
 	// Properties of the policy metadata.
-	Properties *PolicyMetadataProperties `json:"properties,omitempty"`
+	Properties *PolicyMetadataProperties
 
 	// READ-ONLY; The ID of the policy metadata.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy metadata.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the policy metadata.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource method.
@@ -711,7 +712,7 @@ type PolicyMetadataClientGetResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
+// PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
 type PolicyMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -719,73 +720,73 @@ type PolicyMetadataClientListOptions struct {
 // PolicyMetadataCollection - Collection of policy metadata resources.
 type PolicyMetadataCollection struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of policy metadata definitions.
-	Value []*SlimPolicyMetadata `json:"value,omitempty" azure:"ro"`
+	Value []*SlimPolicyMetadata
 }
 
 // PolicyMetadataProperties - The properties of the policy metadata.
 type PolicyMetadataProperties struct {
 	// READ-ONLY; Url for getting additional content about the resource metadata.
-	AdditionalContentURL *string `json:"additionalContentUrl,omitempty" azure:"ro"`
+	AdditionalContentURL *string
 
 	// READ-ONLY; The category of the policy metadata.
-	Category *string `json:"category,omitempty" azure:"ro"`
+	Category *string
 
 	// READ-ONLY; The description of the policy metadata.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Additional metadata.
-	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata any
 
 	// READ-ONLY; The policy metadata identifier.
-	MetadataID *string `json:"metadataId,omitempty" azure:"ro"`
+	MetadataID *string
 
 	// READ-ONLY; The owner of the policy metadata.
-	Owner *string `json:"owner,omitempty" azure:"ro"`
+	Owner *string
 
 	// READ-ONLY; The requirements of the policy metadata.
-	Requirements *string `json:"requirements,omitempty" azure:"ro"`
+	Requirements *string
 
 	// READ-ONLY; The title of the policy metadata.
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // PolicyMetadataSlimProperties - The properties of the policy metadata, excluding properties containing large strings
 type PolicyMetadataSlimProperties struct {
 	// READ-ONLY; Url for getting additional content about the resource metadata.
-	AdditionalContentURL *string `json:"additionalContentUrl,omitempty" azure:"ro"`
+	AdditionalContentURL *string
 
 	// READ-ONLY; The category of the policy metadata.
-	Category *string `json:"category,omitempty" azure:"ro"`
+	Category *string
 
 	// READ-ONLY; Additional metadata.
-	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata any
 
 	// READ-ONLY; The policy metadata identifier.
-	MetadataID *string `json:"metadataId,omitempty" azure:"ro"`
+	MetadataID *string
 
 	// READ-ONLY; The owner of the policy metadata.
-	Owner *string `json:"owner,omitempty" azure:"ro"`
+	Owner *string
 
 	// READ-ONLY; The title of the policy metadata.
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // PolicyReference - Resource identifiers for a policy.
 type PolicyReference struct {
 	// READ-ONLY; The resource identifier of the policy assignment.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty" azure:"ro"`
+	PolicyAssignmentID *string
 
 	// READ-ONLY; The resource identifier of the policy definition.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty" azure:"ro"`
+	PolicyDefinitionID *string
 
 	// READ-ONLY; The reference identifier of a specific policy definition within a policy set definition.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty" azure:"ro"`
+	PolicyDefinitionReferenceID *string
 
 	// READ-ONLY; The resource identifier of the policy set definition.
-	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty" azure:"ro"`
+	PolicySetDefinitionID *string
 }
 
 // PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
@@ -809,110 +810,110 @@ type PolicyRestrictionsClientCheckAtSubscriptionScopeOptions struct {
 // PolicyState - Policy state record.
 type PolicyState struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compliance state of the resource.
-	ComplianceState *string `json:"complianceState,omitempty"`
+	ComplianceState *string
 
 	// Components state compliance records populated only when URL contains $expand=components clause.
-	Components []*ComponentStateDetails `json:"components,omitempty"`
+	Components []*ComponentStateDetails
 
 	// Effective parameters for the policy assignment.
-	EffectiveParameters *string `json:"effectiveParameters,omitempty"`
+	EffectiveParameters *string
 
 	// Flag which states whether the resource is compliant against the policy assignment it was evaluated against. This property
 	// is deprecated; please use ComplianceState instead.
-	IsCompliant *bool `json:"isCompliant,omitempty"`
+	IsCompliant *bool
 
 	// Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
-	ManagementGroupIDs *string `json:"managementGroupIds,omitempty"`
+	ManagementGroupIDs *string
 
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity ID; always set to null since policy state records do not have an entity ID.
-	ODataID *string `json:"@odata.id,omitempty"`
+	ODataID *string
 
 	// Policy assignment ID.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// Policy assignment name.
-	PolicyAssignmentName *string `json:"policyAssignmentName,omitempty"`
+	PolicyAssignmentName *string
 
 	// Policy assignment owner.
-	PolicyAssignmentOwner *string `json:"policyAssignmentOwner,omitempty"`
+	PolicyAssignmentOwner *string
 
 	// Policy assignment parameters.
-	PolicyAssignmentParameters *string `json:"policyAssignmentParameters,omitempty"`
+	PolicyAssignmentParameters *string
 
 	// Policy assignment scope.
-	PolicyAssignmentScope *string `json:"policyAssignmentScope,omitempty"`
+	PolicyAssignmentScope *string
 
 	// Policy definition action, i.e. effect.
-	PolicyDefinitionAction *string `json:"policyDefinitionAction,omitempty"`
+	PolicyDefinitionAction *string
 
 	// Policy definition category.
-	PolicyDefinitionCategory *string `json:"policyDefinitionCategory,omitempty"`
+	PolicyDefinitionCategory *string
 
 	// Policy definition group names.
-	PolicyDefinitionGroupNames []*string `json:"policyDefinitionGroupNames,omitempty"`
+	PolicyDefinitionGroupNames []*string
 
 	// Policy definition ID.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// Policy definition name.
-	PolicyDefinitionName *string `json:"policyDefinitionName,omitempty"`
+	PolicyDefinitionName *string
 
 	// Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 
 	// Policy evaluation details.
-	PolicyEvaluationDetails *PolicyEvaluationDetails `json:"policyEvaluationDetails,omitempty"`
+	PolicyEvaluationDetails *PolicyEvaluationDetails
 
 	// Policy set definition category, if the policy assignment is for a policy set.
-	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
+	PolicySetDefinitionCategory *string
 
 	// Policy set definition ID, if the policy assignment is for a policy set.
-	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty"`
+	PolicySetDefinitionID *string
 
 	// Policy set definition name, if the policy assignment is for a policy set.
-	PolicySetDefinitionName *string `json:"policySetDefinitionName,omitempty"`
+	PolicySetDefinitionName *string
 
 	// Policy set definition owner, if the policy assignment is for a policy set.
-	PolicySetDefinitionOwner *string `json:"policySetDefinitionOwner,omitempty"`
+	PolicySetDefinitionOwner *string
 
 	// Policy set definition parameters, if the policy assignment is for a policy set.
-	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
+	PolicySetDefinitionParameters *string
 
 	// Resource group name.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Resource ID.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Resource location.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// List of resource tags.
-	ResourceTags *string `json:"resourceTags,omitempty"`
+	ResourceTags *string
 
 	// Resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Subscription ID.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Timestamp for the policy state record.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// READ-ONLY; Evaluated policy assignment version.
-	PolicyAssignmentVersion *string `json:"policyAssignmentVersion,omitempty" azure:"ro"`
+	PolicyAssignmentVersion *string
 
 	// READ-ONLY; Evaluated policy definition version.
-	PolicyDefinitionVersion *string `json:"policyDefinitionVersion,omitempty" azure:"ro"`
+	PolicyDefinitionVersion *string
 
 	// READ-ONLY; Evaluated policy set definition version.
-	PolicySetDefinitionVersion *string `json:"policySetDefinitionVersion,omitempty" azure:"ro"`
+	PolicySetDefinitionVersion *string
 }
 
 // PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions contains the optional parameters for the PolicyStatesClient.BeginTriggerResourceGroupEvaluation
@@ -929,49 +930,49 @@ type PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions struct {
 	ResumeToken string
 }
 
-// PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForManagementGroup
+// PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyStatesClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicyDefinition
+// PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager
 // method.
 type PolicyStatesClientListQueryResultsForPolicyDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicySetDefinition
+// PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager
 // method.
 type PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+// PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
 type PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResourceGroup
+// PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyStatesClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResource
+// PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyStatesClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
-// PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+// PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
 type PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForSubscription
+// PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyStatesClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1028,55 +1029,55 @@ type PolicyStatesClientSummarizeForSubscriptionOptions struct {
 // PolicyStatesQueryResults - Query results.
 type PolicyStatesQueryResults struct {
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity count; represents the number of policy state records returned.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// Odata next link; URL to get the next set of results.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// Query results.
-	Value []*PolicyState `json:"value,omitempty"`
+	Value []*PolicyState
 }
 
 // PolicyTrackedResource - Policy tracked resource record.
 type PolicyTrackedResource struct {
 	// READ-ONLY; The details of the policy triggered deployment that created the tracked resource.
-	CreatedBy *TrackedResourceModificationDetails `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *TrackedResourceModificationDetails
 
 	// READ-ONLY; The details of the policy triggered deployment that modified the tracked resource.
-	LastModifiedBy *TrackedResourceModificationDetails `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *TrackedResourceModificationDetails
 
 	// READ-ONLY; Timestamp of the last update to the tracked resource.
-	LastUpdateUTC *time.Time `json:"lastUpdateUtc,omitempty" azure:"ro"`
+	LastUpdateUTC *time.Time
 
 	// READ-ONLY; The details of the policy that require the tracked resource.
-	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty" azure:"ro"`
+	PolicyDetails *PolicyDetails
 
 	// READ-ONLY; The ID of the policy tracked resource.
-	TrackedResourceID *string `json:"trackedResourceId,omitempty" azure:"ro"`
+	TrackedResourceID *string
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup
+// PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResource
+// PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForSubscription
+// PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager
 // method.
 type PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1085,25 +1086,25 @@ type PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions struct {
 // PolicyTrackedResourcesQueryResults - Query results.
 type PolicyTrackedResourcesQueryResults struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Query results.
-	Value []*PolicyTrackedResource `json:"value,omitempty" azure:"ro"`
+	Value []*PolicyTrackedResource
 }
 
 // QueryFailure - Error response.
 type QueryFailure struct {
 	// Error definition.
-	Error *QueryFailureError `json:"error,omitempty"`
+	Error *QueryFailureError
 }
 
 // QueryFailureError - Error definition.
 type QueryFailureError struct {
 	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup method.
@@ -1135,124 +1136,124 @@ type QueryOptions struct {
 // Remediation - The remediation definition.
 type Remediation struct {
 	// Properties for the remediation.
-	Properties *RemediationProperties `json:"properties,omitempty"`
+	Properties *RemediationProperties
 
 	// READ-ONLY; The ID of the remediation.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the remediation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the remediation.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RemediationDeployment - Details of a single deployment created by the remediation.
 type RemediationDeployment struct {
 	// READ-ONLY; The time at which the remediation was created.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; Resource ID of the template deployment that will remediate the resource.
-	DeploymentID *string `json:"deploymentId,omitempty" azure:"ro"`
+	DeploymentID *string
 
 	// READ-ONLY; Error encountered while remediated the resource.
-	Error *ErrorDefinition `json:"error,omitempty" azure:"ro"`
+	Error *ErrorDefinition
 
 	// READ-ONLY; The time at which the remediation deployment was last updated.
-	LastUpdatedOn *time.Time `json:"lastUpdatedOn,omitempty" azure:"ro"`
+	LastUpdatedOn *time.Time
 
 	// READ-ONLY; Resource ID of the resource that is being remediated by the deployment.
-	RemediatedResourceID *string `json:"remediatedResourceId,omitempty" azure:"ro"`
+	RemediatedResourceID *string
 
 	// READ-ONLY; Location of the resource that is being remediated.
-	ResourceLocation *string `json:"resourceLocation,omitempty" azure:"ro"`
+	ResourceLocation *string
 
 	// READ-ONLY; Status of the remediation deployment.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // RemediationDeploymentSummary - The deployment status summary for all deployments created by the remediation.
 type RemediationDeploymentSummary struct {
 	// READ-ONLY; The number of deployments required by the remediation that have failed.
-	FailedDeployments *int32 `json:"failedDeployments,omitempty" azure:"ro"`
+	FailedDeployments *int32
 
 	// READ-ONLY; The number of deployments required by the remediation that have succeeded.
-	SuccessfulDeployments *int32 `json:"successfulDeployments,omitempty" azure:"ro"`
+	SuccessfulDeployments *int32
 
 	// READ-ONLY; The number of deployments required by the remediation.
-	TotalDeployments *int32 `json:"totalDeployments,omitempty" azure:"ro"`
+	TotalDeployments *int32
 }
 
 // RemediationDeploymentsListResult - List of deployments for a remediation.
 type RemediationDeploymentsListResult struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of deployments for the remediation.
-	Value []*RemediationDeployment `json:"value,omitempty" azure:"ro"`
+	Value []*RemediationDeployment
 }
 
 // RemediationFilters - The filters that will be applied to determine which resources to remediate.
 type RemediationFilters struct {
 	// The resource locations that will be remediated.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 }
 
 // RemediationListResult - List of remediations.
 type RemediationListResult struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of remediation definitions.
-	Value []*Remediation `json:"value,omitempty" azure:"ro"`
+	Value []*Remediation
 }
 
 // RemediationProperties - The remediation properties.
 type RemediationProperties struct {
 	// The remediation failure threshold settings
-	FailureThreshold *RemediationPropertiesFailureThreshold `json:"failureThreshold,omitempty"`
+	FailureThreshold *RemediationPropertiesFailureThreshold
 
 	// The filters that will be applied to determine which resources to remediate.
-	Filters *RemediationFilters `json:"filters,omitempty"`
+	Filters *RemediationFilters
 
 	// Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation.
 	// If not provided, the default parallel deployments value is used.
-	ParallelDeployments *int32 `json:"parallelDeployments,omitempty"`
+	ParallelDeployments *int32
 
 	// The resource ID of the policy assignment that should be remediated.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment
 	// being remediated assigns a policy set definition.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 
 	// Determines the max number of resources that can be remediated by the remediation job. If not provided, the default resource
 	// count is used.
-	ResourceCount *int32 `json:"resourceCount,omitempty"`
+	ResourceCount *int32
 
 	// The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
-	ResourceDiscoveryMode *ResourceDiscoveryMode `json:"resourceDiscoveryMode,omitempty"`
+	ResourceDiscoveryMode *ResourceDiscoveryMode
 
 	// READ-ONLY; The remediation correlation Id. Can be used to find events related to the remediation in the activity log.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; The time at which the remediation was created.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; The deployment status summary for all deployments created by the remediation.
-	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *RemediationDeploymentSummary
 
 	// READ-ONLY; The time at which the remediation was last updated.
-	LastUpdatedOn *time.Time `json:"lastUpdatedOn,omitempty" azure:"ro"`
+	LastUpdatedOn *time.Time
 
 	// READ-ONLY; The status of the remediation.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The remediation status message. Provides additional details regarding the state of the remediation.
-	StatusMessage *string `json:"statusMessage,omitempty" azure:"ro"`
+	StatusMessage *string
 }
 
 // RemediationPropertiesFailureThreshold - The remediation failure threshold settings
@@ -1260,7 +1261,7 @@ type RemediationPropertiesFailureThreshold struct {
 	// A number between 0.0 to 1.0 representing the percentage failure threshold. The remediation will fail if the percentage
 	// of failed remediation operations (i.e. failed deployments) exceeds this
 	// threshold.
-	Percentage *float32 `json:"percentage,omitempty"`
+	Percentage *float32
 }
 
 // RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
@@ -1358,48 +1359,49 @@ type RemediationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
+// RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtManagementGroupPager
 // method.
 type RemediationsClientListDeploymentsAtManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
+// RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourceGroupPager
 // method.
 type RemediationsClientListDeploymentsAtResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
+// RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourcePager
 // method.
 type RemediationsClientListDeploymentsAtResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
+// RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtSubscriptionPager
 // method.
 type RemediationsClientListDeploymentsAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
+// RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListForManagementGroupPager
 // method.
 type RemediationsClientListForManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
+// RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListForResourceGroupPager
 // method.
 type RemediationsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource method.
+// RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.NewListForResourcePager
+// method.
 type RemediationsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
+// RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListForSubscriptionPager
 // method.
 type RemediationsClientListForSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1408,120 +1410,120 @@ type RemediationsClientListForSubscriptionOptions struct {
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SlimPolicyMetadata - Slim version of policy metadata resource definition, excluding properties with large strings
 type SlimPolicyMetadata struct {
 	// Properties of the policy metadata.
-	Properties *PolicyMetadataSlimProperties `json:"properties,omitempty"`
+	Properties *PolicyMetadataSlimProperties
 
 	// READ-ONLY; The ID of the policy metadata.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy metadata.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the policy metadata.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SummarizeResults - Summarize action results.
 type SummarizeResults struct {
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity count; represents the number of summaries returned; always set to 1.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// Summarize action results.
-	Value []*Summary `json:"value,omitempty"`
+	Value []*Summary
 }
 
 // Summary results.
 type Summary struct {
 	// OData context string; used by OData clients to resolve type information based on metadata.
-	ODataContext *string `json:"@odata.context,omitempty"`
+	ODataContext *string
 
 	// OData entity ID; always set to null since summaries do not have an entity ID.
-	ODataID *string `json:"@odata.id,omitempty"`
+	ODataID *string
 
 	// Policy assignments summary.
-	PolicyAssignments []*PolicyAssignmentSummary `json:"policyAssignments,omitempty"`
+	PolicyAssignments []*PolicyAssignmentSummary
 
 	// Compliance summary for all policy assignments.
-	Results *SummaryResults `json:"results,omitempty"`
+	Results *SummaryResults
 }
 
 // SummaryResults - Compliance summary on a particular summary level.
 type SummaryResults struct {
 	// Number of non-compliant policies.
-	NonCompliantPolicies *int32 `json:"nonCompliantPolicies,omitempty"`
+	NonCompliantPolicies *int32
 
 	// Number of non-compliant resources.
-	NonCompliantResources *int32 `json:"nonCompliantResources,omitempty"`
+	NonCompliantResources *int32
 
 	// The policy artifact summary at this level. For query scope level, it represents policy assignment summary. For policy assignment
 	// level, it represents policy definitions summary.
-	PolicyDetails []*ComplianceDetail `json:"policyDetails,omitempty"`
+	PolicyDetails []*ComplianceDetail
 
 	// The policy definition group summary at this level.
-	PolicyGroupDetails []*ComplianceDetail `json:"policyGroupDetails,omitempty"`
+	PolicyGroupDetails []*ComplianceDetail
 
 	// HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the compliance summary. This
 	// property will not be available by default in future API versions, but could
 	// be queried explicitly.
-	QueryResultsURI *string `json:"queryResultsUri,omitempty"`
+	QueryResultsURI *string
 
 	// The resources summary at this level.
-	ResourceDetails []*ComplianceDetail `json:"resourceDetails,omitempty"`
+	ResourceDetails []*ComplianceDetail
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResourceModificationDetails - The details of the policy triggered deployment that created or modified the tracked
 // resource.
 type TrackedResourceModificationDetails struct {
 	// READ-ONLY; The ID of the deployment that created or modified the tracked resource.
-	DeploymentID *string `json:"deploymentId,omitempty" azure:"ro"`
+	DeploymentID *string
 
 	// READ-ONLY; Timestamp of the deployment that created or modified the tracked resource.
-	DeploymentTime *time.Time `json:"deploymentTime,omitempty" azure:"ro"`
+	DeploymentTime *time.Time
 
 	// READ-ONLY; The details of the policy that created or modified the tracked resource.
-	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty" azure:"ro"`
+	PolicyDetails *PolicyDetails
 }
 
 // TypedErrorInfo - Scenario specific error details.
 type TypedErrorInfo struct {
 	// READ-ONLY; The scenario specific error details.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The type of included error details.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

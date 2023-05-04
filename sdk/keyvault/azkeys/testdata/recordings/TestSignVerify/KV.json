@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Date": "Tue, 28 Mar 2023 22:07:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "uksouth",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "329061c9-b624-4b5f-b4ee-e4f2712f9cfb"
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "042fe51e-dc2a-429b-84c2-a65b0032f716"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "55",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "crv": "P-256K",
@@ -57,32 +57,34 @@
         "Cache-Control": "no-cache",
         "Content-Length": "408",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Date": "Tue, 28 Mar 2023 22:07:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=645;da_age=2931;rd_age=2931;brd_age=7272;ra_notif_age=1072;dec_lev=1;",
         "x-ms-keyvault-region": "uksouth",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "d6a80cc9-34d8-4f9f-b0a1-e30cae7990bf"
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "84189bcc-8669-4c35-bb22-02344fa876c9"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakevault.local/keys/key3534672839/adc77336fe3a4b5a84474e48ac726856",
+          "kid": "https://fakevault.local/keys/key3534672839/1a9868cd0b7c49f29af5c6a42946a10a",
           "kty": "EC",
           "key_ops": [
             "sign",
             "verify"
           ],
           "crv": "P-256K",
-          "x": "Va1aWGxGujx5qm0O_aCIbYMS58JETP54lffqtiXOsno",
-          "y": "Kix_B24pkHAgmPmaDyCc6BGh75ehnmyfAbJwXH3vDCc"
+          "x": "lvGyyrzuDo2A89nA-6tcoTri3RGLeFXQhRN-fRy4e8A",
+          "y": "o33jgAVh7ZUQRtaU9ZXI6VP6yLbHGVHI4fFZ-460VDA"
         },
         "attributes": {
           "enabled": true,
-          "created": 1662162813,
-          "updated": 1662162813,
+          "created": 1680041256,
+          "updated": 1680041256,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7,
           "exportable": false
@@ -90,7 +92,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839//sign?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/sign?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -98,7 +100,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "70",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "alg": "ES256K",
@@ -109,23 +111,25 @@
         "Cache-Control": "no-cache",
         "Content-Length": "182",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Date": "Tue, 28 Mar 2023 22:07:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=645;da_age=2931;rd_age=2931;brd_age=7272;ra_notif_age=1072;dec_lev=1;",
         "x-ms-keyvault-region": "uksouth",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "67378763-fda4-4159-b51b-ebbc7a979593"
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "7520ec4f-bf26-47e4-a12e-872f9f661dd1"
       },
       "ResponseBody": {
-        "kid": "https://fakevault.local/keys/key3534672839/adc77336fe3a4b5a84474e48ac726856",
-        "value": "VWn0MR64dJv5SgsieK2z02X95EKqv93qH9F4fWn_QmkxdS3aytLtUpl69w4FjiQzvKLqZGoJcVyWgcaJEAPaTg"
+        "kid": "https://fakevault.local/keys/key3534672839/1a9868cd0b7c49f29af5c6a42946a10a",
+        "value": "b5VyKQtuME58vqxsmRlcPSxWxDJdlmToYDK0XKa44K-OaKyh3lCrpUzrpO9U4bY20ql6wHcjW6wBvlL0YZlpVg"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/keys/key3534672839//verify?api-version=7.3",
+      "RequestUri": "https://fakevault.local/keys/key3534672839/verify?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -133,27 +137,29 @@
         "Authorization": "Sanitized",
         "Content-Length": "168",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azkeys/v0.10.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "alg": "ES256K",
         "digest": "ltYuKr0-Qt5fUDMPuO_ExVmYNSeAd7IemqCzPB3wehw",
-        "value": "VWn0MR64dJv5SgsieK2z02X95EKqv93qH9F4fWn_QmkxdS3aytLtUpl69w4FjiQzvKLqZGoJcVyWgcaJEAPaTg"
+        "value": "b5VyKQtuME58vqxsmRlcPSxWxDJdlmToYDK0XKa44K-OaKyh3lCrpUzrpO9U4bY20ql6wHcjW6wBvlL0YZlpVg"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "14",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 23:53:34 GMT",
+        "Date": "Tue, 28 Mar 2023 22:07:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=645;da_age=2931;rd_age=2931;brd_age=7272;ra_notif_age=1072;dec_lev=1;",
         "x-ms-keyvault-region": "uksouth",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "6c06186c-18ca-4b0a-a9aa-14679bec4176"
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "e4611675-21b7-4c14-ae40-b3eb469de9ef"
       },
       "ResponseBody": {
         "value": true

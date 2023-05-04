@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,40 +24,32 @@ import (
 // AzureTrafficCollectorsByResourceGroupClient contains the methods for the AzureTrafficCollectorsByResourceGroup group.
 // Don't use this type directly, use NewAzureTrafficCollectorsByResourceGroupClient() instead.
 type AzureTrafficCollectorsByResourceGroupClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureTrafficCollectorsByResourceGroupClient creates a new instance of AzureTrafficCollectorsByResourceGroupClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAzureTrafficCollectorsByResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureTrafficCollectorsByResourceGroupClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureTrafficCollectorsByResourceGroupClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureTrafficCollectorsByResourceGroupClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Return list of Azure Traffic Collectors in a Resource Group
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// options - AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.List
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.NewListPager
+//     method.
 func (client *AzureTrafficCollectorsByResourceGroupClient) NewListPager(resourceGroupName string, options *AzureTrafficCollectorsByResourceGroupClientListOptions) *runtime.Pager[AzureTrafficCollectorsByResourceGroupClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureTrafficCollectorsByResourceGroupClientListResponse]{
 		More: func(page AzureTrafficCollectorsByResourceGroupClientListResponse) bool {
@@ -76,7 +66,7 @@ func (client *AzureTrafficCollectorsByResourceGroupClient) NewListPager(resource
 			if err != nil {
 				return AzureTrafficCollectorsByResourceGroupClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AzureTrafficCollectorsByResourceGroupClientListResponse{}, err
 			}
@@ -99,7 +89,7 @@ func (client *AzureTrafficCollectorsByResourceGroupClient) listCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

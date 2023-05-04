@@ -19,7 +19,7 @@ func SetupRPC(sender *MockAMQPSenderCloser, receiver *MockAMQPReceiverCloser, ex
 	ch := make(chan *amqp.Message, 1000)
 
 	for i := 0; i < expectedCount; i++ {
-		sender.EXPECT().Send(gomock.Any(), gomock.Any()).Do(func(ctx context.Context, msg *amqp.Message) error {
+		sender.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).Do(func(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 			ch <- msg
 			return nil
 		})
@@ -27,7 +27,7 @@ func SetupRPC(sender *MockAMQPSenderCloser, receiver *MockAMQPReceiverCloser, ex
 
 	// RPC loops forever. We get one extra Receive() call here (the one that waits on the ctx.Done())
 	for i := 0; i < expectedCount+1; i++ {
-		receiver.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+		receiver.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 			select {
 			case <-ctx.Done():
 				return nil, ctx.Err()
@@ -58,7 +58,7 @@ func NewContextWithValueMatcher[KT comparable, VT comparable](key KT, value VT) 
 	return ContextWithValueMatcher[KT, VT]{key, value}
 }
 
-func (m ContextWithValueMatcher[KT, VT]) Matches(x interface{}) bool {
+func (m ContextWithValueMatcher[KT, VT]) Matches(x any) bool {
 	ctx := x.(context.Context)
 	return ctx.Value(m.Key) == m.Value
 }
@@ -88,7 +88,7 @@ type ContextCancelledMatcher struct {
 }
 
 // Matches returns whether x is a match.
-func (m ContextCancelledMatcher) Matches(x interface{}) bool {
+func (m ContextCancelledMatcher) Matches(x any) bool {
 	ctx := x.(context.Context)
 
 	if m.WantCancelled {
@@ -105,7 +105,7 @@ func (m ContextCancelledMatcher) String() string {
 
 type ContextCreatedForTest struct{}
 
-func (m ContextCreatedForTest) Matches(x interface{}) bool {
+func (m ContextCreatedForTest) Matches(x any) bool {
 	ctx := x.(context.Context)
 	return ctx.Value(testContextKey(0)) != nil
 }

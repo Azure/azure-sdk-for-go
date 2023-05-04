@@ -9,7 +9,7 @@
 
 package armbillingbenefits
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -19,7 +19,7 @@ type RPClientValidatePurchaseResponse struct {
 	SavingsPlanValidateResponse
 }
 
-// ReservationOrderAliasClientCreateResponse contains the response from method ReservationOrderAliasClient.Create.
+// ReservationOrderAliasClientCreateResponse contains the response from method ReservationOrderAliasClient.BeginCreate.
 type ReservationOrderAliasClientCreateResponse struct {
 	ReservationOrderAliasResponse
 }
@@ -34,12 +34,12 @@ type SavingsPlanClientGetResponse struct {
 	SavingsPlanModel
 }
 
-// SavingsPlanClientListAllResponse contains the response from method SavingsPlanClient.ListAll.
+// SavingsPlanClientListAllResponse contains the response from method SavingsPlanClient.NewListAllPager.
 type SavingsPlanClientListAllResponse struct {
 	SavingsPlanModelListResult
 }
 
-// SavingsPlanClientListResponse contains the response from method SavingsPlanClient.List.
+// SavingsPlanClientListResponse contains the response from method SavingsPlanClient.NewListPager.
 type SavingsPlanClientListResponse struct {
 	SavingsPlanModelList
 }
@@ -56,7 +56,7 @@ type SavingsPlanClientValidateUpdateResponse struct {
 	SavingsPlanValidateResponse
 }
 
-// SavingsPlanOrderAliasClientCreateResponse contains the response from method SavingsPlanOrderAliasClient.Create.
+// SavingsPlanOrderAliasClientCreateResponse contains the response from method SavingsPlanOrderAliasClient.BeginCreate.
 type SavingsPlanOrderAliasClientCreateResponse struct {
 	SavingsPlanOrderAliasModel
 }
@@ -76,7 +76,7 @@ type SavingsPlanOrderClientGetResponse struct {
 	SavingsPlanOrderModel
 }
 
-// SavingsPlanOrderClientListResponse contains the response from method SavingsPlanOrderClient.List.
+// SavingsPlanOrderClientListResponse contains the response from method SavingsPlanOrderClient.NewListPager.
 type SavingsPlanOrderClientListResponse struct {
 	SavingsPlanOrderModelList
 }

@@ -14,7 +14,7 @@ import (
 )
 
 func FinitePeeks(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("FinitePeeks")
+	sc := shared.MustCreateStressContext("FinitePeeks", nil)
 	defer sc.Done()
 
 	queueName := fmt.Sprintf("finite-peeks-%s", sc.Nano)
@@ -28,11 +28,13 @@ func FinitePeeks(remainingArgs []string) {
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
+	log.Printf("Sending a single message")
 	err = sender.SendMessage(sc.Context, &azservicebus.Message{
 		Body: []byte("peekable message"),
 	}, nil)
 	sc.PanicOnError("failed to send message", err)
 
+	log.Printf("Closing sender")
 	_ = sender.Close(sc.Context)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -51,9 +53,13 @@ func FinitePeeks(remainingArgs []string) {
 	sc.PanicOnError("failed to abandon message",
 		receiver.AbandonMessage(sc.Context, tmp[0], nil))
 
-	for i := 0; i < 10000; i++ {
-		log.Printf("Sleeping for 1 second before iteration %d", i)
-		time.Sleep(time.Second)
+	const maxPeeks = 10000
+	const peekSleep = 500 * time.Millisecond
+
+	log.Printf("Now peeking %d times, every %dms", maxPeeks, peekSleep/time.Millisecond)
+
+	for i := 1; i <= maxPeeks; i++ {
+		time.Sleep(peekSleep)
 
 		seqNum := int64(0)
 
@@ -65,4 +71,6 @@ func FinitePeeks(remainingArgs []string) {
 
 		receiverStats.AddReceived(int32(1))
 	}
+
+	log.Printf("Done, peeked %d times", maxPeeks)
 }

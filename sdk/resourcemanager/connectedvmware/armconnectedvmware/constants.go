@@ -19,7 +19,7 @@ package armconnectedvmware
 
 const (
 	moduleName    = "armconnectedvmware"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

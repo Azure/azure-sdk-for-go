@@ -14,40 +14,40 @@ import "time"
 // AssociatedWorkspace - The list of Log Analytics workspaces associated with the cluster.
 type AssociatedWorkspace struct {
 	// READ-ONLY; The time of workspace association.
-	AssociateDate *string `json:"associateDate,omitempty" azure:"ro"`
+	AssociateDate *string
 
 	// READ-ONLY; The ResourceId id the assigned workspace.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 
 	// READ-ONLY; The id of the assigned workspace.
-	WorkspaceID *string `json:"workspaceId,omitempty" azure:"ro"`
+	WorkspaceID *string
 
 	// READ-ONLY; The name id the assigned workspace.
-	WorkspaceName *string `json:"workspaceName,omitempty" azure:"ro"`
+	WorkspaceName *string
 }
 
 // AvailableServiceTier - Service Tier details.
 type AvailableServiceTier struct {
 	// READ-ONLY; The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
-	CapacityReservationLevel *int64 `json:"capacityReservationLevel,omitempty" azure:"ro"`
+	CapacityReservationLevel *int64
 
 	// READ-ONLY; The default retention for the Service Tier, in days.
-	DefaultRetention *int64 `json:"defaultRetention,omitempty" azure:"ro"`
+	DefaultRetention *int64
 
 	// READ-ONLY; True if the Service Tier is enabled for the workspace.
-	Enabled *bool `json:"enabled,omitempty" azure:"ro"`
+	Enabled *bool
 
 	// READ-ONLY; Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
-	LastSKUUpdate *string `json:"lastSkuUpdate,omitempty" azure:"ro"`
+	LastSKUUpdate *string
 
 	// READ-ONLY; The maximum retention for the Service Tier, in days.
-	MaximumRetention *int64 `json:"maximumRetention,omitempty" azure:"ro"`
+	MaximumRetention *int64
 
 	// READ-ONLY; The minimum retention for the Service Tier, in days.
-	MinimumRetention *int64 `json:"minimumRetention,omitempty" azure:"ro"`
+	MinimumRetention *int64
 
 	// READ-ONLY; The name of the Service Tier.
-	ServiceTier *SKUNameEnum `json:"serviceTier,omitempty" azure:"ro"`
+	ServiceTier *SKUNameEnum
 }
 
 // AvailableServiceTiersClientListByWorkspaceOptions contains the optional parameters for the AvailableServiceTiersClient.ListByWorkspace
@@ -59,145 +59,130 @@ type AvailableServiceTiersClientListByWorkspaceOptions struct {
 // AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// AzureResourceProperties - An Azure resource QueryPack-Query object
-type AzureResourceProperties struct {
-	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CapacityReservationProperties - The Capacity Reservation properties.
 type CapacityReservationProperties struct {
 	// READ-ONLY; The last time Sku was updated.
-	LastSKUUpdate *string `json:"lastSkuUpdate,omitempty" azure:"ro"`
+	LastSKUUpdate *string
 
 	// READ-ONLY; Minimum CapacityReservation value in GB.
-	MinCapacity *int64 `json:"minCapacity,omitempty" azure:"ro"`
+	MinCapacity *int64
 }
 
 // Cluster - The top level Log Analytics cluster resource container.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Log Analytics cluster properties.
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// The sku properties.
-	SKU *ClusterSKU `json:"sku,omitempty"`
+	SKU *ClusterSKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterListResult - The list clusters operation response.
 type ClusterListResult struct {
 	// The link used to get the next page of recommendations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of Log Analytics clusters.
-	Value []*Cluster `json:"value,omitempty"`
+	Value []*Cluster
 }
 
 // ClusterPatch - The top level Log Analytics cluster resource container.
 type ClusterPatch struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Log Analytics cluster properties.
-	Properties *ClusterPatchProperties `json:"properties,omitempty"`
+	Properties *ClusterPatchProperties
 
 	// The sku properties.
-	SKU *ClusterSKU `json:"sku,omitempty"`
+	SKU *ClusterSKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ClusterPatchProperties - Log Analytics cluster patch properties.
 type ClusterPatchProperties struct {
 	// The cluster's billing type.
-	BillingType *BillingType `json:"billingType,omitempty"`
+	BillingType *BillingType
 
 	// The associated key properties.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 }
 
 // ClusterProperties - Cluster properties.
 type ClusterProperties struct {
 	// The list of Log Analytics workspaces associated with the cluster
-	AssociatedWorkspaces []*AssociatedWorkspace `json:"associatedWorkspaces,omitempty"`
+	AssociatedWorkspaces []*AssociatedWorkspace
 
 	// The cluster's billing type.
-	BillingType *BillingType `json:"billingType,omitempty"`
+	BillingType *BillingType
 
 	// Additional properties for capacity reservation
-	CapacityReservationProperties *CapacityReservationProperties `json:"capacityReservationProperties,omitempty"`
+	CapacityReservationProperties *CapacityReservationProperties
 
 	// Sets whether the cluster will support availability zones. This can be set as true only in regions where Azure Data Explorer
 	// support Availability Zones. This Property can not be modified after cluster
 	// creation. Default value is 'true' if region supports Availability Zones.
-	IsAvailabilityZonesEnabled *bool `json:"isAvailabilityZonesEnabled,omitempty"`
+	IsAvailabilityZonesEnabled *bool
 
 	// Configures whether cluster will use double encryption. This Property can not be modified after cluster creation. Default
 	// value is 'true'
-	IsDoubleEncryptionEnabled *bool `json:"isDoubleEncryptionEnabled,omitempty"`
+	IsDoubleEncryptionEnabled *bool
 
 	// The associated key properties.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 
 	// READ-ONLY; The ID associated with the cluster.
-	ClusterID *string `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *string
 
 	// READ-ONLY; The cluster creation time
-	CreatedDate *string `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *string
 
 	// READ-ONLY; The last time the cluster was updated.
-	LastModifiedDate *string `json:"lastModifiedDate,omitempty" azure:"ro"`
+	LastModifiedDate *string
 
 	// READ-ONLY; The provisioning state of the cluster.
-	ProvisioningState *ClusterEntityStatus `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ClusterEntityStatus
 }
 
 // ClusterSKU - The cluster sku definition.
 type ClusterSKU struct {
 	// The capacity value
-	Capacity *Capacity `json:"capacity,omitempty"`
+	Capacity *Capacity
 
 	// The name of the SKU.
-	Name *ClusterSKUNameEnum `json:"name,omitempty"`
+	Name *ClusterSKUNameEnum
 }
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
@@ -223,89 +208,66 @@ type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
 type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// Column - Table column.
-type Column struct {
-	// Column data type logical hint.
-	DataTypeHint *ColumnDataTypeHintEnum `json:"dataTypeHint,omitempty"`
-
-	// Column description.
-	Description *string `json:"description,omitempty"`
-
-	// Column display name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Column name.
-	Name *string `json:"name,omitempty"`
-
-	// Column data type.
-	Type *ColumnTypeEnum `json:"type,omitempty"`
-
-	// READ-ONLY; Is displayed by default.
-	IsDefaultDisplay *bool `json:"isDefaultDisplay,omitempty" azure:"ro"`
-
-	// READ-ONLY; Is column hidden.
-	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
 }
 
 // CoreSummary - The core summary of a search.
 type CoreSummary struct {
 	// REQUIRED; The number of documents of a core summary.
-	NumberOfDocuments *int64 `json:"numberOfDocuments,omitempty"`
+	NumberOfDocuments *int64
 
 	// The status of a core summary.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // DataExport - The top level data export resource container.
 type DataExport struct {
 	// data export properties.
-	Properties *DataExportProperties `json:"properties,omitempty"`
+	Properties *DataExportProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataExportListResult - Result of the request to list data exports.
 type DataExportListResult struct {
 	// List of data export instances within a workspace..
-	Value []*DataExport `json:"value,omitempty"`
+	Value []*DataExport
 }
 
 // DataExportProperties - Data Export properties.
 type DataExportProperties struct {
 	// REQUIRED; An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
-	TableNames []*string `json:"tableNames,omitempty"`
+	TableNames []*string
 
 	// The latest data export rule modification time.
-	CreatedDate *string `json:"createdDate,omitempty"`
+	CreatedDate *string
 
 	// The data export rule ID.
-	DataExportID *string `json:"dataExportId,omitempty"`
+	DataExportID *string
 
 	// destination properties.
-	Destination *Destination `json:"destination,omitempty"`
+	Destination *Destination
 
 	// Active when enabled.
-	Enable *bool `json:"enable,omitempty"`
+	Enable *bool
 
 	// Date and time when the export was last modified.
-	LastModifiedDate *string `json:"lastModifiedDate,omitempty"`
+	LastModifiedDate *string
 }
 
 // DataExportsClientCreateOrUpdateOptions contains the optional parameters for the DataExportsClient.CreateOrUpdate method.
@@ -323,7 +285,8 @@ type DataExportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace method.
+// DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.NewListByWorkspacePager
+// method.
 type DataExportsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
@@ -331,40 +294,40 @@ type DataExportsClientListByWorkspaceOptions struct {
 // DataSource - Datasources under OMS Workspace.
 type DataSource struct {
 	// REQUIRED; The kind of the DataSource.
-	Kind *DataSourceKind `json:"kind,omitempty"`
+	Kind *DataSourceKind
 
 	// REQUIRED; The data source properties in raw json format, each kind of data source have it's own schema.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any
 
 	// The ETag of the data source.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataSourceFilter - DataSource filter. Right now, only filter by kind is supported.
 type DataSourceFilter struct {
 	// The kind of the DataSource.
-	Kind *DataSourceKind `json:"kind,omitempty"`
+	Kind *DataSourceKind
 }
 
 // DataSourceListResult - The list data source by workspace operation response.
 type DataSourceListResult struct {
 	// The link (url) to the next page of datasources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of datasources.
-	Value []*DataSource `json:"value,omitempty"`
+	Value []*DataSource
 }
 
 // DataSourcesClientCreateOrUpdateOptions contains the optional parameters for the DataSourcesClient.CreateOrUpdate method.
@@ -382,19 +345,20 @@ type DataSourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace method.
+// DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.NewListByWorkspacePager
+// method.
 type DataSourcesClientListByWorkspaceOptions struct {
 	// Starting point of the collection of data source instances.
 	Skiptoken *string
 }
 
-// DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
+// DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.NewListByResourceGroupPager
 // method.
 type DeletedWorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
+// DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.NewListPager method.
 type DeletedWorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -402,53 +366,53 @@ type DeletedWorkspacesClientListOptions struct {
 // Destination properties.
 type Destination struct {
 	// REQUIRED; The destination resource ID. This can be copied from the Properties entry of the destination resource in Azure.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// destination meta data.
-	MetaData *DestinationMetaData `json:"metaData,omitempty"`
+	MetaData *DestinationMetaData
 
 	// READ-ONLY; The type of the destination resource
-	Type *Type `json:"type,omitempty" azure:"ro"`
+	Type *Type
 }
 
 // DestinationMetaData - Destination meta data.
 type DestinationMetaData struct {
 	// Optional. Allows to define an Event Hub name. Not applicable when destination is Storage Account.
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GatewaysClientDeleteOptions contains the optional parameters for the GatewaysClient.Delete method.
@@ -459,30 +423,30 @@ type GatewaysClientDeleteOptions struct {
 // Identity for the resource.
 type Identity struct {
 	// REQUIRED; Type of managed service identity.
-	Type *IdentityType `json:"type,omitempty"`
+	Type *IdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserIdentityProperties
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // IntelligencePack - Intelligence Pack containing a string name and boolean indicating if it's enabled.
 type IntelligencePack struct {
 	// The display name of the intelligence pack.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The enabled boolean for the intelligence pack.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The name of the intelligence pack.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // IntelligencePacksClientDisableOptions contains the optional parameters for the IntelligencePacksClient.Disable method.
@@ -503,54 +467,54 @@ type IntelligencePacksClientListOptions struct {
 // KeyVaultProperties - The key vault properties.
 type KeyVaultProperties struct {
 	// The name of the key associated with the Log Analytics cluster.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Selected key minimum required size.
-	KeyRsaSize *int32 `json:"keyRsaSize,omitempty"`
+	KeyRsaSize *int32
 
 	// The Key Vault uri which holds they key associated with the Log Analytics cluster.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// The version of the key associated with the Log Analytics cluster.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // LinkedService - The top level Linked service resource container.
 type LinkedService struct {
 	// REQUIRED; The properties of the linked service.
-	Properties *LinkedServiceProperties `json:"properties,omitempty"`
+	Properties *LinkedServiceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LinkedServiceListResult - The list linked service operation response.
 type LinkedServiceListResult struct {
 	// The list of linked service instances
-	Value []*LinkedService `json:"value,omitempty"`
+	Value []*LinkedService
 }
 
 // LinkedServiceProperties - Linked service properties.
 type LinkedServiceProperties struct {
 	// The provisioning state of the linked service.
-	ProvisioningState *LinkedServiceEntityStatus `json:"provisioningState,omitempty"`
+	ProvisioningState *LinkedServiceEntityStatus
 
 	// The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require
 	// read access
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require
 	// write access
-	WriteAccessResourceID *string `json:"writeAccessResourceId,omitempty"`
+	WriteAccessResourceID *string
 }
 
 // LinkedServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.BeginCreateOrUpdate
@@ -571,7 +535,7 @@ type LinkedServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
+// LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.NewListByWorkspacePager
 // method.
 type LinkedServicesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -593,7 +557,7 @@ type LinkedStorageAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.ListByWorkspace
+// LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.NewListByWorkspacePager
 // method.
 type LinkedStorageAccountsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -602,209 +566,67 @@ type LinkedStorageAccountsClientListByWorkspaceOptions struct {
 // LinkedStorageAccountsListResult - The list linked storage accounts service operation response.
 type LinkedStorageAccountsListResult struct {
 	// A list of linked storage accounts instances.
-	Value []*LinkedStorageAccountsResource `json:"value,omitempty"`
+	Value []*LinkedStorageAccountsResource
 }
 
 // LinkedStorageAccountsProperties - Linked storage accounts properties.
 type LinkedStorageAccountsProperties struct {
 	// Linked storage accounts resources ids.
-	StorageAccountIDs []*string `json:"storageAccountIds,omitempty"`
+	StorageAccountIDs []*string
 
 	// READ-ONLY; Linked storage accounts type.
-	DataSourceType *DataSourceType `json:"dataSourceType,omitempty" azure:"ro"`
+	DataSourceType *DataSourceType
 }
 
 // LinkedStorageAccountsResource - Linked storage accounts top level resource container.
 type LinkedStorageAccountsResource struct {
 	// REQUIRED; Linked storage accounts properties.
-	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
+	Properties *LinkedStorageAccountsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// LogAnalyticsQueryPack - An Log Analytics QueryPack definition.
-type LogAnalyticsQueryPack struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
-	// REQUIRED; Properties that define a Log Analytics QueryPack resource.
-	Properties *LogAnalyticsQueryPackProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// LogAnalyticsQueryPackListResult - Describes the list of Log Analytics QueryPack resources.
-type LogAnalyticsQueryPackListResult struct {
-	// REQUIRED; List of Log Analytics QueryPack definitions.
-	Value []*LogAnalyticsQueryPack `json:"value,omitempty"`
-
-	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPacks where returned in the result
-	// set.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// LogAnalyticsQueryPackProperties - Properties that define a Log Analytics QueryPack resource.
-type LogAnalyticsQueryPackProperties struct {
-	// READ-ONLY; Current state of this QueryPack: whether or not is has been provisioned within the resource group it is defined.
-	// Users cannot change this value but are able to read from it. Values will include
-	// Succeeded, Deploying, Canceled, and Failed.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The unique ID of your application. This field cannot be changed.
-	QueryPackID *string `json:"queryPackId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Creation Date for the Log Analytics QueryPack, in ISO 8601 format.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last modified date of the Log Analytics QueryPack, in ISO 8601 format.
-	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
-}
-
-// LogAnalyticsQueryPackQuery - A Log Analytics QueryPack-Query definition.
-type LogAnalyticsQueryPackQuery struct {
-	// Properties that define an Log Analytics QueryPack-Query resource.
-	Properties *LogAnalyticsQueryPackQueryProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// LogAnalyticsQueryPackQueryListResult - Describes the list of Log Analytics QueryPack-Query resources.
-type LogAnalyticsQueryPackQueryListResult struct {
-	// REQUIRED; List of Log Analytics QueryPack Query definitions.
-	Value []*LogAnalyticsQueryPackQuery `json:"value,omitempty"`
-
-	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPack-Queries where returned in the
-	// result set.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// LogAnalyticsQueryPackQueryProperties - Properties that define an Log Analytics QueryPack-Query resource.
-type LogAnalyticsQueryPackQueryProperties struct {
-	// REQUIRED; Body of the query.
-	Body *string `json:"body,omitempty"`
-
-	// REQUIRED; Unique display name for your query within the Query Pack.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Description of the query.
-	Description *string `json:"description,omitempty"`
-
-	// Additional properties that can be set for the query.
-	Properties interface{} `json:"properties,omitempty"`
-
-	// The related metadata items for the function.
-	Related *LogAnalyticsQueryPackQueryPropertiesRelated `json:"related,omitempty"`
-
-	// Tags associated with the query.
-	Tags map[string][]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Object Id of user creating the query.
-	Author *string `json:"author,omitempty" azure:"ro"`
-
-	// READ-ONLY; The unique ID of your application. This field cannot be changed.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Creation Date for the Log Analytics Query, in ISO 8601 format.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last modified date of the Log Analytics Query, in ISO 8601 format.
-	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
-}
-
-// LogAnalyticsQueryPackQueryPropertiesRelated - The related metadata items for the function.
-type LogAnalyticsQueryPackQueryPropertiesRelated struct {
-	// The related categories for the function.
-	Categories []*string `json:"categories,omitempty"`
-
-	// The related resource types for the function.
-	ResourceTypes []*string `json:"resourceTypes,omitempty"`
-
-	// The related Log Analytics solutions for the function.
-	Solutions []*string `json:"solutions,omitempty"`
-}
-
-// LogAnalyticsQueryPackQuerySearchProperties - Properties that define an Log Analytics QueryPack-Query search properties.
-type LogAnalyticsQueryPackQuerySearchProperties struct {
-	// The related metadata items for the function.
-	Related *LogAnalyticsQueryPackQuerySearchPropertiesRelated `json:"related,omitempty"`
-
-	// Tags associated with the query.
-	Tags map[string][]*string `json:"tags,omitempty"`
-}
-
-// LogAnalyticsQueryPackQuerySearchPropertiesRelated - The related metadata items for the function.
-type LogAnalyticsQueryPackQuerySearchPropertiesRelated struct {
-	// The related categories for the function.
-	Categories []*string `json:"categories,omitempty"`
-
-	// The related resource types for the function.
-	ResourceTypes []*string `json:"resourceTypes,omitempty"`
-
-	// The related Log Analytics solutions for the function.
-	Solutions []*string `json:"solutions,omitempty"`
+	Type *string
 }
 
 // ManagementGroup - A management group that is connected to a workspace
 type ManagementGroup struct {
 	// The properties of the management group.
-	Properties *ManagementGroupProperties `json:"properties,omitempty"`
+	Properties *ManagementGroupProperties
 }
 
 // ManagementGroupProperties - Management group properties.
 type ManagementGroupProperties struct {
 	// The datetime that the management group was created.
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// The last datetime that the management group received data.
-	DataReceived *time.Time `json:"dataReceived,omitempty"`
+	DataReceived *time.Time
 
 	// The unique ID of the management group.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets a value indicating whether the management group is a gateway.
-	IsGateway *bool `json:"isGateway,omitempty"`
+	IsGateway *bool
 
 	// The name of the management group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The SKU of System Center that is managing the management group.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// The number of servers connected to the management group.
-	ServerCount *int32 `json:"serverCount,omitempty"`
+	ServerCount *int32
 
 	// The version of System Center that is managing the management group.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
-// ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.List method.
+// ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.NewListPager method.
 type ManagementGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -812,64 +634,64 @@ type ManagementGroupsClientListOptions struct {
 // MetricName - The name of a metric.
 type MetricName struct {
 	// The localized name of the metric.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The system name of the metric.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Operation - Supported operation of OperationalInsights resource provider.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Description of operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft OperationsManagement.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list solution operations.
 type OperationListResult struct {
 	// List of solution operations supported by the OperationsManagement resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationStatus - The status of operation.
 type OperationStatus struct {
 	// The end time of the operation.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The error detail of the operation if any.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// The operation Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The start time of the operation.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The status of the operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
@@ -877,7 +699,7 @@ type OperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -885,189 +707,79 @@ type OperationsClientListOptions struct {
 // PrivateLinkScopedResource - The private link scope resource reference.
 type PrivateLinkScopedResource struct {
 	// The full resource Id of the private link scope resource.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The private link scope unique Identifier.
-	ScopeID *string `json:"scopeId,omitempty"`
+	ScopeID *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// QueriesClientDeleteOptions contains the optional parameters for the QueriesClient.Delete method.
-type QueriesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueriesClientGetOptions contains the optional parameters for the QueriesClient.Get method.
-type QueriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueriesClientListOptions contains the optional parameters for the QueriesClient.List method.
-type QueriesClientListOptions struct {
-	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
-	IncludeBody *bool
-	// Base64 encoded token used to fetch the next page of items. Default is null.
-	SkipToken *string
-	// Maximum items returned in page.
-	Top *int64
-}
-
-// QueriesClientPutOptions contains the optional parameters for the QueriesClient.Put method.
-type QueriesClientPutOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueriesClientSearchOptions contains the optional parameters for the QueriesClient.Search method.
-type QueriesClientSearchOptions struct {
-	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
-	IncludeBody *bool
-	// Base64 encoded token used to fetch the next page of items. Default is null.
-	SkipToken *string
-	// Maximum items returned in page.
-	Top *int64
-}
-
-// QueriesClientUpdateOptions contains the optional parameters for the QueriesClient.Update method.
-type QueriesClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientCreateOrUpdateOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdate method.
-type QueryPacksClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
-type QueryPacksClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientGetOptions contains the optional parameters for the QueryPacksClient.Get method.
-type QueryPacksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup
-// method.
-type QueryPacksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
-type QueryPacksClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksClientUpdateTagsOptions contains the optional parameters for the QueryPacksClient.UpdateTags method.
-type QueryPacksClientUpdateTagsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryPacksResource - An azure resource object
-type QueryPacksResource struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RestoredLogs - Restore parameters.
-type RestoredLogs struct {
-	// The timestamp to end the restore by (UTC).
-	EndRestoreTime *time.Time `json:"endRestoreTime,omitempty"`
-
-	// The table to restore data from.
-	SourceTable *string `json:"sourceTable,omitempty"`
-
-	// The timestamp to start the restore from (UTC).
-	StartRestoreTime *time.Time `json:"startRestoreTime,omitempty"`
-}
-
-// ResultStatistics - Search job execution statistics.
-type ResultStatistics struct {
-	// READ-ONLY; The number of rows that were returned by the search job.
-	IngestedRecords *int32 `json:"ingestedRecords,omitempty" azure:"ro"`
-
-	// READ-ONLY; Search job completion percentage.
-	Progress *float32 `json:"progress,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SavedSearch - Value object for saved search results.
 type SavedSearch struct {
 	// REQUIRED; The properties of the saved search.
-	Properties *SavedSearchProperties `json:"properties,omitempty"`
+	Properties *SavedSearchProperties
 
 	// The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SavedSearchProperties - Value object for saved search results.
 type SavedSearchProperties struct {
 	// REQUIRED; The category of the saved search. This helps the user to find a saved search faster.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// REQUIRED; Saved search display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The query expression for the saved search.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The function alias if query serves as a function.
-	FunctionAlias *string `json:"functionAlias,omitempty"`
+	FunctionAlias *string
 
 	// The optional function parameters if query serves as a function. Value should be in the following format: 'param-name1:type1
 	// = defaultvalue1, param-name2:type2 = defaultvalue2'. For more examples and
 	// proper syntax please refer to https://docs.microsoft.com/en-us/azure/kusto/query/functions/user-defined-functions.
-	FunctionParameters *string `json:"functionParameters,omitempty"`
+	FunctionParameters *string
 
 	// The tags attached to the saved search.
-	Tags []*Tag `json:"tags,omitempty"`
+	Tags []*Tag
 
 	// The version number of the query language. The current version is 2 and is the default.
-	Version *int64 `json:"version,omitempty"`
+	Version *int64
 }
 
 // SavedSearchesClientCreateOrUpdateOptions contains the optional parameters for the SavedSearchesClient.CreateOrUpdate method.
@@ -1094,50 +806,7 @@ type SavedSearchesClientListByWorkspaceOptions struct {
 // SavedSearchesListResult - The saved search list operation response.
 type SavedSearchesListResult struct {
 	// The array of result values.
-	Value []*SavedSearch `json:"value,omitempty"`
-}
-
-// Schema - Table's schema.
-type Schema struct {
-	// A list of table custom columns.
-	Columns []*Column `json:"columns,omitempty"`
-
-	// Table description.
-	Description *string `json:"description,omitempty"`
-
-	// Table display name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Table name.
-	Name *string `json:"name,omitempty"`
-
-	// READ-ONLY; Table category.
-	Categories []*string `json:"categories,omitempty" azure:"ro"`
-
-	// READ-ONLY; Table labels.
-	Labels []*string `json:"labels,omitempty" azure:"ro"`
-
-	// READ-ONLY; Parameters of the restore operation that initiated this table.
-	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty" azure:"ro"`
-
-	// READ-ONLY; Parameters of the search job that initiated this table.
-	SearchResults *SearchResults `json:"searchResults,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of solutions the table is affiliated with
-	Solutions []*string `json:"solutions,omitempty" azure:"ro"`
-
-	// READ-ONLY; Table's creator.
-	Source *SourceEnum `json:"source,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of table standard columns.
-	StandardColumns []*Column `json:"standardColumns,omitempty" azure:"ro"`
-
-	// READ-ONLY; The subtype describes what APIs can be used to interact with the table, and what features are available against
-	// it.
-	TableSubType *TableSubTypeEnum `json:"tableSubType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Table's creator.
-	TableType *TableTypeEnum `json:"tableType,omitempty" azure:"ro"`
+	Value []*SavedSearch
 }
 
 // SchemaClientGetOptions contains the optional parameters for the SchemaClient.Get method.
@@ -1148,136 +817,115 @@ type SchemaClientGetOptions struct {
 // SearchGetSchemaResponse - The get schema operation response.
 type SearchGetSchemaResponse struct {
 	// The metadata from search results.
-	Metadata *SearchMetadata `json:"metadata,omitempty"`
+	Metadata *SearchMetadata
 
 	// The array of result values.
-	Value []*SearchSchemaValue `json:"value,omitempty"`
+	Value []*SearchSchemaValue
 }
 
 // SearchMetadata - Metadata for search results.
 type SearchMetadata struct {
 	// The aggregated grouping fields.
-	AggregatedGroupingFields *string `json:"aggregatedGroupingFields,omitempty"`
+	AggregatedGroupingFields *string
 
 	// The aggregated value field.
-	AggregatedValueField *string `json:"aggregatedValueField,omitempty"`
+	AggregatedValueField *string
 
 	// The core summaries.
-	CoreSummaries []*CoreSummary `json:"coreSummaries,omitempty"`
+	CoreSummaries []*CoreSummary
 
 	// The ETag of the search results.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// The id of the search results request.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The time of last update.
-	LastUpdated *time.Time `json:"lastUpdated,omitempty"`
+	LastUpdated *time.Time
 
 	// The max of all aggregates returned in the result set.
-	Max *int64 `json:"max,omitempty"`
+	Max *int64
 
 	// The request time.
-	RequestTime *int64 `json:"requestTime,omitempty"`
+	RequestTime *int64
 
 	// The search result type.
-	ResultType *string `json:"resultType,omitempty"`
+	ResultType *string
 
 	// The schema.
-	Schema *SearchMetadataSchema `json:"schema,omitempty"`
+	Schema *SearchMetadataSchema
 
 	// The request id of the search.
-	SearchID *string `json:"requestId,omitempty"`
+	SearchID *string
 
 	// How the results are sorted.
-	Sort []*SearchSort `json:"sort,omitempty"`
+	Sort []*SearchSort
 
 	// The start time for the search.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the search results.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The sum of all aggregates returned in the result set.
-	Sum *int64 `json:"sum,omitempty"`
+	Sum *int64
 
 	// The number of top search results.
-	Top *int64 `json:"top,omitempty"`
+	Top *int64
 
 	// The total number of search results.
-	Total *int64 `json:"total,omitempty"`
+	Total *int64
 }
 
 // SearchMetadataSchema - Schema metadata for search.
 type SearchMetadataSchema struct {
 	// The name of the metadata schema.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The version of the metadata schema.
-	Version *int32 `json:"version,omitempty"`
-}
-
-// SearchResults - Parameters of the search job that initiated this table.
-type SearchResults struct {
-	// Search job Description.
-	Description *string `json:"description,omitempty"`
-
-	// The timestamp to end the search by (UTC)
-	EndSearchTime *time.Time `json:"endSearchTime,omitempty"`
-
-	// Limit the search job to return up to specified number of rows.
-	Limit *int32 `json:"limit,omitempty"`
-
-	// Search job query.
-	Query *string `json:"query,omitempty"`
-
-	// The timestamp to start the search from (UTC)
-	StartSearchTime *time.Time `json:"startSearchTime,omitempty"`
-
-	// READ-ONLY; The table used in the search job.
-	SourceTable *string `json:"sourceTable,omitempty" azure:"ro"`
+	Version *int32
 }
 
 // SearchSchemaValue - Value object for schema results.
 type SearchSchemaValue struct {
 	// REQUIRED; The boolean that indicates whether or not the field is a facet.
-	Facet *bool `json:"facet,omitempty"`
+	Facet *bool
 
 	// REQUIRED; The boolean that indicates the field is searchable as free text.
-	Indexed *bool `json:"indexed,omitempty"`
+	Indexed *bool
 
 	// REQUIRED; The boolean that indicates whether or not the field is stored.
-	Stored *bool `json:"stored,omitempty"`
+	Stored *bool
 
 	// The display name of the schema.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The name of the schema.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The array of workflows containing the field.
-	OwnerType []*string `json:"ownerType,omitempty"`
+	OwnerType []*string
 
 	// The type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // SearchSort - The sort parameters for search.
 type SearchSort struct {
 	// The name of the field the search query is sorted on.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The sort order of the search.
-	Order *SearchSortEnum `json:"order,omitempty"`
+	Order *SearchSortEnum
 }
 
 // SharedKeys - The shared keys for a workspace.
 type SharedKeys struct {
 	// The primary shared key of a workspace.
-	PrimarySharedKey *string `json:"primarySharedKey,omitempty"`
+	PrimarySharedKey *string
 
 	// The secondary shared key of a workspace.
-	SecondarySharedKey *string `json:"secondarySharedKey,omitempty"`
+	SecondarySharedKey *string
 }
 
 // SharedKeysClientGetSharedKeysOptions contains the optional parameters for the SharedKeysClient.GetSharedKeys method.
@@ -1293,31 +941,31 @@ type SharedKeysClientRegenerateOptions struct {
 // StorageAccount - Describes a storage account connection.
 type StorageAccount struct {
 	// REQUIRED; The Azure Resource Manager ID of the storage account resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; The storage account key.
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // StorageInsight - The top level storage insight resource container.
 type StorageInsight struct {
 	// The ETag of the storage insight.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Storage insight properties.
-	Properties *StorageInsightProperties `json:"properties,omitempty"`
+	Properties *StorageInsightProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageInsightConfigsClientCreateOrUpdateOptions contains the optional parameters for the StorageInsightConfigsClient.CreateOrUpdate
@@ -1336,7 +984,7 @@ type StorageInsightConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
+// StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.NewListByWorkspacePager
 // method.
 type StorageInsightConfigsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
@@ -1345,146 +993,56 @@ type StorageInsightConfigsClientListByWorkspaceOptions struct {
 // StorageInsightListResult - The list storage insights operation response.
 type StorageInsightListResult struct {
 	// The link (url) to the next page of results.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A list of storage insight items.
-	Value []*StorageInsight `json:"value,omitempty"`
+	Value []*StorageInsight
 }
 
 // StorageInsightProperties - Storage insight properties.
 type StorageInsightProperties struct {
 	// REQUIRED; The storage account connection details
-	StorageAccount *StorageAccount `json:"storageAccount,omitempty"`
+	StorageAccount *StorageAccount
 
 	// The names of the blob containers that the workspace should read
-	Containers []*string `json:"containers,omitempty"`
+	Containers []*string
 
 	// The names of the Azure tables that the workspace should read
-	Tables []*string `json:"tables,omitempty"`
+	Tables []*string
 
 	// READ-ONLY; The status of the storage insight
-	Status *StorageInsightStatus `json:"status,omitempty" azure:"ro"`
+	Status *StorageInsightStatus
 }
 
 // StorageInsightStatus - The status of the storage insight.
 type StorageInsightStatus struct {
 	// REQUIRED; The state of the storage insight connection to the workspace
-	State *StorageInsightState `json:"state,omitempty"`
+	State *StorageInsightState
 
 	// Description of the state of the storage insight.
-	Description *string `json:"description,omitempty"`
-}
-
-// SystemData - Read only system data
-type SystemData struct {
-	// The timestamp of resource creation (UTC)
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-	// An identifier for the identity that created the resource
-	CreatedBy *string `json:"createdBy,omitempty"`
-
-	// The type of identity that created the resource
-	CreatedByType *IdentityType `json:"createdByType,omitempty"`
-
-	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
-
-	// An identifier for the identity that last modified the resource
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
-}
-
-// SystemDataAutoGenerated - Metadata pertaining to creation and last modification of the resource.
-type SystemDataAutoGenerated struct {
-	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
-
-	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	Description *string
 }
 
 // Table - Workspace data table definition.
 type Table struct {
-	// Table's properties.
-	Properties *TableProperties `json:"properties,omitempty"`
+	// Table properties.
+	Properties *TableProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemDataAutoGenerated `json:"systemData,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TableProperties - Table properties.
 type TableProperties struct {
-	// Instruct the system how to handle and charge the logs ingested to this table.
-	Plan *TablePlanEnum `json:"plan,omitempty"`
-
-	// Parameters of the restore operation that initiated this table.
-	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty"`
-
-	// Search job execution statistics.
-	ResultStatistics *ResultStatistics `json:"resultStatistics,omitempty"`
-
-	// The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
-
-	// Table schema.
-	Schema *Schema `json:"schema,omitempty"`
-
-	// Parameters of the search job that initiated this table.
-	SearchResults *SearchResults `json:"searchResults,omitempty"`
-
-	// The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.
-	TotalRetentionInDays *int32 `json:"totalRetentionInDays,omitempty"`
-
-	// READ-ONLY; The table data archive retention in days. Calculated as (totalRetentionInDays-retentionInDays)
-	ArchiveRetentionInDays *int32 `json:"archiveRetentionInDays,omitempty" azure:"ro"`
-
-	// READ-ONLY; The timestamp that table plan was last modified (UTC).
-	LastPlanModifiedDate *string `json:"lastPlanModifiedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
-	// forbidding any update to the table until the ongoing operation is concluded.
-	ProvisioningState *ProvisioningStateEnum `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate method.
-type TablesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
-type TablesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
-type TablesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+	// The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace
+	// retention.
+	RetentionInDays *int32
 }
 
 // TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
@@ -1492,78 +1050,72 @@ type TablesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.ListByWorkspace method.
+// TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.NewListByWorkspacePager method.
 type TablesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
-type TablesClientMigrateOptions struct {
+// TablesClientUpdateOptions contains the optional parameters for the TablesClient.Update method.
+type TablesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // TablesListResult - The list tables operation response.
 type TablesListResult struct {
 	// A list of data tables.
-	Value []*Table `json:"value,omitempty"`
+	Value []*Table
 }
 
 // Tag - A tag of a saved search.
 type Tag struct {
 	// REQUIRED; The tag name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The tag value.
-	Value *string `json:"value,omitempty"`
-}
-
-// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a QueryPack instance.
-type TagsResource struct {
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Value *string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UsageMetric - A metric describing the usage of a resource.
 type UsageMetric struct {
 	// The current value of the metric.
-	CurrentValue *float64 `json:"currentValue,omitempty"`
+	CurrentValue *float64
 
 	// The quota limit for the metric.
-	Limit *float64 `json:"limit,omitempty"`
+	Limit *float64
 
 	// The name of the metric.
-	Name *MetricName `json:"name,omitempty"`
+	Name *MetricName
 
 	// The time that the metric's value will reset.
-	NextResetTime *time.Time `json:"nextResetTime,omitempty"`
+	NextResetTime *time.Time
 
 	// The quota period that determines the length of time between value resets.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	QuotaPeriod *string
 
 	// The units used for the metric.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1571,178 +1123,171 @@ type UsagesClientListOptions struct {
 // UserIdentityProperties - User assigned identity properties.
 type UserIdentityProperties struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // Workspace - The top level Workspace resource container.
 type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
-	// The ETag of the workspace.
-	ETag *string `json:"eTag,omitempty"`
+	// The etag of the workspace.
+	Etag *string
 
 	// Workspace properties.
-	Properties *WorkspaceProperties `json:"properties,omitempty"`
+	Properties *WorkspaceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemDataAutoGenerated `json:"systemData,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceCapping - The daily volume cap for ingestion.
 type WorkspaceCapping struct {
 	// The workspace daily quota for ingestion.
-	DailyQuotaGb *float64 `json:"dailyQuotaGb,omitempty"`
+	DailyQuotaGb *float64
 
 	// READ-ONLY; The status of data ingestion for this workspace.
-	DataIngestionStatus *DataIngestionStatus `json:"dataIngestionStatus,omitempty" azure:"ro"`
+	DataIngestionStatus *DataIngestionStatus
 
 	// READ-ONLY; The time when the quota will be rest.
-	QuotaNextResetTime *string `json:"quotaNextResetTime,omitempty" azure:"ro"`
+	QuotaNextResetTime *string
 }
 
 // WorkspaceFeatures - Workspace features.
 type WorkspaceFeatures struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Dedicated LA cluster resourceId that is linked to the workspaces.
-	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
+	ClusterResourceID *string
 
 	// Disable Non-AAD based Auth.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Flag that indicate if data should be exported.
-	EnableDataExport *bool `json:"enableDataExport,omitempty"`
+	EnableDataExport *bool
 
 	// Flag that indicate which permission to use - resource or workspace or both.
-	EnableLogAccessUsingOnlyResourcePermissions *bool `json:"enableLogAccessUsingOnlyResourcePermissions,omitempty"`
+	EnableLogAccessUsingOnlyResourcePermissions *bool
 
 	// Flag that describes if we want to remove the data after 30 days.
-	ImmediatePurgeDataOn30Days *bool `json:"immediatePurgeDataOn30Days,omitempty"`
+	ImmediatePurgeDataOn30Days *bool
 }
 
 // WorkspaceListManagementGroupsResult - The list workspace management groups operation response.
 type WorkspaceListManagementGroupsResult struct {
 	// Gets or sets a list of management groups attached to the workspace.
-	Value []*ManagementGroup `json:"value,omitempty"`
+	Value []*ManagementGroup
 }
 
 // WorkspaceListResult - The list workspaces operation response.
 type WorkspaceListResult struct {
 	// A list of workspaces.
-	Value []*Workspace `json:"value,omitempty"`
+	Value []*Workspace
 }
 
 // WorkspaceListUsagesResult - The list workspace usages operation response.
 type WorkspaceListUsagesResult struct {
 	// Gets or sets a list of usage metrics for a workspace.
-	Value []*UsageMetric `json:"value,omitempty"`
+	Value []*UsageMetric
 }
 
 // WorkspacePatch - The top level Workspace resource container.
 type WorkspacePatch struct {
 	// Workspace properties.
-	Properties *WorkspaceProperties `json:"properties,omitempty"`
+	Properties *WorkspaceProperties
 
 	// Resource tags. Optional.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceProperties - Workspace properties.
 type WorkspaceProperties struct {
-	// The resource ID of the default Data Collection Rule to use for this workspace. Expected format is -
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
-	DefaultDataCollectionRuleResourceID *string `json:"defaultDataCollectionRuleResourceId,omitempty"`
-
 	// Workspace features.
-	Features *WorkspaceFeatures `json:"features,omitempty"`
+	Features *WorkspaceFeatures
 
 	// Indicates whether customer managed storage is mandatory for query management.
-	ForceCmkForQuery *bool `json:"forceCmkForQuery,omitempty"`
+	ForceCmkForQuery *bool
+
+	// The provisioning state of the workspace.
+	ProvisioningState *WorkspaceEntityStatus
 
 	// The network access type for accessing Log Analytics ingestion.
-	PublicNetworkAccessForIngestion *PublicNetworkAccessType `json:"publicNetworkAccessForIngestion,omitempty"`
+	PublicNetworkAccessForIngestion *PublicNetworkAccessType
 
 	// The network access type for accessing Log Analytics query.
-	PublicNetworkAccessForQuery *PublicNetworkAccessType `json:"publicNetworkAccessForQuery,omitempty"`
+	PublicNetworkAccessForQuery *PublicNetworkAccessType
 
 	// The workspace data retention in days. Allowed values are per pricing plan. See pricing tiers documentation for details.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32
 
 	// The SKU of the workspace.
-	SKU *WorkspaceSKU `json:"sku,omitempty"`
+	SKU *WorkspaceSKU
 
 	// The daily volume cap for ingestion.
-	WorkspaceCapping *WorkspaceCapping `json:"workspaceCapping,omitempty"`
+	WorkspaceCapping *WorkspaceCapping
 
 	// READ-ONLY; Workspace creation date.
-	CreatedDate *string `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *string
 
 	// READ-ONLY; This is a read-only property. Represents the ID associated with the workspace.
-	CustomerID *string `json:"customerId,omitempty" azure:"ro"`
+	CustomerID *string
 
 	// READ-ONLY; Workspace modification date.
-	ModifiedDate *string `json:"modifiedDate,omitempty" azure:"ro"`
+	ModifiedDate *string
 
 	// READ-ONLY; List of linked private link scope resources.
-	PrivateLinkScopedResources []*PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state of the workspace.
-	ProvisioningState *WorkspaceEntityStatus `json:"provisioningState,omitempty" azure:"ro"`
+	PrivateLinkScopedResources []*PrivateLinkScopedResource
 }
 
 // WorkspacePurgeBody - Describes the body of a purge request for an App Insights Workspace
 type WorkspacePurgeBody struct {
 	// REQUIRED; The set of columns and filters (queries) to run over them to purge the resulting data.
-	Filters []*WorkspacePurgeBodyFilters `json:"filters,omitempty"`
+	Filters []*WorkspacePurgeBodyFilters
 
 	// REQUIRED; Table from which to purge data.
-	Table *string `json:"table,omitempty"`
+	Table *string
 }
 
 // WorkspacePurgeBodyFilters - User-defined filters to return data which will be purged from the table.
 type WorkspacePurgeBodyFilters struct {
 	// The column of the table over which the given query should run
-	Column *string `json:"column,omitempty"`
+	Column *string
 
 	// When filtering over custom dimensions, this key will be used as the name of the custom dimension.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <,
 	// <=, between, and have the same behavior as they would in a KQL query.
-	Operator *string `json:"operator,omitempty"`
+	Operator *string
 
 	// the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or
 	// array of values.
-	Value interface{} `json:"value,omitempty"`
+	Value any
 }
 
 // WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
@@ -1759,25 +1304,25 @@ type WorkspacePurgeClientPurgeOptions struct {
 // WorkspacePurgeResponse - Response containing operationId for a specific purge action.
 type WorkspacePurgeResponse struct {
 	// REQUIRED; Id to use when querying for status for a particular purge operation.
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 }
 
 // WorkspacePurgeStatusResponse - Response containing status for a specific purge operation.
 type WorkspacePurgeStatusResponse struct {
 	// REQUIRED; Status of the operation represented by the requested Id.
-	Status *PurgeState `json:"status,omitempty"`
+	Status *PurgeState
 }
 
 // WorkspaceSKU - The SKU (tier) of a workspace.
 type WorkspaceSKU struct {
 	// REQUIRED; The name of the SKU.
-	Name *WorkspaceSKUNameEnum `json:"name,omitempty"`
+	Name *WorkspaceSKUNameEnum
 
 	// The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
-	CapacityReservationLevel *CapacityReservationLevel `json:"capacityReservationLevel,omitempty"`
+	CapacityReservationLevel *CapacityReservationLevel
 
 	// READ-ONLY; The last time when the sku was updated.
-	LastSKUUpdate *string `json:"lastSkuUpdate,omitempty" azure:"ro"`
+	LastSKUUpdate *string
 }
 
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
@@ -1800,13 +1345,13 @@ type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 // method.
 type WorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
+// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.
 type WorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
 }

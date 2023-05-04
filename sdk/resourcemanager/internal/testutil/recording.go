@@ -27,12 +27,7 @@ var (
 )
 
 const (
-	alphanumericBytes           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	alphanumericLowercaseBytes  = "abcdefghijklmnopqrstuvwxyz1234567890"
-	randomSeedVariableName      = "randomSeed"
-	nowVariableName             = "now"
-	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
-	recordingAssetConfigName    = "assets.json"
+	alphanumericBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 )
 
 // Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
@@ -131,7 +126,6 @@ func StopRecording(t *testing.T) {
 }
 
 func initRandomSource(t *testing.T) {
-
 	if recordingRandomSource != nil {
 		return
 	}
@@ -161,10 +155,8 @@ func initRandomSource(t *testing.T) {
 // When handling live request, the random seed is generated.
 // Otherwise, the random seed is stable and will be stored in recording file.
 // The length parameter is the random part length, not include the prefix part.
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GenerateAlphaNumericID instead.
 func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
-
-	var lowercaseOnly bool = false
-
 	initRandomSource(t)
 	sb := strings.Builder{}
 	sb.Grow(length)
@@ -175,16 +167,9 @@ func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
 		if remain == 0 {
 			cache, remain = recordingRandomSource.Int63(), letterIdxMax
 		}
-		if lowercaseOnly {
-			if idx := int(cache & letterIdxMask); idx < len(alphanumericLowercaseBytes) {
-				sb.WriteByte(alphanumericLowercaseBytes[idx])
-				i--
-			}
-		} else {
-			if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
-				sb.WriteByte(alphanumericBytes[idx])
-				i--
-			}
+		if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
+			sb.WriteByte(alphanumericBytes[idx])
+			i--
 		}
 		cache >>= letterIdxBits
 		remain--

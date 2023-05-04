@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // PolicyRestrictionsClient contains the methods for the PolicyRestrictions group.
 // Don't use this type directly, use NewPolicyRestrictionsClient() instead.
 type PolicyRestrictionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPolicyRestrictionsClient creates a new instance of PolicyRestrictionsClient with the specified values.
-// subscriptionID - Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPolicyRestrictionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyRestrictionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PolicyRestrictionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PolicyRestrictionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckAtManagementGroupScope - Checks what restrictions Azure Policy will place on resources within a management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-01
-// managementGroupID - Management group ID.
-// parameters - The check policy restrictions parameters.
-// options - PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
-// method.
+//   - managementGroupID - Management group ID.
+//   - parameters - The check policy restrictions parameters.
+//   - options - PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
+//     method.
 func (client *PolicyRestrictionsClient) CheckAtManagementGroupScope(ctx context.Context, managementGroupID string, parameters CheckManagementGroupRestrictionsRequest, options *PolicyRestrictionsClientCheckAtManagementGroupScopeOptions) (PolicyRestrictionsClientCheckAtManagementGroupScopeResponse, error) {
 	req, err := client.checkAtManagementGroupScopeCreateRequest(ctx, managementGroupID, parameters, options)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtManagementGroupScopeResponse{}, err
 	}
@@ -85,7 +75,7 @@ func (client *PolicyRestrictionsClient) checkAtManagementGroupScopeCreateRequest
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,17 +98,18 @@ func (client *PolicyRestrictionsClient) checkAtManagementGroupScopeHandleRespons
 // CheckAtResourceGroupScope - Checks what restrictions Azure Policy will place on a resource within a resource group. Use
 // this when the resource group the resource will be created in is already known.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// parameters - The check policy restrictions parameters.
-// options - PolicyRestrictionsClientCheckAtResourceGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtResourceGroupScope
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - parameters - The check policy restrictions parameters.
+//   - options - PolicyRestrictionsClientCheckAtResourceGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtResourceGroupScope
+//     method.
 func (client *PolicyRestrictionsClient) CheckAtResourceGroupScope(ctx context.Context, resourceGroupName string, parameters CheckRestrictionsRequest, options *PolicyRestrictionsClientCheckAtResourceGroupScopeOptions) (PolicyRestrictionsClientCheckAtResourceGroupScopeResponse, error) {
 	req, err := client.checkAtResourceGroupScopeCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtResourceGroupScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtResourceGroupScopeResponse{}, err
 	}
@@ -139,7 +130,7 @@ func (client *PolicyRestrictionsClient) checkAtResourceGroupScopeCreateRequest(c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,16 +152,17 @@ func (client *PolicyRestrictionsClient) checkAtResourceGroupScopeHandleResponse(
 
 // CheckAtSubscriptionScope - Checks what restrictions Azure Policy will place on a resource within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-01
-// parameters - The check policy restrictions parameters.
-// options - PolicyRestrictionsClientCheckAtSubscriptionScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtSubscriptionScope
-// method.
+//   - parameters - The check policy restrictions parameters.
+//   - options - PolicyRestrictionsClientCheckAtSubscriptionScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtSubscriptionScope
+//     method.
 func (client *PolicyRestrictionsClient) CheckAtSubscriptionScope(ctx context.Context, parameters CheckRestrictionsRequest, options *PolicyRestrictionsClientCheckAtSubscriptionScopeOptions) (PolicyRestrictionsClientCheckAtSubscriptionScopeResponse, error) {
 	req, err := client.checkAtSubscriptionScopeCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtSubscriptionScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PolicyRestrictionsClientCheckAtSubscriptionScopeResponse{}, err
 	}
@@ -187,7 +179,7 @@ func (client *PolicyRestrictionsClient) checkAtSubscriptionScopeCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

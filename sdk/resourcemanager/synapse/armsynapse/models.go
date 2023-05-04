@@ -14,155 +14,155 @@ import "time"
 // AADAdminProperties - Workspace active directory administrator properties
 type AADAdminProperties struct {
 	// Workspace active directory administrator type
-	AdministratorType *string `json:"administratorType,omitempty"`
+	AdministratorType *string
 
 	// Login of the workspace active directory administrator
-	Login *string `json:"login,omitempty"`
+	Login *string
 
 	// Object ID of the workspace active directory administrator
-	Sid *string `json:"sid,omitempty"`
+	Sid *string
 
 	// Tenant ID of the workspace active directory administrator
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // AttachedDatabaseConfiguration - Class representing an attached database configuration.
 type AttachedDatabaseConfiguration struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the attached database configuration.
-	Properties *AttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
+	Properties *AttachedDatabaseConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AttachedDatabaseConfigurationListResult - The list attached database configurations operation response.
 type AttachedDatabaseConfigurationListResult struct {
 	// The list of attached database configurations.
-	Value []*AttachedDatabaseConfiguration `json:"value,omitempty"`
+	Value []*AttachedDatabaseConfiguration
 }
 
 // AttachedDatabaseConfigurationProperties - Class representing the an attached database configuration properties of kind
 // specific.
 type AttachedDatabaseConfigurationProperties struct {
 	// REQUIRED; The name of the database which you would like to attach, use * if you want to follow all current and future databases.
-	DatabaseName *string `json:"databaseName,omitempty"`
+	DatabaseName *string
 
 	// REQUIRED; The default principals modification kind
-	DefaultPrincipalsModificationKind *DefaultPrincipalsModificationKind `json:"defaultPrincipalsModificationKind,omitempty"`
+	DefaultPrincipalsModificationKind *DefaultPrincipalsModificationKind
 
 	// REQUIRED; The resource id of the kusto pool where the databases you would like to attach reside.
-	KustoPoolResourceID *string `json:"clusterResourceId,omitempty"`
+	KustoPoolResourceID *string
 
 	// Table level sharing specifications
-	TableLevelSharingProperties *TableLevelSharingProperties `json:"tableLevelSharingProperties,omitempty"`
+	TableLevelSharingProperties *TableLevelSharingProperties
 
 	// READ-ONLY; The list of databases from the clusterResourceId which are currently attached to the kusto pool.
-	AttachedDatabaseNames []*string `json:"attachedDatabaseNames,omitempty" azure:"ro"`
+	AttachedDatabaseNames []*string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // AutoPauseProperties - Auto-pausing properties of a Big Data pool powered by Apache Spark
 type AutoPauseProperties struct {
 	// Number of minutes of idle time before the Big Data pool is automatically paused.
-	DelayInMinutes *int32 `json:"delayInMinutes,omitempty"`
+	DelayInMinutes *int32
 
 	// Whether auto-pausing is enabled for the Big Data pool.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // AutoScaleProperties - Auto-scaling properties of a Big Data pool powered by Apache Spark
 type AutoScaleProperties struct {
 	// Whether automatic scaling is enabled for the Big Data pool.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The maximum number of nodes the Big Data pool can support.
-	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+	MaxNodeCount *int32
 
 	// The minimum number of nodes the Big Data pool can support.
-	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+	MinNodeCount *int32
 }
 
 // AvailableRpOperation - An operation that is available in this resource provider
 type AvailableRpOperation struct {
 	// Display properties of the operation
-	Display *AvailableRpOperationDisplayInfo `json:"display,omitempty"`
+	Display *AvailableRpOperationDisplayInfo
 
 	// Whether this operation is a data action
-	IsDataAction *string `json:"isDataAction,omitempty"`
+	IsDataAction *string
 
 	// Operation name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Operation origin
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Operation properties
-	Properties *OperationMetaPropertyInfo `json:"properties,omitempty"`
+	Properties *OperationMetaPropertyInfo
 }
 
 // AvailableRpOperationDisplayInfo - Description of an available operation
 type AvailableRpOperationDisplayInfo struct {
 	// Operation description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider name
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource type
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // AzureADOnlyAuthentication - Azure Active Directory Only Authentication Info
 type AzureADOnlyAuthentication struct {
 	// azureADOnlyAuthentication resource properties
-	Properties *AzureADOnlyAuthenticationProperties `json:"properties,omitempty"`
+	Properties *AzureADOnlyAuthenticationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureADOnlyAuthenticationListResult - A list of active directory only authentications.
 type AzureADOnlyAuthenticationListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*AzureADOnlyAuthentication `json:"value,omitempty" azure:"ro"`
+	Value []*AzureADOnlyAuthentication
 }
 
 // AzureADOnlyAuthenticationProperties - Properties of a active directory only authentication.
 type AzureADOnlyAuthenticationProperties struct {
 	// REQUIRED; Azure Active Directory only Authentication enabled.
-	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
+	AzureADOnlyAuthentication *bool
 
 	// READ-ONLY; property configuration date
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; property configuration state
-	State *StateValue `json:"state,omitempty" azure:"ro"`
+	State *StateValue
 }
 
 // AzureADOnlyAuthenticationsClientBeginCreateOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.BeginCreate
@@ -187,151 +187,151 @@ type AzureADOnlyAuthenticationsClientListOptions struct {
 // AzureCapacity - Azure capacity definition.
 type AzureCapacity struct {
 	// REQUIRED; The default capacity that would be used.
-	Default *int32 `json:"default,omitempty"`
+	Default *int32
 
 	// REQUIRED; Maximum allowed capacity.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// REQUIRED; Minimum allowed capacity.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// REQUIRED; Scale type.
-	ScaleType *AzureScaleType `json:"scaleType,omitempty"`
+	ScaleType *AzureScaleType
 }
 
 // AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureResourceSKU - Azure resource SKU definition.
 type AzureResourceSKU struct {
 	// The number of instances of the cluster.
-	Capacity *AzureCapacity `json:"capacity,omitempty"`
+	Capacity *AzureCapacity
 
 	// Resource Namespace and Type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The SKU details.
-	SKU *AzureSKU `json:"sku,omitempty"`
+	SKU *AzureSKU
 }
 
 // AzureSKU - Azure SKU definition.
 type AzureSKU struct {
 	// REQUIRED; SKU name.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// REQUIRED; SKU size.
-	Size *SKUSize `json:"size,omitempty"`
+	Size *SKUSize
 
 	// The number of instances of the cluster.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 }
 
 // BigDataPoolPatchInfo - Properties patch for a Big Data pool
 type BigDataPoolPatchInfo struct {
 	// Updated tags for the Big Data pool
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // BigDataPoolResourceInfo - A Big Data pool
 type BigDataPoolResourceInfo struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Big Data pool properties
-	Properties *BigDataPoolResourceProperties `json:"properties,omitempty"`
+	Properties *BigDataPoolResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BigDataPoolResourceInfoListResult - Collection of Big Data pool information
 type BigDataPoolResourceInfoListResult struct {
 	// Link to the next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Big Data pools
-	Value []*BigDataPoolResourceInfo `json:"value,omitempty"`
+	Value []*BigDataPoolResourceInfo
 }
 
 // BigDataPoolResourceProperties - Properties of a Big Data pool powered by Apache Spark
 type BigDataPoolResourceProperties struct {
 	// Auto-pausing properties
-	AutoPause *AutoPauseProperties `json:"autoPause,omitempty"`
+	AutoPause *AutoPauseProperties
 
 	// Auto-scaling properties
-	AutoScale *AutoScaleProperties `json:"autoScale,omitempty"`
+	AutoScale *AutoScaleProperties
 
 	// The cache size
-	CacheSize *int32 `json:"cacheSize,omitempty"`
+	CacheSize *int32
 
 	// List of custom libraries/packages associated with the spark pool.
-	CustomLibraries []*LibraryInfo `json:"customLibraries,omitempty"`
+	CustomLibraries []*LibraryInfo
 
 	// The default folder where Spark logs will be written.
-	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
+	DefaultSparkLogFolder *string
 
 	// Dynamic Executor Allocation
-	DynamicExecutorAllocation *DynamicExecutorAllocation `json:"dynamicExecutorAllocation,omitempty"`
+	DynamicExecutorAllocation *DynamicExecutorAllocation
 
 	// Whether autotune is required or not.
-	IsAutotuneEnabled *bool `json:"isAutotuneEnabled,omitempty"`
+	IsAutotuneEnabled *bool
 
 	// Whether compute isolation is required or not.
-	IsComputeIsolationEnabled *bool `json:"isComputeIsolationEnabled,omitempty"`
+	IsComputeIsolationEnabled *bool
 
 	// Library version requirements
-	LibraryRequirements *LibraryRequirements `json:"libraryRequirements,omitempty"`
+	LibraryRequirements *LibraryRequirements
 
 	// The number of nodes in the Big Data pool.
-	NodeCount *int32 `json:"nodeCount,omitempty"`
+	NodeCount *int32
 
 	// The level of compute power that each node in the Big Data pool has.
-	NodeSize *NodeSize `json:"nodeSize,omitempty"`
+	NodeSize *NodeSize
 
 	// The kind of nodes that the Big Data pool provides.
-	NodeSizeFamily *NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
+	NodeSizeFamily *NodeSizeFamily
 
 	// The state of the Big Data pool.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Whether session level packages enabled.
-	SessionLevelPackagesEnabled *bool `json:"sessionLevelPackagesEnabled,omitempty"`
+	SessionLevelPackagesEnabled *bool
 
 	// Spark configuration file to specify additional properties
-	SparkConfigProperties *SparkConfigProperties `json:"sparkConfigProperties,omitempty"`
+	SparkConfigProperties *SparkConfigProperties
 
 	// The Spark events folder
-	SparkEventsFolder *string `json:"sparkEventsFolder,omitempty"`
+	SparkEventsFolder *string
 
 	// The Apache Spark version.
-	SparkVersion *string `json:"sparkVersion,omitempty"`
+	SparkVersion *string
 
 	// READ-ONLY; The time when the Big Data pool was created.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; The time when the Big Data pool was updated successfully.
-	LastSucceededTimestamp *time.Time `json:"lastSucceededTimestamp,omitempty" azure:"ro"`
+	LastSucceededTimestamp *time.Time
 }
 
 // BigDataPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the BigDataPoolsClient.BeginCreateOrUpdate
@@ -368,111 +368,111 @@ type BigDataPoolsClientUpdateOptions struct {
 // CheckNameAvailabilityRequest - A request about whether a workspace name is available
 type CheckNameAvailabilityRequest struct {
 	// Workspace name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Type: workspace
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponse - A response saying whether the workspace name is available
 type CheckNameAvailabilityResponse struct {
 	// Whether the workspace name is available
-	Available *bool `json:"available,omitempty"`
+	Available *bool
 
 	// Validation message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Workspace name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Reason the workspace name is or is not available
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // CheckNameResult - The result returned from a check name availability request.
 type CheckNameResult struct {
 	// Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The name that was checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Specifies a Boolean value that indicates if the name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Message providing the reason why the given name is invalid.
-	Reason *Reason `json:"reason,omitempty"`
+	Reason *Reason
 }
 
 // ClusterPrincipalAssignment - Class representing a cluster principal assignment.
 type ClusterPrincipalAssignment struct {
 	// The cluster principal.
-	Properties *ClusterPrincipalProperties `json:"properties,omitempty"`
+	Properties *ClusterPrincipalProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterPrincipalAssignmentCheckNameRequest - A principal assignment check name availability request.
 type ClusterPrincipalAssignmentCheckNameRequest struct {
 	// REQUIRED; Principal Assignment resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// CONSTANT; The type of resource, Microsoft.Synapse/workspaces/kustoPools/principalAssignments.
 	// Field has constant value "Microsoft.Synapse/workspaces/kustoPools/principalAssignments", any specified value is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ClusterPrincipalAssignmentListResult - The list Kusto cluster principal assignments operation response.
 type ClusterPrincipalAssignmentListResult struct {
 	// The list of Kusto cluster principal assignments.
-	Value []*ClusterPrincipalAssignment `json:"value,omitempty"`
+	Value []*ClusterPrincipalAssignment
 }
 
 // ClusterPrincipalProperties - A class representing cluster principal property.
 type ClusterPrincipalProperties struct {
 	// REQUIRED; The principal ID assigned to the cluster principal. It can be a user email, application ID, or security group
 	// name.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// REQUIRED; Principal type.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+	PrincipalType *PrincipalType
 
 	// REQUIRED; Cluster principal role.
-	Role *ClusterPrincipalRole `json:"role,omitempty"`
+	Role *ClusterPrincipalRole
 
 	// The tenant id of the principal
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// READ-ONLY; The service principal object id in AAD (Azure active directory)
-	AADObjectID *string `json:"aadObjectId,omitempty" azure:"ro"`
+	AADObjectID *string
 
 	// READ-ONLY; The principal name
-	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
+	PrincipalName *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The tenant name of the principal
-	TenantName *string `json:"tenantName,omitempty" azure:"ro"`
+	TenantName *string
 }
 
 // CmdkeySetup - The custom setup of running cmdkey commands.
 type CmdkeySetup struct {
 	// REQUIRED; The type of custom setup.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; Cmdkey command custom setup type properties.
-	TypeProperties *CmdkeySetupTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *CmdkeySetupTypeProperties
 }
 
 // GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CmdkeySetup.
@@ -485,22 +485,22 @@ func (c *CmdkeySetup) GetCustomSetupBase() *CustomSetupBase {
 // CmdkeySetupTypeProperties - Cmdkey command custom setup type properties.
 type CmdkeySetupTypeProperties struct {
 	// REQUIRED; The password of data source access.
-	Password SecretBaseClassification `json:"password,omitempty"`
+	Password SecretBaseClassification
 
 	// REQUIRED; The server name of data source access.
-	TargetName any `json:"targetName,omitempty"`
+	TargetName any
 
 	// REQUIRED; The user name of data source access.
-	UserName any `json:"userName,omitempty"`
+	UserName any
 }
 
 // ComponentSetup - The custom setup of installing 3rd party components.
 type ComponentSetup struct {
 	// REQUIRED; The type of custom setup.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; Install 3rd party component type properties.
-	TypeProperties *LicensedComponentSetupTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *LicensedComponentSetupTypeProperties
 }
 
 // GetCustomSetupBase implements the CustomSetupBaseClassification interface for type ComponentSetup.
@@ -513,13 +513,13 @@ func (c *ComponentSetup) GetCustomSetupBase() *CustomSetupBase {
 // CreateSQLPoolRestorePointDefinition - Contains the information necessary to perform a create Sql pool restore point operation.
 type CreateSQLPoolRestorePointDefinition struct {
 	// REQUIRED; The restore point label to apply
-	RestorePointLabel *string `json:"restorePointLabel,omitempty"`
+	RestorePointLabel *string
 }
 
 // CspWorkspaceAdminProperties - Initial workspace AAD admin properties for a CSP subscription
 type CspWorkspaceAdminProperties struct {
 	// AAD object ID of initial workspace admin
-	InitialWorkspaceAdminObjectID *string `json:"initialWorkspaceAdminObjectId,omitempty"`
+	InitialWorkspaceAdminObjectID *string
 }
 
 // CustomSetupBaseClassification provides polymorphic access to related types.
@@ -534,7 +534,7 @@ type CustomSetupBaseClassification interface {
 // CustomSetupBase - The base definition of the custom setup.
 type CustomSetupBase struct {
 	// REQUIRED; The type of custom setup.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CustomSetupBase.
@@ -543,13 +543,13 @@ func (c *CustomSetupBase) GetCustomSetupBase() *CustomSetupBase { return c }
 // CustomerManagedKeyDetails - Details of the customer managed key associated with the workspace
 type CustomerManagedKeyDetails struct {
 	// Key encryption key
-	KekIdentity *KekIdentityProperties `json:"kekIdentity,omitempty"`
+	KekIdentity *KekIdentityProperties
 
 	// The key object of the workspace
-	Key *WorkspaceKeyDetails `json:"key,omitempty"`
+	Key *WorkspaceKeyDetails
 
 	// READ-ONLY; The customer managed key status on the workspace
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // DataConnectionClassification provides polymorphic access to related types.
@@ -564,22 +564,22 @@ type DataConnectionClassification interface {
 // DataConnection - Class representing a data connection.
 type DataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
-	Kind *DataConnectionKind `json:"kind,omitempty"`
+	Kind *DataConnectionKind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnection implements the DataConnectionClassification interface for type DataConnection.
@@ -588,53 +588,53 @@ func (d *DataConnection) GetDataConnection() *DataConnection { return d }
 // DataConnectionCheckNameRequest - A data connection check name availability request.
 type DataConnectionCheckNameRequest struct {
 	// REQUIRED; Data Connection name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// CONSTANT; The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections.
 	// Field has constant value "Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections", any specified value is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // DataConnectionListResult - The list Kusto data connections operation response.
 type DataConnectionListResult struct {
 	// The list of Kusto data connections.
-	Value []DataConnectionClassification `json:"value,omitempty"`
+	Value []DataConnectionClassification
 }
 
 // DataConnectionValidation - Class representing an data connection validation.
 type DataConnectionValidation struct {
 	// The name of the data connection.
-	DataConnectionName *string `json:"dataConnectionName,omitempty"`
+	DataConnectionName *string
 
 	// The data connection properties to validate.
-	Properties DataConnectionClassification `json:"properties,omitempty"`
+	Properties DataConnectionClassification
 }
 
 // DataConnectionValidationListResult - The list Kusto data connection validation result.
 type DataConnectionValidationListResult struct {
 	// The list of Kusto data connection validation errors.
-	Value []*DataConnectionValidationResult `json:"value,omitempty"`
+	Value []*DataConnectionValidationResult
 }
 
 // DataConnectionValidationResult - The result returned from a data connection validation request.
 type DataConnectionValidationResult struct {
 	// A message which indicates a problem in data connection validation.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 }
 
 // DataLakeStorageAccountDetails - Details of the data lake storage account associated with the workspace
 type DataLakeStorageAccountDetails struct {
 	// Account URL
-	AccountURL *string `json:"accountUrl,omitempty"`
+	AccountURL *string
 
 	// Create managed private endpoint to this storage account or not
-	CreateManagedPrivateEndpoint *bool `json:"createManagedPrivateEndpoint,omitempty"`
+	CreateManagedPrivateEndpoint *bool
 
 	// Filesystem name
-	Filesystem *string `json:"filesystem,omitempty"`
+	Filesystem *string
 
 	// ARM resource Id of this storage account
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // DataMaskingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the DataMaskingPoliciesClient.CreateOrUpdate
@@ -650,115 +650,115 @@ type DataMaskingPoliciesClientGetOptions struct {
 
 type DataMaskingPolicy struct {
 	// The properties of the data masking policy.
-	Properties *DataMaskingPolicyProperties `json:"properties,omitempty"`
+	Properties *DataMaskingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The kind of data masking policy. Metadata, used for Azure portal.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; The location of the data masking policy.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID of the sql pool
-	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
+	ManagedBy *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataMaskingPolicyProperties - The properties of a database data masking policy.
 type DataMaskingPolicyProperties struct {
 	// REQUIRED; The state of the data masking policy.
-	DataMaskingState *DataMaskingState `json:"dataMaskingState,omitempty"`
+	DataMaskingState *DataMaskingState
 
 	// The list of the exempt principals. Specifies the semicolon-separated list of database users for which the data masking
 	// policy does not apply. The specified users receive data results without masking
 	// for all of the database queries.
-	ExemptPrincipals *string `json:"exemptPrincipals,omitempty"`
+	ExemptPrincipals *string
 
 	// READ-ONLY; The list of the application principals. This is a legacy parameter and is no longer used.
-	ApplicationPrincipals *string `json:"applicationPrincipals,omitempty" azure:"ro"`
+	ApplicationPrincipals *string
 
 	// READ-ONLY; The masking level. This is a legacy parameter and is no longer used.
-	MaskingLevel *string `json:"maskingLevel,omitempty" azure:"ro"`
+	MaskingLevel *string
 }
 
 // DataMaskingRule - Represents a Sql pool data masking rule.
 type DataMaskingRule struct {
 	// The properties of the resource.
-	Properties *DataMaskingRuleProperties `json:"properties,omitempty"`
+	Properties *DataMaskingRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The kind of Data Masking Rule. Metadata, used for Azure portal.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; The location of the data masking rule.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataMaskingRuleListResult - The response to a list data masking rules request.
 type DataMaskingRuleListResult struct {
 	// The list of Sql pool data masking rules.
-	Value []*DataMaskingRule `json:"value,omitempty"`
+	Value []*DataMaskingRule
 }
 
 // DataMaskingRuleProperties - The properties of a Sql pool data masking rule.
 type DataMaskingRuleProperties struct {
 	// REQUIRED; The column name on which the data masking rule is applied.
-	ColumnName *string `json:"columnName,omitempty"`
+	ColumnName *string
 
 	// REQUIRED; The masking function that is used for the data masking rule.
-	MaskingFunction *DataMaskingFunction `json:"maskingFunction,omitempty"`
+	MaskingFunction *DataMaskingFunction
 
 	// REQUIRED; The schema name on which the data masking rule is applied.
-	SchemaName *string `json:"schemaName,omitempty"`
+	SchemaName *string
 
 	// REQUIRED; The table name on which the data masking rule is applied.
-	TableName *string `json:"tableName,omitempty"`
+	TableName *string
 
 	// The alias name. This is a legacy parameter and is no longer used.
-	AliasName *string `json:"aliasName,omitempty"`
+	AliasName *string
 
 	// The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this parameter will
 	// be ignored.
-	NumberFrom *string `json:"numberFrom,omitempty"`
+	NumberFrom *string
 
 	// The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this parameter
 	// will be ignored.
-	NumberTo *string `json:"numberTo,omitempty"`
+	NumberTo *string
 
 	// If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string. Otherwise,
 	// this parameter will be ignored.
-	PrefixSize *string `json:"prefixSize,omitempty"`
+	PrefixSize *string
 
 	// If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise, this parameter
 	// will be ignored.
-	ReplacementString *string `json:"replacementString,omitempty"`
+	ReplacementString *string
 
 	// The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName, maskingFunction,
 	// and specify ruleState as disabled. However, if the rule doesn't
 	// already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
-	RuleState *DataMaskingRuleState `json:"ruleState,omitempty"`
+	RuleState *DataMaskingRuleState
 
 	// If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string. Otherwise, this
 	// parameter will be ignored.
-	SuffixSize *string `json:"suffixSize,omitempty"`
+	SuffixSize *string
 
 	// READ-ONLY; The rule Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // DataMaskingRulesClientCreateOrUpdateOptions contains the optional parameters for the DataMaskingRulesClient.CreateOrUpdate
@@ -781,23 +781,23 @@ type DataMaskingRulesClientListBySQLPoolOptions struct {
 // DataWarehouseUserActivities - User activities of a data warehouse
 type DataWarehouseUserActivities struct {
 	// Resource properties.
-	Properties *DataWarehouseUserActivitiesProperties `json:"properties,omitempty"`
+	Properties *DataWarehouseUserActivitiesProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataWarehouseUserActivitiesProperties - User activities of a data warehouse. This currently includes the count of running
 // or suspended queries. For more information, please view the sys.dmpdwexec_requests dynamic management view (DMV).
 type DataWarehouseUserActivitiesProperties struct {
 	// READ-ONLY; Count of running and suspended queries.
-	ActiveQueriesCount *int32 `json:"activeQueriesCount,omitempty" azure:"ro"`
+	ActiveQueriesCount *int32
 }
 
 // DatabaseClassification provides polymorphic access to related types.
@@ -812,22 +812,22 @@ type DatabaseClassification interface {
 // Database - Class representing a Kusto database.
 type Database struct {
 	// REQUIRED; Kind of the database
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDatabase implements the DatabaseClassification interface for type Database.
@@ -836,211 +836,211 @@ func (d *Database) GetDatabase() *Database { return d }
 // DatabaseCheckNameRequest - The result returned from a database check name availability request.
 type DatabaseCheckNameRequest struct {
 	// REQUIRED; Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases.
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 }
 
 // DatabaseListResult - The list Kusto databases operation response.
 type DatabaseListResult struct {
 	// The list of Kusto databases.
-	Value []DatabaseClassification `json:"value,omitempty"`
+	Value []DatabaseClassification
 }
 
 // DatabasePrincipalAssignment - Class representing a database principal assignment.
 type DatabasePrincipalAssignment struct {
 	// The database principal.
-	Properties *DatabasePrincipalProperties `json:"properties,omitempty"`
+	Properties *DatabasePrincipalProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DatabasePrincipalAssignmentCheckNameRequest - A principal assignment check name availability request.
 type DatabasePrincipalAssignmentCheckNameRequest struct {
 	// REQUIRED; Principal Assignment resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// CONSTANT; The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments.
 	// Field has constant value "Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments", any specified value
 	// is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // DatabasePrincipalAssignmentListResult - The list Kusto database principal assignments operation response.
 type DatabasePrincipalAssignmentListResult struct {
 	// The list of Kusto database principal assignments.
-	Value []*DatabasePrincipalAssignment `json:"value,omitempty"`
+	Value []*DatabasePrincipalAssignment
 }
 
 // DatabasePrincipalProperties - A class representing database principal property.
 type DatabasePrincipalProperties struct {
 	// REQUIRED; The principal ID assigned to the database principal. It can be a user email, application ID, or security group
 	// name.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// REQUIRED; Principal type.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+	PrincipalType *PrincipalType
 
 	// REQUIRED; Database principal role.
-	Role *DatabasePrincipalRole `json:"role,omitempty"`
+	Role *DatabasePrincipalRole
 
 	// The tenant id of the principal
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// READ-ONLY; The service principal object id in AAD (Azure active directory)
-	AADObjectID *string `json:"aadObjectId,omitempty" azure:"ro"`
+	AADObjectID *string
 
 	// READ-ONLY; The principal name
-	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
+	PrincipalName *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The tenant name of the principal
-	TenantName *string `json:"tenantName,omitempty" azure:"ro"`
+	TenantName *string
 }
 
 // DatabaseStatistics - A class that contains database statistics information.
 type DatabaseStatistics struct {
 	// The database size - the total size of compressed data and index in bytes.
-	Size *float32 `json:"size,omitempty"`
+	Size *float32
 }
 
 // DedicatedSQLminimalTLSSettings - Dedicated Sql Minimal Tls Settings Info
 type DedicatedSQLminimalTLSSettings struct {
 	// Resource properties.
-	Properties *DedicatedSQLminimalTLSSettingsProperties `json:"properties,omitempty"`
+	Properties *DedicatedSQLminimalTLSSettingsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DedicatedSQLminimalTLSSettingsListResult - A list of the server's dedicated sql minimal tls settings.
 type DedicatedSQLminimalTLSSettingsListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*DedicatedSQLminimalTLSSettings `json:"value,omitempty" azure:"ro"`
+	Value []*DedicatedSQLminimalTLSSettings
 }
 
 // DedicatedSQLminimalTLSSettingsPatchInfo - Dedicated SQL minimal tls settings patch info
 type DedicatedSQLminimalTLSSettingsPatchInfo struct {
 	// minimal tls version
-	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+	MinimalTLSVersion *string
 }
 
 // DedicatedSQLminimalTLSSettingsProperties - Properties of a dedicated sql minimal tls settings.
 type DedicatedSQLminimalTLSSettingsProperties struct {
 	// The minimal tls version of the sql server.
-	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+	MinimalTLSVersion *string
 }
 
 // DynamicExecutorAllocation - Dynamic Executor Allocation Properties
 type DynamicExecutorAllocation struct {
 	// Indicates whether Dynamic Executor Allocation is enabled or not.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The maximum number of executors alloted
-	MaxExecutors *int32 `json:"maxExecutors,omitempty"`
+	MaxExecutors *int32
 
 	// The minimum number of executors alloted
-	MinExecutors *int32 `json:"minExecutors,omitempty"`
+	MinExecutors *int32
 }
 
 // EncryptionDetails - Details of the encryption associated with the workspace
 type EncryptionDetails struct {
 	// Customer Managed Key Details
-	Cmk *CustomerManagedKeyDetails `json:"cmk,omitempty"`
+	Cmk *CustomerManagedKeyDetails
 
 	// READ-ONLY; Double Encryption enabled
-	DoubleEncryptionEnabled *bool `json:"doubleEncryptionEnabled,omitempty" azure:"ro"`
+	DoubleEncryptionEnabled *bool
 }
 
 // EncryptionProtector - The server encryption protector.
 type EncryptionProtector struct {
 	// Resource properties.
-	Properties *EncryptionProtectorProperties `json:"properties,omitempty"`
+	Properties *EncryptionProtectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Kind of encryption protector. This is metadata used for the Azure portal experience.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; Resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EncryptionProtectorListResult - A list of server encryption protectors.
 type EncryptionProtectorListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*EncryptionProtector `json:"value,omitempty" azure:"ro"`
+	Value []*EncryptionProtector
 }
 
 // EncryptionProtectorProperties - Properties for an encryption protector execution.
 type EncryptionProtectorProperties struct {
 	// REQUIRED; The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-	ServerKeyType *ServerKeyType `json:"serverKeyType,omitempty"`
+	ServerKeyType *ServerKeyType
 
 	// The name of the server key.
-	ServerKeyName *string `json:"serverKeyName,omitempty"`
+	ServerKeyName *string
 
 	// READ-ONLY; Subregion of the encryption protector.
-	Subregion *string `json:"subregion,omitempty" azure:"ro"`
+	Subregion *string
 
 	// READ-ONLY; Thumbprint of the server key.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; The URI of the server key.
-	URI *string `json:"uri,omitempty" azure:"ro"`
+	URI *string
 }
 
 // EntityReference - The entity reference.
 type EntityReference struct {
 	// The name of this referenced entity.
-	ReferenceName *string `json:"referenceName,omitempty"`
+	ReferenceName *string
 
 	// The type of this referenced entity.
-	Type *IntegrationRuntimeEntityReferenceType `json:"type,omitempty"`
+	Type *IntegrationRuntimeEntityReferenceType
 }
 
 // EnvironmentVariableSetup - The custom setup of setting environment variable.
 type EnvironmentVariableSetup struct {
 	// REQUIRED; The type of custom setup.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; Add environment variable type properties.
-	TypeProperties *EnvironmentVariableSetupTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *EnvironmentVariableSetupTypeProperties
 }
 
 // GetCustomSetupBase implements the CustomSetupBaseClassification interface for type EnvironmentVariableSetup.
@@ -1053,117 +1053,117 @@ func (e *EnvironmentVariableSetup) GetCustomSetupBase() *CustomSetupBase {
 // EnvironmentVariableSetupTypeProperties - Environment variable custom setup type properties.
 type EnvironmentVariableSetupTypeProperties struct {
 	// REQUIRED; The name of the environment variable.
-	VariableName *string `json:"variableName,omitempty"`
+	VariableName *string
 
 	// REQUIRED; The value of the environment variable.
-	VariableValue *string `json:"variableValue,omitempty"`
+	VariableValue *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
 // operations. (This also follows the OData error response format.)
 type ErrorResponseAutoGenerated struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponseAutoGenerated `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponseAutoGenerated
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // EventGridConnectionProperties - Class representing the Kusto event grid connection properties.
 type EventGridConnectionProperties struct {
 	// REQUIRED; The event hub consumer group.
-	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+	ConsumerGroup *string
 
 	// REQUIRED; The resource ID where the event grid is configured to send events.
-	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
+	EventHubResourceID *string
 
 	// REQUIRED; The resource ID of the storage account where the data resides.
-	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+	StorageAccountResourceID *string
 
 	// The name of blob storage event type to process.
-	BlobStorageEventType *BlobStorageEventType `json:"blobStorageEventType,omitempty"`
+	BlobStorageEventType *BlobStorageEventType
 
 	// The data format of the message. Optionally the data format can be added to each message.
-	DataFormat *EventGridDataFormat `json:"dataFormat,omitempty"`
+	DataFormat *EventGridDataFormat
 
 	// A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file
-	IgnoreFirstRecord *bool `json:"ignoreFirstRecord,omitempty"`
+	IgnoreFirstRecord *bool
 
 	// The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
-	MappingRuleName *string `json:"mappingRuleName,omitempty"`
+	MappingRuleName *string
 
 	// The table where the data should be ingested. Optionally the table information can be added to each message.
-	TableName *string `json:"tableName,omitempty"`
+	TableName *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // EventGridDataConnection - Class representing an Event Grid data connection.
 type EventGridDataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
-	Kind *DataConnectionKind `json:"kind,omitempty"`
+	Kind *DataConnectionKind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the Event Grid data connection.
-	Properties *EventGridConnectionProperties `json:"properties,omitempty"`
+	Properties *EventGridConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnection.
@@ -1181,55 +1181,55 @@ func (e *EventGridDataConnection) GetDataConnection() *DataConnection {
 // EventHubConnectionProperties - Class representing the Kusto event hub connection properties.
 type EventHubConnectionProperties struct {
 	// REQUIRED; The event hub consumer group.
-	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+	ConsumerGroup *string
 
 	// REQUIRED; The resource ID of the event hub to be used to create a data connection.
-	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
+	EventHubResourceID *string
 
 	// The event hub messages compression type
-	Compression *Compression `json:"compression,omitempty"`
+	Compression *Compression
 
 	// The data format of the message. Optionally the data format can be added to each message.
-	DataFormat *EventHubDataFormat `json:"dataFormat,omitempty"`
+	DataFormat *EventHubDataFormat
 
 	// System properties of the event hub
-	EventSystemProperties []*string `json:"eventSystemProperties,omitempty"`
+	EventSystemProperties []*string
 
 	// The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.
-	ManagedIdentityResourceID *string `json:"managedIdentityResourceId,omitempty"`
+	ManagedIdentityResourceID *string
 
 	// The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
-	MappingRuleName *string `json:"mappingRuleName,omitempty"`
+	MappingRuleName *string
 
 	// The table where the data should be ingested. Optionally the table information can be added to each message.
-	TableName *string `json:"tableName,omitempty"`
+	TableName *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // EventHubDataConnection - Class representing an event hub data connection.
 type EventHubDataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
-	Kind *DataConnectionKind `json:"kind,omitempty"`
+	Kind *DataConnectionKind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Event Hub data connection properties to validate.
-	Properties *EventHubConnectionProperties `json:"properties,omitempty"`
+	Properties *EventHubConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnection.
@@ -1265,31 +1265,31 @@ type ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions struct {
 // ExtendedSQLPoolBlobAuditingPolicy - An extended Sql pool blob auditing policy.
 type ExtendedSQLPoolBlobAuditingPolicy struct {
 	// Resource properties.
-	Properties *ExtendedSQLPoolBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	Properties *ExtendedSQLPoolBlobAuditingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExtendedSQLPoolBlobAuditingPolicyListResult - A list of sql pool extended auditing settings.
 type ExtendedSQLPoolBlobAuditingPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ExtendedSQLPoolBlobAuditingPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*ExtendedSQLPoolBlobAuditingPolicy
 }
 
 // ExtendedSQLPoolBlobAuditingPolicyProperties - Properties of an extended Sql pool blob auditing policy.
 type ExtendedSQLPoolBlobAuditingPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
-	State *BlobAuditingPolicyState `json:"state,omitempty"`
+	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
 	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
@@ -1318,7 +1318,7 @@ type ExtendedSQLPoolBlobAuditingPolicyProperties struct {
 	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
 	// For more information, see Database-Level Audit Actions
 	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
-	AuditActionsAndGroups []*string `json:"auditActionsAndGroups,omitempty"`
+	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'state'
 	// as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
@@ -1329,20 +1329,20 @@ type ExtendedSQLPoolBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
-	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies condition of where clause when creating an audit.
-	PredicateExpression *string `json:"predicateExpression,omitempty"`
+	PredicateExpression *string
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
 	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
-	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
+	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
 	// specifying the storageAccountAccessKey will use SQL server system-assigned
@@ -1351,44 +1351,44 @@ type ExtendedSQLPoolBlobAuditingPolicyProperties struct {
 	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
 	// identity. For more information, see Auditing to storage using Managed
 	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
-	StorageAccountSubscriptionID *string `json:"storageAccountSubscriptionId,omitempty"`
+	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
 	// or isAzureMonitorTargetEnabled is required.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 }
 
 // ExtendedServerBlobAuditingPolicy - An extended server blob auditing policy.
 type ExtendedServerBlobAuditingPolicy struct {
 	// Resource properties.
-	Properties *ExtendedServerBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	Properties *ExtendedServerBlobAuditingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExtendedServerBlobAuditingPolicyListResult - A list of server extended auditing settings.
 type ExtendedServerBlobAuditingPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ExtendedServerBlobAuditingPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*ExtendedServerBlobAuditingPolicy
 }
 
 // ExtendedServerBlobAuditingPolicyProperties - Properties of an extended server blob auditing policy.
 type ExtendedServerBlobAuditingPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
-	State *BlobAuditingPolicyState `json:"state,omitempty"`
+	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
 	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
@@ -1417,7 +1417,7 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
 	// For more information, see Database-Level Audit Actions
 	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
-	AuditActionsAndGroups []*string `json:"auditActionsAndGroups,omitempty"`
+	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'state'
 	// as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
@@ -1428,7 +1428,7 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor. In order to send the
 	// events to Azure Monitor, specify 'State' as 'Enabled',
@@ -1439,20 +1439,20 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
+	IsDevopsAuditEnabled *bool
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
-	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies condition of where clause when creating an audit.
-	PredicateExpression *string `json:"predicateExpression,omitempty"`
+	PredicateExpression *string
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
 	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
-	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
+	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
 	// specifying the storageAccountAccessKey will use SQL server system-assigned
@@ -1461,68 +1461,68 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
 	// identity. For more information, see Auditing to storage using Managed
 	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
-	StorageAccountSubscriptionID *string `json:"storageAccountSubscriptionId,omitempty"`
+	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
 	// or isAzureMonitorTargetEnabled is required.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 }
 
 // FollowerDatabaseDefinition - A class representing follower database request.
 type FollowerDatabaseDefinition struct {
 	// REQUIRED; Resource name of the attached database configuration in the follower cluster.
-	AttachedDatabaseConfigurationName *string `json:"attachedDatabaseConfigurationName,omitempty"`
+	AttachedDatabaseConfigurationName *string
 
 	// REQUIRED; Resource id of the cluster that follows a database owned by this cluster.
-	KustoPoolResourceID *string `json:"clusterResourceId,omitempty"`
+	KustoPoolResourceID *string
 
 	// READ-ONLY; The database name owned by this cluster that was followed. * in case following all databases.
-	DatabaseName *string `json:"databaseName,omitempty" azure:"ro"`
+	DatabaseName *string
 }
 
 // FollowerDatabaseListResult - The list Kusto database principals operation response.
 type FollowerDatabaseListResult struct {
 	// The list of follower database result.
-	Value []*FollowerDatabaseDefinition `json:"value,omitempty"`
+	Value []*FollowerDatabaseDefinition
 }
 
 // GeoBackupPolicy - A database geo backup policy.
 type GeoBackupPolicy struct {
 	// REQUIRED; The properties of the geo backup policy.
-	Properties *GeoBackupPolicyProperties `json:"properties,omitempty"`
+	Properties *GeoBackupPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Kind of geo backup policy. This is metadata used for the Azure portal experience.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; Backup policy location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GeoBackupPolicyListResult - The response to a list geo backup policies request.
 type GeoBackupPolicyListResult struct {
 	// The list of geo backup policies.
-	Value []*GeoBackupPolicy `json:"value,omitempty"`
+	Value []*GeoBackupPolicy
 }
 
 // GeoBackupPolicyProperties - The properties of the geo backup policy.
 type GeoBackupPolicyProperties struct {
 	// REQUIRED; The state of the geo backup policy.
-	State *GeoBackupPolicyState `json:"state,omitempty"`
+	State *GeoBackupPolicyState
 
 	// READ-ONLY; The storage type of the geo backup policy.
-	StorageType *string `json:"storageType,omitempty" azure:"ro"`
+	StorageType *string
 }
 
 // GetClientIntegrationRuntimeEnableInteractivequeryOptions contains the optional parameters for the GetClient.IntegrationRuntimeEnableInteractivequery
@@ -1544,43 +1544,43 @@ type GetClientIntegrationRuntimeStopOptions struct {
 // GetSsisObjectMetadataRequest - The request payload of get SSIS object metadata.
 type GetSsisObjectMetadataRequest struct {
 	// Metadata path.
-	MetadataPath *string `json:"metadataPath,omitempty"`
+	MetadataPath *string
 }
 
 // IPFirewallRuleInfo - IP firewall rule
 type IPFirewallRuleInfo struct {
 	// IP firewall rule properties
-	Properties *IPFirewallRuleProperties `json:"properties,omitempty"`
+	Properties *IPFirewallRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IPFirewallRuleInfoListResult - List of IP firewall rules
 type IPFirewallRuleInfoListResult struct {
 	// Link to next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of IP firewall rules
-	Value []*IPFirewallRuleInfo `json:"value,omitempty"`
+	Value []*IPFirewallRuleInfo
 }
 
 // IPFirewallRuleProperties - IP firewall rule properties
 type IPFirewallRuleProperties struct {
 	// The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress
-	EndIPAddress *string `json:"endIpAddress,omitempty"`
+	EndIPAddress *string
 
 	// The start IP address of the firewall rule. Must be IPv4 format
-	StartIPAddress *string `json:"startIpAddress,omitempty"`
+	StartIPAddress *string
 
 	// READ-ONLY; Resource provisioning state
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // IPFirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the IPFirewallRulesClient.BeginCreateOrUpdate
@@ -1626,13 +1626,13 @@ type IntegrationRuntimeClassification interface {
 // IntegrationRuntime - Azure Synapse nested object which serves as a compute resource for activities.
 type IntegrationRuntime struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// Integration runtime description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type IntegrationRuntime.
@@ -1641,10 +1641,10 @@ func (i *IntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime { retur
 // IntegrationRuntimeAuthKeys - The integration runtime authentication keys.
 type IntegrationRuntimeAuthKeys struct {
 	// The primary integration runtime authentication key.
-	AuthKey1 *string `json:"authKey1,omitempty"`
+	AuthKey1 *string
 
 	// The secondary integration runtime authentication key.
-	AuthKey2 *string `json:"authKey2,omitempty"`
+	AuthKey2 *string
 }
 
 // IntegrationRuntimeAuthKeysClientListOptions contains the optional parameters for the IntegrationRuntimeAuthKeysClient.List
@@ -1665,22 +1665,22 @@ type IntegrationRuntimeComputeProperties struct {
 	AdditionalProperties map[string]any
 
 	// Data flow properties for managed integration runtime.
-	DataFlowProperties *IntegrationRuntimeDataFlowProperties `json:"dataFlowProperties,omitempty"`
+	DataFlowProperties *IntegrationRuntimeDataFlowProperties
 
 	// The location for managed integration runtime. The supported regions could be found on https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Maximum parallel executions count per node for managed integration runtime.
-	MaxParallelExecutionsPerNode *int32 `json:"maxParallelExecutionsPerNode,omitempty"`
+	MaxParallelExecutionsPerNode *int32
 
 	// The node size requirement to managed integration runtime.
-	NodeSize *string `json:"nodeSize,omitempty"`
+	NodeSize *string
 
 	// The required number of nodes for managed integration runtime.
-	NumberOfNodes *int32 `json:"numberOfNodes,omitempty"`
+	NumberOfNodes *int32
 
 	// VNet properties for managed integration runtime.
-	VNetProperties *IntegrationRuntimeVNetProperties `json:"vNetProperties,omitempty"`
+	VNetProperties *IntegrationRuntimeVNetProperties
 }
 
 // IntegrationRuntimeConnectionInfo - Connection information for encrypting the on-premises data source credentials.
@@ -1689,22 +1689,22 @@ type IntegrationRuntimeConnectionInfo struct {
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The on-premises integration runtime host URL.
-	HostServiceURI *string `json:"hostServiceUri,omitempty" azure:"ro"`
+	HostServiceURI *string
 
 	// READ-ONLY; The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
-	IdentityCertThumbprint *string `json:"identityCertThumbprint,omitempty" azure:"ro"`
+	IdentityCertThumbprint *string
 
 	// READ-ONLY; Whether the identity certificate is expired.
-	IsIdentityCertExprired *bool `json:"isIdentityCertExprired,omitempty" azure:"ro"`
+	IsIdentityCertExprired *bool
 
 	// READ-ONLY; The public key for encrypting a credential when transferring the credential to the integration runtime.
-	PublicKey *string `json:"publicKey,omitempty" azure:"ro"`
+	PublicKey *string
 
 	// READ-ONLY; The token generated in service. Callers use this token to authenticate to integration runtime.
-	ServiceToken *string `json:"serviceToken,omitempty" azure:"ro"`
+	ServiceToken *string
 
 	// READ-ONLY; The integration runtime version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // IntegrationRuntimeConnectionInfosClientGetOptions contains the optional parameters for the IntegrationRuntimeConnectionInfosClient.Get
@@ -1722,10 +1722,10 @@ type IntegrationRuntimeCredentialsClientSyncOptions struct {
 // IntegrationRuntimeCustomSetupScriptProperties - Custom setup script properties for a managed dedicated integration runtime.
 type IntegrationRuntimeCustomSetupScriptProperties struct {
 	// The URI of the Azure blob container that contains the custom setup script.
-	BlobContainerURI *string `json:"blobContainerUri,omitempty"`
+	BlobContainerURI *string
 
 	// The SAS token of the Azure blob container.
-	SasToken *SecureString `json:"sasToken,omitempty"`
+	SasToken *SecureString
 }
 
 // IntegrationRuntimeDataFlowProperties - Data flow properties for managed integration runtime.
@@ -1735,61 +1735,61 @@ type IntegrationRuntimeDataFlowProperties struct {
 
 	// Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if
 	// this is set as false. Default is true.
-	Cleanup *bool `json:"cleanup,omitempty"`
+	Cleanup *bool
 
 	// Compute type of the cluster which will execute data flow job.
-	ComputeType *DataFlowComputeType `json:"computeType,omitempty"`
+	ComputeType *DataFlowComputeType
 
 	// Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
-	CoreCount *int32 `json:"coreCount,omitempty"`
+	CoreCount *int32
 
 	// Time to live (in minutes) setting of the cluster which will execute data flow job.
-	TimeToLive *int32 `json:"timeToLive,omitempty"`
+	TimeToLive *int32
 }
 
 // IntegrationRuntimeDataProxyProperties - Data proxy properties for a managed dedicated integration runtime.
 type IntegrationRuntimeDataProxyProperties struct {
 	// The self-hosted integration runtime reference.
-	ConnectVia *EntityReference `json:"connectVia,omitempty"`
+	ConnectVia *EntityReference
 
 	// The path to contain the staged data in the Blob storage.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The staging linked service reference.
-	StagingLinkedService *EntityReference `json:"stagingLinkedService,omitempty"`
+	StagingLinkedService *EntityReference
 }
 
 // IntegrationRuntimeEnableinteractivequery - Integration Runtime Operation Status Properties
 type IntegrationRuntimeEnableinteractivequery struct {
 	// The operation error message.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// EnableInteractivequery status of Integrationruntimes.
-	Status *WorkspaceStatus `json:"status,omitempty"`
+	Status *WorkspaceStatus
 }
 
 // IntegrationRuntimeListResponse - A list of integration runtime resources.
 type IntegrationRuntimeListResponse struct {
 	// REQUIRED; List of integration runtimes.
-	Value []*IntegrationRuntimeResource `json:"value,omitempty"`
+	Value []*IntegrationRuntimeResource
 
 	// The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // IntegrationRuntimeMonitoringData - Get monitoring data response.
 type IntegrationRuntimeMonitoringData struct {
 	// Integration runtime name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Integration runtime node monitoring data.
-	Nodes []*IntegrationRuntimeNodeMonitoringData `json:"nodes,omitempty"`
+	Nodes []*IntegrationRuntimeNodeMonitoringData
 }
 
 // IntegrationRuntimeMonitoringDataClientListOptions contains the optional parameters for the IntegrationRuntimeMonitoringDataClient.List
@@ -1801,7 +1801,7 @@ type IntegrationRuntimeMonitoringDataClientListOptions struct {
 // IntegrationRuntimeNodeIPAddress - The IP address of self-hosted integration runtime node.
 type IntegrationRuntimeNodeIPAddress struct {
 	// READ-ONLY; The IP address of self-hosted integration runtime node.
-	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
+	IPAddress *string
 }
 
 // IntegrationRuntimeNodeIPAddressClientGetOptions contains the optional parameters for the IntegrationRuntimeNodeIPAddressClient.Get
@@ -1816,28 +1816,28 @@ type IntegrationRuntimeNodeMonitoringData struct {
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; Available memory (MB) on the integration runtime node.
-	AvailableMemoryInMB *int32 `json:"availableMemoryInMB,omitempty" azure:"ro"`
+	AvailableMemoryInMB *int32
 
 	// READ-ONLY; CPU percentage on the integration runtime node.
-	CPUUtilization *int32 `json:"cpuUtilization,omitempty" azure:"ro"`
+	CPUUtilization *int32
 
 	// READ-ONLY; Maximum concurrent jobs on the integration runtime node.
-	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty" azure:"ro"`
+	ConcurrentJobsLimit *int32
 
 	// READ-ONLY; The number of jobs currently running on the integration runtime node.
-	ConcurrentJobsRunning *int32 `json:"concurrentJobsRunning,omitempty" azure:"ro"`
+	ConcurrentJobsRunning *int32
 
 	// READ-ONLY; The maximum concurrent jobs in this integration runtime.
-	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty" azure:"ro"`
+	MaxConcurrentJobs *int32
 
 	// READ-ONLY; Name of the integration runtime node.
-	NodeName *string `json:"nodeName,omitempty" azure:"ro"`
+	NodeName *string
 
 	// READ-ONLY; Received bytes on the integration runtime node.
-	ReceivedBytes *float32 `json:"receivedBytes,omitempty" azure:"ro"`
+	ReceivedBytes *float32
 
 	// READ-ONLY; Sent bytes on the integration runtime node.
-	SentBytes *float32 `json:"sentBytes,omitempty" azure:"ro"`
+	SentBytes *float32
 }
 
 // IntegrationRuntimeNodesClientDeleteOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Delete
@@ -1874,74 +1874,74 @@ type IntegrationRuntimeObjectMetadataClientListOptions struct {
 // IntegrationRuntimeOperationStatus - Integration Runtime Operation Status Properties
 type IntegrationRuntimeOperationStatus struct {
 	// The operation error message.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// status of Start Integrationruntimes.
-	Status *WorkspaceStatus `json:"status,omitempty"`
+	Status *WorkspaceStatus
 }
 
 // IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint - Azure-SSIS integration runtime outbound network dependency
 // endpoints for one category.
 type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint struct {
 	// The category of outbound network dependency.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The endpoints for outbound network dependency.
-	Endpoints []*IntegrationRuntimeOutboundNetworkDependenciesEndpoint `json:"endpoints,omitempty"`
+	Endpoints []*IntegrationRuntimeOutboundNetworkDependenciesEndpoint
 }
 
 // IntegrationRuntimeOutboundNetworkDependenciesEndpoint - The endpoint for Azure-SSIS integration runtime outbound network
 // dependency.
 type IntegrationRuntimeOutboundNetworkDependenciesEndpoint struct {
 	// The domain name of endpoint.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The details of endpoint.
-	EndpointDetails []*IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails `json:"endpointDetails,omitempty"`
+	EndpointDetails []*IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails
 }
 
 // IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails - The details of Azure-SSIS integration runtime outbound network
 // dependency endpoint.
 type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails struct {
 	// The port of endpoint.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse - Azure-SSIS integration runtime outbound network dependency
 // endpoints.
 type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse struct {
 	// The list of outbound network dependency endpoints.
-	Value []*IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint `json:"value,omitempty"`
+	Value []*IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
 }
 
 // IntegrationRuntimeRegenerateKeyParameters - Parameters to regenerate the authentication key.
 type IntegrationRuntimeRegenerateKeyParameters struct {
 	// The name of the authentication key to regenerate.
-	KeyName *IntegrationRuntimeAuthKeyName `json:"keyName,omitempty"`
+	KeyName *IntegrationRuntimeAuthKeyName
 }
 
 // IntegrationRuntimeResource - Integration runtime resource type.
 type IntegrationRuntimeResource struct {
 	// REQUIRED; Integration runtime properties.
-	Properties IntegrationRuntimeClassification `json:"properties,omitempty"`
+	Properties IntegrationRuntimeClassification
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationRuntimeSsisCatalogInfo - Catalog information for managed dedicated integration runtime.
@@ -1950,16 +1950,16 @@ type IntegrationRuntimeSsisCatalogInfo struct {
 	AdditionalProperties map[string]any
 
 	// The password of the administrator user account of the catalog database.
-	CatalogAdminPassword *SecureString `json:"catalogAdminPassword,omitempty"`
+	CatalogAdminPassword *SecureString
 
 	// The administrator user name of catalog database.
-	CatalogAdminUserName *string `json:"catalogAdminUserName,omitempty"`
+	CatalogAdminUserName *string
 
 	// The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
-	CatalogPricingTier *IntegrationRuntimeSsisCatalogPricingTier `json:"catalogPricingTier,omitempty"`
+	CatalogPricingTier *IntegrationRuntimeSsisCatalogPricingTier
 
 	// The catalog database server URL.
-	CatalogServerEndpoint *string `json:"catalogServerEndpoint,omitempty"`
+	CatalogServerEndpoint *string
 }
 
 // IntegrationRuntimeSsisProperties - SSIS properties for managed integration runtime.
@@ -1968,22 +1968,22 @@ type IntegrationRuntimeSsisProperties struct {
 	AdditionalProperties map[string]any
 
 	// Catalog information for managed dedicated integration runtime.
-	CatalogInfo *IntegrationRuntimeSsisCatalogInfo `json:"catalogInfo,omitempty"`
+	CatalogInfo *IntegrationRuntimeSsisCatalogInfo
 
 	// Custom setup script properties for a managed dedicated integration runtime.
-	CustomSetupScriptProperties *IntegrationRuntimeCustomSetupScriptProperties `json:"customSetupScriptProperties,omitempty"`
+	CustomSetupScriptProperties *IntegrationRuntimeCustomSetupScriptProperties
 
 	// Data proxy properties for a managed dedicated integration runtime.
-	DataProxyProperties *IntegrationRuntimeDataProxyProperties `json:"dataProxyProperties,omitempty"`
+	DataProxyProperties *IntegrationRuntimeDataProxyProperties
 
 	// The edition for the SSIS Integration Runtime
-	Edition *IntegrationRuntimeEdition `json:"edition,omitempty"`
+	Edition *IntegrationRuntimeEdition
 
 	// Custom setup without script properties for a SSIS integration runtime.
-	ExpressCustomSetupProperties []CustomSetupBaseClassification `json:"expressCustomSetupProperties,omitempty"`
+	ExpressCustomSetupProperties []CustomSetupBaseClassification
 
 	// License type for bringing your own license scenario.
-	LicenseType *IntegrationRuntimeLicenseType `json:"licenseType,omitempty"`
+	LicenseType *IntegrationRuntimeLicenseType
 }
 
 // IntegrationRuntimeStatusClassification provides polymorphic access to related types.
@@ -1998,16 +1998,16 @@ type IntegrationRuntimeStatusClassification interface {
 // IntegrationRuntimeStatus - Integration runtime status.
 type IntegrationRuntimeStatus struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The workspace name which the integration runtime belong to.
-	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
+	DataFactoryName *string
 
 	// READ-ONLY; The state of integration runtime.
-	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+	State *IntegrationRuntimeState
 }
 
 // GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type IntegrationRuntimeStatus.
@@ -2021,25 +2021,25 @@ type IntegrationRuntimeStatusClientGetOptions struct {
 // IntegrationRuntimeStatusResponse - Integration runtime status response.
 type IntegrationRuntimeStatusResponse struct {
 	// REQUIRED; Integration runtime properties.
-	Properties IntegrationRuntimeStatusClassification `json:"properties,omitempty"`
+	Properties IntegrationRuntimeStatusClassification
 
 	// READ-ONLY; The integration runtime name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // IntegrationRuntimeStopOperationStatus - Integration Runtime Operation Status Properties
 type IntegrationRuntimeStopOperationStatus struct {
 	// The operation error message.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// status of Start Integrationruntimes.
-	Status *WorkspaceStatus `json:"status,omitempty"`
+	Status *WorkspaceStatus
 }
 
 // IntegrationRuntimeVNetProperties - VNet properties for managed integration runtime.
@@ -2048,16 +2048,16 @@ type IntegrationRuntimeVNetProperties struct {
 	AdditionalProperties map[string]any
 
 	// Resource IDs of the public IP addresses that this integration runtime will use.
-	PublicIPs []*string `json:"publicIPs,omitempty"`
+	PublicIPs []*string
 
 	// The name of the subnet this integration runtime will join.
-	Subnet *string `json:"subnet,omitempty"`
+	Subnet *string
 
 	// The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// The ID of the VNet that this integration runtime will join.
-	VNetID *string `json:"vNetId,omitempty"`
+	VNetID *string
 }
 
 // IntegrationRuntimesClientBeginCreateOptions contains the optional parameters for the IntegrationRuntimesClient.BeginCreate
@@ -2137,52 +2137,52 @@ type IntegrationRuntimesClientUpgradeOptions struct {
 // IotHubConnectionProperties - Class representing the Kusto Iot hub connection properties.
 type IotHubConnectionProperties struct {
 	// REQUIRED; The iot hub consumer group.
-	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+	ConsumerGroup *string
 
 	// REQUIRED; The resource ID of the Iot hub to be used to create a data connection.
-	IotHubResourceID *string `json:"iotHubResourceId,omitempty"`
+	IotHubResourceID *string
 
 	// REQUIRED; The name of the share access policy
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 
 	// The data format of the message. Optionally the data format can be added to each message.
-	DataFormat *IotHubDataFormat `json:"dataFormat,omitempty"`
+	DataFormat *IotHubDataFormat
 
 	// System properties of the iot hub
-	EventSystemProperties []*string `json:"eventSystemProperties,omitempty"`
+	EventSystemProperties []*string
 
 	// The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
-	MappingRuleName *string `json:"mappingRuleName,omitempty"`
+	MappingRuleName *string
 
 	// The table where the data should be ingested. Optionally the table information can be added to each message.
-	TableName *string `json:"tableName,omitempty"`
+	TableName *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // IotHubDataConnection - Class representing an iot hub data connection.
 type IotHubDataConnection struct {
 	// REQUIRED; Kind of the endpoint for the data connection
-	Kind *DataConnectionKind `json:"kind,omitempty"`
+	Kind *DataConnectionKind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Iot Hub data connection properties.
-	Properties *IotHubConnectionProperties `json:"properties,omitempty"`
+	Properties *IotHubConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnection implements the DataConnectionClassification interface for type IotHubDataConnection.
@@ -2200,43 +2200,43 @@ func (i *IotHubDataConnection) GetDataConnection() *DataConnection {
 // KekIdentityProperties - Key encryption key properties
 type KekIdentityProperties struct {
 	// Boolean specifying whether to use system assigned identity or not
-	UseSystemAssignedIdentity any `json:"useSystemAssignedIdentity,omitempty"`
+	UseSystemAssignedIdentity any
 
 	// User assigned identity resource Id
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 }
 
 // Key - A workspace key
 type Key struct {
 	// Keys resource properties
-	Properties *KeyProperties `json:"properties,omitempty"`
+	Properties *KeyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KeyInfoListResult - List of keys
 type KeyInfoListResult struct {
 	// Link to the next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of keys
-	Value []*Key `json:"value,omitempty"`
+	Value []*Key
 }
 
 // KeyProperties - Key properties
 type KeyProperties struct {
 	// Used to activate the workspace after a customer managed key is provided.
-	IsActiveCMK *bool `json:"isActiveCMK,omitempty"`
+	IsActiveCMK *bool
 
 	// The Key Vault Url of the workspace key.
-	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
+	KeyVaultURL *string
 }
 
 // KeysClientCreateOrUpdateOptions contains the optional parameters for the KeysClient.CreateOrUpdate method.
@@ -2267,31 +2267,31 @@ type KustoOperationsClientListOptions struct {
 // KustoPool - Class representing a Kusto kusto pool.
 type KustoPool struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The SKU of the kusto pool.
-	SKU *AzureSKU `json:"sku,omitempty"`
+	SKU *AzureSKU
 
 	// The kusto pool properties.
-	Properties *KustoPoolProperties `json:"properties,omitempty"`
+	Properties *KustoPoolProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolAttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
@@ -2323,11 +2323,11 @@ type KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions struct 
 // KustoPoolCheckNameRequest - The object sent for a kusto pool check name availability request.
 type KustoPoolCheckNameRequest struct {
 	// REQUIRED; Kusto Pool name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// CONSTANT; The type of resource, Microsoft.Synapse/workspaces/kustoPools.
 	// Field has constant value "Microsoft.Synapse/workspaces/kustoPools", any specified value is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // KustoPoolChildResourceClientCheckNameAvailabilityOptions contains the optional parameters for the KustoPoolChildResourceClient.CheckNameAvailability
@@ -2448,7 +2448,7 @@ type KustoPoolDatabasesClientListByKustoPoolOptions struct {
 // KustoPoolListResult - The list Kusto pools operation response.
 type KustoPoolListResult struct {
 	// The list of Kusto pools.
-	Value []*KustoPool `json:"value,omitempty"`
+	Value []*KustoPool
 }
 
 // KustoPoolPrincipalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the KustoPoolPrincipalAssignmentsClient.BeginCreateOrUpdate
@@ -2486,19 +2486,19 @@ type KustoPoolPrincipalAssignmentsClientListOptions struct {
 // KustoPoolPrivateLinkResources - Class representing a Private Link Resources.
 type KustoPoolPrivateLinkResources struct {
 	// The Private Link Resources.
-	Properties *PrivateLinkResourcesProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourcesProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KustoPoolPrivateLinkResourcesClientListOptions contains the optional parameters for the KustoPoolPrivateLinkResourcesClient.NewListPager
@@ -2510,55 +2510,55 @@ type KustoPoolPrivateLinkResourcesClientListOptions struct {
 // KustoPoolProperties - Class representing the Kusto pool properties.
 type KustoPoolProperties struct {
 	// A boolean value that indicates if the purge operations are enabled.
-	EnablePurge *bool `json:"enablePurge,omitempty"`
+	EnablePurge *bool
 
 	// A boolean value that indicates if the streaming ingest is enabled.
-	EnableStreamingIngest *bool `json:"enableStreamingIngest,omitempty"`
+	EnableStreamingIngest *bool
 
 	// Optimized auto scale definition.
-	OptimizedAutoscale *OptimizedAutoscale `json:"optimizedAutoscale,omitempty"`
+	OptimizedAutoscale *OptimizedAutoscale
 
 	// The workspace unique identifier.
-	WorkspaceUID *string `json:"workspaceUID,omitempty"`
+	WorkspaceUID *string
 
 	// READ-ONLY; The Kusto Pool data ingestion URI.
-	DataIngestionURI *string `json:"dataIngestionUri,omitempty" azure:"ro"`
+	DataIngestionURI *string
 
 	// READ-ONLY; List of the Kusto Pool's language extensions.
-	LanguageExtensions *LanguageExtensionsList `json:"languageExtensions,omitempty" azure:"ro"`
+	LanguageExtensions *LanguageExtensionsList
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The state of the resource.
-	State *State `json:"state,omitempty" azure:"ro"`
+	State *State
 
 	// READ-ONLY; The reason for the Kusto Pool's current state.
-	StateReason *string `json:"stateReason,omitempty" azure:"ro"`
+	StateReason *string
 
 	// READ-ONLY; The Kusto Pool URI.
-	URI *string `json:"uri,omitempty" azure:"ro"`
+	URI *string
 }
 
 // KustoPoolUpdate - Class representing an update to a Kusto kusto pool.
 type KustoPoolUpdate struct {
 	// The kusto pool properties.
-	Properties *KustoPoolProperties `json:"properties,omitempty"`
+	Properties *KustoPoolProperties
 
 	// The SKU of the kusto pool.
-	SKU *AzureSKU `json:"sku,omitempty"`
+	SKU *AzureSKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KustoPoolsClientBeginAddLanguageExtensionsOptions contains the optional parameters for the KustoPoolsClient.BeginAddLanguageExtensions
@@ -2664,13 +2664,13 @@ type KustoPoolsClientListSKUsOptions struct {
 // LanguageExtension - The language extension object.
 type LanguageExtension struct {
 	// The language extension name.
-	LanguageExtensionName *LanguageExtensionName `json:"languageExtensionName,omitempty"`
+	LanguageExtensionName *LanguageExtensionName
 }
 
 // LanguageExtensionsList - The list of language extension objects.
 type LanguageExtensionsList struct {
 	// The list of language extensions.
-	Value []*LanguageExtension `json:"value,omitempty"`
+	Value []*LanguageExtension
 }
 
 // LibrariesClientListByWorkspaceOptions contains the optional parameters for the LibrariesClient.NewListByWorkspacePager
@@ -2687,100 +2687,100 @@ type LibraryClientGetOptions struct {
 // LibraryInfo - Library/package information of a Big Data pool powered by Apache Spark
 type LibraryInfo struct {
 	// Storage blob container name.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Name of the library.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Storage blob path of library.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Type of the library.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The last update time of the library.
-	UploadedTimestamp *time.Time `json:"uploadedTimestamp,omitempty"`
+	UploadedTimestamp *time.Time
 
 	// READ-ONLY; Creator Id of the library/package.
-	CreatorID *string `json:"creatorId,omitempty" azure:"ro"`
+	CreatorID *string
 
 	// READ-ONLY; Provisioning status of the library/package.
-	ProvisioningStatus *string `json:"provisioningStatus,omitempty" azure:"ro"`
+	ProvisioningStatus *string
 }
 
 // LibraryListResponse - A list of Library resources.
 type LibraryListResponse struct {
 	// REQUIRED; List of Library.
-	Value []*LibraryResource `json:"value,omitempty"`
+	Value []*LibraryResource
 
 	// The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // LibraryRequirements - Library requirements for a Big Data pool powered by Apache Spark
 type LibraryRequirements struct {
 	// The library requirements.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The filename of the library requirements file.
-	Filename *string `json:"filename,omitempty"`
+	Filename *string
 
 	// READ-ONLY; The last update time of the library requirements file.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // LibraryResource - Library response details
 type LibraryResource struct {
 	// REQUIRED; Library/package properties.
-	Properties *LibraryInfo `json:"properties,omitempty"`
+	Properties *LibraryInfo
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LicensedComponentSetupTypeProperties - Installation of licensed component setup type properties.
 type LicensedComponentSetupTypeProperties struct {
 	// REQUIRED; The name of the 3rd party component.
-	ComponentName *string `json:"componentName,omitempty"`
+	ComponentName *string
 
 	// The license key to activate the component.
-	LicenseKey SecretBaseClassification `json:"licenseKey,omitempty"`
+	LicenseKey SecretBaseClassification
 }
 
 // LinkedIntegrationRuntime - The linked integration runtime information.
 type LinkedIntegrationRuntime struct {
 	// READ-ONLY; The creating time of the linked integration runtime.
-	CreateTime *time.Time `json:"createTime,omitempty" azure:"ro"`
+	CreateTime *time.Time
 
 	// READ-ONLY; The location of the workspace for which the linked integration runtime belong to.
-	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty" azure:"ro"`
+	DataFactoryLocation *string
 
 	// READ-ONLY; The name of the workspace for which the linked integration runtime belong to.
-	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
+	DataFactoryName *string
 
 	// READ-ONLY; The name of the linked integration runtime.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The subscription ID for which the linked integration runtime belong to.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	SubscriptionID *string
 }
 
 // LinkedIntegrationRuntimeKeyAuthorization - The key authorization type integration runtime.
 type LinkedIntegrationRuntimeKeyAuthorization struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
-	AuthorizationType *string `json:"authorizationType,omitempty"`
+	AuthorizationType *string
 
 	// REQUIRED; The key used for authorization.
-	Key *SecureString `json:"key,omitempty"`
+	Key *SecureString
 }
 
 // GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeKeyAuthorization.
@@ -2793,10 +2793,10 @@ func (l *LinkedIntegrationRuntimeKeyAuthorization) GetLinkedIntegrationRuntimeTy
 // LinkedIntegrationRuntimeRbacAuthorization - The role based access control (RBAC) authorization type integration runtime.
 type LinkedIntegrationRuntimeRbacAuthorization struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
-	AuthorizationType *string `json:"authorizationType,omitempty"`
+	AuthorizationType *string
 
 	// REQUIRED; The resource identifier of the integration runtime to be shared.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeRbacAuthorization.
@@ -2818,7 +2818,7 @@ type LinkedIntegrationRuntimeTypeClassification interface {
 // LinkedIntegrationRuntimeType - The base definition of a linked integration runtime.
 type LinkedIntegrationRuntimeType struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
-	AuthorizationType *string `json:"authorizationType,omitempty"`
+	AuthorizationType *string
 }
 
 // GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeType.
@@ -2829,153 +2829,153 @@ func (l *LinkedIntegrationRuntimeType) GetLinkedIntegrationRuntimeType() *Linked
 // ListResourceSKUsResult - List of available SKUs for a Kusto Pool.
 type ListResourceSKUsResult struct {
 	// The collection of available SKUs for an existing resource.
-	Value []*AzureResourceSKU `json:"value,omitempty"`
+	Value []*AzureResourceSKU
 }
 
 // ListSQLPoolSecurityAlertPolicies - A list of SQL pool security alert policies.
 type ListSQLPoolSecurityAlertPolicies struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolSecurityAlertPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolSecurityAlertPolicy
 }
 
 // MaintenanceWindowOptions - Maintenance window options.
 type MaintenanceWindowOptions struct {
 	// Resource properties.
-	Properties *MaintenanceWindowOptionsProperties `json:"properties,omitempty"`
+	Properties *MaintenanceWindowOptionsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MaintenanceWindowOptionsProperties - Maintenance window options properties.
 type MaintenanceWindowOptionsProperties struct {
 	// Whether we allow multiple maintenance windows per cycle.
-	AllowMultipleMaintenanceWindowsPerCycle *bool `json:"allowMultipleMaintenanceWindowsPerCycle,omitempty"`
+	AllowMultipleMaintenanceWindowsPerCycle *bool
 
 	// Default duration for maintenance window.
-	DefaultDurationInMinutes *int32 `json:"defaultDurationInMinutes,omitempty"`
+	DefaultDurationInMinutes *int32
 
 	// Whether maintenance windows are enabled for the database.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Available maintenance cycles e.g. {Saturday, 0, 4860}, {Wednesday, 0, 2460}.
-	MaintenanceWindowCycles []*MaintenanceWindowTimeRange `json:"maintenanceWindowCycles,omitempty"`
+	MaintenanceWindowCycles []*MaintenanceWindowTimeRange
 
 	// Minimum number of maintenance windows cycles to be set on the database.
-	MinCycles *int32 `json:"minCycles,omitempty"`
+	MinCycles *int32
 
 	// Minimum duration of maintenance window.
-	MinDurationInMinutes *int32 `json:"minDurationInMinutes,omitempty"`
+	MinDurationInMinutes *int32
 
 	// Time granularity in minutes for maintenance windows.
-	TimeGranularityInMinutes *int32 `json:"timeGranularityInMinutes,omitempty"`
+	TimeGranularityInMinutes *int32
 }
 
 // MaintenanceWindowTimeRange - Maintenance window time range.
 type MaintenanceWindowTimeRange struct {
 	// Day of maintenance window.
-	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
+	DayOfWeek *DayOfWeek
 
 	// Duration of maintenance window in minutes.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// Start time minutes offset from 12am.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // MaintenanceWindows - Maintenance windows.
 type MaintenanceWindows struct {
 	// Resource properties.
-	Properties *MaintenanceWindowsProperties `json:"properties,omitempty"`
+	Properties *MaintenanceWindowsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MaintenanceWindowsProperties - Maintenance windows resource properties.
 type MaintenanceWindowsProperties struct {
-	TimeRanges []*MaintenanceWindowTimeRange `json:"timeRanges,omitempty"`
+	TimeRanges []*MaintenanceWindowTimeRange
 }
 
 // ManagedIdentity - The workspace managed identity
 type ManagedIdentity struct {
 	// The type of managed identity for the workspace
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The user assigned managed identities.
-	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedManagedIdentity
 
 	// READ-ONLY; The principal ID of the workspace managed identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the workspace managed identity
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ManagedIdentitySQLControlSettingsModel - Sql Control Settings for workspace managed identity
 type ManagedIdentitySQLControlSettingsModel struct {
 	// Sql Control Settings for workspace managed identity
-	Properties *ManagedIdentitySQLControlSettingsModelProperties `json:"properties,omitempty"`
+	Properties *ManagedIdentitySQLControlSettingsModelProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedIdentitySQLControlSettingsModelProperties - Sql Control Settings for workspace managed identity
 type ManagedIdentitySQLControlSettingsModelProperties struct {
 	// Grant sql control to managed identity
-	GrantSQLControlToManagedIdentity *ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity `json:"grantSqlControlToManagedIdentity,omitempty"`
+	GrantSQLControlToManagedIdentity *ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity
 }
 
 // ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity - Grant sql control to managed identity
 type ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity struct {
 	// Desired state
-	DesiredState *DesiredState `json:"desiredState,omitempty"`
+	DesiredState *DesiredState
 
 	// READ-ONLY; Actual state
-	ActualState *ActualState `json:"actualState,omitempty" azure:"ro"`
+	ActualState *ActualState
 }
 
 // ManagedIntegrationRuntime - Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
 type ManagedIntegrationRuntime struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// REQUIRED; Managed integration runtime properties.
-	TypeProperties *ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *ManagedIntegrationRuntimeTypeProperties
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// Integration runtime description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Managed integration runtime managed virtual network.
-	ManagedVirtualNetwork *ManagedIntegrationRuntimeManagedVirtualNetworkReference `json:"managedVirtualNetwork,omitempty"`
+	ManagedVirtualNetwork *ManagedIntegrationRuntimeManagedVirtualNetworkReference
 
 	// READ-ONLY; Integration runtime state, only valid for managed dedicated integration runtime.
-	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+	State *IntegrationRuntimeState
 }
 
 // GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type ManagedIntegrationRuntime.
@@ -2993,28 +2993,28 @@ type ManagedIntegrationRuntimeError struct {
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Managed integration runtime error parameters.
-	Parameters []*string `json:"parameters,omitempty" azure:"ro"`
+	Parameters []*string
 
 	// READ-ONLY; The time when the error occurred.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // ManagedIntegrationRuntimeManagedVirtualNetworkReference - Managed integration runtime managed virtual network reference.
 type ManagedIntegrationRuntimeManagedVirtualNetworkReference struct {
 	// The id of the managed virtual network.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The reference name of the managed virtual network.
-	ReferenceName *string `json:"referenceName,omitempty"`
+	ReferenceName *string
 
 	// The type of the managed virtual network.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ManagedIntegrationRuntimeNode - Properties of integration runtime node.
@@ -3023,13 +3023,13 @@ type ManagedIntegrationRuntimeNode struct {
 	AdditionalProperties map[string]any
 
 	// The errors that occurred on this integration runtime node.
-	Errors []*ManagedIntegrationRuntimeError `json:"errors,omitempty"`
+	Errors []*ManagedIntegrationRuntimeError
 
 	// READ-ONLY; The managed integration runtime node id.
-	NodeID *string `json:"nodeId,omitempty" azure:"ro"`
+	NodeID *string
 
 	// READ-ONLY; The managed integration runtime node status.
-	Status *ManagedIntegrationRuntimeNodeStatus `json:"status,omitempty" azure:"ro"`
+	Status *ManagedIntegrationRuntimeNodeStatus
 }
 
 // ManagedIntegrationRuntimeOperationResult - Properties of managed integration runtime operation result.
@@ -3038,40 +3038,40 @@ type ManagedIntegrationRuntimeOperationResult struct {
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The activity id for the operation request.
-	ActivityID *string `json:"activityId,omitempty" azure:"ro"`
+	ActivityID *string
 
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; Managed integration runtime error parameters.
-	Parameters []*string `json:"parameters,omitempty" azure:"ro"`
+	Parameters []*string
 
 	// READ-ONLY; The operation result.
-	Result *string `json:"result,omitempty" azure:"ro"`
+	Result *string
 
 	// READ-ONLY; The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The operation type. Could be start or stop.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedIntegrationRuntimeStatus - Managed integration runtime status.
 type ManagedIntegrationRuntimeStatus struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// REQUIRED; Managed integration runtime status type properties.
-	TypeProperties *ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *ManagedIntegrationRuntimeStatusTypeProperties
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The workspace name which the integration runtime belong to.
-	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
+	DataFactoryName *string
 
 	// READ-ONLY; The state of integration runtime.
-	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+	State *IntegrationRuntimeState
 }
 
 // GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type ManagedIntegrationRuntimeStatus.
@@ -3087,203 +3087,203 @@ func (m *ManagedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *Integra
 // ManagedIntegrationRuntimeStatusTypeProperties - Managed integration runtime status type properties.
 type ManagedIntegrationRuntimeStatusTypeProperties struct {
 	// READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
-	CreateTime *time.Time `json:"createTime,omitempty" azure:"ro"`
+	CreateTime *time.Time
 
 	// READ-ONLY; The last operation result that occurred on this integration runtime.
-	LastOperation *ManagedIntegrationRuntimeOperationResult `json:"lastOperation,omitempty" azure:"ro"`
+	LastOperation *ManagedIntegrationRuntimeOperationResult
 
 	// READ-ONLY; The list of nodes for managed integration runtime.
-	Nodes []*ManagedIntegrationRuntimeNode `json:"nodes,omitempty" azure:"ro"`
+	Nodes []*ManagedIntegrationRuntimeNode
 
 	// READ-ONLY; The errors that occurred on this integration runtime.
-	OtherErrors []*ManagedIntegrationRuntimeError `json:"otherErrors,omitempty" azure:"ro"`
+	OtherErrors []*ManagedIntegrationRuntimeError
 }
 
 // ManagedIntegrationRuntimeTypeProperties - Managed integration runtime type properties.
 type ManagedIntegrationRuntimeTypeProperties struct {
 	// The compute resource for managed integration runtime.
-	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
+	ComputeProperties *IntegrationRuntimeComputeProperties
 
 	// SSIS properties for managed integration runtime.
-	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
+	SsisProperties *IntegrationRuntimeSsisProperties
 }
 
 // ManagedVirtualNetworkSettings - Managed Virtual Network Settings
 type ManagedVirtualNetworkSettings struct {
 	// Allowed Aad Tenant Ids For Linking
-	AllowedAADTenantIDsForLinking []*string `json:"allowedAadTenantIdsForLinking,omitempty"`
+	AllowedAADTenantIDsForLinking []*string
 
 	// Linked Access Check On Target Resource
-	LinkedAccessCheckOnTargetResource *bool `json:"linkedAccessCheckOnTargetResource,omitempty"`
+	LinkedAccessCheckOnTargetResource *bool
 
 	// Prevent Data Exfiltration
-	PreventDataExfiltration *bool `json:"preventDataExfiltration,omitempty"`
+	PreventDataExfiltration *bool
 }
 
 // MetadataSyncConfig - Configuration for metadata sync
 type MetadataSyncConfig struct {
 	// Metadata Sync Config properties
-	Properties *MetadataSyncConfigProperties `json:"properties,omitempty"`
+	Properties *MetadataSyncConfigProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MetadataSyncConfigProperties - Metadata Sync Config properties
 type MetadataSyncConfigProperties struct {
 	// Indicates whether the metadata sync is enabled or disabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The Sync Interval in minutes.
-	SyncIntervalInMinutes *int32 `json:"syncIntervalInMinutes,omitempty"`
+	SyncIntervalInMinutes *int32
 }
 
 // Operation - A REST API operation
 type Operation struct {
 	// The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// This is of the format {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The intended executor of the operation.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationDisplay - The object that describes the operation.
 type OperationDisplay struct {
 	// The friendly name of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// For example: read, write, delete.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
 // to get the next set of results.
 type OperationListResult struct {
 	// The list of operations supported by the resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// READ-ONLY; The URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationMetaLogSpecification - What is this?
 type OperationMetaLogSpecification struct {
 	// Time range the log covers
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Log display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Log unique name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationMetaMetricDimensionSpecification - What is this?
 type OperationMetaMetricDimensionSpecification struct {
 	// Dimension display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Dimension unique name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Whether this metric should be exported for Shoebox
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // OperationMetaMetricSpecification - What is this?
 type OperationMetaMetricSpecification struct {
 	// Metric aggregation type
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// Metric dimensions
-	Dimensions []*OperationMetaMetricDimensionSpecification `json:"dimensions,omitempty"`
+	Dimensions []*OperationMetaMetricDimensionSpecification
 
 	// Metric description
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Metric display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether the regional MDM account is enabled
-	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *bool
 
 	// Metric filter
-	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	MetricFilterPattern *string
 
 	// Metric unique name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The source MDM account
-	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	SourceMdmAccount *string
 
 	// The source MDM namespace
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// Whether the metric supports instance-level aggregation
-	SupportsInstanceLevelAggregation *bool `json:"supportsInstanceLevelAggregation,omitempty"`
+	SupportsInstanceLevelAggregation *bool
 
 	// Metric units
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // OperationMetaPropertyInfo - What is this?
 type OperationMetaPropertyInfo struct {
 	// Operation service specification
-	ServiceSpecification *OperationMetaServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationMetaServiceSpecification
 }
 
 // OperationMetaServiceSpecification - What is this?
 type OperationMetaServiceSpecification struct {
 	// Service log specifications
-	LogSpecifications []*OperationMetaLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*OperationMetaLogSpecification
 
 	// Service metric specifications
-	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*OperationMetaMetricSpecification
 }
 
 // OperationResource - An operation
 type OperationResource struct {
 	// Operation start time
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Errors from the operation
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Operation ID
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Operation name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Completion percentage of the operation
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// Operation properties
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// Operation start time
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Operation status
-	Status *OperationStatus `json:"status,omitempty"`
+	Status *OperationStatus
 }
 
 // OperationsClientCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.CheckNameAvailability
@@ -3312,88 +3312,88 @@ type OperationsClientListOptions struct {
 // OptimizedAutoscale - A class that contains the optimized auto scale definition.
 type OptimizedAutoscale struct {
 	// REQUIRED; A boolean value that indicate if the optimized autoscale feature is enabled or not.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; Maximum allowed instances count.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// REQUIRED; Minimum allowed instances count.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// REQUIRED; The version of the template defined, for instance 1.
-	Version *int32 `json:"version,omitempty"`
+	Version *int32
 }
 
 // PrivateEndpoint - Private endpoint details
 type PrivateEndpoint struct {
 	// READ-ONLY; Resource id of the private endpoint.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
 	// Private endpoint connection properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type PrivateEndpointConnectionForPrivateLinkHub struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
+	ID   *string
+	Name *string
 
 	// Properties of a private endpoint connection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-	Type       *string                              `json:"type,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
+	Type       *string
 }
 
 // PrivateEndpointConnectionForPrivateLinkHubBasic - Private Endpoint Connection For Private Link Hub - Basic
 type PrivateEndpointConnectionForPrivateLinkHubBasic struct {
 	// Properties of private endpoint connection for private link hub
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; identifier
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 type PrivateEndpointConnectionForPrivateLinkHubBasicAutoGenerated struct {
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Properties of a private endpoint connection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 }
 
 type PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse struct {
-	NextLink *string                                       `json:"nextLink,omitempty"`
-	Value    []*PrivateEndpointConnectionForPrivateLinkHub `json:"value,omitempty"`
+	NextLink *string
+	Value    []*PrivateEndpointConnectionForPrivateLinkHub
 }
 
 // PrivateEndpointConnectionList - A list of private endpoint connections
 type PrivateEndpointConnectionList struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// The private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Connection state of the private endpoint connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// READ-ONLY; Provisioning state of the private endpoint connection.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
@@ -3437,37 +3437,37 @@ type PrivateEndpointConnectionsPrivateLinkHubClientListOptions struct {
 // PrivateLinkHub - A privateLinkHub
 type PrivateLinkHub struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// PrivateLinkHub resource properties
-	Properties *PrivateLinkHubProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkHubProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkHubInfoListResult - List of privateLinkHubs
 type PrivateLinkHubInfoListResult struct {
 	// Link to the next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of privateLinkHubs
-	Value []*PrivateLinkHub `json:"value,omitempty"`
+	Value []*PrivateLinkHub
 }
 
 // PrivateLinkHubPatchInfo - PrivateLinkHub patch details
 type PrivateLinkHubPatchInfo struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PrivateLinkHubPrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkHubPrivateLinkResourcesClient.Get
@@ -3485,10 +3485,10 @@ type PrivateLinkHubPrivateLinkResourcesClientListOptions struct {
 // PrivateLinkHubProperties - PrivateLinkHub properties
 type PrivateLinkHubProperties struct {
 	// PrivateLinkHub provisioning state
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// READ-ONLY; List of private endpoint connections
-	PrivateEndpointConnections []*PrivateEndpointConnectionForPrivateLinkHubBasic `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnectionForPrivateLinkHubBasic
 }
 
 // PrivateLinkHubsClientBeginDeleteOptions contains the optional parameters for the PrivateLinkHubsClient.BeginDelete method.
@@ -3527,43 +3527,43 @@ type PrivateLinkHubsClientUpdateOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The private link resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; Required DNS zone names of the the private link resource.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResources - The list Kusto Private Link Resources operation response.
 type PrivateLinkResources struct {
 	// The list of Kusto Private Link Resources.
-	Value []*KustoPoolPrivateLinkResources `json:"value,omitempty"`
+	Value []*KustoPoolPrivateLinkResources
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -3580,107 +3580,107 @@ type PrivateLinkResourcesClientListOptions struct {
 // PrivateLinkResourcesProperties - Private Link Resources Properties.
 type PrivateLinkResourcesProperties struct {
 	// READ-ONLY; The Private link resources GroupId
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; The private link resource required zone names.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkServiceConnectionState - Connection state details of the private endpoint
 type PrivateLinkServiceConnectionState struct {
 	// The private link service connection description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The private link service connection status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; The actions required for private link service connection.
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
+	ActionsRequired *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PurviewConfiguration - Purview Configuration
 type PurviewConfiguration struct {
 	// Purview Resource ID
-	PurviewResourceID *string `json:"purviewResourceId,omitempty"`
+	PurviewResourceID *string
 }
 
 // QueryInterval - A database query.
 type QueryInterval struct {
 	// READ-ONLY; The number of times the query was executed during this interval.
-	ExecutionCount *int32 `json:"executionCount,omitempty" azure:"ro"`
+	ExecutionCount *int32
 
 	// READ-ONLY; The start time of the measurement interval (ISO8601 format).
-	IntervalStartTime *time.Time `json:"intervalStartTime,omitempty" azure:"ro"`
+	IntervalStartTime *time.Time
 
 	// READ-ONLY; The list of query metrics during this interval.
-	Metrics []*QueryMetric `json:"metrics,omitempty" azure:"ro"`
+	Metrics []*QueryMetric
 }
 
 // QueryMetric - A database query.
 type QueryMetric struct {
 	// READ-ONLY; The name of the metric for display in user interface
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The name of the metric
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The unit of measurement
-	Unit *QueryMetricUnit `json:"unit,omitempty" azure:"ro"`
+	Unit *QueryMetricUnit
 
 	// READ-ONLY; The measured value
-	Value *float64 `json:"value,omitempty" azure:"ro"`
+	Value *float64
 }
 
 // QueryStatistic - A database query.
 type QueryStatistic struct {
 	// READ-ONLY; The list of query intervals.
-	Intervals []*QueryInterval `json:"intervals,omitempty" azure:"ro"`
+	Intervals []*QueryInterval
 
 	// READ-ONLY; The id of the query
-	QueryID *string `json:"queryId,omitempty" azure:"ro"`
+	QueryID *string
 }
 
 // ReadOnlyFollowingDatabase - Class representing a read only following database.
 type ReadOnlyFollowingDatabase struct {
 	// REQUIRED; Kind of the database
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The database properties.
-	Properties *ReadOnlyFollowingDatabaseProperties `json:"properties,omitempty"`
+	Properties *ReadOnlyFollowingDatabaseProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDatabase implements the DatabaseClassification interface for type ReadOnlyFollowingDatabase.
@@ -3698,49 +3698,49 @@ func (r *ReadOnlyFollowingDatabase) GetDatabase() *Database {
 // ReadOnlyFollowingDatabaseProperties - Class representing the Kusto database properties.
 type ReadOnlyFollowingDatabaseProperties struct {
 	// The time the data should be kept in cache for fast queries in TimeSpan.
-	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
+	HotCachePeriod *string
 
 	// READ-ONLY; The name of the attached database configuration cluster
-	AttachedDatabaseConfigurationName *string `json:"attachedDatabaseConfigurationName,omitempty" azure:"ro"`
+	AttachedDatabaseConfigurationName *string
 
 	// READ-ONLY; The name of the leader cluster
-	LeaderClusterResourceID *string `json:"leaderClusterResourceId,omitempty" azure:"ro"`
+	LeaderClusterResourceID *string
 
 	// READ-ONLY; The principals modification kind of the database
-	PrincipalsModificationKind *PrincipalsModificationKind `json:"principalsModificationKind,omitempty" azure:"ro"`
+	PrincipalsModificationKind *PrincipalsModificationKind
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The time the data should be kept before it stops being accessible to queries in TimeSpan.
-	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty" azure:"ro"`
+	SoftDeletePeriod *string
 
 	// READ-ONLY; The statistics of the database.
-	Statistics *DatabaseStatistics `json:"statistics,omitempty" azure:"ro"`
+	Statistics *DatabaseStatistics
 }
 
 // ReadWriteDatabase - Class representing a read write database.
 type ReadWriteDatabase struct {
 	// REQUIRED; Kind of the database
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The database properties.
-	Properties *ReadWriteDatabaseProperties `json:"properties,omitempty"`
+	Properties *ReadWriteDatabaseProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDatabase implements the DatabaseClassification interface for type ReadWriteDatabase.
@@ -3758,234 +3758,234 @@ func (r *ReadWriteDatabase) GetDatabase() *Database {
 // ReadWriteDatabaseProperties - Class representing the Kusto database properties.
 type ReadWriteDatabaseProperties struct {
 	// The time the data should be kept in cache for fast queries in TimeSpan.
-	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
+	HotCachePeriod *string
 
 	// The time the data should be kept before it stops being accessible to queries in TimeSpan.
-	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
+	SoftDeletePeriod *string
 
 	// READ-ONLY; Indicates whether the database is followed.
-	IsFollowed *bool `json:"isFollowed,omitempty" azure:"ro"`
+	IsFollowed *bool
 
 	// READ-ONLY; The provisioned state of the resource.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; The statistics of the database.
-	Statistics *DatabaseStatistics `json:"statistics,omitempty" azure:"ro"`
+	Statistics *DatabaseStatistics
 }
 
 // RecommendedSensitivityLabelUpdate - A recommended sensitivity label update operation.
 type RecommendedSensitivityLabelUpdate struct {
 	// Resource properties.
-	Properties *RecommendedSensitivityLabelUpdateProperties `json:"properties,omitempty"`
+	Properties *RecommendedSensitivityLabelUpdateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecommendedSensitivityLabelUpdateList - A list of recommended sensitivity label update operations.
 type RecommendedSensitivityLabelUpdateList struct {
-	Operations []*RecommendedSensitivityLabelUpdate `json:"operations,omitempty"`
+	Operations []*RecommendedSensitivityLabelUpdate
 }
 
 // RecommendedSensitivityLabelUpdateProperties - Properties of an operation executed on a recommended sensitivity label.
 type RecommendedSensitivityLabelUpdateProperties struct {
 	// REQUIRED; Column name to update.
-	Column *string `json:"column,omitempty"`
+	Column *string
 
 	// REQUIRED
-	Op *RecommendedSensitivityLabelUpdateKind `json:"op,omitempty"`
+	Op *RecommendedSensitivityLabelUpdateKind
 
 	// REQUIRED; Schema name of the column to update.
-	Schema *string `json:"schema,omitempty"`
+	Schema *string
 
 	// REQUIRED; Table name of the column to update.
-	Table *string `json:"table,omitempty"`
+	Table *string
 }
 
 // RecoverableSQLPool - A recoverable sql pool
 type RecoverableSQLPool struct {
 	// The properties of a recoverable sql pool
-	Properties *RecoverableSQLPoolProperties `json:"properties,omitempty"`
+	Properties *RecoverableSQLPoolProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecoverableSQLPoolListResult - The response to a list recoverable sql pools request
 type RecoverableSQLPoolListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of recoverable sql pool
-	Value []*RecoverableSQLPool `json:"value,omitempty" azure:"ro"`
+	Value []*RecoverableSQLPool
 }
 
 // RecoverableSQLPoolProperties - The properties of a recoverable sql pool
 type RecoverableSQLPoolProperties struct {
 	// READ-ONLY; The edition of the database
-	Edition *string `json:"edition,omitempty" azure:"ro"`
+	Edition *string
 
 	// READ-ONLY; The elastic pool name of the database
-	ElasticPoolName *string `json:"elasticPoolName,omitempty" azure:"ro"`
+	ElasticPoolName *string
 
 	// READ-ONLY; The last available backup date of the database (ISO8601 format)
-	LastAvailableBackupDate *time.Time `json:"lastAvailableBackupDate,omitempty" azure:"ro"`
+	LastAvailableBackupDate *time.Time
 
 	// READ-ONLY; The service level objective name of the database
-	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty" azure:"ro"`
+	ServiceLevelObjective *string
 }
 
 // ReplaceAllFirewallRulesOperationResponse - An existing operation for replacing the firewall rules
 type ReplaceAllFirewallRulesOperationResponse struct {
 	// The operation ID
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 }
 
 // ReplaceAllIPFirewallRulesRequest - Replace all IP firewall rules request
 type ReplaceAllIPFirewallRulesRequest struct {
 	// IP firewall rule properties
-	IPFirewallRules map[string]*IPFirewallRuleProperties `json:"ipFirewallRules,omitempty"`
+	IPFirewallRules map[string]*IPFirewallRuleProperties
 }
 
 // ReplicationLink - Represents a Sql pool replication link.
 type ReplicationLink struct {
 	// The properties representing the resource.
-	Properties *ReplicationLinkProperties `json:"properties,omitempty"`
+	Properties *ReplicationLinkProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Location of the workspace that contains this firewall rule.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicationLinkListResult - Represents the response to a List Sql pool replication link request.
 type ReplicationLinkListResult struct {
 	// The list of Sql pool replication links housed in the Sql pool.
-	Value []*ReplicationLink `json:"value,omitempty"`
+	Value []*ReplicationLink
 
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ReplicationLinkProperties - Represents the properties of a Sql pool replication link.
 type ReplicationLinkProperties struct {
 	// READ-ONLY; Legacy value indicating whether termination is allowed. Currently always returns true.
-	IsTerminationAllowed *bool `json:"isTerminationAllowed,omitempty" azure:"ro"`
+	IsTerminationAllowed *bool
 
 	// READ-ONLY; The name of the partner Sql pool.
-	PartnerDatabase *string `json:"partnerDatabase,omitempty" azure:"ro"`
+	PartnerDatabase *string
 
 	// READ-ONLY; The Azure Region of the partner Sql pool.
-	PartnerLocation *string `json:"partnerLocation,omitempty" azure:"ro"`
+	PartnerLocation *string
 
 	// READ-ONLY; The role of the partner Sql pool in the replication link.
-	PartnerRole *ReplicationRole `json:"partnerRole,omitempty" azure:"ro"`
+	PartnerRole *ReplicationRole
 
 	// READ-ONLY; The name of the workspace hosting the partner Sql pool.
-	PartnerServer *string `json:"partnerServer,omitempty" azure:"ro"`
+	PartnerServer *string
 
 	// READ-ONLY; The percentage of seeding complete for the replication link.
-	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+	PercentComplete *int32
 
 	// READ-ONLY; Replication mode of this replication link.
-	ReplicationMode *string `json:"replicationMode,omitempty" azure:"ro"`
+	ReplicationMode *string
 
 	// READ-ONLY; The replication state for the replication link.
-	ReplicationState *ReplicationState `json:"replicationState,omitempty" azure:"ro"`
+	ReplicationState *ReplicationState
 
 	// READ-ONLY; The role of the Sql pool in the replication link.
-	Role *ReplicationRole `json:"role,omitempty" azure:"ro"`
+	Role *ReplicationRole
 
 	// READ-ONLY; The start time for the replication link.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceMoveDefinition - Contains the information necessary to perform a resource move (rename).
 type ResourceMoveDefinition struct {
 	// REQUIRED; The target ID for the resource
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // RestorableDroppedSQLPool - A restorable dropped Sql pool
 type RestorableDroppedSQLPool struct {
 	// The properties of a restorable dropped Sql pool
-	Properties *RestorableDroppedSQLPoolProperties `json:"properties,omitempty"`
+	Properties *RestorableDroppedSQLPoolProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RestorableDroppedSQLPoolListResult - The response to a list restorable dropped Sql pools request
 type RestorableDroppedSQLPoolListResult struct {
 	// REQUIRED; A list of restorable dropped Sql pools
-	Value []*RestorableDroppedSQLPool `json:"value,omitempty"`
+	Value []*RestorableDroppedSQLPool
 }
 
 // RestorableDroppedSQLPoolProperties - The properties of a restorable dropped Sql pool
 type RestorableDroppedSQLPoolProperties struct {
 	// READ-ONLY; The creation date of the database (ISO8601 format)
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; The name of the database
-	DatabaseName *string `json:"databaseName,omitempty" azure:"ro"`
+	DatabaseName *string
 
 	// READ-ONLY; The deletion date of the database (ISO8601 format)
-	DeletionDate *time.Time `json:"deletionDate,omitempty" azure:"ro"`
+	DeletionDate *time.Time
 
 	// READ-ONLY; The earliest restore date of the database (ISO8601 format)
-	EarliestRestoreDate *time.Time `json:"earliestRestoreDate,omitempty" azure:"ro"`
+	EarliestRestoreDate *time.Time
 
 	// READ-ONLY; The edition of the database
-	Edition *string `json:"edition,omitempty" azure:"ro"`
+	Edition *string
 
 	// READ-ONLY; The elastic pool name of the database
-	ElasticPoolName *string `json:"elasticPoolName,omitempty" azure:"ro"`
+	ElasticPoolName *string
 
 	// READ-ONLY; The max size in bytes of the database
-	MaxSizeBytes *string `json:"maxSizeBytes,omitempty" azure:"ro"`
+	MaxSizeBytes *string
 
 	// READ-ONLY; The service level objective name of the database
-	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty" azure:"ro"`
+	ServiceLevelObjective *string
 }
 
 // RestorableDroppedSQLPoolsClientGetOptions contains the optional parameters for the RestorableDroppedSQLPoolsClient.Get
@@ -4003,116 +4003,116 @@ type RestorableDroppedSQLPoolsClientListByWorkspaceOptions struct {
 // RestorePoint - Database restore points.
 type RestorePoint struct {
 	// Resource properties.
-	Properties *RestorePointProperties `json:"properties,omitempty"`
+	Properties *RestorePointProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RestorePointListResult - A list of long term retention backups.
 type RestorePointListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*RestorePoint `json:"value,omitempty" azure:"ro"`
+	Value []*RestorePoint
 }
 
 // RestorePointProperties - Properties of a database restore point
 type RestorePointProperties struct {
 	// READ-ONLY; The earliest time to which this database can be restored
-	EarliestRestoreDate *time.Time `json:"earliestRestoreDate,omitempty" azure:"ro"`
+	EarliestRestoreDate *time.Time
 
 	// READ-ONLY; The time the backup was taken
-	RestorePointCreationDate *time.Time `json:"restorePointCreationDate,omitempty" azure:"ro"`
+	RestorePointCreationDate *time.Time
 
 	// READ-ONLY; The label of restore point for backup request by user
-	RestorePointLabel *string `json:"restorePointLabel,omitempty" azure:"ro"`
+	RestorePointLabel *string
 
 	// READ-ONLY; The type of restore point
-	RestorePointType *RestorePointType `json:"restorePointType,omitempty" azure:"ro"`
+	RestorePointType *RestorePointType
 }
 
 // SKU - SQL pool SKU
 type SKU struct {
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
 	// resource this may be omitted.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The SKU name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The service tier
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SKUDescription - The Kusto SKU description of given resource type
 type SKUDescription struct {
 	// READ-ONLY; Locations and zones
-	LocationInfo []*SKULocationInfoItem `json:"locationInfo,omitempty" azure:"ro"`
+	LocationInfo []*SKULocationInfoItem
 
 	// READ-ONLY; The set of locations that the SKU is available
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; The name of the SKU
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; The restrictions because of which SKU cannot be used
-	Restrictions []any `json:"restrictions,omitempty" azure:"ro"`
+	Restrictions []any
 
 	// READ-ONLY; The size of the SKU
-	Size *string `json:"size,omitempty" azure:"ro"`
+	Size *string
 }
 
 // SKUDescriptionList - The list of the SKU descriptions
 type SKUDescriptionList struct {
 	// READ-ONLY; SKU descriptions
-	Value []*SKUDescription `json:"value,omitempty" azure:"ro"`
+	Value []*SKUDescription
 }
 
 // SKULocationInfoItem - The locations and zones info for SKU.
 type SKULocationInfoItem struct {
 	// REQUIRED; The available location of the SKU.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The available zone of the SKU.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // SQLPool - A SQL Analytics pool
 type SQLPool struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// SQL pool properties
-	Properties *SQLPoolResourceProperties `json:"properties,omitempty"`
+	Properties *SQLPoolResourceProperties
 
 	// SQL pool SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.CreateOrUpdate
@@ -4136,34 +4136,34 @@ type SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions struct {
 // SQLPoolBlobAuditingPolicy - A Sql pool blob auditing policy.
 type SQLPoolBlobAuditingPolicy struct {
 	// Resource properties.
-	Properties *SQLPoolBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	Properties *SQLPoolBlobAuditingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource kind.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolBlobAuditingPolicyListResult - A list of Sql pool auditing settings.
 type SQLPoolBlobAuditingPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolBlobAuditingPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolBlobAuditingPolicy
 }
 
 // SQLPoolBlobAuditingPolicyProperties - Properties of a Sql pool blob auditing policy.
 type SQLPoolBlobAuditingPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
-	State *BlobAuditingPolicyState `json:"state,omitempty"`
+	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
 	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
@@ -4192,7 +4192,7 @@ type SQLPoolBlobAuditingPolicyProperties struct {
 	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
 	// For more information, see Database-Level Audit Actions
 	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
-	AuditActionsAndGroups []*string `json:"auditActionsAndGroups,omitempty"`
+	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'state'
 	// as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
@@ -4203,66 +4203,66 @@ type SQLPoolBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
-	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, storageAccountAccessKey
 	// is required.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
-	StorageAccountSubscriptionID *string `json:"storageAccountSubscriptionId,omitempty"`
+	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
 	// is required.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 }
 
 // SQLPoolBlobAuditingPolicySQLPoolOperationListResult - The response to a list Sql pool operations request
 type SQLPoolBlobAuditingPolicySQLPoolOperationListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolOperation `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolOperation
 }
 
 // SQLPoolColumn - A Sql pool column resource.
 type SQLPoolColumn struct {
 	// Resource properties.
-	Properties *SQLPoolColumnProperties `json:"properties,omitempty"`
+	Properties *SQLPoolColumnProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolColumnListResult - A list of Sql pool columns.
 type SQLPoolColumnListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolColumn `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolColumn
 }
 
 // SQLPoolColumnProperties - Sql pool column properties.
 type SQLPoolColumnProperties struct {
 	// The column data type.
-	ColumnType *ColumnDataType `json:"columnType,omitempty"`
+	ColumnType *ColumnDataType
 
 	// READ-ONLY; Indicates whether column value is computed or not
-	IsComputed *bool `json:"isComputed,omitempty" azure:"ro"`
+	IsComputed *bool
 }
 
 // SQLPoolColumnsClientGetOptions contains the optional parameters for the SQLPoolColumnsClient.Get method.
@@ -4279,46 +4279,46 @@ type SQLPoolConnectionPoliciesClientGetOptions struct {
 // SQLPoolConnectionPolicy - A Sql pool connection policy.
 type SQLPoolConnectionPolicy struct {
 	// Resource properties.
-	Properties *SQLPoolConnectionPolicyProperties `json:"properties,omitempty"`
+	Properties *SQLPoolConnectionPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource kind.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; Resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolConnectionPolicyProperties - Properties of a Sql pool connection policy.
 type SQLPoolConnectionPolicyProperties struct {
 	// The fully qualified host name of the auditing proxy.
-	ProxyDNSName *string `json:"proxyDnsName,omitempty"`
+	ProxyDNSName *string
 
 	// The port number of the auditing proxy.
-	ProxyPort *string `json:"proxyPort,omitempty"`
+	ProxyPort *string
 
 	// The state of proxy redirection.
-	RedirectionState *string `json:"redirectionState,omitempty"`
+	RedirectionState *string
 
 	// The state of security access.
-	SecurityEnabledAccess *string `json:"securityEnabledAccess,omitempty"`
+	SecurityEnabledAccess *string
 
 	// The connection policy state.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// Whether server default is enabled or disabled.
-	UseServerDefault *string `json:"useServerDefault,omitempty"`
+	UseServerDefault *string
 
 	// The visibility of the auditing proxy.
-	Visibility *string `json:"visibility,omitempty"`
+	Visibility *string
 }
 
 // SQLPoolDataWarehouseUserActivitiesClientGetOptions contains the optional parameters for the SQLPoolDataWarehouseUserActivitiesClient.Get
@@ -4347,10 +4347,10 @@ type SQLPoolGeoBackupPoliciesClientListOptions struct {
 // SQLPoolInfoListResult - List of SQL pools
 type SQLPoolInfoListResult struct {
 	// Link to the next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of SQL pools
-	Value []*SQLPool `json:"value,omitempty"`
+	Value []*SQLPool
 }
 
 // SQLPoolMaintenanceWindowOptionsClientGetOptions contains the optional parameters for the SQLPoolMaintenanceWindowOptionsClient.Get
@@ -4386,61 +4386,61 @@ type SQLPoolMetadataSyncConfigsClientGetOptions struct {
 // SQLPoolOperation - A Sql pool operation.
 type SQLPoolOperation struct {
 	// Resource properties.
-	Properties *SQLPoolOperationProperties `json:"properties,omitempty"`
+	Properties *SQLPoolOperationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolOperationProperties - The properties of a Sql pool operation.
 type SQLPoolOperationProperties struct {
 	// READ-ONLY; The name of the Sql pool the operation is being performed on.
-	DatabaseName *string `json:"databaseName,omitempty" azure:"ro"`
+	DatabaseName *string
 
 	// READ-ONLY; The operation description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The operation error code.
-	ErrorCode *int32 `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *int32
 
 	// READ-ONLY; The operation error description.
-	ErrorDescription *string `json:"errorDescription,omitempty" azure:"ro"`
+	ErrorDescription *string
 
 	// READ-ONLY; The operation error severity.
-	ErrorSeverity *int32 `json:"errorSeverity,omitempty" azure:"ro"`
+	ErrorSeverity *int32
 
 	// READ-ONLY; The estimated completion time of the operation.
-	EstimatedCompletionTime *time.Time `json:"estimatedCompletionTime,omitempty" azure:"ro"`
+	EstimatedCompletionTime *time.Time
 
 	// READ-ONLY; Whether the operation can be cancelled.
-	IsCancellable *bool `json:"isCancellable,omitempty" azure:"ro"`
+	IsCancellable *bool
 
 	// READ-ONLY; Whether or not the error is a user error.
-	IsUserError *bool `json:"isUserError,omitempty" azure:"ro"`
+	IsUserError *bool
 
 	// READ-ONLY; The name of operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The friendly name of operation.
-	OperationFriendlyName *string `json:"operationFriendlyName,omitempty" azure:"ro"`
+	OperationFriendlyName *string
 
 	// READ-ONLY; The percentage of the operation completed.
-	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+	PercentComplete *int32
 
 	// READ-ONLY; The name of the server.
-	ServerName *string `json:"serverName,omitempty" azure:"ro"`
+	ServerName *string
 
 	// READ-ONLY; The operation start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The operation state.
-	State *ManagementOperationState `json:"state,omitempty" azure:"ro"`
+	State *ManagementOperationState
 }
 
 // SQLPoolOperationResultsClientBeginGetLocationHeaderResultOptions contains the optional parameters for the SQLPoolOperationResultsClient.BeginGetLocationHeaderResult
@@ -4458,16 +4458,16 @@ type SQLPoolOperationsClientListOptions struct {
 // SQLPoolPatchInfo - A SQL Analytics pool patch info
 type SQLPoolPatchInfo struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// SQL pool properties
-	Properties *SQLPoolResourceProperties `json:"properties,omitempty"`
+	Properties *SQLPoolResourceProperties
 
 	// SQL pool SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SQLPoolRecommendedSensitivityLabelsClientUpdateOptions contains the optional parameters for the SQLPoolRecommendedSensitivityLabelsClient.Update
@@ -4491,7 +4491,7 @@ type SQLPoolReplicationLinksClientListOptions struct {
 // SQLPoolResourceProperties - Properties of a SQL Analytics pool
 type SQLPoolResourceProperties struct {
 	// Collation mode
-	Collation *string `json:"collation,omitempty"`
+	Collation *string
 
 	// Specifies the mode of sql pool creation.
 	// Default: regular sql pool creation.
@@ -4503,34 +4503,34 @@ type SQLPoolResourceProperties struct {
 	// Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql pool's original
 	// resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be
 	// specified.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Maximum size in bytes
-	MaxSizeBytes *int64 `json:"maxSizeBytes,omitempty"`
+	MaxSizeBytes *int64
 
 	// Resource state
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Backup database to restore from
-	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
+	RecoverableDatabaseID *string
 
 	// Snapshot time to restore
-	RestorePointInTime *time.Time `json:"restorePointInTime,omitempty"`
+	RestorePointInTime *time.Time
 
 	// Specifies the time that the sql pool was deleted
-	SourceDatabaseDeletionDate *time.Time `json:"sourceDatabaseDeletionDate,omitempty"`
+	SourceDatabaseDeletionDate *time.Time
 
 	// Source database to create from
-	SourceDatabaseID *string `json:"sourceDatabaseId,omitempty"`
+	SourceDatabaseID *string
 
 	// The storage account type used to store backups for this sql pool.
-	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
+	StorageAccountType *StorageAccountType
 
 	// READ-ONLY; Date the SQL pool was created
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; Resource status
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // SQLPoolRestorePointsClientBeginCreateOptions contains the optional parameters for the SQLPoolRestorePointsClient.BeginCreate
@@ -4559,22 +4559,22 @@ type SQLPoolRestorePointsClientListOptions struct {
 // SQLPoolSchema - A Sql pool schema resource.
 type SQLPoolSchema struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolSchemaListResult - A list of Sql pool schemas.
 type SQLPoolSchemaListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolSchema `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolSchema
 }
 
 // SQLPoolSchemasClientGetOptions contains the optional parameters for the SQLPoolSchemasClient.Get method.
@@ -4609,16 +4609,16 @@ type SQLPoolSecurityAlertPoliciesClientListOptions struct {
 // SQLPoolSecurityAlertPolicy - A Sql pool security alert policy.
 type SQLPoolSecurityAlertPolicy struct {
 	// Resource properties.
-	Properties *SecurityAlertPolicyProperties `json:"properties,omitempty"`
+	Properties *SecurityAlertPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolSensitivityLabelsClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.CreateOrUpdate
@@ -4677,13 +4677,13 @@ type SQLPoolSensitivityLabelsClientUpdateOptions struct {
 // SQLPoolTable - A Sql pool table resource.
 type SQLPoolTable struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolTableColumnsClientListByTableNameOptions contains the optional parameters for the SQLPoolTableColumnsClient.NewListByTableNamePager
@@ -4696,10 +4696,10 @@ type SQLPoolTableColumnsClientListByTableNameOptions struct {
 // SQLPoolTableListResult - A list of Sql pool tables.
 type SQLPoolTableListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolTable `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolTable
 }
 
 // SQLPoolTablesClientGetOptions contains the optional parameters for the SQLPoolTablesClient.Get method.
@@ -4735,34 +4735,34 @@ type SQLPoolTransparentDataEncryptionsClientListOptions struct {
 // SQLPoolUsage - The Sql pool usages.
 type SQLPoolUsage struct {
 	// READ-ONLY; The current value of the usage metric.
-	CurrentValue *float64 `json:"currentValue,omitempty" azure:"ro"`
+	CurrentValue *float64
 
 	// READ-ONLY; The usage metric display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The current limit of the usage metric.
-	Limit *float64 `json:"limit,omitempty" azure:"ro"`
+	Limit *float64
 
 	// READ-ONLY; The name of the usage metric.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The next reset time for the usage metric (ISO8601 format).
-	NextResetTime *time.Time `json:"nextResetTime,omitempty" azure:"ro"`
+	NextResetTime *time.Time
 
 	// READ-ONLY; The name of the resource.
-	ResourceName *string `json:"resourceName,omitempty" azure:"ro"`
+	ResourceName *string
 
 	// READ-ONLY; The units of the usage metric.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // SQLPoolUsageListResult - The response to a list Sql pool usages request.
 type SQLPoolUsageListResult struct {
 	// REQUIRED; The list of usages for the Sql pool.
-	Value []*SQLPoolUsage `json:"value,omitempty"`
+	Value []*SQLPoolUsage
 
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SQLPoolUsagesClientListOptions contains the optional parameters for the SQLPoolUsagesClient.NewListPager method.
@@ -4773,71 +4773,71 @@ type SQLPoolUsagesClientListOptions struct {
 // SQLPoolVulnerabilityAssessment - A Sql pool vulnerability assessment.
 type SQLPoolVulnerabilityAssessment struct {
 	// Resource properties.
-	Properties *SQLPoolVulnerabilityAssessmentProperties `json:"properties,omitempty"`
+	Properties *SQLPoolVulnerabilityAssessmentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolVulnerabilityAssessmentListResult - A list of the Sql pool's vulnerability assessments.
 type SQLPoolVulnerabilityAssessmentListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SQLPoolVulnerabilityAssessment `json:"value,omitempty" azure:"ro"`
+	Value []*SQLPoolVulnerabilityAssessment
 }
 
 // SQLPoolVulnerabilityAssessmentProperties - Properties of a Sql pool Vulnerability Assessment.
 type SQLPoolVulnerabilityAssessmentProperties struct {
 	// The recurring scans settings
-	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
+	RecurringScans *VulnerabilityAssessmentRecurringScansProperties
 
 	// Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey'
 	// isn't specified, storageAccountAccessKey is required.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/). It is required
 	// if server level vulnerability assessment policy doesn't set
-	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
+	StorageContainerPath *string
 
 	// A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter.
 	// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
 	// required.
-	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
+	StorageContainerSasKey *string
 }
 
 // SQLPoolVulnerabilityAssessmentRuleBaseline - A Sql pool vulnerability assessment rule baseline.
 type SQLPoolVulnerabilityAssessmentRuleBaseline struct {
 	// Resource properties.
-	Properties *SQLPoolVulnerabilityAssessmentRuleBaselineProperties `json:"properties,omitempty"`
+	Properties *SQLPoolVulnerabilityAssessmentRuleBaselineProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolVulnerabilityAssessmentRuleBaselineItem - Properties for an Sql pool vulnerability assessment rule baseline's result.
 type SQLPoolVulnerabilityAssessmentRuleBaselineItem struct {
 	// REQUIRED; The rule baseline result
-	Result []*string `json:"result,omitempty"`
+	Result []*string
 }
 
 // SQLPoolVulnerabilityAssessmentRuleBaselineProperties - Properties of a Sql pool vulnerability assessment rule baseline.
 type SQLPoolVulnerabilityAssessmentRuleBaselineProperties struct {
 	// REQUIRED; The rule baseline result
-	BaselineResults []*SQLPoolVulnerabilityAssessmentRuleBaselineItem `json:"baselineResults,omitempty"`
+	BaselineResults []*SQLPoolVulnerabilityAssessmentRuleBaselineItem
 }
 
 // SQLPoolVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolVulnerabilityAssessmentRuleBaselinesClient.CreateOrUpdate
@@ -4861,7 +4861,7 @@ type SQLPoolVulnerabilityAssessmentRuleBaselinesClientGetOptions struct {
 // SQLPoolVulnerabilityAssessmentScanExportProperties - Properties of the export operation's result.
 type SQLPoolVulnerabilityAssessmentScanExportProperties struct {
 	// READ-ONLY; Location of the exported report (e.g. https://myStorage.blob.core.windows.net/VaScans/scans/serverName/databaseName/scan_scanId.xlsx).
-	ExportedReportLocation *string `json:"exportedReportLocation,omitempty" azure:"ro"`
+	ExportedReportLocation *string
 }
 
 // SQLPoolVulnerabilityAssessmentScansClientBeginInitiateScanOptions contains the optional parameters for the SQLPoolVulnerabilityAssessmentScansClient.BeginInitiateScan
@@ -4892,16 +4892,16 @@ type SQLPoolVulnerabilityAssessmentScansClientListOptions struct {
 // SQLPoolVulnerabilityAssessmentScansExport - A Sql pool Vulnerability Assessment scan export resource.
 type SQLPoolVulnerabilityAssessmentScansExport struct {
 	// Resource properties.
-	Properties *SQLPoolVulnerabilityAssessmentScanExportProperties `json:"properties,omitempty"`
+	Properties *SQLPoolVulnerabilityAssessmentScanExportProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SQLPoolVulnerabilityAssessmentsClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolVulnerabilityAssessmentsClient.CreateOrUpdate
@@ -5036,7 +5036,7 @@ type SecretBaseClassification interface {
 // SecretBase - The base definition of a secret type.
 type SecretBase struct {
 	// REQUIRED; Type of the secret.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetSecretBase implements the SecretBaseClassification interface for type SecretBase.
@@ -5046,10 +5046,10 @@ func (s *SecretBase) GetSecretBase() *SecretBase { return s }
 // List API calls.
 type SecureString struct {
 	// REQUIRED; Type of the secret.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; Value of secure string.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // GetSecretBase implements the SecretBaseClassification interface for type SecureString.
@@ -5063,46 +5063,46 @@ func (s *SecureString) GetSecretBase() *SecretBase {
 type SecurityAlertPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on
 	// the specific Sql pool.
-	State *SecurityAlertPolicyState `json:"state,omitempty"`
+	State *SecurityAlertPolicyState
 
 	// Specifies an array of alerts that are disabled. Allowed values are: SqlInjection, SqlInjectionVulnerability, AccessAnomaly,
 	// DataExfiltration, UnsafeAction
-	DisabledAlerts []*string `json:"disabledAlerts,omitempty"`
+	DisabledAlerts []*string
 
 	// Specifies that the alert is sent to the account administrators.
-	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
+	EmailAccountAdmins *bool
 
 	// Specifies an array of e-mail addresses to which the alert is sent.
-	EmailAddresses []*string `json:"emailAddresses,omitempty"`
+	EmailAddresses []*string
 
 	// Specifies the number of days to keep in the Threat Detection audit logs.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the Threat Detection audit storage account.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat
 	// Detection audit logs.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 
 	// READ-ONLY; Specifies the UTC creation time of the policy.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 }
 
 // SelfHostedIntegrationRuntime - Self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// Integration runtime description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// When this property is not null, means this is a linked integration runtime. The property is used to access original integration
 	// runtime.
-	TypeProperties *SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *SelfHostedIntegrationRuntimeTypeProperties
 }
 
 // GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type SelfHostedIntegrationRuntime.
@@ -5120,76 +5120,76 @@ type SelfHostedIntegrationRuntimeNode struct {
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The integration runtime capabilities dictionary
-	Capabilities map[string]*string `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities map[string]*string
 
 	// READ-ONLY; Maximum concurrent jobs on the integration runtime node.
-	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty" azure:"ro"`
+	ConcurrentJobsLimit *int32
 
 	// READ-ONLY; The time at which the integration runtime will expire in ISO8601 format.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty" azure:"ro"`
+	ExpiryTime *time.Time
 
 	// READ-ONLY; URI for the host machine of the integration runtime.
-	HostServiceURI *string `json:"hostServiceUri,omitempty" azure:"ro"`
+	HostServiceURI *string
 
 	// READ-ONLY; Indicates whether this node is the active dispatcher for integration runtime requests.
-	IsActiveDispatcher *bool `json:"isActiveDispatcher,omitempty" azure:"ro"`
+	IsActiveDispatcher *bool
 
 	// READ-ONLY; The most recent time at which the integration runtime was connected in ISO8601 format.
-	LastConnectTime *time.Time `json:"lastConnectTime,omitempty" azure:"ro"`
+	LastConnectTime *time.Time
 
 	// READ-ONLY; The last time for the integration runtime node update end.
-	LastEndUpdateTime *time.Time `json:"lastEndUpdateTime,omitempty" azure:"ro"`
+	LastEndUpdateTime *time.Time
 
 	// READ-ONLY; The time the node last started up.
-	LastStartTime *time.Time `json:"lastStartTime,omitempty" azure:"ro"`
+	LastStartTime *time.Time
 
 	// READ-ONLY; The last time for the integration runtime node update start.
-	LastStartUpdateTime *time.Time `json:"lastStartUpdateTime,omitempty" azure:"ro"`
+	LastStartUpdateTime *time.Time
 
 	// READ-ONLY; The integration runtime node last stop time.
-	LastStopTime *time.Time `json:"lastStopTime,omitempty" azure:"ro"`
+	LastStopTime *time.Time
 
 	// READ-ONLY; The result of the last integration runtime node update.
-	LastUpdateResult *IntegrationRuntimeUpdateResult `json:"lastUpdateResult,omitempty" azure:"ro"`
+	LastUpdateResult *IntegrationRuntimeUpdateResult
 
 	// READ-ONLY; Machine name of the integration runtime node.
-	MachineName *string `json:"machineName,omitempty" azure:"ro"`
+	MachineName *string
 
 	// READ-ONLY; The maximum concurrent jobs in this integration runtime.
-	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty" azure:"ro"`
+	MaxConcurrentJobs *int32
 
 	// READ-ONLY; Name of the integration runtime node.
-	NodeName *string `json:"nodeName,omitempty" azure:"ro"`
+	NodeName *string
 
 	// READ-ONLY; The time at which the integration runtime node was registered in ISO8601 format.
-	RegisterTime *time.Time `json:"registerTime,omitempty" azure:"ro"`
+	RegisterTime *time.Time
 
 	// READ-ONLY; Status of the integration runtime node.
-	Status *SelfHostedIntegrationRuntimeNodeStatus `json:"status,omitempty" azure:"ro"`
+	Status *SelfHostedIntegrationRuntimeNodeStatus
 
 	// READ-ONLY; Version of the integration runtime node.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 
 	// READ-ONLY; Status of the integration runtime node version.
-	VersionStatus *string `json:"versionStatus,omitempty" azure:"ro"`
+	VersionStatus *string
 }
 
 // SelfHostedIntegrationRuntimeStatus - Self-hosted integration runtime status.
 type SelfHostedIntegrationRuntimeStatus struct {
 	// REQUIRED; Type of integration runtime.
-	Type *IntegrationRuntimeType `json:"type,omitempty"`
+	Type *IntegrationRuntimeType
 
 	// REQUIRED; Self-hosted integration runtime status type properties.
-	TypeProperties *SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
+	TypeProperties *SelfHostedIntegrationRuntimeStatusTypeProperties
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
 
 	// READ-ONLY; The workspace name which the integration runtime belong to.
-	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
+	DataFactoryName *string
 
 	// READ-ONLY; The state of integration runtime.
-	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+	State *IntegrationRuntimeState
 }
 
 // GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type SelfHostedIntegrationRuntimeStatus.
@@ -5205,192 +5205,192 @@ func (s *SelfHostedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *Inte
 // SelfHostedIntegrationRuntimeStatusTypeProperties - Self-hosted integration runtime status type properties.
 type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	// The list of linked integration runtimes that are created to share with this integration runtime.
-	Links []*LinkedIntegrationRuntime `json:"links,omitempty"`
+	Links []*LinkedIntegrationRuntime
 
 	// The newer versions on download center.
-	NewerVersions []*string `json:"newerVersions,omitempty"`
+	NewerVersions []*string
 
 	// The list of nodes for this integration runtime.
-	Nodes []*SelfHostedIntegrationRuntimeNode `json:"nodes,omitempty"`
+	Nodes []*SelfHostedIntegrationRuntimeNode
 
 	// The service region of the integration runtime
-	ServiceRegion *string `json:"serviceRegion,omitempty"`
+	ServiceRegion *string
 
 	// READ-ONLY; Whether Self-hosted integration runtime auto update has been turned on.
-	AutoUpdate *IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty" azure:"ro"`
+	AutoUpdate *IntegrationRuntimeAutoUpdate
 
 	// READ-ONLY; The estimated time when the self-hosted integration runtime will be updated.
-	AutoUpdateETA *time.Time `json:"autoUpdateETA,omitempty" azure:"ro"`
+	AutoUpdateETA *time.Time
 
 	// READ-ONLY; Object with additional information about integration runtime capabilities.
-	Capabilities map[string]*string `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities map[string]*string
 
 	// READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
-	CreateTime *time.Time `json:"createTime,omitempty" azure:"ro"`
+	CreateTime *time.Time
 
 	// READ-ONLY; It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration
 	// runtime nodes exist).
-	InternalChannelEncryption *IntegrationRuntimeInternalChannelEncryptionMode `json:"internalChannelEncryption,omitempty" azure:"ro"`
+	InternalChannelEncryption *IntegrationRuntimeInternalChannelEncryptionMode
 
 	// READ-ONLY; The latest version on download center.
-	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+	LatestVersion *string
 
 	// READ-ONLY; The local time zone offset in hours.
-	LocalTimeZoneOffset *string `json:"localTimeZoneOffset,omitempty" azure:"ro"`
+	LocalTimeZoneOffset *string
 
 	// READ-ONLY; The node communication Channel encryption mode
-	NodeCommunicationChannelEncryptionMode *string `json:"nodeCommunicationChannelEncryptionMode,omitempty" azure:"ro"`
+	NodeCommunicationChannelEncryptionMode *string
 
 	// READ-ONLY; The version that the integration runtime is going to update to.
-	PushedVersion *string `json:"pushedVersion,omitempty" azure:"ro"`
+	PushedVersion *string
 
 	// READ-ONLY; The date at which the integration runtime will be scheduled to update, in ISO8601 format.
-	ScheduledUpdateDate *time.Time `json:"scheduledUpdateDate,omitempty" azure:"ro"`
+	ScheduledUpdateDate *time.Time
 
 	// READ-ONLY; The URLs for the services used in integration runtime backend service.
-	ServiceUrls []*string `json:"serviceUrls,omitempty" azure:"ro"`
+	ServiceUrls []*string
 
 	// READ-ONLY; The task queue id of the integration runtime.
-	TaskQueueID *string `json:"taskQueueId,omitempty" azure:"ro"`
+	TaskQueueID *string
 
 	// READ-ONLY; The time in the date scheduled by service to update the integration runtime, e.g., PT03H is 3 hours
-	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty" azure:"ro"`
+	UpdateDelayOffset *string
 
 	// READ-ONLY; Version of the integration runtime.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 
 	// READ-ONLY; Status of the integration runtime version.
-	VersionStatus *string `json:"versionStatus,omitempty" azure:"ro"`
+	VersionStatus *string
 }
 
 // SelfHostedIntegrationRuntimeTypeProperties - The self-hosted integration runtime properties.
 type SelfHostedIntegrationRuntimeTypeProperties struct {
 	// Linked integration runtime type from data factory
-	LinkedInfo LinkedIntegrationRuntimeTypeClassification `json:"linkedInfo,omitempty"`
+	LinkedInfo LinkedIntegrationRuntimeTypeClassification
 }
 
 // SensitivityLabel - A sensitivity label.
 type SensitivityLabel struct {
 	// Resource properties.
-	Properties *SensitivityLabelProperties `json:"properties,omitempty"`
+	Properties *SensitivityLabelProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; managed by
-	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
+	ManagedBy *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SensitivityLabelListResult - A list of sensitivity labels.
 type SensitivityLabelListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*SensitivityLabel `json:"value,omitempty" azure:"ro"`
+	Value []*SensitivityLabel
 }
 
 // SensitivityLabelProperties - Properties of a sensitivity label.
 type SensitivityLabelProperties struct {
 	// The information type.
-	InformationType *string `json:"informationType,omitempty"`
+	InformationType *string
 
 	// The information type ID.
-	InformationTypeID *string `json:"informationTypeId,omitempty"`
+	InformationTypeID *string
 
 	// The label ID.
-	LabelID *string `json:"labelId,omitempty"`
+	LabelID *string
 
 	// The label name.
-	LabelName *string               `json:"labelName,omitempty"`
-	Rank      *SensitivityLabelRank `json:"rank,omitempty"`
+	LabelName *string
+	Rank      *SensitivityLabelRank
 
 	// READ-ONLY; The column name.
-	ColumnName *string `json:"columnName,omitempty" azure:"ro"`
+	ColumnName *string
 
 	// READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether
 	// the sensitivity recommendation on this column is disabled (dismissed) or not.
-	IsDisabled *bool `json:"isDisabled,omitempty" azure:"ro"`
+	IsDisabled *bool
 
 	// READ-ONLY; The schema name.
-	SchemaName *string `json:"schemaName,omitempty" azure:"ro"`
+	SchemaName *string
 
 	// READ-ONLY; The table name.
-	TableName *string `json:"tableName,omitempty" azure:"ro"`
+	TableName *string
 }
 
 // SensitivityLabelUpdate - A sensitivity label update operation.
 type SensitivityLabelUpdate struct {
 	// Resource properties.
-	Properties *SensitivityLabelUpdateProperties `json:"properties,omitempty"`
+	Properties *SensitivityLabelUpdateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SensitivityLabelUpdateList - A list of sensitivity label update operations.
 type SensitivityLabelUpdateList struct {
-	Operations []*SensitivityLabelUpdate `json:"operations,omitempty"`
+	Operations []*SensitivityLabelUpdate
 }
 
 // SensitivityLabelUpdateProperties - Properties of an operation executed on a sensitivity label.
 type SensitivityLabelUpdateProperties struct {
 	// REQUIRED; Column name to update.
-	Column *string `json:"column,omitempty"`
+	Column *string
 
 	// REQUIRED
-	Op *SensitivityLabelUpdateKind `json:"op,omitempty"`
+	Op *SensitivityLabelUpdateKind
 
 	// REQUIRED; Schema name of the column to update.
-	Schema *string `json:"schema,omitempty"`
+	Schema *string
 
 	// REQUIRED; Table name of the column to update.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The sensitivity label information to apply on a column.
-	SensitivityLabel *SensitivityLabel `json:"sensitivityLabel,omitempty"`
+	SensitivityLabel *SensitivityLabel
 }
 
 // ServerBlobAuditingPolicy - A server blob auditing policy.
 type ServerBlobAuditingPolicy struct {
 	// Resource properties.
-	Properties *ServerBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	Properties *ServerBlobAuditingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerBlobAuditingPolicyListResult - A list of server auditing settings.
 type ServerBlobAuditingPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ServerBlobAuditingPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*ServerBlobAuditingPolicy
 }
 
 // ServerBlobAuditingPolicyProperties - Properties of a server blob auditing policy.
 type ServerBlobAuditingPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
-	State *BlobAuditingPolicyState `json:"state,omitempty"`
+	State *BlobAuditingPolicyState
 
 	// Specifies the Actions-Groups and Actions to audit.
 	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures
@@ -5419,7 +5419,7 @@ type ServerBlobAuditingPolicyProperties struct {
 	// For example: SELECT on dbo.myTable by public SELECT on DATABASE::myDatabase by public SELECT on SCHEMA::mySchema by public
 	// For more information, see Database-Level Audit Actions
 	// [https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions]
-	AuditActionsAndGroups []*string `json:"auditActionsAndGroups,omitempty"`
+	AuditActionsAndGroups []*string
 
 	// Specifies whether audit events are sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'state'
 	// as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
@@ -5430,7 +5430,7 @@ type ServerBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+	IsAzureMonitorTargetEnabled *bool
 
 	// Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor. In order to send the
 	// events to Azure Monitor, specify 'State' as 'Enabled',
@@ -5441,17 +5441,17 @@ type ServerBlobAuditingPolicyProperties struct {
 	// https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
-	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
+	IsDevopsAuditEnabled *bool
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
-	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	IsStorageSecondaryKeyInUse *bool
 
 	// Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed. The default
 	// minimum value is 1000 (1 second). The maximum is 2,147,483,647.
-	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
+	QueueDelayMs *int32
 
 	// Specifies the number of days to keep in the audit logs in the storage account.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
 	// specifying the storageAccountAccessKey will use SQL server system-assigned
@@ -5460,158 +5460,158 @@ type ServerBlobAuditingPolicyProperties struct {
 	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
 	// identity. For more information, see Auditing to storage using Managed
 	// Identity authentication [https://go.microsoft.com/fwlink/?linkid=2114355]
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage subscription Id.
-	StorageAccountSubscriptionID *string `json:"storageAccountSubscriptionId,omitempty"`
+	StorageAccountSubscriptionID *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint
 	// or isAzureMonitorTargetEnabled is required.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 }
 
 // ServerSecurityAlertPolicy - Workspace managed Sql server security alert policy.
 type ServerSecurityAlertPolicy struct {
 	// Resource properties.
-	Properties *ServerSecurityAlertPolicyProperties `json:"properties,omitempty"`
+	Properties *ServerSecurityAlertPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerSecurityAlertPolicyListResult - A list of the workspace managed sql server's security alert policies.
 type ServerSecurityAlertPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ServerSecurityAlertPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*ServerSecurityAlertPolicy
 }
 
 // ServerSecurityAlertPolicyProperties - Properties of a security alert policy.
 type ServerSecurityAlertPolicyProperties struct {
 	// REQUIRED; Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on
 	// the specific server
-	State *SecurityAlertPolicyState `json:"state,omitempty"`
+	State *SecurityAlertPolicyState
 
 	// Specifies an array of alerts that are disabled. Allowed values are: SqlInjection, SqlInjectionVulnerability, AccessAnomaly,
 	// DataExfiltration, UnsafeAction
-	DisabledAlerts []*string `json:"disabledAlerts,omitempty"`
+	DisabledAlerts []*string
 
 	// Specifies that the alert is sent to the account administrators.
-	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
+	EmailAccountAdmins *bool
 
 	// Specifies an array of e-mail addresses to which the alert is sent.
-	EmailAddresses []*string `json:"emailAddresses,omitempty"`
+	EmailAddresses []*string
 
 	// Specifies the number of days to keep in the Threat Detection audit logs.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	RetentionDays *int32
 
 	// Specifies the identifier key of the Threat Detection audit storage account.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat
 	// Detection audit logs.
-	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	StorageEndpoint *string
 
 	// READ-ONLY; Specifies the UTC creation time of the policy.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 }
 
 // ServerUsage - Represents server metrics.
 type ServerUsage struct {
 	// READ-ONLY; The current value of the metric.
-	CurrentValue *float64 `json:"currentValue,omitempty" azure:"ro"`
+	CurrentValue *float64
 
 	// READ-ONLY; The metric display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The current limit of the metric.
-	Limit *float64 `json:"limit,omitempty" azure:"ro"`
+	Limit *float64
 
 	// READ-ONLY; Name of the server usage metric.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The next reset time for the metric (ISO8601 format).
-	NextResetTime *time.Time `json:"nextResetTime,omitempty" azure:"ro"`
+	NextResetTime *time.Time
 
 	// READ-ONLY; The name of the resource.
-	ResourceName *string `json:"resourceName,omitempty" azure:"ro"`
+	ResourceName *string
 
 	// READ-ONLY; The units of the metric.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // ServerUsageListResult - Represents the response to a list server metrics request.
 type ServerUsageListResult struct {
 	// REQUIRED; The list of server metrics for the server.
-	Value []*ServerUsage `json:"value,omitempty"`
+	Value []*ServerUsage
 
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ServerVulnerabilityAssessment - A server vulnerability assessment.
 type ServerVulnerabilityAssessment struct {
 	// Resource properties.
-	Properties *ServerVulnerabilityAssessmentProperties `json:"properties,omitempty"`
+	Properties *ServerVulnerabilityAssessmentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerVulnerabilityAssessmentListResult - A list of the server's vulnerability assessments.
 type ServerVulnerabilityAssessmentListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ServerVulnerabilityAssessment `json:"value,omitempty" azure:"ro"`
+	Value []*ServerVulnerabilityAssessment
 }
 
 // ServerVulnerabilityAssessmentProperties - Properties of a server Vulnerability Assessment.
 type ServerVulnerabilityAssessmentProperties struct {
 	// REQUIRED; A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
-	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
+	StorageContainerPath *string
 
 	// The recurring scans settings
-	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
+	RecurringScans *VulnerabilityAssessmentRecurringScansProperties
 
 	// Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey'
 	// isn't specified, storageAccountAccessKey is required.
-	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	StorageAccountAccessKey *string
 
 	// A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath'
 	// parameter. If 'storageAccountAccessKey' isn't specified,
 	// StorageContainerSasKey is required.
-	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
+	StorageContainerSasKey *string
 }
 
 // SparkConfigProperties - SparkConfig Properties for a Big Data pool powered by Apache Spark
 type SparkConfigProperties struct {
 	// The type of the spark config properties file.
-	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
+	ConfigurationType *ConfigurationType
 
 	// The spark config properties.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The filename of the spark config properties file.
-	Filename *string `json:"filename,omitempty"`
+	Filename *string
 
 	// READ-ONLY; The last update time of the spark config properties file.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // SparkConfigurationClientGetOptions contains the optional parameters for the SparkConfigurationClient.Get method.
@@ -5622,52 +5622,52 @@ type SparkConfigurationClientGetOptions struct {
 // SparkConfigurationInfo - SparkConfiguration Artifact information
 type SparkConfigurationInfo struct {
 	// REQUIRED; SparkConfiguration configs.
-	Configs map[string]*string `json:"configs,omitempty"`
+	Configs map[string]*string
 
 	// Annotations for SparkConfiguration.
-	Annotations []*string `json:"annotations,omitempty"`
+	Annotations []*string
 
 	// SparkConfiguration merge configs.
-	ConfigMergeRule map[string]*string `json:"configMergeRule,omitempty"`
+	ConfigMergeRule map[string]*string
 
 	// The timestamp of resource creation.
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// Description about the SparkConfiguration.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// additional Notes.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 }
 
 // SparkConfigurationListResponse - A list of SparkConfiguration resources.
 type SparkConfigurationListResponse struct {
 	// REQUIRED; List of SparkConfiguration.
-	Value []*SparkConfigurationResource `json:"value,omitempty"`
+	Value []*SparkConfigurationResource
 
 	// The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // SparkConfigurationResource - SparkConfiguration response details
 type SparkConfigurationResource struct {
 	// REQUIRED; SparkConfiguration properties.
-	Properties *SparkConfigurationInfo `json:"properties,omitempty"`
+	Properties *SparkConfigurationInfo
 
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SparkConfigurationsClientListByWorkspaceOptions contains the optional parameters for the SparkConfigurationsClient.NewListByWorkspacePager
@@ -5679,22 +5679,22 @@ type SparkConfigurationsClientListByWorkspaceOptions struct {
 // SsisEnvironment - Ssis environment.
 type SsisEnvironment struct {
 	// REQUIRED; Type of metadata.
-	Type *SsisObjectMetadataType `json:"type,omitempty"`
+	Type *SsisObjectMetadataType
 
 	// Metadata description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Folder id which contains environment.
-	FolderID *int64 `json:"folderId,omitempty"`
+	FolderID *int64
 
 	// Metadata id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Metadata name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Variable in environment
-	Variables []*SsisVariable `json:"variables,omitempty"`
+	Variables []*SsisVariable
 }
 
 // GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisEnvironment.
@@ -5710,31 +5710,31 @@ func (s *SsisEnvironment) GetSsisObjectMetadata() *SsisObjectMetadata {
 // SsisEnvironmentReference - Ssis environment reference.
 type SsisEnvironmentReference struct {
 	// Environment folder name.
-	EnvironmentFolderName *string `json:"environmentFolderName,omitempty"`
+	EnvironmentFolderName *string
 
 	// Environment name.
-	EnvironmentName *string `json:"environmentName,omitempty"`
+	EnvironmentName *string
 
 	// Environment reference id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Reference type
-	ReferenceType *string `json:"referenceType,omitempty"`
+	ReferenceType *string
 }
 
 // SsisFolder - Ssis folder.
 type SsisFolder struct {
 	// REQUIRED; Type of metadata.
-	Type *SsisObjectMetadataType `json:"type,omitempty"`
+	Type *SsisObjectMetadataType
 
 	// Metadata description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Metadata id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Metadata name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisFolder.
@@ -5759,16 +5759,16 @@ type SsisObjectMetadataClassification interface {
 // SsisObjectMetadata - SSIS object metadata.
 type SsisObjectMetadata struct {
 	// REQUIRED; Type of metadata.
-	Type *SsisObjectMetadataType `json:"type,omitempty"`
+	Type *SsisObjectMetadataType
 
 	// Metadata description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Metadata id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Metadata name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisObjectMetadata.
@@ -5777,52 +5777,52 @@ func (s *SsisObjectMetadata) GetSsisObjectMetadata() *SsisObjectMetadata { retur
 // SsisObjectMetadataListResponse - A list of SSIS object metadata.
 type SsisObjectMetadataListResponse struct {
 	// The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of SSIS object metadata.
-	Value []SsisObjectMetadataClassification `json:"value,omitempty"`
+	Value []SsisObjectMetadataClassification
 }
 
 // SsisObjectMetadataStatusResponse - The status of the operation.
 type SsisObjectMetadataStatusResponse struct {
 	// The operation error message.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation properties.
-	Properties *string `json:"properties,omitempty"`
+	Properties *string
 
 	// The status of the operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // SsisPackage - Ssis Package.
 type SsisPackage struct {
 	// REQUIRED; Type of metadata.
-	Type *SsisObjectMetadataType `json:"type,omitempty"`
+	Type *SsisObjectMetadataType
 
 	// Metadata description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Folder id which contains package.
-	FolderID *int64 `json:"folderId,omitempty"`
+	FolderID *int64
 
 	// Metadata id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Metadata name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Parameters in package
-	Parameters []*SsisParameter `json:"parameters,omitempty"`
+	Parameters []*SsisParameter
 
 	// Project id which contains package.
-	ProjectID *int64 `json:"projectId,omitempty"`
+	ProjectID *int64
 
 	// Project version which contains package.
-	ProjectVersion *int64 `json:"projectVersion,omitempty"`
+	ProjectVersion *int64
 }
 
 // GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisPackage.
@@ -5838,67 +5838,67 @@ func (s *SsisPackage) GetSsisObjectMetadata() *SsisObjectMetadata {
 // SsisParameter - Ssis parameter.
 type SsisParameter struct {
 	// Parameter type.
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 
 	// Default value of parameter.
-	DefaultValue *string `json:"defaultValue,omitempty"`
+	DefaultValue *string
 
 	// Parameter description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Design default value of parameter.
-	DesignDefaultValue *string `json:"designDefaultValue,omitempty"`
+	DesignDefaultValue *string
 
 	// Parameter id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Parameter name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Whether parameter is required.
-	Required *bool `json:"required,omitempty"`
+	Required *bool
 
 	// Whether parameter is sensitive.
-	Sensitive *bool `json:"sensitive,omitempty"`
+	Sensitive *bool
 
 	// Default sensitive value of parameter.
-	SensitiveDefaultValue *string `json:"sensitiveDefaultValue,omitempty"`
+	SensitiveDefaultValue *string
 
 	// Parameter value set.
-	ValueSet *bool `json:"valueSet,omitempty"`
+	ValueSet *bool
 
 	// Parameter value type.
-	ValueType *string `json:"valueType,omitempty"`
+	ValueType *string
 
 	// Parameter reference variable.
-	Variable *string `json:"variable,omitempty"`
+	Variable *string
 }
 
 // SsisProject - Ssis project.
 type SsisProject struct {
 	// REQUIRED; Type of metadata.
-	Type *SsisObjectMetadataType `json:"type,omitempty"`
+	Type *SsisObjectMetadataType
 
 	// Metadata description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Environment reference in project
-	EnvironmentRefs []*SsisEnvironmentReference `json:"environmentRefs,omitempty"`
+	EnvironmentRefs []*SsisEnvironmentReference
 
 	// Folder id which contains project.
-	FolderID *int64 `json:"folderId,omitempty"`
+	FolderID *int64
 
 	// Metadata id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Metadata name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Parameters in project
-	Parameters []*SsisParameter `json:"parameters,omitempty"`
+	Parameters []*SsisParameter
 
 	// Project version.
-	Version *int64 `json:"version,omitempty"`
+	Version *int64
 }
 
 // GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisProject.
@@ -5914,402 +5914,402 @@ func (s *SsisProject) GetSsisObjectMetadata() *SsisObjectMetadata {
 // SsisVariable - Ssis variable.
 type SsisVariable struct {
 	// Variable type.
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 
 	// Variable description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Variable id.
-	ID *int64 `json:"id,omitempty"`
+	ID *int64
 
 	// Variable name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Whether variable is sensitive.
-	Sensitive *bool `json:"sensitive,omitempty"`
+	Sensitive *bool
 
 	// Variable sensitive value.
-	SensitiveValue *string `json:"sensitiveValue,omitempty"`
+	SensitiveValue *string
 
 	// Variable value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SubResource - Azure Synapse nested resource, which belongs to a workspace.
 type SubResource struct {
 	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TableLevelSharingProperties - Tables that will be included and excluded in the follower database
 type TableLevelSharingProperties struct {
 	// List of external tables exclude from the follower database
-	ExternalTablesToExclude []*string `json:"externalTablesToExclude,omitempty"`
+	ExternalTablesToExclude []*string
 
 	// List of external tables to include in the follower database
-	ExternalTablesToInclude []*string `json:"externalTablesToInclude,omitempty"`
+	ExternalTablesToInclude []*string
 
 	// List of materialized views exclude from the follower database
-	MaterializedViewsToExclude []*string `json:"materializedViewsToExclude,omitempty"`
+	MaterializedViewsToExclude []*string
 
 	// List of materialized views to include in the follower database
-	MaterializedViewsToInclude []*string `json:"materializedViewsToInclude,omitempty"`
+	MaterializedViewsToInclude []*string
 
 	// List of tables to exclude from the follower database
-	TablesToExclude []*string `json:"tablesToExclude,omitempty"`
+	TablesToExclude []*string
 
 	// List of tables to include in the follower database
-	TablesToInclude []*string `json:"tablesToInclude,omitempty"`
+	TablesToInclude []*string
 }
 
 // TopQueries - A database query.
 type TopQueries struct {
 	// READ-ONLY; The function that is used to aggregate each query's metrics.
-	AggregationFunction *QueryAggregationFunction `json:"aggregationFunction,omitempty" azure:"ro"`
+	AggregationFunction *QueryAggregationFunction
 
 	// READ-ONLY; The execution type that is used to filter the query instances that are returned.
-	ExecutionType *QueryExecutionType `json:"executionType,omitempty" azure:"ro"`
+	ExecutionType *QueryExecutionType
 
 	// READ-ONLY; The duration of the interval (ISO8601 duration format).
-	IntervalType *string `json:"intervalType,omitempty" azure:"ro"`
+	IntervalType *string
 
 	// READ-ONLY; The number of requested queries.
-	NumberOfTopQueries *int32 `json:"numberOfTopQueries,omitempty" azure:"ro"`
+	NumberOfTopQueries *int32
 
 	// READ-ONLY; The end time for queries that are returned (ISO8601 format)
-	ObservationEndTime *time.Time `json:"observationEndTime,omitempty" azure:"ro"`
+	ObservationEndTime *time.Time
 
 	// READ-ONLY; The start time for queries that are returned (ISO8601 format)
-	ObservationStartTime *time.Time `json:"observationStartTime,omitempty" azure:"ro"`
+	ObservationStartTime *time.Time
 
 	// READ-ONLY; The type of metric to use for ordering the top metrics.
-	ObservedMetric *QueryObservedMetricType `json:"observedMetric,omitempty" azure:"ro"`
+	ObservedMetric *QueryObservedMetricType
 
 	// READ-ONLY; The list of queries.
-	Queries []*QueryStatistic `json:"queries,omitempty" azure:"ro"`
+	Queries []*QueryStatistic
 }
 
 // TopQueriesListResult - Represents the response to a get top queries request.
 type TopQueriesListResult struct {
 	// REQUIRED; The list of top queries.
-	Value []*TopQueries `json:"value,omitempty"`
+	Value []*TopQueries
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TransparentDataEncryption - Represents a Sql pool transparent data encryption configuration.
 type TransparentDataEncryption struct {
 	// Represents the properties of the resource.
-	Properties *TransparentDataEncryptionProperties `json:"properties,omitempty"`
+	Properties *TransparentDataEncryptionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TransparentDataEncryptionListResult - A list of transparent data encryption configurations.
 type TransparentDataEncryptionListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*TransparentDataEncryption `json:"value,omitempty" azure:"ro"`
+	Value []*TransparentDataEncryption
 }
 
 // TransparentDataEncryptionProperties - Represents the properties of a database transparent data encryption.
 type TransparentDataEncryptionProperties struct {
 	// The status of the database transparent data encryption.
-	Status *TransparentDataEncryptionStatus `json:"status,omitempty"`
+	Status *TransparentDataEncryptionStatus
 }
 
 // UpdateIntegrationRuntimeNodeRequest - Update integration runtime node request.
 type UpdateIntegrationRuntimeNodeRequest struct {
 	// The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive)
 	// are allowed.
-	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
+	ConcurrentJobsLimit *int32
 }
 
 // UpdateIntegrationRuntimeRequest - Update integration runtime request.
 type UpdateIntegrationRuntimeRequest struct {
 	// Enables or disables the auto-update feature of the self-hosted integration runtime. See https://go.microsoft.com/fwlink/?linkid=854189.
-	AutoUpdate *IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
+	AutoUpdate *IntegrationRuntimeAutoUpdate
 
 	// The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen on that
 	// time.
-	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty"`
+	UpdateDelayOffset *string
 }
 
 // UserAssignedManagedIdentity - User Assigned Managed Identity
 type UserAssignedManagedIdentity struct {
 	// READ-ONLY; The client ID.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // VirtualNetworkProfile - Virtual Network Profile
 type VirtualNetworkProfile struct {
 	// Subnet ID used for computes in workspace
-	ComputeSubnetID *string `json:"computeSubnetId,omitempty"`
+	ComputeSubnetID *string
 }
 
 // VulnerabilityAssessmentRecurringScansProperties - Properties of a Vulnerability Assessment recurring scans.
 type VulnerabilityAssessmentRecurringScansProperties struct {
 	// Specifies that the schedule scan notification will be is sent to the subscription administrators.
-	EmailSubscriptionAdmins *bool `json:"emailSubscriptionAdmins,omitempty"`
+	EmailSubscriptionAdmins *bool
 
 	// Specifies an array of e-mail addresses to which the scan notification is sent.
-	Emails []*string `json:"emails,omitempty"`
+	Emails []*string
 
 	// Recurring scans state.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 }
 
 // VulnerabilityAssessmentScanError - Properties of a vulnerability assessment scan error.
 type VulnerabilityAssessmentScanError struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // VulnerabilityAssessmentScanRecord - A vulnerability assessment scan record.
 type VulnerabilityAssessmentScanRecord struct {
 	// Resource properties.
-	Properties *VulnerabilityAssessmentScanRecordProperties `json:"properties,omitempty"`
+	Properties *VulnerabilityAssessmentScanRecordProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VulnerabilityAssessmentScanRecordListResult - A list of vulnerability assessment scan records.
 type VulnerabilityAssessmentScanRecordListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*VulnerabilityAssessmentScanRecord `json:"value,omitempty" azure:"ro"`
+	Value []*VulnerabilityAssessmentScanRecord
 }
 
 // VulnerabilityAssessmentScanRecordProperties - Properties of a vulnerability assessment scan record.
 type VulnerabilityAssessmentScanRecordProperties struct {
 	// READ-ONLY; The scan end time (UTC).
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; The scan errors.
-	Errors []*VulnerabilityAssessmentScanError `json:"errors,omitempty" azure:"ro"`
+	Errors []*VulnerabilityAssessmentScanError
 
 	// READ-ONLY; The number of failed security checks.
-	NumberOfFailedSecurityChecks *int32 `json:"numberOfFailedSecurityChecks,omitempty" azure:"ro"`
+	NumberOfFailedSecurityChecks *int32
 
 	// READ-ONLY; The scan ID.
-	ScanID *string `json:"scanId,omitempty" azure:"ro"`
+	ScanID *string
 
 	// READ-ONLY; The scan start time (UTC).
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The scan status.
-	State *VulnerabilityAssessmentScanState `json:"state,omitempty" azure:"ro"`
+	State *VulnerabilityAssessmentScanState
 
 	// READ-ONLY; The scan results storage container path.
-	StorageContainerPath *string `json:"storageContainerPath,omitempty" azure:"ro"`
+	StorageContainerPath *string
 
 	// READ-ONLY; The scan trigger type.
-	TriggerType *VulnerabilityAssessmentScanTriggerType `json:"triggerType,omitempty" azure:"ro"`
+	TriggerType *VulnerabilityAssessmentScanTriggerType
 }
 
 // WorkloadClassifier - Workload classifier operations for a data warehouse
 type WorkloadClassifier struct {
 	// Resource properties.
-	Properties *WorkloadClassifierProperties `json:"properties,omitempty"`
+	Properties *WorkloadClassifierProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadClassifierListResult - A list of workload classifiers for a workload group.
 type WorkloadClassifierListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*WorkloadClassifier `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadClassifier
 }
 
 // WorkloadClassifierProperties - Workload classifier definition. For more information look at sys.workloadmanagementworkload_classifiers
 // (DMV).
 type WorkloadClassifierProperties struct {
 	// REQUIRED; The workload classifier member name.
-	MemberName *string `json:"memberName,omitempty"`
+	MemberName *string
 
 	// The workload classifier context.
-	Context *string `json:"context,omitempty"`
+	Context *string
 
 	// The workload classifier end time for classification.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The workload classifier importance.
-	Importance *string `json:"importance,omitempty"`
+	Importance *string
 
 	// The workload classifier label.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The workload classifier start time for classification.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // WorkloadGroup - Workload group operations for a sql pool
 type WorkloadGroup struct {
 	// Resource properties.
-	Properties *WorkloadGroupProperties `json:"properties,omitempty"`
+	Properties *WorkloadGroupProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadGroupListResult - A list of workload groups.
 type WorkloadGroupListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*WorkloadGroup `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadGroup
 }
 
 // WorkloadGroupProperties - Workload group definition. For more information look at sys.workloadmanagementworkload_groups
 // (DMV).
 type WorkloadGroupProperties struct {
 	// REQUIRED; The workload group cap percentage resource.
-	MaxResourcePercent *int32 `json:"maxResourcePercent,omitempty"`
+	MaxResourcePercent *int32
 
 	// REQUIRED; The workload group minimum percentage resource.
-	MinResourcePercent *int32 `json:"minResourcePercent,omitempty"`
+	MinResourcePercent *int32
 
 	// REQUIRED; The workload group request minimum grant percentage.
-	MinResourcePercentPerRequest *float64 `json:"minResourcePercentPerRequest,omitempty"`
+	MinResourcePercentPerRequest *float64
 
 	// The workload group importance level.
-	Importance *string `json:"importance,omitempty"`
+	Importance *string
 
 	// The workload group request maximum grant percentage.
-	MaxResourcePercentPerRequest *float64 `json:"maxResourcePercentPerRequest,omitempty"`
+	MaxResourcePercentPerRequest *float64
 
 	// The workload group query execution timeout.
-	QueryExecutionTimeout *int32 `json:"queryExecutionTimeout,omitempty"`
+	QueryExecutionTimeout *int32
 }
 
 // Workspace - A workspace
 type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity of the workspace
-	Identity *ManagedIdentity `json:"identity,omitempty"`
+	Identity *ManagedIdentity
 
 	// Workspace resource properties
-	Properties *WorkspaceProperties `json:"properties,omitempty"`
+	Properties *WorkspaceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceAADAdminInfo - Workspace active directory administrator
 type WorkspaceAADAdminInfo struct {
 	// Workspace active directory administrator properties
-	Properties *AADAdminProperties `json:"properties,omitempty"`
+	Properties *AADAdminProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceAADAdminsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspaceAADAdminsClient.BeginCreateOrUpdate
@@ -6334,19 +6334,19 @@ type WorkspaceAADAdminsClientGetOptions struct {
 // WorkspaceInfoListResult - List of workspaces
 type WorkspaceInfoListResult struct {
 	// Link to the next page of results
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of workspaces
-	Value []*Workspace `json:"value,omitempty"`
+	Value []*Workspace
 }
 
 // WorkspaceKeyDetails - Details of the customer managed key associated with the workspace
 type WorkspaceKeyDetails struct {
 	// Workspace Key sub-resource key vault url
-	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
+	KeyVaultURL *string
 
 	// Workspace Key sub-resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate
@@ -6509,137 +6509,137 @@ type WorkspaceManagedSQLServerVulnerabilityAssessmentsClientListOptions struct {
 // WorkspacePatchInfo - Workspace patch details
 type WorkspacePatchInfo struct {
 	// The identity of the workspace
-	Identity *ManagedIdentity `json:"identity,omitempty"`
+	Identity *ManagedIdentity
 
 	// Workspace patch properties
-	Properties *WorkspacePatchProperties `json:"properties,omitempty"`
+	Properties *WorkspacePatchProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // WorkspacePatchProperties - Workspace patch properties
 type WorkspacePatchProperties struct {
 	// The encryption details of the workspace
-	Encryption *EncryptionDetails `json:"encryption,omitempty"`
+	Encryption *EncryptionDetails
 
 	// Managed Virtual Network Settings
-	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
+	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings
 
 	// Enable or Disable public network access to workspace
-	PublicNetworkAccess *WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *WorkspacePublicNetworkAccess
 
 	// Purview Configuration
-	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
+	PurviewConfiguration *PurviewConfiguration
 
 	// SQL administrator login password
-	SQLAdministratorLoginPassword *string `json:"sqlAdministratorLoginPassword,omitempty"`
+	SQLAdministratorLoginPassword *string
 
 	// Git integration settings
-	WorkspaceRepositoryConfiguration *WorkspaceRepositoryConfiguration `json:"workspaceRepositoryConfiguration,omitempty"`
+	WorkspaceRepositoryConfiguration *WorkspaceRepositoryConfiguration
 
 	// READ-ONLY; Resource provisioning state
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // WorkspaceProperties - Workspace properties
 type WorkspaceProperties struct {
 	// Enable or Disable AzureADOnlyAuthentication on All Workspace subresource
-	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
+	AzureADOnlyAuthentication *bool
 
 	// Connectivity endpoints
-	ConnectivityEndpoints map[string]*string `json:"connectivityEndpoints,omitempty"`
+	ConnectivityEndpoints map[string]*string
 
 	// Initial workspace AAD admin properties for a CSP subscription
-	CspWorkspaceAdminProperties *CspWorkspaceAdminProperties `json:"cspWorkspaceAdminProperties,omitempty"`
+	CspWorkspaceAdminProperties *CspWorkspaceAdminProperties
 
 	// Workspace default data lake storage account details
-	DefaultDataLakeStorage *DataLakeStorageAccountDetails `json:"defaultDataLakeStorage,omitempty"`
+	DefaultDataLakeStorage *DataLakeStorageAccountDetails
 
 	// The encryption details of the workspace
-	Encryption *EncryptionDetails `json:"encryption,omitempty"`
+	Encryption *EncryptionDetails
 
 	// Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId.
 	// The resource group name must be no longer than 90 characters long, and
 	// must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with
 	// '.'
-	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
+	ManagedResourceGroupName *string
 
 	// Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of
 	// the user.
-	ManagedVirtualNetwork *string `json:"managedVirtualNetwork,omitempty"`
+	ManagedVirtualNetwork *string
 
 	// Managed Virtual Network Settings
-	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
+	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings
 
 	// Private endpoint connections to the workspace
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Enable or Disable public network access to workspace
-	PublicNetworkAccess *WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *WorkspacePublicNetworkAccess
 
 	// Purview Configuration
-	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
+	PurviewConfiguration *PurviewConfiguration
 
 	// Login for workspace SQL active directory administrator
-	SQLAdministratorLogin *string `json:"sqlAdministratorLogin,omitempty"`
+	SQLAdministratorLogin *string
 
 	// SQL administrator login password
-	SQLAdministratorLoginPassword *string `json:"sqlAdministratorLoginPassword,omitempty"`
+	SQLAdministratorLoginPassword *string
 
 	// Is trustedServiceBypassEnabled for the workspace
-	TrustedServiceBypassEnabled *bool `json:"trustedServiceBypassEnabled,omitempty"`
+	TrustedServiceBypassEnabled *bool
 
 	// Virtual Network profile
-	VirtualNetworkProfile *VirtualNetworkProfile `json:"virtualNetworkProfile,omitempty"`
+	VirtualNetworkProfile *VirtualNetworkProfile
 
 	// Git integration settings
-	WorkspaceRepositoryConfiguration *WorkspaceRepositoryConfiguration `json:"workspaceRepositoryConfiguration,omitempty"`
+	WorkspaceRepositoryConfiguration *WorkspaceRepositoryConfiguration
 
 	// READ-ONLY; The ADLA resource ID.
-	AdlaResourceID *string `json:"adlaResourceId,omitempty" azure:"ro"`
+	AdlaResourceID *string
 
 	// READ-ONLY; Workspace level configs and feature flags
-	ExtraProperties map[string]any `json:"extraProperties,omitempty" azure:"ro"`
+	ExtraProperties map[string]any
 
 	// READ-ONLY; Resource provisioning state
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Workspace settings
-	Settings map[string]any `json:"settings,omitempty" azure:"ro"`
+	Settings map[string]any
 
 	// READ-ONLY; The workspace unique identifier
-	WorkspaceUID *string `json:"workspaceUID,omitempty" azure:"ro"`
+	WorkspaceUID *string
 }
 
 // WorkspaceRepositoryConfiguration - Git integration settings
 type WorkspaceRepositoryConfiguration struct {
 	// Account name
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Collaboration branch
-	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	CollaborationBranch *string
 
 	// GitHub Enterprise host name. For example: https://github.mydomain.com
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The last commit ID
-	LastCommitID *string `json:"lastCommitId,omitempty"`
+	LastCommitID *string
 
 	// VSTS project name
-	ProjectName *string `json:"projectName,omitempty"`
+	ProjectName *string
 
 	// Repository name
-	RepositoryName *string `json:"repositoryName,omitempty"`
+	RepositoryName *string
 
 	// Root folder to use in the repository
-	RootFolder *string `json:"rootFolder,omitempty"`
+	RootFolder *string
 
 	// The VSTS tenant ID
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspaceSQLAADAdminsClient.BeginCreateOrUpdate

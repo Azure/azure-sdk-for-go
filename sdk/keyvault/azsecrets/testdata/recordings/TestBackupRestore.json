@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:31 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:27 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "ef459add-94ff-4abc-bc43-637a6e7dd52e"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "9839eb0c-a946-4b1e-8325-f9c74434bf87"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "27",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "value": "value1387819847"
@@ -50,107 +50,113 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "259",
+        "Content-Length": "268",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:33 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:29 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "494bc18c-f552-4f86-b13e-3d1677303f87"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=1;da_age=9225;rd_age=9225;brd_age=13565;ra_notif_age=2726;dec_lev=3;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "76ad62c7-6ee1-4c03-a6ea-6de760793d54"
       },
       "ResponseBody": {
         "value": "value1387819847",
-        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee",
+        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955",
         "attributes": {
           "enabled": true,
-          "created": 1662158133,
-          "updated": 1662158133,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1680047550,
+          "updated": 1680047550,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847/backup?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847/backup?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "5212",
+        "Content-Length": "3904",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:33 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:30 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "a7b32727-0593-4b9e-848a-96c996ceb17c"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=1;da_age=9225;rd_age=9225;brd_age=13566;ra_notif_age=2726;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "92550f50-e761-4a26-804d-de97811fca38"
       },
       "ResponseBody": {
-        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUl5WVdabU5tRmhNUzAzTm1Ka0xUUTBZVGN0WVRjek5DMDJaalZoWkRCaU5XRTRPVGdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAuQWZjMnNNUzVvUDlBanA4ZlUxSGxVdkh6dzMxbktnSnFIdU9WR1p1WUJKcDRUeU1WSTNCakV3OHk1ZFVLZll6QXZNWXBGQlV5YzQxNFItREpKTDh3S2RmWWVhY0FCOVdzeDJ5UXZod0VSck11bUFQNGZDRl9LQUh5ZDJXeDNSV1RqalJCLUdoOVl2YUNGWnRoSGk0Qy1acDA4blYyTVVPMFFhd1ZndDh2MnJEZ3JKQm9tQW5JdXFhdktNZkpuclRuaGpwcmJ4OUNaanhLbmEwRlRXLU5uYlNPV21pTEVFeUlDTURuaHFpc2dlaVEzWkZoYUotbE5SdHdQQ0lLZHNPVnhrd21JaUJ2UUhJWU5NVEpRcGNHNWtZOTg2MTExc3ZmYUxGV1ZMWC1rcjkzcVhJVjQ0UzVoMGFFTk5QRjNrbXgwUG4wYnJacGN6d2lHRUNSR25jOFRRLkNneVFPY2hLWUxBSU5IYlIyU0ZLUmcuR2hFVEwxNkNhNHJDRU5GbWZoX2NiaV9iZzZ5c0JXYXVKeDlOQm9JaHptcEZMOEowbkltLXJ6N01XczVRbS1NM25GbWdBenZOejZlN2hJbmt2SmF3VXFQN01tRUdSV3YtWGFONmE1anEyOWNaUm0wTF9HM2pJMVRZUlJOMjJVSEtGTk1jMDJDVHRXaEktLWt6al9lOFJkaGx4QUg0WEJqSnZ5Y2ZYX0hVbVhwaDdrazFWN2I1TGhQNXV2X0l2Ym9yUzN3VVVXcVB0Q2w5d1pqRzlmbFVXeXdYMy1fMVU0TVR1dGFsbXhCeF9jODdMbk1tSDJOYVBZcFFBWTBMN2ZKeGlnWlZEbXVsb3NVRFFRbVNfaV9sLUEyU19FWUJBODF5NUJFanhsOXJwdUhLem10WE5vNnN3LW5ib0JPQ0FOSDBKY0QzVUptM1djbGh3U2VvNkpFMWR5aEpuMHRDdzFFN1ozZU5oRnJleGhYSlZIOEF5OUlGZjg5aXNrSEdfY1JnMHJVY0ozTGdMeFJXNkotY1VSX2VBSHc1ei10WjlFdndxc3N4N2lYal9LU3IxZ3NlZkVkcFgxaFFrSjV0RzBUWldBQ1ZWclNlS1l2dkR5U2Y2bDJzYm52TFdFM3NYamFRa0lHX0RKcWxXMmU5TkNCTi1KOVZ6NDc0a1YzT2Y1ZFhnZnl6QlJRS0ZGZUJxMEoxODFQVTI0bDhraFBDb21vcFEtUnduMWhocFZGZjRYcGMwNVYyMG9iV3p3NFM5QW90d29CcEt2TEdiMnBKS0MtY2o4V3NuWVNLWFd5cE91bnd2ZUVoakRfN2ZZdWxNaWdjSDJlaUlpSHB2bUtHYmd4R1NYdFZkRXFPNkdPMDZ6Ykk5bW1lck9yQkoxNUtyY0VBVWFyMG1uUzJGc0FBcjV4YlNTS2VIakNha2U0UXY3bEtXNjBOLVdTQmFUY3NhMzNlLVRLeF9ySXFMUl9wUkY1Q05PdWFMM2s3a19zMktodVZDN1BnWm5Say1sSEZZREhjLVVMeExEZlNSbHlyWEwxZFVINXhJaEd0YjRTeklJbzZhMy1POWJoUE8ycUNBdHE4eGQwam9wdHY4SGR0TEViM0RxRFRfc3VNajNyeGtYMHZFdHlZaVNPNi1iRG9MZUNDRDVPYXJ3NS03OWtjYW1nZHBqd3IzTWlaT1dIUWctcUVoTHVVYm5jeG12RTB4Z3VPR1hUVmdEcHBmQUdkQ2s3SlYyRWZHRVgtQzV5OEwyV3dQY05XWWRDSHFhdEk5R1pKWEtxVFhZQ1NGZWtIUlJocE5BR2dTWjZJWThLUnYybGg5WnlvUzJzTkJya2F1YXlhV2VVMkIxMmRWM0JtWHhsYi1VZjRJMTZaTzRPd2FQRHYyTWJtX1RlSVdDSEdsQ1lneHNkZ2R6U2JUblVfQkFFVjNobGNoNk55eTJsRDhmWmI2b2d2MExNV29mT2ZZRi1XLUxfUk1XaFJpMTZUUUo5TzZ1SDFkNUFLVEFKbDlMQ3M5Z2ppNVBBdDVUTVlfeXlmcVVYUEkyRm0xNzVnNnRJcnZ4WHFmNEpJVWxHd25hNG5nWHE5b21fSTc0XzFTakJNUlNiRDVJY2xpNVctUzRGUy1ndzJRSzAtUFdEVGZwd29wVU12WS1iVVIxbnVrWUIzTHZpbUdmSjN0TmF5amdPQ0lyVHZxTTJtWEl3emRqSWdfcl9UQkhzRmtkYng4eXJCeWRfQXd1OS0wbWEyMG9JX21pcHIyZVdfSE8waU53NUowaTlfWmVtWkZnNkhFaGNPdU93Q1EwcEVjRWp4LXVYMVVnVkQ4cDh6RzVNVi1iRjloVEZhY3ljbHJqakxoc0l4cFJZZzFoQld1WGpTdVFRNVdNdk51Um5TdjRSUExkQmVPLVFPcm1WYlFZWFBwbzdhbm00WS0xZFo3U0lSTEJFdUJSLTdQQ1NZV0NzdThDdEJYclQwVjlRc1BRTE5ESHlScnk2enJzRlBKQVhKYUFvVTQ4d0JTcW9QNUh0WmdCSDlNX19BWU9wUHVoTFd3RkF5VGZZNFFibFpVNUpVeWpQWHZqbEcyc0d1X3ZIVzRUamplUndjMW1SQUFPcVJid2dxYWF2MXBDX1RMYXNGb2ROSGJoc3dRTGRmd0pHY3p4NnhUQlBVbnRub1JWaEhOdVB3RjlOZWRSZWJuczhITlU4MVJhQjBMRFRBeFJoUUNUS2U3dkhqWGowbGhCOFFzNG5Ja3JLSzRSbnJaVnNuUEl4UmxpM2h0ZE1QR0dqNm9nRGI2ZXJ5NmpuS1hoS202VkZzTGNjTjdCRDg0czl1RjVPM1lvWS0xdFlmb2pDaWt6WHlyM2FtTXh1Zk1EY3pMRlhJYXduRk0yWU5VejgzRVVDeS01OWpJNkNBN0FKUjZ1S1JYSTVsTHZkU2dnRzhlc3hWLXNOQVZYWUVvalhxeWpVNFZ0bnlwTkZpVGlEZm5lUWN6S3FhLWprWGhQelhoRUlseG1Vd21aU09teTBVTUF3alE0c0EzTWw3eGVHeG94MGFXRlpPaHllakZ0R1BuUzZ5c2dyZEFrdWh1MWZ0RF9qSUhjQW9TdEZ0aTFuQTd5SVFaamxLU1JVOFBYY05wQUtVY1FRNVd2akRjUmZsT1JkbXotNmo0M0lmVS04S2FEdWlGVXh1cmFCWnRMUkRHdGxYVlU0RzFQRDF5UnJBckNmWnViVnFaeVluTmFmeE1YWVpCQ05mNzJueHowdW9XVmRKUnlobHMxM0lWM1UxWDQ0Zk53cnRHY28xamV1aUs4d0ZFUWpTNU1UTzl4dktrTDlvdFBLMWUxUmJzTVMwN0RacGl1VkFMUnNpZnFRNko2M0VCaDRjMUhBWTBjU2ZqeDJHeUg2QnNtV2ZZOEpSS1ZYaFMxS1VENzRTRGVTX3h6ZWNwNEd4SFg1SU0zaTVRWVZES3VnZVZKX0ttdnotRG1DMzRjcnBvNWRkOUY3TWZQNS1TY2NRMGloM3dRUXc5WXl2MlZfUkk4dlNUUGtWc2FBVHcxYkQ1djRUQUp3QzN4NGZTQ1dqXzlGSDg3V3NPTjRURFlaZ25VNHpGc3ZmQ1VVc1VUSkFDT1Fja0VQWlNIVHdReF9hTEZMVTAxQUY1alJvQ1hVR09qQXBqbXJXTkg4bmJ5TlNPNUIwZHR2emotd2lDTWlJTG96dVZtYVlZWkQ5aDhJd2FSVjNzRXA0RDlKR29jeVNpWXJ3YU40cERNZ0QzaUwtZ3A3cjZXOTl4V2lsRWhyZW5nMFF1eE9IbEdTd25VeTluMUlNWHI5M0tFa3ZTUUJwci1makQ2U0RlbEZFOVBnSkFqc1dpWmpRV1h6RTVYV3dBNW9tWGp6S1dwLWhSM1FibVFmNXNnYVhER00yMm9kOW4wSTlUM1ZLbFpJYk9FRVItdE51TkpWNFVIQ0tycWJqZHBqRHBXejF0MEc2TkxYLW5GMjhJekZpYl9nMEMxdEd6cWdQMFlNSWVxeFlsUmxkai1WNDl3WkMzOW9JVmJkYXdjTDE3NTdhTnRtLWduVTlNczNyeHBkUTBPTExLZmxPalBNWF9Uci1FdDdMa1RvT1NMVjdUaGtCX2FKNWJwblY2a2NPVEtWM3Y5QUU1UlRFa0s2U0J1VjhZSE5MQUU3NUZyMm9ESmhXZVVybzRDOFdTb1hvdmtFOU5jVHRqN2hOOTcyQTVUdVN3NWZKWHl2THpKb0p6SnVaTTNXREVnT3p3eU0wa29JTUtENDN4TzlFM0U0NXZPOUVwY19GUldCOGJQaFNyMkJOOTBId3FEYVJWdGdUWUpUM0hPTXFJVzFIUmlyUGRUelRCTm5ENHg5akFOS0xPWU0wY0wzdEsxcDZpNkRCaGFzQUlwSUU3WnNBV0NxNlJvenVZUkplVVdCWXhZNlFOVVFpNlpVSW9lTGRjcU8zZDJxUV9leUltU1ozTW5pdU85emtzQ0c4NlowMU5IRDRwQmlxYTBHeDgxM2tVcFR4LXlYWTVUeUZFSzAzZWRkNU1iYlh4ell6cTdha1NObTh0Sk9EZmU0NWtCUU4ySjNxU3lIdkhyVkRpcmNuUGwwOFZESmRtYnIyRHJOM0JET2c2V0xNeC1RRGNhVUtDVkVsU0dSX0tHMko4NXowWUlZNGF3V04yeTRGWW9sM2lQcnlhUUwySmxnaTR4ZjREcy1KME9GRVJZdlBYWTZNMGlpVjRncVNUWVVmUUo2bnpDUWZZQld1amw4QWZTMGxZOXQ5WFEyOWRZZjFUMFFJNjZkVW84SEp3dUVEVnZjdkw2cnJHY3dmclRGQm04aUZIX0hoNFpzUlVkeW1Iek5iWkJ3enN5MHJUdUdZeW5kdjhITG1RRVU4YTdac0EzN0ZLLWJzX0VUYVlHckc1OFZzYzBvWlRXLWlUWG1FWHlVMlZiRTQ1Y0V6MXBqQi56UjRNdTlnOFR0Z3h3X0Yzc3JPQ2JiMkl5YXZSdnVOSFN2MkxyT2ZQSmw4"
+        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUptWWpsbU5HTmlaaTB6WWpsaExUUXdZekF0T1RkaVlpMHhZMkl5TXpkaFltRTFPVE1pTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAudVBIN19jcjdQVHM5elR2TXRlZnpSblNqaHlXRF9iY2VxY1hDVzg2WFJDZnduNGxMcnZNU2tBdFlmN2MyVkpqekpTd2pXYjdudmZEOV9HckdmVlhZZ25VUHZwdU1qcTB6akdMSzg2WWY0aWdLbkxRczRIVGlNS2xWWkdadEdncVBKdUg3aFJjR2d6SFBMLXRLVkpHeFN1WXRtQmg1YjVjMWNScGgtUWdCR0UzV3JUdEJGOC1DV2JCX0JETF90QWlTZGp5VDdTNi1xZXNnU3lSNExpcjlhMmRXWGFfM3Rnb2RmTUQwejR5aGE0WXY0NlNkWlpyQnl0aEJsSE5VaHFKZ2xMZzA4bXNSU1hnQVpaakJiaERwcnJDNzJ1Ykp6WWFTS25GWG0wOXk1VWRHdHFfR09kaUlZeUk5QmFmNEtYMHN6ejhfVjVYRHlTa0lCcDduejBoN2J3LnBwSmFnUDhDZWJtSUhtb2N2MnNTcFEudXp0TnVYTkVKYU9RVl9MY1RiZVFBVW9hclZ1RHNNOEphLTZtRk1jSzloTFdXTW1YbVRPVW9NWEhwbEpJa09VeXJfd2xQbDJqbEhwakM5c0hPenRIbXYyREJNZW0wSV84ZmlOalJMWGc3Q1J5NFowUnZoMC1nMjlmbnFzRklqVllqSjJLbzhYR0pacFo4bU9oZzVUNGR1d0ppbVFnTlNJWDBQcll0SFNRX2dDVjEza3Vuci11ZDQxbFdfQy1aQkEwNHJmczhZT1RYS1o5WXNFbkx3YmQtMmxsQzVhWTdSZnBKS3pPcXRrb1JPQzlqRVhyTDhfRk0xSzc0RVFiU1lWc1dSaXVSWjRnbzVlNHRtY2JjZ2VKU3dobjVnZk96X2V6Zi1tLXN4bUk4RkNTVXdLQW84T3J0ZmtTWFVvZFdQS2docjlSS05pb1l6dG00UHJmZ3VPeXoyX3Jzc21DUmJJcG9nd0VOMC1talVZazVXYWlXY0FiT2JxR1RlcjBnWFN5UU4zaVFWQ25zeGxudmxzcmkzdjV3czV6QjlPMjBaN0NGTlVpUnRUX2NaWDVKYWdFdTkzTk90MFV4dXZfcnRSbjZIUXFEcV81QmhsVmN2c2ZsUmpacGstcVlOMXo1RXFGOFVoeDEwaFkyeE43b3RqcTJnaFc1TDlNYkhZQnlNMXRScVpacXlXNUl1R2k2VjRPUE1YV2tlT3luVUpkM3dZUTQ4ZGg4QmN2dDZtRjN4dlMxOEhZR1NDX0xQTGRYa1NBRVhBWDV0d25lbks2QnpwUnFnYWJfaEhqYlVDRndRbkpLNHY4TWtmcG5lNWFqSEhLbExDRmVUZjRNbUpsM1hTZFJPdzM0LUpzeTV0QVBjeldadlktWWVKOEZCWUdpMlB6aW9IclRvRmlCSVVUbkNPSERac2VvdFk3ZjNpa2xTV2xSRUk5aGVoOE5NMGl6LTVqTEZhbHh1YXlDTmhIVHdnYURjcVQ5M2dDS2pLMlRYT0QxVGpOc3AybmE2dllhQi1lUHdfV1Uxc2U5ZWxlREZyc1ctcDZnbURGeHhfUkRRTmE0SjZNSndOX2xveWZiekV0b2RwY0NKTDhQT2lMeXo2U1lucGtKcVJfUXlCQTBtSS1OcmhzeTBuYURFTC1hYk51dXpya2tIYmxSM3plcmpHaXRmLTJRakxzYWxKT3pmX3ZaejJwRFhuUG1Nc1VGbF8tc2xpb2Z2aXJTWWFUOENpV0NKVTUtVTVZd1AwTVZGTE5sMWhyeUtrYXAyVTVvMnhMOHZfYWZvUFBhdUVDLXZ2cGJwYmczeVBwdWkyS3UwdjZBQ3p3d29KVFlrb29TT3pOUllwUWloWFRIaXhFUTIwQ3dwYnB2azc2SlVzNmdNNUVJaTB4S1FCTl9QOXBWdFdVNmx0eVNYZWxkQ1R3eWVTdnRobmhFbE1yRGc3djhhNG1zUXBDektTcDdRM1Q1Zk1zWlZ6bkNCenBDbm55QmxEaldUVDFXVDZGUWd1UFRxVW1xb1VYZlRsYXZnSzNkYjk5Z1hJSlJYS1h6MkkwckwzY3RpZU5WQVE3am5lOF90U3lOdmlCcFdkTU9PSWgtWjZtMFZKRmhaYTRrWFZpRnFnSXFDbnk1bDhxZ2tjdnk1RFQ4TnBVQ0twcmxRclltU0pYUkNrS0dWcmEzUTNESkh5YU9VNDc5VDZxOUJCN0doU2RWck8zMHZDN2lmbXFQOWczTUxyeEhoVnFGZDQxcEo5TVM5S2oxU2ota29GQVJOSXhJeG5haWc4LWh1YmtMSGtTVy0zZ3otR2syOEtlVUhOdkM3ZG00SHp4Z2lvSmI1TUpIdGFmWGg1d0RWNl9pSGdFLWdvb0x4bGd6bFh6WE1MOTRNSG9TZFd4T1k2cGpfWG1hM0xYd2JzTTQyOW4xOWY5REp0Qk5fSy15RXpWSG93dXM3UjBWcDU1VWo1RHdVUDZkWUs5RkswMDhJSTR3Um9RaF9lN1VielNvcTNKYlZjNC1YX1g0TjBMaVlJbE1PSW9SZGtpZkk1YXZzZXY5R3ZkN3ZVaXJtZFJxZnVCMkVETmdJbGtBcUtBOHV4YkdxLXFTZlliSUZjZlhPWUxtQnMtZ2k4OThJcVpEM1BwUWcxX2pvZFMzOTcwVXVuWGtKQVQ0ZzVNZk1pOEF6amZVb3BoTlZLRi00S091VU1FU2dBZnF3YVVwSHVIdkY0emk5QTktOFNFVm5va1lTMnlPMVlGdlg3OUN1SkhMTjZVUzFqNGtYOFBBZF9sblRlei1GMmNDbmFZZjNVMEx6MWhWRVJRTWJzNFYtcGhXOWMtbWNObVNvbkh2YVFkNkpmOHh3VDNXNUlRRnppenpUQUJNOEFBcGF4SEtGaUM3TVZLdmo5aENSdDdOTTVTak13Q2tOd1ZKd0ozbjNBWDdhOGlVd01RZE1kUkJ2aHEwZldQckdicGlYZ3AzOUNiUVNiNnJwODF4Vk5FV25vS180XzJNcVpZR2ZWWFc1UE95WjZMckNrZUZoa3d2cnRPSmwwNEk4bDhyeHFsLWF6X29oZTU3OURFdjRDSG5qT1dZVWViMkpnajV6Ym4ydWhpcnpWdFVJNnNHYi1ZSVVSaE50YlVxSm5KMlhuWWF6U2M5bFUzUTBtaExKb3FleU5CM3p6ZDJTVE5Jb0w0Z1RCWkZ6NjhYUzdoVGhhMjlDdHBSaUQ1SEJUOFFYQnJJNHhELXo1Tkw2RWR5SERlU1k3X0F4SHpkVWNYZDR3YU5kQVVjcXpvNDM4NmEtSWN1aVJzdUNhMmk5T2NyTjNnZ2g2OW5YbEFwak9BMFlEV3IwOHhvTkJsQUJvZzNheUlRWlVrMzNSVWRWWVVudjBrckJ6cWw5VVN6b3JFUGxpbEdzZVhjT1ZXZ3EwRXpLNFBBMTBTcXZjQ0lKTFJ2TlhicHIzaXZtUHJyNFBzbzZZQmhtcUVremZkZWVXVXZqYlJUcWxveFlyUHdMX09TMzJtSGZuODRUZHZ0TUt6SFV5dDR4NGZmajRocVlzc0ZhbjM0d3dXQXNOcy1jUlFqWE1YNFRjdkpkai1PMVlPbXh1RGw3R2ZWOWlDTFEwM3pfWnFCVDRxQjR4dVpLcXBMTU05dEwzMkhXcy5ZYnhVNE9mV2RvUnJ6R29PR1lQNVpJZXVud0tWcEtwTDlYM1VYYzB3WkdF"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "371",
+        "Content-Length": "380",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:33 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:30 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "4f546612-27c7-40e8-9eb6-b10f93be21df"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=1;da_age=9225;rd_age=9225;brd_age=13566;ra_notif_age=2726;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "73049ca5-54a1-486f-89cf-4b8b7af2bd3d"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847",
-        "deletedDate": 1662158134,
-        "scheduledPurgeDate": 1669934134,
-        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee",
+        "deletedDate": 1680047551,
+        "scheduledPurgeDate": 1680652351,
+        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955",
         "attributes": {
           "enabled": true,
-          "created": 1662158133,
-          "updated": 1662158133,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1680047550,
+          "updated": 1680047550,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 404,
@@ -158,15 +164,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "100",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:34 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:30 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "856036c0-9e67-4435-8d1e-7c1f5f0a80bc"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=2;da_age=9226;rd_age=9226;brd_age=13566;ra_notif_age=2727;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "d08cfa68-3da4-4736-a671-851028320234"
       },
       "ResponseBody": {
         "error": {
@@ -176,213 +184,191 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "100",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:44 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "ca0a61b4-9add-4d2f-a942-65770640e6e7"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "SecretNotFound",
-          "message": "Deleted Secret not found: testbackupsecret1387819847"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "371",
+        "Content-Length": "380",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:54 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "af501c66-2834-45a8-80f3-1b7cbe722943"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=12;da_age=9236;rd_age=9236;brd_age=13576;ra_notif_age=2737;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "422dfa72-1bd8-462b-908d-503d3af1b307"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847",
-        "deletedDate": 1662158134,
-        "scheduledPurgeDate": 1669934134,
-        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee",
+        "deletedDate": 1680047551,
+        "scheduledPurgeDate": 1680652351,
+        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955",
         "attributes": {
           "enabled": true,
-          "created": 1662158133,
-          "updated": 1662158133,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1680047550,
+          "updated": 1680047550,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Fri, 02 Sep 2022 22:35:54 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "2f92e933-1f76-4fd4-af4c-df96ea069b7c"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=12;da_age=9236;rd_age=9236;brd_age=13577;ra_notif_age=2737;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "83dd490b-aa2d-4f95-a912-f434420f16db"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/restore?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/restore?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "5212",
+        "Content-Length": "3904",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": {
-        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUl5WVdabU5tRmhNUzAzTm1Ka0xUUTBZVGN0WVRjek5DMDJaalZoWkRCaU5XRTRPVGdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAuQWZjMnNNUzVvUDlBanA4ZlUxSGxVdkh6dzMxbktnSnFIdU9WR1p1WUJKcDRUeU1WSTNCakV3OHk1ZFVLZll6QXZNWXBGQlV5YzQxNFItREpKTDh3S2RmWWVhY0FCOVdzeDJ5UXZod0VSck11bUFQNGZDRl9LQUh5ZDJXeDNSV1RqalJCLUdoOVl2YUNGWnRoSGk0Qy1acDA4blYyTVVPMFFhd1ZndDh2MnJEZ3JKQm9tQW5JdXFhdktNZkpuclRuaGpwcmJ4OUNaanhLbmEwRlRXLU5uYlNPV21pTEVFeUlDTURuaHFpc2dlaVEzWkZoYUotbE5SdHdQQ0lLZHNPVnhrd21JaUJ2UUhJWU5NVEpRcGNHNWtZOTg2MTExc3ZmYUxGV1ZMWC1rcjkzcVhJVjQ0UzVoMGFFTk5QRjNrbXgwUG4wYnJacGN6d2lHRUNSR25jOFRRLkNneVFPY2hLWUxBSU5IYlIyU0ZLUmcuR2hFVEwxNkNhNHJDRU5GbWZoX2NiaV9iZzZ5c0JXYXVKeDlOQm9JaHptcEZMOEowbkltLXJ6N01XczVRbS1NM25GbWdBenZOejZlN2hJbmt2SmF3VXFQN01tRUdSV3YtWGFONmE1anEyOWNaUm0wTF9HM2pJMVRZUlJOMjJVSEtGTk1jMDJDVHRXaEktLWt6al9lOFJkaGx4QUg0WEJqSnZ5Y2ZYX0hVbVhwaDdrazFWN2I1TGhQNXV2X0l2Ym9yUzN3VVVXcVB0Q2w5d1pqRzlmbFVXeXdYMy1fMVU0TVR1dGFsbXhCeF9jODdMbk1tSDJOYVBZcFFBWTBMN2ZKeGlnWlZEbXVsb3NVRFFRbVNfaV9sLUEyU19FWUJBODF5NUJFanhsOXJwdUhLem10WE5vNnN3LW5ib0JPQ0FOSDBKY0QzVUptM1djbGh3U2VvNkpFMWR5aEpuMHRDdzFFN1ozZU5oRnJleGhYSlZIOEF5OUlGZjg5aXNrSEdfY1JnMHJVY0ozTGdMeFJXNkotY1VSX2VBSHc1ei10WjlFdndxc3N4N2lYal9LU3IxZ3NlZkVkcFgxaFFrSjV0RzBUWldBQ1ZWclNlS1l2dkR5U2Y2bDJzYm52TFdFM3NYamFRa0lHX0RKcWxXMmU5TkNCTi1KOVZ6NDc0a1YzT2Y1ZFhnZnl6QlJRS0ZGZUJxMEoxODFQVTI0bDhraFBDb21vcFEtUnduMWhocFZGZjRYcGMwNVYyMG9iV3p3NFM5QW90d29CcEt2TEdiMnBKS0MtY2o4V3NuWVNLWFd5cE91bnd2ZUVoakRfN2ZZdWxNaWdjSDJlaUlpSHB2bUtHYmd4R1NYdFZkRXFPNkdPMDZ6Ykk5bW1lck9yQkoxNUtyY0VBVWFyMG1uUzJGc0FBcjV4YlNTS2VIakNha2U0UXY3bEtXNjBOLVdTQmFUY3NhMzNlLVRLeF9ySXFMUl9wUkY1Q05PdWFMM2s3a19zMktodVZDN1BnWm5Say1sSEZZREhjLVVMeExEZlNSbHlyWEwxZFVINXhJaEd0YjRTeklJbzZhMy1POWJoUE8ycUNBdHE4eGQwam9wdHY4SGR0TEViM0RxRFRfc3VNajNyeGtYMHZFdHlZaVNPNi1iRG9MZUNDRDVPYXJ3NS03OWtjYW1nZHBqd3IzTWlaT1dIUWctcUVoTHVVYm5jeG12RTB4Z3VPR1hUVmdEcHBmQUdkQ2s3SlYyRWZHRVgtQzV5OEwyV3dQY05XWWRDSHFhdEk5R1pKWEtxVFhZQ1NGZWtIUlJocE5BR2dTWjZJWThLUnYybGg5WnlvUzJzTkJya2F1YXlhV2VVMkIxMmRWM0JtWHhsYi1VZjRJMTZaTzRPd2FQRHYyTWJtX1RlSVdDSEdsQ1lneHNkZ2R6U2JUblVfQkFFVjNobGNoNk55eTJsRDhmWmI2b2d2MExNV29mT2ZZRi1XLUxfUk1XaFJpMTZUUUo5TzZ1SDFkNUFLVEFKbDlMQ3M5Z2ppNVBBdDVUTVlfeXlmcVVYUEkyRm0xNzVnNnRJcnZ4WHFmNEpJVWxHd25hNG5nWHE5b21fSTc0XzFTakJNUlNiRDVJY2xpNVctUzRGUy1ndzJRSzAtUFdEVGZwd29wVU12WS1iVVIxbnVrWUIzTHZpbUdmSjN0TmF5amdPQ0lyVHZxTTJtWEl3emRqSWdfcl9UQkhzRmtkYng4eXJCeWRfQXd1OS0wbWEyMG9JX21pcHIyZVdfSE8waU53NUowaTlfWmVtWkZnNkhFaGNPdU93Q1EwcEVjRWp4LXVYMVVnVkQ4cDh6RzVNVi1iRjloVEZhY3ljbHJqakxoc0l4cFJZZzFoQld1WGpTdVFRNVdNdk51Um5TdjRSUExkQmVPLVFPcm1WYlFZWFBwbzdhbm00WS0xZFo3U0lSTEJFdUJSLTdQQ1NZV0NzdThDdEJYclQwVjlRc1BRTE5ESHlScnk2enJzRlBKQVhKYUFvVTQ4d0JTcW9QNUh0WmdCSDlNX19BWU9wUHVoTFd3RkF5VGZZNFFibFpVNUpVeWpQWHZqbEcyc0d1X3ZIVzRUamplUndjMW1SQUFPcVJid2dxYWF2MXBDX1RMYXNGb2ROSGJoc3dRTGRmd0pHY3p4NnhUQlBVbnRub1JWaEhOdVB3RjlOZWRSZWJuczhITlU4MVJhQjBMRFRBeFJoUUNUS2U3dkhqWGowbGhCOFFzNG5Ja3JLSzRSbnJaVnNuUEl4UmxpM2h0ZE1QR0dqNm9nRGI2ZXJ5NmpuS1hoS202VkZzTGNjTjdCRDg0czl1RjVPM1lvWS0xdFlmb2pDaWt6WHlyM2FtTXh1Zk1EY3pMRlhJYXduRk0yWU5VejgzRVVDeS01OWpJNkNBN0FKUjZ1S1JYSTVsTHZkU2dnRzhlc3hWLXNOQVZYWUVvalhxeWpVNFZ0bnlwTkZpVGlEZm5lUWN6S3FhLWprWGhQelhoRUlseG1Vd21aU09teTBVTUF3alE0c0EzTWw3eGVHeG94MGFXRlpPaHllakZ0R1BuUzZ5c2dyZEFrdWh1MWZ0RF9qSUhjQW9TdEZ0aTFuQTd5SVFaamxLU1JVOFBYY05wQUtVY1FRNVd2akRjUmZsT1JkbXotNmo0M0lmVS04S2FEdWlGVXh1cmFCWnRMUkRHdGxYVlU0RzFQRDF5UnJBckNmWnViVnFaeVluTmFmeE1YWVpCQ05mNzJueHowdW9XVmRKUnlobHMxM0lWM1UxWDQ0Zk53cnRHY28xamV1aUs4d0ZFUWpTNU1UTzl4dktrTDlvdFBLMWUxUmJzTVMwN0RacGl1VkFMUnNpZnFRNko2M0VCaDRjMUhBWTBjU2ZqeDJHeUg2QnNtV2ZZOEpSS1ZYaFMxS1VENzRTRGVTX3h6ZWNwNEd4SFg1SU0zaTVRWVZES3VnZVZKX0ttdnotRG1DMzRjcnBvNWRkOUY3TWZQNS1TY2NRMGloM3dRUXc5WXl2MlZfUkk4dlNUUGtWc2FBVHcxYkQ1djRUQUp3QzN4NGZTQ1dqXzlGSDg3V3NPTjRURFlaZ25VNHpGc3ZmQ1VVc1VUSkFDT1Fja0VQWlNIVHdReF9hTEZMVTAxQUY1alJvQ1hVR09qQXBqbXJXTkg4bmJ5TlNPNUIwZHR2emotd2lDTWlJTG96dVZtYVlZWkQ5aDhJd2FSVjNzRXA0RDlKR29jeVNpWXJ3YU40cERNZ0QzaUwtZ3A3cjZXOTl4V2lsRWhyZW5nMFF1eE9IbEdTd25VeTluMUlNWHI5M0tFa3ZTUUJwci1makQ2U0RlbEZFOVBnSkFqc1dpWmpRV1h6RTVYV3dBNW9tWGp6S1dwLWhSM1FibVFmNXNnYVhER00yMm9kOW4wSTlUM1ZLbFpJYk9FRVItdE51TkpWNFVIQ0tycWJqZHBqRHBXejF0MEc2TkxYLW5GMjhJekZpYl9nMEMxdEd6cWdQMFlNSWVxeFlsUmxkai1WNDl3WkMzOW9JVmJkYXdjTDE3NTdhTnRtLWduVTlNczNyeHBkUTBPTExLZmxPalBNWF9Uci1FdDdMa1RvT1NMVjdUaGtCX2FKNWJwblY2a2NPVEtWM3Y5QUU1UlRFa0s2U0J1VjhZSE5MQUU3NUZyMm9ESmhXZVVybzRDOFdTb1hvdmtFOU5jVHRqN2hOOTcyQTVUdVN3NWZKWHl2THpKb0p6SnVaTTNXREVnT3p3eU0wa29JTUtENDN4TzlFM0U0NXZPOUVwY19GUldCOGJQaFNyMkJOOTBId3FEYVJWdGdUWUpUM0hPTXFJVzFIUmlyUGRUelRCTm5ENHg5akFOS0xPWU0wY0wzdEsxcDZpNkRCaGFzQUlwSUU3WnNBV0NxNlJvenVZUkplVVdCWXhZNlFOVVFpNlpVSW9lTGRjcU8zZDJxUV9leUltU1ozTW5pdU85emtzQ0c4NlowMU5IRDRwQmlxYTBHeDgxM2tVcFR4LXlYWTVUeUZFSzAzZWRkNU1iYlh4ell6cTdha1NObTh0Sk9EZmU0NWtCUU4ySjNxU3lIdkhyVkRpcmNuUGwwOFZESmRtYnIyRHJOM0JET2c2V0xNeC1RRGNhVUtDVkVsU0dSX0tHMko4NXowWUlZNGF3V04yeTRGWW9sM2lQcnlhUUwySmxnaTR4ZjREcy1KME9GRVJZdlBYWTZNMGlpVjRncVNUWVVmUUo2bnpDUWZZQld1amw4QWZTMGxZOXQ5WFEyOWRZZjFUMFFJNjZkVW84SEp3dUVEVnZjdkw2cnJHY3dmclRGQm04aUZIX0hoNFpzUlVkeW1Iek5iWkJ3enN5MHJUdUdZeW5kdjhITG1RRVU4YTdac0EzN0ZLLWJzX0VUYVlHckc1OFZzYzBvWlRXLWlUWG1FWHlVMlZiRTQ1Y0V6MXBqQi56UjRNdTlnOFR0Z3h3X0Yzc3JPQ2JiMkl5YXZSdnVOSFN2MkxyT2ZQSmw4"
+        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUptWWpsbU5HTmlaaTB6WWpsaExUUXdZekF0T1RkaVlpMHhZMkl5TXpkaFltRTFPVE1pTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAudVBIN19jcjdQVHM5elR2TXRlZnpSblNqaHlXRF9iY2VxY1hDVzg2WFJDZnduNGxMcnZNU2tBdFlmN2MyVkpqekpTd2pXYjdudmZEOV9HckdmVlhZZ25VUHZwdU1qcTB6akdMSzg2WWY0aWdLbkxRczRIVGlNS2xWWkdadEdncVBKdUg3aFJjR2d6SFBMLXRLVkpHeFN1WXRtQmg1YjVjMWNScGgtUWdCR0UzV3JUdEJGOC1DV2JCX0JETF90QWlTZGp5VDdTNi1xZXNnU3lSNExpcjlhMmRXWGFfM3Rnb2RmTUQwejR5aGE0WXY0NlNkWlpyQnl0aEJsSE5VaHFKZ2xMZzA4bXNSU1hnQVpaakJiaERwcnJDNzJ1Ykp6WWFTS25GWG0wOXk1VWRHdHFfR09kaUlZeUk5QmFmNEtYMHN6ejhfVjVYRHlTa0lCcDduejBoN2J3LnBwSmFnUDhDZWJtSUhtb2N2MnNTcFEudXp0TnVYTkVKYU9RVl9MY1RiZVFBVW9hclZ1RHNNOEphLTZtRk1jSzloTFdXTW1YbVRPVW9NWEhwbEpJa09VeXJfd2xQbDJqbEhwakM5c0hPenRIbXYyREJNZW0wSV84ZmlOalJMWGc3Q1J5NFowUnZoMC1nMjlmbnFzRklqVllqSjJLbzhYR0pacFo4bU9oZzVUNGR1d0ppbVFnTlNJWDBQcll0SFNRX2dDVjEza3Vuci11ZDQxbFdfQy1aQkEwNHJmczhZT1RYS1o5WXNFbkx3YmQtMmxsQzVhWTdSZnBKS3pPcXRrb1JPQzlqRVhyTDhfRk0xSzc0RVFiU1lWc1dSaXVSWjRnbzVlNHRtY2JjZ2VKU3dobjVnZk96X2V6Zi1tLXN4bUk4RkNTVXdLQW84T3J0ZmtTWFVvZFdQS2docjlSS05pb1l6dG00UHJmZ3VPeXoyX3Jzc21DUmJJcG9nd0VOMC1talVZazVXYWlXY0FiT2JxR1RlcjBnWFN5UU4zaVFWQ25zeGxudmxzcmkzdjV3czV6QjlPMjBaN0NGTlVpUnRUX2NaWDVKYWdFdTkzTk90MFV4dXZfcnRSbjZIUXFEcV81QmhsVmN2c2ZsUmpacGstcVlOMXo1RXFGOFVoeDEwaFkyeE43b3RqcTJnaFc1TDlNYkhZQnlNMXRScVpacXlXNUl1R2k2VjRPUE1YV2tlT3luVUpkM3dZUTQ4ZGg4QmN2dDZtRjN4dlMxOEhZR1NDX0xQTGRYa1NBRVhBWDV0d25lbks2QnpwUnFnYWJfaEhqYlVDRndRbkpLNHY4TWtmcG5lNWFqSEhLbExDRmVUZjRNbUpsM1hTZFJPdzM0LUpzeTV0QVBjeldadlktWWVKOEZCWUdpMlB6aW9IclRvRmlCSVVUbkNPSERac2VvdFk3ZjNpa2xTV2xSRUk5aGVoOE5NMGl6LTVqTEZhbHh1YXlDTmhIVHdnYURjcVQ5M2dDS2pLMlRYT0QxVGpOc3AybmE2dllhQi1lUHdfV1Uxc2U5ZWxlREZyc1ctcDZnbURGeHhfUkRRTmE0SjZNSndOX2xveWZiekV0b2RwY0NKTDhQT2lMeXo2U1lucGtKcVJfUXlCQTBtSS1OcmhzeTBuYURFTC1hYk51dXpya2tIYmxSM3plcmpHaXRmLTJRakxzYWxKT3pmX3ZaejJwRFhuUG1Nc1VGbF8tc2xpb2Z2aXJTWWFUOENpV0NKVTUtVTVZd1AwTVZGTE5sMWhyeUtrYXAyVTVvMnhMOHZfYWZvUFBhdUVDLXZ2cGJwYmczeVBwdWkyS3UwdjZBQ3p3d29KVFlrb29TT3pOUllwUWloWFRIaXhFUTIwQ3dwYnB2azc2SlVzNmdNNUVJaTB4S1FCTl9QOXBWdFdVNmx0eVNYZWxkQ1R3eWVTdnRobmhFbE1yRGc3djhhNG1zUXBDektTcDdRM1Q1Zk1zWlZ6bkNCenBDbm55QmxEaldUVDFXVDZGUWd1UFRxVW1xb1VYZlRsYXZnSzNkYjk5Z1hJSlJYS1h6MkkwckwzY3RpZU5WQVE3am5lOF90U3lOdmlCcFdkTU9PSWgtWjZtMFZKRmhaYTRrWFZpRnFnSXFDbnk1bDhxZ2tjdnk1RFQ4TnBVQ0twcmxRclltU0pYUkNrS0dWcmEzUTNESkh5YU9VNDc5VDZxOUJCN0doU2RWck8zMHZDN2lmbXFQOWczTUxyeEhoVnFGZDQxcEo5TVM5S2oxU2ota29GQVJOSXhJeG5haWc4LWh1YmtMSGtTVy0zZ3otR2syOEtlVUhOdkM3ZG00SHp4Z2lvSmI1TUpIdGFmWGg1d0RWNl9pSGdFLWdvb0x4bGd6bFh6WE1MOTRNSG9TZFd4T1k2cGpfWG1hM0xYd2JzTTQyOW4xOWY5REp0Qk5fSy15RXpWSG93dXM3UjBWcDU1VWo1RHdVUDZkWUs5RkswMDhJSTR3Um9RaF9lN1VielNvcTNKYlZjNC1YX1g0TjBMaVlJbE1PSW9SZGtpZkk1YXZzZXY5R3ZkN3ZVaXJtZFJxZnVCMkVETmdJbGtBcUtBOHV4YkdxLXFTZlliSUZjZlhPWUxtQnMtZ2k4OThJcVpEM1BwUWcxX2pvZFMzOTcwVXVuWGtKQVQ0ZzVNZk1pOEF6amZVb3BoTlZLRi00S091VU1FU2dBZnF3YVVwSHVIdkY0emk5QTktOFNFVm5va1lTMnlPMVlGdlg3OUN1SkhMTjZVUzFqNGtYOFBBZF9sblRlei1GMmNDbmFZZjNVMEx6MWhWRVJRTWJzNFYtcGhXOWMtbWNObVNvbkh2YVFkNkpmOHh3VDNXNUlRRnppenpUQUJNOEFBcGF4SEtGaUM3TVZLdmo5aENSdDdOTTVTak13Q2tOd1ZKd0ozbjNBWDdhOGlVd01RZE1kUkJ2aHEwZldQckdicGlYZ3AzOUNiUVNiNnJwODF4Vk5FV25vS180XzJNcVpZR2ZWWFc1UE95WjZMckNrZUZoa3d2cnRPSmwwNEk4bDhyeHFsLWF6X29oZTU3OURFdjRDSG5qT1dZVWViMkpnajV6Ym4ydWhpcnpWdFVJNnNHYi1ZSVVSaE50YlVxSm5KMlhuWWF6U2M5bFUzUTBtaExKb3FleU5CM3p6ZDJTVE5Jb0w0Z1RCWkZ6NjhYUzdoVGhhMjlDdHBSaUQ1SEJUOFFYQnJJNHhELXo1Tkw2RWR5SERlU1k3X0F4SHpkVWNYZDR3YU5kQVVjcXpvNDM4NmEtSWN1aVJzdUNhMmk5T2NyTjNnZ2g2OW5YbEFwak9BMFlEV3IwOHhvTkJsQUJvZzNheUlRWlVrMzNSVWRWWVVudjBrckJ6cWw5VVN6b3JFUGxpbEdzZVhjT1ZXZ3EwRXpLNFBBMTBTcXZjQ0lKTFJ2TlhicHIzaXZtUHJyNFBzbzZZQmhtcUVremZkZWVXVXZqYlJUcWxveFlyUHdMX09TMzJtSGZuODRUZHZ0TUt6SFV5dDR4NGZmajRocVlzc0ZhbjM0d3dXQXNOcy1jUlFqWE1YNFRjdkpkai1PMVlPbXh1RGw3R2ZWOWlDTFEwM3pfWnFCVDRxQjR4dVpLcXBMTU05dEwzMkhXcy5ZYnhVNE9mV2RvUnJ6R29PR1lQNVpJZXVud0tWcEtwTDlYM1VYYzB3WkdF"
       },
       "StatusCode": 409,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "632",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:35:54 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "81dcf932-87e8-4537-b12b-55a6b5ab631f"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=12;da_age=9236;rd_age=9236;brd_age=13577;ra_notif_age=2737;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "93606dfb-153e-43e2-a87c-5f2d71318e49"
       },
       "ResponseBody": {
         "error": {
           "code": "Conflict",
-          "message": "There was a conflict restoring the secret \u0027https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee\u0027. This can happen if either: a second secret with the same name was created after the first secret was deleted; thus trying to restore a secret whose name is already in use. To fix this, rename the second secret to something else so that the restore works. The second probable cause of this exception is when multiple operations are performed in parallel against the secret. To avoid this error, perform operations against a secret in a sequential manner."
+          "message": "There was a conflict restoring the secret \u0027https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955\u0027. This can happen if either: a second secret with the same name was created after the first secret was deleted; thus trying to restore a secret whose name is already in use. To fix this, rename the second secret to something else so that the restore works. The second probable cause of this exception is when multiple operations are performed in parallel against the secret. To avoid this error, perform operations against a secret in a sequential manner."
         }
       }
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/restore?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/restore?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "5212",
+        "Content-Length": "3904",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": {
-        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUl5WVdabU5tRmhNUzAzTm1Ka0xUUTBZVGN0WVRjek5DMDJaalZoWkRCaU5XRTRPVGdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAuQWZjMnNNUzVvUDlBanA4ZlUxSGxVdkh6dzMxbktnSnFIdU9WR1p1WUJKcDRUeU1WSTNCakV3OHk1ZFVLZll6QXZNWXBGQlV5YzQxNFItREpKTDh3S2RmWWVhY0FCOVdzeDJ5UXZod0VSck11bUFQNGZDRl9LQUh5ZDJXeDNSV1RqalJCLUdoOVl2YUNGWnRoSGk0Qy1acDA4blYyTVVPMFFhd1ZndDh2MnJEZ3JKQm9tQW5JdXFhdktNZkpuclRuaGpwcmJ4OUNaanhLbmEwRlRXLU5uYlNPV21pTEVFeUlDTURuaHFpc2dlaVEzWkZoYUotbE5SdHdQQ0lLZHNPVnhrd21JaUJ2UUhJWU5NVEpRcGNHNWtZOTg2MTExc3ZmYUxGV1ZMWC1rcjkzcVhJVjQ0UzVoMGFFTk5QRjNrbXgwUG4wYnJacGN6d2lHRUNSR25jOFRRLkNneVFPY2hLWUxBSU5IYlIyU0ZLUmcuR2hFVEwxNkNhNHJDRU5GbWZoX2NiaV9iZzZ5c0JXYXVKeDlOQm9JaHptcEZMOEowbkltLXJ6N01XczVRbS1NM25GbWdBenZOejZlN2hJbmt2SmF3VXFQN01tRUdSV3YtWGFONmE1anEyOWNaUm0wTF9HM2pJMVRZUlJOMjJVSEtGTk1jMDJDVHRXaEktLWt6al9lOFJkaGx4QUg0WEJqSnZ5Y2ZYX0hVbVhwaDdrazFWN2I1TGhQNXV2X0l2Ym9yUzN3VVVXcVB0Q2w5d1pqRzlmbFVXeXdYMy1fMVU0TVR1dGFsbXhCeF9jODdMbk1tSDJOYVBZcFFBWTBMN2ZKeGlnWlZEbXVsb3NVRFFRbVNfaV9sLUEyU19FWUJBODF5NUJFanhsOXJwdUhLem10WE5vNnN3LW5ib0JPQ0FOSDBKY0QzVUptM1djbGh3U2VvNkpFMWR5aEpuMHRDdzFFN1ozZU5oRnJleGhYSlZIOEF5OUlGZjg5aXNrSEdfY1JnMHJVY0ozTGdMeFJXNkotY1VSX2VBSHc1ei10WjlFdndxc3N4N2lYal9LU3IxZ3NlZkVkcFgxaFFrSjV0RzBUWldBQ1ZWclNlS1l2dkR5U2Y2bDJzYm52TFdFM3NYamFRa0lHX0RKcWxXMmU5TkNCTi1KOVZ6NDc0a1YzT2Y1ZFhnZnl6QlJRS0ZGZUJxMEoxODFQVTI0bDhraFBDb21vcFEtUnduMWhocFZGZjRYcGMwNVYyMG9iV3p3NFM5QW90d29CcEt2TEdiMnBKS0MtY2o4V3NuWVNLWFd5cE91bnd2ZUVoakRfN2ZZdWxNaWdjSDJlaUlpSHB2bUtHYmd4R1NYdFZkRXFPNkdPMDZ6Ykk5bW1lck9yQkoxNUtyY0VBVWFyMG1uUzJGc0FBcjV4YlNTS2VIakNha2U0UXY3bEtXNjBOLVdTQmFUY3NhMzNlLVRLeF9ySXFMUl9wUkY1Q05PdWFMM2s3a19zMktodVZDN1BnWm5Say1sSEZZREhjLVVMeExEZlNSbHlyWEwxZFVINXhJaEd0YjRTeklJbzZhMy1POWJoUE8ycUNBdHE4eGQwam9wdHY4SGR0TEViM0RxRFRfc3VNajNyeGtYMHZFdHlZaVNPNi1iRG9MZUNDRDVPYXJ3NS03OWtjYW1nZHBqd3IzTWlaT1dIUWctcUVoTHVVYm5jeG12RTB4Z3VPR1hUVmdEcHBmQUdkQ2s3SlYyRWZHRVgtQzV5OEwyV3dQY05XWWRDSHFhdEk5R1pKWEtxVFhZQ1NGZWtIUlJocE5BR2dTWjZJWThLUnYybGg5WnlvUzJzTkJya2F1YXlhV2VVMkIxMmRWM0JtWHhsYi1VZjRJMTZaTzRPd2FQRHYyTWJtX1RlSVdDSEdsQ1lneHNkZ2R6U2JUblVfQkFFVjNobGNoNk55eTJsRDhmWmI2b2d2MExNV29mT2ZZRi1XLUxfUk1XaFJpMTZUUUo5TzZ1SDFkNUFLVEFKbDlMQ3M5Z2ppNVBBdDVUTVlfeXlmcVVYUEkyRm0xNzVnNnRJcnZ4WHFmNEpJVWxHd25hNG5nWHE5b21fSTc0XzFTakJNUlNiRDVJY2xpNVctUzRGUy1ndzJRSzAtUFdEVGZwd29wVU12WS1iVVIxbnVrWUIzTHZpbUdmSjN0TmF5amdPQ0lyVHZxTTJtWEl3emRqSWdfcl9UQkhzRmtkYng4eXJCeWRfQXd1OS0wbWEyMG9JX21pcHIyZVdfSE8waU53NUowaTlfWmVtWkZnNkhFaGNPdU93Q1EwcEVjRWp4LXVYMVVnVkQ4cDh6RzVNVi1iRjloVEZhY3ljbHJqakxoc0l4cFJZZzFoQld1WGpTdVFRNVdNdk51Um5TdjRSUExkQmVPLVFPcm1WYlFZWFBwbzdhbm00WS0xZFo3U0lSTEJFdUJSLTdQQ1NZV0NzdThDdEJYclQwVjlRc1BRTE5ESHlScnk2enJzRlBKQVhKYUFvVTQ4d0JTcW9QNUh0WmdCSDlNX19BWU9wUHVoTFd3RkF5VGZZNFFibFpVNUpVeWpQWHZqbEcyc0d1X3ZIVzRUamplUndjMW1SQUFPcVJid2dxYWF2MXBDX1RMYXNGb2ROSGJoc3dRTGRmd0pHY3p4NnhUQlBVbnRub1JWaEhOdVB3RjlOZWRSZWJuczhITlU4MVJhQjBMRFRBeFJoUUNUS2U3dkhqWGowbGhCOFFzNG5Ja3JLSzRSbnJaVnNuUEl4UmxpM2h0ZE1QR0dqNm9nRGI2ZXJ5NmpuS1hoS202VkZzTGNjTjdCRDg0czl1RjVPM1lvWS0xdFlmb2pDaWt6WHlyM2FtTXh1Zk1EY3pMRlhJYXduRk0yWU5VejgzRVVDeS01OWpJNkNBN0FKUjZ1S1JYSTVsTHZkU2dnRzhlc3hWLXNOQVZYWUVvalhxeWpVNFZ0bnlwTkZpVGlEZm5lUWN6S3FhLWprWGhQelhoRUlseG1Vd21aU09teTBVTUF3alE0c0EzTWw3eGVHeG94MGFXRlpPaHllakZ0R1BuUzZ5c2dyZEFrdWh1MWZ0RF9qSUhjQW9TdEZ0aTFuQTd5SVFaamxLU1JVOFBYY05wQUtVY1FRNVd2akRjUmZsT1JkbXotNmo0M0lmVS04S2FEdWlGVXh1cmFCWnRMUkRHdGxYVlU0RzFQRDF5UnJBckNmWnViVnFaeVluTmFmeE1YWVpCQ05mNzJueHowdW9XVmRKUnlobHMxM0lWM1UxWDQ0Zk53cnRHY28xamV1aUs4d0ZFUWpTNU1UTzl4dktrTDlvdFBLMWUxUmJzTVMwN0RacGl1VkFMUnNpZnFRNko2M0VCaDRjMUhBWTBjU2ZqeDJHeUg2QnNtV2ZZOEpSS1ZYaFMxS1VENzRTRGVTX3h6ZWNwNEd4SFg1SU0zaTVRWVZES3VnZVZKX0ttdnotRG1DMzRjcnBvNWRkOUY3TWZQNS1TY2NRMGloM3dRUXc5WXl2MlZfUkk4dlNUUGtWc2FBVHcxYkQ1djRUQUp3QzN4NGZTQ1dqXzlGSDg3V3NPTjRURFlaZ25VNHpGc3ZmQ1VVc1VUSkFDT1Fja0VQWlNIVHdReF9hTEZMVTAxQUY1alJvQ1hVR09qQXBqbXJXTkg4bmJ5TlNPNUIwZHR2emotd2lDTWlJTG96dVZtYVlZWkQ5aDhJd2FSVjNzRXA0RDlKR29jeVNpWXJ3YU40cERNZ0QzaUwtZ3A3cjZXOTl4V2lsRWhyZW5nMFF1eE9IbEdTd25VeTluMUlNWHI5M0tFa3ZTUUJwci1makQ2U0RlbEZFOVBnSkFqc1dpWmpRV1h6RTVYV3dBNW9tWGp6S1dwLWhSM1FibVFmNXNnYVhER00yMm9kOW4wSTlUM1ZLbFpJYk9FRVItdE51TkpWNFVIQ0tycWJqZHBqRHBXejF0MEc2TkxYLW5GMjhJekZpYl9nMEMxdEd6cWdQMFlNSWVxeFlsUmxkai1WNDl3WkMzOW9JVmJkYXdjTDE3NTdhTnRtLWduVTlNczNyeHBkUTBPTExLZmxPalBNWF9Uci1FdDdMa1RvT1NMVjdUaGtCX2FKNWJwblY2a2NPVEtWM3Y5QUU1UlRFa0s2U0J1VjhZSE5MQUU3NUZyMm9ESmhXZVVybzRDOFdTb1hvdmtFOU5jVHRqN2hOOTcyQTVUdVN3NWZKWHl2THpKb0p6SnVaTTNXREVnT3p3eU0wa29JTUtENDN4TzlFM0U0NXZPOUVwY19GUldCOGJQaFNyMkJOOTBId3FEYVJWdGdUWUpUM0hPTXFJVzFIUmlyUGRUelRCTm5ENHg5akFOS0xPWU0wY0wzdEsxcDZpNkRCaGFzQUlwSUU3WnNBV0NxNlJvenVZUkplVVdCWXhZNlFOVVFpNlpVSW9lTGRjcU8zZDJxUV9leUltU1ozTW5pdU85emtzQ0c4NlowMU5IRDRwQmlxYTBHeDgxM2tVcFR4LXlYWTVUeUZFSzAzZWRkNU1iYlh4ell6cTdha1NObTh0Sk9EZmU0NWtCUU4ySjNxU3lIdkhyVkRpcmNuUGwwOFZESmRtYnIyRHJOM0JET2c2V0xNeC1RRGNhVUtDVkVsU0dSX0tHMko4NXowWUlZNGF3V04yeTRGWW9sM2lQcnlhUUwySmxnaTR4ZjREcy1KME9GRVJZdlBYWTZNMGlpVjRncVNUWVVmUUo2bnpDUWZZQld1amw4QWZTMGxZOXQ5WFEyOWRZZjFUMFFJNjZkVW84SEp3dUVEVnZjdkw2cnJHY3dmclRGQm04aUZIX0hoNFpzUlVkeW1Iek5iWkJ3enN5MHJUdUdZeW5kdjhITG1RRVU4YTdac0EzN0ZLLWJzX0VUYVlHckc1OFZzYzBvWlRXLWlUWG1FWHlVMlZiRTQ1Y0V6MXBqQi56UjRNdTlnOFR0Z3h3X0Yzc3JPQ2JiMkl5YXZSdnVOSFN2MkxyT2ZQSmw4"
+        "value": "KUF6dXJlS2V5VmF1bHRTZWNyZXRCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUptWWpsbU5HTmlaaTB6WWpsaExUUXdZekF0T1RkaVlpMHhZMkl5TXpkaFltRTFPVE1pTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAudVBIN19jcjdQVHM5elR2TXRlZnpSblNqaHlXRF9iY2VxY1hDVzg2WFJDZnduNGxMcnZNU2tBdFlmN2MyVkpqekpTd2pXYjdudmZEOV9HckdmVlhZZ25VUHZwdU1qcTB6akdMSzg2WWY0aWdLbkxRczRIVGlNS2xWWkdadEdncVBKdUg3aFJjR2d6SFBMLXRLVkpHeFN1WXRtQmg1YjVjMWNScGgtUWdCR0UzV3JUdEJGOC1DV2JCX0JETF90QWlTZGp5VDdTNi1xZXNnU3lSNExpcjlhMmRXWGFfM3Rnb2RmTUQwejR5aGE0WXY0NlNkWlpyQnl0aEJsSE5VaHFKZ2xMZzA4bXNSU1hnQVpaakJiaERwcnJDNzJ1Ykp6WWFTS25GWG0wOXk1VWRHdHFfR09kaUlZeUk5QmFmNEtYMHN6ejhfVjVYRHlTa0lCcDduejBoN2J3LnBwSmFnUDhDZWJtSUhtb2N2MnNTcFEudXp0TnVYTkVKYU9RVl9MY1RiZVFBVW9hclZ1RHNNOEphLTZtRk1jSzloTFdXTW1YbVRPVW9NWEhwbEpJa09VeXJfd2xQbDJqbEhwakM5c0hPenRIbXYyREJNZW0wSV84ZmlOalJMWGc3Q1J5NFowUnZoMC1nMjlmbnFzRklqVllqSjJLbzhYR0pacFo4bU9oZzVUNGR1d0ppbVFnTlNJWDBQcll0SFNRX2dDVjEza3Vuci11ZDQxbFdfQy1aQkEwNHJmczhZT1RYS1o5WXNFbkx3YmQtMmxsQzVhWTdSZnBKS3pPcXRrb1JPQzlqRVhyTDhfRk0xSzc0RVFiU1lWc1dSaXVSWjRnbzVlNHRtY2JjZ2VKU3dobjVnZk96X2V6Zi1tLXN4bUk4RkNTVXdLQW84T3J0ZmtTWFVvZFdQS2docjlSS05pb1l6dG00UHJmZ3VPeXoyX3Jzc21DUmJJcG9nd0VOMC1talVZazVXYWlXY0FiT2JxR1RlcjBnWFN5UU4zaVFWQ25zeGxudmxzcmkzdjV3czV6QjlPMjBaN0NGTlVpUnRUX2NaWDVKYWdFdTkzTk90MFV4dXZfcnRSbjZIUXFEcV81QmhsVmN2c2ZsUmpacGstcVlOMXo1RXFGOFVoeDEwaFkyeE43b3RqcTJnaFc1TDlNYkhZQnlNMXRScVpacXlXNUl1R2k2VjRPUE1YV2tlT3luVUpkM3dZUTQ4ZGg4QmN2dDZtRjN4dlMxOEhZR1NDX0xQTGRYa1NBRVhBWDV0d25lbks2QnpwUnFnYWJfaEhqYlVDRndRbkpLNHY4TWtmcG5lNWFqSEhLbExDRmVUZjRNbUpsM1hTZFJPdzM0LUpzeTV0QVBjeldadlktWWVKOEZCWUdpMlB6aW9IclRvRmlCSVVUbkNPSERac2VvdFk3ZjNpa2xTV2xSRUk5aGVoOE5NMGl6LTVqTEZhbHh1YXlDTmhIVHdnYURjcVQ5M2dDS2pLMlRYT0QxVGpOc3AybmE2dllhQi1lUHdfV1Uxc2U5ZWxlREZyc1ctcDZnbURGeHhfUkRRTmE0SjZNSndOX2xveWZiekV0b2RwY0NKTDhQT2lMeXo2U1lucGtKcVJfUXlCQTBtSS1OcmhzeTBuYURFTC1hYk51dXpya2tIYmxSM3plcmpHaXRmLTJRakxzYWxKT3pmX3ZaejJwRFhuUG1Nc1VGbF8tc2xpb2Z2aXJTWWFUOENpV0NKVTUtVTVZd1AwTVZGTE5sMWhyeUtrYXAyVTVvMnhMOHZfYWZvUFBhdUVDLXZ2cGJwYmczeVBwdWkyS3UwdjZBQ3p3d29KVFlrb29TT3pOUllwUWloWFRIaXhFUTIwQ3dwYnB2azc2SlVzNmdNNUVJaTB4S1FCTl9QOXBWdFdVNmx0eVNYZWxkQ1R3eWVTdnRobmhFbE1yRGc3djhhNG1zUXBDektTcDdRM1Q1Zk1zWlZ6bkNCenBDbm55QmxEaldUVDFXVDZGUWd1UFRxVW1xb1VYZlRsYXZnSzNkYjk5Z1hJSlJYS1h6MkkwckwzY3RpZU5WQVE3am5lOF90U3lOdmlCcFdkTU9PSWgtWjZtMFZKRmhaYTRrWFZpRnFnSXFDbnk1bDhxZ2tjdnk1RFQ4TnBVQ0twcmxRclltU0pYUkNrS0dWcmEzUTNESkh5YU9VNDc5VDZxOUJCN0doU2RWck8zMHZDN2lmbXFQOWczTUxyeEhoVnFGZDQxcEo5TVM5S2oxU2ota29GQVJOSXhJeG5haWc4LWh1YmtMSGtTVy0zZ3otR2syOEtlVUhOdkM3ZG00SHp4Z2lvSmI1TUpIdGFmWGg1d0RWNl9pSGdFLWdvb0x4bGd6bFh6WE1MOTRNSG9TZFd4T1k2cGpfWG1hM0xYd2JzTTQyOW4xOWY5REp0Qk5fSy15RXpWSG93dXM3UjBWcDU1VWo1RHdVUDZkWUs5RkswMDhJSTR3Um9RaF9lN1VielNvcTNKYlZjNC1YX1g0TjBMaVlJbE1PSW9SZGtpZkk1YXZzZXY5R3ZkN3ZVaXJtZFJxZnVCMkVETmdJbGtBcUtBOHV4YkdxLXFTZlliSUZjZlhPWUxtQnMtZ2k4OThJcVpEM1BwUWcxX2pvZFMzOTcwVXVuWGtKQVQ0ZzVNZk1pOEF6amZVb3BoTlZLRi00S091VU1FU2dBZnF3YVVwSHVIdkY0emk5QTktOFNFVm5va1lTMnlPMVlGdlg3OUN1SkhMTjZVUzFqNGtYOFBBZF9sblRlei1GMmNDbmFZZjNVMEx6MWhWRVJRTWJzNFYtcGhXOWMtbWNObVNvbkh2YVFkNkpmOHh3VDNXNUlRRnppenpUQUJNOEFBcGF4SEtGaUM3TVZLdmo5aENSdDdOTTVTak13Q2tOd1ZKd0ozbjNBWDdhOGlVd01RZE1kUkJ2aHEwZldQckdicGlYZ3AzOUNiUVNiNnJwODF4Vk5FV25vS180XzJNcVpZR2ZWWFc1UE95WjZMckNrZUZoa3d2cnRPSmwwNEk4bDhyeHFsLWF6X29oZTU3OURFdjRDSG5qT1dZVWViMkpnajV6Ym4ydWhpcnpWdFVJNnNHYi1ZSVVSaE50YlVxSm5KMlhuWWF6U2M5bFUzUTBtaExKb3FleU5CM3p6ZDJTVE5Jb0w0Z1RCWkZ6NjhYUzdoVGhhMjlDdHBSaUQ1SEJUOFFYQnJJNHhELXo1Tkw2RWR5SERlU1k3X0F4SHpkVWNYZDR3YU5kQVVjcXpvNDM4NmEtSWN1aVJzdUNhMmk5T2NyTjNnZ2g2OW5YbEFwak9BMFlEV3IwOHhvTkJsQUJvZzNheUlRWlVrMzNSVWRWWVVudjBrckJ6cWw5VVN6b3JFUGxpbEdzZVhjT1ZXZ3EwRXpLNFBBMTBTcXZjQ0lKTFJ2TlhicHIzaXZtUHJyNFBzbzZZQmhtcUVremZkZWVXVXZqYlJUcWxveFlyUHdMX09TMzJtSGZuODRUZHZ0TUt6SFV5dDR4NGZmajRocVlzc0ZhbjM0d3dXQXNOcy1jUlFqWE1YNFRjdkpkai1PMVlPbXh1RGw3R2ZWOWlDTFEwM3pfWnFCVDRxQjR4dVpLcXBMTU05dEwzMkhXcy5ZYnhVNE9mV2RvUnJ6R29PR1lQNVpJZXVud0tWcEtwTDlYM1VYYzB3WkdF"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "233",
+        "Content-Length": "242",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:36:04 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "3bc91bd0-a2cd-4072-b2dd-8cfe6908895d"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=22;da_age=9246;rd_age=9246;brd_age=13587;ra_notif_age=2747;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "4180989b-2f78-4083-af89-226e018548b2"
       },
       "ResponseBody": {
-        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee",
+        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955",
         "attributes": {
           "enabled": true,
-          "created": 1662158133,
-          "updated": 1662158133,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1680047550,
+          "updated": 1680047550,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/testbackupsecret1387819847?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.12.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "371",
+        "Content-Length": "380",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:36:04 GMT",
+        "Date": "Tue, 28 Mar 2023 23:52:52 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "0ecb54a7-ee4f-481a-8e10-cbc899b6ee31"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=167.220.2.77;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "0ca71076-4c54-51c3-8622-e5e45ccee0d6",
+        "x-ms-keyvault-rbac-cache": "ra_age=23;da_age=9247;rd_age=9247;brd_age=13587;ra_notif_age=2748;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "a6f761e5-f89f-4ad4-bb29-8ecdfcae0f3e"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedsecrets/testbackupsecret1387819847",
-        "deletedDate": 1662158164,
-        "scheduledPurgeDate": 1669934164,
-        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/979c38bb6da44259a8d1e1b923d21aee",
+        "deletedDate": 1680047572,
+        "scheduledPurgeDate": 1680652372,
+        "id": "https://fakevault.local/secrets/testbackupsecret1387819847/967256fb3ef148bcbffe0be75e934955",
         "attributes": {
           "enabled": true,
-          "created": 1662158133,
-          "updated": 1662158133,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1680047550,
+          "updated": 1680047550,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     }

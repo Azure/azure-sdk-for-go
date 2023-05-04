@@ -32,34 +32,26 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 			mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
-				response.ApplicationProperties = map[string]interface{}{
+				response.ApplicationProperties = map[string]any{
 					"status-code": int32(200),
 				}
 			})
+
+			callerCtx, cancelCallerCtx := context.WithCancel(context.Background())
+			defer cancelCallerCtx()
 
 			// the context passed to these calls are already cancelled since the parent
 			// context was cancelled. This basically just falls through the error handling
 			// but it's okay - each resource should close any local state they can before
 			// returning and we're going to end up abandoning ship on the connection.
-			session.EXPECT().Close(mock.CancelledAndHasTimeout)
-			sender.EXPECT().Close(mock.CancelledAndHasTimeout)
-
-			// When links fail to close in a timely manner it's either because the connection is (somehow)
-			// no longer valid _or_ conditions are preventing us from closing the link. In either case we
-			// have to be careful since it means that some resources (for instance, singleton links like $cbs)
-			// might "leak" since they can't be closed.
-			//
-			// Rather than attempt to do some complicated piecemeal recovery, we instead invalidate the entire
-			// connection, which is the only safe way to ensure the client and service agree on what is open and
-			// active.
-			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
+			session.EXPECT().Close(mock.NotCancelled).DoAndReturn(func(ctx context.Context) error {
+				cancelCallerCtx()
 				<-ctx.Done()
 				return errToReturn
 			})
 
-			err := NegotiateClaim(context.Background(), "audience", client, tp, mock.NewContextWithTimeoutForTests)
-			require.EqualError(t, err, "connection must be reset, link/connection state may be inconsistent")
-			require.Equal(t, GetRecoveryKind(err), RecoveryKindConn)
+			err := NegotiateClaim(callerCtx, "audience", client, tp)
+			require.ErrorIs(t, err, errToReturn)
 		})
 	}
 }
@@ -78,24 +70,22 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	session.EXPECT().NewSender(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
 	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
-	session.EXPECT().Close(mock.NotCancelledAndHasTimeout)
-	sender.EXPECT().Close(mock.NotCancelledAndHasTimeout)
-	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout)
+	session.EXPECT().Close(mock.NotCancelled)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		// this is the kind of error you get if your connection string is inconsistent
 		// (ie, you tamper with the shared key, etc..)
-		response.ApplicationProperties = map[string]interface{}{
+		response.ApplicationProperties = map[string]any{
 			"status-code":        int32(401),
 			"status-description": "InvalidSignature: The token has an invalid signature.",
 			"error-condition":    "com.microsoft:auth-failed",
 		}
 	})
 
-	err := NegotiateClaim(context.Background(), "audience", client, tp, mock.NewContextWithTimeoutForTests)
+	err := NegotiateClaim(context.Background(), "audience", client, tp)
 
 	require.EqualError(t, err, "rpc: failed, status code 401 and description: InvalidSignature: The token has an invalid signature.")
-	require.Equal(t, GetRecoveryKind(err), RecoveryKindLink)
+	require.Equal(t, GetRecoveryKind(err), RecoveryKindFatal)
 }
 
 func TestNegotiateClaimSuccess(t *testing.T) {
@@ -112,16 +102,14 @@ func TestNegotiateClaimSuccess(t *testing.T) {
 	session.EXPECT().NewSender(mock.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
 	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
-	session.EXPECT().Close(mock.NotCancelledAndHasTimeout)
-	sender.EXPECT().Close(mock.NotCancelledAndHasTimeout)
-	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout)
+	session.EXPECT().Close(mock.NotCancelled)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
-		response.ApplicationProperties = map[string]interface{}{
+		response.ApplicationProperties = map[string]any{
 			"status-code": int32(200),
 		}
 	})
 
-	err := NegotiateClaim(context.Background(), "audience", client, tp, mock.NewContextWithTimeoutForTests)
+	err := NegotiateClaim(context.Background(), "audience", client, tp)
 	require.NoError(t, err)
 }

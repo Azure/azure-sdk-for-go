@@ -25,11 +25,11 @@ func ExampleQuotasClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtesting.NewQuotasClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armloadtesting.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westus", nil)
+	pager := clientFactory.NewQuotasClient().NewListPager("westus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -62,11 +62,11 @@ func ExampleQuotasClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtesting.NewQuotasClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armloadtesting.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "westus", "testQuotaBucket", nil)
+	res, err := clientFactory.NewQuotasClient().Get(ctx, "westus", "testQuotaBucket", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,11 +91,11 @@ func ExampleQuotasClient_CheckAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armloadtesting.NewQuotasClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armloadtesting.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckAvailability(ctx, "westus", "testQuotaBucket", armloadtesting.QuotaBucketRequest{
+	res, err := clientFactory.NewQuotasClient().CheckAvailability(ctx, "westus", "testQuotaBucket", armloadtesting.QuotaBucketRequest{
 		Properties: &armloadtesting.QuotaBucketRequestProperties{
 			CurrentQuota: to.Ptr[int32](40),
 			CurrentUsage: to.Ptr[int32](20),

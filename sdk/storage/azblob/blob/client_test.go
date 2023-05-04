@@ -191,6 +191,67 @@ func waitForCopy(_require *require.Assertions, copyBlobClient *blockblob.Client,
 	}
 }
 
+func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const contentSize = 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := bytes.NewReader(content)
+
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+	destBlob := containerClient.NewBlockBlobClient("destblob")
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_require.Nil(err)
+
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	// Get source blob url with SAS for StageFromURL.
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Invoke CopyFromURL.
+	sourceContentMD5 := contentMD5[:]
+	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		SourceContentMD5: sourceContentMD5,
+	})
+	_require.Nil(err)
+	_require.EqualValues(resp.ContentMD5, sourceContentMD5)
+
+	// Provide bad MD5 and make sure the copy fails
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
+	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		SourceContentMD5: badMD5,
+	})
+	_require.NotNil(err)
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1016,7 +1077,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 
 	// Create a large blob that takes time to copy
 	blobSize := 8 * 1024 * 1024
-	blobReader, _ := testcommon.GetRandomDataAndReader(blobSize)
+	blobReader, _ := testcommon.GetDataAndReader(testName, blobSize)
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(blobReader), nil)
 	_require.Nil(err)
 
@@ -3439,6 +3500,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
@@ -3460,6 +3522,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobImmutableDueToPolicy)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
@@ -3476,6 +3539,7 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
@@ -3508,6 +3572,7 @@ func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
@@ -3604,4 +3669,23 @@ func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 	// GetSASURL fails (with MissingSharedKeyCredential) because blob client is created without credentials
 	_, err = bbClient.BlobClient().GetSASURL(permissions, expiry, &opts)
 	_require.Equal(err, bloberror.MissingSharedKeyCredential)
+}
+
+func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+	bAccInfo, err := bbClient.GetAccountInfo(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(bAccInfo)
 }

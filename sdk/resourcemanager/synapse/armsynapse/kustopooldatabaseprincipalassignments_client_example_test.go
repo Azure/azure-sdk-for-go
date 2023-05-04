@@ -25,11 +25,11 @@ func ExampleKustoPoolDatabasePrincipalAssignmentsClient_CheckNameAvailability() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", armsynapse.DatabasePrincipalAssignmentCheckNameRequest{
+	res, err := clientFactory.NewKustoPoolDatabasePrincipalAssignmentsClient().CheckNameAvailability(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", armsynapse.DatabasePrincipalAssignmentCheckNameRequest{
 		Name: to.Ptr("kustoprincipal1"),
 		Type: to.Ptr("Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleKustoPoolDatabasePrincipalAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", nil)
+	pager := clientFactory.NewKustoPoolDatabasePrincipalAssignmentsClient().NewListPager("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -111,11 +111,11 @@ func ExampleKustoPoolDatabasePrincipalAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", nil)
+	res, err := clientFactory.NewKustoPoolDatabasePrincipalAssignmentsClient().Get(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -146,11 +146,11 @@ func ExampleKustoPoolDatabasePrincipalAssignmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", armsynapse.DatabasePrincipalAssignment{
+	poller, err := clientFactory.NewKustoPoolDatabasePrincipalAssignmentsClient().BeginCreateOrUpdate(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", armsynapse.DatabasePrincipalAssignment{
 		Properties: &armsynapse.DatabasePrincipalProperties{
 			PrincipalID:   to.Ptr("87654321-1234-1234-1234-123456789123"),
 			PrincipalType: to.Ptr(armsynapse.PrincipalTypeApp),
@@ -192,11 +192,11 @@ func ExampleKustoPoolDatabasePrincipalAssignmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolDatabasePrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", nil)
+	poller, err := clientFactory.NewKustoPoolDatabasePrincipalAssignmentsClient().BeginDelete(ctx, "synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // SoftwareInventoriesClient contains the methods for the SoftwareInventories group.
 // Don't use this type directly, use NewSoftwareInventoriesClient() instead.
 type SoftwareInventoriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSoftwareInventoriesClient creates a new instance of SoftwareInventoriesClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSoftwareInventoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareInventoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SoftwareInventoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SoftwareInventoriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a single software data of the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-05-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// resourceNamespace - The namespace of the resource.
-// resourceType - The type of the resource.
-// resourceName - Name of the resource.
-// softwareName - Name of the installed software.
-// options - SoftwareInventoriesClientGetOptions contains the optional parameters for the SoftwareInventoriesClient.Get method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - resourceNamespace - The namespace of the resource.
+//   - resourceType - The type of the resource.
+//   - resourceName - Name of the resource.
+//   - softwareName - Name of the installed software.
+//   - options - SoftwareInventoriesClientGetOptions contains the optional parameters for the SoftwareInventoriesClient.Get method.
 func (client *SoftwareInventoriesClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, softwareName string, options *SoftwareInventoriesClientGetOptions) (SoftwareInventoriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName, options)
 	if err != nil {
 		return SoftwareInventoriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareInventoriesClientGetResponse{}, err
 	}
@@ -106,7 +96,7 @@ func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter softwareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{softwareName}", url.PathEscape(softwareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,13 +117,14 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByExtendedResourcePager - Gets the software inventory of the virtual machine.
+//
 // Generated from API version 2021-05-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// resourceNamespace - The namespace of the resource.
-// resourceType - The type of the resource.
-// resourceName - Name of the resource.
-// options - SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.ListByExtendedResource
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - resourceNamespace - The namespace of the resource.
+//   - resourceType - The type of the resource.
+//   - resourceName - Name of the resource.
+//   - options - SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.NewListByExtendedResourcePager
+//     method.
 func (client *SoftwareInventoriesClient) NewListByExtendedResourcePager(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SoftwareInventoriesClientListByExtendedResourceResponse]{
 		More: func(page SoftwareInventoriesClientListByExtendedResourceResponse) bool {
@@ -150,7 +141,7 @@ func (client *SoftwareInventoriesClient) NewListByExtendedResourcePager(resource
 			if err != nil {
 				return SoftwareInventoriesClientListByExtendedResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SoftwareInventoriesClientListByExtendedResourceResponse{}, err
 			}
@@ -185,7 +176,7 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,9 +197,10 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(re
 }
 
 // NewListBySubscriptionPager - Gets the software inventory of all virtual machines in the subscriptions.
+//
 // Generated from API version 2021-05-01-preview
-// options - SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.ListBySubscription
-// method.
+//   - options - SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.NewListBySubscriptionPager
+//     method.
 func (client *SoftwareInventoriesClient) NewListBySubscriptionPager(options *SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SoftwareInventoriesClientListBySubscriptionResponse]{
 		More: func(page SoftwareInventoriesClientListBySubscriptionResponse) bool {
@@ -225,7 +217,7 @@ func (client *SoftwareInventoriesClient) NewListBySubscriptionPager(options *Sof
 			if err != nil {
 				return SoftwareInventoriesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SoftwareInventoriesClientListBySubscriptionResponse{}, err
 			}
@@ -244,7 +236,7 @@ func (client *SoftwareInventoriesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

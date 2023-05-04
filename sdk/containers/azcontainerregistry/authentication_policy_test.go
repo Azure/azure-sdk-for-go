@@ -7,16 +7,19 @@
 package azcontainerregistry
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/stretchr/testify/require"
 	"net/http"
 	"reflect"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -77,7 +80,7 @@ func Test_getJWTExpireTime(t *testing.T) {
 	}
 }
 
-func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
+func Test_findServiceAndScope(t *testing.T) {
 	resp1 := http.Response{}
 	resp1.Header = http.Header{}
 	resp1.Header.Set("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\",scope=\"registry:catalog:*\"")
@@ -97,14 +100,13 @@ func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
 		{"error", "error", &http.Response{}, true},
 	} {
 		t.Run(fmt.Sprintf("%s-%s", test.acrService, test.acrScope), func(t *testing.T) {
-			p := &authenticationPolicy{}
-			err := p.findServiceAndScope(test.resp)
+			service, scope, err := findServiceAndScope(test.resp)
 			if test.err {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, test.acrScope, p.acrScope)
-				require.Equal(t, test.acrService, p.acrService)
+				require.Equal(t, test.acrService, service)
+				require.Equal(t, test.acrScope, scope)
 			}
 		})
 	}
@@ -118,16 +120,15 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	}
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
-		temporal.NewResource(acquire),
+		temporal.NewResource(acquireRefreshToken),
+		atomic.Value{},
 		cred,
 		[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
-		"registry:catalog:*",
-		strings.TrimPrefix(endpoint, "https://"),
 		authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request)
+	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -137,16 +138,12 @@ func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
-		temporal.NewResource(acquire),
-		nil,
-		nil,
-		"registry:catalog:*",
-		strings.TrimPrefix(endpoint, "https://"),
-		authClient,
+		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
+		authClient:        authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request)
+	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -170,4 +167,17 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	require.NotEmpty(t, repositoryName)
 	_, err = client.UpdateRepositoryProperties(ctx, repositoryName, &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{CanDelete: to.Ptr(true)}})
 	require.Error(t, err)
+}
+
+func Test_authenticationPolicy_getChallengeRequest(t *testing.T) {
+	oriReq, err := runtime.NewRequest(context.Background(), http.MethodPost, "https://test.com")
+	require.NoError(t, err)
+	testBody := []byte("test")
+	err = oriReq.SetBody(streaming.NopCloser(bytes.NewReader(testBody)), "text/plain")
+	require.NoError(t, err)
+	p := &authenticationPolicy{}
+	challengeReq, err := p.getChallengeRequest(*oriReq)
+	require.NoError(t, err)
+	require.Equal(t, fmt.Sprintf("%d", len(testBody)), oriReq.Raw().Header.Get("Content-Length"))
+	require.Equal(t, "", challengeReq.Raw().Header.Get("Content-Length"))
 }

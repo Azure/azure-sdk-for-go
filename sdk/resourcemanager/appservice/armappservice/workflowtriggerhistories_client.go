@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // WorkflowTriggerHistoriesClient contains the methods for the WorkflowTriggerHistories group.
 // Don't use this type directly, use NewWorkflowTriggerHistoriesClient() instead.
 type WorkflowTriggerHistoriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowTriggerHistoriesClient creates a new instance of WorkflowTriggerHistoriesClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowTriggerHistoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowTriggerHistoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowTriggerHistoriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a workflow trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// triggerName - The workflow trigger name.
-// historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
-// options - WorkflowTriggerHistoriesClientGetOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
+//   - options - WorkflowTriggerHistoriesClientGetOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.Get
+//     method.
 func (client *WorkflowTriggerHistoriesClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientGetOptions) (WorkflowTriggerHistoriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
 	if err != nil {
 		return WorkflowTriggerHistoriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowTriggerHistoriesClientGetResponse{}, err
 	}
@@ -108,12 +98,12 @@ func (client *WorkflowTriggerHistoriesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter historyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{historyName}", url.PathEscape(historyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -129,14 +119,14 @@ func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListPager - Gets a list of workflow trigger histories.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// triggerName - The workflow trigger name.
-// options - WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - options - WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.NewListPager
+//     method.
 func (client *WorkflowTriggerHistoriesClient) NewListPager(resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggerHistoriesClientListOptions) *runtime.Pager[WorkflowTriggerHistoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowTriggerHistoriesClientListResponse]{
 		More: func(page WorkflowTriggerHistoriesClientListResponse) bool {
@@ -153,7 +143,7 @@ func (client *WorkflowTriggerHistoriesClient) NewListPager(resourceGroupName str
 			if err != nil {
 				return WorkflowTriggerHistoriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowTriggerHistoriesClientListResponse{}, err
 			}
@@ -188,12 +178,12 @@ func (client *WorkflowTriggerHistoriesClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -216,35 +206,37 @@ func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Resp
 
 // BeginResubmit - Resubmits a workflow run based on the trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// triggerName - The workflow trigger name.
-// historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
-// options - WorkflowTriggerHistoriesClientBeginResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.BeginResubmit
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - historyName - The workflow trigger history name. Corresponds to the run name for triggers that resulted in a run.
+//   - options - WorkflowTriggerHistoriesClientBeginResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.BeginResubmit
+//     method.
 func (client *WorkflowTriggerHistoriesClient) BeginResubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*runtime.Poller[WorkflowTriggerHistoriesClientResubmitResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.resubmit(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WorkflowTriggerHistoriesClientResubmitResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkflowTriggerHistoriesClientResubmitResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkflowTriggerHistoriesClientResubmitResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkflowTriggerHistoriesClientResubmitResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Resubmit - Resubmits a workflow run based on the trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-09-01
 func (client *WorkflowTriggerHistoriesClient) resubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*http.Response, error) {
 	req, err := client.resubmitCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, historyName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -281,12 +273,12 @@ func (client *WorkflowTriggerHistoriesClient) resubmitCreateRequest(ctx context.
 		return nil, errors.New("parameter historyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{historyName}", url.PathEscape(historyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

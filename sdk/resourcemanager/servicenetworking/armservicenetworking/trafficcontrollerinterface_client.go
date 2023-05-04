@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // TrafficControllerInterfaceClient contains the methods for the TrafficControllerInterface group.
 // Don't use this type directly, use NewTrafficControllerInterfaceClient() instead.
 type TrafficControllerInterfaceClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTrafficControllerInterfaceClient creates a new instance of TrafficControllerInterfaceClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTrafficControllerInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrafficControllerInterfaceClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TrafficControllerInterfaceClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TrafficControllerInterfaceClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// resource - Resource create parameters.
-// options - TrafficControllerInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - resource - Resource create parameters.
+//   - options - TrafficControllerInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginCreateOrUpdate
+//     method.
 func (client *TrafficControllerInterfaceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, resource TrafficController, options *TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[TrafficControllerInterfaceClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, trafficControllerName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TrafficControllerInterfaceClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrafficControllerInterfaceClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TrafficControllerInterfaceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TrafficControllerInterfaceClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
 func (client *TrafficControllerInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, resource TrafficController, options *TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trafficControllerName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,34 +114,36 @@ func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx 
 
 // BeginDelete - Delete a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// options - TrafficControllerInterfaceClientBeginDeleteOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - options - TrafficControllerInterfaceClientBeginDeleteOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginDelete
+//     method.
 func (client *TrafficControllerInterfaceClient) BeginDelete(ctx context.Context, resourceGroupName string, trafficControllerName string, options *TrafficControllerInterfaceClientBeginDeleteOptions) (*runtime.Poller[TrafficControllerInterfaceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, trafficControllerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[TrafficControllerInterfaceClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrafficControllerInterfaceClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[TrafficControllerInterfaceClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TrafficControllerInterfaceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
 func (client *TrafficControllerInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, options *TrafficControllerInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trafficControllerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +168,7 @@ func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,17 +181,18 @@ func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.
 
 // Get - Get a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// options - TrafficControllerInterfaceClientGetOptions contains the optional parameters for the TrafficControllerInterfaceClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - options - TrafficControllerInterfaceClientGetOptions contains the optional parameters for the TrafficControllerInterfaceClient.Get
+//     method.
 func (client *TrafficControllerInterfaceClient) Get(ctx context.Context, resourceGroupName string, trafficControllerName string, options *TrafficControllerInterfaceClientGetOptions) (TrafficControllerInterfaceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, trafficControllerName, options)
 	if err != nil {
 		return TrafficControllerInterfaceClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TrafficControllerInterfaceClientGetResponse{}, err
 	}
@@ -223,7 +217,7 @@ func (client *TrafficControllerInterfaceClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -244,10 +238,11 @@ func (client *TrafficControllerInterfaceClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByResourceGroupPager - List TrafficController resources by resource group
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - TrafficControllerInterfaceClientListByResourceGroupOptions contains the optional parameters for the TrafficControllerInterfaceClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - TrafficControllerInterfaceClientListByResourceGroupOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListByResourceGroupPager
+//     method.
 func (client *TrafficControllerInterfaceClient) NewListByResourceGroupPager(resourceGroupName string, options *TrafficControllerInterfaceClientListByResourceGroupOptions) *runtime.Pager[TrafficControllerInterfaceClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TrafficControllerInterfaceClientListByResourceGroupResponse]{
 		More: func(page TrafficControllerInterfaceClientListByResourceGroupResponse) bool {
@@ -264,7 +259,7 @@ func (client *TrafficControllerInterfaceClient) NewListByResourceGroupPager(reso
 			if err != nil {
 				return TrafficControllerInterfaceClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TrafficControllerInterfaceClientListByResourceGroupResponse{}, err
 			}
@@ -287,7 +282,7 @@ func (client *TrafficControllerInterfaceClient) listByResourceGroupCreateRequest
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,9 +303,10 @@ func (client *TrafficControllerInterfaceClient) listByResourceGroupHandleRespons
 }
 
 // NewListBySubscriptionPager - List TrafficController resources by subscription ID
+//
 // Generated from API version 2022-10-01-preview
-// options - TrafficControllerInterfaceClientListBySubscriptionOptions contains the optional parameters for the TrafficControllerInterfaceClient.ListBySubscription
-// method.
+//   - options - TrafficControllerInterfaceClientListBySubscriptionOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListBySubscriptionPager
+//     method.
 func (client *TrafficControllerInterfaceClient) NewListBySubscriptionPager(options *TrafficControllerInterfaceClientListBySubscriptionOptions) *runtime.Pager[TrafficControllerInterfaceClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TrafficControllerInterfaceClientListBySubscriptionResponse]{
 		More: func(page TrafficControllerInterfaceClientListBySubscriptionResponse) bool {
@@ -327,7 +323,7 @@ func (client *TrafficControllerInterfaceClient) NewListBySubscriptionPager(optio
 			if err != nil {
 				return TrafficControllerInterfaceClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TrafficControllerInterfaceClientListBySubscriptionResponse{}, err
 			}
@@ -346,7 +342,7 @@ func (client *TrafficControllerInterfaceClient) listBySubscriptionCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -368,18 +364,19 @@ func (client *TrafficControllerInterfaceClient) listBySubscriptionHandleResponse
 
 // Update - Update a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// trafficControllerName - traffic controller name for path
-// properties - The resource properties to be updated.
-// options - TrafficControllerInterfaceClientUpdateOptions contains the optional parameters for the TrafficControllerInterfaceClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - trafficControllerName - traffic controller name for path
+//   - properties - The resource properties to be updated.
+//   - options - TrafficControllerInterfaceClientUpdateOptions contains the optional parameters for the TrafficControllerInterfaceClient.Update
+//     method.
 func (client *TrafficControllerInterfaceClient) Update(ctx context.Context, resourceGroupName string, trafficControllerName string, properties TrafficControllerUpdate, options *TrafficControllerInterfaceClientUpdateOptions) (TrafficControllerInterfaceClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, trafficControllerName, properties, options)
 	if err != nil {
 		return TrafficControllerInterfaceClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TrafficControllerInterfaceClientUpdateResponse{}, err
 	}
@@ -404,7 +401,7 @@ func (client *TrafficControllerInterfaceClient) updateCreateRequest(ctx context.
 		return nil, errors.New("parameter trafficControllerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trafficControllerName}", url.PathEscape(trafficControllerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

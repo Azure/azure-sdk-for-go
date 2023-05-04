@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,64 +25,57 @@ import (
 // DNSResolversClient contains the methods for the DNSResolvers group.
 // Don't use this type directly, use NewDNSResolversClient() instead.
 type DNSResolversClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDNSResolversClient creates a new instance of DNSResolversClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDNSResolversClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSResolversClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DNSResolversClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DNSResolversClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsResolverName - The name of the DNS resolver.
-// parameters - Parameters supplied to the CreateOrUpdate operation.
-// options - DNSResolversClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolversClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverName - The name of the DNS resolver.
+//   - parameters - Parameters supplied to the CreateOrUpdate operation.
+//   - options - DNSResolversClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolversClient.BeginCreateOrUpdate
+//     method.
 func (client *DNSResolversClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolver, options *DNSResolversClientBeginCreateOrUpdateOptions) (*runtime.Poller[DNSResolversClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DNSResolversClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSResolversClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DNSResolversClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSResolversClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
 func (client *DNSResolversClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolver, options *DNSResolversClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dnsResolverName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +100,7 @@ func (client *DNSResolversClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter dnsResolverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,32 +119,34 @@ func (client *DNSResolversClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsResolverName - The name of the DNS resolver.
-// options - DNSResolversClientBeginDeleteOptions contains the optional parameters for the DNSResolversClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverName - The name of the DNS resolver.
+//   - options - DNSResolversClientBeginDeleteOptions contains the optional parameters for the DNSResolversClient.BeginDelete
+//     method.
 func (client *DNSResolversClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientBeginDeleteOptions) (*runtime.Poller[DNSResolversClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DNSResolversClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSResolversClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DNSResolversClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSResolversClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
 func (client *DNSResolversClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dnsResolverName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +171,7 @@ func (client *DNSResolversClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dnsResolverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,16 +187,17 @@ func (client *DNSResolversClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Gets properties of a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsResolverName - The name of the DNS resolver.
-// options - DNSResolversClientGetOptions contains the optional parameters for the DNSResolversClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverName - The name of the DNS resolver.
+//   - options - DNSResolversClientGetOptions contains the optional parameters for the DNSResolversClient.Get method.
 func (client *DNSResolversClient) Get(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientGetOptions) (DNSResolversClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dnsResolverName, options)
 	if err != nil {
 		return DNSResolversClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DNSResolversClientGetResponse{}, err
 	}
@@ -228,7 +222,7 @@ func (client *DNSResolversClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter dnsResolverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,8 +243,9 @@ func (client *DNSResolversClient) getHandleResponse(resp *http.Response) (DNSRes
 }
 
 // NewListPager - Lists DNS resolvers in all resource groups of a subscription.
+//
 // Generated from API version 2022-07-01
-// options - DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.List method.
+//   - options - DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.NewListPager method.
 func (client *DNSResolversClient) NewListPager(options *DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DNSResolversClientListResponse]{
 		More: func(page DNSResolversClientListResponse) bool {
@@ -267,7 +262,7 @@ func (client *DNSResolversClient) NewListPager(options *DNSResolversClientListOp
 			if err != nil {
 				return DNSResolversClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DNSResolversClientListResponse{}, err
 			}
@@ -286,7 +281,7 @@ func (client *DNSResolversClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,10 +305,11 @@ func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSRe
 }
 
 // NewListByResourceGroupPager - Lists DNS resolvers within a resource group.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.NewListByResourceGroupPager
+//     method.
 func (client *DNSResolversClient) NewListByResourceGroupPager(resourceGroupName string, options *DNSResolversClientListByResourceGroupOptions) *runtime.Pager[DNSResolversClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DNSResolversClientListByResourceGroupResponse]{
 		More: func(page DNSResolversClientListByResourceGroupResponse) bool {
@@ -330,7 +326,7 @@ func (client *DNSResolversClient) NewListByResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return DNSResolversClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DNSResolversClientListByResourceGroupResponse{}, err
 			}
@@ -353,7 +349,7 @@ func (client *DNSResolversClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,11 +373,12 @@ func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListByVirtualNetworkPager - Lists DNS resolver resource IDs linked to a virtual network.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// virtualNetworkName - The name of the virtual network.
-// options - DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.ListByVirtualNetwork
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworkName - The name of the virtual network.
+//   - options - DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.NewListByVirtualNetworkPager
+//     method.
 func (client *DNSResolversClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *DNSResolversClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolversClientListByVirtualNetworkResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DNSResolversClientListByVirtualNetworkResponse]{
 		More: func(page DNSResolversClientListByVirtualNetworkResponse) bool {
@@ -398,7 +395,7 @@ func (client *DNSResolversClient) NewListByVirtualNetworkPager(resourceGroupName
 			if err != nil {
 				return DNSResolversClientListByVirtualNetworkResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DNSResolversClientListByVirtualNetworkResponse{}, err
 			}
@@ -425,7 +422,7 @@ func (client *DNSResolversClient) listByVirtualNetworkCreateRequest(ctx context.
 		return nil, errors.New("parameter virtualNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -450,33 +447,35 @@ func (client *DNSResolversClient) listByVirtualNetworkHandleResponse(resp *http.
 
 // BeginUpdate - Updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dnsResolverName - The name of the DNS resolver.
-// parameters - Parameters supplied to the Update operation.
-// options - DNSResolversClientBeginUpdateOptions contains the optional parameters for the DNSResolversClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dnsResolverName - The name of the DNS resolver.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - DNSResolversClientBeginUpdateOptions contains the optional parameters for the DNSResolversClient.BeginUpdate
+//     method.
 func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*runtime.Poller[DNSResolversClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DNSResolversClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSResolversClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DNSResolversClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSResolversClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
 func (client *DNSResolversClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsResolverName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -501,7 +500,7 @@ func (client *DNSResolversClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dnsResolverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dnsResolverName}", url.PathEscape(dnsResolverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

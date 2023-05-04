@@ -9,6 +9,11 @@
 
 package armrecoveryservices
 
+// ClientCapabilitiesResponse contains the response from method Client.Capabilities.
+type ClientCapabilitiesResponse struct {
+	CapabilitiesResponse
+}
+
 // ClientCheckNameAvailabilityResponse contains the response from method Client.CheckNameAvailability.
 type ClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
@@ -19,7 +24,7 @@ type OperationsClientGetOperationResultResponse struct {
 	Vault
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	ClientDiscoveryResponse
 }
@@ -34,7 +39,7 @@ type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResources
 }
@@ -44,12 +49,12 @@ type RegisteredIdentitiesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationUsagesClientListResponse contains the response from method ReplicationUsagesClient.List.
+// ReplicationUsagesClientListResponse contains the response from method ReplicationUsagesClient.NewListPager.
 type ReplicationUsagesClientListResponse struct {
 	ReplicationUsageList
 }
 
-// UsagesClientListByVaultsResponse contains the response from method UsagesClient.ListByVaults.
+// UsagesClientListByVaultsResponse contains the response from method UsagesClient.NewListByVaultsPager.
 type UsagesClientListByVaultsResponse struct {
 	VaultUsageList
 }
@@ -74,7 +79,7 @@ type VaultExtendedInfoClientUpdateResponse struct {
 	VaultExtendedInfoResource
 }
 
-// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.CreateOrUpdate.
+// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.BeginCreateOrUpdate.
 type VaultsClientCreateOrUpdateResponse struct {
 	Vault
 }
@@ -89,17 +94,17 @@ type VaultsClientGetResponse struct {
 	Vault
 }
 
-// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.ListByResourceGroup.
+// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.NewListByResourceGroupPager.
 type VaultsClientListByResourceGroupResponse struct {
 	VaultList
 }
 
-// VaultsClientListBySubscriptionIDResponse contains the response from method VaultsClient.ListBySubscriptionID.
+// VaultsClientListBySubscriptionIDResponse contains the response from method VaultsClient.NewListBySubscriptionIDPager.
 type VaultsClientListBySubscriptionIDResponse struct {
 	VaultList
 }
 
-// VaultsClientUpdateResponse contains the response from method VaultsClient.Update.
+// VaultsClientUpdateResponse contains the response from method VaultsClient.BeginUpdate.
 type VaultsClientUpdateResponse struct {
 	Vault
 }

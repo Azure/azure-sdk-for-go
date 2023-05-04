@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // DevToolPortalsClient contains the methods for the DevToolPortals group.
 // Don't use this type directly, use NewDevToolPortalsClient() instead.
 type DevToolPortalsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDevToolPortalsClient creates a new instance of DevToolPortalsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDevToolPortalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevToolPortalsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DevToolPortalsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DevToolPortalsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// devToolPortalName - The name of Dev Tool Portal.
-// devToolPortalResource - Parameters for the create or update operation
-// options - DevToolPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevToolPortalsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - devToolPortalResource - Parameters for the create or update operation
+//   - options - DevToolPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevToolPortalsClient.BeginCreateOrUpdate
+//     method.
 func (client *DevToolPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DevToolPortalsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, devToolPortalName, devToolPortalResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DevToolPortalsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevToolPortalsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DevToolPortalsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevToolPortalsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DevToolPortalsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, devToolPortalResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +106,12 @@ func (client *DevToolPortalsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, devToolPortalResource)
@@ -128,34 +119,36 @@ func (client *DevToolPortalsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// devToolPortalName - The name of Dev Tool Portal.
-// options - DevToolPortalsClientBeginDeleteOptions contains the optional parameters for the DevToolPortalsClient.BeginDelete
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - options - DevToolPortalsClientBeginDeleteOptions contains the optional parameters for the DevToolPortalsClient.BeginDelete
+//     method.
 func (client *DevToolPortalsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*runtime.Poller[DevToolPortalsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DevToolPortalsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevToolPortalsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DevToolPortalsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevToolPortalsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DevToolPortalsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,12 +177,12 @@ func (client *DevToolPortalsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,18 +190,19 @@ func (client *DevToolPortalsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get the Application Live and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// devToolPortalName - The name of Dev Tool Portal.
-// options - DevToolPortalsClientGetOptions contains the optional parameters for the DevToolPortalsClient.Get method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - options - DevToolPortalsClientGetOptions contains the optional parameters for the DevToolPortalsClient.Get method.
 func (client *DevToolPortalsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientGetOptions) (DevToolPortalsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 	if err != nil {
 		return DevToolPortalsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DevToolPortalsClientGetResponse{}, err
 	}
@@ -237,12 +231,12 @@ func (client *DevToolPortalsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,11 +252,12 @@ func (client *DevToolPortalsClient) getHandleResponse(resp *http.Response) (DevT
 }
 
 // NewListPager - Handles requests to list all resources in a Service.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.List method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.NewListPager method.
 func (client *DevToolPortalsClient) NewListPager(resourceGroupName string, serviceName string, options *DevToolPortalsClientListOptions) *runtime.Pager[DevToolPortalsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DevToolPortalsClientListResponse]{
 		More: func(page DevToolPortalsClientListResponse) bool {
@@ -279,7 +274,7 @@ func (client *DevToolPortalsClient) NewListPager(resourceGroupName string, servi
 			if err != nil {
 				return DevToolPortalsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DevToolPortalsClientListResponse{}, err
 			}
@@ -306,12 +301,12 @@ func (client *DevToolPortalsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -15,7 +15,7 @@ func unmarshalAdditionalDataClassification(rawMsg json.RawMessage) (AdditionalDa
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func unmarshalAlertSimulatorRequestPropertiesClassification(rawMsg json.RawMessa
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func unmarshalAllowlistCustomAlertRuleClassification(rawMsg json.RawMessage) (Al
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func unmarshalAuthenticationDetailsPropertiesClassification(rawMsg json.RawMessa
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func unmarshalAutomationActionClassification(rawMsg json.RawMessage) (Automation
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func unmarshalAwsOrganizationalDataClassification(rawMsg json.RawMessage) (AwsOr
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -193,6 +193,8 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorAzureDevOpsOffering{}
 	case string(OfferingTypeCspmMonitorGcp):
 		b = &CspmMonitorGcpOffering{}
+	case string(OfferingTypeCspmMonitorGitLab):
+		b = &CspmMonitorGitLabOffering{}
 	case string(OfferingTypeCspmMonitorGithub):
 		b = &CspmMonitorGithubOffering{}
 	case string(OfferingTypeDefenderCspmAws):
@@ -209,6 +211,8 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &DefenderForDatabasesGcpOffering{}
 	case string(OfferingTypeDefenderForDevOpsAzureDevOps):
 		b = &DefenderForDevOpsAzureDevOpsOffering{}
+	case string(OfferingTypeDefenderForDevOpsGitLab):
+		b = &DefenderForDevOpsGitLabOffering{}
 	case string(OfferingTypeDefenderForDevOpsGithub):
 		b = &DefenderForDevOpsGithubOffering{}
 	case string(OfferingTypeDefenderForServersAws):
@@ -246,7 +250,7 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -260,6 +264,8 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 		b = &GcpProjectEnvironmentData{}
 	case string(EnvironmentTypeGithubScope):
 		b = &GithubScopeEnvironmentData{}
+	case string(EnvironmentTypeGitlabScope):
+		b = &GitlabScopeEnvironmentData{}
 	default:
 		b = &EnvironmentData{}
 	}
@@ -270,7 +276,7 @@ func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOr
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -290,7 +296,7 @@ func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDet
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -312,7 +318,7 @@ func unmarshalResourceIdentifierClassification(rawMsg json.RawMessage) (Resource
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -351,7 +357,7 @@ func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassificati
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -390,7 +396,7 @@ func unmarshalThresholdCustomAlertRuleClassification(rawMsg json.RawMessage) (Th
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -459,7 +465,7 @@ func unmarshalTimeWindowCustomAlertRuleClassification(rawMsg json.RawMessage) (T
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

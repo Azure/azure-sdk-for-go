@@ -25,11 +25,11 @@ func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewUserAssignedIdentitiesClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -68,11 +68,11 @@ func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rgName", nil)
+	pager := clientFactory.NewUserAssignedIdentitiesClient().NewListByResourceGroupPager("rgName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -111,11 +111,11 @@ func ExampleUserAssignedIdentitiesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rgName", "resourceName", armmsi.Identity{
+	res, err := clientFactory.NewUserAssignedIdentitiesClient().CreateOrUpdate(ctx, "rgName", "resourceName", armmsi.Identity{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -152,11 +152,11 @@ func ExampleUserAssignedIdentitiesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rgName", "resourceName", armmsi.IdentityUpdate{
+	res, err := clientFactory.NewUserAssignedIdentitiesClient().Update(ctx, "rgName", "resourceName", armmsi.IdentityUpdate{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -193,11 +193,11 @@ func ExampleUserAssignedIdentitiesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rgName", "resourceName", nil)
+	res, err := clientFactory.NewUserAssignedIdentitiesClient().Get(ctx, "rgName", "resourceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -228,11 +228,11 @@ func ExampleUserAssignedIdentitiesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmsi.NewUserAssignedIdentitiesClient("subid", cred, nil)
+	clientFactory, err := armmsi.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "rgName", "resourceName", nil)
+	_, err = clientFactory.NewUserAssignedIdentitiesClient().Delete(ctx, "rgName", "resourceName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

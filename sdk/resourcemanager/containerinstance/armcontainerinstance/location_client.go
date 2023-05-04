@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,41 +24,33 @@ import (
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
 type LocationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLocationClient creates a new instance of LocationClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LocationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LocationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListCachedImagesPager - Get the list of cached images on specific OS type for a subscription in a region.
-// Generated from API version 2022-10-01-preview
-// location - The identifier for the physical azure location.
-// options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages
-// method.
+//
+// Generated from API version 2023-05-01
+//   - location - The identifier for the physical azure location.
+//   - options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.NewListCachedImagesPager
+//     method.
 func (client *LocationClient) NewListCachedImagesPager(location string, options *LocationClientListCachedImagesOptions) *runtime.Pager[LocationClientListCachedImagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationClientListCachedImagesResponse]{
 		More: func(page LocationClientListCachedImagesResponse) bool {
@@ -77,7 +67,7 @@ func (client *LocationClient) NewListCachedImagesPager(location string, options 
 			if err != nil {
 				return LocationClientListCachedImagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationClientListCachedImagesResponse{}, err
 			}
@@ -100,12 +90,12 @@ func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,10 +111,11 @@ func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response
 }
 
 // NewListCapabilitiesPager - Get the list of CPU/memory/GPU capabilities of a region.
-// Generated from API version 2022-10-01-preview
-// location - The identifier for the physical azure location.
-// options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities
-// method.
+//
+// Generated from API version 2023-05-01
+//   - location - The identifier for the physical azure location.
+//   - options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.NewListCapabilitiesPager
+//     method.
 func (client *LocationClient) NewListCapabilitiesPager(location string, options *LocationClientListCapabilitiesOptions) *runtime.Pager[LocationClientListCapabilitiesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationClientListCapabilitiesResponse]{
 		More: func(page LocationClientListCapabilitiesResponse) bool {
@@ -141,7 +132,7 @@ func (client *LocationClient) NewListCapabilitiesPager(location string, options 
 			if err != nil {
 				return LocationClientListCapabilitiesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationClientListCapabilitiesResponse{}, err
 			}
@@ -164,12 +155,12 @@ func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,9 +176,10 @@ func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response
 }
 
 // NewListUsagePager - Get the usage for a subscription
-// Generated from API version 2022-10-01-preview
-// location - The identifier for the physical azure location.
-// options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
+//
+// Generated from API version 2023-05-01
+//   - location - The identifier for the physical azure location.
+//   - options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.NewListUsagePager method.
 func (client *LocationClient) NewListUsagePager(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationClientListUsageResponse]{
 		More: func(page LocationClientListUsageResponse) bool {
@@ -198,7 +190,7 @@ func (client *LocationClient) NewListUsagePager(location string, options *Locati
 			if err != nil {
 				return LocationClientListUsageResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LocationClientListUsageResponse{}, err
 			}
@@ -221,12 +213,12 @@ func (client *LocationClient) listUsageCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

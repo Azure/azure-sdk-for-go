@@ -77,14 +77,14 @@ type StartPositions struct {
 	Default StartPosition
 }
 
-// Processor uses a ConsumerClient and CheckpointStore to provide automatic
+// Processor uses a [ConsumerClient] and [CheckpointStore] to provide automatic
 // load balancing between multiple Processor instances, even in separate
 // processes or on separate machines.
 //
-// See [example_processor_test.go] for an example, and the function documentation
+// See [example_consuming_with_checkpoints_test.go] for an example, and the function documentation
 // for [Run] for a more detailed description of how load balancing works.
 //
-// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
@@ -110,10 +110,10 @@ type consumerClientForProcessor interface {
 
 // NewProcessor creates a Processor.
 //
-// More information can be found in the documentation for the [azeventhubs.Processor]
-// type or the [example_processor_test.go] for an example.
+// More information can be found in the documentation for the [Processor]
+// type or the [example_consuming_with_checkpoints_test.go] for an example.
 //
-// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
@@ -172,15 +172,16 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}, nil
 }
 
-// NextPartitionClient will get the next owned [PartitionProcessorClient] if one is acquired
-// or will block until a new one arrives or [processor.Run] is cancelled. You MUST call [azeventhubs.ProcessorPartitionClient.Close] on the returned client to avoid leaking resources.
+// NextPartitionClient will get the next owned [ProcessorPartitionClient] if one is acquired
+// or will block until a new one arrives or [Processor.Run] is cancelled. When the Processor
+// stops running this function will return nil.
 //
-// This function is safe to call before [processor.Run] has been called and will typically
-// be executed in a goroutine in a loop.
+// NOTE: You MUST call [ProcessorPartitionClient.Close] on the returned client to avoid
+// leaking resources.
 //
-// See [example_processor_test.go] for an example of typical usage.
+// See [example_consuming_with_checkpoints_test.go] for an example of typical usage.
 //
-// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartitionClient {
 	<-p.runCalled
 
@@ -196,19 +197,19 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 // or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
 // This function should run for the lifetime of your application, or for as long as you want
-// to continue to claim partitions.
+// to continue to claim and process partitions.
 //
 // As partitions are claimed new [ProcessorPartitionClient] instances will be returned from
 // [Processor.NextPartitionClient]. This can happen at any time, based on new Processor instances
 // coming online, as well as other Processors exiting.
 //
 // [ProcessorPartitionClient] are used like a [PartitionClient] but provide an [ProcessorPartitionClient.UpdateCheckpoint]
-// function that will store a checkpoint into the CheckpointStore. If the client were to crash, or be restarted
-// it will pick up from that point.
+// function that will store a checkpoint into the [CheckpointStore]. If the client were to crash, or be restarted
+// it will pick up from the last checkpoint.
 //
-// See [example_processor_test.go] for an example of typical usage.
+// See [example_consuming_with_checkpoints_test.go] for an example of typical usage.
 //
-// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 func (p *Processor) Run(ctx context.Context) error {
 	err := p.runImpl(ctx)
 

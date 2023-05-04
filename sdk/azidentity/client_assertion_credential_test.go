@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"os"
 	"strings"
 	"testing"
 
@@ -75,5 +76,39 @@ func TestClientAssertionCredentialCallbackError(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil || !strings.Contains(err.Error(), expectedError.Error()) {
 		t.Fatalf(`unexpected error: "%v"`, err)
+	}
+}
+
+func TestClientAssertionCredential_Live(t *testing.T) {
+	data, err := os.ReadFile(liveSP.pemPath)
+	if err != nil {
+		t.Fatalf(`failed to read cert: %v`, err)
+	}
+	certs, key, err := ParseCertificates(data, nil)
+	if err != nil {
+		t.Fatalf(`failed to parse cert: %v`, err)
+	}
+	for _, d := range []bool{true, false} {
+		name := "default options"
+		if d {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			o, stop := initRecording(t)
+			defer stop()
+			cred, err := NewClientAssertionCredential(liveSP.tenantID, liveSP.clientID,
+				func(context.Context) (string, error) {
+					return getAssertion(certs[0], key)
+				},
+				&ClientAssertionCredentialOptions{
+					ClientOptions: o,
+					DisableAuthorityValidationAndInstanceDiscovery: d,
+				},
+			)
+			if err != nil {
+				t.Fatal(err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
 }

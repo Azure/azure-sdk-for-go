@@ -14,22 +14,22 @@ import "time"
 // AacAudio - Describes Advanced Audio Codec (AAC) audio encoding settings.
 type AacAudio struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The bitrate, in bits per second, of the output encoded audio.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// The number of channels in the audio.
-	Channels *int32 `json:"channels,omitempty"`
+	Channels *int32
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The encoding profile to be used when encoding audio with AAC.
-	Profile *AacAudioProfile `json:"profile,omitempty"`
+	Profile *AacAudioProfile
 
 	// The sampling rate to use for encoding in hertz.
-	SamplingRate *int32 `json:"samplingRate,omitempty"`
+	SamplingRate *int32
 }
 
 // GetAudio implements the AudioClassification interface for type AacAudio.
@@ -55,11 +55,11 @@ func (a *AacAudio) GetCodec() *Codec {
 // to a different position depending on whether the media file starts from a timestamp of zero or not.
 type AbsoluteClipTime struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S
 	// for 30 seconds.
-	Time *string `json:"time,omitempty"`
+	Time *string
 }
 
 // GetClipTime implements the ClipTimeClassification interface for type AbsoluteClipTime.
@@ -71,52 +71,52 @@ func (a *AbsoluteClipTime) GetClipTime() *ClipTime {
 
 type AccessControl struct {
 	// The behavior for IP access control in Key Delivery.
-	DefaultAction *DefaultAction `json:"defaultAction,omitempty"`
+	DefaultAction *DefaultAction
 
 	// The IP allow list for access control in Key Delivery. If the default action is set to 'Allow', the IP allow list must be
 	// empty.
-	IPAllowList []*string `json:"ipAllowList,omitempty"`
+	IPAllowList []*string
 }
 
 type AccountEncryption struct {
 	// REQUIRED; The type of key used to encrypt the Account Key.
-	Type *AccountEncryptionKeyType `json:"type,omitempty"`
+	Type *AccountEncryptionKeyType
 
 	// The Key Vault identity.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// The properties of the key used to encrypt the account.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 
 	// READ-ONLY; The current status of the Key Vault mapping.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // AccountFilter - An Account Filter.
 type AccountFilter struct {
 	// The Media Filter properties.
-	Properties *MediaFilterProperties `json:"properties,omitempty"`
+	Properties *MediaFilterProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountFilterCollection - A collection of AccountFilter items.
 type AccountFilterCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of AccountFilter items.
-	Value []*AccountFilter `json:"value,omitempty"`
+	Value []*AccountFilter
 }
 
 // AccountFiltersClientCreateOrUpdateOptions contains the optional parameters for the AccountFiltersClient.CreateOrUpdate
@@ -135,7 +135,7 @@ type AccountFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
+// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.NewListPager method.
 type AccountFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -148,130 +148,130 @@ type AccountFiltersClientUpdateOptions struct {
 // AkamaiAccessControl - Akamai access control
 type AkamaiAccessControl struct {
 	// authentication key list
-	AkamaiSignatureHeaderAuthenticationKeyList []*AkamaiSignatureHeaderAuthenticationKey `json:"akamaiSignatureHeaderAuthenticationKeyList,omitempty"`
+	AkamaiSignatureHeaderAuthenticationKeyList []*AkamaiSignatureHeaderAuthenticationKey
 }
 
 // AkamaiSignatureHeaderAuthenticationKey - Akamai Signature Header authentication key.
 type AkamaiSignatureHeaderAuthenticationKey struct {
 	// authentication key
-	Base64Key *string `json:"base64Key,omitempty"`
+	Base64Key *string
 
 	// The expiration time of the authentication key.
-	Expiration *time.Time `json:"expiration,omitempty"`
+	Expiration *time.Time
 
 	// identifier of the key
-	Identifier *string `json:"identifier,omitempty"`
+	Identifier *string
 }
 
 // ArmStreamingEndpointCapacity - The streaming endpoint sku capacity.
 type ArmStreamingEndpointCapacity struct {
 	// The streaming endpoint default capacity.
-	Default *int32 `json:"default,omitempty"`
+	Default *int32
 
 	// The streaming endpoint maximum capacity.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// The streaming endpoint minimum capacity.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// READ-ONLY
-	ScaleType *string `json:"scaleType,omitempty" azure:"ro"`
+	ScaleType *string
 }
 
 // ArmStreamingEndpointCurrentSKU - The streaming endpoint current sku.
 type ArmStreamingEndpointCurrentSKU struct {
 	// The streaming endpoint sku capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// READ-ONLY; The streaming endpoint sku name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // ArmStreamingEndpointSKU - The streaming endpoint sku.
 type ArmStreamingEndpointSKU struct {
 	// READ-ONLY; The streaming endpoint sku name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 type ArmStreamingEndpointSKUInfo struct {
 	// The streaming endpoint sku capacity.
-	Capacity     *ArmStreamingEndpointCapacity `json:"capacity,omitempty"`
-	ResourceType *string                       `json:"resourceType,omitempty"`
+	Capacity     *ArmStreamingEndpointCapacity
+	ResourceType *string
 
 	// The streaming endpoint sku.
-	SKU *ArmStreamingEndpointSKU `json:"sku,omitempty"`
+	SKU *ArmStreamingEndpointSKU
 }
 
 // Asset - An Asset.
 type Asset struct {
 	// The resource properties.
-	Properties *AssetProperties `json:"properties,omitempty"`
+	Properties *AssetProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssetCollection - A collection of Asset items.
 type AssetCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of Asset items.
-	Value []*Asset `json:"value,omitempty"`
+	Value []*Asset
 }
 
 // AssetContainerSas - The Asset Storage container SAS URLs.
 type AssetContainerSas struct {
 	// The list of Asset container SAS URLs.
-	AssetContainerSasUrls []*string `json:"assetContainerSasUrls,omitempty"`
+	AssetContainerSasUrls []*string
 }
 
 // AssetFileEncryptionMetadata - The Asset File Storage encryption metadata.
 type AssetFileEncryptionMetadata struct {
 	// REQUIRED; The Asset File Id.
-	AssetFileID *string `json:"assetFileId,omitempty"`
+	AssetFileID *string
 
 	// The Asset File name.
-	AssetFileName *string `json:"assetFileName,omitempty"`
+	AssetFileName *string
 
 	// The Asset File initialization vector.
-	InitializationVector *string `json:"initializationVector,omitempty"`
+	InitializationVector *string
 }
 
 // AssetFilter - An Asset Filter.
 type AssetFilter struct {
 	// The Media Filter properties.
-	Properties *MediaFilterProperties `json:"properties,omitempty"`
+	Properties *MediaFilterProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssetFilterCollection - A collection of AssetFilter items.
 type AssetFilterCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of AssetFilter items.
-	Value []*AssetFilter `json:"value,omitempty"`
+	Value []*AssetFilter
 }
 
 // AssetFiltersClientCreateOrUpdateOptions contains the optional parameters for the AssetFiltersClient.CreateOrUpdate method.
@@ -289,7 +289,7 @@ type AssetFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
+// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.NewListPager method.
 type AssetFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -302,76 +302,76 @@ type AssetFiltersClientUpdateOptions struct {
 // AssetProperties - The Asset properties.
 type AssetProperties struct {
 	// The alternate ID of the Asset.
-	AlternateID *string `json:"alternateId,omitempty"`
+	AlternateID *string
 
 	// The name of the asset blob container.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The Asset description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The name of the storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	StorageAccountName *string
 
 	// READ-ONLY; The Asset ID.
-	AssetID *string `json:"assetId,omitempty" azure:"ro"`
+	AssetID *string
 
 	// READ-ONLY; The creation date of the Asset.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The last modified date of the Asset.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The Asset encryption format. One of None or MediaStorageEncryption.
-	StorageEncryptionFormat *AssetStorageEncryptionFormat `json:"storageEncryptionFormat,omitempty" azure:"ro"`
+	StorageEncryptionFormat *AssetStorageEncryptionFormat
 }
 
 // AssetStreamingLocator - Properties of the Streaming Locator.
 type AssetStreamingLocator struct {
 	// READ-ONLY; Asset Name.
-	AssetName *string `json:"assetName,omitempty" azure:"ro"`
+	AssetName *string
 
 	// READ-ONLY; The creation time of the Streaming Locator.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; Name of the default ContentKeyPolicy used by this Streaming Locator.
-	DefaultContentKeyPolicyName *string `json:"defaultContentKeyPolicyName,omitempty" azure:"ro"`
+	DefaultContentKeyPolicyName *string
 
 	// READ-ONLY; The end time of the Streaming Locator.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Streaming Locator name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The start time of the Streaming Locator.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; StreamingLocatorId of the Streaming Locator.
-	StreamingLocatorID *string `json:"streamingLocatorId,omitempty" azure:"ro"`
+	StreamingLocatorID *string
 
 	// READ-ONLY; Name of the Streaming Policy used by this Streaming Locator.
-	StreamingPolicyName *string `json:"streamingPolicyName,omitempty" azure:"ro"`
+	StreamingPolicyName *string
 }
 
 // AssetTrack - An Asset Track resource.
 type AssetTrack struct {
 	// The resource properties.
-	Properties *AssetTrackProperties `json:"properties,omitempty"`
+	Properties *AssetTrackProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssetTrackCollection - A collection of AssetTrack items.
 type AssetTrackCollection struct {
 	// A collection of AssetTrack items.
-	Value []*AssetTrack `json:"value,omitempty"`
+	Value []*AssetTrack
 }
 
 // AssetTrackOperationResultsClientGetOptions contains the optional parameters for the AssetTrackOperationResultsClient.Get
@@ -383,22 +383,22 @@ type AssetTrackOperationResultsClientGetOptions struct {
 // AssetTrackOperationStatus - Status of asset track operation.
 type AssetTrackOperationStatus struct {
 	// REQUIRED; Operation identifier.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Operation end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The error detail.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Operation resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Operation start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // AssetTrackOperationStatusesClientGetOptions contains the optional parameters for the AssetTrackOperationStatusesClient.Get
@@ -410,10 +410,10 @@ type AssetTrackOperationStatusesClientGetOptions struct {
 // AssetTrackProperties - Properties of a video, audio or text track in the asset.
 type AssetTrackProperties struct {
 	// Detailed information about a track in the asset.
-	Track TrackBaseClassification `json:"track,omitempty"`
+	Track TrackBaseClassification
 
 	// READ-ONLY; Provisioning state of the asset track.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AssetsClientCreateOrUpdateOptions contains the optional parameters for the AssetsClient.CreateOrUpdate method.
@@ -441,7 +441,7 @@ type AssetsClientListContainerSasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
+// AssetsClientListOptions contains the optional parameters for the AssetsClient.NewListPager method.
 type AssetsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -465,13 +465,13 @@ type AssetsClientUpdateOptions struct {
 // AsyncOperationResult - The status of an async operation.
 type AsyncOperationResult struct {
 	// The error object
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Operation Id of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Operation status of the async operation.
-	Status *AsyncOperationStatus `json:"status,omitempty"`
+	Status *AsyncOperationStatus
 }
 
 // AudioClassification provides polymorphic access to related types.
@@ -487,19 +487,19 @@ type AudioClassification interface {
 // Audio - Defines the common properties for all audio codecs.
 type Audio struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The bitrate, in bits per second, of the output encoded audio.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// The number of channels in the audio.
-	Channels *int32 `json:"channels,omitempty"`
+	Channels *int32
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The sampling rate to use for encoding in hertz.
-	SamplingRate *int32 `json:"samplingRate,omitempty"`
+	SamplingRate *int32
 }
 
 // GetAudio implements the AudioClassification interface for type Audio.
@@ -527,7 +527,7 @@ type AudioAnalyzerPresetClassification interface {
 // transcription. Currently, the preset supports processing of content with a single audio track.
 type AudioAnalyzerPreset struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). If you
 	// know the language of your content, it is recommended that you specify it. The
@@ -538,14 +538,14 @@ type AudioAnalyzerPreset struct {
 	// first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If
 	// automatic detection fails to find the language, transcription would fallback to
 	// 'en-US'." The list of supported languages is available here: https://go.microsoft.com/fwlink/?linkid=2109463
-	AudioLanguage *string `json:"audioLanguage,omitempty"`
+	AudioLanguage *string
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
-	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
+	ExperimentalOptions map[string]*string
 
 	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
 	// chosen.
-	Mode *AudioAnalysisMode `json:"mode,omitempty"`
+	Mode *AudioAnalysisMode
 }
 
 // GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type AudioAnalyzerPreset.
@@ -564,33 +564,33 @@ type AudioOverlay struct {
 	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
 	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
 	// file formats.
-	InputLabel *string `json:"inputLabel,omitempty"`
+	InputLabel *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
-	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
+	AudioGainLevel *float64
 
 	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
 	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
 	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
 	// video if the overlay media duration is greater than the input video duration,
 	// else the overlay will last as long as the overlay media duration.
-	End *string `json:"end,omitempty"`
+	End *string
 
 	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
 	// not specified the default behavior is to have no fade in (same as PT0S).
-	FadeInDuration *string `json:"fadeInDuration,omitempty"`
+	FadeInDuration *string
 
 	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
 	// specified the default behavior is to have no fade out (same as PT0S).
-	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
+	FadeOutDuration *string
 
 	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
 	// For example, PT05S to start the overlay at 5 seconds into the input video.
 	// If not specified the overlay starts from the beginning of the input video.
-	Start *string `json:"start,omitempty"`
+	Start *string
 }
 
 // GetOverlay implements the OverlayClassification interface for type AudioOverlay.
@@ -609,28 +609,28 @@ func (a *AudioOverlay) GetOverlay() *Overlay {
 // AudioTrack - Represents an audio track in the asset.
 type AudioTrack struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The DASH specific setting for the audio track.
-	DashSettings *DashSettings `json:"dashSettings,omitempty"`
+	DashSettings *DashSettings
 
 	// The display name of the audio track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The file name to the source file. This file is located in the storage container of the asset.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// The HLS specific setting for the audio track.
-	HlsSettings *HlsSettings `json:"hlsSettings,omitempty"`
+	HlsSettings *HlsSettings
 
 	// The RFC5646 language code for the audio track.
-	LanguageCode *string `json:"languageCode,omitempty"`
+	LanguageCode *string
 
 	// The MPEG-4 audio track ID for the audio track.
-	Mpeg4TrackID *int32 `json:"mpeg4TrackId,omitempty"`
+	Mpeg4TrackID *int32
 
 	// READ-ONLY; The stream bit rate for the audio track.
-	BitRate *int32 `json:"bitRate,omitempty" azure:"ro"`
+	BitRate *int32
 }
 
 // GetTrackBase implements the TrackBaseClassification interface for type AudioTrack.
@@ -653,11 +653,11 @@ type AudioTrackDescriptorClassification interface {
 // AudioTrackDescriptor - A TrackSelection to select audio tracks.
 type AudioTrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
 	// tracks.
-	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+	ChannelMapping *ChannelMapping
 }
 
 // GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type AudioTrackDescriptor.
@@ -673,14 +673,14 @@ func (a *AudioTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
 // BuiltInStandardEncoderPreset - Describes a built-in preset for encoding the input video with the Standard Encoder.
 type BuiltInStandardEncoderPreset struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The built-in preset to be used for encoding videos.
-	PresetName *EncoderNamedPreset `json:"presetName,omitempty"`
+	PresetName *EncoderNamedPreset
 
 	// Optional configuration settings for encoder. Configurations is only supported for ContentAwareEncoding and H265ContentAwareEncoding
 	// BuiltInStandardEncoderPreset.
-	Configurations *PresetConfigurations `json:"configurations,omitempty"`
+	Configurations *PresetConfigurations
 }
 
 // GetPreset implements the PresetClassification interface for type BuiltInStandardEncoderPreset.
@@ -693,31 +693,31 @@ func (b *BuiltInStandardEncoderPreset) GetPreset() *Preset {
 // CbcsDrmConfiguration - Class to specify DRM configurations of CommonEncryptionCbcs scheme in Streaming Policy
 type CbcsDrmConfiguration struct {
 	// FairPlay configurations
-	FairPlay *StreamingPolicyFairPlayConfiguration `json:"fairPlay,omitempty"`
+	FairPlay *StreamingPolicyFairPlayConfiguration
 
 	// PlayReady configurations
-	PlayReady *StreamingPolicyPlayReadyConfiguration `json:"playReady,omitempty"`
+	PlayReady *StreamingPolicyPlayReadyConfiguration
 
 	// Widevine configurations
-	Widevine *StreamingPolicyWidevineConfiguration `json:"widevine,omitempty"`
+	Widevine *StreamingPolicyWidevineConfiguration
 }
 
 // CencDrmConfiguration - Class to specify DRM configurations of CommonEncryptionCenc scheme in Streaming Policy
 type CencDrmConfiguration struct {
 	// PlayReady configurations
-	PlayReady *StreamingPolicyPlayReadyConfiguration `json:"playReady,omitempty"`
+	PlayReady *StreamingPolicyPlayReadyConfiguration
 
 	// Widevine configurations
-	Widevine *StreamingPolicyWidevineConfiguration `json:"widevine,omitempty"`
+	Widevine *StreamingPolicyWidevineConfiguration
 }
 
 // CheckNameAvailabilityInput - The input to the check name availability request.
 type CheckNameAvailabilityInput struct {
 	// The account name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The account type. For a Media Services account, this should be 'MediaServices'.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ClearKeyEncryptionConfiguration - Class to specify ClearKey configuration of common encryption schemes in Streaming Policy
@@ -727,7 +727,7 @@ type ClearKeyEncryptionConfiguration struct {
 	// the service will update at runtime with the value specific to the request. The currently supported token value is {AlternativeMediaId},
 	// which is replaced with the value of
 	// StreamingLocatorId.AlternativeMediaId.
-	CustomKeysAcquisitionURLTemplate *string `json:"customKeysAcquisitionUrlTemplate,omitempty"`
+	CustomKeysAcquisitionURLTemplate *string
 }
 
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
@@ -752,7 +752,7 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -762,7 +762,7 @@ type ClientListEdgePoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListOptions contains the optional parameters for the Client.List method.
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -784,7 +784,7 @@ type ClipTimeClassification interface {
 // ClipTime - Base class for specifying a clip time. Use sub classes of this class to specify the time position in the media.
 type ClipTime struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetClipTime implements the ClipTimeClassification interface for type ClipTime.
@@ -802,10 +802,10 @@ type CodecClassification interface {
 // Codec - Describes the basic properties of all codecs.
 type Codec struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 }
 
 // GetCodec implements the CodecClassification interface for type Codec.
@@ -814,37 +814,37 @@ func (c *Codec) GetCodec() *Codec { return c }
 // CommonEncryptionCbcs - Class for CommonEncryptionCbcs encryption scheme
 type CommonEncryptionCbcs struct {
 	// Optional configuration supporting ClearKey in CommonEncryptionCbcs encryption scheme.
-	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration `json:"clearKeyEncryptionConfiguration,omitempty"`
+	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration
 
 	// Representing which tracks should not be encrypted
-	ClearTracks []*TrackSelection `json:"clearTracks,omitempty"`
+	ClearTracks []*TrackSelection
 
 	// Representing default content key for each encryption scheme and separate content keys for specific tracks
-	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
+	ContentKeys *StreamingPolicyContentKeys
 
 	// Configuration of DRMs for current encryption scheme
-	Drm *CbcsDrmConfiguration `json:"drm,omitempty"`
+	Drm *CbcsDrmConfiguration
 
 	// Representing supported protocols
-	EnabledProtocols *EnabledProtocols `json:"enabledProtocols,omitempty"`
+	EnabledProtocols *EnabledProtocols
 }
 
 // CommonEncryptionCenc - Class for envelope encryption scheme
 type CommonEncryptionCenc struct {
 	// Optional configuration supporting ClearKey in CommonEncryptionCenc encryption scheme.
-	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration `json:"clearKeyEncryptionConfiguration,omitempty"`
+	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration
 
 	// Representing which tracks should not be encrypted
-	ClearTracks []*TrackSelection `json:"clearTracks,omitempty"`
+	ClearTracks []*TrackSelection
 
 	// Representing default content key for each encryption scheme and separate content keys for specific tracks
-	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
+	ContentKeys *StreamingPolicyContentKeys
 
 	// Configuration of DRMs for CommonEncryptionCenc encryption scheme
-	Drm *CencDrmConfiguration `json:"drm,omitempty"`
+	Drm *CencDrmConfiguration
 
 	// Representing supported protocols
-	EnabledProtocols *EnabledProtocols `json:"enabledProtocols,omitempty"`
+	EnabledProtocols *EnabledProtocols
 }
 
 // ContentKeyPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.CreateOrUpdate
@@ -869,7 +869,7 @@ type ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.NewListPager method.
 type ContentKeyPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -888,25 +888,25 @@ type ContentKeyPoliciesClientUpdateOptions struct {
 // ContentKeyPolicy - A Content Key Policy resource.
 type ContentKeyPolicy struct {
 	// The properties of the Content Key Policy.
-	Properties *ContentKeyPolicyProperties `json:"properties,omitempty"`
+	Properties *ContentKeyPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ContentKeyPolicyClearKeyConfiguration - Represents a configuration for non-DRM keys.
 type ContentKeyPolicyClearKeyConfiguration struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyClearKeyConfiguration.
@@ -919,10 +919,10 @@ func (c *ContentKeyPolicyClearKeyConfiguration) GetContentKeyPolicyConfiguration
 // ContentKeyPolicyCollection - A collection of ContentKeyPolicy items.
 type ContentKeyPolicyCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of ContentKeyPolicy items.
-	Value []*ContentKeyPolicy `json:"value,omitempty"`
+	Value []*ContentKeyPolicy
 }
 
 // ContentKeyPolicyConfigurationClassification provides polymorphic access to related types.
@@ -939,7 +939,7 @@ type ContentKeyPolicyConfigurationClassification interface {
 // a configuration.
 type ContentKeyPolicyConfiguration struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyConfiguration.
@@ -950,25 +950,25 @@ func (c *ContentKeyPolicyConfiguration) GetContentKeyPolicyConfiguration() *Cont
 // ContentKeyPolicyFairPlayConfiguration - Specifies a configuration for FairPlay licenses.
 type ContentKeyPolicyFairPlayConfiguration struct {
 	// REQUIRED; The key that must be used as FairPlay Application Secret key. This needs to be base64 encoded.
-	Ask []byte `json:"ask,omitempty"`
+	Ask []byte
 
 	// REQUIRED; The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
-	FairPlayPfx *string `json:"fairPlayPfx,omitempty"`
+	FairPlayPfx *string
 
 	// REQUIRED; The password encrypting FairPlay certificate in PKCS 12 (pfx) format.
-	FairPlayPfxPassword *string `json:"fairPlayPfxPassword,omitempty"`
+	FairPlayPfxPassword *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The rental and lease key type.
-	RentalAndLeaseKeyType *ContentKeyPolicyFairPlayRentalAndLeaseKeyType `json:"rentalAndLeaseKeyType,omitempty"`
+	RentalAndLeaseKeyType *ContentKeyPolicyFairPlayRentalAndLeaseKeyType
 
 	// REQUIRED; The rental duration. Must be greater than or equal to 0.
-	RentalDuration *int64 `json:"rentalDuration,omitempty"`
+	RentalDuration *int64
 
 	// Offline rental policy
-	OfflineRentalConfiguration *ContentKeyPolicyFairPlayOfflineRentalConfiguration `json:"offlineRentalConfiguration,omitempty"`
+	OfflineRentalConfiguration *ContentKeyPolicyFairPlayOfflineRentalConfiguration
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyFairPlayConfiguration.
@@ -980,16 +980,16 @@ func (c *ContentKeyPolicyFairPlayConfiguration) GetContentKeyPolicyConfiguration
 
 type ContentKeyPolicyFairPlayOfflineRentalConfiguration struct {
 	// REQUIRED; Playback duration
-	PlaybackDurationSeconds *int64 `json:"playbackDurationSeconds,omitempty"`
+	PlaybackDurationSeconds *int64
 
 	// REQUIRED; Storage duration
-	StorageDurationSeconds *int64 `json:"storageDurationSeconds,omitempty"`
+	StorageDurationSeconds *int64
 }
 
 // ContentKeyPolicyOpenRestriction - Represents an open restriction. License or key will be delivered on every request.
 type ContentKeyPolicyOpenRestriction struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyOpenRestriction.
@@ -1002,28 +1002,28 @@ func (c *ContentKeyPolicyOpenRestriction) GetContentKeyPolicyRestriction() *Cont
 // ContentKeyPolicyOption - Represents a policy option.
 type ContentKeyPolicyOption struct {
 	// REQUIRED; The key delivery configuration.
-	Configuration ContentKeyPolicyConfigurationClassification `json:"configuration,omitempty"`
+	Configuration ContentKeyPolicyConfigurationClassification
 
 	// REQUIRED; The requirements that must be met to deliver keys with this configuration
-	Restriction ContentKeyPolicyRestrictionClassification `json:"restriction,omitempty"`
+	Restriction ContentKeyPolicyRestrictionClassification
 
 	// The Policy Option description.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; The legacy Policy Option ID.
-	PolicyOptionID *string `json:"policyOptionId,omitempty" azure:"ro"`
+	PolicyOptionID *string
 }
 
 // ContentKeyPolicyPlayReadyConfiguration - Specifies a configuration for PlayReady licenses.
 type ContentKeyPolicyPlayReadyConfiguration struct {
 	// REQUIRED; The PlayReady licenses.
-	Licenses []*ContentKeyPolicyPlayReadyLicense `json:"licenses,omitempty"`
+	Licenses []*ContentKeyPolicyPlayReadyLicense
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The custom response data.
-	ResponseCustomData *string `json:"responseCustomData,omitempty"`
+	ResponseCustomData *string
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyPlayReadyConfiguration.
@@ -1036,7 +1036,7 @@ func (c *ContentKeyPolicyPlayReadyConfiguration) GetContentKeyPolicyConfiguratio
 // ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader - Specifies that the content key ID is in the PlayReady header.
 type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
@@ -1051,10 +1051,10 @@ func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) GetContentKeyP
 // PlayReady configuration.
 type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier struct {
 	// REQUIRED; The content key ID.
-	KeyID *string `json:"keyId,omitempty"`
+	KeyID *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
@@ -1079,7 +1079,7 @@ type ContentKeyPolicyPlayReadyContentKeyLocationClassification interface {
 // the location.
 type ContentKeyPolicyPlayReadyContentKeyLocation struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
@@ -1092,107 +1092,107 @@ func (c *ContentKeyPolicyPlayReadyContentKeyLocation) GetContentKeyPolicyPlayRea
 // control bits. For further details see the PlayReady Compliance Rules.
 type ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction struct {
 	// REQUIRED; Indicates whether this restriction is enforced on a Best Effort basis.
-	BestEffort *bool `json:"bestEffort,omitempty"`
+	BestEffort *bool
 
 	// REQUIRED; Configures the restriction control bits. Must be between 0 and 3 inclusive.
-	ConfigurationData *int32 `json:"configurationData,omitempty"`
+	ConfigurationData *int32
 }
 
 // ContentKeyPolicyPlayReadyLicense - The PlayReady license
 type ContentKeyPolicyPlayReadyLicense struct {
 	// REQUIRED; A flag indicating whether test devices can use the license.
-	AllowTestDevices *bool `json:"allowTestDevices,omitempty"`
+	AllowTestDevices *bool
 
 	// REQUIRED; The content key location.
-	ContentKeyLocation ContentKeyPolicyPlayReadyContentKeyLocationClassification `json:"contentKeyLocation,omitempty"`
+	ContentKeyLocation ContentKeyPolicyPlayReadyContentKeyLocationClassification
 
 	// REQUIRED; The PlayReady content type.
-	ContentType *ContentKeyPolicyPlayReadyContentType `json:"contentType,omitempty"`
+	ContentType *ContentKeyPolicyPlayReadyContentType
 
 	// REQUIRED; The license type.
-	LicenseType *ContentKeyPolicyPlayReadyLicenseType `json:"licenseType,omitempty"`
+	LicenseType *ContentKeyPolicyPlayReadyLicenseType
 
 	// The begin date of license
-	BeginDate *time.Time `json:"beginDate,omitempty"`
+	BeginDate *time.Time
 
 	// The expiration date of license.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// The grace period of license.
-	GracePeriod *string `json:"gracePeriod,omitempty"`
+	GracePeriod *string
 
 	// The license PlayRight
-	PlayRight *ContentKeyPolicyPlayReadyPlayRight `json:"playRight,omitempty"`
+	PlayRight *ContentKeyPolicyPlayReadyPlayRight
 
 	// The relative begin date of license.
-	RelativeBeginDate *string `json:"relativeBeginDate,omitempty"`
+	RelativeBeginDate *string
 
 	// The relative expiration date of license.
-	RelativeExpirationDate *string `json:"relativeExpirationDate,omitempty"`
+	RelativeExpirationDate *string
 
 	// The security level.
-	SecurityLevel *SecurityLevel `json:"securityLevel,omitempty"`
+	SecurityLevel *SecurityLevel
 }
 
 // ContentKeyPolicyPlayReadyPlayRight - Configures the Play Right in the PlayReady license.
 type ContentKeyPolicyPlayReadyPlayRight struct {
 	// REQUIRED; Configures Unknown output handling settings of the license.
-	AllowPassingVideoContentToUnknownOutput *ContentKeyPolicyPlayReadyUnknownOutputPassingOption `json:"allowPassingVideoContentToUnknownOutput,omitempty"`
+	AllowPassingVideoContentToUnknownOutput *ContentKeyPolicyPlayReadyUnknownOutputPassingOption
 
 	// REQUIRED; Enables the Image Constraint For Analog Component Video Restriction in the license.
-	DigitalVideoOnlyContentRestriction *bool `json:"digitalVideoOnlyContentRestriction,omitempty"`
+	DigitalVideoOnlyContentRestriction *bool
 
 	// REQUIRED; Enables the Image Constraint For Analog Component Video Restriction in the license.
-	ImageConstraintForAnalogComponentVideoRestriction *bool `json:"imageConstraintForAnalogComponentVideoRestriction,omitempty"`
+	ImageConstraintForAnalogComponentVideoRestriction *bool
 
 	// REQUIRED; Enables the Image Constraint For Analog Component Video Restriction in the license.
-	ImageConstraintForAnalogComputerMonitorRestriction *bool `json:"imageConstraintForAnalogComputerMonitorRestriction,omitempty"`
+	ImageConstraintForAnalogComputerMonitorRestriction *bool
 
 	// Configures Automatic Gain Control (AGC) and Color Stripe in the license. Must be between 0 and 3 inclusive.
-	AgcAndColorStripeRestriction *int32 `json:"agcAndColorStripeRestriction,omitempty"`
+	AgcAndColorStripeRestriction *int32
 
 	// Specifies the output protection level for compressed digital audio.
-	AnalogVideoOpl *int32 `json:"analogVideoOpl,omitempty"`
+	AnalogVideoOpl *int32
 
 	// Specifies the output protection level for compressed digital audio.
-	CompressedDigitalAudioOpl *int32 `json:"compressedDigitalAudioOpl,omitempty"`
+	CompressedDigitalAudioOpl *int32
 
 	// Specifies the output protection level for compressed digital video.
-	CompressedDigitalVideoOpl *int32 `json:"compressedDigitalVideoOpl,omitempty"`
+	CompressedDigitalVideoOpl *int32
 
 	// Configures the Explicit Analog Television Output Restriction in the license. Configuration data must be between 0 and 3
 	// inclusive.
-	ExplicitAnalogTelevisionOutputRestriction *ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction `json:"explicitAnalogTelevisionOutputRestriction,omitempty"`
+	ExplicitAnalogTelevisionOutputRestriction *ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction
 
 	// The amount of time that the license is valid after the license is first used to play content.
-	FirstPlayExpiration *string `json:"firstPlayExpiration,omitempty"`
+	FirstPlayExpiration *string
 
 	// Configures the Serial Copy Management System (SCMS) in the license. Must be between 0 and 3 inclusive.
-	ScmsRestriction *int32 `json:"scmsRestriction,omitempty"`
+	ScmsRestriction *int32
 
 	// Specifies the output protection level for uncompressed digital audio.
-	UncompressedDigitalAudioOpl *int32 `json:"uncompressedDigitalAudioOpl,omitempty"`
+	UncompressedDigitalAudioOpl *int32
 
 	// Specifies the output protection level for uncompressed digital video.
-	UncompressedDigitalVideoOpl *int32 `json:"uncompressedDigitalVideoOpl,omitempty"`
+	UncompressedDigitalVideoOpl *int32
 }
 
 // ContentKeyPolicyProperties - The properties of the Content Key Policy.
 type ContentKeyPolicyProperties struct {
 	// REQUIRED; The Key Policy options.
-	Options []*ContentKeyPolicyOption `json:"options,omitempty"`
+	Options []*ContentKeyPolicyOption
 
 	// A description for the Policy.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The creation date of the Policy
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The last modified date of the Policy
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The legacy Policy ID.
-	PolicyID *string `json:"policyId,omitempty" azure:"ro"`
+	PolicyID *string
 }
 
 // ContentKeyPolicyRestrictionClassification provides polymorphic access to related types.
@@ -1208,7 +1208,7 @@ type ContentKeyPolicyRestrictionClassification interface {
 // restriction.
 type ContentKeyPolicyRestriction struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyRestriction.
@@ -1229,7 +1229,7 @@ type ContentKeyPolicyRestrictionTokenKeyClassification interface {
 // be used to create a token key.
 type ContentKeyPolicyRestrictionTokenKey struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
@@ -1241,13 +1241,13 @@ func (c *ContentKeyPolicyRestrictionTokenKey) GetContentKeyPolicyRestrictionToke
 // ContentKeyPolicyRsaTokenKey - Specifies a RSA key for token validation
 type ContentKeyPolicyRsaTokenKey struct {
 	// REQUIRED; The RSA Parameter exponent
-	Exponent []byte `json:"exponent,omitempty"`
+	Exponent []byte
 
 	// REQUIRED; The RSA Parameter modulus
-	Modulus []byte `json:"modulus,omitempty"`
+	Modulus []byte
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
@@ -1261,10 +1261,10 @@ func (c *ContentKeyPolicyRsaTokenKey) GetContentKeyPolicyRestrictionTokenKey() *
 // ContentKeyPolicySymmetricTokenKey - Specifies a symmetric key for token validation.
 type ContentKeyPolicySymmetricTokenKey struct {
 	// REQUIRED; The key value of the key
-	KeyValue []byte `json:"keyValue,omitempty"`
+	KeyValue []byte
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
@@ -1278,38 +1278,38 @@ func (c *ContentKeyPolicySymmetricTokenKey) GetContentKeyPolicyRestrictionTokenK
 // ContentKeyPolicyTokenClaim - Represents a token claim.
 type ContentKeyPolicyTokenClaim struct {
 	// Token claim type.
-	ClaimType *string `json:"claimType,omitempty"`
+	ClaimType *string
 
 	// Token claim value.
-	ClaimValue *string `json:"claimValue,omitempty"`
+	ClaimValue *string
 }
 
 // ContentKeyPolicyTokenRestriction - Represents a token restriction. Provided token must match these requirements for successful
 // license or key delivery.
 type ContentKeyPolicyTokenRestriction struct {
 	// REQUIRED; The audience for the token.
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// REQUIRED; The token issuer.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The primary verification key.
-	PrimaryVerificationKey ContentKeyPolicyRestrictionTokenKeyClassification `json:"primaryVerificationKey,omitempty"`
+	PrimaryVerificationKey ContentKeyPolicyRestrictionTokenKeyClassification
 
 	// REQUIRED; The type of token.
-	RestrictionTokenType *ContentKeyPolicyRestrictionTokenType `json:"restrictionTokenType,omitempty"`
+	RestrictionTokenType *ContentKeyPolicyRestrictionTokenType
 
 	// A list of alternative verification keys.
-	AlternateVerificationKeys []ContentKeyPolicyRestrictionTokenKeyClassification `json:"alternateVerificationKeys,omitempty"`
+	AlternateVerificationKeys []ContentKeyPolicyRestrictionTokenKeyClassification
 
 	// The OpenID connect discovery document.
-	OpenIDConnectDiscoveryDocument *string `json:"openIdConnectDiscoveryDocument,omitempty"`
+	OpenIDConnectDiscoveryDocument *string
 
 	// A list of required token claims.
-	RequiredClaims []*ContentKeyPolicyTokenClaim `json:"requiredClaims,omitempty"`
+	RequiredClaims []*ContentKeyPolicyTokenClaim
 }
 
 // GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyTokenRestriction.
@@ -1323,7 +1323,7 @@ func (c *ContentKeyPolicyTokenRestriction) GetContentKeyPolicyRestriction() *Con
 // version.
 type ContentKeyPolicyUnknownConfiguration struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyUnknownConfiguration.
@@ -1336,7 +1336,7 @@ func (c *ContentKeyPolicyUnknownConfiguration) GetContentKeyPolicyConfiguration(
 // ContentKeyPolicyUnknownRestriction - Represents a ContentKeyPolicyRestriction that is unavailable in the current API version.
 type ContentKeyPolicyUnknownRestriction struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyUnknownRestriction.
@@ -1349,10 +1349,10 @@ func (c *ContentKeyPolicyUnknownRestriction) GetContentKeyPolicyRestriction() *C
 // ContentKeyPolicyWidevineConfiguration - Specifies a configuration for Widevine licenses.
 type ContentKeyPolicyWidevineConfiguration struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The Widevine template.
-	WidevineTemplate *string `json:"widevineTemplate,omitempty"`
+	WidevineTemplate *string
 }
 
 // GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyWidevineConfiguration.
@@ -1365,10 +1365,10 @@ func (c *ContentKeyPolicyWidevineConfiguration) GetContentKeyPolicyConfiguration
 // ContentKeyPolicyX509CertificateTokenKey - Specifies a certificate for token validation.
 type ContentKeyPolicyX509CertificateTokenKey struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET)
-	RawBody []byte `json:"rawBody,omitempty"`
+	RawBody []byte
 }
 
 // GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
@@ -1382,10 +1382,10 @@ func (c *ContentKeyPolicyX509CertificateTokenKey) GetContentKeyPolicyRestriction
 // CopyAudio - A codec flag, which tells the encoder to copy the input audio bitstream.
 type CopyAudio struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 }
 
 // GetCodec implements the CodecClassification interface for type CopyAudio.
@@ -1399,10 +1399,10 @@ func (c *CopyAudio) GetCodec() *Codec {
 // CopyVideo - A codec flag, which tells the encoder to copy the input video bitstream without re-encoding.
 type CopyVideo struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 }
 
 // GetCodec implements the CodecClassification interface for type CopyVideo.
@@ -1416,10 +1416,10 @@ func (c *CopyVideo) GetCodec() *Codec {
 // CrossSiteAccessPolicies - The client access policy.
 type CrossSiteAccessPolicies struct {
 	// The content of clientaccesspolicy.xml used by Silverlight.
-	ClientAccessPolicy *string `json:"clientAccessPolicy,omitempty"`
+	ClientAccessPolicy *string
 
 	// The content of crossdomain.xml used by Silverlight.
-	CrossDomainPolicy *string `json:"crossDomainPolicy,omitempty"`
+	CrossDomainPolicy *string
 }
 
 // DDAudio - Describes Dolby Digital Audio Codec (AC3) audio encoding settings. The current implementation for Dolby Digital
@@ -1429,19 +1429,19 @@ type CrossSiteAccessPolicies struct {
 // 320000, 384000, 448000, 512000, 576000, 640000 bps.
 type DDAudio struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The bitrate, in bits per second, of the output encoded audio.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// The number of channels in the audio.
-	Channels *int32 `json:"channels,omitempty"`
+	Channels *int32
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The sampling rate to use for encoding in hertz.
-	SamplingRate *int32 `json:"samplingRate,omitempty"`
+	SamplingRate *int32
 }
 
 // GetAudio implements the AudioClassification interface for type DDAudio.
@@ -1466,147 +1466,147 @@ func (d *DDAudio) GetCodec() *Codec {
 // DashSettings - The DASH setting for a track.
 type DashSettings struct {
 	// The role for the DASH setting.
-	Role *string `json:"role,omitempty"`
+	Role *string
 }
 
 // DefaultKey - Class to specify properties of default content key for each encryption scheme
 type DefaultKey struct {
 	// Label can be used to specify Content Key when creating a Streaming Locator
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Policy used by Default Key
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 }
 
 // Deinterlace - Describes the de-interlacing settings.
 type Deinterlace struct {
 	// The deinterlacing mode. Defaults to AutoPixelAdaptive.
-	Mode *DeinterlaceMode `json:"mode,omitempty"`
+	Mode *DeinterlaceMode
 
 	// The field parity for de-interlacing, defaults to Auto.
-	Parity *DeinterlaceParity `json:"parity,omitempty"`
+	Parity *DeinterlaceParity
 }
 
 type EdgePolicies struct {
-	UsageDataCollectionPolicy *EdgeUsageDataCollectionPolicy `json:"usageDataCollectionPolicy,omitempty"`
+	UsageDataCollectionPolicy *EdgeUsageDataCollectionPolicy
 }
 
 type EdgeUsageDataCollectionPolicy struct {
 	// Usage data collection frequency in ISO 8601 duration format e.g. PT10M , PT5H.
-	DataCollectionFrequency *string `json:"dataCollectionFrequency,omitempty"`
+	DataCollectionFrequency *string
 
 	// Usage data reporting frequency in ISO 8601 duration format e.g. PT10M , PT5H.
-	DataReportingFrequency *string `json:"dataReportingFrequency,omitempty"`
+	DataReportingFrequency *string
 
 	// Details of Event Hub where the usage will be reported.
-	EventHubDetails *EdgeUsageDataEventHub `json:"eventHubDetails,omitempty"`
+	EventHubDetails *EdgeUsageDataEventHub
 
 	// Maximum time for which the functionality of the device will not be hampered for not reporting the usage data.
-	MaxAllowedUnreportedUsageDuration *string `json:"maxAllowedUnreportedUsageDuration,omitempty"`
+	MaxAllowedUnreportedUsageDuration *string
 }
 
 type EdgeUsageDataEventHub struct {
 	// Name of the Event Hub where usage will be reported.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Namespace of the Event Hub where usage will be reported.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// SAS token needed to interact with Event Hub.
-	Token *string `json:"token,omitempty"`
+	Token *string
 }
 
 // EnabledProtocols - Class to specify which protocols are enabled
 type EnabledProtocols struct {
 	// REQUIRED; Enable DASH protocol or not
-	Dash *bool `json:"dash,omitempty"`
+	Dash *bool
 
 	// REQUIRED; Enable Download protocol or not
-	Download *bool `json:"download,omitempty"`
+	Download *bool
 
 	// REQUIRED; Enable HLS protocol or not
-	Hls *bool `json:"hls,omitempty"`
+	Hls *bool
 
 	// REQUIRED; Enable SmoothStreaming protocol or not
-	SmoothStreaming *bool `json:"smoothStreaming,omitempty"`
+	SmoothStreaming *bool
 }
 
 // EntityNameAvailabilityCheckOutput - The response from the check name availability request.
 type EntityNameAvailabilityCheckOutput struct {
 	// REQUIRED; Specifies if the name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Specifies the detailed reason if the name is not available.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Specifies the reason if the name is not available.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // EnvelopeEncryption - Class for EnvelopeEncryption encryption scheme
 type EnvelopeEncryption struct {
 	// Representing which tracks should not be encrypted
-	ClearTracks []*TrackSelection `json:"clearTracks,omitempty"`
+	ClearTracks []*TrackSelection
 
 	// Representing default content key for each encryption scheme and separate content keys for specific tracks
-	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
+	ContentKeys *StreamingPolicyContentKeys
 
 	// Template for the URL of the custom service delivering keys to end user players. Not required when using Azure Media Services
 	// for issuing keys. The template supports replaceable tokens that the service
 	// will update at runtime with the value specific to the request. The currently supported token values are {AlternativeMediaId},
 	// which is replaced with the value of StreamingLocatorId.AlternativeMediaId,
 	// and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
-	CustomKeyAcquisitionURLTemplate *string `json:"customKeyAcquisitionUrlTemplate,omitempty"`
+	CustomKeyAcquisitionURLTemplate *string
 
 	// Representing supported protocols
-	EnabledProtocols *EnabledProtocols `json:"enabledProtocols,omitempty"`
+	EnabledProtocols *EnabledProtocols
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // FaceDetectorPreset - Describes all the settings to be used when analyzing a video in order to detect (and optionally redact)
 // all the faces present.
 type FaceDetectorPreset struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Blur type
-	BlurType *BlurType `json:"blurType,omitempty"`
+	BlurType *BlurType
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
-	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
+	ExperimentalOptions map[string]*string
 
 	// This mode provides the ability to choose between the following settings: 1) Analyze - For detection only.This mode generates
 	// a metadata JSON file marking appearances of faces throughout the
@@ -1614,7 +1614,7 @@ type FaceDetectorPreset struct {
 	// detected faces. 3) Redact - This enables a 2-pass process, allowing for
 	// selective redaction of a subset of detected faces.It takes in the metadata file from a prior analyze pass, along with the
 	// source video, and a user-selected subset of IDs that require redaction.
-	Mode *FaceRedactorMode `json:"mode,omitempty"`
+	Mode *FaceRedactorMode
 
 	// Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution," which will
 	// keep the input video at its original resolution when analyzed. Using
@@ -1624,7 +1624,7 @@ type FaceDetectorPreset struct {
 	// process high resolution video. It may also reduce the cost of using this
 	// component (see https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces
 	// that end up being too small in the resized video may not be detected.
-	Resolution *AnalysisResolution `json:"resolution,omitempty"`
+	Resolution *AnalysisResolution
 }
 
 // GetPreset implements the PresetClassification interface for type FaceDetectorPreset.
@@ -1639,63 +1639,63 @@ type Fade struct {
 	// REQUIRED; The Duration of the fade effect in the video. The value can be in ISO 8601 format (For example, PT05S to fade
 	// In/Out a color during 5 seconds), or a frame count (For example, 10 to fade 10 frames from
 	// the start time), or a relative value to stream duration (For example, 10% to fade 10% of stream duration)
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; The Color for the fade In/Out. it can be on the CSS Level1 colors https://developer.mozilla.org/en-US/docs/Web/CSS/colorvalue/colorkeywords
 	// or an RGB/hex value: e.g: rgb(255,0,0), 0xFF0000 or #FF0000
-	FadeColor *string `json:"fadeColor,omitempty"`
+	FadeColor *string
 
 	// The position in the input video from where to start fade. The value can be in ISO 8601 format (For example, PT05S to start
 	// at 5 seconds), or a frame count (For example, 10 to start at the 10th frame),
 	// or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Default is 0
-	Start *string `json:"start,omitempty"`
+	Start *string
 }
 
 // FilterTrackPropertyCondition - The class to specify one track property condition.
 type FilterTrackPropertyCondition struct {
 	// REQUIRED; The track property condition operation.
-	Operation *FilterTrackPropertyCompareOperation `json:"operation,omitempty"`
+	Operation *FilterTrackPropertyCompareOperation
 
 	// REQUIRED; The track property type.
-	Property *FilterTrackPropertyType `json:"property,omitempty"`
+	Property *FilterTrackPropertyType
 
 	// REQUIRED; The track property value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // FilterTrackSelection - Representing a list of FilterTrackPropertyConditions to select a track. The filters are combined
 // using a logical AND operation.
 type FilterTrackSelection struct {
 	// REQUIRED; The track selections.
-	TrackSelections []*FilterTrackPropertyCondition `json:"trackSelections,omitempty"`
+	TrackSelections []*FilterTrackPropertyCondition
 }
 
 // Filters - Describes all the filtering operations, such as de-interlacing, rotation etc. that are to be applied to the input
 // media before encoding.
 type Filters struct {
 	// The parameters for the rectangular window with which to crop the input video.
-	Crop *Rectangle `json:"crop,omitempty"`
+	Crop *Rectangle
 
 	// The de-interlacing settings.
-	Deinterlace *Deinterlace `json:"deinterlace,omitempty"`
+	Deinterlace *Deinterlace
 
 	// Describes the properties of a Fade effect applied to the input media.
-	FadeIn *Fade `json:"fadeIn,omitempty"`
+	FadeIn *Fade
 
 	// Describes the properties of a Fade effect applied to the input media.
-	FadeOut *Fade `json:"fadeOut,omitempty"`
+	FadeOut *Fade
 
 	// The properties of overlays to be applied to the input video. These could be audio, image or video overlays.
-	Overlays []OverlayClassification `json:"overlays,omitempty"`
+	Overlays []OverlayClassification
 
 	// The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto
-	Rotation *Rotation `json:"rotation,omitempty"`
+	Rotation *Rotation
 }
 
 // FirstQuality - Filter First Quality
 type FirstQuality struct {
 	// REQUIRED; The first quality bitrate.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 }
 
 // FormatClassification provides polymorphic access to related types.
@@ -1719,10 +1719,10 @@ type Format struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetFormat implements the FormatClassification interface for type Format.
@@ -1733,10 +1733,10 @@ func (f *Format) GetFormat() *Format { return f }
 // allow selection of a single track across a set of input files.
 type FromAllInputFile struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
-	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+	IncludedTracks []TrackDescriptorClassification
 }
 
 // GetInputDefinition implements the InputDefinitionClassification interface for type FromAllInputFile.
@@ -1752,10 +1752,10 @@ func (f *FromAllInputFile) GetInputDefinition() *InputDefinition {
 // tracks from each file given.
 type FromEachInputFile struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
-	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+	IncludedTracks []TrackDescriptorClassification
 }
 
 // GetInputDefinition implements the InputDefinitionClassification interface for type FromEachInputFile.
@@ -1771,101 +1771,101 @@ func (f *FromEachInputFile) GetInputDefinition() *InputDefinition {
 type H264Layer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is
 	// a required field.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
 	// whenever the video profile permits its use.
-	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+	AdaptiveBFrame *bool
 
 	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
 	// based on the video profile and level.
-	BFrames *int32 `json:"bFrames,omitempty"`
+	BFrames *int32
 
 	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
 	// The default is 5 seconds (for example, PT5S).
-	BufferWindow *string `json:"bufferWindow,omitempty"`
+	BufferWindow *string
 
 	// The value of CRF to be used when encoding this layer. This setting takes effect when RateControlMode of video codec is
 	// set at CRF mode. The range of CRF value is between 0 and 51, where lower values
 	// would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at some point
 	// quality degradation will be noticed. Default value is 23.
-	Crf *float32 `json:"crf,omitempty"`
+	Crf *float32
 
 	// The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for the
 	// profile and level.
-	EntropyMode *EntropyMode `json:"entropyMode,omitempty"`
+	EntropyMode *EntropyMode
 
 	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
 	// are integers (For example, 30000/1001), or in the form of a number (For example,
 	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
 	// the encoder will use the same frame rate as the input video.
-	FrameRate *string `json:"frameRate,omitempty"`
+	FrameRate *string
 
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.264 profile. If not specified,
 	// the default is Auto, which lets the encoder choose the Level that is
 	// appropriate for this layer.
-	Level *string `json:"level,omitempty"`
+	Level *string
 
 	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
 	// to the same value as bitrate.
-	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
+	MaxBitrate *int32
 
 	// We currently support Baseline, Main, High, High422, High444. Default is Auto.
-	Profile *H264VideoProfile `json:"profile,omitempty"`
+	Profile *H264VideoProfile
 
 	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate
 	// number based on the encoder complexity setting.
-	ReferenceFrames *int32 `json:"referenceFrames,omitempty"`
+	ReferenceFrames *int32
 
 	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
 	// use a single slice for each frame.
-	Slices *int32 `json:"slices,omitempty"`
+	Slices *int32
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // H264Video - Describes all the properties for encoding a video with the H.264 codec.
 type H264Video struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Tells the encoder how to choose its encoding settings. The default value is Balanced.
-	Complexity *H264Complexity `json:"complexity,omitempty"`
+	Complexity *H264Complexity
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The collection of output H.264 layers to be produced by the encoder.
-	Layers []*H264Layer `json:"layers,omitempty"`
+	Layers []*H264Layer
 
 	// The video rate control mode
-	RateControlMode *H264RateControlMode `json:"rateControlMode,omitempty"`
+	RateControlMode *H264RateControlMode
 
 	// Whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag
 	// should be set to true only when the encoder is being configured to produce a
 	// single output video.
-	SceneChangeDetection *bool `json:"sceneChangeDetection,omitempty"`
+	SceneChangeDetection *bool
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type H264Video.
@@ -1893,96 +1893,96 @@ type H265Layer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example:
 	// a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a
 	// required field.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
 	// turn it on whenever the video profile permits its use.
-	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+	AdaptiveBFrame *bool
 
 	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
 	// based on the video profile and level.
-	BFrames *int32 `json:"bFrames,omitempty"`
+	BFrames *int32
 
 	// The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds.
 	// The default is 5 seconds (for example, PT5S).
-	BufferWindow *string `json:"bufferWindow,omitempty"`
+	BufferWindow *string
 
 	// The value of CRF to be used when encoding this layer. This setting takes effect when RateControlMode of video codec is
 	// set at CRF mode. The range of CRF value is between 0 and 51, where lower values
 	// would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at some point
 	// quality degradation will be noticed. Default value is 28.
-	Crf *float32 `json:"crf,omitempty"`
+	Crf *float32
 
 	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
 	// are integers (For example, 30000/1001), or in the form of a number (For example,
 	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
 	// the encoder will use the same frame rate as the input video.
-	FrameRate *string `json:"frameRate,omitempty"`
+	FrameRate *string
 
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.265 profile. If not specified,
 	// the default is Auto, which lets the encoder choose the Level that is
 	// appropriate for this layer.
-	Level *string `json:"level,omitempty"`
+	Level *string
 
 	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
 	// to the same value as bitrate.
-	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
+	MaxBitrate *int32
 
 	// We currently support Main. Default is Auto.
-	Profile *H265VideoProfile `json:"profile,omitempty"`
+	Profile *H265VideoProfile
 
 	// The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate
 	// number based on the encoder complexity setting.
-	ReferenceFrames *int32 `json:"referenceFrames,omitempty"`
+	ReferenceFrames *int32
 
 	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
 	// use a single slice for each frame.
-	Slices *int32 `json:"slices,omitempty"`
+	Slices *int32
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // H265Video - Describes all the properties for encoding a video with the H.265 codec.
 type H265Video struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Tells the encoder how to choose its encoding settings. Quality will provide for a higher compression ratio but at a higher
 	// cost and longer compute time. Speed will produce a relatively larger file but
 	// is faster and more economical. The default value is Balanced.
-	Complexity *H265Complexity `json:"complexity,omitempty"`
+	Complexity *H265Complexity
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The collection of output H.265 layers to be produced by the encoder.
-	Layers []*H265Layer `json:"layers,omitempty"`
+	Layers []*H265Layer
 
 	// Specifies whether or not the encoder should insert key frames at scene changes. If not specified, the default is false.
 	// This flag should be set to true only when the encoder is being configured to
 	// produce a single output video.
-	SceneChangeDetection *bool `json:"sceneChangeDetection,omitempty"`
+	SceneChangeDetection *bool
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type H265Video.
@@ -2009,78 +2009,78 @@ type H265VideoLayer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. For example:
 	// a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a
 	// required field.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will
 	// turn it on whenever the video profile permits its use.
-	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+	AdaptiveBFrame *bool
 
 	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
 	// based on the video profile and level.
-	BFrames *int32 `json:"bFrames,omitempty"`
+	BFrames *int32
 
 	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
 	// are integers (For example, 30000/1001), or in the form of a number (For example,
 	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
 	// the encoder will use the same frame rate as the input video.
-	FrameRate *string `json:"frameRate,omitempty"`
+	FrameRate *string
 
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
 	// to the same value as bitrate.
-	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
+	MaxBitrate *int32
 
 	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
 	// use a single slice for each frame.
-	Slices *int32 `json:"slices,omitempty"`
+	Slices *int32
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // Hls - HTTP Live Streaming (HLS) packing setting for the live output.
 type Hls struct {
 	// The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value does not
 	// affect the packing ratio for HLS CMAF output.
-	FragmentsPerTsSegment *int32 `json:"fragmentsPerTsSegment,omitempty"`
+	FragmentsPerTsSegment *int32
 }
 
 // HlsSettings - The HLS setting for a track.
 type HlsSettings struct {
 	// The characteristics for the HLS setting.
-	Characteristics *string `json:"characteristics,omitempty"`
+	Characteristics *string
 
 	// The default for the HLS setting.
-	Default *bool `json:"default,omitempty"`
+	Default *bool
 
 	// The forced for the HLS setting.
-	Forced *bool `json:"forced,omitempty"`
+	Forced *bool
 }
 
 // IPAccessControl - The IP access control.
 type IPAccessControl struct {
 	// The IP allow list.
-	Allow []*IPRange `json:"allow,omitempty"`
+	Allow []*IPRange
 }
 
 // IPRange - The IP address range in the CIDR scheme.
 type IPRange struct {
 	// The IP address.
-	Address *string `json:"address,omitempty"`
+	Address *string
 
 	// The friendly name for the IP address range.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The subnet mask prefix length (see CIDR notation).
-	SubnetPrefixLength *int32 `json:"subnetPrefixLength,omitempty"`
+	SubnetPrefixLength *int32
 }
 
 // ImageClassification provides polymorphic access to related types.
@@ -2096,7 +2096,7 @@ type ImageClassification interface {
 // Image - Describes the basic properties for generating thumbnails from the input video
 type Image struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
 	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
@@ -2104,15 +2104,15 @@ type Image struct {
 	// a macro {Best}, which tells the encoder to select the best thumbnail from
 	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
 	// Range. The default value is macro {Best}.
-	Start *string `json:"start,omitempty"`
+	Start *string
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
 	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
@@ -2120,7 +2120,7 @@ type Image struct {
 	// this value is 1, it means only producing one thumbnail at start time), or a
 	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
 	// value is 100%, which means to stop at the end of the stream.
-	Range *string `json:"range,omitempty"`
+	Range *string
 
 	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
 	// every 5 seconds), or a frame count (For example, 30 for one image every 30
@@ -2131,13 +2131,13 @@ type Image struct {
 	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
 	// specified at start time. Try to select reasonable value for Step if the first
 	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
-	Step *string `json:"step,omitempty"`
+	Step *string
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type Image.
@@ -2184,10 +2184,10 @@ type ImageFormat struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetFormat implements the FormatClassification interface for type ImageFormat.
@@ -2214,10 +2214,10 @@ type InputDefinitionClassification interface {
 // metadata.
 type InputDefinition struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
-	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+	IncludedTracks []TrackDescriptorClassification
 }
 
 // GetInputDefinition implements the InputDefinitionClassification interface for type InputDefinition.
@@ -2226,13 +2226,13 @@ func (i *InputDefinition) GetInputDefinition() *InputDefinition { return i }
 // InputFile - An InputDefinition for a single file. TrackSelections are scoped to the file specified.
 type InputFile struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Name of the file that this input definition applies to.
-	Filename *string `json:"filename,omitempty"`
+	Filename *string
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
-	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+	IncludedTracks []TrackDescriptorClassification
 }
 
 // GetInputDefinition implements the InputDefinitionClassification interface for type InputFile.
@@ -2246,56 +2246,56 @@ func (i *InputFile) GetInputDefinition() *InputDefinition {
 // Job - A Job resource type. The progress and state can be obtained by polling a Job or subscribing to events using EventGrid.
 type Job struct {
 	// The resource properties.
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobCollection - A collection of Job items.
 type JobCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of Job items.
-	Value []*Job `json:"value,omitempty"`
+	Value []*Job
 }
 
 // JobError - Details of JobOutput errors.
 type JobError struct {
 	// READ-ONLY; Helps with categorization of errors.
-	Category *JobErrorCategory `json:"category,omitempty" azure:"ro"`
+	Category *JobErrorCategory
 
 	// READ-ONLY; Error code describing the error.
-	Code *JobErrorCode `json:"code,omitempty" azure:"ro"`
+	Code *JobErrorCode
 
 	// READ-ONLY; An array of details about specific errors that led to this reported error.
-	Details []*JobErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*JobErrorDetail
 
 	// READ-ONLY; A human-readable language-dependent representation of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
 	// Azure Portal.
-	Retry *JobRetry `json:"retry,omitempty" azure:"ro"`
+	Retry *JobRetry
 }
 
 // JobErrorDetail - Details of JobOutput errors.
 type JobErrorDetail struct {
 	// READ-ONLY; Code describing the error detail.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; A human-readable representation of the error.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // JobInputClassification provides polymorphic access to related types.
@@ -2310,7 +2310,7 @@ type JobInputClassification interface {
 // JobInput - Base class for inputs to a Job.
 type JobInput struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInput.
@@ -2319,30 +2319,30 @@ func (j *JobInput) GetJobInput() *JobInput { return j }
 // JobInputAsset - Represents an Asset for input into a Job.
 type JobInputAsset struct {
 	// REQUIRED; The name of the input Asset.
-	AssetName *string `json:"assetName,omitempty"`
+	AssetName *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
-	End ClipTimeClassification `json:"end,omitempty"`
+	End ClipTimeClassification
 
 	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
 	// responses to prevent sensitive data exposure.
-	Files []*string `json:"files,omitempty"`
+	Files []*string
 
 	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
-	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
+	InputDefinitions []InputDefinitionClassification
 
 	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
 	// can be authored so as to take an image file with the label 'xyz' and
 	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
 	// be the image file, and it should have the label 'xyz'.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
 	// media.
-	Start ClipTimeClassification `json:"start,omitempty"`
+	Start ClipTimeClassification
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInputAsset.
@@ -2377,27 +2377,27 @@ type JobInputClipClassification interface {
 // JobInputClip - Represents input files for a Job.
 type JobInputClip struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
-	End ClipTimeClassification `json:"end,omitempty"`
+	End ClipTimeClassification
 
 	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
 	// responses to prevent sensitive data exposure.
-	Files []*string `json:"files,omitempty"`
+	Files []*string
 
 	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
-	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
+	InputDefinitions []InputDefinitionClassification
 
 	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
 	// can be authored so as to take an image file with the label 'xyz' and
 	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
 	// be the image file, and it should have the label 'xyz'.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
 	// media.
-	Start ClipTimeClassification `json:"start,omitempty"`
+	Start ClipTimeClassification
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInputClip.
@@ -2413,32 +2413,32 @@ func (j *JobInputClip) GetJobInputClip() *JobInputClip { return j }
 // JobInputHTTP - Represents HTTPS job input.
 type JobInputHTTP struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the provided
 	// file list is assumed to be fully qualified uris. Maximum length of 4000
 	// characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
-	BaseURI *string `json:"baseUri,omitempty"`
+	BaseURI *string
 
 	// Defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
-	End ClipTimeClassification `json:"end,omitempty"`
+	End ClipTimeClassification
 
 	// List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings will not be returned in service
 	// responses to prevent sensitive data exposure.
-	Files []*string `json:"files,omitempty"`
+	Files []*string
 
 	// Defines a list of InputDefinitions. For each InputDefinition, it defines a list of track selections and related metadata.
-	InputDefinitions []InputDefinitionClassification `json:"inputDefinitions,omitempty"`
+	InputDefinitions []InputDefinitionClassification
 
 	// A label that is assigned to a JobInputClip, that is used to satisfy a reference used in the Transform. For example, a Transform
 	// can be authored so as to take an image file with the label 'xyz' and
 	// apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should
 	// be the image file, and it should have the label 'xyz'.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
 	// media.
-	Start ClipTimeClassification `json:"start,omitempty"`
+	Start ClipTimeClassification
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInputHTTP.
@@ -2464,10 +2464,10 @@ func (j *JobInputHTTP) GetJobInputClip() *JobInputClip {
 // as a single input.
 type JobInputSequence struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// JobInputs that make up the timeline.
-	Inputs []JobInputClipClassification `json:"inputs,omitempty"`
+	Inputs []JobInputClipClassification
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInputSequence.
@@ -2480,10 +2480,10 @@ func (j *JobInputSequence) GetJobInput() *JobInput {
 // JobInputs - Describes a list of inputs to a Job.
 type JobInputs struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// List of inputs to a Job.
-	Inputs []JobInputClassification `json:"inputs,omitempty"`
+	Inputs []JobInputClassification
 }
 
 // GetJobInput implements the JobInputClassification interface for type JobInputs.
@@ -2505,7 +2505,7 @@ type JobOutputClassification interface {
 // JobOutput - Describes all the properties of a JobOutput.
 type JobOutput struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// A label that is assigned to a JobOutput in order to help uniquely identify it. This is useful when your Transform has more
 	// than one TransformOutput, whereby your Job has more than one JobOutput. In
@@ -2516,27 +2516,27 @@ type JobOutput struct {
 	// preset in the corresponding TransformOutput and the output index is the relative index of the this JobOutput within the
 	// Job. Note that this index is the same as the relative index of the corresponding
 	// TransformOutput within its Transform.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// A preset used to override the preset in the corresponding transform output.
-	PresetOverride PresetClassification `json:"presetOverride,omitempty"`
+	PresetOverride PresetClassification
 
 	// READ-ONLY; The UTC date and time at which this Job Output finished processing.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; If the JobOutput is in the Error state, it contains the details of the error.
-	Error *JobError `json:"error,omitempty" azure:"ro"`
+	Error *JobError
 
 	// READ-ONLY; If the JobOutput is in a Processing state, this contains the Job completion percentage. The value is an estimate
 	// and not intended to be used to predict Job completion times. To determine if the
 	// JobOutput is complete, use the State property.
-	Progress *int32 `json:"progress,omitempty" azure:"ro"`
+	Progress *int32
 
 	// READ-ONLY; The UTC date and time at which this Job Output began processing.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Describes the state of the JobOutput.
-	State *JobState `json:"state,omitempty" azure:"ro"`
+	State *JobState
 }
 
 // GetJobOutput implements the JobOutputClassification interface for type JobOutput.
@@ -2545,10 +2545,10 @@ func (j *JobOutput) GetJobOutput() *JobOutput { return j }
 // JobOutputAsset - Represents an Asset used as a JobOutput.
 type JobOutputAsset struct {
 	// REQUIRED; The name of the output Asset.
-	AssetName *string `json:"assetName,omitempty"`
+	AssetName *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// A label that is assigned to a JobOutput in order to help uniquely identify it. This is useful when your Transform has more
 	// than one TransformOutput, whereby your Job has more than one JobOutput. In
@@ -2559,27 +2559,27 @@ type JobOutputAsset struct {
 	// preset in the corresponding TransformOutput and the output index is the relative index of the this JobOutput within the
 	// Job. Note that this index is the same as the relative index of the corresponding
 	// TransformOutput within its Transform.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// A preset used to override the preset in the corresponding transform output.
-	PresetOverride PresetClassification `json:"presetOverride,omitempty"`
+	PresetOverride PresetClassification
 
 	// READ-ONLY; The UTC date and time at which this Job Output finished processing.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; If the JobOutput is in the Error state, it contains the details of the error.
-	Error *JobError `json:"error,omitempty" azure:"ro"`
+	Error *JobError
 
 	// READ-ONLY; If the JobOutput is in a Processing state, this contains the Job completion percentage. The value is an estimate
 	// and not intended to be used to predict Job completion times. To determine if the
 	// JobOutput is complete, use the State property.
-	Progress *int32 `json:"progress,omitempty" azure:"ro"`
+	Progress *int32
 
 	// READ-ONLY; The UTC date and time at which this Job Output began processing.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Describes the state of the JobOutput.
-	State *JobState `json:"state,omitempty" azure:"ro"`
+	State *JobState
 }
 
 // GetJobOutput implements the JobOutputClassification interface for type JobOutputAsset.
@@ -2599,35 +2599,35 @@ func (j *JobOutputAsset) GetJobOutput() *JobOutput {
 // JobProperties - Properties of the Job.
 type JobProperties struct {
 	// REQUIRED; The inputs for the Job.
-	Input JobInputClassification `json:"input,omitempty"`
+	Input JobInputClassification
 
 	// REQUIRED; The outputs for the Job.
-	Outputs []JobOutputClassification `json:"outputs,omitempty"`
+	Outputs []JobOutputClassification
 
 	// Customer provided key, value pairs that will be returned in Job and JobOutput state events.
-	CorrelationData map[string]*string `json:"correlationData,omitempty"`
+	CorrelationData map[string]*string
 
 	// Optional customer supplied description of the Job.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not
 	// set, the default is normal.
-	Priority *Priority `json:"priority,omitempty"`
+	Priority *Priority
 
 	// READ-ONLY; The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ' format.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The UTC date and time at which this Job finished processing.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; The UTC date and time when the customer has last updated the Job, in 'YYYY-MM-DDThh:mm:ssZ' format.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The UTC date and time at which this Job began processing.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The current state of the job.
-	State *JobState `json:"state,omitempty" azure:"ro"`
+	State *JobState
 }
 
 // JobsClientCancelJobOptions contains the optional parameters for the JobsClient.CancelJob method.
@@ -2650,7 +2650,7 @@ type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+// JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 type JobsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -2675,10 +2675,10 @@ type JpgFormat struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetFormat implements the FormatClassification interface for type JpgFormat.
@@ -2700,7 +2700,7 @@ func (j *JpgFormat) GetImageFormat() *ImageFormat {
 // JpgImage - Describes the properties for producing a series of JPEG images from the input video.
 type JpgImage struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
 	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
@@ -2708,18 +2708,18 @@ type JpgImage struct {
 	// a macro {Best}, which tells the encoder to select the best thumbnail from
 	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
 	// Range. The default value is macro {Best}.
-	Start *string `json:"start,omitempty"`
+	Start *string
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// A collection of output JPEG image layers to be produced by the encoder.
-	Layers []*JpgLayer `json:"layers,omitempty"`
+	Layers []*JpgLayer
 
 	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
 	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
@@ -2727,13 +2727,13 @@ type JpgImage struct {
 	// this value is 1, it means only producing one thumbnail at start time), or a
 	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
 	// value is 100%, which means to stop at the end of the stream.
-	Range *string `json:"range,omitempty"`
+	Range *string
 
 	// Sets the number of columns used in thumbnail sprite image. The number of rows are automatically calculated and a VTT file
 	// is generated with the coordinate mappings for each thumbnail in the sprite.
 	// Note: this value should be a positive integer and a proper value is recommended so that the output image resolution will
 	// not go beyond JPEG maximum pixel resolution limit 65535x65535.
-	SpriteColumn *int32 `json:"spriteColumn,omitempty"`
+	SpriteColumn *int32
 
 	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
 	// every 5 seconds), or a frame count (For example, 30 for one image every 30
@@ -2744,13 +2744,13 @@ type JpgImage struct {
 	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
 	// specified at start time. Try to select reasonable value for Step if the first
 	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
-	Step *string `json:"step,omitempty"`
+	Step *string
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type JpgImage.
@@ -2790,33 +2790,33 @@ func (j *JpgImage) GetVideo() *Video {
 type JpgLayer struct {
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The compression quality of the JPEG output. Range is from 0-100 and the default is 70.
-	Quality *int32 `json:"quality,omitempty"`
+	Quality *int32
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 type KeyDelivery struct {
 	// The access control properties for Key Delivery.
-	AccessControl *AccessControl `json:"accessControl,omitempty"`
+	AccessControl *AccessControl
 }
 
 type KeyVaultProperties struct {
 	// The URL of the Key Vault key used to encrypt the account. The key may either be versioned (for example https://vault/keys/mykey/version1)
 	// or reference a key without a version (for example
 	// https://vault/keys/mykey).
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 
 	// READ-ONLY; The current key used to encrypt the Media Services account, including the key version.
-	CurrentKeyIdentifier *string `json:"currentKeyIdentifier,omitempty" azure:"ro"`
+	CurrentKeyIdentifier *string
 }
 
 // Layer - The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying
@@ -2825,81 +2825,81 @@ type KeyVaultProperties struct {
 type Layer struct {
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // ListContainerSasInput - The parameters to the list SAS request.
 type ListContainerSasInput struct {
 	// The SAS URL expiration time. This must be less than 24 hours from the current time.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// The permissions to set on the SAS URL.
-	Permissions *AssetContainerPermission `json:"permissions,omitempty"`
+	Permissions *AssetContainerPermission
 }
 
 // ListContentKeysResponse - Class of response for listContentKeys action
 type ListContentKeysResponse struct {
 	// ContentKeys used by current Streaming Locator
-	ContentKeys []*StreamingLocatorContentKey `json:"contentKeys,omitempty"`
+	ContentKeys []*StreamingLocatorContentKey
 }
 
 type ListEdgePoliciesInput struct {
 	// Unique identifier of the edge device.
-	DeviceID *string `json:"deviceId,omitempty"`
+	DeviceID *string
 }
 
 // ListPathsResponse - Class of response for listPaths action
 type ListPathsResponse struct {
 	// Download Paths supported by current Streaming Locator
-	DownloadPaths []*string `json:"downloadPaths,omitempty"`
+	DownloadPaths []*string
 
 	// Streaming Paths supported by current Streaming Locator
-	StreamingPaths []*StreamingPath `json:"streamingPaths,omitempty"`
+	StreamingPaths []*StreamingPath
 }
 
 // ListStreamingLocatorsResponse - The Streaming Locators associated with this Asset.
 type ListStreamingLocatorsResponse struct {
 	// READ-ONLY; The list of Streaming Locators.
-	StreamingLocators []*AssetStreamingLocator `json:"streamingLocators,omitempty" azure:"ro"`
+	StreamingLocators []*AssetStreamingLocator
 }
 
 // LiveEvent - The live event.
 type LiveEvent struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The live event properties.
-	Properties *LiveEventProperties `json:"properties,omitempty"`
+	Properties *LiveEventProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LiveEventActionInput - The LiveEvent action input parameter definition.
 type LiveEventActionInput struct {
 	// The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting live outputs
 	// do not delete the underlying assets.
-	RemoveOutputsOnStop *bool `json:"removeOutputsOnStop,omitempty"`
+	RemoveOutputsOnStop *bool
 }
 
 // LiveEventEncoding - Specifies the live event type and optional encoding settings for encoding live events.
@@ -2909,168 +2909,168 @@ type LiveEventEncoding struct {
 	// Standard or Premium1080p, a live encoder transcodes the incoming stream into multiple bitrates or layers. See https://go.microsoft.com/fwlink/?linkid=2095101
 	// for more information. This property cannot
 	// be modified after the live event is created.
-	EncodingType *LiveEventEncodingType `json:"encodingType,omitempty"`
+	EncodingType *LiveEventEncodingType
 
 	// Use an ISO 8601 time value between 0.5 to 20 seconds to specify the output fragment length for the video and audio tracks
 	// of an encoding live event. For example, use PT2S to indicate 2 seconds. For
 	// the video track it also defines the key frame interval, or the length of a GoP (group of pictures). If this value is not
 	// set for an encoding live event, the fragment duration defaults to 2 seconds.
 	// The value cannot be set for pass-through live events.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// The optional encoding preset name, used when encodingType is not None. This value is specified at creation time and cannot
 	// be updated. If the encodingType is set to Standard, then the default preset
 	// name is ‘Default720p’. Else if the encodingType is set to Premium1080p, the default preset is ‘Default1080p’.
-	PresetName *string `json:"presetName,omitempty"`
+	PresetName *string
 
 	// Specifies how the input video will be resized to fit the desired output resolution(s). Default is None
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 }
 
 // LiveEventEndpoint - The live event endpoint.
 type LiveEventEndpoint struct {
 	// The endpoint protocol.
-	Protocol *string `json:"protocol,omitempty"`
+	Protocol *string
 
 	// The endpoint URL.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // LiveEventInput - The live event input.
 type LiveEventInput struct {
 	// REQUIRED; The input protocol for the live event. This is specified at creation time and cannot be updated.
-	StreamingProtocol *LiveEventInputProtocol `json:"streamingProtocol,omitempty"`
+	StreamingProtocol *LiveEventInputProtocol
 
 	// Access control for live event input.
-	AccessControl *LiveEventInputAccessControl `json:"accessControl,omitempty"`
+	AccessControl *LiveEventInputAccessControl
 
 	// A UUID in string form to uniquely identify the stream. This can be specified at creation time but cannot be updated. If
 	// omitted, the service will generate a unique value.
-	AccessToken *string `json:"accessToken,omitempty"`
+	AccessToken *string
 
 	// The input endpoints for the live event.
-	Endpoints []*LiveEventEndpoint `json:"endpoints,omitempty"`
+	Endpoints []*LiveEventEndpoint
 
 	// ISO 8601 time duration of the key frame interval duration of the input. This value sets the EXT-X-TARGETDURATION property
 	// in the HLS output. For example, use PT2S to indicate 2 seconds. Leave the
 	// value empty for encoding live events.
-	KeyFrameIntervalDuration *string `json:"keyFrameIntervalDuration,omitempty"`
+	KeyFrameIntervalDuration *string
 }
 
 // LiveEventInputAccessControl - The IP access control for live event input.
 type LiveEventInputAccessControl struct {
 	// The IP access control properties.
-	IP *IPAccessControl `json:"ip,omitempty"`
+	IP *IPAccessControl
 }
 
 // LiveEventInputTrackSelection - A track selection condition. This property is reserved for future use, any value set on
 // this property will be ignored.
 type LiveEventInputTrackSelection struct {
 	// Comparing operation. This property is reserved for future use, any value set on this property will be ignored.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Property name to select. This property is reserved for future use, any value set on this property will be ignored.
-	Property *string `json:"property,omitempty"`
+	Property *string
 
 	// Property value to select. This property is reserved for future use, any value set on this property will be ignored.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // LiveEventListResult - The LiveEvent list result.
 type LiveEventListResult struct {
 	// The number of result.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// The link to the next set of results. Not empty if value contains incomplete list of live outputs.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// The result of the List Live Event operation.
-	Value []*LiveEvent `json:"value,omitempty"`
+	Value []*LiveEvent
 }
 
 // LiveEventOutputTranscriptionTrack - Describes a transcription track in the output of a live event, generated using speech-to-text
 // transcription. This property is reserved for future use, any value set on this property will be ignored.
 type LiveEventOutputTranscriptionTrack struct {
 	// REQUIRED; The output track name. This property is reserved for future use, any value set on this property will be ignored.
-	TrackName *string `json:"trackName,omitempty"`
+	TrackName *string
 }
 
 // LiveEventPreview - Live event preview settings.
 type LiveEventPreview struct {
 	// The access control for live event preview.
-	AccessControl *LiveEventPreviewAccessControl `json:"accessControl,omitempty"`
+	AccessControl *LiveEventPreviewAccessControl
 
 	// An alternative media identifier associated with the streaming locator created for the preview. This value is specified
 	// at creation time and cannot be updated. The identifier can be used in the
 	// CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName
 	// field.
-	AlternativeMediaID *string `json:"alternativeMediaId,omitempty"`
+	AlternativeMediaID *string
 
 	// The endpoints for preview. Do not share the preview URL with the live event audience.
-	Endpoints []*LiveEventEndpoint `json:"endpoints,omitempty"`
+	Endpoints []*LiveEventEndpoint
 
 	// The identifier of the preview locator in Guid format. Specifying this at creation time allows the caller to know the preview
 	// locator url before the event is created. If omitted, the service will
 	// generate a random identifier. This value cannot be updated once the live event is created.
-	PreviewLocator *string `json:"previewLocator,omitempty"`
+	PreviewLocator *string
 
 	// The name of streaming policy used for the live event preview. This value is specified at creation time and cannot be updated.
-	StreamingPolicyName *string `json:"streamingPolicyName,omitempty"`
+	StreamingPolicyName *string
 }
 
 // LiveEventPreviewAccessControl - The IP access control for the live event preview endpoint.
 type LiveEventPreviewAccessControl struct {
 	// The IP access control properties.
-	IP *IPAccessControl `json:"ip,omitempty"`
+	IP *IPAccessControl
 }
 
 // LiveEventProperties - The live event properties.
 type LiveEventProperties struct {
 	// REQUIRED; Live event input settings. It defines how the live event receives input from a contribution encoder.
-	Input *LiveEventInput `json:"input,omitempty"`
+	Input *LiveEventInput
 
 	// Live event cross site access policies.
-	CrossSiteAccessPolicies *CrossSiteAccessPolicies `json:"crossSiteAccessPolicies,omitempty"`
+	CrossSiteAccessPolicies *CrossSiteAccessPolicies
 
 	// A description for the live event.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Encoding settings for the live event. It configures whether a live encoder is used for the live event and settings for
 	// the live encoder if it is used.
-	Encoding *LiveEventEncoding `json:"encoding,omitempty"`
+	Encoding *LiveEventEncoding
 
 	// When useStaticHostname is set to true, the hostnamePrefix specifies the first part of the hostname assigned to the live
 	// event preview and ingest endpoints. The final hostname would be a combination of
 	// this prefix, the media service account name and a short code for the Azure Media Services data center.
-	HostnamePrefix *string `json:"hostnamePrefix,omitempty"`
+	HostnamePrefix *string
 
 	// Live event preview settings. Preview allows live event producers to preview the live streaming content without creating
 	// any live output.
-	Preview *LiveEventPreview `json:"preview,omitempty"`
+	Preview *LiveEventPreview
 
 	// The options to use for the LiveEvent. This value is specified at creation time and cannot be updated. The valid values
 	// for the array entry values are 'Default' and 'LowLatency'.
-	StreamOptions []*StreamOptionsFlag `json:"streamOptions,omitempty"`
+	StreamOptions []*StreamOptionsFlag
 
 	// Live transcription settings for the live event. See https://go.microsoft.com/fwlink/?linkid=2133742 for more information
 	// about the live transcription feature.
-	Transcriptions []*LiveEventTranscription `json:"transcriptions,omitempty"`
+	Transcriptions []*LiveEventTranscription
 
 	// Specifies whether a static hostname would be assigned to the live event preview and ingest endpoints. This value can only
 	// be updated if the live event is in Standby state
-	UseStaticHostname *bool `json:"useStaticHostname,omitempty"`
+	UseStaticHostname *bool
 
 	// READ-ONLY; The creation time for the live event
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The last modified time of the live event.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The provisioning state of the live event.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The resource state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for more information.
-	ResourceState *LiveEventResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *LiveEventResourceState
 }
 
 // LiveEventTranscription - Describes the transcription tracks in the output of a live event, generated using speech-to-text
@@ -3080,17 +3080,17 @@ type LiveEventTranscription struct {
 	// Provides a mechanism to select the audio track in the input live feed, to which speech-to-text transcription is applied.
 	// This property is reserved for future use, any value set on this property will
 	// be ignored.
-	InputTrackSelection []*LiveEventInputTrackSelection `json:"inputTrackSelection,omitempty"`
+	InputTrackSelection []*LiveEventInputTrackSelection
 
 	// Specifies the language (locale) to be used for speech-to-text transcription – it should match the spoken language in the
 	// audio track. The value should be in BCP-47 format (e.g: 'en-US'). See
 	// https://go.microsoft.com/fwlink/?linkid=2133742 for more information about the live transcription feature and the list
 	// of supported languages.
-	Language *string `json:"language,omitempty"`
+	Language *string
 
 	// Describes a transcription track in the output of a live event, generated using speech-to-text transcription. This property
 	// is reserved for future use, any value set on this property will be ignored.
-	OutputTranscriptionTrack *LiveEventOutputTranscriptionTrack `json:"outputTranscriptionTrack,omitempty"`
+	OutputTranscriptionTrack *LiveEventOutputTranscriptionTrack
 }
 
 // LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation method.
@@ -3147,7 +3147,7 @@ type LiveEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.NewListPager method.
 type LiveEventsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3160,31 +3160,31 @@ type LiveEventsClientOperationLocationOptions struct {
 // LiveOutput - The Live Output.
 type LiveOutput struct {
 	// Live output properties.
-	Properties *LiveOutputProperties `json:"properties,omitempty"`
+	Properties *LiveOutputProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LiveOutputListResult - The LiveOutput list result.
 type LiveOutputListResult struct {
 	// The number of result.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// The link to the next set of results. Not empty if value contains incomplete list of live outputs.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// The result of the List LiveOutput operation.
-	Value []*LiveOutput `json:"value,omitempty"`
+	Value []*LiveOutput
 }
 
 // LiveOutputProperties - The JSON object that contains the properties required to create a live output.
@@ -3192,41 +3192,41 @@ type LiveOutputProperties struct {
 	// REQUIRED; ISO 8601 time between 1 minute to 25 hours to indicate the maximum content length that can be archived in the
 	// asset for this live output. This also sets the maximum content length for the rewind
 	// window. For example, use PT1H30M to indicate 1 hour and 30 minutes of archive window.
-	ArchiveWindowLength *string `json:"archiveWindowLength,omitempty"`
+	ArchiveWindowLength *string
 
 	// REQUIRED; The asset that the live output will write to.
-	AssetName *string `json:"assetName,omitempty"`
+	AssetName *string
 
 	// The description of the live output.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// HTTP Live Streaming (HLS) packing setting for the live output.
-	Hls *Hls `json:"hls,omitempty"`
+	Hls *Hls
 
 	// The manifest file name. If not provided, the service will generate one automatically.
-	ManifestName *string `json:"manifestName,omitempty"`
+	ManifestName *string
 
 	// The initial timestamp that the live output will start at, any content before this value will not be archived.
-	OutputSnapTime *int64 `json:"outputSnapTime,omitempty"`
+	OutputSnapTime *int64
 
 	// ISO 8601 time between 1 minute to the duration of archiveWindowLength to control seek-able window length during Live. The
 	// service won't use this property once LiveOutput stops. The archived VOD will
 	// have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1 hour and 30 minutes of rewind
 	// window length. Service will use implicit default value 30m only if Live Event
 	// enables LL.
-	RewindWindowLength *string `json:"rewindWindowLength,omitempty"`
+	RewindWindowLength *string
 
 	// READ-ONLY; The creation time the live output.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The time the live output was last modified.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The provisioning state of the live output.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The resource state of the live output.
-	ResourceState *LiveOutputResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *LiveOutputResourceState
 }
 
 // LiveOutputsClientAsyncOperationOptions contains the optional parameters for the LiveOutputsClient.AsyncOperation method.
@@ -3251,7 +3251,7 @@ type LiveOutputsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
+// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.NewListPager method.
 type LiveOutputsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3271,184 +3271,184 @@ type LocationsClientCheckNameAvailabilityOptions struct {
 // LogSpecification - A diagnostic log emitted by service.
 type LogSpecification struct {
 	// READ-ONLY; The time range for requests in each blob.
-	BlobDuration *string `json:"blobDuration,omitempty" azure:"ro"`
+	BlobDuration *string
 
 	// READ-ONLY; The diagnostic log category display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The diagnostic log category name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // MediaFilterProperties - The Media Filter properties.
 type MediaFilterProperties struct {
 	// The first quality.
-	FirstQuality *FirstQuality `json:"firstQuality,omitempty"`
+	FirstQuality *FirstQuality
 
 	// The presentation time range.
-	PresentationTimeRange *PresentationTimeRange `json:"presentationTimeRange,omitempty"`
+	PresentationTimeRange *PresentationTimeRange
 
 	// The tracks selection conditions.
-	Tracks []*FilterTrackSelection `json:"tracks,omitempty"`
+	Tracks []*FilterTrackSelection
 }
 
 // MediaService - A Media Services account.
 type MediaService struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Managed Identity for the Media Services account.
-	Identity *MediaServiceIdentity `json:"identity,omitempty"`
+	Identity *MediaServiceIdentity
 
 	// The resource properties.
-	Properties *MediaServiceProperties `json:"properties,omitempty"`
+	Properties *MediaServiceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MediaServiceCollection - A collection of MediaService items.
 type MediaServiceCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of MediaService items.
-	Value []*MediaService `json:"value,omitempty"`
+	Value []*MediaService
 }
 
 type MediaServiceIdentity struct {
 	// REQUIRED; The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The user assigned managed identities.
-	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedManagedIdentity
 
 	// READ-ONLY; The Principal ID of the identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The Tenant ID of the identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // MediaServiceOperationStatus - Status of media service operation.
 type MediaServiceOperationStatus struct {
 	// REQUIRED; Operation identifier.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Operation end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The error detail.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Operation resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Operation start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // MediaServiceProperties - Properties of the Media Services account.
 type MediaServiceProperties struct {
 	// The account encryption properties.
-	Encryption *AccountEncryption `json:"encryption,omitempty"`
+	Encryption *AccountEncryption
 
 	// The Key Delivery properties for Media Services account.
-	KeyDelivery *KeyDelivery `json:"keyDelivery,omitempty"`
+	KeyDelivery *KeyDelivery
 
 	// Whether or not public network access is allowed for resources under the Media Services account.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// The storage accounts for this resource.
-	StorageAccounts       []*StorageAccount      `json:"storageAccounts,omitempty"`
-	StorageAuthentication *StorageAuthentication `json:"storageAuthentication,omitempty"`
+	StorageAccounts       []*StorageAccount
+	StorageAuthentication *StorageAuthentication
 
 	// READ-ONLY; The Media Services account ID.
-	MediaServiceID *string `json:"mediaServiceId,omitempty" azure:"ro"`
+	MediaServiceID *string
 
 	// READ-ONLY; The Private Endpoint Connections created for the Media Service account.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Media Services account.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // MediaServiceUpdate - A Media Services account update.
 type MediaServiceUpdate struct {
 	// The Managed Identity for the Media Services account.
-	Identity *MediaServiceIdentity `json:"identity,omitempty"`
+	Identity *MediaServiceIdentity
 
 	// The resource properties.
-	Properties *MediaServiceProperties `json:"properties,omitempty"`
+	Properties *MediaServiceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MetricDimension - A metric dimension.
 type MetricDimension struct {
 	// READ-ONLY; The display name for the dimension.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The metric dimension name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Whether to export metric to shoebox.
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty" azure:"ro"`
+	ToBeExportedForShoebox *bool
 }
 
 // MetricSpecification - A metric emitted by service.
 type MetricSpecification struct {
 	// Supported aggregation types.
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// READ-ONLY; The metric aggregation type
-	AggregationType *MetricAggregationType `json:"aggregationType,omitempty" azure:"ro"`
+	AggregationType *MetricAggregationType
 
 	// READ-ONLY; The metric dimensions.
-	Dimensions []*MetricDimension `json:"dimensions,omitempty" azure:"ro"`
+	Dimensions []*MetricDimension
 
 	// READ-ONLY; The metric display description.
-	DisplayDescription *string `json:"displayDescription,omitempty" azure:"ro"`
+	DisplayDescription *string
 
 	// READ-ONLY; The metric display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Indicates whether regional MDM account is enabled.
-	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty" azure:"ro"`
+	EnableRegionalMdmAccount *bool
 
 	// READ-ONLY; The metric lock aggregation type
-	LockAggregationType *MetricAggregationType `json:"lockAggregationType,omitempty" azure:"ro"`
+	LockAggregationType *MetricAggregationType
 
 	// READ-ONLY; The metric name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The source MDM account.
-	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty" azure:"ro"`
+	SourceMdmAccount *string
 
 	// READ-ONLY; The source MDM namespace.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty" azure:"ro"`
+	SourceMdmNamespace *string
 
 	// READ-ONLY; The supported time grain types.
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty" azure:"ro"`
+	SupportedTimeGrainTypes []*string
 
 	// READ-ONLY; The metric unit
-	Unit *MetricUnit `json:"unit,omitempty" azure:"ro"`
+	Unit *MetricUnit
 }
 
 // Mp4Format - Describes the properties for an output ISO MP4 file.
@@ -3463,14 +3463,14 @@ type Mp4Format struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
 	// .
-	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+	OutputFiles []*OutputFile
 }
 
 // GetFormat implements the FormatClassification interface for type Mp4Format.
@@ -3514,14 +3514,14 @@ type MultiBitrateFormat struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
 	// .
-	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+	OutputFiles []*OutputFile
 }
 
 // GetFormat implements the FormatClassification interface for type MultiBitrateFormat.
@@ -3538,49 +3538,49 @@ func (m *MultiBitrateFormat) GetMultiBitrateFormat() *MultiBitrateFormat { retur
 // NoEncryption - Class for NoEncryption scheme
 type NoEncryption struct {
 	// Representing supported protocols
-	EnabledProtocols *EnabledProtocols `json:"enabledProtocols,omitempty"`
+	EnabledProtocols *EnabledProtocols
 }
 
 // Operation - An operation.
 type Operation struct {
 	// REQUIRED; The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Indicates the action type.
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 
 	// The operation display name.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Whether the operation applies to data-plane.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Origin of the operation.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Operation properties format.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 }
 
 // OperationCollection - A collection of Operation items.
 type OperationCollection struct {
 	// A collection of Operation items.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationDisplay - Operation details.
 type OperationDisplay struct {
 	// The operation description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The operation type.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The service provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
@@ -3604,7 +3604,7 @@ type OutputFile struct {
 	// if the encoder is producing two video layers with labels v1 and v2, and one audio
 	// layer with label a1, then an array like '[v1, a1]' tells the encoder to produce an output file with the video track represented
 	// by v1 and the audio track represented by a1.
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 }
 
 // OverlayClassification provides polymorphic access to related types.
@@ -3622,33 +3622,33 @@ type Overlay struct {
 	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
 	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
 	// file formats.
-	InputLabel *string `json:"inputLabel,omitempty"`
+	InputLabel *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
-	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
+	AudioGainLevel *float64
 
 	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
 	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
 	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
 	// video if the overlay media duration is greater than the input video duration,
 	// else the overlay will last as long as the overlay media duration.
-	End *string `json:"end,omitempty"`
+	End *string
 
 	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
 	// not specified the default behavior is to have no fade in (same as PT0S).
-	FadeInDuration *string `json:"fadeInDuration,omitempty"`
+	FadeInDuration *string
 
 	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
 	// specified the default behavior is to have no fade out (same as PT0S).
-	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
+	FadeOutDuration *string
 
 	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
 	// For example, PT05S to start the overlay at 5 seconds into the input video.
 	// If not specified the overlay starts from the beginning of the input video.
-	Start *string `json:"start,omitempty"`
+	Start *string
 }
 
 // GetOverlay implements the OverlayClassification interface for type Overlay.
@@ -3666,10 +3666,10 @@ type PNGFormat struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetFormat implements the FormatClassification interface for type PNGFormat.
@@ -3691,7 +3691,7 @@ func (p *PNGFormat) GetImageFormat() *ImageFormat {
 // PNGImage - Describes the properties for producing a series of PNG images from the input video.
 type PNGImage struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The position in the input video from where to start generating thumbnails. The value can be in ISO 8601 format
 	// (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at
@@ -3699,18 +3699,18 @@ type PNGImage struct {
 	// a macro {Best}, which tells the encoder to select the best thumbnail from
 	// the first few seconds of the video and will only produce one thumbnail, no matter what other settings are for Step and
 	// Range. The default value is macro {Best}.
-	Start *string `json:"start,omitempty"`
+	Start *string
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// A collection of output PNG image layers to be produced by the encoder.
-	Layers []*PNGLayer `json:"layers,omitempty"`
+	Layers []*PNGLayer
 
 	// The position relative to transform preset start time in the input video at which to stop generating thumbnails. The value
 	// can be in ISO 8601 format (For example, PT5M30S to stop at 5 minutes and 30
@@ -3718,7 +3718,7 @@ type PNGImage struct {
 	// this value is 1, it means only producing one thumbnail at start time), or a
 	// relative value to the stream duration (For example, 50% to stop at half of stream duration from start time). The default
 	// value is 100%, which means to stop at the end of the stream.
-	Range *string `json:"range,omitempty"`
+	Range *string
 
 	// The intervals at which thumbnails are generated. The value can be in ISO 8601 format (For example, PT05S for one image
 	// every 5 seconds), or a frame count (For example, 30 for one image every 30
@@ -3729,13 +3729,13 @@ type PNGImage struct {
 	// default value is 10%, it means if stream has long duration, the first generated thumbnail might be far away from the one
 	// specified at start time. Try to select reasonable value for Step if the first
 	// thumbnail is expected close to start time, or set Range value at 1 if only one thumbnail is needed at start time.
-	Step *string `json:"step,omitempty"`
+	Step *string
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type PNGImage.
@@ -3775,36 +3775,36 @@ func (p *PNGImage) GetVideo() *Video {
 type PNGLayer struct {
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // PresentationTimeRange - The presentation time range, this is asset related and not recommended for Account Filter.
 type PresentationTimeRange struct {
 	// The absolute end time boundary.
-	EndTimestamp *int64 `json:"endTimestamp,omitempty"`
+	EndTimestamp *int64
 
 	// The indicator of forcing existing of end time stamp.
-	ForceEndTimestamp *bool `json:"forceEndTimestamp,omitempty"`
+	ForceEndTimestamp *bool
 
 	// The relative to end right edge.
-	LiveBackoffDuration *int64 `json:"liveBackoffDuration,omitempty"`
+	LiveBackoffDuration *int64
 
 	// The relative to end sliding window.
-	PresentationWindowDuration *int64 `json:"presentationWindowDuration,omitempty"`
+	PresentationWindowDuration *int64
 
 	// The absolute start time boundary.
-	StartTimestamp *int64 `json:"startTimestamp,omitempty"`
+	StartTimestamp *int64
 
 	// The time scale of time stamps.
-	Timescale *int64 `json:"timescale,omitempty"`
+	Timescale *int64
 }
 
 // PresetClassification provides polymorphic access to related types.
@@ -3819,7 +3819,7 @@ type PresetClassification interface {
 // Preset - Base type for all Presets, which define the recipe or instructions on how the input media files should be processed.
 type Preset struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetPreset implements the PresetClassification interface for type Preset.
@@ -3829,75 +3829,75 @@ func (p *Preset) GetPreset() *Preset { return p }
 type PresetConfigurations struct {
 	// Allows you to configure the encoder settings to control the balance between speed and quality. Example: set Complexity
 	// as Speed for faster encoding but less compression efficiency.
-	Complexity *Complexity `json:"complexity,omitempty"`
+	Complexity *Complexity
 
 	// Sets the interleave mode of the output to control how audio and video are stored in the container format. Example: set
 	// InterleavedOutput as NonInterleavedOutput to produce audio-only and video-only
 	// outputs in separate MP4 files.
-	InterleaveOutput *InterleaveOutput `json:"interleaveOutput,omitempty"`
+	InterleaveOutput *InterleaveOutput
 
 	// The key frame interval in seconds. Example: set KeyFrameIntervalInSeconds as 2 to reduce the playback buffering for some
 	// players.
-	KeyFrameIntervalInSeconds *float32 `json:"keyFrameIntervalInSeconds,omitempty"`
+	KeyFrameIntervalInSeconds *float32
 
 	// The maximum bitrate in bits per second (threshold for the top video layer). Example: set MaxBitrateBps as 6000000 to avoid
 	// producing very high bitrate outputs for contents with high complexity.
-	MaxBitrateBps *int32 `json:"maxBitrateBps,omitempty"`
+	MaxBitrateBps *int32
 
 	// The maximum height of output video layers. Example: set MaxHeight as 720 to produce output layers up to 720P even if the
 	// input is 4K.
-	MaxHeight *int32 `json:"maxHeight,omitempty"`
+	MaxHeight *int32
 
 	// The maximum number of output video layers. Example: set MaxLayers as 4 to make sure at most 4 output layers are produced
 	// to control the overall cost of the encoding job.
-	MaxLayers *int32 `json:"maxLayers,omitempty"`
+	MaxLayers *int32
 
 	// The minimum bitrate in bits per second (threshold for the bottom video layer). Example: set MinBitrateBps as 200000 to
 	// have a bottom layer that covers users with low network bandwidth.
-	MinBitrateBps *int32 `json:"minBitrateBps,omitempty"`
+	MinBitrateBps *int32
 
 	// The minimum height of output video layers. Example: set MinHeight as 360 to avoid output layers of smaller resolutions
 	// like 180P.
-	MinHeight *int32 `json:"minHeight,omitempty"`
+	MinHeight *int32
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
@@ -3927,34 +3927,34 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -3971,90 +3971,90 @@ type PrivateLinkResourcesClientListOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // Properties - The service specification property.
 type Properties struct {
 	// READ-ONLY; The service specifications.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty" azure:"ro"`
+	ServiceSpecification *ServiceSpecification
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Rectangle - Describes the properties of a rectangular window applied to the input media before processing it.
 type Rectangle struct {
 	// The height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of
 	// the video (For example, 50%).
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video
 	// (For example, 50%).
-	Left *string `json:"left,omitempty"`
+	Left *string
 
 	// The number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video
 	// (For example, 50%).
-	Top *string `json:"top,omitempty"`
+	Top *string
 
 	// The width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the
 	// video (For example, 50%).
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type ResourceIdentity struct {
 	// REQUIRED; Indicates whether to use System Assigned Managed Identity. Mutual exclusive with User Assigned Managed Identity.
-	UseSystemAssignedIdentity *bool `json:"useSystemAssignedIdentity,omitempty"`
+	UseSystemAssignedIdentity *bool
 
 	// The user assigned managed identity's ARM ID to use when accessing a resource.
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 }
 
 // SelectAudioTrackByAttribute - Select audio tracks from the input by specifying an attribute and an attribute filter.
 type SelectAudioTrackByAttribute struct {
 	// REQUIRED; The TrackAttribute to filter the tracks by.
-	Attribute *TrackAttribute `json:"attribute,omitempty"`
+	Attribute *TrackAttribute
 
 	// REQUIRED; The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
-	Filter *AttributeFilter `json:"filter,omitempty"`
+	Filter *AttributeFilter
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
 	// tracks.
-	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+	ChannelMapping *ChannelMapping
 
 	// The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter property.
-	FilterValue *string `json:"filterValue,omitempty"`
+	FilterValue *string
 }
 
 // GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
@@ -4075,14 +4075,14 @@ func (s *SelectAudioTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
 // SelectAudioTrackByID - Select audio tracks from the input by specifying a track identifier.
 type SelectAudioTrackByID struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; Track identifier to select
-	TrackID *int64 `json:"trackId,omitempty"`
+	TrackID *int64
 
 	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
 	// tracks.
-	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+	ChannelMapping *ChannelMapping
 }
 
 // GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByID.
@@ -4103,18 +4103,18 @@ func (s *SelectAudioTrackByID) GetTrackDescriptor() *TrackDescriptor {
 // SelectVideoTrackByAttribute - Select video tracks from the input by specifying an attribute and an attribute filter.
 type SelectVideoTrackByAttribute struct {
 	// REQUIRED; The TrackAttribute to filter the tracks by.
-	Attribute *TrackAttribute `json:"attribute,omitempty"`
+	Attribute *TrackAttribute
 
 	// REQUIRED; The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
-	Filter *AttributeFilter `json:"filter,omitempty"`
+	Filter *AttributeFilter
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter property. For
 	// TrackAttribute.Bitrate, this should be an integer value in bits per second (e.g:
 	// '1500000'). The TrackAttribute.Language is not supported for video tracks.
-	FilterValue *string `json:"filterValue,omitempty"`
+	FilterValue *string
 }
 
 // GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
@@ -4134,10 +4134,10 @@ func (s *SelectVideoTrackByAttribute) GetVideoTrackDescriptor() *VideoTrackDescr
 // SelectVideoTrackByID - Select video tracks from the input by specifying a track identifier.
 type SelectVideoTrackByID struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; Track identifier to select
-	TrackID *int64 `json:"trackId,omitempty"`
+	TrackID *int64
 }
 
 // GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByID.
@@ -4157,28 +4157,28 @@ func (s *SelectVideoTrackByID) GetVideoTrackDescriptor() *VideoTrackDescriptor {
 // ServiceSpecification - The service metric specifications.
 type ServiceSpecification struct {
 	// READ-ONLY; List of log specifications.
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty" azure:"ro"`
+	LogSpecifications []*LogSpecification
 
 	// READ-ONLY; List of metric specifications.
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty" azure:"ro"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // StandardEncoderPreset - Describes all the settings to be used when encoding the input video with the Standard Encoder.
 type StandardEncoderPreset struct {
 	// REQUIRED; The list of codecs to be used when encoding the input video.
-	Codecs []CodecClassification `json:"codecs,omitempty"`
+	Codecs []CodecClassification
 
 	// REQUIRED; The list of outputs to be produced by the encoder.
-	Formats []FormatClassification `json:"formats,omitempty"`
+	Formats []FormatClassification
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
-	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
+	ExperimentalOptions map[string]*string
 
 	// One or more filtering operations that are applied to the input media before encoding.
-	Filters *Filters `json:"filters,omitempty"`
+	Filters *Filters
 }
 
 // GetPreset implements the PresetClassification interface for type StandardEncoderPreset.
@@ -4191,131 +4191,131 @@ func (s *StandardEncoderPreset) GetPreset() *Preset {
 // StorageAccount - The storage account details.
 type StorageAccount struct {
 	// REQUIRED; The type of the storage account.
-	Type *StorageAccountType `json:"type,omitempty"`
+	Type *StorageAccountType
 
 	// The ID of the storage account resource. Media Services relies on tables and queues as well as blobs, so the primary storage
 	// account must be a Standard Storage account (either Microsoft.ClassicStorage
 	// or Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The storage account identity.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// READ-ONLY; The current status of the storage account mapping.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // StorageEncryptedAssetDecryptionData - Data needed to decrypt asset files encrypted with legacy storage encryption.
 type StorageEncryptedAssetDecryptionData struct {
 	// Asset File encryption metadata.
-	AssetFileEncryptionMetadata []*AssetFileEncryptionMetadata `json:"assetFileEncryptionMetadata,omitempty"`
+	AssetFileEncryptionMetadata []*AssetFileEncryptionMetadata
 
 	// The Asset File storage encryption key.
-	Key []byte `json:"key,omitempty"`
+	Key []byte
 }
 
 // StreamingEndpoint - The streaming endpoint.
 type StreamingEndpoint struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The streaming endpoint properties.
-	Properties *StreamingEndpointProperties `json:"properties,omitempty"`
+	Properties *StreamingEndpointProperties
 
 	// The streaming endpoint sku.
-	SKU *ArmStreamingEndpointCurrentSKU `json:"sku,omitempty"`
+	SKU *ArmStreamingEndpointCurrentSKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StreamingEndpointAccessControl - Streaming endpoint access control definition.
 type StreamingEndpointAccessControl struct {
 	// The access control of Akamai
-	Akamai *AkamaiAccessControl `json:"akamai,omitempty"`
+	Akamai *AkamaiAccessControl
 
 	// The IP access control of the streaming endpoint.
-	IP *IPAccessControl `json:"ip,omitempty"`
+	IP *IPAccessControl
 }
 
 // StreamingEndpointListResult - The streaming endpoint list result.
 type StreamingEndpointListResult struct {
 	// The number of result.
-	ODataCount *int32 `json:"@odata.count,omitempty"`
+	ODataCount *int32
 
 	// The link to the next set of results. Not empty if value contains incomplete list of streaming endpoints.
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// The result of the List StreamingEndpoint operation.
-	Value []*StreamingEndpoint `json:"value,omitempty"`
+	Value []*StreamingEndpoint
 }
 
 // StreamingEndpointProperties - The streaming endpoint properties.
 type StreamingEndpointProperties struct {
 	// REQUIRED; The number of scale units. Use the Scale operation to adjust this value.
-	ScaleUnits *int32 `json:"scaleUnits,omitempty"`
+	ScaleUnits *int32
 
 	// The access control definition of the streaming endpoint.
-	AccessControl *StreamingEndpointAccessControl `json:"accessControl,omitempty"`
+	AccessControl *StreamingEndpointAccessControl
 
 	// This feature is deprecated, do not set a value for this property.
-	AvailabilitySetName *string `json:"availabilitySetName,omitempty"`
+	AvailabilitySetName *string
 
 	// The CDN enabled flag.
-	CdnEnabled *bool `json:"cdnEnabled,omitempty"`
+	CdnEnabled *bool
 
 	// The CDN profile name.
-	CdnProfile *string `json:"cdnProfile,omitempty"`
+	CdnProfile *string
 
 	// The CDN provider name.
-	CdnProvider *string `json:"cdnProvider,omitempty"`
+	CdnProvider *string
 
 	// The streaming endpoint access policies.
-	CrossSiteAccessPolicies *CrossSiteAccessPolicies `json:"crossSiteAccessPolicies,omitempty"`
+	CrossSiteAccessPolicies *CrossSiteAccessPolicies
 
 	// The custom host names of the streaming endpoint
-	CustomHostNames []*string `json:"customHostNames,omitempty"`
+	CustomHostNames []*string
 
 	// The streaming endpoint description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Max cache age
-	MaxCacheAge *int64 `json:"maxCacheAge,omitempty"`
+	MaxCacheAge *int64
 
 	// READ-ONLY; The exact time the streaming endpoint was created.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The free trial expiration time.
-	FreeTrialEndTime *time.Time `json:"freeTrialEndTime,omitempty" azure:"ro"`
+	FreeTrialEndTime *time.Time
 
 	// READ-ONLY; The streaming endpoint host name.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; The exact time the streaming endpoint was last modified.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 
 	// READ-ONLY; The provisioning state of the streaming endpoint.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The resource state of the streaming endpoint.
-	ResourceState *StreamingEndpointResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *StreamingEndpointResourceState
 }
 
 type StreamingEndpointSKUInfoListResult struct {
 	// The result of the List StreamingEndpoint skus.
-	Value []*ArmStreamingEndpointSKUInfo `json:"value,omitempty"`
+	Value []*ArmStreamingEndpointSKUInfo
 }
 
 // StreamingEndpointsClientAsyncOperationOptions contains the optional parameters for the StreamingEndpointsClient.AsyncOperation
@@ -4372,7 +4372,7 @@ type StreamingEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
+// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.NewListPager method.
 type StreamingEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4391,92 +4391,92 @@ type StreamingEndpointsClientSKUsOptions struct {
 // StreamingEntityScaleUnit - scale units definition
 type StreamingEntityScaleUnit struct {
 	// The scale unit number of the streaming endpoint.
-	ScaleUnit *int32 `json:"scaleUnit,omitempty"`
+	ScaleUnit *int32
 }
 
 // StreamingLocator - A Streaming Locator resource
 type StreamingLocator struct {
 	// Properties of the Streaming Locator.
-	Properties *StreamingLocatorProperties `json:"properties,omitempty"`
+	Properties *StreamingLocatorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StreamingLocatorCollection - A collection of StreamingLocator items.
 type StreamingLocatorCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of StreamingLocator items.
-	Value []*StreamingLocator `json:"value,omitempty"`
+	Value []*StreamingLocator
 }
 
 // StreamingLocatorContentKey - Class for content key in Streaming Locator
 type StreamingLocatorContentKey struct {
 	// REQUIRED; ID of Content Key
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Label of Content Key as specified in the Streaming Policy
-	LabelReferenceInStreamingPolicy *string `json:"labelReferenceInStreamingPolicy,omitempty"`
+	LabelReferenceInStreamingPolicy *string
 
 	// Value of Content Key
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// READ-ONLY; ContentKeyPolicy used by Content Key
-	PolicyName *string `json:"policyName,omitempty" azure:"ro"`
+	PolicyName *string
 
 	// READ-ONLY; Tracks which use this Content Key
-	Tracks []*TrackSelection `json:"tracks,omitempty" azure:"ro"`
+	Tracks []*TrackSelection
 
 	// READ-ONLY; Encryption type of Content Key
-	Type *StreamingLocatorContentKeyType `json:"type,omitempty" azure:"ro"`
+	Type *StreamingLocatorContentKeyType
 }
 
 // StreamingLocatorProperties - Properties of the Streaming Locator.
 type StreamingLocatorProperties struct {
 	// REQUIRED; Asset Name
-	AssetName *string `json:"assetName,omitempty"`
+	AssetName *string
 
 	// REQUIRED; Name of the Streaming Policy used by this Streaming Locator. Either specify the name of Streaming Policy you
 	// created or use one of the predefined Streaming Policies. The predefined Streaming Policies
 	// available are: 'PredefinedDownloadOnly', 'PredefinedClearStreamingOnly', 'PredefinedDownloadAndClearStreaming', 'PredefinedClearKey',
 	// 'PredefinedMultiDrmCencStreaming' and 'Predefined
 	// MultiDrmStreaming'
-	StreamingPolicyName *string `json:"streamingPolicyName,omitempty"`
+	StreamingPolicyName *string
 
 	// Alternative Media ID of this Streaming Locator
-	AlternativeMediaID *string `json:"alternativeMediaId,omitempty"`
+	AlternativeMediaID *string
 
 	// The ContentKeys used by this Streaming Locator.
-	ContentKeys []*StreamingLocatorContentKey `json:"contentKeys,omitempty"`
+	ContentKeys []*StreamingLocatorContentKey
 
 	// Name of the default ContentKeyPolicy used by this Streaming Locator.
-	DefaultContentKeyPolicyName *string `json:"defaultContentKeyPolicyName,omitempty"`
+	DefaultContentKeyPolicyName *string
 
 	// The end time of the Streaming Locator.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// A list of asset or account filters which apply to this streaming locator
-	Filters []*string `json:"filters,omitempty"`
+	Filters []*string
 
 	// The start time of the Streaming Locator.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The StreamingLocatorId of the Streaming Locator.
-	StreamingLocatorID *string `json:"streamingLocatorId,omitempty"`
+	StreamingLocatorID *string
 
 	// READ-ONLY; The creation time of the Streaming Locator.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 }
 
 // StreamingLocatorsClientCreateOptions contains the optional parameters for the StreamingLocatorsClient.Create method.
@@ -4500,7 +4500,7 @@ type StreamingLocatorsClientListContentKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.NewListPager method.
 type StreamingLocatorsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4519,13 +4519,13 @@ type StreamingLocatorsClientListPathsOptions struct {
 // StreamingPath - Class of paths for streaming
 type StreamingPath struct {
 	// REQUIRED; Encryption scheme
-	EncryptionScheme *EncryptionScheme `json:"encryptionScheme,omitempty"`
+	EncryptionScheme *EncryptionScheme
 
 	// REQUIRED; Streaming protocol
-	StreamingProtocol *StreamingPolicyStreamingProtocol `json:"streamingProtocol,omitempty"`
+	StreamingProtocol *StreamingPolicyStreamingProtocol
 
 	// Streaming paths for each protocol and encryptionScheme pair
-	Paths []*string `json:"paths,omitempty"`
+	Paths []*string
 }
 
 // StreamingPoliciesClientCreateOptions contains the optional parameters for the StreamingPoliciesClient.Create method.
@@ -4543,7 +4543,7 @@ type StreamingPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
+// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.NewListPager method.
 type StreamingPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4557,55 +4557,55 @@ type StreamingPoliciesClientListOptions struct {
 // StreamingPolicy - A Streaming Policy resource
 type StreamingPolicy struct {
 	// Class to specify properties of Streaming Policy
-	Properties *StreamingPolicyProperties `json:"properties,omitempty"`
+	Properties *StreamingPolicyProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StreamingPolicyCollection - A collection of StreamingPolicy items.
 type StreamingPolicyCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of StreamingPolicy items.
-	Value []*StreamingPolicy `json:"value,omitempty"`
+	Value []*StreamingPolicy
 }
 
 // StreamingPolicyContentKey - Class to specify properties of content key
 type StreamingPolicyContentKey struct {
 	// Label can be used to specify Content Key when creating a Streaming Locator
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Policy used by Content Key
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Tracks which use this content key
-	Tracks []*TrackSelection `json:"tracks,omitempty"`
+	Tracks []*TrackSelection
 }
 
 // StreamingPolicyContentKeys - Class to specify properties of all content keys in Streaming Policy
 type StreamingPolicyContentKeys struct {
 	// Default content key for an encryption scheme
-	DefaultKey *DefaultKey `json:"defaultKey,omitempty"`
+	DefaultKey *DefaultKey
 
 	// Representing tracks needs separate content key
-	KeyToTrackMappings []*StreamingPolicyContentKey `json:"keyToTrackMappings,omitempty"`
+	KeyToTrackMappings []*StreamingPolicyContentKey
 }
 
 // StreamingPolicyFairPlayConfiguration - Class to specify configurations of FairPlay in Streaming Policy
 type StreamingPolicyFairPlayConfiguration struct {
 	// REQUIRED; All license to be persistent or not
-	AllowPersistentLicense *bool `json:"allowPersistentLicense,omitempty"`
+	AllowPersistentLicense *bool
 
 	// Template for the URL of the custom service delivering licenses to end user players. Not required when using Azure Media
 	// Services for issuing licenses. The template supports replaceable tokens that the
@@ -4613,7 +4613,7 @@ type StreamingPolicyFairPlayConfiguration struct {
 	// which is replaced with the value of
 	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
 	// requested.
-	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
+	CustomLicenseAcquisitionURLTemplate *string
 }
 
 // StreamingPolicyPlayReadyConfiguration - Class to specify configurations of PlayReady in Streaming Policy
@@ -4624,31 +4624,31 @@ type StreamingPolicyPlayReadyConfiguration struct {
 	// which is replaced with the value of
 	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
 	// requested.
-	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
+	CustomLicenseAcquisitionURLTemplate *string
 
 	// Custom attributes for PlayReady
-	PlayReadyCustomAttributes *string `json:"playReadyCustomAttributes,omitempty"`
+	PlayReadyCustomAttributes *string
 }
 
 // StreamingPolicyProperties - Class to specify properties of Streaming Policy
 type StreamingPolicyProperties struct {
 	// Configuration of CommonEncryptionCbcs
-	CommonEncryptionCbcs *CommonEncryptionCbcs `json:"commonEncryptionCbcs,omitempty"`
+	CommonEncryptionCbcs *CommonEncryptionCbcs
 
 	// Configuration of CommonEncryptionCenc
-	CommonEncryptionCenc *CommonEncryptionCenc `json:"commonEncryptionCenc,omitempty"`
+	CommonEncryptionCenc *CommonEncryptionCenc
 
 	// Default ContentKey used by current Streaming Policy
-	DefaultContentKeyPolicyName *string `json:"defaultContentKeyPolicyName,omitempty"`
+	DefaultContentKeyPolicyName *string
 
 	// Configuration of EnvelopeEncryption
-	EnvelopeEncryption *EnvelopeEncryption `json:"envelopeEncryption,omitempty"`
+	EnvelopeEncryption *EnvelopeEncryption
 
 	// Configurations of NoEncryption
-	NoEncryption *NoEncryption `json:"noEncryption,omitempty"`
+	NoEncryption *NoEncryption
 
 	// READ-ONLY; Creation time of Streaming Policy
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 }
 
 // StreamingPolicyWidevineConfiguration - Class to specify configurations of Widevine in Streaming Policy
@@ -4659,58 +4659,58 @@ type StreamingPolicyWidevineConfiguration struct {
 	// which is replaced with the value of
 	// StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being
 	// requested.
-	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
+	CustomLicenseAcquisitionURLTemplate *string
 }
 
 // SyncStorageKeysInput - The input to the sync storage keys request.
 type SyncStorageKeysInput struct {
 	// The ID of the storage account resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TextTrack - Represents a text track in an asset. A text track is usually used for sparse data related to the audio or video
 // tracks.
 type TextTrack struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The display name of the text track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The file name to the source file. This file is located in the storage container of the asset.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// The HLS specific setting for the text track.
-	HlsSettings *HlsSettings `json:"hlsSettings,omitempty"`
+	HlsSettings *HlsSettings
 
 	// When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist when requested
 	// by a client. When the PlayerVisibility is set to "Hidden", the text will
 	// not be available to the client. The default value is "Visible".
-	PlayerVisibility *Visibility `json:"playerVisibility,omitempty"`
+	PlayerVisibility *Visibility
 
 	// READ-ONLY; The RFC5646 language code for the text track.
-	LanguageCode *string `json:"languageCode,omitempty" azure:"ro"`
+	LanguageCode *string
 }
 
 // GetTrackBase implements the TrackBaseClassification interface for type TextTrack.
@@ -4732,7 +4732,7 @@ type TrackBaseClassification interface {
 // TrackBase - Base type for concrete track types. A derived type must be used to represent the Track.
 type TrackBase struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetTrackBase implements the TrackBaseClassification interface for type TrackBase.
@@ -4752,7 +4752,7 @@ type TrackDescriptorClassification interface {
 // be processed by a Job
 type TrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetTrackDescriptor implements the TrackDescriptorClassification interface for type TrackDescriptor.
@@ -4761,38 +4761,38 @@ func (t *TrackDescriptor) GetTrackDescriptor() *TrackDescriptor { return t }
 // TrackPropertyCondition - Class to specify one track property condition
 type TrackPropertyCondition struct {
 	// REQUIRED; Track property condition operation
-	Operation *TrackPropertyCompareOperation `json:"operation,omitempty"`
+	Operation *TrackPropertyCompareOperation
 
 	// REQUIRED; Track property type
-	Property *TrackPropertyType `json:"property,omitempty"`
+	Property *TrackPropertyType
 
 	// Track property value
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // TrackSelection - Class to select a track
 type TrackSelection struct {
 	// TrackSelections is a track property condition list which can specify track(s)
-	TrackSelections []*TrackPropertyCondition `json:"trackSelections,omitempty"`
+	TrackSelections []*TrackPropertyCondition
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate method.
@@ -4824,7 +4824,7 @@ type TracksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TracksClientListOptions contains the optional parameters for the TracksClient.List method.
+// TracksClientListOptions contains the optional parameters for the TracksClient.NewListPager method.
 type TracksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4834,28 +4834,28 @@ type TracksClientListOptions struct {
 // to input media by creating Jobs.
 type Transform struct {
 	// The resource properties.
-	Properties *TransformProperties `json:"properties,omitempty"`
+	Properties *TransformProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TransformCollection - A collection of Transform items.
 type TransformCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
-	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string
 
 	// A collection of Transform items.
-	Value []*Transform `json:"value,omitempty"`
+	Value []*Transform
 }
 
 // TransformOutput - Describes the properties of a TransformOutput, which are the rules to be applied while generating the
@@ -4863,31 +4863,31 @@ type TransformCollection struct {
 type TransformOutput struct {
 	// REQUIRED; Preset that describes the operations that will be used to modify, transcode, or extract insights from the source
 	// file to generate the output.
-	Preset PresetClassification `json:"preset,omitempty"`
+	Preset PresetClassification
 
 	// A Transform can define more than one outputs. This property defines what the service should do when one output fails -
 	// either continue to produce other outputs, or, stop the other outputs. The overall
 	// Job state will not reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'.
-	OnError *OnErrorType `json:"onError,omitempty"`
+	OnError *OnErrorType
 
 	// Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for
 	// processing TransformOutputs. The default priority is Normal.
-	RelativePriority *Priority `json:"relativePriority,omitempty"`
+	RelativePriority *Priority
 }
 
 // TransformProperties - A Transform.
 type TransformProperties struct {
 	// REQUIRED; An array of one or more TransformOutputs that the Transform should generate.
-	Outputs []*TransformOutput `json:"outputs,omitempty"`
+	Outputs []*TransformOutput
 
 	// An optional verbose description of the Transform.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The UTC date and time when the Transform was last updated, in 'YYYY-MM-DDThh:mm:ssZ' format.
-	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
+	LastModified *time.Time
 }
 
 // TransformsClientCreateOrUpdateOptions contains the optional parameters for the TransformsClient.CreateOrUpdate method.
@@ -4905,7 +4905,7 @@ type TransformsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+// TransformsClientListOptions contains the optional parameters for the TransformsClient.NewListPager method.
 type TransformsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4931,14 +4931,14 @@ type TransportStreamFormat struct {
 	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
 	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
 	// macros will be collapsed and removed from the filename.
-	FilenamePattern *string `json:"filenamePattern,omitempty"`
+	FilenamePattern *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed together
 	// .
-	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
+	OutputFiles []*OutputFile
 }
 
 // GetFormat implements the FormatClassification interface for type TransportStreamFormat.
@@ -4962,10 +4962,10 @@ func (t *TransportStreamFormat) GetMultiBitrateFormat() *MultiBitrateFormat {
 // depending on whether the media file starts from a timestamp of zero or not.
 type UTCClipTime struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; The time position on the timeline of the input media based on Utc time.
-	Time *time.Time `json:"time,omitempty"`
+	Time *time.Time
 }
 
 // GetClipTime implements the ClipTimeClassification interface for type UTCClipTime.
@@ -4977,10 +4977,10 @@ func (u *UTCClipTime) GetClipTime() *ClipTime {
 
 type UserAssignedManagedIdentity struct {
 	// READ-ONLY; The client ID.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // VideoClassification provides polymorphic access to related types.
@@ -4996,21 +4996,21 @@ type VideoClassification interface {
 // Video - Describes the basic properties for encoding the input video.
 type Video struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in ISO 8601
 	// format. The default is 2 seconds(PT2S). Note that this setting is ignored if
 	// VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source setting.
-	KeyFrameInterval *string `json:"keyFrameInterval,omitempty"`
+	KeyFrameInterval *string
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize
-	StretchMode *StretchMode `json:"stretchMode,omitempty"`
+	StretchMode *StretchMode
 
 	// The Video Sync Mode
-	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+	SyncMode *VideoSyncMode
 }
 
 // GetCodec implements the CodecClassification interface for type Video.
@@ -5028,7 +5028,7 @@ func (v *Video) GetVideo() *Video { return v }
 // a JSON format file.
 type VideoAnalyzerPreset struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). If you
 	// know the language of your content, it is recommended that you specify it. The
@@ -5039,10 +5039,10 @@ type VideoAnalyzerPreset struct {
 	// first language is detected. The automatic detection works best with audio recordings with clearly discernable speech. If
 	// automatic detection fails to find the language, transcription would fallback to
 	// 'en-US'." The list of supported languages is available here: https://go.microsoft.com/fwlink/?linkid=2109463
-	AudioLanguage *string `json:"audioLanguage,omitempty"`
+	AudioLanguage *string
 
 	// Dictionary containing key value pairs for parameters not exposed in the preset itself
-	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
+	ExperimentalOptions map[string]*string
 
 	// Defines the type of insights that you want the service to generate. The allowed values are 'AudioInsightsOnly', 'VideoInsightsOnly',
 	// and 'AllInsights'. The default is AllInsights. If you set this to
@@ -5050,11 +5050,11 @@ type VideoAnalyzerPreset struct {
 	// then only video insights are generated. It is recommended that you not use
 	// AudioInsightsOnly if you expect some of your inputs to be video only; or use VideoInsightsOnly if you expect some of your
 	// inputs to be audio only. Your Jobs in such conditions would error out.
-	InsightsToExtract *InsightsType `json:"insightsToExtract,omitempty"`
+	InsightsToExtract *InsightsType
 
 	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
 	// chosen.
-	Mode *AudioAnalysisMode `json:"mode,omitempty"`
+	Mode *AudioAnalysisMode
 }
 
 // GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type VideoAnalyzerPreset.
@@ -5078,41 +5078,41 @@ func (v *VideoAnalyzerPreset) GetPreset() *Preset {
 type VideoLayer struct {
 	// REQUIRED; The average bitrate in bits per second at which to encode the input video when generating this layer. This is
 	// a required field.
-	Bitrate *int32 `json:"bitrate,omitempty"`
+	Bitrate *int32
 
 	// Whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on
 	// whenever the video profile permits its use.
-	AdaptiveBFrame *bool `json:"adaptiveBFrame,omitempty"`
+	AdaptiveBFrame *bool
 
 	// The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number
 	// based on the video profile and level.
-	BFrames *int32 `json:"bFrames,omitempty"`
+	BFrames *int32
 
 	// The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N
 	// are integers (For example, 30000/1001), or in the form of a number (For example,
 	// 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified,
 	// the encoder will use the same frame rate as the input video.
-	FrameRate *string `json:"frameRate,omitempty"`
+	FrameRate *string
 
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in height as the input.
-	Height *string `json:"height,omitempty"`
+	Height *string
 
 	// The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming
 	// the output file.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults
 	// to the same value as bitrate.
-	MaxBitrate *int32 `json:"maxBitrate,omitempty"`
+	MaxBitrate *int32
 
 	// The number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will
 	// use a single slice for each frame.
-	Slices *int32 `json:"slices,omitempty"`
+	Slices *int32
 
 	// The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
 	// 50% means the output video has half as many pixels in width as the input.
-	Width *string `json:"width,omitempty"`
+	Width *string
 }
 
 // VideoOverlay - Describes the properties of a video overlay.
@@ -5121,42 +5121,42 @@ type VideoOverlay struct {
 	// specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,
 	// MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video
 	// file formats.
-	InputLabel *string `json:"inputLabel,omitempty"`
+	InputLabel *string
 
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// The gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
-	AudioGainLevel *float64 `json:"audioGainLevel,omitempty"`
+	AudioGainLevel *float64
 
 	// An optional rectangular window used to crop the overlay image or video.
-	CropRectangle *Rectangle `json:"cropRectangle,omitempty"`
+	CropRectangle *Rectangle
 
 	// The end position, with reference to the input video, at which the overlay ends. The value should be in ISO 8601 format.
 	// For example, PT30S to end the overlay at 30 seconds into the input video. If not
 	// specified or the value is greater than the input video duration, the overlay will be applied until the end of the input
 	// video if the overlay media duration is greater than the input video duration,
 	// else the overlay will last as long as the overlay media duration.
-	End *string `json:"end,omitempty"`
+	End *string
 
 	// The duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If
 	// not specified the default behavior is to have no fade in (same as PT0S).
-	FadeInDuration *string `json:"fadeInDuration,omitempty"`
+	FadeInDuration *string
 
 	// The duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not
 	// specified the default behavior is to have no fade out (same as PT0S).
-	FadeOutDuration *string `json:"fadeOutDuration,omitempty"`
+	FadeOutDuration *string
 
 	// The opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is opaque.
-	Opacity *float64 `json:"opacity,omitempty"`
+	Opacity *float64
 
 	// The location in the input video where the overlay is applied.
-	Position *Rectangle `json:"position,omitempty"`
+	Position *Rectangle
 
 	// The start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format.
 	// For example, PT05S to start the overlay at 5 seconds into the input video.
 	// If not specified the overlay starts from the beginning of the input video.
-	Start *string `json:"start,omitempty"`
+	Start *string
 }
 
 // GetOverlay implements the OverlayClassification interface for type VideoOverlay.
@@ -5175,7 +5175,7 @@ func (v *VideoOverlay) GetOverlay() *Overlay {
 // VideoTrack - Represents a video track in the asset.
 type VideoTrack struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetTrackBase implements the TrackBaseClassification interface for type VideoTrack.
@@ -5198,7 +5198,7 @@ type VideoTrackDescriptorClassification interface {
 // VideoTrackDescriptor - A TrackSelection to select video tracks.
 type VideoTrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetTrackDescriptor implements the TrackDescriptorClassification interface for type VideoTrackDescriptor.

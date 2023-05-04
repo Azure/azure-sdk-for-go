@@ -15,7 +15,7 @@ func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonProper
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (P
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (Sc
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (W
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

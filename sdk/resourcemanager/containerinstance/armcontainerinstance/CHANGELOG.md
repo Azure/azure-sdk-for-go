@@ -1,13 +1,28 @@
 # Release History
 
-## 2.2.0-beta.1 (2023-01-27)
+## 2.3.0 (2023-04-28)
 ### Features Added
 
-- New value `ContainerGroupSKUConfidential` added to type alias `ContainerGroupSKU`
-- New type alias `ContainerGroupPriority` with values `ContainerGroupPriorityRegular`, `ContainerGroupPrioritySpot`
+- New value `ContainerGroupSKUConfidential` added to enum type `ContainerGroupSKU`
+- New enum type `ContainerGroupPriority` with values `ContainerGroupPriorityRegular`, `ContainerGroupPrioritySpot`
 - New struct `ConfidentialComputeProperties`
-- New field `ConfidentialComputeProperties` in struct `ContainerGroupPropertiesProperties`
-- New field `Priority` in struct `ContainerGroupPropertiesProperties`
+- New struct `SecurityContextCapabilitiesDefinition`
+- New struct `SecurityContextDefinition`
+- New field `ConfidentialComputeProperties`, `Priority` in struct `ContainerGroupPropertiesProperties`
+- New field `SecurityContext` in struct `ContainerProperties`
+- New field `SecurityContext` in struct `InitContainerPropertiesDefinition`
+
+
+## 2.2.1 (2023-04-18)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 2.2.0 (2023-04-07)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 2.1.0 (2022-11-08)

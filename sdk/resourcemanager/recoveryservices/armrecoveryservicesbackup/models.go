@@ -14,7 +14,7 @@ import "time"
 // AzureBackupGoalFeatureSupportRequest - Azure backup goal feature specific request.
 type AzureBackupGoalFeatureSupportRequest struct {
 	// REQUIRED; backup support feature type.
-	FeatureType *string `json:"featureType,omitempty"`
+	FeatureType *string
 }
 
 // GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureBackupGoalFeatureSupportRequest.
@@ -30,46 +30,46 @@ type AzureBackupServerContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Specifies whether the container is re-registrable.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// ID of container.
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Backup engine Agent version
-	DpmAgentVersion *string `json:"dpmAgentVersion,omitempty"`
+	DpmAgentVersion *string
 
 	// List of BackupEngines protecting the container
-	DpmServers []*string `json:"dpmServers,omitempty"`
+	DpmServers []*string
 
 	// Extended Info of the container.
-	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *DPMContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Number of protected items in the BackupEngine
-	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int64
 
 	// Protection status of the container.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// To check if upgrade available
-	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
+	UpgradeAvailable *bool
 }
 
 // GetDpmContainer implements the DpmContainerClassification interface for type AzureBackupServerContainer.
@@ -107,43 +107,43 @@ func (a *AzureBackupServerContainer) GetProtectionContainer() *ProtectionContain
 // AzureBackupServerEngine - Backup engine type when Azure Backup Server is used to manage the backups.
 type AzureBackupServerEngine struct {
 	// REQUIRED; Type of the backup engine.
-	BackupEngineType *BackupEngineType `json:"backupEngineType,omitempty"`
+	BackupEngineType *BackupEngineType
 
 	// Backup agent version
-	AzureBackupAgentVersion *string `json:"azureBackupAgentVersion,omitempty"`
+	AzureBackupAgentVersion *string
 
 	// ID of the backup engine.
-	BackupEngineID *string `json:"backupEngineId,omitempty"`
+	BackupEngineID *string
 
 	// Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
-	BackupEngineState *string `json:"backupEngineState,omitempty"`
+	BackupEngineState *string
 
 	// Type of backup management for the backup engine.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Flag indicating if the backup engine be registered, once already registered.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// Backup engine version
-	DpmVersion *string `json:"dpmVersion,omitempty"`
+	DpmVersion *string
 
 	// Extended info of the backupengine
-	ExtendedInfo *BackupEngineExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *BackupEngineExtendedInfo
 
 	// Friendly name of the backup engine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Backup status of the backup engine.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// To check if backup agent upgrade available
-	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
+	IsAzureBackupAgentUpgradeAvailable *bool
 
 	// To check if backup engine upgrade available
-	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
+	IsDpmUpgradeAvailable *bool
 
 	// Registration status of the backup engine with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type AzureBackupServerEngine.
@@ -168,10 +168,10 @@ func (a *AzureBackupServerEngine) GetBackupEngineBase() *BackupEngineBase {
 // AzureFileShareBackupRequest - AzureFileShare workload-specific backup request.
 type AzureFileShareBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Backup copy will expire after the time specified (UTC).
-	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+	RecoveryPointExpiryTimeInUTC *time.Time
 }
 
 // GetBackupRequest implements the BackupRequestClassification interface for type AzureFileShareBackupRequest.
@@ -184,28 +184,28 @@ func (a *AzureFileShareBackupRequest) GetBackupRequest() *BackupRequest {
 // AzureFileShareProtectableItem - Protectable item for Azure Fileshare workloads.
 type AzureFileShareProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// File Share type XSync or XSMB.
-	AzureFileShareType *AzureFileShareType `json:"azureFileShareType,omitempty"`
+	AzureFileShareType *AzureFileShareType
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
-	ParentContainerFabricID *string `json:"parentContainerFabricId,omitempty"`
+	ParentContainerFabricID *string
 
 	// Friendly name of container to which this protectable item belongs.
-	ParentContainerFriendlyName *string `json:"parentContainerFriendlyName,omitempty"`
+	ParentContainerFriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureFileShareProtectableItem.
@@ -222,25 +222,25 @@ func (a *AzureFileShareProtectableItem) GetWorkloadProtectableItem() *WorkloadPr
 // AzureFileShareProtectionPolicy - AzureStorage backup policy.
 type AzureFileShareProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Retention policy with the details on backup copy retention ranges.
-	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+	RetentionPolicy RetentionPolicyClassification
 
 	// Backup schedule specified as part of backup policy.
-	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
+	SchedulePolicy SchedulePolicyClassification
 
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// Type of workload for the backup management
-	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
+	WorkLoadType *WorkloadType
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureFileShareProtectionPolicy.
@@ -255,13 +255,13 @@ func (a *AzureFileShareProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy
 // AzureFileShareProvisionILRRequest - Update snapshot Uri with the correct friendly Name of the source Azure file share.
 type AzureFileShareProvisionILRRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Recovery point ID.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Source Storage account ARM Id
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetILRRequest implements the ILRRequestClassification interface for type AzureFileShareProvisionILRRequest.
@@ -274,22 +274,22 @@ func (a *AzureFileShareProvisionILRRequest) GetILRRequest() *ILRRequest {
 // AzureFileShareRecoveryPoint - Azure File Share workload specific backup copy.
 type AzureFileShareRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Contains Url to the snapshot of fileshare, if applicable
-	FileShareSnapshotURI *string `json:"fileShareSnapshotUri,omitempty"`
+	FileShareSnapshotURI *string
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Contains recovery point size
-	RecoveryPointSizeInGB *int32 `json:"recoveryPointSizeInGB,omitempty"`
+	RecoveryPointSizeInGB *int32
 
 	// Time at which this backup copy was created.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *time.Time
 
 	// Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
-	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *string
 }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureFileShareRecoveryPoint.
@@ -302,25 +302,25 @@ func (a *AzureFileShareRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
 // AzureFileShareRestoreRequest - AzureFileShare Restore Request
 type AzureFileShareRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Options to resolve copy conflicts.
-	CopyOptions *CopyOptions `json:"copyOptions,omitempty"`
+	CopyOptions *CopyOptions
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// List of Source Files/Folders(which need to recover) and TargetFolderPath details
-	RestoreFileSpecs []*RestoreFileSpecs `json:"restoreFileSpecs,omitempty"`
+	RestoreFileSpecs []*RestoreFileSpecs
 
 	// Restore Type (FullShareRestore or ItemLevelRestore)
-	RestoreRequestType *RestoreRequestType `json:"restoreRequestType,omitempty"`
+	RestoreRequestType *RestoreRequestType
 
 	// Source storage account ARM Id
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Target File Share Details
-	TargetDetails *TargetAFSRestoreInfo `json:"targetDetails,omitempty"`
+	TargetDetails *TargetAFSRestoreInfo
 }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type AzureFileShareRestoreRequest.
@@ -333,79 +333,79 @@ func (a *AzureFileShareRestoreRequest) GetRestoreRequest() *RestoreRequest {
 // AzureFileshareProtectedItem - Azure File Share workload-specific backup item.
 type AzureFileshareProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information with this backup item.
-	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo
 
 	// Friendly name of the fileshare represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureFileshareProtectedItem.
@@ -435,20 +435,20 @@ func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
 // AzureFileshareProtectedItemExtendedInfo - Additional information about Azure File Share backup item.
 type AzureFileshareProtectedItemExtendedInfo struct {
 	// The oldest backup copy available for this item in the service.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// Indicates consistency of policy object and policy applied to this backup item.
-	PolicyState *string `json:"policyState,omitempty"`
+	PolicyState *string
 
 	// Number of available backup copies associated with this backup item.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 
 	// READ-ONLY; Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
 	// Deleted}
-	ResourceState *string `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *string
 
 	// READ-ONLY; The resource state sync time for this backup item.
-	ResourceStateSyncTime *time.Time `json:"resourceStateSyncTime,omitempty" azure:"ro"`
+	ResourceStateSyncTime *time.Time
 }
 
 // AzureIaaSClassicComputeVMContainer - IaaS VM workload-specific backup item representing a classic virtual machine.
@@ -457,31 +457,31 @@ type AzureIaaSClassicComputeVMContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
@@ -514,28 +514,28 @@ func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *Protectio
 // AzureIaaSClassicComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM ID of the virtual machine.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
@@ -566,94 +566,94 @@ func (a *AzureIaaSClassicComputeVMProtectableItem) GetWorkloadProtectableItem() 
 // AzureIaaSClassicComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
 type AzureIaaSClassicComputeVMProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
 	// Extended Properties for Azure IaasVM Backup.
-	ExtendedProperties *ExtendedProperties `json:"extendedProperties,omitempty"`
+	ExtendedProperties *ExtendedProperties
 
 	// Health details on this backup item.
-	HealthDetails []*AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	HealthDetails []*AzureIaaSVMHealthDetails
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Last backup operation status.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the VM represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Health status of protected item.
-	HealthStatus *HealthStatus `json:"healthStatus,omitempty" azure:"ro"`
+	HealthStatus *HealthStatus
 
 	// READ-ONLY; Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty" azure:"ro"`
+	LastBackupTime *time.Time
 
 	// READ-ONLY; Data ID of the protected item.
-	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty" azure:"ro"`
+	ProtectedItemDataID *string
 
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
+	VirtualMachineID *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
@@ -722,31 +722,31 @@ type AzureIaaSComputeVMContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSComputeVMContainer.
@@ -779,28 +779,28 @@ func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContai
 // AzureIaaSComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
 type AzureIaaSComputeVMProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM ID of the virtual machine.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
@@ -831,94 +831,94 @@ func (a *AzureIaaSComputeVMProtectableItem) GetWorkloadProtectableItem() *Worklo
 // AzureIaaSComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
 type AzureIaaSComputeVMProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
 	// Extended Properties for Azure IaasVM Backup.
-	ExtendedProperties *ExtendedProperties `json:"extendedProperties,omitempty"`
+	ExtendedProperties *ExtendedProperties
 
 	// Health details on this backup item.
-	HealthDetails []*AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	HealthDetails []*AzureIaaSVMHealthDetails
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Last backup operation status.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the VM represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Health status of protected item.
-	HealthStatus *HealthStatus `json:"healthStatus,omitempty" azure:"ro"`
+	HealthStatus *HealthStatus
 
 	// READ-ONLY; Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty" azure:"ro"`
+	LastBackupTime *time.Time
 
 	// READ-ONLY; Data ID of the protected item.
-	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty" azure:"ro"`
+	ProtectedItemDataID *string
 
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
+	VirtualMachineID *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
@@ -984,79 +984,79 @@ func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
 // AzureIaaSVMErrorInfo - Azure IaaS VM workload-specific error information.
 type AzureIaaSVMErrorInfo struct {
 	// READ-ONLY; Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *int32
 
 	// READ-ONLY; Localized error string.
-	ErrorString *string `json:"errorString,omitempty" azure:"ro"`
+	ErrorString *string
 
 	// READ-ONLY; Title: Typically, the entity that the error pertains to.
-	ErrorTitle *string `json:"errorTitle,omitempty" azure:"ro"`
+	ErrorTitle *string
 
 	// READ-ONLY; List of localized recommendations for above error code.
-	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+	Recommendations []*string
 }
 
 // AzureIaaSVMHealthDetails - Azure IaaS VM workload-specific Health Details.
 type AzureIaaSVMHealthDetails struct {
 	// READ-ONLY; Health Code
-	Code *int32 `json:"code,omitempty" azure:"ro"`
+	Code *int32
 
 	// READ-ONLY; Health Message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Health Recommended Actions
-	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+	Recommendations []*string
 
 	// READ-ONLY; Health Title
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // AzureIaaSVMJob - Azure IaaS VM workload-specific job object.
 type AzureIaaSVMJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Container name of the entity on which the current job is executing.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Time elapsed during the execution of this job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// Error details on execution of this job.
-	ErrorDetails []*AzureIaaSVMErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*AzureIaaSVMErrorInfo
 
 	// Additional information for this job.
-	ExtendedInfo *AzureIaaSVMJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureIaaSVMJobExtendedInfo
 
 	// Indicated that whether the job is adhoc(true) or scheduled(false)
-	IsUserTriggered *bool `json:"isUserTriggered,omitempty"`
+	IsUserTriggered *bool
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 }
 
 // GetJob implements the JobClassification interface for type AzureIaaSVMJob.
@@ -1076,94 +1076,94 @@ func (a *AzureIaaSVMJob) GetJob() *Job {
 // AzureIaaSVMJobExtendedInfo - Azure IaaS VM workload-specific additional information for job.
 type AzureIaaSVMJobExtendedInfo struct {
 	// Non localized error message on job execution.
-	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
+	DynamicErrorMessage *string
 
 	// Time remaining for execution of this job.
-	EstimatedRemainingDuration *string `json:"estimatedRemainingDuration,omitempty"`
+	EstimatedRemainingDuration *string
 
 	// Job internal properties.
-	InternalPropertyBag map[string]*string `json:"internalPropertyBag,omitempty"`
+	InternalPropertyBag map[string]*string
 
 	// Indicates progress of the job. Null if it has not started or completed.
-	ProgressPercentage *float64 `json:"progressPercentage,omitempty"`
+	ProgressPercentage *float64
 
 	// Job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// List of tasks associated with this job.
-	TasksList []*AzureIaaSVMJobTaskDetails `json:"tasksList,omitempty"`
+	TasksList []*AzureIaaSVMJobTaskDetails
 }
 
 // AzureIaaSVMJobTaskDetails - Azure IaaS VM workload-specific job task details.
 type AzureIaaSVMJobTaskDetails struct {
 	// Time elapsed for task.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The instanceId.
-	InstanceID *string `json:"instanceId,omitempty"`
+	InstanceID *string
 
 	// Progress of the task.
-	ProgressPercentage *float64 `json:"progressPercentage,omitempty"`
+	ProgressPercentage *float64
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Details about execution of the task. eg: number of bytes transferred etc
-	TaskExecutionDetails *string `json:"taskExecutionDetails,omitempty"`
+	TaskExecutionDetails *string
 
 	// The task display name.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // AzureIaaSVMJobV2 - Azure IaaS VM workload-specific job object.
 type AzureIaaSVMJobV2 struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Container name of the entity on which the current job is executing.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Time elapsed during the execution of this job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// Error details on execution of this job.
-	ErrorDetails []*AzureIaaSVMErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*AzureIaaSVMErrorInfo
 
 	// Additional information for this job.
-	ExtendedInfo *AzureIaaSVMJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureIaaSVMJobExtendedInfo
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 }
 
 // GetJob implements the JobClassification interface for type AzureIaaSVMJobV2.
@@ -1193,94 +1193,94 @@ type AzureIaaSVMProtectedItemClassification interface {
 // AzureIaaSVMProtectedItem - IaaS VM workload-specific backup item.
 type AzureIaaSVMProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
 	// Extended Properties for Azure IaasVM Backup.
-	ExtendedProperties *ExtendedProperties `json:"extendedProperties,omitempty"`
+	ExtendedProperties *ExtendedProperties
 
 	// Health details on this backup item.
-	HealthDetails []*AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+	HealthDetails []*AzureIaaSVMHealthDetails
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Last backup operation status.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the VM represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Health status of protected item.
-	HealthStatus *HealthStatus `json:"healthStatus,omitempty" azure:"ro"`
+	HealthStatus *HealthStatus
 
 	// READ-ONLY; Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty" azure:"ro"`
+	LastBackupTime *time.Time
 
 	// READ-ONLY; Data ID of the protected item.
-	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty" azure:"ro"`
+	ProtectedItemDataID *string
 
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty" azure:"ro"`
+	VirtualMachineID *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
@@ -1313,52 +1313,52 @@ func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
 // AzureIaaSVMProtectedItemExtendedInfo - Additional information on Azure IaaS VM specific backup item.
 type AzureIaaSVMProtectedItemExtendedInfo struct {
 	// The latest backup copy available for this backup item in archive tier
-	NewestRecoveryPointInArchive *time.Time `json:"newestRecoveryPointInArchive,omitempty"`
+	NewestRecoveryPointInArchive *time.Time
 
 	// The oldest backup copy available for this backup item across all tiers.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// The oldest backup copy available for this backup item in archive tier
-	OldestRecoveryPointInArchive *time.Time `json:"oldestRecoveryPointInArchive,omitempty"`
+	OldestRecoveryPointInArchive *time.Time
 
 	// The oldest backup copy available for this backup item in vault tier
-	OldestRecoveryPointInVault *time.Time `json:"oldestRecoveryPointInVault,omitempty"`
+	OldestRecoveryPointInVault *time.Time
 
 	// Specifies if backup policy associated with the backup item is inconsistent.
-	PolicyInconsistent *bool `json:"policyInconsistent,omitempty"`
+	PolicyInconsistent *bool
 
 	// Number of backup copies available for this backup item.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 }
 
 // AzureIaaSVMProtectionPolicy - IaaS VM workload-specific backup policy.
 type AzureIaaSVMProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string                     `json:"backupManagementType,omitempty"`
-	InstantRPDetails     *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
+	BackupManagementType *string
+	InstantRPDetails     *InstantRPAdditionalDetails
 
 	// Instant RP retention policy range in days
-	InstantRpRetentionRangeInDays *int32            `json:"instantRpRetentionRangeInDays,omitempty"`
-	PolicyType                    *IAASVMPolicyType `json:"policyType,omitempty"`
+	InstantRpRetentionRangeInDays *int32
+	PolicyType                    *IAASVMPolicyType
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Retention policy with the details on backup copy retention ranges.
-	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+	RetentionPolicy RetentionPolicyClassification
 
 	// Backup schedule specified as part of backup policy.
-	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
+	SchedulePolicy SchedulePolicyClassification
 
 	// Tiering policy to automatically move RPs to another tier Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
 	// policy specifies the criteria to move RP to the target tier.
-	TieringPolicy map[string]*TieringPolicy `json:"tieringPolicy,omitempty"`
+	TieringPolicy map[string]*TieringPolicy
 
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureIaaSVMProtectionPolicy.
@@ -1383,22 +1383,22 @@ type AzureRecoveryServiceVaultProtectionIntentClassification interface {
 // AzureRecoveryServiceVaultProtectionIntent - Azure Recovery Services Vault specific protection intent item.
 type AzureRecoveryServiceVaultProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
@@ -1422,25 +1422,25 @@ func (a *AzureRecoveryServiceVaultProtectionIntent) GetProtectionIntent() *Prote
 // AzureResourceProtectionIntent - IaaS VM specific backup protection intent item.
 type AzureResourceProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the VM represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureResourceProtectionIntent.
@@ -1461,37 +1461,37 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Additional details of a workload container.
-	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Time stamp when this container was updated.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+	LastUpdatedTime *time.Time
 
 	// Re-Do Operation
-	OperationType *OperationType `json:"operationType,omitempty"`
+	OperationType *OperationType
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// ARM ID of the virtual machine represented by this Azure Workload Container
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Workload type for which registration was sent.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
@@ -1529,22 +1529,22 @@ type AzureSQLContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLContainer.
@@ -1562,67 +1562,67 @@ func (a *AzureSQLContainer) GetProtectionContainer() *ProtectionContainer {
 // AzureSQLProtectedItem - Azure SQL workload-specific backup item.
 type AzureSQLProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureSQLProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureSQLProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Internal ID of a backup item. Used by Azure SQL Backup engine to contact Recovery Services.
-	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
+	ProtectedItemDataID *string
 
 	// Backup state of the backed up item.
-	ProtectionState *ProtectedItemState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectedItemState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type AzureSQLProtectedItem.
@@ -1652,28 +1652,28 @@ func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
 // AzureSQLProtectedItemExtendedInfo - Additional information on Azure Sql specific protected item.
 type AzureSQLProtectedItemExtendedInfo struct {
 	// The oldest backup copy available for this item in the service.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// State of the backup policy associated with this backup item.
-	PolicyState *string `json:"policyState,omitempty"`
+	PolicyState *string
 
 	// Number of available backup copies associated with this backup item.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 }
 
 // AzureSQLProtectionPolicy - Azure SQL workload-specific backup policy.
 type AzureSQLProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Retention policy details.
-	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+	RetentionPolicy RetentionPolicyClassification
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureSQLProtectionPolicy.
@@ -1691,37 +1691,37 @@ type AzureStorageContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Whether storage account lock is to be acquired for this container or not.
-	AcquireStorageAccountLock *AcquireStorageAccountLock `json:"acquireStorageAccountLock,omitempty"`
+	AcquireStorageAccountLock *AcquireStorageAccountLock
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Number of items backed up in this container.
-	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int64
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM url.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Storage account version.
-	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
+	StorageAccountVersion *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureStorageContainer.
@@ -1739,61 +1739,61 @@ func (a *AzureStorageContainer) GetProtectionContainer() *ProtectionContainer {
 // AzureStorageErrorInfo - Azure storage specific error information
 type AzureStorageErrorInfo struct {
 	// Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty"`
+	ErrorCode *int32
 
 	// Localized error string.
-	ErrorString *string `json:"errorString,omitempty"`
+	ErrorString *string
 
 	// List of localized recommendations for above error code.
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 }
 
 // AzureStorageJob - Azure storage specific job.
 type AzureStorageJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Time elapsed during the execution of this job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// Error details on execution of this job.
-	ErrorDetails []*AzureStorageErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*AzureStorageErrorInfo
 
 	// Additional information about the job.
-	ExtendedInfo *AzureStorageJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureStorageJobExtendedInfo
 
 	// Indicated that whether the job is adhoc(true) or scheduled(false)
-	IsUserTriggered *bool `json:"isUserTriggered,omitempty"`
+	IsUserTriggered *bool
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Specifies friendly name of the storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	StorageAccountName *string
 
 	// Specifies whether the Storage account is a Classic or an Azure Resource Manager Storage account.
-	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
+	StorageAccountVersion *string
 }
 
 // GetJob implements the JobClassification interface for type AzureStorageJob.
@@ -1813,22 +1813,22 @@ func (a *AzureStorageJob) GetJob() *Job {
 // AzureStorageJobExtendedInfo - Azure Storage workload-specific additional information for job.
 type AzureStorageJobExtendedInfo struct {
 	// Non localized error message on job execution.
-	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
+	DynamicErrorMessage *string
 
 	// Job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// List of tasks for this job
-	TasksList []*AzureStorageJobTaskDetails `json:"tasksList,omitempty"`
+	TasksList []*AzureStorageJobTaskDetails
 }
 
 // AzureStorageJobTaskDetails - Azure storage workload specific job task details.
 type AzureStorageJobTaskDetails struct {
 	// The status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The task display name.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // AzureStorageProtectableContainer - Azure Storage-specific protectable containers
@@ -1836,19 +1836,19 @@ type AzureStorageProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
 	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
-	ProtectableContainerType *ProtectableContainerType `json:"protectableContainerType,omitempty"`
+	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Fabric Id of the container such as ARM Id.
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 }
 
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureStorageProtectableContainer.
@@ -1867,19 +1867,19 @@ type AzureVMAppContainerProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
 	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
-	ProtectableContainerType *ProtectableContainerType `json:"protectableContainerType,omitempty"`
+	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Fabric Id of the container such as ARM Id.
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 }
 
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureVMAppContainerProtectableContainer.
@@ -1899,37 +1899,37 @@ type AzureVMAppContainerProtectionContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Additional details of a workload container.
-	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Time stamp when this container was updated.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+	LastUpdatedTime *time.Time
 
 	// Re-Do Operation
-	OperationType *OperationType `json:"operationType,omitempty"`
+	OperationType *OperationType
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// ARM ID of the virtual machine represented by this Azure Workload Container
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Workload type for which registration was sent.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureVMAppContainerProtectionContainer.
@@ -1964,13 +1964,13 @@ func (a *AzureVMAppContainerProtectionContainer) GetProtectionContainer() *Prote
 // AzureVMResourceFeatureSupportRequest - AzureResource(IaaS VM) Specific feature support request
 type AzureVMResourceFeatureSupportRequest struct {
 	// REQUIRED; backup support feature type.
-	FeatureType *string `json:"featureType,omitempty"`
+	FeatureType *string
 
 	// SKUs (Premium/Managed etc) in case of IaasVM
-	VMSKU *string `json:"vmSku,omitempty"`
+	VMSKU *string
 
 	// Size of the resource: VM size(A/D series etc) in case of IaasVM
-	VMSize *string `json:"vmSize,omitempty"`
+	VMSize *string
 }
 
 // GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureVMResourceFeatureSupportRequest.
@@ -1983,7 +1983,7 @@ func (a *AzureVMResourceFeatureSupportRequest) GetFeatureSupportRequest() *Featu
 // AzureVMResourceFeatureSupportResponse - Response for feature support requests for Azure IaasVm
 type AzureVMResourceFeatureSupportResponse struct {
 	// Support status of feature
-	SupportStatus *SupportStatus `json:"supportStatus,omitempty"`
+	SupportStatus *SupportStatus
 }
 
 // AzureVMWorkloadItemClassification provides polymorphic access to related types.
@@ -2000,34 +2000,34 @@ type AzureVMWorkloadItemClassification interface {
 // AzureVMWorkloadItem - Azure VM workload-specific workload item.
 type AzureVMWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadItem.
@@ -2059,44 +2059,44 @@ type AzureVMWorkloadProtectableItemClassification interface {
 // AzureVMWorkloadProtectableItem - Azure VM workload-specific protectable item.
 type AzureVMWorkloadProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
@@ -2129,97 +2129,97 @@ type AzureVMWorkloadProtectedItemClassification interface {
 // AzureVMWorkloadProtectedItem - Azure VM workload-specific protected item.
 type AzureVMWorkloadProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+	LastBackupErrorDetail *ErrorDetail
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *LastBackupStatus
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
+	ParentType *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+	ProtectedItemDataSourceID *string
 
 	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
@@ -2254,49 +2254,49 @@ func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
 // AzureVMWorkloadProtectedItemExtendedInfo - Additional information on Azure Workload for SQL specific backup item.
 type AzureVMWorkloadProtectedItemExtendedInfo struct {
 	// The latest backup copy available for this backup item in archive tier
-	NewestRecoveryPointInArchive *time.Time `json:"newestRecoveryPointInArchive,omitempty"`
+	NewestRecoveryPointInArchive *time.Time
 
 	// The oldest backup copy available for this backup item across all tiers.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// The oldest backup copy available for this backup item in archive tier
-	OldestRecoveryPointInArchive *time.Time `json:"oldestRecoveryPointInArchive,omitempty"`
+	OldestRecoveryPointInArchive *time.Time
 
 	// The oldest backup copy available for this backup item in vault tier
-	OldestRecoveryPointInVault *time.Time `json:"oldestRecoveryPointInVault,omitempty"`
+	OldestRecoveryPointInVault *time.Time
 
 	// Indicates consistency of policy object and policy applied to this backup item.
-	PolicyState *string `json:"policyState,omitempty"`
+	PolicyState *string
 
 	// Indicates consistency of policy object and policy applied to this backup item.
-	RecoveryModel *string `json:"recoveryModel,omitempty"`
+	RecoveryModel *string
 
 	// Number of backup copies available for this backup item.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 }
 
 // AzureVMWorkloadProtectionPolicy - Azure VM (Mercury) workload-specific backup policy.
 type AzureVMWorkloadProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Fix the policy inconsistency
-	MakePolicyConsistent *bool `json:"makePolicyConsistent,omitempty"`
+	MakePolicyConsistent *bool
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Common settings for the backup management
-	Settings *Settings `json:"settings,omitempty"`
+	Settings *Settings
 
 	// List of sub-protection policies which includes schedule and retention
-	SubProtectionPolicy []*SubProtectionPolicy `json:"subProtectionPolicy,omitempty"`
+	SubProtectionPolicy []*SubProtectionPolicy
 
 	// Type of workload for the backup management
-	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
+	WorkLoadType *WorkloadType
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureVMWorkloadProtectionPolicy.
@@ -2311,97 +2311,97 @@ func (a *AzureVMWorkloadProtectionPolicy) GetProtectionPolicy() *ProtectionPolic
 // AzureVMWorkloadSAPAseDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP ASE Database.
 type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+	LastBackupErrorDetail *ErrorDetail
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *LastBackupStatus
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
+	ParentType *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+	ProtectedItemDataSourceID *string
 
 	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
@@ -2468,34 +2468,34 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *Protect
 // AzureVMWorkloadSAPAseDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP ASE Database.
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
@@ -2528,44 +2528,44 @@ func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetWorkloadItem() *WorkloadI
 // AzureVMWorkloadSAPAseSystemProtectableItem - Azure VM workload-specific protectable item representing SAP ASE System.
 type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
@@ -2601,34 +2601,34 @@ func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetWorkloadProtectableItem(
 // AzureVMWorkloadSAPAseSystemWorkloadItem - Azure VM workload-specific workload item representing SAP ASE System.
 type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
@@ -2661,44 +2661,44 @@ func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetWorkloadItem() *WorkloadIte
 // AzureVMWorkloadSAPHanaDBInstance - Azure VM workload-specific protectable item representing SAP HANA Dbinstance.
 type AzureVMWorkloadSAPHanaDBInstance struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDBInstance.
@@ -2734,97 +2734,97 @@ func (a *AzureVMWorkloadSAPHanaDBInstance) GetWorkloadProtectableItem() *Workloa
 // AzureVMWorkloadSAPHanaDBInstanceProtectedItem - Azure VM workload-specific protected item representing SAP HANA DBInstance.
 type AzureVMWorkloadSAPHanaDBInstanceProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+	LastBackupErrorDetail *ErrorDetail
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *LastBackupStatus
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
+	ParentType *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+	ProtectedItemDataSourceID *string
 
 	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDBInstanceProtectedItem.
@@ -2891,44 +2891,44 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetProtectedItem() *Prot
 // AzureVMWorkloadSAPHanaDatabaseProtectableItem - Azure VM workload-specific protectable item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
@@ -2964,97 +2964,97 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetWorkloadProtectableIt
 // AzureVMWorkloadSAPHanaDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+	LastBackupErrorDetail *ErrorDetail
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *LastBackupStatus
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
+	ParentType *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+	ProtectedItemDataSourceID *string
 
 	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
@@ -3121,34 +3121,34 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *Protec
 // AzureVMWorkloadSAPHanaDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
@@ -3181,44 +3181,44 @@ func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetWorkloadItem() *Workload
 // AzureVMWorkloadSAPHanaHSR - Azure VM workload-specific protectable item representing SAP HANA Dbinstance.
 type AzureVMWorkloadSAPHanaHSR struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaHSR.
@@ -3254,44 +3254,44 @@ func (a *AzureVMWorkloadSAPHanaHSR) GetWorkloadProtectableItem() *WorkloadProtec
 // AzureVMWorkloadSAPHanaSystemProtectableItem - Azure VM workload-specific protectable item representing SAP HANA System.
 type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
@@ -3327,34 +3327,34 @@ func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetWorkloadProtectableItem
 // AzureVMWorkloadSAPHanaSystemWorkloadItem - Azure VM workload-specific workload item representing SAP HANA System.
 type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
@@ -3388,44 +3388,44 @@ func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetWorkloadItem() *WorkloadIt
 // Group.
 type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
@@ -3461,44 +3461,44 @@ func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetWorkloadProtecta
 // AzureVMWorkloadSQLDatabaseProtectableItem - Azure VM workload-specific protectable item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
@@ -3534,97 +3534,97 @@ func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetWorkloadProtectableItem()
 // AzureVMWorkloadSQLDatabaseProtectedItem - Azure VM workload-specific protected item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+	KpisHealths map[string]*KPIResourceHealthDetails
 
 	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+	LastBackupErrorDetail *ErrorDetail
 
 	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *LastBackupStatus
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
+	ParentType *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+	ProtectedItemDataSourceID *string
 
 	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *string
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
@@ -3691,34 +3691,34 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedI
 // AzureVMWorkloadSQLDatabaseWorkloadItem - Azure VM workload-specific workload item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
@@ -3751,44 +3751,44 @@ func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem
 // AzureVMWorkloadSQLInstanceProtectableItem - Azure VM workload-specific protectable item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+	IsAutoProtected *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
 	// the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+	ParentUniqueName *string
 
 	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+	Prebackupvalidation *PreBackupValidation
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+	Subprotectableitemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
@@ -3824,37 +3824,37 @@ func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem()
 // AzureVMWorkloadSQLInstanceWorkloadItem - Azure VM workload-specific workload item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Data Directory Paths for default directories
-	DataDirectoryPaths []*SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
+	DataDirectoryPaths []*SQLDataDirectory
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Indicates if workload item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	IsAutoProtectable *bool
 
 	// Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
+	ServerName *string
 
 	// For instance or AG, indicates number of DB's to be protected
-	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+	SubWorkloadItemCount *int32
 
 	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+	Subinquireditemcount *int32
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
@@ -3897,22 +3897,22 @@ type AzureWorkloadAutoProtectionIntentClassification interface {
 // AzureWorkloadAutoProtectionIntent - Azure Recovery Services Vault specific protection intent item.
 type AzureWorkloadAutoProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
@@ -3949,16 +3949,16 @@ func (a *AzureWorkloadAutoProtectionIntent) GetProtectionIntent() *ProtectionInt
 // AzureWorkloadBackupRequest - AzureWorkload workload-specific backup request.
 type AzureWorkloadBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Type of backup, viz. Full, Differential, Log or CopyOnlyFull
-	BackupType *BackupType `json:"backupType,omitempty"`
+	BackupType *BackupType
 
 	// Bool for Compression setting
-	EnableCompression *bool `json:"enableCompression,omitempty"`
+	EnableCompression *bool
 
 	// Backup copy will expire after the time specified (UTC).
-	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+	RecoveryPointExpiryTimeInUTC *time.Time
 }
 
 // GetBackupRequest implements the BackupRequestClassification interface for type AzureWorkloadBackupRequest.
@@ -3984,37 +3984,37 @@ type AzureWorkloadContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Additional details of a workload container.
-	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Time stamp when this container was updated.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+	LastUpdatedTime *time.Time
 
 	// Re-Do Operation
-	OperationType *OperationType `json:"operationType,omitempty"`
+	OperationType *OperationType
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// ARM ID of the virtual machine represented by this Azure Workload Container
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Workload type for which registration was sent.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureWorkloadContainer.
@@ -4035,22 +4035,22 @@ func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
 // AzureWorkloadContainerAutoProtectionIntent - Azure workload specific protection intent item.
 type AzureWorkloadContainerAutoProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadContainerAutoProtectionIntent.
@@ -4068,73 +4068,73 @@ func (a *AzureWorkloadContainerAutoProtectionIntent) GetProtectionIntent() *Prot
 // AzureWorkloadContainerExtendedInfo - Extended information of the container.
 type AzureWorkloadContainerExtendedInfo struct {
 	// Host Os Name in case of Stand Alone and Cluster Name in case of distributed container.
-	HostServerName *string `json:"hostServerName,omitempty"`
+	HostServerName *string
 
 	// Inquiry Status for the container.
-	InquiryInfo *InquiryInfo `json:"inquiryInfo,omitempty"`
+	InquiryInfo *InquiryInfo
 
 	// List of the nodes in case of distributed container.
-	NodesList []*DistributedNodesInfo `json:"nodesList,omitempty"`
+	NodesList []*DistributedNodesInfo
 }
 
 // AzureWorkloadErrorInfo - Azure storage specific error information
 type AzureWorkloadErrorInfo struct {
 	// Additional details for above error code.
-	AdditionalDetails *string `json:"additionalDetails,omitempty"`
+	AdditionalDetails *string
 
 	// Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty"`
+	ErrorCode *int32
 
 	// Localized error string.
-	ErrorString *string `json:"errorString,omitempty"`
+	ErrorString *string
 
 	// Title: Typically, the entity that the error pertains to.
-	ErrorTitle *string `json:"errorTitle,omitempty"`
+	ErrorTitle *string
 
 	// List of localized recommendations for above error code.
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 }
 
 // AzureWorkloadJob - Azure storage specific job.
 type AzureWorkloadJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Time elapsed during the execution of this job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// Error details on execution of this job.
-	ErrorDetails []*AzureWorkloadErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*AzureWorkloadErrorInfo
 
 	// Additional information about the job.
-	ExtendedInfo *AzureWorkloadJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadJobExtendedInfo
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Workload type of the job
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetJob implements the JobClassification interface for type AzureWorkloadJob.
@@ -4154,22 +4154,22 @@ func (a *AzureWorkloadJob) GetJob() *Job {
 // AzureWorkloadJobExtendedInfo - Azure VM workload-specific additional information for job.
 type AzureWorkloadJobExtendedInfo struct {
 	// Non localized error message on job execution.
-	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
+	DynamicErrorMessage *string
 
 	// Job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// List of tasks for this job
-	TasksList []*AzureWorkloadJobTaskDetails `json:"tasksList,omitempty"`
+	TasksList []*AzureWorkloadJobTaskDetails
 }
 
 // AzureWorkloadJobTaskDetails - Azure VM workload specific job task details.
 type AzureWorkloadJobTaskDetails struct {
 	// The status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The task display name.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // AzureWorkloadPointInTimeRecoveryPointClassification provides polymorphic access to related types.
@@ -4185,25 +4185,25 @@ type AzureWorkloadPointInTimeRecoveryPointClassification interface {
 // AzureWorkloadPointInTimeRecoveryPoint - Recovery point specific to PointInTime
 type AzureWorkloadPointInTimeRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// List of log ranges
-	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+	TimeRanges []*PointInTimeRange
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
@@ -4234,28 +4234,28 @@ func (a *AzureWorkloadPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoin
 // AzureWorkloadPointInTimeRestoreRequest - AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore
 type AzureWorkloadPointInTimeRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// PointInTime value
-	PointInTime *time.Time `json:"pointInTime,omitempty"`
+	PointInTime *time.Time
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
@@ -4292,22 +4292,22 @@ type AzureWorkloadRecoveryPointClassification interface {
 // AzureWorkloadRecoveryPoint - Workload specific recovery point, specifically encapsulates full/diff recovery point
 type AzureWorkloadRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
@@ -4338,25 +4338,25 @@ type AzureWorkloadRestoreRequestClassification interface {
 // AzureWorkloadRestoreRequest - AzureWorkload-specific restore.
 type AzureWorkloadRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
@@ -4374,25 +4374,25 @@ func (a *AzureWorkloadRestoreRequest) GetRestoreRequest() *RestoreRequest {
 // AzureWorkloadSAPHanaPointInTimeRecoveryPoint - Recovery point specific to PointInTime in SAPHana
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// List of log ranges
-	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+	TimeRanges []*PointInTimeRange
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
@@ -4442,28 +4442,28 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification interface {
 // restore
 type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// PointInTime value
-	PointInTime *time.Time `json:"pointInTime,omitempty"`
+	PointInTime *time.Time
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
@@ -4510,31 +4510,31 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetRestoreRequest() *Res
 // of recovery point.
 type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// PointInTime value
-	PointInTime *time.Time `json:"pointInTime,omitempty"`
+	PointInTime *time.Time
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// RP Rehydration Info
-	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
@@ -4589,22 +4589,22 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetRestoreR
 // AzureWorkloadSAPHanaRecoveryPoint - SAPHana specific recoverypoint, specifically encapsulates full/diff recoverypoints
 type AzureWorkloadSAPHanaRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
@@ -4640,25 +4640,25 @@ type AzureWorkloadSAPHanaRestoreRequestClassification interface {
 // AzureWorkloadSAPHanaRestoreRequest - AzureWorkload SAP Hana-specific restore.
 type AzureWorkloadSAPHanaRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
@@ -4691,28 +4691,28 @@ func (a *AzureWorkloadSAPHanaRestoreRequest) GetRestoreRequest() *RestoreRequest
 // recovery point.
 type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// RP Rehydration Info
-	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
@@ -4752,25 +4752,25 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetRestoreRequest() *R
 // AzureWorkloadSQLAutoProtectionIntent - Azure Workload SQL Auto Protection intent item.
 type AzureWorkloadSQLAutoProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Workload item type of the item for which intent is to be set
-	WorkloadItemType *WorkloadItemType `json:"workloadItemType,omitempty"`
+	WorkloadItemType *WorkloadItemType
 }
 
 // GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
@@ -4814,30 +4814,30 @@ func (a *AzureWorkloadSQLAutoProtectionIntent) GetProtectionIntent() *Protection
 // AzureWorkloadSQLPointInTimeRecoveryPoint - Recovery point specific to PointInTime
 type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
 	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
 	// only with ExtendedInfo query filter
-	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// List of log ranges
-	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+	TimeRanges []*PointInTimeRange
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
@@ -4885,37 +4885,37 @@ type AzureWorkloadSQLPointInTimeRestoreRequestClassification interface {
 // AzureWorkloadSQLPointInTimeRestoreRequest - AzureWorkload SQL -specific restore. Specifically for PointInTime/Log restore
 type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Data directory details
-	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping
 
 	// SQL specific property where user can chose to set no-recovery when restore operation is tried
-	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+	IsNonRecoverable *bool
 
 	// PointInTime value
-	PointInTime *time.Time `json:"pointInTime,omitempty"`
+	PointInTime *time.Time
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Default option set to true. If this is set to false, alternate data directory must be provided
-	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+	ShouldUseAlternateTargetLocation *bool
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
@@ -4964,40 +4964,40 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetRestoreRequest() *Restore
 // of recovery point.
 type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Data directory details
-	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping
 
 	// SQL specific property where user can chose to set no-recovery when restore operation is tried
-	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+	IsNonRecoverable *bool
 
 	// PointInTime value
-	PointInTime *time.Time `json:"pointInTime,omitempty"`
+	PointInTime *time.Time
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// RP Rehydration Info
-	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Default option set to true. If this is set to false, alternate data directory must be provided
-	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+	ShouldUseAlternateTargetLocation *bool
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
@@ -5068,27 +5068,27 @@ type AzureWorkloadSQLRecoveryPointClassification interface {
 // extended info
 type AzureWorkloadSQLRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
 	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
 	// only with ExtendedInfo query filter
-	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// UTC time at which recovery point was created
-	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+	RecoveryPointTimeInUTC *time.Time
 
 	// Type of restore point
-	Type *RestorePointType `json:"type,omitempty"`
+	Type *RestorePointType
 }
 
 // GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
@@ -5118,10 +5118,10 @@ func (a *AzureWorkloadSQLRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
 // AzureWorkloadSQLRecoveryPointExtendedInfo - Extended info class details
 type AzureWorkloadSQLRecoveryPointExtendedInfo struct {
 	// List of data directory paths during restore operation.
-	DataDirectoryPaths []*SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
+	DataDirectoryPaths []*SQLDataDirectory
 
 	// UTC time at which data directory info was captured
-	DataDirectoryTimeInUTC *time.Time `json:"dataDirectoryTimeInUTC,omitempty"`
+	DataDirectoryTimeInUTC *time.Time
 }
 
 // AzureWorkloadSQLRestoreRequestClassification provides polymorphic access to related types.
@@ -5138,34 +5138,34 @@ type AzureWorkloadSQLRestoreRequestClassification interface {
 // AzureWorkloadSQLRestoreRequest - AzureWorkload SQL -specific restore. Specifically for full/diff restore
 type AzureWorkloadSQLRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Data directory details
-	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping
 
 	// SQL specific property where user can chose to set no-recovery when restore operation is tried
-	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+	IsNonRecoverable *bool
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Default option set to true. If this is set to false, alternate data directory must be provided
-	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+	ShouldUseAlternateTargetLocation *bool
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
@@ -5197,37 +5197,37 @@ func (a *AzureWorkloadSQLRestoreRequest) GetRestoreRequest() *RestoreRequest {
 // point
 type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Data directory details
-	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping
 
 	// SQL specific property where user can chose to set no-recovery when restore operation is tried
-	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+	IsNonRecoverable *bool
 
 	// Workload specific property bag.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+	RecoveryMode *RecoveryMode
 
 	// RP Rehydration Info
-	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Default option set to true. If this is set to false, alternate data directory must be provided
-	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+	ShouldUseAlternateTargetLocation *bool
 
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Details of target database
-	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+	TargetInfo *TargetRestoreInfo
 
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
@@ -5269,85 +5269,85 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetRestoreRequest() *Resto
 // BEKDetails - BEK is bitlocker encryption key.
 type BEKDetails struct {
 	// BEK data.
-	SecretData *string `json:"secretData,omitempty"`
+	SecretData *string
 
 	// Secret is BEK.
-	SecretURL *string `json:"secretUrl,omitempty"`
+	SecretURL *string
 
 	// ID of the Key Vault where this Secret is stored.
-	SecretVaultID *string `json:"secretVaultId,omitempty"`
+	SecretVaultID *string
 }
 
 // BMSBackupEngineQueryObject - Query parameters to fetch list of backup engines.
 type BMSBackupEngineQueryObject struct {
 	// attribute to add extended info
-	Expand *string `json:"expand,omitempty"`
+	Expand *string
 }
 
 // BMSBackupEnginesQueryObject - Query parameters to fetch list of backup engines.
 type BMSBackupEnginesQueryObject struct {
 	// Backup management type for the backup engine.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Attribute to add extended info.
-	Expand *string `json:"expand,omitempty"`
+	Expand *string
 
 	// Friendly name of the backup engine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 }
 
 // BMSBackupSummariesQueryObject - Query parameters to fetch backup summaries.
 type BMSBackupSummariesQueryObject struct {
 	// Backup management type for this container.
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 }
 
 // BMSContainerQueryObject - The query filters that can be used with the list containers API.
 type BMSContainerQueryObject struct {
 	// REQUIRED; Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Backup engine name
-	BackupEngineName *string `json:"backupEngineName,omitempty"`
+	BackupEngineName *string
 
 	// Type of container for filter
-	ContainerType *ContainerType `json:"containerType,omitempty"`
+	ContainerType *ContainerType
 
 	// Fabric name for filter
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Friendly name of this container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of registration of this container with the Recovery Services Vault.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // BMSContainersInquiryQueryObject - The query filters that can be used with the inquire container API.
 type BMSContainersInquiryQueryObject struct {
 	// Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Workload type for this container.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // BMSPOQueryObject - Filters to list items that can be backed up.
 type BMSPOQueryObject struct {
 	// Backup management type.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Full name of the container whose Protectable Objects should be returned.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Backup status query parameter.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Workload type
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // BMSPrepareDataMoveOperationResultClientGetOptions contains the optional parameters for the BMSPrepareDataMoveOperationResultClient.Get
@@ -5359,40 +5359,43 @@ type BMSPrepareDataMoveOperationResultClientGetOptions struct {
 // BMSRPQueryObject - Filters to list backup copies.
 type BMSRPQueryObject struct {
 	// Backup copies created before this time.
-	EndDate *time.Time `json:"endDate,omitempty"`
+	EndDate *time.Time
 
 	// In Get Recovery Point, it tells whether extended information about recovery point is asked.
-	ExtendedInfo *bool `json:"extendedInfo,omitempty"`
+	ExtendedInfo *bool
+
+	// Flag to indicate whether Soft Deleted RPs should be included/excluded from result.
+	IncludeSoftDeletedRP *bool
 
 	// Whether the RP can be moved to another tier
-	MoveReadyRPOnly *bool `json:"moveReadyRPOnly,omitempty"`
+	MoveReadyRPOnly *bool
 
 	// RestorePoint type
-	RestorePointQueryType *RestorePointQueryType `json:"restorePointQueryType,omitempty"`
+	RestorePointQueryType *RestorePointQueryType
 
 	// Backup copies created after this time.
-	StartDate *time.Time `json:"startDate,omitempty"`
+	StartDate *time.Time
 }
 
 // BMSRefreshContainersQueryObject - The query filters that can be used with the refresh container API.
 type BMSRefreshContainersQueryObject struct {
 	// Backup management type for this container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 }
 
 // BMSWorkloadItemQueryObject - Filters to list items that can be backed up.
 type BMSWorkloadItemQueryObject struct {
 	// Backup management type.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Backup status query parameter.
-	ProtectionStatus *ProtectionStatus `json:"protectionStatus,omitempty"`
+	ProtectionStatus *ProtectionStatus
 
 	// Workload Item type
-	WorkloadItemType *WorkloadItemType `json:"workloadItemType,omitempty"`
+	WorkloadItemType *WorkloadItemType
 
 	// Workload type
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // BackupEngineBaseClassification provides polymorphic access to related types.
@@ -5407,43 +5410,43 @@ type BackupEngineBaseClassification interface {
 // BackupEngineBase - The base backup engine class. All workload specific backup engines derive from this class.
 type BackupEngineBase struct {
 	// REQUIRED; Type of the backup engine.
-	BackupEngineType *BackupEngineType `json:"backupEngineType,omitempty"`
+	BackupEngineType *BackupEngineType
 
 	// Backup agent version
-	AzureBackupAgentVersion *string `json:"azureBackupAgentVersion,omitempty"`
+	AzureBackupAgentVersion *string
 
 	// ID of the backup engine.
-	BackupEngineID *string `json:"backupEngineId,omitempty"`
+	BackupEngineID *string
 
 	// Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
-	BackupEngineState *string `json:"backupEngineState,omitempty"`
+	BackupEngineState *string
 
 	// Type of backup management for the backup engine.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Flag indicating if the backup engine be registered, once already registered.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// Backup engine version
-	DpmVersion *string `json:"dpmVersion,omitempty"`
+	DpmVersion *string
 
 	// Extended info of the backupengine
-	ExtendedInfo *BackupEngineExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *BackupEngineExtendedInfo
 
 	// Friendly name of the backup engine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Backup status of the backup engine.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// To check if backup agent upgrade available
-	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
+	IsAzureBackupAgentUpgradeAvailable *bool
 
 	// To check if backup engine upgrade available
-	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
+	IsDpmUpgradeAvailable *bool
 
 	// Registration status of the backup engine with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type BackupEngineBase.
@@ -5452,61 +5455,61 @@ func (b *BackupEngineBase) GetBackupEngineBase() *BackupEngineBase { return b }
 // BackupEngineBaseResource - The base backup engine class. All workload specific backup engines derive from this class.
 type BackupEngineBaseResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupEngineBaseResource properties
-	Properties BackupEngineBaseClassification `json:"properties,omitempty"`
+	Properties BackupEngineBaseClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupEngineBaseResourceList - List of BackupEngineBase resources
 type BackupEngineBaseResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*BackupEngineBaseResource `json:"value,omitempty"`
+	Value []*BackupEngineBaseResource
 }
 
 // BackupEngineExtendedInfo - Additional information on backup engine.
 type BackupEngineExtendedInfo struct {
 	// Disk space currently available in the backup engine.
-	AvailableDiskSpace *float64 `json:"availableDiskSpace,omitempty"`
+	AvailableDiskSpace *float64
 
 	// Protected instances in the backup engine.
-	AzureProtectedInstances *int32 `json:"azureProtectedInstances,omitempty"`
+	AzureProtectedInstances *int32
 
 	// Database name of backup engine.
-	DatabaseName *string `json:"databaseName,omitempty"`
+	DatabaseName *string
 
 	// Number of disks in the backup engine.
-	DiskCount *int32 `json:"diskCount,omitempty"`
+	DiskCount *int32
 
 	// Number of protected items in the backup engine.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// Number of protected servers in the backup engine.
-	ProtectedServersCount *int32 `json:"protectedServersCount,omitempty"`
+	ProtectedServersCount *int32
 
 	// Last refresh time in the backup engine.
-	RefreshedAt *time.Time `json:"refreshedAt,omitempty"`
+	RefreshedAt *time.Time
 
 	// Disk space used in the backup engine.
-	UsedDiskSpace *float64 `json:"usedDiskSpace,omitempty"`
+	UsedDiskSpace *float64
 }
 
 // BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
@@ -5536,28 +5539,28 @@ type BackupJobsClientListOptions struct {
 // BackupManagementUsage - Backup management usages of a vault.
 type BackupManagementUsage struct {
 	// Current value of usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// Limit of usage.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// Name of usage.
-	Name *NameInfo `json:"name,omitempty"`
+	Name *NameInfo
 
 	// Next reset time of usage.
-	NextResetTime *time.Time `json:"nextResetTime,omitempty"`
+	NextResetTime *time.Time
 
 	// Quota period of usage.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	QuotaPeriod *string
 
 	// Unit of the usage.
-	Unit *UsagesUnit `json:"unit,omitempty"`
+	Unit *UsagesUnit
 }
 
 // BackupManagementUsageList - Backup management usage for vault.
 type BackupManagementUsageList struct {
 	// The list of backup management usages for the given vault.
-	Value []*BackupManagementUsage `json:"value,omitempty"`
+	Value []*BackupManagementUsage
 }
 
 // BackupOperationResultsClientGetOptions contains the optional parameters for the BackupOperationResultsClient.Get method.
@@ -5622,7 +5625,7 @@ type BackupRequestClassification interface {
 // BackupRequest - Base class for backup request. Workload-specific backup requests are derived from this class.
 type BackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupRequest implements the BackupRequestClassification interface for type BackupRequest.
@@ -5631,148 +5634,148 @@ func (b *BackupRequest) GetBackupRequest() *BackupRequest { return b }
 // BackupRequestResource - Base class for backup request. Workload-specific backup requests are derived from this class.
 type BackupRequestResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupRequestResource properties
-	Properties BackupRequestClassification `json:"properties,omitempty"`
+	Properties BackupRequestClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupResourceConfig - The resource storage details.
 type BackupResourceConfig struct {
 	// Opt in details of Cross Region Restore feature.
-	CrossRegionRestoreFlag *bool `json:"crossRegionRestoreFlag,omitempty"`
+	CrossRegionRestoreFlag *bool
 
 	// Vault Dedup state
-	DedupState *DedupState `json:"dedupState,omitempty"`
+	DedupState *DedupState
 
 	// Storage type
-	StorageModelType *StorageType `json:"storageModelType,omitempty"`
+	StorageModelType *StorageType
 
 	// Storage type.
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 
 	// Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
-	StorageTypeState *StorageTypeState `json:"storageTypeState,omitempty"`
+	StorageTypeState *StorageTypeState
 
 	// Vault x-cool state
-	XcoolState *XcoolState `json:"xcoolState,omitempty"`
+	XcoolState *XcoolState
 }
 
 // BackupResourceConfigResource - The resource storage details.
 type BackupResourceConfigResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupResourceConfigResource properties
-	Properties *BackupResourceConfig `json:"properties,omitempty"`
+	Properties *BackupResourceConfig
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type BackupResourceEncryptionConfig struct {
 	// Encryption At Rest Type
-	EncryptionAtRestType          *EncryptionAtRestType          `json:"encryptionAtRestType,omitempty"`
-	InfrastructureEncryptionState *InfrastructureEncryptionState `json:"infrastructureEncryptionState,omitempty"`
+	EncryptionAtRestType          *EncryptionAtRestType
+	InfrastructureEncryptionState *InfrastructureEncryptionState
 
 	// Key Vault Key URI
-	KeyURI           *string           `json:"keyUri,omitempty"`
-	LastUpdateStatus *LastUpdateStatus `json:"lastUpdateStatus,omitempty"`
+	KeyURI           *string
+	LastUpdateStatus *LastUpdateStatus
 
 	// Key Vault Subscription Id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 type BackupResourceEncryptionConfigExtended struct {
 	// Encryption At Rest Type
-	EncryptionAtRestType          *EncryptionAtRestType          `json:"encryptionAtRestType,omitempty"`
-	InfrastructureEncryptionState *InfrastructureEncryptionState `json:"infrastructureEncryptionState,omitempty"`
+	EncryptionAtRestType          *EncryptionAtRestType
+	InfrastructureEncryptionState *InfrastructureEncryptionState
 
 	// Key Vault Key URI
-	KeyURI           *string           `json:"keyUri,omitempty"`
-	LastUpdateStatus *LastUpdateStatus `json:"lastUpdateStatus,omitempty"`
+	KeyURI           *string
+	LastUpdateStatus *LastUpdateStatus
 
 	// Key Vault Subscription Id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// bool to indicate whether to use system Assigned Identity or not
-	UseSystemAssignedIdentity *bool `json:"useSystemAssignedIdentity,omitempty"`
+	UseSystemAssignedIdentity *bool
 
 	// User Assigned Identity Id
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 }
 
 type BackupResourceEncryptionConfigExtendedResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupResourceEncryptionConfigExtendedResource properties
-	Properties *BackupResourceEncryptionConfigExtended `json:"properties,omitempty"`
+	Properties *BackupResourceEncryptionConfigExtended
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type BackupResourceEncryptionConfigResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupResourceEncryptionConfigResource properties
-	Properties *BackupResourceEncryptionConfig `json:"properties,omitempty"`
+	Properties *BackupResourceEncryptionConfig
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupResourceEncryptionConfigsClientGetOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Get
@@ -5808,49 +5811,49 @@ type BackupResourceStorageConfigsNonCRRClientUpdateOptions struct {
 // BackupResourceVaultConfig - Backup resource vault config details.
 type BackupResourceVaultConfig struct {
 	// Enabled or Disabled.
-	EnhancedSecurityState *EnhancedSecurityState `json:"enhancedSecurityState,omitempty"`
+	EnhancedSecurityState *EnhancedSecurityState
 
 	// Is soft delete feature state editable
-	IsSoftDeleteFeatureStateEditable *bool `json:"isSoftDeleteFeatureStateEditable,omitempty"`
+	IsSoftDeleteFeatureStateEditable *bool
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft Delete feature state
-	SoftDeleteFeatureState *SoftDeleteFeatureState `json:"softDeleteFeatureState,omitempty"`
+	SoftDeleteFeatureState *SoftDeleteFeatureState
 
 	// Storage type.
-	StorageModelType *StorageType `json:"storageModelType,omitempty"`
+	StorageModelType *StorageType
 
 	// Storage type.
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 
 	// Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
-	StorageTypeState *StorageTypeState `json:"storageTypeState,omitempty"`
+	StorageTypeState *StorageTypeState
 }
 
 // BackupResourceVaultConfigResource - Backup resource vault config details.
 type BackupResourceVaultConfigResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// BackupResourceVaultConfigResource properties
-	Properties *BackupResourceVaultConfig `json:"properties,omitempty"`
+	Properties *BackupResourceVaultConfig
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupResourceVaultConfigsClientGetOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Get
@@ -5879,43 +5882,43 @@ type BackupStatusClientGetOptions struct {
 // BackupStatusRequest - BackupStatus request.
 type BackupStatusRequest struct {
 	// Protectable Item Logical Name
-	PoLogicalName *string `json:"poLogicalName,omitempty"`
+	PoLogicalName *string
 
 	// Entire ARM resource id of the resource
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Container Type - VM, SQLPaaS, DPM, AzureFileShare…
-	ResourceType *DataSourceType `json:"resourceType,omitempty"`
+	ResourceType *DataSourceType
 }
 
 // BackupStatusResponse - BackupStatus response.
 type BackupStatusResponse struct {
 	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// ErrorCode in case of intent failed
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// ErrorMessage in case of intent failed.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Specifies the fabric name - Azure or AD
-	FabricName *FabricName `json:"fabricName,omitempty"`
+	FabricName *FabricName
 
 	// Specifies the policy name which is used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
-	ProtectedItemName *string `json:"protectedItemName,omitempty"`
+	ProtectedItemName *string
 
 	// Specifies whether the container is registered or not
-	ProtectionStatus *ProtectionStatus `json:"protectionStatus,omitempty"`
+	ProtectionStatus *ProtectionStatus
 
 	// Container registration status
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// Specifies the arm resource id of the vault
-	VaultID *string `json:"vaultId,omitempty"`
+	VaultID *string
 }
 
 // BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.NewListPager
@@ -5961,64 +5964,64 @@ type ClientBeginMoveRecoveryPointOptions struct {
 // ClientDiscoveryDisplay - Localized display information of an operation.
 type ClientDiscoveryDisplay struct {
 	// Description of the operation having details of what operation is about.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operations Name itself.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// ResourceType for which this Operation can be performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ClientDiscoveryForLogSpecification - Class to represent shoebox log specification in json client discovery.
 type ClientDiscoveryForLogSpecification struct {
 	// blob duration of shoebox log specification
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Localized display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name for shoebox log specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ClientDiscoveryForProperties - Class to represent shoebox properties in json client discovery.
 type ClientDiscoveryForProperties struct {
 	// Operation properties.
-	ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ClientDiscoveryForServiceSpecification
 }
 
 // ClientDiscoveryForServiceSpecification - Class to represent shoebox service specification in json client discovery.
 type ClientDiscoveryForServiceSpecification struct {
 	// List of log specifications of this operation.
-	LogSpecifications []*ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*ClientDiscoveryForLogSpecification
 }
 
 // ClientDiscoveryResponse - Operations List response which contains list of available APIs.
 type ClientDiscoveryResponse struct {
 	// Link to the next chunk of Response.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of available operations.
-	Value []*ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
+	Value []*ClientDiscoveryValueForSingleAPI
 }
 
 // ClientDiscoveryValueForSingleAPI - Available operation details.
 type ClientDiscoveryValueForSingleAPI struct {
 	// Contains the localized display information for this particular operation
-	Display *ClientDiscoveryDisplay `json:"display,omitempty"`
+	Display *ClientDiscoveryDisplay
 
 	// Name of the Operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// ShoeBox properties for the given operation.
-	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
+	Properties *ClientDiscoveryForProperties
 }
 
 // ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
@@ -6029,110 +6032,110 @@ type ClientGetOperationStatusOptions struct {
 // ClientScriptForConnect - Client script details for file / folder restore.
 type ClientScriptForConnect struct {
 	// OS type - Windows, Linux etc. for which this file / folder restore client script works.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// File content of the client script for file / folder restore.
-	ScriptContent *string `json:"scriptContent,omitempty"`
+	ScriptContent *string
 
 	// File extension of the client script for file / folder restore - .ps1 , .sh , etc.
-	ScriptExtension *string `json:"scriptExtension,omitempty"`
+	ScriptExtension *string
 
 	// Mandatory suffix that should be added to the name of script that is given for download to user. If its null or empty then
 	// , ignore it.
-	ScriptNameSuffix *string `json:"scriptNameSuffix,omitempty"`
+	ScriptNameSuffix *string
 
 	// URL of Executable from where to source the content. If this is not null then ScriptContent should not be used
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // ContainerIdentityInfo - Container identity information
 type ContainerIdentityInfo struct {
 	// Protection container identity - AAD Tenant
-	AADTenantID *string `json:"aadTenantId,omitempty"`
+	AADTenantID *string
 
 	// Protection container identity - Audience
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// Protection container identity - AAD Service Principal
-	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
+	ServicePrincipalClientID *string
 
 	// Unique name of the container
-	UniqueName *string `json:"uniqueName,omitempty"`
+	UniqueName *string
 }
 
 // DPMContainerExtendedInfo - Additional information of the DPMContainer.
 type DPMContainerExtendedInfo struct {
 	// Last refresh time of the DPMContainer.
-	LastRefreshedAt *time.Time `json:"lastRefreshedAt,omitempty"`
+	LastRefreshedAt *time.Time
 }
 
 // DPMProtectedItem - Additional information on Backup engine specific backup item.
 type DPMProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Backup Management server protecting this backup item
-	BackupEngineName *string `json:"backupEngineName,omitempty"`
+	BackupEngineName *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Extended info of the backup item.
-	ExtendedInfo *DPMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *DPMProtectedItemExtendedInfo
 
 	// Friendly name of the managed item
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Protection state of the backup engine
-	ProtectionState *ProtectedItemState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectedItemState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type DPMProtectedItem.
@@ -6162,75 +6165,75 @@ func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
 // DPMProtectedItemExtendedInfo - Additional information of DPM Protected item.
 type DPMProtectedItemExtendedInfo struct {
 	// Used Disk storage in bytes.
-	DiskStorageUsedInBytes *string `json:"diskStorageUsedInBytes,omitempty"`
+	DiskStorageUsedInBytes *string
 
 	// To check if backup item is collocated.
-	IsCollocated *bool `json:"isCollocated,omitempty"`
+	IsCollocated *bool
 
 	// To check if backup item is cloud protected.
-	IsPresentOnCloud *bool `json:"isPresentOnCloud,omitempty"`
+	IsPresentOnCloud *bool
 
 	// Last backup status information on backup item.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Last refresh time on backup item.
-	LastRefreshedAt *time.Time `json:"lastRefreshedAt,omitempty"`
+	LastRefreshedAt *time.Time
 
 	// Oldest cloud recovery point time.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// latest disk recovery point time.
-	OnPremiseLatestRecoveryPoint *time.Time `json:"onPremiseLatestRecoveryPoint,omitempty"`
+	OnPremiseLatestRecoveryPoint *time.Time
 
 	// Oldest disk recovery point time.
-	OnPremiseOldestRecoveryPoint *time.Time `json:"onPremiseOldestRecoveryPoint,omitempty"`
+	OnPremiseOldestRecoveryPoint *time.Time
 
 	// disk recovery point count.
-	OnPremiseRecoveryPointCount *int32 `json:"onPremiseRecoveryPointCount,omitempty"`
+	OnPremiseRecoveryPointCount *int32
 
 	// Attribute to provide information on various DBs.
-	ProtectableObjectLoadPath map[string]*string `json:"protectableObjectLoadPath,omitempty"`
+	ProtectableObjectLoadPath map[string]*string
 
 	// To check if backup item is disk protected.
-	Protected *bool `json:"protected,omitempty"`
+	Protected *bool
 
 	// Protection group name of the backup item.
-	ProtectionGroupName *string `json:"protectionGroupName,omitempty"`
+	ProtectionGroupName *string
 
 	// cloud recovery point count.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 
 	// total Disk storage in bytes.
-	TotalDiskStorageSizeInBytes *string `json:"totalDiskStorageSizeInBytes,omitempty"`
+	TotalDiskStorageSizeInBytes *string
 }
 
 // DailyRetentionFormat - Daily retention format.
 type DailyRetentionFormat struct {
 	// List of days of the month.
-	DaysOfTheMonth []*Day `json:"daysOfTheMonth,omitempty"`
+	DaysOfTheMonth []*Day
 }
 
 // DailyRetentionSchedule - Daily retention schedule.
 type DailyRetentionSchedule struct {
 	// Retention duration of retention Policy.
-	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+	RetentionDuration *RetentionDuration
 
 	// Retention times of retention policy.
-	RetentionTimes []*time.Time `json:"retentionTimes,omitempty"`
+	RetentionTimes []*time.Time
 }
 
 type DailySchedule struct {
 	// List of times of day this schedule has to be run.
-	ScheduleRunTimes []*time.Time `json:"scheduleRunTimes,omitempty"`
+	ScheduleRunTimes []*time.Time
 }
 
 // Day of the week.
 type Day struct {
 	// Date of the month
-	Date *int32 `json:"date,omitempty"`
+	Date *int32
 
 	// Whether Date is last date of month
-	IsLast *bool `json:"isLast,omitempty"`
+	IsLast *bool
 }
 
 // DeletedProtectionContainersClientListOptions contains the optional parameters for the DeletedProtectionContainersClient.NewListPager
@@ -6242,70 +6245,70 @@ type DeletedProtectionContainersClientListOptions struct {
 
 type DiskExclusionProperties struct {
 	// List of Disks' Logical Unit Numbers (LUN) to be used for VM Protection.
-	DiskLunList []*int32 `json:"diskLunList,omitempty"`
+	DiskLunList []*int32
 
 	// Flag to indicate whether DiskLunList is to be included/ excluded from backup.
-	IsInclusionList *bool `json:"isInclusionList,omitempty"`
+	IsInclusionList *bool
 }
 
 // DiskInformation - Disk information
 type DiskInformation struct {
-	Lun  *int32  `json:"lun,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Lun  *int32
+	Name *string
 }
 
 // DistributedNodesInfo - This is used to represent the various nodes of the distributed container.
 type DistributedNodesInfo struct {
 	// Error Details if the Status is non-success.
-	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
+	ErrorDetail *ErrorDetail
 
 	// Name of the node under a distributed container.
-	NodeName *string `json:"nodeName,omitempty"`
+	NodeName *string
 
 	// Status of this Node. Failed | Succeeded
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // DpmBackupEngine - Data Protection Manager (DPM) specific backup engine.
 type DpmBackupEngine struct {
 	// REQUIRED; Type of the backup engine.
-	BackupEngineType *BackupEngineType `json:"backupEngineType,omitempty"`
+	BackupEngineType *BackupEngineType
 
 	// Backup agent version
-	AzureBackupAgentVersion *string `json:"azureBackupAgentVersion,omitempty"`
+	AzureBackupAgentVersion *string
 
 	// ID of the backup engine.
-	BackupEngineID *string `json:"backupEngineId,omitempty"`
+	BackupEngineID *string
 
 	// Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
-	BackupEngineState *string `json:"backupEngineState,omitempty"`
+	BackupEngineState *string
 
 	// Type of backup management for the backup engine.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Flag indicating if the backup engine be registered, once already registered.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// Backup engine version
-	DpmVersion *string `json:"dpmVersion,omitempty"`
+	DpmVersion *string
 
 	// Extended info of the backupengine
-	ExtendedInfo *BackupEngineExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *BackupEngineExtendedInfo
 
 	// Friendly name of the backup engine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Backup status of the backup engine.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// To check if backup agent upgrade available
-	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
+	IsAzureBackupAgentUpgradeAvailable *bool
 
 	// To check if backup engine upgrade available
-	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
+	IsDpmUpgradeAvailable *bool
 
 	// Registration status of the backup engine with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type DpmBackupEngine.
@@ -6343,46 +6346,46 @@ type DpmContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Specifies whether the container is re-registrable.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// ID of container.
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Backup engine Agent version
-	DpmAgentVersion *string `json:"dpmAgentVersion,omitempty"`
+	DpmAgentVersion *string
 
 	// List of BackupEngines protecting the container
-	DpmServers []*string `json:"dpmServers,omitempty"`
+	DpmServers []*string
 
 	// Extended Info of the container.
-	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *DPMContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Number of protected items in the BackupEngine
-	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int64
 
 	// Protection status of the container.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// To check if upgrade available
-	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
+	UpgradeAvailable *bool
 }
 
 // GetDpmContainer implements the DpmContainerClassification interface for type DpmContainer.
@@ -6403,61 +6406,61 @@ func (d *DpmContainer) GetProtectionContainer() *ProtectionContainer {
 // DpmErrorInfo - DPM workload-specific error information.
 type DpmErrorInfo struct {
 	// Localized error string.
-	ErrorString *string `json:"errorString,omitempty"`
+	ErrorString *string
 
 	// List of localized recommendations for above error code.
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 }
 
 // DpmJob - DPM workload-specific job object.
 type DpmJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// The state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Name of cluster/server protecting current backup item, if any.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Type of container.
-	ContainerType *string `json:"containerType,omitempty"`
+	ContainerType *string
 
 	// DPM server name managing the backup item or backup job.
-	DpmServerName *string `json:"dpmServerName,omitempty"`
+	DpmServerName *string
 
 	// Time elapsed for job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// The errors.
-	ErrorDetails []*DpmErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*DpmErrorInfo
 
 	// Additional information for this job.
-	ExtendedInfo *DpmJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *DpmJobExtendedInfo
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Type of backup item.
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetJob implements the JobClassification interface for type DpmJob.
@@ -6477,88 +6480,88 @@ func (d *DpmJob) GetJob() *Job {
 // DpmJobExtendedInfo - Additional information on the DPM workload-specific job.
 type DpmJobExtendedInfo struct {
 	// Non localized error message on job execution.
-	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
+	DynamicErrorMessage *string
 
 	// The job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// List of tasks associated with this job.
-	TasksList []*DpmJobTaskDetails `json:"tasksList,omitempty"`
+	TasksList []*DpmJobTaskDetails
 }
 
 // DpmJobTaskDetails - DPM workload-specific job task details.
 type DpmJobTaskDetails struct {
 	// Time elapsed for task.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The task display name.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // EncryptionDetails - Details needed if the VM was encrypted at the time of backup.
 type EncryptionDetails struct {
 	// Identifies whether this backup copy represents an encrypted VM at the time of backup.
-	EncryptionEnabled *bool `json:"encryptionEnabled,omitempty"`
+	EncryptionEnabled *bool
 
 	// Key Url.
-	KekURL *string `json:"kekUrl,omitempty"`
+	KekURL *string
 
 	// ID of Key Vault where KEK is stored.
-	KekVaultID *string `json:"kekVaultId,omitempty"`
+	KekVaultID *string
 
 	// Secret Url.
-	SecretKeyURL *string `json:"secretKeyUrl,omitempty"`
+	SecretKeyURL *string
 
 	// ID of Key Vault where Secret is stored.
-	SecretKeyVaultID *string `json:"secretKeyVaultId,omitempty"`
+	SecretKeyVaultID *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - Error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error Message related to the Code.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; List of recommendation strings.
-	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+	Recommendations []*string
 }
 
 // ExportJobsOperationResultInfo - This class is used to send blob details after exporting jobs.
 type ExportJobsOperationResultInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// SAS key to access the blob. It expires in 15 mins.
-	BlobSasKey *string `json:"blobSasKey,omitempty"`
+	BlobSasKey *string
 
 	// URL of the blob into which the serialized string of list of jobs is exported.
-	BlobURL *string `json:"blobUrl,omitempty"`
+	BlobURL *string
 
 	// SAS key to access the blob. It expires in 15 mins.
-	ExcelFileBlobSasKey *string `json:"excelFileBlobSasKey,omitempty"`
+	ExcelFileBlobSasKey *string
 
 	// URL of the blob into which the ExcelFile is uploaded.
-	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty"`
+	ExcelFileBlobURL *string
 }
 
 // GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type ExportJobsOperationResultInfo.
@@ -6574,13 +6577,22 @@ type ExportJobsOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ExtendedLocation - The extended location of Recovery point where VM was present.
+type ExtendedLocation struct {
+	// Name of the extended location.
+	Name *string
+
+	// Type of the extended location. Possible values include: 'EdgeZone'
+	Type *string
+}
+
 // ExtendedProperties - Extended Properties for Azure IaasVM Backup.
 type ExtendedProperties struct {
 	// Extended Properties for Disk Exclusion.
-	DiskExclusionProperties *DiskExclusionProperties `json:"diskExclusionProperties,omitempty"`
+	DiskExclusionProperties *DiskExclusionProperties
 
 	// Linux VM name
-	LinuxVMApplicationName *string `json:"linuxVmApplicationName,omitempty"`
+	LinuxVMApplicationName *string
 }
 
 // FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
@@ -6600,7 +6612,7 @@ type FeatureSupportRequestClassification interface {
 // FeatureSupportRequest - Base class for feature request
 type FeatureSupportRequest struct {
 	// REQUIRED; backup support feature type.
-	FeatureType *string `json:"featureType,omitempty"`
+	FeatureType *string
 }
 
 // GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type FeatureSupportRequest.
@@ -6612,28 +6624,28 @@ type GenericContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Extended information (not returned in List container API calls)
-	ExtendedInformation *GenericContainerExtendedInfo `json:"extendedInformation,omitempty"`
+	ExtendedInformation *GenericContainerExtendedInfo
 
 	// Name of the container's fabric
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type GenericContainer.
@@ -6651,88 +6663,88 @@ func (g *GenericContainer) GetProtectionContainer() *ProtectionContainer {
 // GenericContainerExtendedInfo - Container extended information
 type GenericContainerExtendedInfo struct {
 	// Container identity information
-	ContainerIdentityInfo *ContainerIdentityInfo `json:"containerIdentityInfo,omitempty"`
+	ContainerIdentityInfo *ContainerIdentityInfo
 
 	// Public key of container cert
-	RawCertData *string `json:"rawCertData,omitempty"`
+	RawCertData *string
 
 	// Azure Backup Service Endpoints for the container
-	ServiceEndpoints map[string]*string `json:"serviceEndpoints,omitempty"`
+	ServiceEndpoints map[string]*string
 }
 
 // GenericProtectedItem - Base class for backup items.
 type GenericProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Name of this backup item's fabric.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Indicates consistency of policy object and policy applied to this backup item.
-	PolicyState *string `json:"policyState,omitempty"`
+	PolicyState *string
 
 	// Data Plane Service ID of the protected item.
-	ProtectedItemID *int64 `json:"protectedItemId,omitempty"`
+	ProtectedItemID *int64
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionState
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// Loosely coupled (type, value) associations (example - parent of a protected item)
-	SourceAssociations map[string]*string `json:"sourceAssociations,omitempty"`
+	SourceAssociations map[string]*string
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type GenericProtectedItem.
@@ -6762,22 +6774,22 @@ func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
 // GenericProtectionPolicy - Azure VM (Mercury) workload-specific backup policy.
 type GenericProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Name of this policy's fabric.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// List of sub-protection policies which includes schedule and retention
-	SubProtectionPolicy []*SubProtectionPolicy `json:"subProtectionPolicy,omitempty"`
+	SubProtectionPolicy []*SubProtectionPolicy
 
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type GenericProtectionPolicy.
@@ -6792,22 +6804,22 @@ func (g *GenericProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 // GenericRecoveryPoint - Generic backup copy.
 type GenericRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Friendly name of the backup copy.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Additional information associated with this backup copy.
-	RecoveryPointAdditionalInfo *string `json:"recoveryPointAdditionalInfo,omitempty"`
+	RecoveryPointAdditionalInfo *string
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Time at which this backup copy was created.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *time.Time
 
 	// Type of the backup copy.
-	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *string
 }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type GenericRecoveryPoint.
@@ -6820,18 +6832,18 @@ func (g *GenericRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
 // GetProtectedItemQueryObject - Filters to list backup items.
 type GetProtectedItemQueryObject struct {
 	// Specifies if the additional information should be provided for this item.
-	Expand *string `json:"expand,omitempty"`
+	Expand *string
 }
 
 type HourlySchedule struct {
 	// Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12
-	Interval *int32 `json:"interval,omitempty"`
+	Interval *int32
 
 	// To specify duration of the backup window
-	ScheduleWindowDuration *int32 `json:"scheduleWindowDuration,omitempty"`
+	ScheduleWindowDuration *int32
 
 	// To specify start time of the backup window
-	ScheduleWindowStartTime *time.Time `json:"scheduleWindowStartTime,omitempty"`
+	ScheduleWindowStartTime *time.Time
 }
 
 // ILRRequestClassification provides polymorphic access to related types.
@@ -6846,7 +6858,7 @@ type ILRRequestClassification interface {
 // ILRRequest - Parameters to Provision ILR API.
 type ILRRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetILRRequest implements the ILRRequestClassification interface for type ILRRequest.
@@ -6855,25 +6867,25 @@ func (i *ILRRequest) GetILRRequest() *ILRRequest { return i }
 // ILRRequestResource - Parameters to Provision ILR API.
 type ILRRequestResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ILRRequestResource properties
-	Properties ILRRequestClassification `json:"properties,omitempty"`
+	Properties ILRRequestClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IaaSVMContainerClassification provides polymorphic access to related types.
@@ -6892,31 +6904,31 @@ type IaaSVMContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type IaaSVMContainer.
@@ -6947,28 +6959,28 @@ type IaaSVMProtectableItemClassification interface {
 // IaaSVMProtectableItem - IaaS VM workload-specific backup item.
 type IaaSVMProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Resource group name of Recovery Services Vault.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// Fully qualified ARM ID of the virtual machine.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
-	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+	VirtualMachineVersion *string
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type IaaSVMProtectableItem.
@@ -6988,10 +7000,10 @@ func (i *IaaSVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectabl
 // IaasVMBackupRequest - IaaS VM workload-specific backup request.
 type IaasVMBackupRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Backup copy will expire after the time specified (UTC).
-	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+	RecoveryPointExpiryTimeInUTC *time.Time
 }
 
 // GetBackupRequest implements the BackupRequestClassification interface for type IaasVMBackupRequest.
@@ -7004,19 +7016,19 @@ func (i *IaasVMBackupRequest) GetBackupRequest() *BackupRequest {
 // IaasVMILRRegistrationRequest - Restore files/folders from a backup copy of IaaS VM.
 type IaasVMILRRegistrationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// iSCSI initiator name.
-	InitiatorName *string `json:"initiatorName,omitempty"`
+	InitiatorName *string
 
 	// ID of the IaaS VM backup copy from where the files/folders have to be restored.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Whether to renew existing registration with the iSCSI server.
-	RenewExistingRegistration *bool `json:"renewExistingRegistration,omitempty"`
+	RenewExistingRegistration *bool
 
 	// Fully qualified ARM ID of the virtual machine whose the files / folders have to be restored.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 }
 
 // GetILRRequest implements the ILRRequestClassification interface for type IaasVMILRRegistrationRequest.
@@ -7029,55 +7041,61 @@ func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
 // IaasVMRecoveryPoint - IaaS VM workload specific backup copy.
 type IaasVMRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Is the session to recover items from this backup copy still active.
-	IsInstantIlrSessionActive *bool `json:"isInstantIlrSessionActive,omitempty"`
+	IsInstantIlrSessionActive *bool
 
 	// Whether VM is with Managed Disks
-	IsManagedVirtualMachine *bool `json:"isManagedVirtualMachine,omitempty"`
+	IsManagedVirtualMachine *bool
+
+	// This flag denotes if any of the disks in the VM are using Private access network setting
+	IsPrivateAccessEnabledOnAnyDisk *bool
 
 	// Identifies whether the VM was encrypted when the backup copy is created.
-	IsSourceVMEncrypted *bool `json:"isSourceVMEncrypted,omitempty"`
+	IsSourceVMEncrypted *bool
 
 	// Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
-	KeyAndSecret *KeyAndSecretDetails `json:"keyAndSecret,omitempty"`
+	KeyAndSecret *KeyAndSecretDetails
 
 	// OS type
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// Original Storage Account Option
-	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
+	OriginalStorageAccountOption *bool
 
 	// Additional information associated with this backup copy.
-	RecoveryPointAdditionalInfo *string `json:"recoveryPointAdditionalInfo,omitempty"`
+	RecoveryPointAdditionalInfo *string
 
 	// Disk configuration
-	RecoveryPointDiskConfiguration *RecoveryPointDiskConfiguration `json:"recoveryPointDiskConfiguration,omitempty"`
+	RecoveryPointDiskConfiguration *RecoveryPointDiskConfiguration
 
 	// Eligibility of RP to be moved to another tier
-	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo
 
 	// Properties of Recovery Point
-	RecoveryPointProperties *RecoveryPointProperties `json:"recoveryPointProperties,omitempty"`
+	RecoveryPointProperties *RecoveryPointProperties
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2
 
 	// Time at which this backup copy was created.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *time.Time
 
 	// Type of the backup copy.
-	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *string
+
+	// Security Type of the Disk
+	SecurityType *string
 
 	// Storage type of the VM whose backup copy is created.
-	SourceVMStorageType *string `json:"sourceVMStorageType,omitempty"`
+	SourceVMStorageType *string
 
 	// Virtual Machine Size
-	VirtualMachineSize *string `json:"virtualMachineSize,omitempty"`
+	VirtualMachineSize *string
 
 	// Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type IaasVMRecoveryPoint.
@@ -7100,73 +7118,82 @@ type IaasVMRestoreRequestClassification interface {
 // IaasVMRestoreRequest - IaaS VM workload-specific restore.
 type IaasVMRestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
-	AffinityGroup *string `json:"affinityGroup,omitempty"`
+	AffinityGroup *string
 
 	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
 	// as it was at the time of backup.
-	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
+	CreateNewCloudService *bool
 
 	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// Details needed if the VM was encrypted at the time of backup.
-	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
+	EncryptionDetails *EncryptionDetails
+
+	// Target extended location where the VM should be restored, should be null if restore is to be done in public cloud
+	ExtendedLocation *ExtendedLocation
 
 	// IaaS VM workload specific restore details for restores using managed identity.
-	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
+	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails
 
 	// Managed Identity information required to access customer storage account.
-	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
+	IdentityInfo *IdentityInfo
 
 	// Original Storage Account Option
-	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
+	OriginalStorageAccountOption *bool
 
 	// ID of the backup copy to be recovered.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Region in which the virtual machine is restored.
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// List of Disk LUNs for partial restore
-	RestoreDiskLunList []*int32 `json:"restoreDiskLunList,omitempty"`
+	RestoreDiskLunList []*int32
 
 	// Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
-	RestoreWithManagedDisks *bool `json:"restoreWithManagedDisks,omitempty"`
+	RestoreWithManagedDisks *bool
+
+	// Stores Secured VM Details
+	SecuredVMDetails *SecuredVMDetails
 
 	// Fully qualified ARM ID of the VM which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Fully qualified ARM ID of the storage account to which the VM has to be restored.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
 	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
 	// represent the subnet.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
+
+	// Specifies target network access settings for disks of VM to be restored,
+	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
 	// Machines.
-	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
+	TargetDomainNameID *string
 
 	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
 	// /subscriptions/{subId}/resourcegroups/{rg}
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 
 	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
 	// action permissions in the linked access.
-	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
+	VirtualNetworkID *string
 
 	// Target zone where the VM and its disks should be restored.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreRequest.
@@ -7182,102 +7209,114 @@ func (i *IaasVMRestoreRequest) GetRestoreRequest() *RestoreRequest {
 // IaasVMRestoreWithRehydrationRequest - IaaS VM workload-specific restore with integrated rehydration of recovery point.
 type IaasVMRestoreWithRehydrationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
-	AffinityGroup *string `json:"affinityGroup,omitempty"`
+	AffinityGroup *string
 
 	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
 	// as it was at the time of backup.
-	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
+	CreateNewCloudService *bool
 
 	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// Details needed if the VM was encrypted at the time of backup.
-	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
+	EncryptionDetails *EncryptionDetails
+
+	// Target extended location where the VM should be restored, should be null if restore is to be done in public cloud
+	ExtendedLocation *ExtendedLocation
 
 	// IaaS VM workload specific restore details for restores using managed identity.
-	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
+	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails
 
 	// Managed Identity information required to access customer storage account.
-	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
+	IdentityInfo *IdentityInfo
 
 	// Original Storage Account Option
-	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
+	OriginalStorageAccountOption *bool
 
 	// ID of the backup copy to be recovered.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// RP Rehydration Info
-	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo
 
 	// Type of this recovery.
-	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+	RecoveryType *RecoveryType
 
 	// Region in which the virtual machine is restored.
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// List of Disk LUNs for partial restore
-	RestoreDiskLunList []*int32 `json:"restoreDiskLunList,omitempty"`
+	RestoreDiskLunList []*int32
 
 	// Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
-	RestoreWithManagedDisks *bool `json:"restoreWithManagedDisks,omitempty"`
+	RestoreWithManagedDisks *bool
+
+	// Stores Secured VM Details
+	SecuredVMDetails *SecuredVMDetails
 
 	// Fully qualified ARM ID of the VM which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Fully qualified ARM ID of the storage account to which the VM has to be restored.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
 	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
 	// represent the subnet.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
+
+	// Specifies target network access settings for disks of VM to be restored,
+	TargetDiskNetworkAccessSettings *TargetDiskNetworkAccessSettings
 
 	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
 	// Machines.
-	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
+	TargetDomainNameID *string
 
 	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
 	// /subscriptions/{subId}/resourcegroups/{rg}
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
-	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+	TargetVirtualMachineID *string
 
 	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
 	// action permissions in the linked access.
-	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
+	VirtualNetworkID *string
 
 	// Target zone where the VM and its disks should be restored.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
 func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
 	return &IaasVMRestoreRequest{
-		RecoveryPointID:              i.RecoveryPointID,
-		RecoveryType:                 i.RecoveryType,
-		SourceResourceID:             i.SourceResourceID,
-		TargetVirtualMachineID:       i.TargetVirtualMachineID,
-		TargetResourceGroupID:        i.TargetResourceGroupID,
-		StorageAccountID:             i.StorageAccountID,
-		VirtualNetworkID:             i.VirtualNetworkID,
-		SubnetID:                     i.SubnetID,
-		TargetDomainNameID:           i.TargetDomainNameID,
-		Region:                       i.Region,
-		AffinityGroup:                i.AffinityGroup,
-		CreateNewCloudService:        i.CreateNewCloudService,
-		OriginalStorageAccountOption: i.OriginalStorageAccountOption,
-		EncryptionDetails:            i.EncryptionDetails,
-		RestoreDiskLunList:           i.RestoreDiskLunList,
-		RestoreWithManagedDisks:      i.RestoreWithManagedDisks,
-		DiskEncryptionSetID:          i.DiskEncryptionSetID,
-		Zones:                        i.Zones,
-		IdentityInfo:                 i.IdentityInfo,
-		IdentityBasedRestoreDetails:  i.IdentityBasedRestoreDetails,
-		ObjectType:                   i.ObjectType,
+		RecoveryPointID:                 i.RecoveryPointID,
+		RecoveryType:                    i.RecoveryType,
+		SourceResourceID:                i.SourceResourceID,
+		TargetVirtualMachineID:          i.TargetVirtualMachineID,
+		TargetResourceGroupID:           i.TargetResourceGroupID,
+		StorageAccountID:                i.StorageAccountID,
+		VirtualNetworkID:                i.VirtualNetworkID,
+		SubnetID:                        i.SubnetID,
+		TargetDomainNameID:              i.TargetDomainNameID,
+		Region:                          i.Region,
+		AffinityGroup:                   i.AffinityGroup,
+		CreateNewCloudService:           i.CreateNewCloudService,
+		OriginalStorageAccountOption:    i.OriginalStorageAccountOption,
+		EncryptionDetails:               i.EncryptionDetails,
+		RestoreDiskLunList:              i.RestoreDiskLunList,
+		RestoreWithManagedDisks:         i.RestoreWithManagedDisks,
+		DiskEncryptionSetID:             i.DiskEncryptionSetID,
+		Zones:                           i.Zones,
+		IdentityInfo:                    i.IdentityInfo,
+		IdentityBasedRestoreDetails:     i.IdentityBasedRestoreDetails,
+		ExtendedLocation:                i.ExtendedLocation,
+		SecuredVMDetails:                i.SecuredVMDetails,
+		TargetDiskNetworkAccessSettings: i.TargetDiskNetworkAccessSettings,
+		ObjectType:                      i.ObjectType,
 	}
 }
 
@@ -7291,54 +7330,54 @@ func (i *IaasVMRestoreWithRehydrationRequest) GetRestoreRequest() *RestoreReques
 // IdentityBasedRestoreDetails - IaaS VM workload specific restore details for restores using managed identity
 type IdentityBasedRestoreDetails struct {
 	// Gets the class type.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Fully qualified ARM ID of the target storage account.
-	TargetStorageAccountID *string `json:"targetStorageAccountId,omitempty"`
+	TargetStorageAccountID *string
 }
 
 // IdentityInfo - Encapsulates Managed Identity related information
 type IdentityInfo struct {
 	// To differentiate if the managed identity is system assigned or user assigned
-	IsSystemAssignedIdentity *bool `json:"isSystemAssignedIdentity,omitempty"`
+	IsSystemAssignedIdentity *bool
 
 	// Managed Identity Resource Id Optional: Might not be required in the case of system assigned managed identity
-	ManagedIdentityResourceID *string `json:"managedIdentityResourceId,omitempty"`
+	ManagedIdentityResourceID *string
 }
 
 // InquiryInfo - Details about inquired protectable items under a given container.
 type InquiryInfo struct {
 	// Error Details if the Status is non-success.
-	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
+	ErrorDetail *ErrorDetail
 
 	// Inquiry Details which will have workload specific details. For e.g. - For SQL and oracle this will contain different details.
-	InquiryDetails []*WorkloadInquiryDetails `json:"inquiryDetails,omitempty"`
+	InquiryDetails []*WorkloadInquiryDetails
 
 	// Inquiry Status for this container such as InProgress | Failed | Succeeded
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // InquiryValidation - Validation for inquired protectable items under a given container.
 type InquiryValidation struct {
 	// Error Detail in case the status is non-success.
-	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
+	ErrorDetail *ErrorDetail
 
 	// Status for the Inquiry Validation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; Error Additional Detail in case the status is non-success.
-	AdditionalDetail *string `json:"additionalDetail,omitempty" azure:"ro"`
+	AdditionalDetail *string
 }
 
 // InstantItemRecoveryTarget - Target details for file / folder restore.
 type InstantItemRecoveryTarget struct {
 	// List of client scripts.
-	ClientScripts []*ClientScriptForConnect `json:"clientScripts,omitempty"`
+	ClientScripts []*ClientScriptForConnect
 }
 
 type InstantRPAdditionalDetails struct {
-	AzureBackupRGNamePrefix *string `json:"azureBackupRGNamePrefix,omitempty"`
-	AzureBackupRGNameSuffix *string `json:"azureBackupRGNameSuffix,omitempty"`
+	AzureBackupRGNamePrefix *string
+	AzureBackupRGNameSuffix *string
 }
 
 // ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
@@ -7365,28 +7404,28 @@ type JobClassification interface {
 // Job - Defines workload agnostic properties for a job.
 type Job struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // GetJob implements the JobClassification interface for type Job.
@@ -7410,55 +7449,55 @@ type JobOperationResultsClientGetOptions struct {
 // JobQueryObject - Filters to list the jobs.
 type JobQueryObject struct {
 	// Type of backup management for the job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Job has ended at this time. Value is in UTC.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// JobID represents the job uniquely.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// Type of operation.
-	Operation *JobOperationType `json:"operation,omitempty"`
+	Operation *JobOperationType
 
 	// Job has started at this time. Value is in UTC.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Status of the job.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 }
 
 // JobResource - Defines workload agnostic properties for a job.
 type JobResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// JobResource properties
-	Properties JobClassification `json:"properties,omitempty"`
+	Properties JobClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobResourceList - List of Job resources
 type JobResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*JobResource `json:"value,omitempty"`
+	Value []*JobResource
 }
 
 // JobsClientExportOptions contains the optional parameters for the JobsClient.Export method.
@@ -7470,22 +7509,22 @@ type JobsClientExportOptions struct {
 // KEKDetails - KEK is encryption key for BEK.
 type KEKDetails struct {
 	// KEK data.
-	KeyBackupData *string `json:"keyBackupData,omitempty"`
+	KeyBackupData *string
 
 	// Key is KEK.
-	KeyURL *string `json:"keyUrl,omitempty"`
+	KeyURL *string
 
 	// Key Vault ID where this Key is stored.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 }
 
 // KPIResourceHealthDetails - KPI Resource Health Details
 type KPIResourceHealthDetails struct {
 	// Resource Health Status
-	ResourceHealthDetails []*ResourceHealthDetails `json:"resourceHealthDetails,omitempty"`
+	ResourceHealthDetails []*ResourceHealthDetails
 
 	// Resource Health Status
-	ResourceHealthStatus *ResourceHealthStatus `json:"resourceHealthStatus,omitempty"`
+	ResourceHealthStatus *ResourceHealthStatus
 }
 
 // KeyAndSecretDetails - BEK is bitlocker key. KEK is encryption key for BEK If the VM was encrypted then we will store following
@@ -7495,31 +7534,31 @@ type KPIResourceHealthDetails struct {
 // 3. EncryptionMechanism BEK and KEK can potentially have different vault ids.
 type KeyAndSecretDetails struct {
 	// BEK is bitlocker encryption key.
-	BekDetails *BEKDetails `json:"bekDetails,omitempty"`
+	BekDetails *BEKDetails
 
 	// Encryption mechanism: None/ SinglePass/ DoublePass
-	EncryptionMechanism *string `json:"encryptionMechanism,omitempty"`
+	EncryptionMechanism *string
 
 	// KEK is encryption key for BEK.
-	KekDetails *KEKDetails `json:"kekDetails,omitempty"`
+	KekDetails *KEKDetails
 }
 
 // ListRecoveryPointsRecommendedForMoveRequest Request
 type ListRecoveryPointsRecommendedForMoveRequest struct {
 	// List of Recovery Points excluded from Move
-	ExcludedRPList []*string `json:"excludedRPList,omitempty"`
+	ExcludedRPList []*string
 
 	// Gets the class type.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // LogSchedulePolicy - Log policy schedule.
 type LogSchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+	SchedulePolicyType *string
 
 	// Frequency of the log schedule operation of this policy in minutes.
-	ScheduleFrequencyInMins *int32 `json:"scheduleFrequencyInMins,omitempty"`
+	ScheduleFrequencyInMins *int32
 }
 
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type LogSchedulePolicy.
@@ -7532,19 +7571,19 @@ func (l *LogSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
 // LongTermRetentionPolicy - Long term retention policy.
 type LongTermRetentionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
+	RetentionPolicyType *string
 
 	// Daily retention schedule of the protection policy.
-	DailySchedule *DailyRetentionSchedule `json:"dailySchedule,omitempty"`
+	DailySchedule *DailyRetentionSchedule
 
 	// Monthly retention schedule of the protection policy.
-	MonthlySchedule *MonthlyRetentionSchedule `json:"monthlySchedule,omitempty"`
+	MonthlySchedule *MonthlyRetentionSchedule
 
 	// Weekly retention schedule of the protection policy.
-	WeeklySchedule *WeeklyRetentionSchedule `json:"weeklySchedule,omitempty"`
+	WeeklySchedule *WeeklyRetentionSchedule
 
 	// Yearly retention schedule of the protection policy.
-	YearlySchedule *YearlyRetentionSchedule `json:"yearlySchedule,omitempty"`
+	YearlySchedule *YearlyRetentionSchedule
 }
 
 // GetRetentionPolicy implements the RetentionPolicyClassification interface for type LongTermRetentionPolicy.
@@ -7557,7 +7596,7 @@ func (l *LongTermRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
 // LongTermSchedulePolicy - Long term policy schedule.
 type LongTermSchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+	SchedulePolicyType *string
 }
 
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type LongTermSchedulePolicy.
@@ -7570,16 +7609,16 @@ func (l *LongTermSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
 // MABContainerHealthDetails - MAB workload-specific Health Details.
 type MABContainerHealthDetails struct {
 	// Health Code
-	Code *int32 `json:"code,omitempty"`
+	Code *int32
 
 	// Health Message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Health Recommended Actions
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 
 	// Health Title
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // MabContainer - Container with items backed up using MAB backup engine.
@@ -7588,43 +7627,43 @@ type MabContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Agent version of this container.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Can the container be registered one more time.
-	CanReRegister *bool `json:"canReRegister,omitempty"`
+	CanReRegister *bool
 
 	// Health state of mab container.
-	ContainerHealthState *string `json:"containerHealthState,omitempty"`
+	ContainerHealthState *string
 
 	// ContainerID represents the container.
-	ContainerID *int64 `json:"containerId,omitempty"`
+	ContainerID *int64
 
 	// Additional information for this container
-	ExtendedInfo *MabContainerExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *MabContainerExtendedInfo
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Health details on this mab container.
-	MabContainerHealthDetails []*MABContainerHealthDetails `json:"mabContainerHealthDetails,omitempty"`
+	MabContainerHealthDetails []*MABContainerHealthDetails
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Number of items backed up in this container.
-	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int64
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type MabContainer.
@@ -7642,106 +7681,106 @@ func (m *MabContainer) GetProtectionContainer() *ProtectionContainer {
 // MabContainerExtendedInfo - Additional information of the container.
 type MabContainerExtendedInfo struct {
 	// Type of backup items associated with this container.
-	BackupItemType *BackupItemType `json:"backupItemType,omitempty"`
+	BackupItemType *BackupItemType
 
 	// List of backup items associated with this container.
-	BackupItems []*string `json:"backupItems,omitempty"`
+	BackupItems []*string
 
 	// Latest backup status of this container.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Time stamp when this container was refreshed.
-	LastRefreshedAt *time.Time `json:"lastRefreshedAt,omitempty"`
+	LastRefreshedAt *time.Time
 
 	// Backup policy associated with this container.
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 }
 
 // MabErrorInfo - MAB workload-specific error information.
 type MabErrorInfo struct {
 	// READ-ONLY; Localized error string.
-	ErrorString *string `json:"errorString,omitempty" azure:"ro"`
+	ErrorString *string
 
 	// READ-ONLY; List of localized recommendations.
-	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+	Recommendations []*string
 }
 
 // MabFileFolderProtectedItem - MAB workload-specific backup item.
 type MabFileFolderProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Name of the computer associated with this backup item.
-	ComputerName *string `json:"computerName,omitempty"`
+	ComputerName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Sync time for deferred deletion in UTC
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	DeferredDeleteSyncTimeInUTC *int64
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Additional information with this backup item.
-	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo
 
 	// Friendly name of this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Status of last backup operation.
-	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	LastBackupStatus *string
 
 	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+	LastBackupTime *time.Time
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Protected, ProtectionStopped, IRPending or ProtectionError
-	ProtectionState *string `json:"protectionState,omitempty"`
+	ProtectionState *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type MabFileFolderProtectedItem.
@@ -7771,61 +7810,61 @@ func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
 // MabFileFolderProtectedItemExtendedInfo - Additional information on the backed up item.
 type MabFileFolderProtectedItemExtendedInfo struct {
 	// Last time when the agent data synced to service.
-	LastRefreshedAt *time.Time `json:"lastRefreshedAt,omitempty"`
+	LastRefreshedAt *time.Time
 
 	// The oldest backup copy available.
-	OldestRecoveryPoint *time.Time `json:"oldestRecoveryPoint,omitempty"`
+	OldestRecoveryPoint *time.Time
 
 	// Number of backup copies associated with the backup item.
-	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
+	RecoveryPointCount *int32
 }
 
 // MabJob - MAB workload-specific job.
 type MabJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// The state/actions applicable on jobs like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Time taken by job to run.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// The errors.
-	ErrorDetails []*MabErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*MabErrorInfo
 
 	// Additional information on the job.
-	ExtendedInfo *MabJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *MabJobExtendedInfo
 
 	// Name of server protecting the DS.
-	MabServerName *string `json:"mabServerName,omitempty"`
+	MabServerName *string
 
 	// Server type of MAB container.
-	MabServerType *MabServerType `json:"mabServerType,omitempty"`
+	MabServerType *MabServerType
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Workload type of backup item.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // GetJob implements the JobClassification interface for type MabJob.
@@ -7845,49 +7884,49 @@ func (m *MabJob) GetJob() *Job {
 // MabJobExtendedInfo - Additional information for the MAB workload-specific job.
 type MabJobExtendedInfo struct {
 	// Non localized error message specific to this job.
-	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
+	DynamicErrorMessage *string
 
 	// The job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 
 	// List of tasks for this job.
-	TasksList []*MabJobTaskDetails `json:"tasksList,omitempty"`
+	TasksList []*MabJobTaskDetails
 }
 
 // MabJobTaskDetails - MAB workload-specific job task details.
 type MabJobTaskDetails struct {
 	// Time elapsed for task.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The task display name.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // MabProtectionPolicy - Mab container-specific backup policy.
 type MabProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Retention policy details.
-	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+	RetentionPolicy RetentionPolicyClassification
 
 	// Backup schedule of backup policy.
-	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
+	SchedulePolicy SchedulePolicyClassification
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type MabProtectionPolicy.
@@ -7902,63 +7941,63 @@ func (m *MabProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
 // MonthlyRetentionSchedule - Monthly retention schedule.
 type MonthlyRetentionSchedule struct {
 	// Retention duration of retention Policy.
-	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+	RetentionDuration *RetentionDuration
 
 	// Daily retention format for monthly retention policy.
-	RetentionScheduleDaily *DailyRetentionFormat `json:"retentionScheduleDaily,omitempty"`
+	RetentionScheduleDaily *DailyRetentionFormat
 
 	// Retention schedule format type for monthly retention policy.
-	RetentionScheduleFormatType *RetentionScheduleFormat `json:"retentionScheduleFormatType,omitempty"`
+	RetentionScheduleFormatType *RetentionScheduleFormat
 
 	// Weekly retention format for monthly retention policy.
-	RetentionScheduleWeekly *WeeklyRetentionFormat `json:"retentionScheduleWeekly,omitempty"`
+	RetentionScheduleWeekly *WeeklyRetentionFormat
 
 	// Retention times of retention policy.
-	RetentionTimes []*time.Time `json:"retentionTimes,omitempty"`
+	RetentionTimes []*time.Time
 }
 
 type MoveRPAcrossTiersRequest struct {
 	// Gets the class type.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Source tier from where RP needs to be moved
-	SourceTierType *RecoveryPointTierType `json:"sourceTierType,omitempty"`
+	SourceTierType *RecoveryPointTierType
 
 	// Target tier where RP needs to be moved
-	TargetTierType *RecoveryPointTierType `json:"targetTierType,omitempty"`
+	TargetTierType *RecoveryPointTierType
 }
 
 // NameInfo - The name of usage.
 type NameInfo struct {
 	// Localized value of usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// Value of usage.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NewErrorResponse - The resource management error response.
 type NewErrorResponse struct {
 	// The error object.
-	Error *NewErrorResponseError `json:"error,omitempty"`
+	Error *NewErrorResponseError
 }
 
 // NewErrorResponseError - The error object.
 type NewErrorResponseError struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*NewErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*NewErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // OperationClientValidateOptions contains the optional parameters for the OperationClient.Validate method.
@@ -7969,10 +8008,10 @@ type OperationClientValidateOptions struct {
 // OperationResultInfo - Operation result info.
 type OperationResultInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// List of jobs created by this operation.
-	JobList []*string `json:"jobList,omitempty"`
+	JobList []*string
 }
 
 // GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfo.
@@ -7994,7 +8033,7 @@ type OperationResultInfoBaseClassification interface {
 // OperationResultInfoBase - Base class for operation result info.
 type OperationResultInfoBase struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfoBase.
@@ -8003,46 +8042,46 @@ func (o *OperationResultInfoBase) GetOperationResultInfoBase() *OperationResultI
 // OperationResultInfoBaseResource - Base class for operation result info.
 type OperationResultInfoBaseResource struct {
 	// HTTP headers associated with this operation.
-	Headers map[string][]*string `json:"headers,omitempty"`
+	Headers map[string][]*string
 
 	// OperationResultInfoBaseResource operation
-	Operation OperationResultInfoBaseClassification `json:"operation,omitempty"`
+	Operation OperationResultInfoBaseClassification
 
 	// HTTP Status Code of the operation.
-	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
+	StatusCode *HTTPStatusCode
 }
 
 // OperationStatus - Operation status.
 type OperationStatus struct {
 	// Operation end time. Format: ISO-8601.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Error information related to this operation.
-	Error *OperationStatusError `json:"error,omitempty"`
+	Error *OperationStatusError
 
 	// ID of the operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Additional information associated with this operation.
-	Properties OperationStatusExtendedInfoClassification `json:"properties,omitempty"`
+	Properties OperationStatusExtendedInfoClassification
 
 	// Operation start time. Format: ISO-8601.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Operation status.
-	Status *OperationStatusValues `json:"status,omitempty"`
+	Status *OperationStatusValues
 }
 
 // OperationStatusError - Error information associated with operation status call.
 type OperationStatusError struct {
 	// Error code of the operation failure.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message displayed if the operation failure.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // OperationStatusExtendedInfoClassification provides polymorphic access to related types.
@@ -8058,7 +8097,7 @@ type OperationStatusExtendedInfoClassification interface {
 // OperationStatusExtendedInfo - Base class for additional information of operation status.
 type OperationStatusExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusExtendedInfo.
@@ -8069,10 +8108,10 @@ func (o *OperationStatusExtendedInfo) GetOperationStatusExtendedInfo() *Operatio
 // OperationStatusJobExtendedInfo - Operation status job extended info.
 type OperationStatusJobExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// ID of the job created for this protected item.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobExtendedInfo.
@@ -8085,13 +8124,13 @@ func (o *OperationStatusJobExtendedInfo) GetOperationStatusExtendedInfo() *Opera
 // OperationStatusJobsExtendedInfo - Operation status extended info for list of jobs.
 type OperationStatusJobsExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Stores all the failed jobs along with the corresponding error codes.
-	FailedJobsError map[string]*string `json:"failedJobsError,omitempty"`
+	FailedJobsError map[string]*string
 
 	// IDs of the jobs created for the protected item.
-	JobIDs []*string `json:"jobIds,omitempty"`
+	JobIDs []*string
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobsExtendedInfo.
@@ -8104,10 +8143,10 @@ func (o *OperationStatusJobsExtendedInfo) GetOperationStatusExtendedInfo() *Oper
 // OperationStatusProvisionILRExtendedInfo - Operation status extended info for ILR provision action.
 type OperationStatusProvisionILRExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Target details for file / folder restore.
-	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
+	RecoveryTarget *InstantItemRecoveryTarget
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusProvisionILRExtendedInfo.
@@ -8120,10 +8159,10 @@ func (o *OperationStatusProvisionILRExtendedInfo) GetOperationStatusExtendedInfo
 // OperationStatusValidateOperationExtendedInfo - Operation status extended info for ValidateOperation action.
 type OperationStatusValidateOperationExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Gets the validation operation response
-	ValidateOperationResponse *ValidateOperationResponse `json:"validateOperationResponse,omitempty"`
+	ValidateOperationResponse *ValidateOperationResponse
 }
 
 // GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusValidateOperationExtendedInfo.
@@ -8136,10 +8175,10 @@ func (o *OperationStatusValidateOperationExtendedInfo) GetOperationStatusExtende
 // OperationWorkerResponse - This is the base class for operation result responses.
 type OperationWorkerResponse struct {
 	// HTTP headers associated with this operation.
-	Headers map[string][]*string `json:"headers,omitempty"`
+	Headers map[string][]*string
 
 	// HTTP Status Code of the operation.
-	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
+	StatusCode *HTTPStatusCode
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -8150,22 +8189,22 @@ type OperationsClientListOptions struct {
 // PointInTimeRange - Provides details for log ranges
 type PointInTimeRange struct {
 	// End time of the time range for log recovery.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Start time of the time range for log recovery.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // PreBackupValidation - Pre-backup validation for Azure VM Workload provider.
 type PreBackupValidation struct {
 	// Error code of protectable item
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Message corresponding to the error code for the protectable item
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Status of protectable item, i.e. InProgress,Succeeded,Failed
-	Status *InquiryStatus `json:"status,omitempty"`
+	Status *InquiryStatus
 }
 
 // PreValidateEnableBackupRequest - Contract to validate if backup can be enabled on the given resource in a given vault and
@@ -8175,68 +8214,68 @@ type PreBackupValidation struct {
 // 3. Any VM related configuration passed in properties.
 type PreValidateEnableBackupRequest struct {
 	// Configuration of VM if any needs to be validated like OS type etc
-	Properties *string `json:"properties,omitempty"`
+	Properties *string
 
 	// ARM Virtual Machine Id
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc
-	ResourceType *DataSourceType `json:"resourceType,omitempty"`
+	ResourceType *DataSourceType
 
 	// ARM id of the Recovery Services Vault
-	VaultID *string `json:"vaultId,omitempty"`
+	VaultID *string
 }
 
 // PreValidateEnableBackupResponse - Response contract for enable backup validation request
 type PreValidateEnableBackupResponse struct {
 	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for
 	// portal
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Response error code
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// Response error message
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Specifies the product specific ds name. E.g. vm;iaasvmcontainer;rgname;vmname. This is required for portal
-	ProtectedItemName *string `json:"protectedItemName,omitempty"`
+	ProtectedItemName *string
 
 	// Recommended action for user
-	Recommendation *string `json:"recommendation,omitempty"`
+	Recommendation *string
 
 	// Validation Status
-	Status *ValidationStatus `json:"status,omitempty"`
+	Status *ValidationStatus
 }
 
 // PrepareDataMoveRequest - Prepare DataMove Request
 type PrepareDataMoveRequest struct {
 	// REQUIRED; DataMove Level
-	DataMoveLevel *DataMoveLevel `json:"dataMoveLevel,omitempty"`
+	DataMoveLevel *DataMoveLevel
 
 	// REQUIRED; Target Region
-	TargetRegion *string `json:"targetRegion,omitempty"`
+	TargetRegion *string
 
 	// REQUIRED; ARM Id of target vault
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
 
 	// Ignore the artifacts which are already moved.
-	IgnoreMoved *bool `json:"ignoreMoved,omitempty"`
+	IgnoreMoved *bool
 
 	// Source Container ArmIds This needs to be populated only if DataMoveLevel is set to container
-	SourceContainerArmIDs []*string `json:"sourceContainerArmIds,omitempty"`
+	SourceContainerArmIDs []*string
 }
 
 // PrepareDataMoveResponse - Prepare DataMove Response
 type PrepareDataMoveResponse struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Co-relationId for move operation
-	CorrelationID *string `json:"correlationId,omitempty"`
+	CorrelationID *string
 
 	// Source Vault Properties
-	SourceVaultProperties map[string]*string `json:"sourceVaultProperties,omitempty"`
+	SourceVaultProperties map[string]*string
 }
 
 // GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
@@ -8250,7 +8289,7 @@ func (p *PrepareDataMoveResponse) GetVaultStorageConfigOperationResultResponse()
 // PrivateEndpoint - The Private Endpoint network resource that is linked to the Private Endpoint connection
 type PrivateEndpoint struct {
 	// Gets or sets id
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointClientGetOperationStatusOptions contains the optional parameters for the PrivateEndpointClient.GetOperationStatus
@@ -8262,13 +8301,13 @@ type PrivateEndpointClientGetOperationStatusOptions struct {
 // PrivateEndpointConnection - Private Endpoint Connection Response Properties
 type PrivateEndpointConnection struct {
 	// Gets or sets private endpoint associated with the private endpoint connection
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Gets or sets private link service connection state
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// Gets or sets provisioning state of the private endpoint connection
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 }
 
 // PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
@@ -8294,37 +8333,37 @@ type PrivateEndpointConnectionClientGetOptions struct {
 // PrivateEndpointConnectionResource - Private Endpoint Connection Response Properties
 type PrivateEndpointConnectionResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// PrivateEndpointConnectionResource properties
-	Properties *PrivateEndpointConnection `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnection
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServiceConnectionState - Private Link Service Connection State
 type PrivateLinkServiceConnectionState struct {
 	// Gets or sets actions required
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	ActionRequired *string
 
 	// Gets or sets description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the status
-	Status *PrivateEndpointConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointConnectionStatus
 }
 
 // ProtectableContainerClassification provides polymorphic access to related types.
@@ -8341,19 +8380,19 @@ type ProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
 	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
-	ProtectableContainerType *ProtectableContainerType `json:"protectableContainerType,omitempty"`
+	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Fabric Id of the container such as ARM Id.
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 }
 
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type ProtectableContainer.
@@ -8362,34 +8401,34 @@ func (p *ProtectableContainer) GetProtectableContainer() *ProtectableContainer {
 // ProtectableContainerResource - Protectable Container Class.
 type ProtectableContainerResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ProtectableContainerResource properties
-	Properties ProtectableContainerClassification `json:"properties,omitempty"`
+	Properties ProtectableContainerClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectableContainerResourceList - List of ProtectableContainer resources
 type ProtectableContainerResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ProtectableContainerResource `json:"value,omitempty"`
+	Value []*ProtectableContainerResource
 }
 
 // ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.NewListPager
@@ -8414,58 +8453,58 @@ type ProtectedItemClassification interface {
 // ProtectedItem - Base class for backup items.
 type ProtectedItem struct {
 	// REQUIRED; backup item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	CreateMode *CreateMode
 
 	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	DeferredDeleteTimeInUTC *time.Time
 
 	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	DeferredDeleteTimeRemaining *string
 
 	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	IsArchiveEnabled *bool
 
 	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool
 
 	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+	IsRehydrate *bool
 
 	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	IsScheduledForDeferredDelete *bool
 
 	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+	LastRecoveryPoint *time.Time
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Name of the policy used for protection
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 
 	// Soft delete retention period in days
-	SoftDeleteRetentionPeriod *int32 `json:"softDeleteRetentionPeriod,omitempty"`
+	SoftDeleteRetentionPeriod *int32
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty" azure:"ro"`
+	BackupManagementType *BackupManagementType
 
 	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType `json:"workloadType,omitempty" azure:"ro"`
+	WorkloadType *DataSourceType
 }
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type ProtectedItem.
@@ -8486,64 +8525,64 @@ type ProtectedItemOperationStatusesClientGetOptions struct {
 // ProtectedItemQueryObject - Filters to list backup items.
 type ProtectedItemQueryObject struct {
 	// Backup Engine name
-	BackupEngineName *string `json:"backupEngineName,omitempty"`
+	BackupEngineName *string
 
 	// Backup management type for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Name of the backup set.
-	BackupSetName *string `json:"backupSetName,omitempty"`
+	BackupSetName *string
 
 	// Name of the container.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// Name of the fabric.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Friendly name of protected item
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Health State for the backed up item.
-	HealthState *HealthState `json:"healthState,omitempty"`
+	HealthState *HealthState
 
 	// Type of workload this item represents.
-	ItemType *DataSourceType `json:"itemType,omitempty"`
+	ItemType *DataSourceType
 
 	// Backup policy name associated with the backup item.
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 }
 
 // ProtectedItemResource - Base class for backup items.
 type ProtectedItemResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ProtectedItemResource properties
-	Properties ProtectedItemClassification `json:"properties,omitempty"`
+	Properties ProtectedItemClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectedItemResourceList - List of ProtectedItem resources
 type ProtectedItemResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ProtectedItemResource `json:"value,omitempty"`
+	Value []*ProtectedItemResource
 }
 
 // ProtectedItemsClientCreateOrUpdateOptions contains the optional parameters for the ProtectedItemsClient.CreateOrUpdate
@@ -8581,22 +8620,22 @@ type ProtectionContainer struct {
 	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
 	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
 	// 6. Azure workload Backup is VMAppContainer
-	ContainerType *ProtectableContainerType `json:"containerType,omitempty"`
+	ContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Friendly name of the container.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Status of health of the container.
-	HealthStatus *string `json:"healthStatus,omitempty"`
+	HealthStatus *string
 
 	// Type of the protectable object associated with this container
-	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+	ProtectableObjectType *string
 
 	// Status of registration of the container with the Recovery Services Vault.
-	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+	RegistrationStatus *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type ProtectionContainer.
@@ -8618,34 +8657,34 @@ type ProtectionContainerRefreshOperationResultsClientGetOptions struct {
 // from this class.
 type ProtectionContainerResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ProtectionContainerResource properties
-	Properties ProtectionContainerClassification `json:"properties,omitempty"`
+	Properties ProtectionContainerClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectionContainerResourceList - List of ProtectionContainer resources
 type ProtectionContainerResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ProtectionContainerResource `json:"value,omitempty"`
+	Value []*ProtectionContainerResource
 }
 
 // ProtectionContainersClientGetOptions contains the optional parameters for the ProtectionContainersClient.Get method.
@@ -8690,22 +8729,22 @@ type ProtectionIntentClassification interface {
 // ProtectionIntent - Base class for backup ProtectionIntent.
 type ProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType
 
 	// Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
-	ItemID *string `json:"itemId,omitempty"`
+	ItemID *string
 
 	// ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Backup state of this backup item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type ProtectionIntent.
@@ -8735,49 +8774,49 @@ type ProtectionIntentClientValidateOptions struct {
 // ProtectionIntentQueryObject - Filters to list protection intent.
 type ProtectionIntentQueryObject struct {
 	// Backup management type for the backed up item
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Item name of the intent
-	ItemName *string `json:"itemName,omitempty"`
+	ItemName *string
 
 	// Type of workload this item represents
-	ItemType *IntentItemType `json:"itemType,omitempty"`
+	ItemType *IntentItemType
 
 	// Parent name of the intent
-	ParentName *string `json:"parentName,omitempty"`
+	ParentName *string
 }
 
 // ProtectionIntentResource - Base class for backup ProtectionIntent.
 type ProtectionIntentResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ProtectionIntentResource properties
-	Properties ProtectionIntentClassification `json:"properties,omitempty"`
+	Properties ProtectionIntentClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectionIntentResourceList - List of ProtectionIntent resources
 type ProtectionIntentResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ProtectionIntentResource `json:"value,omitempty"`
+	Value []*ProtectionIntentResource
 }
 
 // ProtectionPoliciesClientBeginDeleteOptions contains the optional parameters for the ProtectionPoliciesClient.BeginDelete
@@ -8811,13 +8850,13 @@ type ProtectionPolicyClassification interface {
 // ProtectionPolicy - Base class for backup policy. Workload-specific backup policies are derived from this class.
 type ProtectionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Number of items associated with this policy.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+	ProtectedItemsCount *int32
 
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 }
 
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type ProtectionPolicy.
@@ -8838,46 +8877,46 @@ type ProtectionPolicyOperationStatusesClientGetOptions struct {
 // ProtectionPolicyQueryObject - Filters the list backup policies API.
 type ProtectionPolicyQueryObject struct {
 	// Backup management type for the backup policy.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Fabric name for filter
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// Workload type for the backup policy.
-	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+	WorkloadType *WorkloadType
 }
 
 // ProtectionPolicyResource - Base class for backup policy. Workload-specific backup policies are derived from this class.
 type ProtectionPolicyResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ProtectionPolicyResource properties
-	Properties ProtectionPolicyClassification `json:"properties,omitempty"`
+	Properties ProtectionPolicyClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectionPolicyResourceList - List of ProtectionPolicy resources
 type ProtectionPolicyResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ProtectionPolicyResource `json:"value,omitempty"`
+	Value []*ProtectionPolicyResource
 }
 
 // RecoveryPointClassification provides polymorphic access to related types.
@@ -8894,7 +8933,7 @@ type RecoveryPointClassification interface {
 // RecoveryPoint - Base class for backup copies. Workload-specific backup copies are derived from this class.
 type RecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type RecoveryPoint.
@@ -8903,96 +8942,99 @@ func (r *RecoveryPoint) GetRecoveryPoint() *RecoveryPoint { return r }
 // RecoveryPointDiskConfiguration - Disk configuration
 type RecoveryPointDiskConfiguration struct {
 	// Information of disks excluded from backup
-	ExcludedDiskList []*DiskInformation `json:"excludedDiskList,omitempty"`
+	ExcludedDiskList []*DiskInformation
 
 	// Information of disks included in backup
-	IncludedDiskList []*DiskInformation `json:"includedDiskList,omitempty"`
+	IncludedDiskList []*DiskInformation
 
 	// Number of disks attached to the VM
-	NumberOfDisksAttachedToVM *int32 `json:"numberOfDisksAttachedToVm,omitempty"`
+	NumberOfDisksAttachedToVM *int32
 
 	// Number of disks included in backup
-	NumberOfDisksIncludedInBackup *int32 `json:"numberOfDisksIncludedInBackup,omitempty"`
+	NumberOfDisksIncludedInBackup *int32
 }
 
 type RecoveryPointMoveReadinessInfo struct {
-	AdditionalInfo *string `json:"additionalInfo,omitempty"`
-	IsReadyForMove *bool   `json:"isReadyForMove,omitempty"`
+	AdditionalInfo *string
+	IsReadyForMove *bool
 }
 
 // RecoveryPointProperties - Properties of Recovery Point
 type RecoveryPointProperties struct {
 	// Expiry time of Recovery Point in UTC.
-	ExpiryTime *string `json:"expiryTime,omitempty"`
+	ExpiryTime *string
+
+	// Bool to indicate whether RP is in soft delete state or not
+	IsSoftDeleted *bool
 
 	// Rule name tagged on Recovery Point that governs life cycle
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 }
 
 // RecoveryPointRehydrationInfo - RP Rehydration Info
 type RecoveryPointRehydrationInfo struct {
 	// Rehydration Priority
-	RehydrationPriority *RehydrationPriority `json:"rehydrationPriority,omitempty"`
+	RehydrationPriority *RehydrationPriority
 
 	// How long the rehydrated RP should be kept Should be ISO8601 Duration format e.g. "P7D"
-	RehydrationRetentionDuration *string `json:"rehydrationRetentionDuration,omitempty"`
+	RehydrationRetentionDuration *string
 }
 
 // RecoveryPointResource - Base class for backup copies. Workload-specific backup copies are derived from this class.
 type RecoveryPointResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// RecoveryPointResource properties
-	Properties RecoveryPointClassification `json:"properties,omitempty"`
+	Properties RecoveryPointClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecoveryPointResourceList - List of RecoveryPoint resources
 type RecoveryPointResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*RecoveryPointResource `json:"value,omitempty"`
+	Value []*RecoveryPointResource
 }
 
 // RecoveryPointTierInformation - Recovery point tier information.
 type RecoveryPointTierInformation struct {
 	// Recovery point tier status.
-	ExtendedInfo map[string]*string `json:"extendedInfo,omitempty"`
+	ExtendedInfo map[string]*string
 
 	// Recovery point tier status.
-	Status *RecoveryPointTierStatus `json:"status,omitempty"`
+	Status *RecoveryPointTierStatus
 
 	// Recovery point tier type.
-	Type *RecoveryPointTierType `json:"type,omitempty"`
+	Type *RecoveryPointTierType
 }
 
 // RecoveryPointTierInformationV2 - RecoveryPoint Tier Information V2
 type RecoveryPointTierInformationV2 struct {
 	// Recovery point tier status.
-	ExtendedInfo map[string]*string `json:"extendedInfo,omitempty"`
+	ExtendedInfo map[string]*string
 
 	// Recovery point tier status.
-	Status *RecoveryPointTierStatus `json:"status,omitempty"`
+	Status *RecoveryPointTierStatus
 
 	// Recovery point tier type.
-	Type *RecoveryPointTierType `json:"type,omitempty"`
+	Type *RecoveryPointTierType
 }
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
@@ -9015,27 +9057,27 @@ type RecoveryPointsRecommendedForMoveClientListOptions struct {
 // Resource - ARM Resource.
 type Resource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type ResourceGuardOperationDetail struct {
-	DefaultResourceRequest *string `json:"defaultResourceRequest,omitempty"`
-	VaultCriticalOperation *string `json:"vaultCriticalOperation,omitempty"`
+	DefaultResourceRequest *string
+	VaultCriticalOperation *string
 }
 
 // ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.NewGetPager method.
@@ -9044,42 +9086,42 @@ type ResourceGuardProxiesClientGetOptions struct {
 }
 
 type ResourceGuardProxyBase struct {
-	Description                   *string                         `json:"description,omitempty"`
-	LastUpdatedTime               *string                         `json:"lastUpdatedTime,omitempty"`
-	ResourceGuardOperationDetails []*ResourceGuardOperationDetail `json:"resourceGuardOperationDetails,omitempty"`
-	ResourceGuardResourceID       *string                         `json:"resourceGuardResourceId,omitempty"`
+	Description                   *string
+	LastUpdatedTime               *string
+	ResourceGuardOperationDetails []*ResourceGuardOperationDetail
+	ResourceGuardResourceID       *string
 }
 
 type ResourceGuardProxyBaseResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ResourceGuardProxyBaseResource properties
-	Properties *ResourceGuardProxyBase `json:"properties,omitempty"`
+	Properties *ResourceGuardProxyBase
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceGuardProxyBaseResourceList - List of ResourceGuardProxyBase resources
 type ResourceGuardProxyBaseResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ResourceGuardProxyBaseResource `json:"value,omitempty"`
+	Value []*ResourceGuardProxyBaseResource
 }
 
 // ResourceGuardProxyClientDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.Delete method.
@@ -9106,34 +9148,34 @@ type ResourceGuardProxyClientUnlockDeleteOptions struct {
 // ResourceHealthDetails - Health Details for backup items.
 type ResourceHealthDetails struct {
 	// READ-ONLY; Health Code
-	Code *int32 `json:"code,omitempty" azure:"ro"`
+	Code *int32
 
 	// READ-ONLY; Health Message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Health Recommended Actions
-	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+	Recommendations []*string
 
 	// READ-ONLY; Health Title
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // ResourceList - Base for all lists of resources.
 type ResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // RestoreFileSpecs - Restore file specs like file path, type and target folder path info.
 type RestoreFileSpecs struct {
 	// Indicates what the Path variable stands for
-	FileSpecType *string `json:"fileSpecType,omitempty"`
+	FileSpecType *string
 
 	// Source File/Folder path
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Destination folder path in target FileShare
-	TargetFolderPath *string `json:"targetFolderPath,omitempty"`
+	TargetFolderPath *string
 }
 
 // RestoreRequestClassification provides polymorphic access to related types.
@@ -9151,7 +9193,7 @@ type RestoreRequestClassification interface {
 // RestoreRequest - Base class for restore request. Workload-specific restore requests are derived from this class.
 type RestoreRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetRestoreRequest implements the RestoreRequestClassification interface for type RestoreRequest.
@@ -9160,25 +9202,25 @@ func (r *RestoreRequest) GetRestoreRequest() *RestoreRequest { return r }
 // RestoreRequestResource - Base class for restore request. Workload-specific restore requests are derived from this class.
 type RestoreRequestResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// RestoreRequestResource properties
-	Properties RestoreRequestClassification `json:"properties,omitempty"`
+	Properties RestoreRequestClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
@@ -9191,10 +9233,10 @@ type RestoresClientBeginTriggerOptions struct {
 type RetentionDuration struct {
 	// Count of duration types. Retention duration is obtained by the counting the duration type Count times. For example, when
 	// Count = 3 and DurationType = Weeks, retention duration will be three weeks.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Retention duration type of retention policy.
-	DurationType *RetentionDurationType `json:"durationType,omitempty"`
+	DurationType *RetentionDurationType
 }
 
 // RetentionPolicyClassification provides polymorphic access to related types.
@@ -9209,7 +9251,7 @@ type RetentionPolicyClassification interface {
 // RetentionPolicy - Base class for retention policy.
 type RetentionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
+	RetentionPolicyType *string
 }
 
 // GetRetentionPolicy implements the RetentionPolicyClassification interface for type RetentionPolicy.
@@ -9218,28 +9260,28 @@ func (r *RetentionPolicy) GetRetentionPolicy() *RetentionPolicy { return r }
 // SQLDataDirectory info
 type SQLDataDirectory struct {
 	// Logical name of the file
-	LogicalName *string `json:"logicalName,omitempty"`
+	LogicalName *string
 
 	// File path
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Type of data directory mapping
-	Type *SQLDataDirectoryType `json:"type,omitempty"`
+	Type *SQLDataDirectoryType
 }
 
 // SQLDataDirectoryMapping - Encapsulates information regarding data directory
 type SQLDataDirectoryMapping struct {
 	// Type of data directory mapping
-	MappingType *SQLDataDirectoryType `json:"mappingType,omitempty"`
+	MappingType *SQLDataDirectoryType
 
 	// Restore source logical name path
-	SourceLogicalName *string `json:"sourceLogicalName,omitempty"`
+	SourceLogicalName *string
 
 	// Restore source path
-	SourcePath *string `json:"sourcePath,omitempty"`
+	SourcePath *string
 
 	// Target path
-	TargetPath *string `json:"targetPath,omitempty"`
+	TargetPath *string
 }
 
 // SchedulePolicyClassification provides polymorphic access to related types.
@@ -9254,11 +9296,17 @@ type SchedulePolicyClassification interface {
 // SchedulePolicy - Base class for backup schedule.
 type SchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+	SchedulePolicyType *string
 }
 
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type SchedulePolicy.
 func (s *SchedulePolicy) GetSchedulePolicy() *SchedulePolicy { return s }
+
+// SecuredVMDetails - Restore request parameters for Secured VMs
+type SecuredVMDetails struct {
+	// Gets or Sets Disk Encryption Set Id for Secured VM OS Disk
+	SecuredVMOsDiskEncryptionSetID *string
+}
 
 // SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
 type SecurityPINsClientGetOptions struct {
@@ -9269,29 +9317,29 @@ type SecurityPINsClientGetOptions struct {
 // SecurityPinBase - Base class for get security pin request body
 type SecurityPinBase struct {
 	// ResourceGuard Operation Requests
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+	ResourceGuardOperationRequests []*string
 }
 
 // Settings - Common settings field for backup management
 type Settings struct {
 	// Workload compression flag. This has been added so that 'isSqlCompression' will be deprecated once clients upgrade to consider
 	// this flag.
-	IsCompression *bool `json:"isCompression,omitempty"`
+	IsCompression *bool
 
 	// SQL compression flag
-	Issqlcompression *bool `json:"issqlcompression,omitempty"`
+	Issqlcompression *bool
 
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // SimpleRetentionPolicy - Simple policy retention.
 type SimpleRetentionPolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
+	RetentionPolicyType *string
 
 	// Retention duration of the protection policy.
-	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+	RetentionDuration *RetentionDuration
 }
 
 // GetRetentionPolicy implements the RetentionPolicyClassification interface for type SimpleRetentionPolicy.
@@ -9304,22 +9352,22 @@ func (s *SimpleRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
 // SimpleSchedulePolicy - Simple policy schedule.
 type SimpleSchedulePolicy struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+	SchedulePolicyType *string
 
 	// Hourly Schedule of this Policy
-	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+	HourlySchedule *HourlySchedule
 
 	// List of days of week this schedule has to be run.
-	ScheduleRunDays []*DayOfWeek `json:"scheduleRunDays,omitempty"`
+	ScheduleRunDays []*DayOfWeek
 
 	// Frequency of the schedule operation of this policy.
-	ScheduleRunFrequency *ScheduleRunType `json:"scheduleRunFrequency,omitempty"`
+	ScheduleRunFrequency *ScheduleRunType
 
 	// List of times of day this schedule has to be run.
-	ScheduleRunTimes []*time.Time `json:"scheduleRunTimes,omitempty"`
+	ScheduleRunTimes []*time.Time
 
 	// At every number weeks this schedule has to be run.
-	ScheduleWeeklyFrequency *int32 `json:"scheduleWeeklyFrequency,omitempty"`
+	ScheduleWeeklyFrequency *int32
 }
 
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicy.
@@ -9332,19 +9380,19 @@ func (s *SimpleSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
 // SimpleSchedulePolicyV2 - The V2 policy schedule for IaaS that supports hourly backups.
 type SimpleSchedulePolicyV2 struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+	SchedulePolicyType *string
 
 	// Daily schedule of this policy
-	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
+	DailySchedule *DailySchedule
 
 	// hourly schedule of this policy
-	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+	HourlySchedule *HourlySchedule
 
 	// Frequency of the schedule operation of this policy.
-	ScheduleRunFrequency *ScheduleRunType `json:"scheduleRunFrequency,omitempty"`
+	ScheduleRunFrequency *ScheduleRunType
 
 	// Weekly schedule of this policy
-	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
+	WeeklySchedule *WeeklySchedule
 }
 
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicyV2.
@@ -9357,41 +9405,50 @@ func (s *SimpleSchedulePolicyV2) GetSchedulePolicy() *SchedulePolicy {
 // SubProtectionPolicy - Sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
 	// Type of backup policy type
-	PolicyType *PolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType
 
 	// Retention policy with the details on backup copy retention ranges.
-	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+	RetentionPolicy RetentionPolicyClassification
 
 	// Backup schedule specified as part of backup policy.
-	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
+	SchedulePolicy SchedulePolicyClassification
 
 	// Tiering policy to automatically move RPs to another tier. Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
 	// policy specifies the criteria to move RP to the target tier.
-	TieringPolicy map[string]*TieringPolicy `json:"tieringPolicy,omitempty"`
+	TieringPolicy map[string]*TieringPolicy
 }
 
 // TargetAFSRestoreInfo - Target Azure File Share Info.
 type TargetAFSRestoreInfo struct {
 	// File share name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Target file share resource ARM ID
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
+}
+
+// TargetDiskNetworkAccessSettings - Specifies target network access settings for disks of VM to be restored.
+type TargetDiskNetworkAccessSettings struct {
+	// Gets or sets the ARM resource ID of the target disk access to be used when TargetDiskNetworkAccessOption is set to TargetDiskNetworkAccessOption.UseNew
+	TargetDiskAccessID *string
+
+	// Network access settings to be used for restored disks
+	TargetDiskNetworkAccessOption *TargetDiskNetworkAccessOption
 }
 
 // TargetRestoreInfo - Details about target workload during restore operation.
 type TargetRestoreInfo struct {
 	// Resource Id name of the container in which Target DataBase resides
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana
-	DatabaseName *string `json:"databaseName,omitempty"`
+	DatabaseName *string
 
 	// Can Overwrite if Target DataBase already exists
-	OverwriteOption *OverwriteOptions `json:"overwriteOption,omitempty"`
+	OverwriteOption *OverwriteOptions
 
 	// Target directory location for restore as files.
-	TargetDirectoryForFileRestore *string `json:"targetDirectoryForFileRestore,omitempty"`
+	TargetDirectoryForFileRestore *string
 }
 
 // TieringPolicy - Tiering Policy for a target tier. If the policy is not specified for a given target tier, service retains
@@ -9399,70 +9456,70 @@ type TargetRestoreInfo struct {
 type TieringPolicy struct {
 	// Number of days/weeks/months/years to retain backups in current tier before tiering. Used only if TieringMode is set to
 	// TierAfter
-	Duration *int32 `json:"duration,omitempty"`
+	Duration *int32
 
 	// Retention duration type: days/weeks/months/years Used only if TieringMode is set to TierAfter
-	DurationType *RetentionDurationType `json:"durationType,omitempty"`
+	DurationType *RetentionDurationType
 
 	// Tiering Mode to control automatic tiering of recovery points. Supported values are:
 	// 1. TierRecommended: Tier all recovery points recommended to be tiered
 	// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
 	// 3. DoNotTier: Do not tier any recovery points
-	TieringMode *TieringMode `json:"tieringMode,omitempty"`
+	TieringMode *TieringMode
 }
 
 // TokenInformation - The token information details.
 type TokenInformation struct {
 	// Expiry time of token.
-	ExpiryTimeInUTCTicks *int64 `json:"expiryTimeInUtcTicks,omitempty"`
+	ExpiryTimeInUTCTicks *int64
 
 	// Security PIN
-	SecurityPIN *string `json:"securityPIN,omitempty"`
+	SecurityPIN *string
 
 	// Token value.
-	Token *string `json:"token,omitempty"`
+	Token *string
 }
 
 // TriggerDataMoveRequest - Trigger DataMove Request
 type TriggerDataMoveRequest struct {
 	// REQUIRED; Correlation Id
-	CorrelationID *string `json:"correlationId,omitempty"`
+	CorrelationID *string
 
 	// REQUIRED; DataMove Level
-	DataMoveLevel *DataMoveLevel `json:"dataMoveLevel,omitempty"`
+	DataMoveLevel *DataMoveLevel
 
 	// REQUIRED; Source Region
-	SourceRegion *string `json:"sourceRegion,omitempty"`
+	SourceRegion *string
 
 	// REQUIRED; ARM Id of source vault
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 
 	// Pause GC
-	PauseGC *bool `json:"pauseGC,omitempty"`
+	PauseGC *bool
 
 	// Source Container ArmIds
-	SourceContainerArmIDs []*string `json:"sourceContainerArmIds,omitempty"`
+	SourceContainerArmIDs []*string
 }
 
 // UnlockDeleteRequest - Request body of unlock delete API.
 type UnlockDeleteRequest struct {
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
-	ResourceToBeDeleted            *string   `json:"resourceToBeDeleted,omitempty"`
+	ResourceGuardOperationRequests []*string
+	ResourceToBeDeleted            *string
 }
 
 // UnlockDeleteResponse - Response of Unlock Delete API.
 type UnlockDeleteResponse struct {
 	// This is the time when unlock delete privileges will get expired.
-	UnlockDeleteExpiryTime *string `json:"unlockDeleteExpiryTime,omitempty"`
+	UnlockDeleteExpiryTime *string
 }
 
 // ValidateIaasVMRestoreOperationRequest - AzureRestoreValidation request.
 type ValidateIaasVMRestoreOperationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Sets restore request to be validated
-	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
+	RestoreRequest RestoreRequestClassification
 }
 
 // GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
@@ -9499,7 +9556,7 @@ type ValidateOperationRequestClassification interface {
 // ValidateOperationRequest - Base class for validate operation request.
 type ValidateOperationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateOperationRequest.
@@ -9508,7 +9565,7 @@ func (v *ValidateOperationRequest) GetValidateOperationRequest() *ValidateOperat
 // ValidateOperationResponse - Base class for validate operation response.
 type ValidateOperationResponse struct {
 	// Gets the validation result
-	ValidationResults []*ErrorDetail `json:"validationResults,omitempty"`
+	ValidationResults []*ErrorDetail
 }
 
 // ValidateOperationResultsClientGetOptions contains the optional parameters for the ValidateOperationResultsClient.Get method.
@@ -9524,7 +9581,7 @@ type ValidateOperationStatusesClientGetOptions struct {
 
 type ValidateOperationsResponse struct {
 	// Base class for validate operation response.
-	ValidateOperationResponse *ValidateOperationResponse `json:"validateOperationResponse,omitempty"`
+	ValidateOperationResponse *ValidateOperationResponse
 }
 
 // ValidateRestoreOperationRequestClassification provides polymorphic access to related types.
@@ -9540,10 +9597,10 @@ type ValidateRestoreOperationRequestClassification interface {
 // ValidateRestoreOperationRequest - AzureRestoreValidation request.
 type ValidateRestoreOperationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Sets restore request to be validated
-	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
+	RestoreRequest RestoreRequestClassification
 }
 
 // GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateRestoreOperationRequest.
@@ -9561,40 +9618,40 @@ func (v *ValidateRestoreOperationRequest) GetValidateRestoreOperationRequest() *
 // VaultJob - Vault level Job
 type VaultJob struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
-	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+	ActionsInfo []*JobSupportedAction
 
 	// ActivityId of job.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Backup management type to execute the current job.
-	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+	BackupManagementType *BackupManagementType
 
 	// Time elapsed during the execution of this job.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Friendly name of the entity on which the current job is executing.
-	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+	EntityFriendlyName *string
 
 	// Error details on execution of this job.
-	ErrorDetails []*VaultJobErrorInfo `json:"errorDetails,omitempty"`
+	ErrorDetails []*VaultJobErrorInfo
 
 	// Additional information about the job.
-	ExtendedInfo *VaultJobExtendedInfo `json:"extendedInfo,omitempty"`
+	ExtendedInfo *VaultJobExtendedInfo
 
 	// The operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // GetJob implements the JobClassification interface for type VaultJob.
@@ -9614,19 +9671,19 @@ func (v *VaultJob) GetJob() *Job {
 // VaultJobErrorInfo - Vault Job specific error information
 type VaultJobErrorInfo struct {
 	// Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty"`
+	ErrorCode *int32
 
 	// Localized error string.
-	ErrorString *string `json:"errorString,omitempty"`
+	ErrorString *string
 
 	// List of localized recommendations for above error code.
-	Recommendations []*string `json:"recommendations,omitempty"`
+	Recommendations []*string
 }
 
 // VaultJobExtendedInfo - Vault Job for CMK - has CMK specific info.
 type VaultJobExtendedInfo struct {
 	// Job properties.
-	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+	PropertyBag map[string]*string
 }
 
 // VaultStorageConfigOperationResultResponseClassification provides polymorphic access to related types.
@@ -9641,7 +9698,7 @@ type VaultStorageConfigOperationResultResponseClassification interface {
 // VaultStorageConfigOperationResultResponse - Operation result response for Vault Storage Config
 type VaultStorageConfigOperationResultResponse struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
@@ -9653,41 +9710,41 @@ func (v *VaultStorageConfigOperationResultResponse) GetVaultStorageConfigOperati
 // WeeklyRetentionFormat - Weekly retention format.
 type WeeklyRetentionFormat struct {
 	// List of days of the week.
-	DaysOfTheWeek []*DayOfWeek `json:"daysOfTheWeek,omitempty"`
+	DaysOfTheWeek []*DayOfWeek
 
 	// List of weeks of month.
-	WeeksOfTheMonth []*WeekOfMonth `json:"weeksOfTheMonth,omitempty"`
+	WeeksOfTheMonth []*WeekOfMonth
 }
 
 // WeeklyRetentionSchedule - Weekly retention schedule.
 type WeeklyRetentionSchedule struct {
 	// List of days of week for weekly retention policy.
-	DaysOfTheWeek []*DayOfWeek `json:"daysOfTheWeek,omitempty"`
+	DaysOfTheWeek []*DayOfWeek
 
 	// Retention duration of retention Policy.
-	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+	RetentionDuration *RetentionDuration
 
 	// Retention times of retention policy.
-	RetentionTimes []*time.Time `json:"retentionTimes,omitempty"`
+	RetentionTimes []*time.Time
 }
 
 type WeeklySchedule struct {
-	ScheduleRunDays []*DayOfWeek `json:"scheduleRunDays,omitempty"`
+	ScheduleRunDays []*DayOfWeek
 
 	// List of times of day this schedule has to be run.
-	ScheduleRunTimes []*time.Time `json:"scheduleRunTimes,omitempty"`
+	ScheduleRunTimes []*time.Time
 }
 
 // WorkloadInquiryDetails - Details of an inquired protectable item.
 type WorkloadInquiryDetails struct {
 	// Inquiry validation such as permissions and other backup validations.
-	InquiryValidation *InquiryValidation `json:"inquiryValidation,omitempty"`
+	InquiryValidation *InquiryValidation
 
 	// Contains the protectable item Count inside this Container.
-	ItemCount *int64 `json:"itemCount,omitempty"`
+	ItemCount *int64
 
 	// Type of the Workload such as SQL, Oracle etc.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // WorkloadItemClassification provides polymorphic access to related types.
@@ -9704,19 +9761,19 @@ type WorkloadItemClassification interface {
 // WorkloadItem - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItem struct {
 	// REQUIRED; Type of the backup item.
-	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+	WorkloadItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetWorkloadItem implements the WorkloadItemClassification interface for type WorkloadItem.
@@ -9725,34 +9782,34 @@ func (w *WorkloadItem) GetWorkloadItem() *WorkloadItem { return w }
 // WorkloadItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItemResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// WorkloadItemResource properties
-	Properties WorkloadItemClassification `json:"properties,omitempty"`
+	Properties WorkloadItemClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadItemResourceList - List of WorkloadItem resources
 type WorkloadItemResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*WorkloadItemResource `json:"value,omitempty"`
+	Value []*WorkloadItemResource
 }
 
 // WorkloadProtectableItemClassification provides polymorphic access to related types.
@@ -9770,19 +9827,19 @@ type WorkloadProtectableItemClassification interface {
 // WorkloadProtectableItem - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadProtectableItem struct {
 	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+	ProtectableItemType *string
 
 	// Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
+	BackupManagementType *string
 
 	// Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// State of the back up item.
-	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+	ProtectionState *ProtectionStatus
 
 	// Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
+	WorkloadType *string
 }
 
 // GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type WorkloadProtectableItem.
@@ -9791,53 +9848,53 @@ func (w *WorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtecta
 // WorkloadProtectableItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadProtectableItemResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// WorkloadProtectableItemResource properties
-	Properties WorkloadProtectableItemClassification `json:"properties,omitempty"`
+	Properties WorkloadProtectableItemClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadProtectableItemResourceList - List of WorkloadProtectableItem resources
 type WorkloadProtectableItemResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*WorkloadProtectableItemResource `json:"value,omitempty"`
+	Value []*WorkloadProtectableItemResource
 }
 
 // YearlyRetentionSchedule - Yearly retention schedule.
 type YearlyRetentionSchedule struct {
 	// List of months of year of yearly retention policy.
-	MonthsOfYear []*MonthOfYear `json:"monthsOfYear,omitempty"`
+	MonthsOfYear []*MonthOfYear
 
 	// Retention duration of retention Policy.
-	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+	RetentionDuration *RetentionDuration
 
 	// Daily retention format for yearly retention policy.
-	RetentionScheduleDaily *DailyRetentionFormat `json:"retentionScheduleDaily,omitempty"`
+	RetentionScheduleDaily *DailyRetentionFormat
 
 	// Retention schedule format for yearly retention policy.
-	RetentionScheduleFormatType *RetentionScheduleFormat `json:"retentionScheduleFormatType,omitempty"`
+	RetentionScheduleFormatType *RetentionScheduleFormat
 
 	// Weekly retention format for yearly retention policy.
-	RetentionScheduleWeekly *WeeklyRetentionFormat `json:"retentionScheduleWeekly,omitempty"`
+	RetentionScheduleWeekly *WeeklyRetentionFormat
 
 	// Retention times of retention policy.
-	RetentionTimes []*time.Time `json:"retentionTimes,omitempty"`
+	RetentionTimes []*time.Time
 }

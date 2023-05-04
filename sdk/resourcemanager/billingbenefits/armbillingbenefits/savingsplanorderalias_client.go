@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,62 +24,55 @@ import (
 // SavingsPlanOrderAliasClient contains the methods for the SavingsPlanOrderAlias group.
 // Don't use this type directly, use NewSavingsPlanOrderAliasClient() instead.
 type SavingsPlanOrderAliasClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSavingsPlanOrderAliasClient creates a new instance of SavingsPlanOrderAliasClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSavingsPlanOrderAliasClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SavingsPlanOrderAliasClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SavingsPlanOrderAliasClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SavingsPlanOrderAliasClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderAliasName - Name of the savings plan order alias
-// body - Request body for creating a savings plan order alias
-// options - SavingsPlanOrderAliasClientBeginCreateOptions contains the optional parameters for the SavingsPlanOrderAliasClient.BeginCreate
-// method.
+//   - savingsPlanOrderAliasName - Name of the savings plan order alias
+//   - body - Request body for creating a savings plan order alias
+//   - options - SavingsPlanOrderAliasClientBeginCreateOptions contains the optional parameters for the SavingsPlanOrderAliasClient.BeginCreate
+//     method.
 func (client *SavingsPlanOrderAliasClient) BeginCreate(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, options *SavingsPlanOrderAliasClientBeginCreateOptions) (*runtime.Poller[SavingsPlanOrderAliasClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, savingsPlanOrderAliasName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SavingsPlanOrderAliasClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SavingsPlanOrderAliasClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SavingsPlanOrderAliasClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SavingsPlanOrderAliasClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, options *SavingsPlanOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, savingsPlanOrderAliasName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +89,7 @@ func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter savingsPlanOrderAliasName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderAliasName}", url.PathEscape(savingsPlanOrderAliasName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,16 +102,17 @@ func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Conte
 
 // Get - Get a savings plan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// savingsPlanOrderAliasName - Name of the savings plan order alias
-// options - SavingsPlanOrderAliasClientGetOptions contains the optional parameters for the SavingsPlanOrderAliasClient.Get
-// method.
+//   - savingsPlanOrderAliasName - Name of the savings plan order alias
+//   - options - SavingsPlanOrderAliasClientGetOptions contains the optional parameters for the SavingsPlanOrderAliasClient.Get
+//     method.
 func (client *SavingsPlanOrderAliasClient) Get(ctx context.Context, savingsPlanOrderAliasName string, options *SavingsPlanOrderAliasClientGetOptions) (SavingsPlanOrderAliasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, savingsPlanOrderAliasName, options)
 	if err != nil {
 		return SavingsPlanOrderAliasClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SavingsPlanOrderAliasClientGetResponse{}, err
 	}
@@ -137,7 +129,7 @@ func (client *SavingsPlanOrderAliasClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter savingsPlanOrderAliasName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderAliasName}", url.PathEscape(savingsPlanOrderAliasName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,37 @@
 # Release History
 
+## 0.4.0 (2023-04-28)
+### Breaking Changes
+
+- Type alias `SSHKeyType` has been removed
+- Function `*AppliancesClient.ListClusterCustomerUserCredential` has been removed
+- Struct `ApplianceListClusterCustomerUserCredentialResults` has been removed
+
+### Features Added
+
+- New value `StatusImageDeprovisioning`, `StatusImageDownloaded`, `StatusImageDownloading`, `StatusImagePending`, `StatusImageProvisioned`, `StatusImageProvisioning`, `StatusImageUnknown`, `StatusUpgradingKVAIO`, `StatusWaitingForKVAIO` added to enum type `Status`
+- New function `*AppliancesClient.GetTelemetryConfig(context.Context, *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error)`
+- New function `*AppliancesClient.ListKeys(context.Context, string, string, *AppliancesClientListKeysOptions) (AppliancesClientListKeysResponse, error)`
+- New struct `ApplianceGetTelemetryConfigResult`
+- New struct `ApplianceListKeysResults`
+- New struct `ArtifactProfile`
+- New field `Certificate` in struct `SSHKey`
+- New field `CreationTimeStamp` in struct `SSHKey`
+- New field `ExpirationTimeStamp` in struct `SSHKey`
+
+
+## 0.3.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 0.3.0 (2023-03-31)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
 ## 0.2.0 (2022-06-28)
 ### Features Added
 

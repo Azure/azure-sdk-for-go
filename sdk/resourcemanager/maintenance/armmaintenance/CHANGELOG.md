@@ -1,39 +1,15 @@
 # Release History
 
-## 1.1.0-beta.2 (2023-01-27)
+## 1.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 1.1.0 (2023-04-07)
 ### Features Added
 
-- New value `MaintenanceScopeResource` added to type alias `MaintenanceScope`
-
-
-## 1.1.0-beta.1 (2022-05-19)
-### Features Added
-
-- New const `TaskScopeResource`
-- New const `RebootOptionsNever`
-- New const `RebootOptionsAlways`
-- New const `TaskScopeGlobal`
-- New const `RebootOptionsIfRequired`
-- New function `InputLinuxParameters.MarshalJSON() ([]byte, error)`
-- New function `*ConfigurationAssignmentsClient.Get(context.Context, string, string, string, string, string, *ConfigurationAssignmentsClientGetOptions) (ConfigurationAssignmentsClientGetResponse, error)`
-- New function `InputWindowsParameters.MarshalJSON() ([]byte, error)`
-- New function `TaskProperties.MarshalJSON() ([]byte, error)`
-- New function `PossibleRebootOptionsValues() []RebootOptions`
-- New function `SoftwareUpdateConfigurationTasks.MarshalJSON() ([]byte, error)`
-- New function `PossibleTaskScopeValues() []TaskScope`
-- New function `*ConfigurationAssignmentsClient.GetParent(context.Context, string, string, string, string, string, string, string, *ConfigurationAssignmentsClientGetParentOptions) (ConfigurationAssignmentsClientGetParentResponse, error)`
-- New struct `ConfigurationAssignmentsClientGetOptions`
-- New struct `ConfigurationAssignmentsClientGetParentOptions`
-- New struct `ConfigurationAssignmentsClientGetParentResponse`
-- New struct `ConfigurationAssignmentsClientGetResponse`
-- New struct `ConfigurationAssignmentsWithinSubscriptionClientListOptions`
-- New struct `ConfigurationAssignmentsWithinSubscriptionClientListResponse`
-- New struct `InputLinuxParameters`
-- New struct `InputPatchConfiguration`
-- New struct `InputWindowsParameters`
-- New struct `SoftwareUpdateConfigurationTasks`
-- New struct `TaskProperties`
-- New field `InstallPatches` in struct `ConfigurationProperties`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-18)

@@ -18,8 +18,8 @@ func TestSender_UserFacingError(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return nil, &amqp.ConnectionError{}
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return nil, &amqp.ConnError{}
 				}).AnyTimes()
 			}
 
@@ -27,8 +27,8 @@ func TestSender_UserFacingError(t *testing.T) {
 		},
 		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
 			if ms.Target != "$cbs" {
-				ms.EXPECT().Send(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, m *amqp.Message) error {
-					return &amqp.ConnectionError{}
+				ms.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, m *amqp.Message, o *amqp.SendOptions) error {
+					return &amqp.ConnError{}
 				}).AnyTimes()
 			}
 
@@ -76,8 +76,8 @@ func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return nil, &amqp.ConnectionError{}
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return nil, &amqp.ConnError{}
 				}).AnyTimes()
 			}
 
@@ -85,7 +85,7 @@ func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
 		},
 		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
 			if ms.Target != "$cbs" {
-				return &amqp.ConnectionError{}
+				return &amqp.ConnError{}
 			}
 
 			return nil

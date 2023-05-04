@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.4.0-beta.1"
+	moduleVersion = "v3.1.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -108,6 +108,22 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
+// ControlPlaneUpgradeOverride - The list of control plane upgrade override settings.
+type ControlPlaneUpgradeOverride string
+
+const (
+	// ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations - Upgrade the cluster control plane version without checking for
+	// recent Kubernetes deprecations usage.
+	ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations ControlPlaneUpgradeOverride = "IgnoreKubernetesDeprecations"
+)
+
+// PossibleControlPlaneUpgradeOverrideValues returns the possible values for the ControlPlaneUpgradeOverride const type.
+func PossibleControlPlaneUpgradeOverrideValues() []ControlPlaneUpgradeOverride {
+	return []ControlPlaneUpgradeOverride{
+		ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations,
+	}
+}
+
 // ControlledValues - Controls which resource value autoscaler will change. Default value is RequestsAndLimits.
 type ControlledValues string
 
@@ -143,21 +159,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// EbpfDataplane - The eBPF dataplane used for building the Kubernetes network.
-type EbpfDataplane string
-
-const (
-	// EbpfDataplaneCilium - Use Cilium for networking in the Kubernetes cluster.
-	EbpfDataplaneCilium EbpfDataplane = "cilium"
-)
-
-// PossibleEbpfDataplaneValues returns the possible values for the EbpfDataplane const type.
-func PossibleEbpfDataplaneValues() []EbpfDataplane {
-	return []EbpfDataplane{
-		EbpfDataplaneCilium,
 	}
 }
 
@@ -202,54 +203,6 @@ const (
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return []ExtendedLocationTypes{
 		ExtendedLocationTypesEdgeZone,
-	}
-}
-
-// FleetMemberProvisioningState - The provisioning state of the last accepted operation.
-type FleetMemberProvisioningState string
-
-const (
-	FleetMemberProvisioningStateCanceled  FleetMemberProvisioningState = "Canceled"
-	FleetMemberProvisioningStateFailed    FleetMemberProvisioningState = "Failed"
-	FleetMemberProvisioningStateJoining   FleetMemberProvisioningState = "Joining"
-	FleetMemberProvisioningStateLeaving   FleetMemberProvisioningState = "Leaving"
-	FleetMemberProvisioningStateSucceeded FleetMemberProvisioningState = "Succeeded"
-	FleetMemberProvisioningStateUpdating  FleetMemberProvisioningState = "Updating"
-)
-
-// PossibleFleetMemberProvisioningStateValues returns the possible values for the FleetMemberProvisioningState const type.
-func PossibleFleetMemberProvisioningStateValues() []FleetMemberProvisioningState {
-	return []FleetMemberProvisioningState{
-		FleetMemberProvisioningStateCanceled,
-		FleetMemberProvisioningStateFailed,
-		FleetMemberProvisioningStateJoining,
-		FleetMemberProvisioningStateLeaving,
-		FleetMemberProvisioningStateSucceeded,
-		FleetMemberProvisioningStateUpdating,
-	}
-}
-
-// FleetProvisioningState - The provisioning state of the last accepted operation.
-type FleetProvisioningState string
-
-const (
-	FleetProvisioningStateCanceled  FleetProvisioningState = "Canceled"
-	FleetProvisioningStateCreating  FleetProvisioningState = "Creating"
-	FleetProvisioningStateDeleting  FleetProvisioningState = "Deleting"
-	FleetProvisioningStateFailed    FleetProvisioningState = "Failed"
-	FleetProvisioningStateSucceeded FleetProvisioningState = "Succeeded"
-	FleetProvisioningStateUpdating  FleetProvisioningState = "Updating"
-)
-
-// PossibleFleetProvisioningStateValues returns the possible values for the FleetProvisioningState const type.
-func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
-	return []FleetProvisioningState{
-		FleetProvisioningStateCanceled,
-		FleetProvisioningStateCreating,
-		FleetProvisioningStateDeleting,
-		FleetProvisioningStateFailed,
-		FleetProvisioningStateSucceeded,
-		FleetProvisioningStateUpdating,
 	}
 }
 
@@ -327,6 +280,24 @@ func PossibleIpvsSchedulerValues() []IpvsScheduler {
 	}
 }
 
+// IstioIngressGatewayMode - Mode of an ingress gateway.
+type IstioIngressGatewayMode string
+
+const (
+	// IstioIngressGatewayModeExternal - The ingress gateway is assigned a public IP address and is publicly accessible.
+	IstioIngressGatewayModeExternal IstioIngressGatewayMode = "External"
+	// IstioIngressGatewayModeInternal - The ingress gateway is assigned an internal IP address and cannot is accessed publicly.
+	IstioIngressGatewayModeInternal IstioIngressGatewayMode = "Internal"
+)
+
+// PossibleIstioIngressGatewayModeValues returns the possible values for the IstioIngressGatewayMode const type.
+func PossibleIstioIngressGatewayModeValues() []IstioIngressGatewayMode {
+	return []IstioIngressGatewayMode{
+		IstioIngressGatewayModeExternal,
+		IstioIngressGatewayModeInternal,
+	}
+}
+
 // KeyVaultNetworkAccessTypes - Network access of key vault. The possible values are Public and Private. Public means the
 // key vault allows public access from all networks. Private means the key vault disables public access and
 // enables private link. The default value is Public.
@@ -360,6 +331,26 @@ func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return []KubeletDiskType{
 		KubeletDiskTypeOS,
 		KubeletDiskTypeTemporary,
+	}
+}
+
+// KubernetesSupportPlan - Different support tiers for AKS managed clusters
+type KubernetesSupportPlan string
+
+const (
+	// KubernetesSupportPlanAKSLongTermSupport - Support for the version extended past the KubernetesOfficial support of 1 year.
+	// AKS continues to patch CVEs for another 1 year, for a total of 2 years of support.
+	KubernetesSupportPlanAKSLongTermSupport KubernetesSupportPlan = "AKSLongTermSupport"
+	// KubernetesSupportPlanKubernetesOfficial - Support for the version is the same as for the open source Kubernetes offering.
+	// Official Kubernetes open source community support versions for 1 year after release.
+	KubernetesSupportPlanKubernetesOfficial KubernetesSupportPlan = "KubernetesOfficial"
+)
+
+// PossibleKubernetesSupportPlanValues returns the possible values for the KubernetesSupportPlan const type.
+func PossibleKubernetesSupportPlanValues() []KubernetesSupportPlan {
+	return []KubernetesSupportPlan{
+		KubernetesSupportPlanAKSLongTermSupport,
+		KubernetesSupportPlanKubernetesOfficial,
 	}
 }
 
@@ -450,33 +441,41 @@ func PossibleManagedClusterPodIdentityProvisioningStateValues() []ManagedCluster
 type ManagedClusterSKUName string
 
 const (
-	ManagedClusterSKUNameBasic ManagedClusterSKUName = "Basic"
+	// ManagedClusterSKUNameBase - Base option for the AKS control plane.
+	ManagedClusterSKUNameBase ManagedClusterSKUName = "Base"
 )
 
 // PossibleManagedClusterSKUNameValues returns the possible values for the ManagedClusterSKUName const type.
 func PossibleManagedClusterSKUNameValues() []ManagedClusterSKUName {
 	return []ManagedClusterSKUName{
-		ManagedClusterSKUNameBasic,
+		ManagedClusterSKUNameBase,
 	}
 }
 
-// ManagedClusterSKUTier - If not specified, the default is 'Free'. See uptime SLA [https://docs.microsoft.com/azure/aks/uptime-sla]
+// ManagedClusterSKUTier - If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
 // for more details.
 type ManagedClusterSKUTier string
 
 const (
-	// ManagedClusterSKUTierFree - No guaranteed SLA, no additional charges. Free tier clusters have an SLO of 99.5%.
+	// ManagedClusterSKUTierFree - The cluster management is free, but charged for VM, storage, and networking usage. Best for
+	// experimenting, learning, simple testing, or workloads with fewer than 10 nodes. Not recommended for production use cases.
 	ManagedClusterSKUTierFree ManagedClusterSKUTier = "Free"
-	// ManagedClusterSKUTierPaid - Guarantees 99.95% availability of the Kubernetes API server endpoint for clusters that use
-	// Availability Zones and 99.9% of availability for clusters that don't use Availability Zones.
-	ManagedClusterSKUTierPaid ManagedClusterSKUTier = "Paid"
+	// ManagedClusterSKUTierPremium - Cluster has premium capabilities in addition to all of the capabilities included in 'Standard'.
+	// Premium enables selection of LongTermSupport (aka.ms/aks/lts) for certain Kubernetes versions.
+	ManagedClusterSKUTierPremium ManagedClusterSKUTier = "Premium"
+	// ManagedClusterSKUTierStandard - Recommended for mission-critical and production workloads. Includes Kubernetes control
+	// plane autoscaling, workload-intensive testing, and up to 5,000 nodes per cluster. Guarantees 99.95% availability of the
+	// Kubernetes API server endpoint for clusters that use Availability Zones and 99.9% of availability for clusters that don't
+	// use Availability Zones.
+	ManagedClusterSKUTierStandard ManagedClusterSKUTier = "Standard"
 )
 
 // PossibleManagedClusterSKUTierValues returns the possible values for the ManagedClusterSKUTier const type.
 func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	return []ManagedClusterSKUTier{
 		ManagedClusterSKUTierFree,
-		ManagedClusterSKUTierPaid,
+		ManagedClusterSKUTierPremium,
+		ManagedClusterSKUTierStandard,
 	}
 }
 
@@ -495,6 +494,25 @@ func PossibleModeValues() []Mode {
 	return []Mode{
 		ModeIPTABLES,
 		ModeIPVS,
+	}
+}
+
+// NetworkDataplane - Network dataplane used in the Kubernetes cluster.
+type NetworkDataplane string
+
+const (
+	// NetworkDataplaneAzure - Use Azure network dataplane.
+	NetworkDataplaneAzure NetworkDataplane = "azure"
+	// NetworkDataplaneCilium - Use Cilium network dataplane. See [Azure CNI Powered by Cilium](https://learn.microsoft.com/azure/aks/azure-cni-powered-by-cilium)
+	// for more information.
+	NetworkDataplaneCilium NetworkDataplane = "cilium"
+)
+
+// PossibleNetworkDataplaneValues returns the possible values for the NetworkDataplane const type.
+func PossibleNetworkDataplaneValues() []NetworkDataplane {
+	return []NetworkDataplane{
+		NetworkDataplaneAzure,
+		NetworkDataplaneCilium,
 	}
 }
 
@@ -547,7 +565,7 @@ type NetworkPluginMode string
 const (
 	// NetworkPluginModeOverlay - Pods are given IPs from the PodCIDR address space but use Azure Routing Domains rather than
 	// Kubenet reference plugins host-local and bridge.
-	NetworkPluginModeOverlay NetworkPluginMode = "Overlay"
+	NetworkPluginModeOverlay NetworkPluginMode = "overlay"
 )
 
 // PossibleNetworkPluginModeValues returns the possible values for the NetworkPluginMode const type.
@@ -567,6 +585,8 @@ const (
 	// NetworkPolicyCalico - Use Calico network policies. See [differences between Azure and Calico policies](https://docs.microsoft.com/azure/aks/use-network-policies#differences-between-azure-and-calico-policies-and-their-capabilities)
 	// for more information.
 	NetworkPolicyCalico NetworkPolicy = "calico"
+	// NetworkPolicyCilium - Use Cilium to enforce network policies. This requires networkDataplane to be 'cilium'.
+	NetworkPolicyCilium NetworkPolicy = "cilium"
 )
 
 // PossibleNetworkPolicyValues returns the possible values for the NetworkPolicy const type.
@@ -574,6 +594,7 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 	return []NetworkPolicy{
 		NetworkPolicyAzure,
 		NetworkPolicyCalico,
+		NetworkPolicyCilium,
 	}
 }
 
@@ -867,6 +888,24 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	return []ScaleSetPriority{
 		ScaleSetPriorityRegular,
 		ScaleSetPrioritySpot,
+	}
+}
+
+// ServiceMeshMode - Mode of the service mesh.
+type ServiceMeshMode string
+
+const (
+	// ServiceMeshModeDisabled - Mesh is disabled.
+	ServiceMeshModeDisabled ServiceMeshMode = "Disabled"
+	// ServiceMeshModeIstio - Istio deployed as an AKS addon.
+	ServiceMeshModeIstio ServiceMeshMode = "Istio"
+)
+
+// PossibleServiceMeshModeValues returns the possible values for the ServiceMeshMode const type.
+func PossibleServiceMeshModeValues() []ServiceMeshMode {
+	return []ServiceMeshMode{
+		ServiceMeshModeDisabled,
+		ServiceMeshModeIstio,
 	}
 }
 

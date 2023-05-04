@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"io"
 	"log"
 	"net/http"
@@ -392,4 +393,145 @@ func Example_container_ClientSetMetadata() {
 	handleError(err)
 
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
+}
+
+// ExampleContainerBatchDelete shows blob batch operations for delete and set tier.
+func Example_container_BatchDelete() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	const containerName = "testcontainer"
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create container batch client
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+	cntBatchClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb, err := cntBatchClient.NewBatchBuilder()
+	handleError(err)
+
+	// add operations to the batch builder
+	err = bb.Delete("testBlob0", nil)
+	handleError(err)
+
+	err = bb.Delete("testBlob1", &container.BatchDeleteOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
+	})
+	handleError(err)
+
+	err = bb.Delete("testBlob2", &container.BatchDeleteOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
+	})
+	handleError(err)
+
+	err = bb.Delete("testBlob3", &container.BatchDeleteOptions{
+		DeleteOptions: blob.DeleteOptions{
+			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
+			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
+		},
+	})
+	handleError(err)
+
+	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
+}
+
+// ExampleContainerBatchSetTier shows blob batch operations for delete and set tier.
+func Example_container_BatchSetTier() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	const containerName = "testcontainer"
+
+	// create client secret credential
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	handleError(err)
+
+	// create container batch client
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+	cntBatchClient, err := container.NewClient(containerURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb, err := cntBatchClient.NewBatchBuilder()
+	handleError(err)
+
+	// add operations to the batch builder
+	err = bb.SetTier("testBlob1", blob.AccessTierHot, nil)
+	handleError(err)
+
+	err = bb.SetTier("testBlob2", blob.AccessTierCool, &container.BatchSetTierOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("testBlob3", blob.AccessTierCool, &container.BatchSetTierOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("testBlob4", blob.AccessTierCool, &container.BatchSetTierOptions{
+		SetTierOptions: blob.SetTierOptions{
+			RehydratePriority: to.Ptr(blob.RehydratePriorityStandard),
+		},
+	})
+	handleError(err)
+
+	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
 }

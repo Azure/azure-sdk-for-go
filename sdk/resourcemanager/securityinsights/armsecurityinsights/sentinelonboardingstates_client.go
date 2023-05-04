@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // SentinelOnboardingStatesClient contains the methods for the SentinelOnboardingStates group.
 // Don't use this type directly, use NewSentinelOnboardingStatesClient() instead.
 type SentinelOnboardingStatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSentinelOnboardingStatesClient creates a new instance of SentinelOnboardingStatesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SentinelOnboardingStatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SentinelOnboardingStatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SentinelOnboardingStatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
-// options - SentinelOnboardingStatesClientCreateOptions contains the optional parameters for the SentinelOnboardingStatesClient.Create
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
+//   - options - SentinelOnboardingStatesClientCreateOptions contains the optional parameters for the SentinelOnboardingStatesClient.Create
+//     method.
 func (client *SentinelOnboardingStatesClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientCreateOptions) (SentinelOnboardingStatesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sentinelOnboardingStateName, options)
 	if err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
@@ -97,12 +87,12 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 		return nil, errors.New("parameter sentinelOnboardingStateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sentinelOnboardingStateName}", url.PathEscape(sentinelOnboardingStateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SentinelOnboardingStateParameter != nil {
@@ -122,18 +112,19 @@ func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Re
 
 // Delete - Delete Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
-// options - SentinelOnboardingStatesClientDeleteOptions contains the optional parameters for the SentinelOnboardingStatesClient.Delete
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
+//   - options - SentinelOnboardingStatesClientDeleteOptions contains the optional parameters for the SentinelOnboardingStatesClient.Delete
+//     method.
 func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientDeleteOptions) (SentinelOnboardingStatesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sentinelOnboardingStateName, options)
 	if err != nil {
 		return SentinelOnboardingStatesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SentinelOnboardingStatesClientDeleteResponse{}, err
 	}
@@ -162,12 +153,12 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter sentinelOnboardingStateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sentinelOnboardingStateName}", url.PathEscape(sentinelOnboardingStateName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,18 +166,19 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 
 // Get - Get Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
-// options - SentinelOnboardingStatesClientGetOptions contains the optional parameters for the SentinelOnboardingStatesClient.Get
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
+//   - options - SentinelOnboardingStatesClientGetOptions contains the optional parameters for the SentinelOnboardingStatesClient.Get
+//     method.
 func (client *SentinelOnboardingStatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientGetOptions) (SentinelOnboardingStatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sentinelOnboardingStateName, options)
 	if err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
@@ -215,12 +207,12 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter sentinelOnboardingStateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sentinelOnboardingStateName}", url.PathEscape(sentinelOnboardingStateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,17 +229,18 @@ func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Respo
 
 // List - Gets all Sentinel onboarding states
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - SentinelOnboardingStatesClientListOptions contains the optional parameters for the SentinelOnboardingStatesClient.List
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - SentinelOnboardingStatesClientListOptions contains the optional parameters for the SentinelOnboardingStatesClient.List
+//     method.
 func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *SentinelOnboardingStatesClientListOptions) (SentinelOnboardingStatesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}
@@ -272,12 +265,12 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

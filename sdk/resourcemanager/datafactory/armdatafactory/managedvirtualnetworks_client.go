@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ManagedVirtualNetworksClient contains the methods for the ManagedVirtualNetworks group.
 // Don't use this type directly, use NewManagedVirtualNetworksClient() instead.
 type ManagedVirtualNetworksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewManagedVirtualNetworksClient creates a new instance of ManagedVirtualNetworksClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagedVirtualNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedVirtualNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ManagedVirtualNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ManagedVirtualNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// managedVirtualNetwork - Managed Virtual Network resource definition.
-// options - ManagedVirtualNetworksClientCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNetworksClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - managedVirtualNetwork - Managed Virtual Network resource definition.
+//   - options - ManagedVirtualNetworksClientCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNetworksClient.CreateOrUpdate
+//     method.
 func (client *ManagedVirtualNetworksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedVirtualNetwork ManagedVirtualNetworkResource, options *ManagedVirtualNetworksClientCreateOrUpdateOptions) (ManagedVirtualNetworksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, options)
 	if err != nil {
 		return ManagedVirtualNetworksClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagedVirtualNetworksClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,18 +113,19 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateHandleResponse(resp *h
 
 // Get - Gets a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// options - ManagedVirtualNetworksClientGetOptions contains the optional parameters for the ManagedVirtualNetworksClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - options - ManagedVirtualNetworksClientGetOptions contains the optional parameters for the ManagedVirtualNetworksClient.Get
+//     method.
 func (client *ManagedVirtualNetworksClient) Get(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedVirtualNetworksClientGetOptions) (ManagedVirtualNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, options)
 	if err != nil {
 		return ManagedVirtualNetworksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagedVirtualNetworksClientGetResponse{}, err
 	}
@@ -163,7 +154,7 @@ func (client *ManagedVirtualNetworksClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,11 +178,12 @@ func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByFactoryPager - Lists managed Virtual Networks.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.NewListByFactoryPager
+//     method.
 func (client *ManagedVirtualNetworksClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksClientListByFactoryOptions) *runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagedVirtualNetworksClientListByFactoryResponse]{
 		More: func(page ManagedVirtualNetworksClientListByFactoryResponse) bool {
@@ -208,7 +200,7 @@ func (client *ManagedVirtualNetworksClient) NewListByFactoryPager(resourceGroupN
 			if err != nil {
 				return ManagedVirtualNetworksClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ManagedVirtualNetworksClientListByFactoryResponse{}, err
 			}
@@ -235,7 +227,7 @@ func (client *ManagedVirtualNetworksClient) listByFactoryCreateRequest(ctx conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

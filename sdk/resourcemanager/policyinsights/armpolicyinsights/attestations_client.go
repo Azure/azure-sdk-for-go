@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,64 +25,57 @@ import (
 // AttestationsClient contains the methods for the Attestations group.
 // Don't use this type directly, use NewAttestationsClient() instead.
 type AttestationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAttestationsClient creates a new instance of AttestationsClient with the specified values.
-// subscriptionID - Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAttestationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttestationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AttestationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AttestationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdateAtResource - Creates or updates an attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceID - Resource ID.
-// attestationName - The name of the attestation.
-// parameters - The attestation parameters.
-// options - AttestationsClientBeginCreateOrUpdateAtResourceOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - attestationName - The name of the attestation.
+//   - parameters - The attestation parameters.
+//   - options - AttestationsClientBeginCreateOrUpdateAtResourceOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResource
+//     method.
 func (client *AttestationsClient) BeginCreateOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtResourceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtResource(ctx, resourceID, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateAtResource - Creates or updates an attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
 func (client *AttestationsClient) createOrUpdateAtResource(ctx context.Context, resourceID string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtResourceCreateRequest(ctx, resourceID, attestationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +93,7 @@ func (client *AttestationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,33 +106,35 @@ func (client *AttestationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 
 // BeginCreateOrUpdateAtResourceGroup - Creates or updates an attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// attestationName - The name of the attestation.
-// parameters - The attestation parameters.
-// options - AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - attestationName - The name of the attestation.
+//   - parameters - The attestation parameters.
+//   - options - AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
+//     method.
 func (client *AttestationsClient) BeginCreateOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtResourceGroupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtResourceGroup(ctx, resourceGroupName, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceGroupResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtResourceGroupResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceGroupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateAtResourceGroup - Creates or updates an attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
 func (client *AttestationsClient) createOrUpdateAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtResourceGroupCreateRequest(ctx, resourceGroupName, attestationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +159,7 @@ func (client *AttestationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,32 +172,34 @@ func (client *AttestationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 
 // BeginCreateOrUpdateAtSubscription - Creates or updates an attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// attestationName - The name of the attestation.
-// parameters - The attestation parameters.
-// options - AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtSubscription
-// method.
+//   - attestationName - The name of the attestation.
+//   - parameters - The attestation parameters.
+//   - options - AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtSubscription
+//     method.
 func (client *AttestationsClient) BeginCreateOrUpdateAtSubscription(ctx context.Context, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions) (*runtime.Poller[AttestationsClientCreateOrUpdateAtSubscriptionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateAtSubscription(ctx, attestationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtSubscriptionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttestationsClientCreateOrUpdateAtSubscriptionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtSubscriptionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttestationsClientCreateOrUpdateAtSubscriptionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateAtSubscription - Creates or updates an attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
 func (client *AttestationsClient) createOrUpdateAtSubscription(ctx context.Context, attestationName string, parameters Attestation, options *AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateAtSubscriptionCreateRequest(ctx, attestationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +220,7 @@ func (client *AttestationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,17 +233,18 @@ func (client *AttestationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 
 // DeleteAtResource - Deletes an existing attestation at individual resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceID - Resource ID.
-// attestationName - The name of the attestation.
-// options - AttestationsClientDeleteAtResourceOptions contains the optional parameters for the AttestationsClient.DeleteAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientDeleteAtResourceOptions contains the optional parameters for the AttestationsClient.DeleteAtResource
+//     method.
 func (client *AttestationsClient) DeleteAtResource(ctx context.Context, resourceID string, attestationName string, options *AttestationsClientDeleteAtResourceOptions) (AttestationsClientDeleteAtResourceResponse, error) {
 	req, err := client.deleteAtResourceCreateRequest(ctx, resourceID, attestationName, options)
 	if err != nil {
 		return AttestationsClientDeleteAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientDeleteAtResourceResponse{}, err
 	}
@@ -266,7 +262,7 @@ func (client *AttestationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,17 +275,18 @@ func (client *AttestationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 
 // DeleteAtResourceGroup - Deletes an existing attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// attestationName - The name of the attestation.
-// options - AttestationsClientDeleteAtResourceGroupOptions contains the optional parameters for the AttestationsClient.DeleteAtResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientDeleteAtResourceGroupOptions contains the optional parameters for the AttestationsClient.DeleteAtResourceGroup
+//     method.
 func (client *AttestationsClient) DeleteAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, options *AttestationsClientDeleteAtResourceGroupOptions) (AttestationsClientDeleteAtResourceGroupResponse, error) {
 	req, err := client.deleteAtResourceGroupCreateRequest(ctx, resourceGroupName, attestationName, options)
 	if err != nil {
 		return AttestationsClientDeleteAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientDeleteAtResourceGroupResponse{}, err
 	}
@@ -314,7 +311,7 @@ func (client *AttestationsClient) deleteAtResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,16 +324,17 @@ func (client *AttestationsClient) deleteAtResourceGroupCreateRequest(ctx context
 
 // DeleteAtSubscription - Deletes an existing attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// attestationName - The name of the attestation.
-// options - AttestationsClientDeleteAtSubscriptionOptions contains the optional parameters for the AttestationsClient.DeleteAtSubscription
-// method.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientDeleteAtSubscriptionOptions contains the optional parameters for the AttestationsClient.DeleteAtSubscription
+//     method.
 func (client *AttestationsClient) DeleteAtSubscription(ctx context.Context, attestationName string, options *AttestationsClientDeleteAtSubscriptionOptions) (AttestationsClientDeleteAtSubscriptionResponse, error) {
 	req, err := client.deleteAtSubscriptionCreateRequest(ctx, attestationName, options)
 	if err != nil {
 		return AttestationsClientDeleteAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientDeleteAtSubscriptionResponse{}, err
 	}
@@ -357,7 +355,7 @@ func (client *AttestationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -370,17 +368,18 @@ func (client *AttestationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 
 // GetAtResource - Gets an existing attestation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceID - Resource ID.
-// attestationName - The name of the attestation.
-// options - AttestationsClientGetAtResourceOptions contains the optional parameters for the AttestationsClient.GetAtResource
-// method.
+//   - resourceID - Resource ID.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientGetAtResourceOptions contains the optional parameters for the AttestationsClient.GetAtResource
+//     method.
 func (client *AttestationsClient) GetAtResource(ctx context.Context, resourceID string, attestationName string, options *AttestationsClientGetAtResourceOptions) (AttestationsClientGetAtResourceResponse, error) {
 	req, err := client.getAtResourceCreateRequest(ctx, resourceID, attestationName, options)
 	if err != nil {
 		return AttestationsClientGetAtResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientGetAtResourceResponse{}, err
 	}
@@ -398,7 +397,7 @@ func (client *AttestationsClient) getAtResourceCreateRequest(ctx context.Context
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -420,17 +419,18 @@ func (client *AttestationsClient) getAtResourceHandleResponse(resp *http.Respons
 
 // GetAtResourceGroup - Gets an existing attestation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// attestationName - The name of the attestation.
-// options - AttestationsClientGetAtResourceGroupOptions contains the optional parameters for the AttestationsClient.GetAtResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientGetAtResourceGroupOptions contains the optional parameters for the AttestationsClient.GetAtResourceGroup
+//     method.
 func (client *AttestationsClient) GetAtResourceGroup(ctx context.Context, resourceGroupName string, attestationName string, options *AttestationsClientGetAtResourceGroupOptions) (AttestationsClientGetAtResourceGroupResponse, error) {
 	req, err := client.getAtResourceGroupCreateRequest(ctx, resourceGroupName, attestationName, options)
 	if err != nil {
 		return AttestationsClientGetAtResourceGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientGetAtResourceGroupResponse{}, err
 	}
@@ -455,7 +455,7 @@ func (client *AttestationsClient) getAtResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -477,16 +477,17 @@ func (client *AttestationsClient) getAtResourceGroupHandleResponse(resp *http.Re
 
 // GetAtSubscription - Gets an existing attestation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// attestationName - The name of the attestation.
-// options - AttestationsClientGetAtSubscriptionOptions contains the optional parameters for the AttestationsClient.GetAtSubscription
-// method.
+//   - attestationName - The name of the attestation.
+//   - options - AttestationsClientGetAtSubscriptionOptions contains the optional parameters for the AttestationsClient.GetAtSubscription
+//     method.
 func (client *AttestationsClient) GetAtSubscription(ctx context.Context, attestationName string, options *AttestationsClientGetAtSubscriptionOptions) (AttestationsClientGetAtSubscriptionResponse, error) {
 	req, err := client.getAtSubscriptionCreateRequest(ctx, attestationName, options)
 	if err != nil {
 		return AttestationsClientGetAtSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttestationsClientGetAtSubscriptionResponse{}, err
 	}
@@ -507,7 +508,7 @@ func (client *AttestationsClient) getAtSubscriptionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter attestationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{attestationName}", url.PathEscape(attestationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -528,12 +529,13 @@ func (client *AttestationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 }
 
 // NewListForResourcePager - Gets all attestations for a resource.
+//
 // Generated from API version 2022-09-01
-// resourceID - Resource ID.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.ListForResource
-// method.
+//   - resourceID - Resource ID.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.NewListForResourcePager
+//     method.
 func (client *AttestationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceResponse]{
 		More: func(page AttestationsClientListForResourceResponse) bool {
@@ -550,7 +552,7 @@ func (client *AttestationsClient) NewListForResourcePager(resourceID string, que
 			if err != nil {
 				return AttestationsClientListForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AttestationsClientListForResourceResponse{}, err
 			}
@@ -566,7 +568,7 @@ func (client *AttestationsClient) NewListForResourcePager(resourceID string, que
 func (client *AttestationsClient) listForResourceCreateRequest(ctx context.Context, resourceID string, queryOptions *QueryOptions, options *AttestationsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/attestations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -593,12 +595,13 @@ func (client *AttestationsClient) listForResourceHandleResponse(resp *http.Respo
 }
 
 // NewListForResourceGroupPager - Gets all attestations for the resource group.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.ListForResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
+//     method.
 func (client *AttestationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceGroupResponse]{
 		More: func(page AttestationsClientListForResourceGroupResponse) bool {
@@ -615,7 +618,7 @@ func (client *AttestationsClient) NewListForResourceGroupPager(resourceGroupName
 			if err != nil {
 				return AttestationsClientListForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AttestationsClientListForResourceGroupResponse{}, err
 			}
@@ -638,7 +641,7 @@ func (client *AttestationsClient) listForResourceGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -665,11 +668,12 @@ func (client *AttestationsClient) listForResourceGroupHandleResponse(resp *http.
 }
 
 // NewListForSubscriptionPager - Gets all attestations for the subscription.
+//
 // Generated from API version 2022-09-01
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.ListForSubscription
-// method.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.NewListForSubscriptionPager
+//     method.
 func (client *AttestationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForSubscriptionResponse]{
 		More: func(page AttestationsClientListForSubscriptionResponse) bool {
@@ -686,7 +690,7 @@ func (client *AttestationsClient) NewListForSubscriptionPager(queryOptions *Quer
 			if err != nil {
 				return AttestationsClientListForSubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AttestationsClientListForSubscriptionResponse{}, err
 			}
@@ -705,7 +709,7 @@ func (client *AttestationsClient) listForSubscriptionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -36,7 +36,7 @@ func FiniteSessions(remainingArgs []string) {
 	fs.IntVar(&params.numSessions, "sessions", 2000, "Number of sessions to test")
 	fs.IntVar(&params.rounds, "rounds", 100, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
 
-	sc := shared.MustCreateStressContext("FiniteSessions")
+	sc := shared.MustCreateStressContext("FiniteSessions", nil)
 	defer sc.End()
 
 	topicName := strings.ToLower(fmt.Sprintf("topic-%X", time.Now().UnixNano()))

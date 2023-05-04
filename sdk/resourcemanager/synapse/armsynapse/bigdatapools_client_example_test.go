@@ -25,11 +25,11 @@ func ExampleBigDataPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", nil)
+	res, err := clientFactory.NewBigDataPoolsClient().Get(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,11 +78,11 @@ func ExampleBigDataPoolsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", armsynapse.BigDataPoolPatchInfo{
+	res, err := clientFactory.NewBigDataPoolsClient().Update(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", armsynapse.BigDataPoolPatchInfo{
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -136,11 +136,11 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", armsynapse.BigDataPoolResourceInfo{
+	poller, err := clientFactory.NewBigDataPoolsClient().BeginCreateOrUpdate(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", armsynapse.BigDataPoolResourceInfo{
 		Location: to.Ptr("West US 2"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -222,11 +222,11 @@ func ExampleBigDataPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", nil)
+	poller, err := clientFactory.NewBigDataPoolsClient().BeginDelete(ctx, "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -279,11 +279,11 @@ func ExampleBigDataPoolsClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewBigDataPoolsClient("01234567-89ab-4def-0123-456789abcdef", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("ExampleResourceGroup", "ExampleWorkspace", nil)
+	pager := clientFactory.NewBigDataPoolsClient().NewListByWorkspacePager("ExampleResourceGroup", "ExampleWorkspace", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // IncidentCommentsClient contains the methods for the IncidentComments group.
 // Don't use this type directly, use NewIncidentCommentsClient() instead.
 type IncidentCommentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIncidentCommentsClient creates a new instance of IncidentCommentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIncidentCommentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IncidentCommentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IncidentCommentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IncidentCommentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates the incident comment.
+// CreateOrUpdate - Creates or updates a comment for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// incidentCommentID - Incident comment ID
-// incidentComment - The incident comment
-// options - IncidentCommentsClientCreateOrUpdateOptions contains the optional parameters for the IncidentCommentsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - incidentCommentID - Incident comment ID
+//   - incidentComment - The incident comment
+//   - options - IncidentCommentsClientCreateOrUpdateOptions contains the optional parameters for the IncidentCommentsClient.CreateOrUpdate
+//     method.
 func (client *IncidentCommentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentCommentID string, incidentComment IncidentComment, options *IncidentCommentsClientCreateOrUpdateOptions) (IncidentCommentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, incidentCommentID, incidentComment, options)
 	if err != nil {
 		return IncidentCommentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentCommentsClientCreateOrUpdateResponse{}, err
 	}
@@ -104,12 +94,12 @@ func (client *IncidentCommentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter incidentCommentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{incidentCommentId}", url.PathEscape(incidentCommentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, incidentComment)
@@ -124,20 +114,21 @@ func (client *IncidentCommentsClient) createOrUpdateHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// Delete - Delete the incident comment.
+// Delete - Deletes a comment for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// incidentCommentID - Incident comment ID
-// options - IncidentCommentsClientDeleteOptions contains the optional parameters for the IncidentCommentsClient.Delete method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - incidentCommentID - Incident comment ID
+//   - options - IncidentCommentsClientDeleteOptions contains the optional parameters for the IncidentCommentsClient.Delete method.
 func (client *IncidentCommentsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentCommentID string, options *IncidentCommentsClientDeleteOptions) (IncidentCommentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, incidentCommentID, options)
 	if err != nil {
 		return IncidentCommentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentCommentsClientDeleteResponse{}, err
 	}
@@ -170,31 +161,32 @@ func (client *IncidentCommentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter incidentCommentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{incidentCommentId}", url.PathEscape(incidentCommentID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets an incident comment.
+// Get - Gets a comment for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// incidentCommentID - Incident comment ID
-// options - IncidentCommentsClientGetOptions contains the optional parameters for the IncidentCommentsClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - incidentCommentID - Incident comment ID
+//   - options - IncidentCommentsClientGetOptions contains the optional parameters for the IncidentCommentsClient.Get method.
 func (client *IncidentCommentsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incidentCommentID string, options *IncidentCommentsClientGetOptions) (IncidentCommentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, incidentCommentID, options)
 	if err != nil {
 		return IncidentCommentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentCommentsClientGetResponse{}, err
 	}
@@ -227,12 +219,12 @@ func (client *IncidentCommentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter incidentCommentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{incidentCommentId}", url.PathEscape(incidentCommentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,12 +239,14 @@ func (client *IncidentCommentsClient) getHandleResponse(resp *http.Response) (In
 	return result, nil
 }
 
-// NewListPager - Gets all incident comments.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// options - IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.List method.
+// NewListPager - Gets all comments for a given incident.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - options - IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.NewListPager
+//     method.
 func (client *IncidentCommentsClient) NewListPager(resourceGroupName string, workspaceName string, incidentID string, options *IncidentCommentsClientListOptions) *runtime.Pager[IncidentCommentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IncidentCommentsClientListResponse]{
 		More: func(page IncidentCommentsClientListResponse) bool {
@@ -269,7 +263,7 @@ func (client *IncidentCommentsClient) NewListPager(resourceGroupName string, wor
 			if err != nil {
 				return IncidentCommentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IncidentCommentsClientListResponse{}, err
 			}
@@ -300,12 +294,12 @@ func (client *IncidentCommentsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter incidentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

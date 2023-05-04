@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // ExposureControlClient contains the methods for the ExposureControl group.
 // Don't use this type directly, use NewExposureControlClient() instead.
 type ExposureControlClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewExposureControlClient creates a new instance of ExposureControlClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExposureControlClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ExposureControlClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ExposureControlClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetFeatureValue - Get exposure control feature for specific location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// locationID - The location identifier.
-// exposureControlRequest - The exposure control request.
-// options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
-// method.
+//   - locationID - The location identifier.
+//   - exposureControlRequest - The exposure control request.
+//   - options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
+//     method.
 func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueOptions) (ExposureControlClientGetFeatureValueResponse, error) {
 	req, err := client.getFeatureValueCreateRequest(ctx, locationID, exposureControlRequest, options)
 	if err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,18 +100,19 @@ func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Re
 
 // GetFeatureValueByFactory - Get exposure control feature for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// exposureControlRequest - The exposure control request.
-// options - ExposureControlClientGetFeatureValueByFactoryOptions contains the optional parameters for the ExposureControlClient.GetFeatureValueByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - exposureControlRequest - The exposure control request.
+//   - options - ExposureControlClientGetFeatureValueByFactoryOptions contains the optional parameters for the ExposureControlClient.GetFeatureValueByFactory
+//     method.
 func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueByFactoryOptions) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
 	req, err := client.getFeatureValueByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlRequest, options)
 	if err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
@@ -146,7 +137,7 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -168,18 +159,19 @@ func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp
 
 // QueryFeatureValuesByFactory - Get list of exposure control features for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// exposureControlBatchRequest - The exposure control request for list of features.
-// options - ExposureControlClientQueryFeatureValuesByFactoryOptions contains the optional parameters for the ExposureControlClient.QueryFeatureValuesByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - exposureControlBatchRequest - The exposure control request for list of features.
+//   - options - ExposureControlClientQueryFeatureValuesByFactoryOptions contains the optional parameters for the ExposureControlClient.QueryFeatureValuesByFactory
+//     method.
 func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlClientQueryFeatureValuesByFactoryOptions) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
 	req, err := client.queryFeatureValuesByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlBatchRequest, options)
 	if err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
@@ -204,7 +196,7 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

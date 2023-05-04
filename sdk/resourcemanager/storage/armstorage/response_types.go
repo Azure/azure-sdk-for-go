@@ -9,7 +9,7 @@
 
 package armstorage
 
-// AccountsClientAbortHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.AbortHierarchicalNamespaceMigration.
+// AccountsClientAbortHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.BeginAbortHierarchicalNamespaceMigration.
 type AccountsClientAbortHierarchicalNamespaceMigrationResponse struct {
 	// placeholder for future response values
 }
@@ -19,7 +19,7 @@ type AccountsClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
-// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+// AccountsClientCreateResponse contains the response from method AccountsClient.BeginCreate.
 type AccountsClientCreateResponse struct {
 	Account
 }
@@ -29,7 +29,7 @@ type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AccountsClientFailoverResponse contains the response from method AccountsClient.Failover.
+// AccountsClientFailoverResponse contains the response from method AccountsClient.BeginFailover.
 type AccountsClientFailoverResponse struct {
 	// placeholder for future response values
 }
@@ -39,7 +39,7 @@ type AccountsClientGetPropertiesResponse struct {
 	Account
 }
 
-// AccountsClientHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.HierarchicalNamespaceMigration.
+// AccountsClientHierarchicalNamespaceMigrationResponse contains the response from method AccountsClient.BeginHierarchicalNamespaceMigration.
 type AccountsClientHierarchicalNamespaceMigrationResponse struct {
 	// placeholder for future response values
 }
@@ -49,7 +49,7 @@ type AccountsClientListAccountSASResponse struct {
 	ListAccountSasResponse
 }
 
-// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.NewListByResourceGroupPager.
 type AccountsClientListByResourceGroupResponse struct {
 	AccountListResult
 }
@@ -59,7 +59,7 @@ type AccountsClientListKeysResponse struct {
 	AccountListKeysResult
 }
 
-// AccountsClientListResponse contains the response from method AccountsClient.List.
+// AccountsClientListResponse contains the response from method AccountsClient.NewListPager.
 type AccountsClientListResponse struct {
 	AccountListResult
 }
@@ -74,7 +74,7 @@ type AccountsClientRegenerateKeyResponse struct {
 	AccountListKeysResult
 }
 
-// AccountsClientRestoreBlobRangesResponse contains the response from method AccountsClient.RestoreBlobRanges.
+// AccountsClientRestoreBlobRangesResponse contains the response from method AccountsClient.BeginRestoreBlobRanges.
 type AccountsClientRestoreBlobRangesResponse struct {
 	BlobRestoreStatus
 }
@@ -142,7 +142,7 @@ type BlobContainersClientLeaseResponse struct {
 	LeaseContainerResponse
 }
 
-// BlobContainersClientListResponse contains the response from method BlobContainersClient.List.
+// BlobContainersClientListResponse contains the response from method BlobContainersClient.NewListPager.
 type BlobContainersClientListResponse struct {
 	ListContainerItems
 }
@@ -154,7 +154,7 @@ type BlobContainersClientLockImmutabilityPolicyResponse struct {
 	ETag *string
 }
 
-// BlobContainersClientObjectLevelWormResponse contains the response from method BlobContainersClient.ObjectLevelWorm.
+// BlobContainersClientObjectLevelWormResponse contains the response from method BlobContainersClient.BeginObjectLevelWorm.
 type BlobContainersClientObjectLevelWormResponse struct {
 	// placeholder for future response values
 }
@@ -184,7 +184,7 @@ type BlobInventoryPoliciesClientGetResponse struct {
 	BlobInventoryPolicy
 }
 
-// BlobInventoryPoliciesClientListResponse contains the response from method BlobInventoryPoliciesClient.List.
+// BlobInventoryPoliciesClientListResponse contains the response from method BlobInventoryPoliciesClient.NewListPager.
 type BlobInventoryPoliciesClientListResponse struct {
 	ListBlobInventoryPolicy
 }
@@ -194,7 +194,7 @@ type BlobServicesClientGetServicePropertiesResponse struct {
 	BlobServiceProperties
 }
 
-// BlobServicesClientListResponse contains the response from method BlobServicesClient.List.
+// BlobServicesClientListResponse contains the response from method BlobServicesClient.NewListPager.
 type BlobServicesClientListResponse struct {
 	BlobServiceItems
 }
@@ -209,7 +209,7 @@ type DeletedAccountsClientGetResponse struct {
 	DeletedAccount
 }
 
-// DeletedAccountsClientListResponse contains the response from method DeletedAccountsClient.List.
+// DeletedAccountsClientListResponse contains the response from method DeletedAccountsClient.NewListPager.
 type DeletedAccountsClientListResponse struct {
 	DeletedAccountListResult
 }
@@ -219,7 +219,7 @@ type EncryptionScopesClientGetResponse struct {
 	EncryptionScope
 }
 
-// EncryptionScopesClientListResponse contains the response from method EncryptionScopesClient.List.
+// EncryptionScopesClientListResponse contains the response from method EncryptionScopesClient.NewListPager.
 type EncryptionScopesClientListResponse struct {
 	EncryptionScopeListResult
 }
@@ -271,7 +271,7 @@ type FileSharesClientLeaseResponse struct {
 	ETag *string
 }
 
-// FileSharesClientListResponse contains the response from method FileSharesClient.List.
+// FileSharesClientListResponse contains the response from method FileSharesClient.NewListPager.
 type FileSharesClientListResponse struct {
 	FileShareItems
 }
@@ -306,7 +306,7 @@ type LocalUsersClientListKeysResponse struct {
 	LocalUserKeys
 }
 
-// LocalUsersClientListResponse contains the response from method LocalUsersClient.List.
+// LocalUsersClientListResponse contains the response from method LocalUsersClient.NewListPager.
 type LocalUsersClientListResponse struct {
 	LocalUsers
 }
@@ -346,12 +346,12 @@ type ObjectReplicationPoliciesClientGetResponse struct {
 	ObjectReplicationPolicy
 }
 
-// ObjectReplicationPoliciesClientListResponse contains the response from method ObjectReplicationPoliciesClient.List.
+// ObjectReplicationPoliciesClientListResponse contains the response from method ObjectReplicationPoliciesClient.NewListPager.
 type ObjectReplicationPoliciesClientListResponse struct {
 	ObjectReplicationPolicies
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -366,7 +366,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -396,7 +396,7 @@ type QueueClientGetResponse struct {
 	Queue
 }
 
-// QueueClientListResponse contains the response from method QueueClient.List.
+// QueueClientListResponse contains the response from method QueueClient.NewListPager.
 type QueueClientListResponse struct {
 	ListQueueResource
 }
@@ -421,7 +421,7 @@ type QueueServicesClientSetServicePropertiesResponse struct {
 	QueueServiceProperties
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.List.
+// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	SKUListResult
 }
@@ -441,7 +441,7 @@ type TableClientGetResponse struct {
 	Table
 }
 
-// TableClientListResponse contains the response from method TableClient.List.
+// TableClientListResponse contains the response from method TableClient.NewListPager.
 type TableClientListResponse struct {
 	ListTableResource
 }
@@ -466,7 +466,7 @@ type TableServicesClientSetServicePropertiesResponse struct {
 	TableServiceProperties
 }
 
-// UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.
+// UsagesClientListByLocationResponse contains the response from method UsagesClient.NewListByLocationPager.
 type UsagesClientListByLocationResponse struct {
 	UsageListResult
 }

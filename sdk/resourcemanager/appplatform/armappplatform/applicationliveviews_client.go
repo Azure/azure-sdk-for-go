@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // ApplicationLiveViewsClient contains the methods for the ApplicationLiveViews group.
 // Don't use this type directly, use NewApplicationLiveViewsClient() instead.
 type ApplicationLiveViewsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewApplicationLiveViewsClient creates a new instance of ApplicationLiveViewsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewApplicationLiveViewsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationLiveViewsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ApplicationLiveViewsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ApplicationLiveViewsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create the default Application Live View or update the existing Application Live View.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationLiveViewName - The name of Application Live View.
-// applicationLiveViewResource - Parameters for the update operation
-// options - ApplicationLiveViewsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationLiveViewName - The name of Application Live View.
+//   - applicationLiveViewResource - Parameters for the update operation
+//   - options - ApplicationLiveViewsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginCreateOrUpdate
+//     method.
 func (client *ApplicationLiveViewsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, applicationLiveViewName string, applicationLiveViewResource ApplicationLiveViewResource, options *ApplicationLiveViewsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ApplicationLiveViewsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, applicationLiveViewName, applicationLiveViewResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ApplicationLiveViewsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationLiveViewsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationLiveViewsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationLiveViewsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create the default Application Live View or update the existing Application Live View.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *ApplicationLiveViewsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, applicationLiveViewName string, applicationLiveViewResource ApplicationLiveViewResource, options *ApplicationLiveViewsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, applicationLiveViewName, applicationLiveViewResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +106,12 @@ func (client *ApplicationLiveViewsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter applicationLiveViewName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationLiveViewName}", url.PathEscape(applicationLiveViewName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, applicationLiveViewResource)
@@ -128,34 +119,36 @@ func (client *ApplicationLiveViewsClient) createOrUpdateCreateRequest(ctx contex
 
 // BeginDelete - Disable the default Application Live View.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationLiveViewName - The name of Application Live View.
-// options - ApplicationLiveViewsClientBeginDeleteOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginDelete
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationLiveViewName - The name of Application Live View.
+//   - options - ApplicationLiveViewsClientBeginDeleteOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginDelete
+//     method.
 func (client *ApplicationLiveViewsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, applicationLiveViewName string, options *ApplicationLiveViewsClientBeginDeleteOptions) (*runtime.Poller[ApplicationLiveViewsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, applicationLiveViewName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ApplicationLiveViewsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationLiveViewsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationLiveViewsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationLiveViewsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Disable the default Application Live View.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *ApplicationLiveViewsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, applicationLiveViewName string, options *ApplicationLiveViewsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, applicationLiveViewName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,12 +177,12 @@ func (client *ApplicationLiveViewsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter applicationLiveViewName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationLiveViewName}", url.PathEscape(applicationLiveViewName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,19 +190,20 @@ func (client *ApplicationLiveViewsClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Get the Application Live and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationLiveViewName - The name of Application Live View.
-// options - ApplicationLiveViewsClientGetOptions contains the optional parameters for the ApplicationLiveViewsClient.Get
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationLiveViewName - The name of Application Live View.
+//   - options - ApplicationLiveViewsClientGetOptions contains the optional parameters for the ApplicationLiveViewsClient.Get
+//     method.
 func (client *ApplicationLiveViewsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, applicationLiveViewName string, options *ApplicationLiveViewsClientGetOptions) (ApplicationLiveViewsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, applicationLiveViewName, options)
 	if err != nil {
 		return ApplicationLiveViewsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationLiveViewsClientGetResponse{}, err
 	}
@@ -238,12 +232,12 @@ func (client *ApplicationLiveViewsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter applicationLiveViewName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationLiveViewName}", url.PathEscape(applicationLiveViewName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,12 +253,13 @@ func (client *ApplicationLiveViewsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Handles requests to list all resources in a Service.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.List
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.NewListPager
+//     method.
 func (client *ApplicationLiveViewsClient) NewListPager(resourceGroupName string, serviceName string, options *ApplicationLiveViewsClientListOptions) *runtime.Pager[ApplicationLiveViewsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationLiveViewsClientListResponse]{
 		More: func(page ApplicationLiveViewsClientListResponse) bool {
@@ -281,7 +276,7 @@ func (client *ApplicationLiveViewsClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return ApplicationLiveViewsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ApplicationLiveViewsClientListResponse{}, err
 			}
@@ -308,12 +303,12 @@ func (client *ApplicationLiveViewsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

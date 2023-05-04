@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // AccountClient contains the methods for the BatchAccount group.
 // Don't use this type directly, use NewAccountClient() instead.
 type AccountClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAccountClient creates a new instance of AccountClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AccountClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccountClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,38 +47,40 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this
 // API and should instead be updated with the Update Batch Account API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
-// 3 and 24 characters in length and must use only numbers and lowercase letters. This name is
-// used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-// example: http://accountname.region.batch.azure.com/.
-// parameters - Additional parameters for account creation.
-// options - AccountClientBeginCreateOptions contains the optional parameters for the AccountClient.BeginCreate method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
+//     3 and 24 characters in length and must use only numbers and lowercase letters. This name is
+//     used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For
+//     example: http://accountname.region.batch.azure.com/.
+//   - parameters - Additional parameters for account creation.
+//   - options - AccountClientBeginCreateOptions contains the optional parameters for the AccountClient.BeginCreate method.
 func (client *AccountClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (*runtime.Poller[AccountClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AccountClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
 // should instead be updated with the Update Batch Account API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *AccountClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +105,7 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,33 +118,35 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 
 // BeginDelete - Deletes the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
 func (client *AccountClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (*runtime.Poller[AccountClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AccountClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *AccountClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +171,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -191,16 +184,17 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets information about the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
 func (client *AccountClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientGetOptions) (AccountClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientGetResponse{}, err
 	}
@@ -225,7 +219,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -247,17 +241,18 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 
 // GetDetector - Gets information about the given detector for a given Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// detectorID - The name of the detector.
-// options - AccountClientGetDetectorOptions contains the optional parameters for the AccountClient.GetDetector method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - detectorID - The name of the detector.
+//   - options - AccountClientGetDetectorOptions contains the optional parameters for the AccountClient.GetDetector method.
 func (client *AccountClient) GetDetector(ctx context.Context, resourceGroupName string, accountName string, detectorID string, options *AccountClientGetDetectorOptions) (AccountClientGetDetectorResponse, error) {
 	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, accountName, detectorID, options)
 	if err != nil {
 		return AccountClientGetDetectorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientGetDetectorResponse{}, err
 	}
@@ -286,7 +281,7 @@ func (client *AccountClient) getDetectorCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter detectorID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{detectorId}", url.PathEscape(detectorID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -311,16 +306,17 @@ func (client *AccountClient) getDetectorHandleResponse(resp *http.Response) (Acc
 // use shared keys to authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys
 // will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientGetKeysOptions contains the optional parameters for the AccountClient.GetKeys method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientGetKeysOptions contains the optional parameters for the AccountClient.GetKeys method.
 func (client *AccountClient) GetKeys(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientGetKeysOptions) (AccountClientGetKeysResponse, error) {
 	req, err := client.getKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountClientGetKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientGetKeysResponse{}, err
 	}
@@ -345,7 +341,7 @@ func (client *AccountClient) getKeysCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -366,8 +362,9 @@ func (client *AccountClient) getKeysHandleResponse(resp *http.Response) (Account
 }
 
 // NewListPager - Gets information about the Batch accounts associated with the subscription.
+//
 // Generated from API version 2022-10-01
-// options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+//   - options - AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
 		More: func(page AccountClientListResponse) bool {
@@ -384,7 +381,7 @@ func (client *AccountClient) NewListPager(options *AccountClientListOptions) *ru
 			if err != nil {
 				return AccountClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListResponse{}, err
 			}
@@ -403,7 +400,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -424,10 +421,11 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 }
 
 // NewListByResourceGroupPager - Gets information about the Batch accounts associated with the specified resource group.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
+//     method.
 func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountClientListByResourceGroupOptions) *runtime.Pager[AccountClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListByResourceGroupResponse]{
 		More: func(page AccountClientListByResourceGroupResponse) bool {
@@ -444,7 +442,7 @@ func (client *AccountClient) NewListByResourceGroupPager(resourceGroupName strin
 			if err != nil {
 				return AccountClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListByResourceGroupResponse{}, err
 			}
@@ -467,7 +465,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -488,10 +486,12 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 }
 
 // NewListDetectorsPager - Gets information about the detectors available for a given Batch account.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.NewListDetectorsPager
+//     method.
 func (client *AccountClient) NewListDetectorsPager(resourceGroupName string, accountName string, options *AccountClientListDetectorsOptions) *runtime.Pager[AccountClientListDetectorsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListDetectorsResponse]{
 		More: func(page AccountClientListDetectorsResponse) bool {
@@ -508,7 +508,7 @@ func (client *AccountClient) NewListDetectorsPager(resourceGroupName string, acc
 			if err != nil {
 				return AccountClientListDetectorsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListDetectorsResponse{}, err
 			}
@@ -535,7 +535,7 @@ func (client *AccountClient) listDetectorsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -561,11 +561,12 @@ func (client *AccountClient) listDetectorsHandleResponse(resp *http.Response) (A
 // must make sure your network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause
 // Batch to mark the affected nodes as unusable. For more information about
 // creating a pool inside of a virtual network, see https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.NewListOutboundNetworkDependenciesEndpointsPager
+//     method.
 func (client *AccountClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, accountName string, options *AccountClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[AccountClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page AccountClientListOutboundNetworkDependenciesEndpointsResponse) bool {
@@ -582,7 +583,7 @@ func (client *AccountClient) NewListOutboundNetworkDependenciesEndpointsPager(re
 			if err != nil {
 				return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
@@ -609,7 +610,7 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -634,17 +635,18 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsHandleRespo
 // use shared keys to authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the
 // keys will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// parameters - The type of key to regenerate.
-// options - AccountClientRegenerateKeyOptions contains the optional parameters for the AccountClient.RegenerateKey method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - parameters - The type of key to regenerate.
+//   - options - AccountClientRegenerateKeyOptions contains the optional parameters for the AccountClient.RegenerateKey method.
 func (client *AccountClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters AccountRegenerateKeyParameters, options *AccountClientRegenerateKeyOptions) (AccountClientRegenerateKeyResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return AccountClientRegenerateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientRegenerateKeyResponse{}, err
 	}
@@ -669,7 +671,7 @@ func (client *AccountClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -692,17 +694,18 @@ func (client *AccountClient) regenerateKeyHandleResponse(resp *http.Response) (A
 // SynchronizeAutoStorageKeys - Synchronizes access keys for the auto-storage account configured for the specified Batch account,
 // only if storage key authentication is being used.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - AccountClientSynchronizeAutoStorageKeysOptions contains the optional parameters for the AccountClient.SynchronizeAutoStorageKeys
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - AccountClientSynchronizeAutoStorageKeysOptions contains the optional parameters for the AccountClient.SynchronizeAutoStorageKeys
+//     method.
 func (client *AccountClient) SynchronizeAutoStorageKeys(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientSynchronizeAutoStorageKeysOptions) (AccountClientSynchronizeAutoStorageKeysResponse, error) {
 	req, err := client.synchronizeAutoStorageKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountClientSynchronizeAutoStorageKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientSynchronizeAutoStorageKeysResponse{}, err
 	}
@@ -727,7 +730,7 @@ func (client *AccountClient) synchronizeAutoStorageKeysCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -740,17 +743,18 @@ func (client *AccountClient) synchronizeAutoStorageKeysCreateRequest(ctx context
 
 // Update - Updates the properties of an existing Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// parameters - Additional parameters for account update.
-// options - AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - parameters - Additional parameters for account update.
+//   - options - AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
 func (client *AccountClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters AccountUpdateParameters, options *AccountClientUpdateOptions) (AccountClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return AccountClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountClientUpdateResponse{}, err
 	}
@@ -775,7 +779,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

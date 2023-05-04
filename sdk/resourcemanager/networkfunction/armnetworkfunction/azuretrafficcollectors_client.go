@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // AzureTrafficCollectorsClient contains the methods for the AzureTrafficCollectors group.
 // Don't use this type directly, use NewAzureTrafficCollectorsClient() instead.
 type AzureTrafficCollectorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAzureTrafficCollectorsClient creates a new instance of AzureTrafficCollectorsClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAzureTrafficCollectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureTrafficCollectorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AzureTrafficCollectorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AzureTrafficCollectorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Azure Traffic Collector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// parameters - The parameters to provide for the created Azure Traffic Collector.
-// options - AzureTrafficCollectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - parameters - The parameters to provide for the created Azure Traffic Collector.
+//   - options - AzureTrafficCollectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginCreateOrUpdate
+//     method.
 func (client *AzureTrafficCollectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, parameters AzureTrafficCollector, options *AzureTrafficCollectorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AzureTrafficCollectorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, azureTrafficCollectorName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureTrafficCollectorsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureTrafficCollectorsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureTrafficCollectorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureTrafficCollectorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Azure Traffic Collector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *AzureTrafficCollectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, parameters AzureTrafficCollector, options *AzureTrafficCollectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *AzureTrafficCollectorsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter azureTrafficCollectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureTrafficCollectorName}", url.PathEscape(azureTrafficCollectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,34 +114,36 @@ func (client *AzureTrafficCollectorsClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - Deletes a specified Azure Traffic Collector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// options - AzureTrafficCollectorsClientBeginDeleteOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - options - AzureTrafficCollectorsClientBeginDeleteOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginDelete
+//     method.
 func (client *AzureTrafficCollectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, options *AzureTrafficCollectorsClientBeginDeleteOptions) (*runtime.Poller[AzureTrafficCollectorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, azureTrafficCollectorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureTrafficCollectorsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureTrafficCollectorsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AzureTrafficCollectorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureTrafficCollectorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a specified Azure Traffic Collector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *AzureTrafficCollectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, options *AzureTrafficCollectorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +168,7 @@ func (client *AzureTrafficCollectorsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter azureTrafficCollectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureTrafficCollectorName}", url.PathEscape(azureTrafficCollectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,17 +181,18 @@ func (client *AzureTrafficCollectorsClient) deleteCreateRequest(ctx context.Cont
 
 // Get - Gets the specified Azure Traffic Collector in a specified resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// options - AzureTrafficCollectorsClientGetOptions contains the optional parameters for the AzureTrafficCollectorsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - options - AzureTrafficCollectorsClientGetOptions contains the optional parameters for the AzureTrafficCollectorsClient.Get
+//     method.
 func (client *AzureTrafficCollectorsClient) Get(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, options *AzureTrafficCollectorsClientGetOptions) (AzureTrafficCollectorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, options)
 	if err != nil {
 		return AzureTrafficCollectorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureTrafficCollectorsClientGetResponse{}, err
 	}
@@ -223,7 +217,7 @@ func (client *AzureTrafficCollectorsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter azureTrafficCollectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureTrafficCollectorName}", url.PathEscape(azureTrafficCollectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,18 +239,19 @@ func (client *AzureTrafficCollectorsClient) getHandleResponse(resp *http.Respons
 
 // UpdateTags - Updates the specified Azure Traffic Collector tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group.
-// azureTrafficCollectorName - Azure Traffic Collector name
-// parameters - Parameters supplied to update Azure Traffic Collector tags.
-// options - AzureTrafficCollectorsClientUpdateTagsOptions contains the optional parameters for the AzureTrafficCollectorsClient.UpdateTags
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - azureTrafficCollectorName - Azure Traffic Collector name
+//   - parameters - Parameters supplied to update Azure Traffic Collector tags.
+//   - options - AzureTrafficCollectorsClientUpdateTagsOptions contains the optional parameters for the AzureTrafficCollectorsClient.UpdateTags
+//     method.
 func (client *AzureTrafficCollectorsClient) UpdateTags(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, parameters TagsObject, options *AzureTrafficCollectorsClientUpdateTagsOptions) (AzureTrafficCollectorsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, azureTrafficCollectorName, parameters, options)
 	if err != nil {
 		return AzureTrafficCollectorsClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AzureTrafficCollectorsClientUpdateTagsResponse{}, err
 	}
@@ -281,7 +276,7 @@ func (client *AzureTrafficCollectorsClient) updateTagsCreateRequest(ctx context.
 		return nil, errors.New("parameter azureTrafficCollectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureTrafficCollectorName}", url.PathEscape(azureTrafficCollectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -58,7 +58,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresou
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
-client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, nil)
+clientFactory, err := armresources.NewClientFactory(<subscription ID>, credential, &options)
+if err != nil {
+    log.Fatal(err)
+}
+client := clientFactory.NewResourceGroupsClient()
 ```
 
 For detailed information on the benefits of using the new authentication types, please refer to [this page](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md)
@@ -111,7 +115,11 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armcompute.NewVirtualMachinesClient("<SubscriptionId>", credential, &options)
+clientFactory, err := armcompute.NewClientFactory(<subscription ID>, credential, &options)
+if err != nil {
+    log.Fatal(err)
+}
+client := clientFactory.NewVirtualMachinesClient()
 ```
 
 For detailed information on the cloud configuration, please refer to [this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud)
@@ -275,9 +283,13 @@ options := &arm.ClientOptions{
         Transport: &httpClient,
     },
 }
-client, err := armresources.NewResourceGroupsClient("<SubscriptionId>", credential, options)
+clientFactory, err := armresources.NewClientFactory(<subscription ID>, credential, &options)
+if err != nil {
+    log.Fatal(err)
+}
+client := clientFactory.NewResourceGroupsClient()
 ```
 
 ## Need help?
 
-If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues) and make sure you add the "Preview" label to the issue
+If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues).

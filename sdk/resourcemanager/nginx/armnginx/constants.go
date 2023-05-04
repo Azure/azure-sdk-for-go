@@ -11,7 +11,7 @@ package armnginx
 
 const (
 	moduleName    = "armnginx"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

@@ -26,6 +26,12 @@ var (
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyz123456789")
 )
 
+// these are created by the test-resources.bicep template - they're useful for tests where we don't need to guaranteee any state, just existence, like our connectivity/recovery tests.
+const (
+	BuiltInTestQueue             = "testQueue"
+	BuildInTestQueueWithSessions = "testQueueWithSessions"
+)
+
 func init() {
 	addSwappableLogger()
 }
@@ -42,27 +48,52 @@ func RandomString(prefix string, length int) string {
 }
 
 func GetConnectionString(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING")
 }
 
 func GetConnectionStringForPremiumSB(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_PREMIUM")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_PREMIUM")
 }
 
 func GetConnectionStringWithoutManagePerms(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+}
+
+func GetConnectionStringSendOnly(t *testing.T) string {
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_SEND_ONLY")
+}
+
+func GetConnectionStringListenOnly(t *testing.T) string {
+	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY")
+}
+
+func GetIdentityVars(t *testing.T) *struct {
+	TenantID string
+	ClientID string
+	Secret   string
+	Endpoint string
+} {
+	runningLiveTest := GetConnectionString(t) != ""
+
+	if !runningLiveTest {
+		return nil
+	}
+
+	return &struct {
+		TenantID string
+		ClientID string
+		Secret   string
+		Endpoint string
+	}{
+		TenantID: getEnvOrSkipTest(t, "AZURE_TENANT_ID"),
+		ClientID: getEnvOrSkipTest(t, "AZURE_CLIENT_ID"),
+		Endpoint: getEnvOrSkipTest(t, "SERVICEBUS_ENDPOINT"),
+		Secret:   getEnvOrSkipTest(t, "AZURE_CLIENT_SECRET"),
+	}
+}
+
+func getEnvOrSkipTest(t *testing.T, name string) string {
+	cs := os.Getenv(name)
 
 	if cs == "" {
 		t.Skip()
@@ -126,11 +157,11 @@ func addSwappableLogger() {
 //
 //	messages := endCapture()
 //	/* do inspection of log messages */
-func CaptureLogsForTest() func() []string {
-	return CaptureLogsForTestWithChannel(nil)
+func CaptureLogsForTest(echo bool) func() []string {
+	return CaptureLogsForTestWithChannel(nil, echo)
 }
 
-func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
+func CaptureLogsForTestWithChannel(messagesCh chan string, echo bool) func() []string {
 	if messagesCh == nil {
 		messagesCh = make(chan string, 10000)
 	}
@@ -149,6 +180,9 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 		for {
 			select {
 			case msg := <-messagesCh:
+				if echo {
+					log.Printf("%s", msg)
+				}
 				messages = append(messages, msg)
 			default:
 				break Loop
@@ -162,7 +196,7 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
 func EnableStdoutLogging(t *testing.T) {
 	ch := make(chan string, 10000)
-	cleanupLogs := CaptureLogsForTestWithChannel(ch)
+	cleanupLogs := CaptureLogsForTestWithChannel(ch, true)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	t.Cleanup(func() {
@@ -170,16 +204,8 @@ func EnableStdoutLogging(t *testing.T) {
 	})
 
 	go func() {
-	Loop:
-		for {
-			select {
-			case <-ctx.Done():
-				_ = cleanupLogs()
-				break Loop
-			case msg := <-ch:
-				log.Printf("%s", msg)
-			}
-		}
+		<-ctx.Done()
+		_ = cleanupLogs()
 	}()
 }
 

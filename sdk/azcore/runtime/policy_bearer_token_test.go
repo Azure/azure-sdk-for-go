@@ -149,7 +149,7 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 	challenge := "Scheme parameters..."
 	srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
-	srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", challenge))
+	srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader(shared.HeaderWWWAuthenticate, challenge))
 	srv.AppendResponse(mock.WithStatusCode(200))
 
 	req, err := NewRequest(context.Background(), "GET", "https://localhost")
@@ -167,7 +167,7 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 	handler.OnChallenge = func(r *policy.Request, res *http.Response, f func(policy.TokenRequestOptions) error) error {
 		require.Equal(t, req.Raw().URL, r.Raw().URL)
 		handler.onChallengeCalls++
-		require.Equal(t, challenge, res.Header.Get("WWW-Authenticate"))
+		require.Equal(t, challenge, res.Header.Get(shared.HeaderWWWAuthenticate))
 		return nil
 	}
 
@@ -185,7 +185,7 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 	srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
-	srv.SetResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", "..."))
+	srv.SetResponse(mock.WithStatusCode(401), mock.WithHeader(shared.HeaderWWWAuthenticate, "..."))
 
 	req, err := NewRequest(context.Background(), "GET", "https://localhost")
 	require.NoError(t, err)

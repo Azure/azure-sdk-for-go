@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // HybridIdentityMetadataClient contains the methods for the HybridIdentityMetadata group.
 // Don't use this type directly, use NewHybridIdentityMetadataClient() instead.
 type HybridIdentityMetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHybridIdentityMetadataClient creates a new instance of HybridIdentityMetadataClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewHybridIdentityMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridIdentityMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HybridIdentityMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HybridIdentityMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Deletes the hybrid identity metadata proxy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
-// options - HybridIdentityMetadataClientDeleteOptions contains the optional parameters for the HybridIdentityMetadataClient.Delete
-// method.
-func (client *HybridIdentityMetadataClient) Delete(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientDeleteOptions) (HybridIdentityMetadataClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, provisionedClustersName, hybridIdentityMetadataResourceName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
+//   - options - HybridIdentityMetadataClientDeleteOptions contains the optional parameters for the HybridIdentityMetadataClient.Delete
+//     method.
+func (client *HybridIdentityMetadataClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientDeleteOptions) (HybridIdentityMetadataClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, hybridIdentityMetadataResourceName, options)
 	if err != nil {
 		return HybridIdentityMetadataClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientDeleteResponse{}, err
 	}
@@ -79,8 +69,8 @@ func (client *HybridIdentityMetadataClient) Delete(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
+func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -89,20 +79,20 @@ func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if hybridIdentityMetadataResourceName == "" {
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,18 +100,19 @@ func (client *HybridIdentityMetadataClient) deleteCreateRequest(ctx context.Cont
 
 // Get - Get the hybrid identity metadata proxy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
-// options - HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get
-// method.
-func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientGetOptions) (HybridIdentityMetadataClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, provisionedClustersName, hybridIdentityMetadataResourceName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
+//   - options - HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get
+//     method.
+func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientGetOptions) (HybridIdentityMetadataClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, hybridIdentityMetadataResourceName, options)
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
@@ -132,8 +123,8 @@ func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
+func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, options *HybridIdentityMetadataClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -142,20 +133,20 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if hybridIdentityMetadataResourceName == "" {
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,12 +162,13 @@ func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByClusterPager - Lists the hybrid identity metadata proxy resource in a cluster.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - HybridIdentityMetadataClientListByClusterOptions contains the optional parameters for the HybridIdentityMetadataClient.ListByCluster
-// method.
-func (client *HybridIdentityMetadataClient) NewListByClusterPager(resourceGroupName string, provisionedClustersName string, options *HybridIdentityMetadataClientListByClusterOptions) *runtime.Pager[HybridIdentityMetadataClientListByClusterResponse] {
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - HybridIdentityMetadataClientListByClusterOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByClusterPager
+//     method.
+func (client *HybridIdentityMetadataClient) NewListByClusterPager(resourceGroupName string, resourceName string, options *HybridIdentityMetadataClientListByClusterOptions) *runtime.Pager[HybridIdentityMetadataClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HybridIdentityMetadataClientListByClusterResponse]{
 		More: func(page HybridIdentityMetadataClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -185,14 +177,14 @@ func (client *HybridIdentityMetadataClient) NewListByClusterPager(resourceGroupN
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByClusterCreateRequest(ctx, resourceGroupName, provisionedClustersName, options)
+				req, err = client.listByClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return HybridIdentityMetadataClientListByClusterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HybridIdentityMetadataClientListByClusterResponse{}, err
 			}
@@ -205,8 +197,8 @@ func (client *HybridIdentityMetadataClient) NewListByClusterPager(resourceGroupN
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *HybridIdentityMetadataClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *HybridIdentityMetadataClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/hybridIdentityMetadata"
+func (client *HybridIdentityMetadataClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *HybridIdentityMetadataClientListByClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -215,16 +207,16 @@ func (client *HybridIdentityMetadataClient) listByClusterCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,18 +233,19 @@ func (client *HybridIdentityMetadataClient) listByClusterHandleResponse(resp *ht
 
 // Put - Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
-// options - HybridIdentityMetadataClientPutOptions contains the optional parameters for the HybridIdentityMetadataClient.Put
-// method.
-func (client *HybridIdentityMetadataClient) Put(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, body HybridIdentityMetadata, options *HybridIdentityMetadataClientPutOptions) (HybridIdentityMetadataClientPutResponse, error) {
-	req, err := client.putCreateRequest(ctx, resourceGroupName, provisionedClustersName, hybridIdentityMetadataResourceName, body, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - hybridIdentityMetadataResourceName - Parameter for the name of the hybrid identity metadata resource.
+//   - options - HybridIdentityMetadataClientPutOptions contains the optional parameters for the HybridIdentityMetadataClient.Put
+//     method.
+func (client *HybridIdentityMetadataClient) Put(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, body HybridIdentityMetadata, options *HybridIdentityMetadataClientPutOptions) (HybridIdentityMetadataClientPutResponse, error) {
+	req, err := client.putCreateRequest(ctx, resourceGroupName, resourceName, hybridIdentityMetadataResourceName, body, options)
 	if err != nil {
 		return HybridIdentityMetadataClientPutResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HybridIdentityMetadataClientPutResponse{}, err
 	}
@@ -263,8 +256,8 @@ func (client *HybridIdentityMetadataClient) Put(ctx context.Context, resourceGro
 }
 
 // putCreateRequest creates the Put request.
-func (client *HybridIdentityMetadataClient) putCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, hybridIdentityMetadataResourceName string, body HybridIdentityMetadata, options *HybridIdentityMetadataClientPutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
+func (client *HybridIdentityMetadataClient) putCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, hybridIdentityMetadataResourceName string, body HybridIdentityMetadata, options *HybridIdentityMetadataClientPutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/hybridIdentityMetadata/{hybridIdentityMetadataResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -273,20 +266,20 @@ func (client *HybridIdentityMetadataClient) putCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if hybridIdentityMetadataResourceName == "" {
 		return nil, errors.New("parameter hybridIdentityMetadataResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hybridIdentityMetadataResourceName}", url.PathEscape(hybridIdentityMetadataResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,35 @@ import (
 // BestPracticesClient contains the methods for the BestPractices group.
 // Don't use this type directly, use NewBestPracticesClient() instead.
 type BestPracticesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewBestPracticesClient creates a new instance of BestPracticesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBestPracticesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BestPracticesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BestPracticesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BestPracticesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get information about a Automanage best practice
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// bestPracticeName - The Automanage best practice name.
-// options - BestPracticesClientGetOptions contains the optional parameters for the BestPracticesClient.Get method.
+//   - bestPracticeName - The Automanage best practice name.
+//   - options - BestPracticesClientGetOptions contains the optional parameters for the BestPracticesClient.Get method.
 func (client *BestPracticesClient) Get(ctx context.Context, bestPracticeName string, options *BestPracticesClientGetOptions) (BestPracticesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, bestPracticeName, options)
 	if err != nil {
 		return BestPracticesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BestPracticesClientGetResponse{}, err
 	}
@@ -79,7 +69,7 @@ func (client *BestPracticesClient) getCreateRequest(ctx context.Context, bestPra
 		return nil, errors.New("parameter bestPracticeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bestPracticeName}", url.PathEscape(bestPracticeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -100,10 +90,10 @@ func (client *BestPracticesClient) getHandleResponse(resp *http.Response) (BestP
 }
 
 // NewListByTenantPager - Retrieve a list of Automanage best practices
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// options - BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.ListByTenant
-// method.
+//   - options - BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.NewListByTenantPager
+//     method.
 func (client *BestPracticesClient) NewListByTenantPager(options *BestPracticesClientListByTenantOptions) *runtime.Pager[BestPracticesClientListByTenantResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BestPracticesClientListByTenantResponse]{
 		More: func(page BestPracticesClientListByTenantResponse) bool {
@@ -114,7 +104,7 @@ func (client *BestPracticesClient) NewListByTenantPager(options *BestPracticesCl
 			if err != nil {
 				return BestPracticesClientListByTenantResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BestPracticesClientListByTenantResponse{}, err
 			}
@@ -129,7 +119,7 @@ func (client *BestPracticesClient) NewListByTenantPager(options *BestPracticesCl
 // listByTenantCreateRequest creates the ListByTenant request.
 func (client *BestPracticesClient) listByTenantCreateRequest(ctx context.Context, options *BestPracticesClientListByTenantOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Automanage/bestPractices"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

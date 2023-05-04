@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,36 +22,29 @@ import (
 // MetricNamespacesClient contains the methods for the MetricNamespaces group.
 // Don't use this type directly, use NewMetricNamespacesClient() instead.
 type MetricNamespacesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewMetricNamespacesClient creates a new instance of MetricNamespacesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricNamespacesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MetricNamespacesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MetricNamespacesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Lists the metric namespaces for the resource.
+//
 // Generated from API version 2017-12-01-preview
-// resourceURI - The identifier of the resource.
-// options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.NewListPager
+//     method.
 func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetricNamespacesClientListResponse]{
 		More: func(page MetricNamespacesClientListResponse) bool {
@@ -64,7 +55,7 @@ func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *
 			if err != nil {
 				return MetricNamespacesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MetricNamespacesClientListResponse{}, err
 			}
@@ -80,7 +71,7 @@ func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *
 func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricNamespacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

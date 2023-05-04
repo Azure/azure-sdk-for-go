@@ -1,14 +1,37 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 1.0.0 (2023-05-09)
 
 ### Features Added
 
-### Breaking Changes
+- First stable release of the azeventhubs package.
+- Authentication errors are indicated with an `azeventhubs.Error`, with a `Code` of `azeventhubs.ErrorCodeUnauthorizedAccess`. (PR#20450)
 
 ### Bugs Fixed
 
-### Other Changes
+- Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20450)
+- Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
+- Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
+- Latest go-amqp changes have been merged in with fixes for robustness.
+- Sending a message to an entity that is full will no longer retry. (PR#20722)
+- Checkpoint store handles multiple initial owners properly, allowing only one through. (PR#20727)
+
+## 0.6.0 (2023-03-07)
+
+### Features Added
+
+- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from
+  Event Hubs. For example, error messages related to ownership changes for a partition will contain the
+  name of the link that has taken ownership, which can help with traceability.
+
+### Breaking Changes
+
+- `ConsumerClient.ID()` renamed to `ConsumerClient.InstanceID()`.
+
+### Bugs Fixed
+
+- Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
 
 ## 0.5.0 (2023-02-07)
 
@@ -20,15 +43,15 @@
 ### Breaking Changes
 
 - ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
-- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy. 
-  For an example, see [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
+- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy.
+  For an example, see [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ## 0.4.0 (2023-01-10)
 
 ### Bugs Fixed
 
 - User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
-- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around
   some operations (Close) that could potentially block recovery for a long time. (PR#19683)
 
 ## 0.3.0 (2022-11-10)
@@ -57,7 +80,7 @@
 - NewWebSocketConnArgs renamed to WebSocketConnParams
 - Code renamed to ErrorCode, including associated constants like `ErrorCodeOwnershipLost`.
 - OwnershipData, CheckpointData, and CheckpointStoreAddress have been folded into their individual structs: Ownership and Checkpoint.
-- StartPosition and OwnerLevel were erroneously included in the ConsumerClientOptions struct - they've been removed. These can be 
+- StartPosition and OwnerLevel were erroneously included in the ConsumerClientOptions struct - they've been removed. These can be
   configured in the PartitionClientOptions.
 
 ### Bugs Fixed
@@ -69,9 +92,9 @@
 
 ### Features Added
 
-- Adding in the new Processor type, which can be used to do distributed (and load balanced) consumption of events, using a 
-  CheckpointStore. The built-in checkpoints.BlobStore uses Azure Blob Storage for persistence. A full example is 
-  in [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
+- Adding in the new Processor type, which can be used to do distributed (and load balanced) consumption of events, using a
+  CheckpointStore. The built-in checkpoints.BlobStore uses Azure Blob Storage for persistence. A full example is
+  in [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ### Breaking Changes
 
@@ -80,6 +103,7 @@
   instances (using ConsumerClient.NewPartitionClient), which allows you to share the same AMQP connection and receive from multiple
   partitions simultaneously.
 - Changes to EventData/ReceivedEventData:
+
   - ReceivedEventData now embeds EventData for fields common between the two, making it easier to change and resend.
   - `ApplicationProperties` renamed to `Properties`.
   - `PartitionKey` removed from `EventData`. To send events using a PartitionKey you must set it in the options
@@ -87,8 +111,8 @@
 
     ```go
     batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
-		  PartitionKey: to.Ptr("partition key"),
-	  })
+      PartitionKey: to.Ptr("partition key"),
+    })
     ```
 
 ### Bugs Fixed
@@ -99,4 +123,4 @@
 
 ## 0.1.0 (2022-08-11)
 
-- Initial preview for the new version of the Azure Event Hubs Go SDK. 
+- Initial preview for the new version of the Azure Event Hubs Go SDK.

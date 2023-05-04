@@ -151,7 +151,7 @@ type MachinePoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.List method.
+// MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.NewListPager method.
 type MachinePoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -307,7 +307,7 @@ type OpenShiftClustersClientListAdminCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersClientListByResourceGroupOptions contains the optional parameters for the OpenShiftClustersClient.ListByResourceGroup
+// OpenShiftClustersClientListByResourceGroupOptions contains the optional parameters for the OpenShiftClustersClient.NewListByResourceGroupPager
 // method.
 type OpenShiftClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -319,7 +319,7 @@ type OpenShiftClustersClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.List method.
+// OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.NewListPager method.
 type OpenShiftClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -357,7 +357,7 @@ type OpenShiftVersionProperties struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// OpenShiftVersionsClientListOptions contains the optional parameters for the OpenShiftVersionsClient.List method.
+// OpenShiftVersionsClientListOptions contains the optional parameters for the OpenShiftVersionsClient.NewListPager method.
 type OpenShiftVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -383,7 +383,7 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -476,7 +476,7 @@ type SecretsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
+// SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
 type SecretsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -552,7 +552,8 @@ type SyncIdentityProvidersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.List method.
+// SyncIdentityProvidersClientListOptions contains the optional parameters for the SyncIdentityProvidersClient.NewListPager
+// method.
 type SyncIdentityProvidersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -619,7 +620,7 @@ type SyncSetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SyncSetsClientListOptions contains the optional parameters for the SyncSetsClient.List method.
+// SyncSetsClientListOptions contains the optional parameters for the SyncSetsClient.NewListPager method.
 type SyncSetsClientListOptions struct {
 	// placeholder for future optional parameters
 }

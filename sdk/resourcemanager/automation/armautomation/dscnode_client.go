@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // DscNodeClient contains the methods for the DscNode group.
 // Don't use this type directly, use NewDscNodeClient() instead.
 type DscNodeClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDscNodeClient creates a new instance of DscNodeClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDscNodeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscNodeClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DscNodeClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DscNodeClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete the dsc node identified by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// nodeID - The node id.
-// options - DscNodeClientDeleteOptions contains the optional parameters for the DscNodeClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - nodeID - The node id.
+//   - options - DscNodeClientDeleteOptions contains the optional parameters for the DscNodeClient.Delete method.
 func (client *DscNodeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientDeleteOptions) (DscNodeClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
 	if err != nil {
 		return DscNodeClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DscNodeClientDeleteResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,17 +101,18 @@ func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Retrieve the dsc node identified by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// nodeID - The node id.
-// options - DscNodeClientGetOptions contains the optional parameters for the DscNodeClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - nodeID - The node id.
+//   - options - DscNodeClientGetOptions contains the optional parameters for the DscNodeClient.Get method.
 func (client *DscNodeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientGetOptions) (DscNodeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
 	if err != nil {
 		return DscNodeClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DscNodeClientGetResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,12 +162,12 @@ func (client *DscNodeClient) getHandleResponse(resp *http.Response) (DscNodeClie
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of dsc nodes.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.NewListByAutomationAccountPager
+//     method.
 func (client *DscNodeClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *DscNodeClientListByAutomationAccountOptions) *runtime.Pager[DscNodeClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DscNodeClientListByAutomationAccountResponse]{
 		More: func(page DscNodeClientListByAutomationAccountResponse) bool {
@@ -193,7 +184,7 @@ func (client *DscNodeClient) NewListByAutomationAccountPager(resourceGroupName s
 			if err != nil {
 				return DscNodeClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DscNodeClientListByAutomationAccountResponse{}, err
 			}
@@ -220,7 +211,7 @@ func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,18 +245,19 @@ func (client *DscNodeClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // Update - Update the dsc node.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// nodeID - Parameters supplied to the update dsc node.
-// dscNodeUpdateParameters - Parameters supplied to the update dsc node.
-// options - DscNodeClientUpdateOptions contains the optional parameters for the DscNodeClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - nodeID - Parameters supplied to the update dsc node.
+//   - dscNodeUpdateParameters - Parameters supplied to the update dsc node.
+//   - options - DscNodeClientUpdateOptions contains the optional parameters for the DscNodeClient.Update method.
 func (client *DscNodeClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters, options *DscNodeClientUpdateOptions) (DscNodeClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, dscNodeUpdateParameters, options)
 	if err != nil {
 		return DscNodeClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DscNodeClientUpdateResponse{}, err
 	}
@@ -294,7 +286,7 @@ func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

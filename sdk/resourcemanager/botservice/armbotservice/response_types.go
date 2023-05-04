@@ -24,7 +24,7 @@ type BotConnectionClientGetResponse struct {
 	ConnectionSetting
 }
 
-// BotConnectionClientListByBotServiceResponse contains the response from method BotConnectionClient.ListByBotService.
+// BotConnectionClientListByBotServiceResponse contains the response from method BotConnectionClient.NewListByBotServicePager.
 type BotConnectionClientListByBotServiceResponse struct {
 	ConnectionSettingResponseList
 }
@@ -64,12 +64,12 @@ type BotsClientGetResponse struct {
 	Bot
 }
 
-// BotsClientListByResourceGroupResponse contains the response from method BotsClient.ListByResourceGroup.
+// BotsClientListByResourceGroupResponse contains the response from method BotsClient.NewListByResourceGroupPager.
 type BotsClientListByResourceGroupResponse struct {
 	BotResponseList
 }
 
-// BotsClientListResponse contains the response from method BotsClient.List.
+// BotsClientListResponse contains the response from method BotsClient.NewListPager.
 type BotsClientListResponse struct {
 	BotResponseList
 }
@@ -94,7 +94,7 @@ type ChannelsClientGetResponse struct {
 	BotChannel
 }
 
-// ChannelsClientListByResourceGroupResponse contains the response from method ChannelsClient.ListByResourceGroup.
+// ChannelsClientListByResourceGroupResponse contains the response from method ChannelsClient.NewListByResourceGroupPager.
 type ChannelsClientListByResourceGroupResponse struct {
 	ChannelResponseList
 }
@@ -124,12 +124,12 @@ type HostSettingsClientGetResponse struct {
 	HostSettingsResponse
 }
 
-// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.BeginGet.
 type OperationResultsClientGetResponse struct {
 	OperationResultsDescription
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationEntityListResult
 }
@@ -149,7 +149,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }

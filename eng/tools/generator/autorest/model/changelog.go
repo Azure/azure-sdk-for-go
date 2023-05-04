@@ -156,7 +156,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range existedTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New value %s added to type alias `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			line := fmt.Sprintf("New value %s added to enum type `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
 			items = append(items, line)
 		}
 
@@ -165,7 +165,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range newTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New type alias `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
+			line := fmt.Sprintf("New enum type `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
 			items = append(items, line)
 		}
 	}
@@ -198,12 +198,22 @@ func getNewContents(c *delta.Content) []string {
 		modified := c.GetModifiedStructs()
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("New anonymous field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("New field `%s` in struct `%s`", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("New field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}
@@ -299,14 +309,14 @@ func getRemovedContent(removed *delta.Content) []string {
 			for _, cs := range removedConst[k] {
 				consts = fmt.Sprintf("%s`%s`, ", consts, cs)
 			}
-			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
+			line := fmt.Sprintf("%s from enum `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
 			items = append(items, line)
 		}
 	}
 	// write type alias
 	if len(removed.TypeAliases) > 0 {
 		for _, k := range sortChangeItem(removed.TypeAliases) {
-			line := fmt.Sprintf("Type alias `%s` has been removed", k)
+			line := fmt.Sprintf("Enum `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
@@ -353,12 +363,22 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(modified) > 0 {
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}

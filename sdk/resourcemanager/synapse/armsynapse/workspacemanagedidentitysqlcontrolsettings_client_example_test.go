@@ -25,11 +25,11 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "workspace1", nil)
+	res, err := clientFactory.NewWorkspaceManagedIdentitySQLControlSettingsClient().Get(ctx, "resourceGroup1", "workspace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,11 +55,11 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_BeginCreateOrUpdate
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspaceManagedIdentitySQLControlSettingsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.ManagedIdentitySQLControlSettingsModel{
+	poller, err := clientFactory.NewWorkspaceManagedIdentitySQLControlSettingsClient().BeginCreateOrUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.ManagedIdentitySQLControlSettingsModel{
 		Properties: &armsynapse.ManagedIdentitySQLControlSettingsModelProperties{
 			GrantSQLControlToManagedIdentity: &armsynapse.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity{
 				DesiredState: to.Ptr(armsynapse.DesiredStateEnabled),

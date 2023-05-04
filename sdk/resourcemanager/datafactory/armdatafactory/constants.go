@@ -11,7 +11,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.2.1"
 )
 
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.
@@ -53,6 +53,28 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 	return []AzureSearchIndexWriteBehaviorType{
 		AzureSearchIndexWriteBehaviorTypeMerge,
 		AzureSearchIndexWriteBehaviorTypeUpload,
+	}
+}
+
+// AzureStorageAuthenticationType - The type used for authentication. Type: string.
+type AzureStorageAuthenticationType string
+
+const (
+	AzureStorageAuthenticationTypeAccountKey       AzureStorageAuthenticationType = "AccountKey"
+	AzureStorageAuthenticationTypeAnonymous        AzureStorageAuthenticationType = "Anonymous"
+	AzureStorageAuthenticationTypeMsi              AzureStorageAuthenticationType = "Msi"
+	AzureStorageAuthenticationTypeSasURI           AzureStorageAuthenticationType = "SasUri"
+	AzureStorageAuthenticationTypeServicePrincipal AzureStorageAuthenticationType = "ServicePrincipal"
+)
+
+// PossibleAzureStorageAuthenticationTypeValues returns the possible values for the AzureStorageAuthenticationType const type.
+func PossibleAzureStorageAuthenticationTypeValues() []AzureStorageAuthenticationType {
+	return []AzureStorageAuthenticationType{
+		AzureStorageAuthenticationTypeAccountKey,
+		AzureStorageAuthenticationTypeAnonymous,
+		AzureStorageAuthenticationTypeMsi,
+		AzureStorageAuthenticationTypeSasURI,
+		AzureStorageAuthenticationTypeServicePrincipal,
 	}
 }
 
@@ -117,6 +139,24 @@ func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadC
 		CassandraSourceReadConsistencyLevelsSERIAL,
 		CassandraSourceReadConsistencyLevelsTHREE,
 		CassandraSourceReadConsistencyLevelsTWO,
+	}
+}
+
+// ConfigurationType - The type of the spark config.
+type ConfigurationType string
+
+const (
+	ConfigurationTypeArtifact   ConfigurationType = "Artifact"
+	ConfigurationTypeCustomized ConfigurationType = "Customized"
+	ConfigurationTypeDefault    ConfigurationType = "Default"
+)
+
+// PossibleConfigurationTypeValues returns the possible values for the ConfigurationType const type.
+func PossibleConfigurationTypeValues() []ConfigurationType {
+	return []ConfigurationType{
+		ConfigurationTypeArtifact,
+		ConfigurationTypeCustomized,
+		ConfigurationTypeDefault,
 	}
 }
 
@@ -1431,6 +1471,20 @@ func PossibleSparkAuthenticationTypeValues() []SparkAuthenticationType {
 		SparkAuthenticationTypeUsername,
 		SparkAuthenticationTypeUsernameAndPassword,
 		SparkAuthenticationTypeWindowsAzureHDInsightService,
+	}
+}
+
+// SparkConfigurationReferenceType - Spark configuration reference type.
+type SparkConfigurationReferenceType string
+
+const (
+	SparkConfigurationReferenceTypeSparkConfigurationReference SparkConfigurationReferenceType = "SparkConfigurationReference"
+)
+
+// PossibleSparkConfigurationReferenceTypeValues returns the possible values for the SparkConfigurationReferenceType const type.
+func PossibleSparkConfigurationReferenceTypeValues() []SparkConfigurationReferenceType {
+	return []SparkConfigurationReferenceType{
+		SparkConfigurationReferenceTypeSparkConfigurationReference,
 	}
 }
 

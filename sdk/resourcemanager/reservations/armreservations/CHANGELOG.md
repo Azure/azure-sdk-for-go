@@ -1,5 +1,24 @@
 # Release History
 
+## 3.0.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 3.0.0 (2023-03-24)
+### Breaking Changes
+
+- Response of `ReturnClient.Post` has been changed from `RefundResponse` to `ReservationOrderResponse`
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New field `P3Y` in struct `CatalogMsrp`
+- New field `P5Y` in struct `CatalogMsrp`
+- New anonymous field `ReservationOrderResponse` in struct `ReturnClientPostResponse`
+
+
 ## 2.0.0 (2023-02-24)
 ### Breaking Changes
 

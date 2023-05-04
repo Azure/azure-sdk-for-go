@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,44 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 type EndpointsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EndpointsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EndpointsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// endpointType - The type of the Traffic Manager endpoint to be created or updated.
-// endpointName - The name of the Traffic Manager endpoint to be created or updated.
-// parameters - The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
-// options - EndpointsClientCreateOrUpdateOptions contains the optional parameters for the EndpointsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2018-08-01
+//   - resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be created or updated.
+//   - profileName - The name of the Traffic Manager profile.
+//   - endpointType - The type of the Traffic Manager endpoint to be created or updated.
+//   - endpointName - The name of the Traffic Manager endpoint to be created or updated.
+//   - parameters - The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+//   - options - EndpointsClientCreateOrUpdateOptions contains the optional parameters for the EndpointsClient.CreateOrUpdate
+//     method.
 func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
@@ -103,12 +94,12 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -125,18 +116,19 @@ func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// endpointType - The type of the Traffic Manager endpoint to be deleted.
-// endpointName - The name of the Traffic Manager endpoint to be deleted.
-// options - EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
+//
+// Generated from API version 2018-08-01
+//   - resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be deleted.
+//   - profileName - The name of the Traffic Manager profile.
+//   - endpointType - The type of the Traffic Manager endpoint to be deleted.
+//   - endpointName - The name of the Traffic Manager endpoint to be deleted.
+//   - options - EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
 func (client *EndpointsClient) Delete(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientDeleteOptions) (EndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, options)
 	if err != nil {
 		return EndpointsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EndpointsClientDeleteResponse{}, err
 	}
@@ -169,12 +161,12 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -191,18 +183,19 @@ func (client *EndpointsClient) deleteHandleResponse(resp *http.Response) (Endpoi
 
 // Get - Gets a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// endpointType - The type of the Traffic Manager endpoint.
-// endpointName - The name of the Traffic Manager endpoint.
-// options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
+//
+// Generated from API version 2018-08-01
+//   - resourceGroupName - The name of the resource group containing the Traffic Manager endpoint.
+//   - profileName - The name of the Traffic Manager profile.
+//   - endpointType - The type of the Traffic Manager endpoint.
+//   - endpointName - The name of the Traffic Manager endpoint.
+//   - options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
 func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, options)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
@@ -235,12 +228,12 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,19 +250,20 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 
 // Update - Update a Traffic Manager endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// profileName - The name of the Traffic Manager profile.
-// endpointType - The type of the Traffic Manager endpoint to be updated.
-// endpointName - The name of the Traffic Manager endpoint to be updated.
-// parameters - The Traffic Manager endpoint parameters supplied to the Update operation.
-// options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
+//
+// Generated from API version 2018-08-01
+//   - resourceGroupName - The name of the resource group containing the Traffic Manager endpoint to be updated.
+//   - profileName - The name of the Traffic Manager profile.
+//   - endpointType - The type of the Traffic Manager endpoint to be updated.
+//   - endpointName - The name of the Traffic Manager endpoint to be updated.
+//   - parameters - The Traffic Manager endpoint parameters supplied to the Update operation.
+//   - options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
 func (client *EndpointsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointType EndpointType, endpointName string, parameters Endpoint, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointType, endpointName, parameters, options)
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}
@@ -302,12 +296,12 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

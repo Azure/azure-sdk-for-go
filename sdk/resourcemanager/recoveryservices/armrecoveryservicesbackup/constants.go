@@ -11,7 +11,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "armrecoveryservicesbackup"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.1"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
@@ -1476,6 +1476,24 @@ func PossibleSupportStatusValues() []SupportStatus {
 		SupportStatusInvalid,
 		SupportStatusNotSupported,
 		SupportStatusSupported,
+	}
+}
+
+// TargetDiskNetworkAccessOption - Network access settings to be used for restored disks
+type TargetDiskNetworkAccessOption string
+
+const (
+	TargetDiskNetworkAccessOptionSameAsOnSourceDisks            TargetDiskNetworkAccessOption = "SameAsOnSourceDisks"
+	TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks TargetDiskNetworkAccessOption = "EnablePrivateAccessForAllDisks"
+	TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks  TargetDiskNetworkAccessOption = "EnablePublicAccessForAllDisks"
+)
+
+// PossibleTargetDiskNetworkAccessOptionValues returns the possible values for the TargetDiskNetworkAccessOption const type.
+func PossibleTargetDiskNetworkAccessOptionValues() []TargetDiskNetworkAccessOption {
+	return []TargetDiskNetworkAccessOption{
+		TargetDiskNetworkAccessOptionSameAsOnSourceDisks,
+		TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks,
+		TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks,
 	}
 }
 

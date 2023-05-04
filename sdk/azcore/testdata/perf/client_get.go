@@ -9,7 +9,6 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
@@ -28,7 +27,7 @@ func clientTestRegister() {
 
 type globalClientGETTest struct {
 	perf.PerfTestOptions
-	req pipeline.Request
+	req policy.Request
 }
 
 func newClientGETTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
@@ -52,7 +51,7 @@ func (g *globalClientGETTest) GlobalCleanup(ctx context.Context) error {
 
 type clientGETTest struct {
 	pipeline runtime.Pipeline
-	req      pipeline.Request
+	req      policy.Request
 }
 
 func (g *globalClientGETTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {

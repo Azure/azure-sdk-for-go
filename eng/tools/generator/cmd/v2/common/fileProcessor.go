@@ -28,6 +28,18 @@ const (
 	swagger_md_module_name_prefix     = "module-name: "
 )
 
+type PullRequestLabel string
+
+const (
+	StableLabel                PullRequestLabel = "Stable"
+	BetaLabel                  PullRequestLabel = "Beta"
+	FirstGALabel               PullRequestLabel = "FirstGA"
+	FirstGABreakingChangeLabel PullRequestLabel = "FirstGA,BreakingChange"
+	FirstBetaLabel             PullRequestLabel = "FirstBeta"
+	StableBreakingChangeLabel  PullRequestLabel = "Stable,BreakingChange"
+	BetaBreakingChangeLabel    PullRequestLabel = "Beta,BreakingChange"
+)
+
 var (
 	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex                      = regexp.MustCompile("^\\s*```\\s*$")
@@ -43,6 +55,7 @@ type PackageInfo struct {
 	Config      string
 	SpecName    string
 	RequestLink string
+	Tag         string
 	ReleaseDate *time.Time
 }
 
@@ -168,8 +181,13 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specRPName)
-			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specRPName)
+			indexResourceManager := strings.Index(line, "resource-manager")
+			indexReadme := strings.Index(line, autorest_md_file_suffix)
+			resourceManagerPath := []byte(line)
+			resourceManagerPath = resourceManagerPath[indexResourceManager : indexReadme-1]
+
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.md", repoURL, commitID, specRPName, resourceManagerPath)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.go.md", repoURL, commitID, specRPName, resourceManagerPath)
 			break
 		}
 	}
@@ -247,68 +265,87 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, error) {
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	log.Printf("Lastest version is: %s", version.String())
 
 	var newVersion semver.Version
+	var prl PullRequestLabel
 	if version.Major() == 0 {
 		// preview version calculation
 		if !isCurrentPreview {
 			tempVersion, err := semver.NewVersion("1.0.0")
 			if err != nil {
-				return nil, err
+				return nil, "", err
 			}
 			newVersion = *tempVersion
+			if changelog.HasBreakingChanges() {
+				prl = FirstGABreakingChangeLabel
+			} else {
+				prl = FirstGALabel
+			}
 		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
+			prl = BetaLabel
 		} else {
 			newVersion = version.IncPatch()
+			prl = BetaLabel
 		}
 	} else {
 		if isCurrentPreview {
 			if strings.Contains(previousVersion, "beta") {
 				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
 				if err != nil {
-					return nil, err
+					return nil, "", err
 				}
 				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
 				if err != nil {
-					return nil, err
+					return nil, "", err
+				}
+				if changelog.HasBreakingChanges() {
+					prl = BetaBreakingChangeLabel
+				} else {
+					prl = BetaLabel
 				}
 			} else {
 				if changelog.HasBreakingChanges() {
 					newVersion = version.IncMajor()
+					prl = BetaBreakingChangeLabel
 				} else if changelog.Modified.HasAdditiveChanges() {
 					newVersion = version.IncMinor()
+					prl = BetaLabel
 				} else {
 					newVersion = version.IncPatch()
+					prl = BetaLabel
 				}
 				newVersion, err = newVersion.SetPrerelease("beta.1")
 				if err != nil {
-					return nil, err
+					return nil, "", err
 				}
 			}
 		} else {
 			if strings.Contains(previousVersion, "beta") {
-				return nil, fmt.Errorf("must have stable previous version")
+				return nil, "", fmt.Errorf("must have stable previous version")
 			}
 			// release version calculation
 			if changelog.HasBreakingChanges() {
 				newVersion = version.IncMajor()
+				prl = StableBreakingChangeLabel
 			} else if changelog.Modified.HasAdditiveChanges() {
 				newVersion = version.IncMinor()
+				prl = StableLabel
 			} else {
 				newVersion = version.IncPatch()
+				prl = StableLabel
 			}
 		}
 	}
 
 	log.Printf("New version is: %s", newVersion.String())
-	return &newVersion, nil
+	return &newVersion, prl, nil
 }
 
 // add new changelog md to changelog file
@@ -416,4 +453,42 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 		return "-alwaysSetBodyParamRequired", nil
 	}
 	return "", nil
+}
+
+// AddTagSet add tag in file
+func AddTagSet(path, tag string) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "tag:") {
+			lines[i] = tag
+			break
+		}
+
+		// end index
+		if i == len(lines)-1 {
+			for j := len(lines) - 1; j > 0; j-- {
+				if strings.Contains(lines[j], "```") {
+					if lines[j-1] == "" {
+						lines[j-1] = tag
+						break
+					} else {
+						newLines := make([]string, len(lines))
+						copy(newLines, lines)
+
+						newLines = append(newLines[:j], tag)
+						tailLines := lines[j:]
+						lines = append(newLines, tailLines...)
+						break
+					}
+				}
+			}
+		}
+	}
+
+	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }

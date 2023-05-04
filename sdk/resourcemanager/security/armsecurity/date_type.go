@@ -35,7 +35,7 @@ func (d *dateType) UnmarshalJSON(data []byte) (err error) {
 	return err
 }
 
-func populateDateType(m map[string]interface{}, k string, t *time.Time) {
+func populateDateType(m map[string]any, k string, t *time.Time) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {

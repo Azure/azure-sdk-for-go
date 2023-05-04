@@ -14,12 +14,12 @@ type ClientCheckNameAvailabilityResponse struct {
 	NameAvailability
 }
 
-// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+// ClientCreateOrUpdateResponse contains the response from method Client.BeginCreateOrUpdate.
 type ClientCreateOrUpdateResponse struct {
 	ResourceInfo
 }
 
-// ClientDeleteResponse contains the response from method Client.Delete.
+// ClientDeleteResponse contains the response from method Client.BeginDelete.
 type ClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,12 +29,12 @@ type ClientGetResponse struct {
 	ResourceInfo
 }
 
-// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
+// ClientListByResourceGroupResponse contains the response from method Client.NewListByResourceGroupPager.
 type ClientListByResourceGroupResponse struct {
 	ResourceInfoList
 }
 
-// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+// ClientListBySubscriptionResponse contains the response from method Client.NewListBySubscriptionPager.
 type ClientListBySubscriptionResponse struct {
 	ResourceInfoList
 }
@@ -49,22 +49,22 @@ type ClientListSKUsResponse struct {
 	SKUList
 }
 
-// ClientRegenerateKeyResponse contains the response from method Client.RegenerateKey.
+// ClientRegenerateKeyResponse contains the response from method Client.BeginRegenerateKey.
 type ClientRegenerateKeyResponse struct {
 	Keys
 }
 
-// ClientRestartResponse contains the response from method Client.Restart.
+// ClientRestartResponse contains the response from method Client.BeginRestart.
 type ClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// ClientUpdateResponse contains the response from method Client.Update.
+// ClientUpdateResponse contains the response from method Client.BeginUpdate.
 type ClientUpdateResponse struct {
 	ResourceInfo
 }
 
-// CustomCertificatesClientCreateOrUpdateResponse contains the response from method CustomCertificatesClient.CreateOrUpdate.
+// CustomCertificatesClientCreateOrUpdateResponse contains the response from method CustomCertificatesClient.BeginCreateOrUpdate.
 type CustomCertificatesClientCreateOrUpdateResponse struct {
 	CustomCertificate
 }
@@ -79,17 +79,17 @@ type CustomCertificatesClientGetResponse struct {
 	CustomCertificate
 }
 
-// CustomCertificatesClientListResponse contains the response from method CustomCertificatesClient.List.
+// CustomCertificatesClientListResponse contains the response from method CustomCertificatesClient.NewListPager.
 type CustomCertificatesClientListResponse struct {
 	CustomCertificateList
 }
 
-// CustomDomainsClientCreateOrUpdateResponse contains the response from method CustomDomainsClient.CreateOrUpdate.
+// CustomDomainsClientCreateOrUpdateResponse contains the response from method CustomDomainsClient.BeginCreateOrUpdate.
 type CustomDomainsClientCreateOrUpdateResponse struct {
 	CustomDomain
 }
 
-// CustomDomainsClientDeleteResponse contains the response from method CustomDomainsClient.Delete.
+// CustomDomainsClientDeleteResponse contains the response from method CustomDomainsClient.BeginDelete.
 type CustomDomainsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -99,17 +99,17 @@ type CustomDomainsClientGetResponse struct {
 	CustomDomain
 }
 
-// CustomDomainsClientListResponse contains the response from method CustomDomainsClient.List.
+// CustomDomainsClientListResponse contains the response from method CustomDomainsClient.NewListPager.
 type CustomDomainsClientListResponse struct {
 	CustomDomainList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationList
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -119,7 +119,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionList
 }
@@ -129,17 +129,17 @@ type PrivateEndpointConnectionsClientUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceList
 }
 
-// SharedPrivateLinkResourcesClientCreateOrUpdateResponse contains the response from method SharedPrivateLinkResourcesClient.CreateOrUpdate.
+// SharedPrivateLinkResourcesClientCreateOrUpdateResponse contains the response from method SharedPrivateLinkResourcesClient.BeginCreateOrUpdate.
 type SharedPrivateLinkResourcesClientCreateOrUpdateResponse struct {
 	SharedPrivateLinkResource
 }
 
-// SharedPrivateLinkResourcesClientDeleteResponse contains the response from method SharedPrivateLinkResourcesClient.Delete.
+// SharedPrivateLinkResourcesClientDeleteResponse contains the response from method SharedPrivateLinkResourcesClient.BeginDelete.
 type SharedPrivateLinkResourcesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -149,12 +149,12 @@ type SharedPrivateLinkResourcesClientGetResponse struct {
 	SharedPrivateLinkResource
 }
 
-// SharedPrivateLinkResourcesClientListResponse contains the response from method SharedPrivateLinkResourcesClient.List.
+// SharedPrivateLinkResourcesClientListResponse contains the response from method SharedPrivateLinkResourcesClient.NewListPager.
 type SharedPrivateLinkResourcesClientListResponse struct {
 	SharedPrivateLinkResourceList
 }
 
-// UsagesClientListResponse contains the response from method UsagesClient.List.
+// UsagesClientListResponse contains the response from method UsagesClient.NewListPager.
 type UsagesClientListResponse struct {
 	UsageList
 }

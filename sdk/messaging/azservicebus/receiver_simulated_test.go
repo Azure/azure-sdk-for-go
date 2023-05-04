@@ -189,7 +189,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 			md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 					if mr.Source == "queue" {
-						mr.EXPECT().Receive(gomock.Any()).Return(nil, args.InternalErr)
+						mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).Return(nil, args.InternalErr)
 					}
 
 					return nil
@@ -235,7 +235,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 
 	fn(args{
 		Name:        "Connection level errors close link and connection",
-		InternalErr: &amqp.ConnectionError{},
+		InternalErr: &amqp.ConnError{},
 		ReturnedErr: nil,
 		ConnAlive:   false,
 		LinkAlive:   false,
@@ -243,7 +243,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 
 	fn(args{
 		Name:        "Link level errors close the link",
-		InternalErr: amqp.ErrLinkClosed,
+		InternalErr: &amqp.LinkError{},
 		ReturnedErr: nil,
 		ConnAlive:   true,
 		LinkAlive:   false,
@@ -289,10 +289,10 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return mr.InternalReceive(ctx)
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return mr.InternalReceive(ctx, o)
 				})
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 					require.NoError(t, ctx.Err())
 					return nil, internal.NewErrNonRetriable("non-retriable error on second message")
 				})
@@ -328,7 +328,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
-				mr.EXPECT().Receive(mock.NotCancelled).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+				mr.EXPECT().Receive(mock.NotCancelled, gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 					return nil, receiveErr
 				}).AnyTimes()
 			}
@@ -345,19 +345,19 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	var asSBError *Error
 
-	receiveErr = amqp.ErrLinkClosed
+	receiveErr = &amqp.LinkError{}
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	receiveErr = &amqp.ConnectionError{}
+	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	receiveErr = &amqp.ConnectionError{}
+	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
@@ -436,10 +436,10 @@ func TestReceive_ReuseExistingCredits(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 					if ctx.Value(key) != nil {
 						log.Printf("Doing receive, called from ReceiveMessages")
-						return mr.InternalReceive(ctx)
+						return mr.InternalReceive(ctx, o)
 					} else {
 						log.Printf("Waiting for cancellation, called from Releaser loop")
 						<-ctx.Done()
@@ -503,8 +503,8 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return mr.InternalReceive(ctx)
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return mr.InternalReceive(ctx, o)
 				}).AnyTimes()
 			}
 
@@ -588,9 +588,9 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 				// issue 5000 again, and should only need to issue 1 new credit.
 				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(mr.InternalIssueCredit)
 
-				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true)).DoAndReturn(mr.InternalReceive).AnyTimes()
+				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true), gomock.Nil()).DoAndReturn(mr.InternalReceive).AnyTimes()
 
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 					// interaction with the releaser just makes this test harder to make predictable and doesn't
 					// add or change anything.
 					azlog.Writef(azlog.Event("testing"), "===> Releaser asking for message, blocking on cancel.")
@@ -598,7 +598,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 					return nil, ctx.Err()
 				}).AnyTimes()
 
-				require.Equal(t, defaultLinkRxBuffer, mr.Opts.Credit)
+				require.EqualValues(t, -1, mr.Opts.Credit)
 			}
 
 			return nil
@@ -625,26 +625,28 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	// no issue credit needed - we've still got the 5000 from last time since we didn't
 	// receive any messages.
 	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
+	logs := logsFn()
+
+	require.Contains(t, logs, "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Have 5000 credits, no new credits needed")
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
-	logsFn = test.CaptureLogsForTest()
+	logsFn = test.CaptureLogsForTest(false)
 
 	// we ate a credit last time since we received a single message, so this time we'll still
 	// need to issue some more to backfill.
 	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
-	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
+	require.Contains(t, logsFn(), "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Issuing 1 credits, have 4999")
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
@@ -654,7 +656,7 @@ func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
-				return &amqp.ConnectionError{}
+				return &amqp.ConnError{}
 			}
 
 			return nil
@@ -673,12 +675,12 @@ func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
 func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	lockLost := false
 
-	mgmtStub := func(ctx context.Context, mr *emulation.MockReceiver) (*amqp.Message, error) {
-		msg, _ := mr.InternalReceive(ctx)
+	mgmtStub := func(ctx context.Context, o *amqp.ReceiveOptions, mr *emulation.MockReceiver) (*amqp.Message, error) {
+		msg, _ := mr.InternalReceive(ctx, o)
 
 		if lockLost {
 			return nil, &amqp.Error{
-				Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost"),
+				Condition: amqp.ErrCond("com.microsoft:message-lock-lost"),
 			}
 		}
 
@@ -699,12 +701,12 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue/$management" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return mgmtStub(ctx, mr)
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return mgmtStub(ctx, o, mr)
 				}).AnyTimes()
 			} else if mr.Source != "$cbs" {
-				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-					return nil, &amqp.ConnectionError{}
+				mr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+					return nil, &amqp.ConnError{}
 				}).AnyTimes()
 
 				mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()

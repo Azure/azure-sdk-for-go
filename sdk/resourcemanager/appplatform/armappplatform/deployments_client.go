@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,68 +24,61 @@ import (
 // DeploymentsClient contains the methods for the Deployments group.
 // Don't use this type directly, use NewDeploymentsClient() instead.
 type DeploymentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDeploymentsClient creates a new instance of DeploymentsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DeploymentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DeploymentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new Deployment or update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// deploymentResource - Parameters for the create or update operation
-// options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - deploymentResource - Parameters for the create or update operation
+//   - options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+//     method.
 func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a new Deployment or update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -120,12 +111,12 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deploymentResource)
@@ -133,34 +124,36 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Operation to delete a Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
 func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*runtime.Poller[DeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Operation to delete a Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -193,12 +186,12 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -206,35 +199,37 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // BeginDisableRemoteDebugging - Disable remote debugging.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginDisableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginDisableRemoteDebugging
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginDisableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginDisableRemoteDebugging
+//     method.
 func (client *DeploymentsClient) BeginDisableRemoteDebugging(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDisableRemoteDebuggingOptions) (*runtime.Poller[DeploymentsClientDisableRemoteDebuggingResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.disableRemoteDebugging(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientDisableRemoteDebuggingResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientDisableRemoteDebuggingResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDisableRemoteDebuggingResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientDisableRemoteDebuggingResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DisableRemoteDebugging - Disable remote debugging.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) disableRemoteDebugging(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginDisableRemoteDebuggingOptions) (*http.Response, error) {
 	req, err := client.disableRemoteDebuggingCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -267,12 +262,12 @@ func (client *DeploymentsClient) disableRemoteDebuggingCreateRequest(ctx context
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,35 +275,37 @@ func (client *DeploymentsClient) disableRemoteDebuggingCreateRequest(ctx context
 
 // BeginEnableRemoteDebugging - Enable remote debugging.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginEnableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginEnableRemoteDebugging
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginEnableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginEnableRemoteDebugging
+//     method.
 func (client *DeploymentsClient) BeginEnableRemoteDebugging(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginEnableRemoteDebuggingOptions) (*runtime.Poller[DeploymentsClientEnableRemoteDebuggingResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.enableRemoteDebugging(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientEnableRemoteDebuggingResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientEnableRemoteDebuggingResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientEnableRemoteDebuggingResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientEnableRemoteDebuggingResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // EnableRemoteDebugging - Enable remote debugging.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) enableRemoteDebugging(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginEnableRemoteDebuggingOptions) (*http.Response, error) {
 	req, err := client.enableRemoteDebuggingCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -341,12 +338,12 @@ func (client *DeploymentsClient) enableRemoteDebuggingCreateRequest(ctx context.
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RemoteDebuggingPayload != nil {
@@ -357,36 +354,38 @@ func (client *DeploymentsClient) enableRemoteDebuggingCreateRequest(ctx context.
 
 // BeginGenerateHeapDump - Generate Heap Dump
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// diagnosticParameters - Parameters for the diagnostic operation
-// options - DeploymentsClientBeginGenerateHeapDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateHeapDump
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - diagnosticParameters - Parameters for the diagnostic operation
+//   - options - DeploymentsClientBeginGenerateHeapDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateHeapDump
+//     method.
 func (client *DeploymentsClient) BeginGenerateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateHeapDumpOptions) (*runtime.Poller[DeploymentsClientGenerateHeapDumpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generateHeapDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientGenerateHeapDumpResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientGenerateHeapDumpResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientGenerateHeapDumpResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientGenerateHeapDumpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // GenerateHeapDump - Generate Heap Dump
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) generateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateHeapDumpOptions) (*http.Response, error) {
 	req, err := client.generateHeapDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -419,12 +418,12 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -432,36 +431,38 @@ func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Conte
 
 // BeginGenerateThreadDump - Generate Thread Dump
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// diagnosticParameters - Parameters for the diagnostic operation
-// options - DeploymentsClientBeginGenerateThreadDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateThreadDump
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - diagnosticParameters - Parameters for the diagnostic operation
+//   - options - DeploymentsClientBeginGenerateThreadDumpOptions contains the optional parameters for the DeploymentsClient.BeginGenerateThreadDump
+//     method.
 func (client *DeploymentsClient) BeginGenerateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateThreadDumpOptions) (*runtime.Poller[DeploymentsClientGenerateThreadDumpResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generateThreadDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientGenerateThreadDumpResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientGenerateThreadDumpResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientGenerateThreadDumpResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientGenerateThreadDumpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // GenerateThreadDump - Generate Thread Dump
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) generateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginGenerateThreadDumpOptions) (*http.Response, error) {
 	req, err := client.generateThreadDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -494,12 +495,12 @@ func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Con
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -507,19 +508,20 @@ func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Con
 
 // Get - Get a Deployment and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
 func (client *DeploymentsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientGetOptions) (DeploymentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
@@ -552,12 +554,12 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -574,20 +576,21 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 
 // GetLogFileURL - Get deployment log file URL
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientGetLogFileURLOptions contains the optional parameters for the DeploymentsClient.GetLogFileURL
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientGetLogFileURLOptions contains the optional parameters for the DeploymentsClient.GetLogFileURL
+//     method.
 func (client *DeploymentsClient) GetLogFileURL(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientGetLogFileURLOptions) (DeploymentsClientGetLogFileURLResponse, error) {
 	req, err := client.getLogFileURLCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return DeploymentsClientGetLogFileURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentsClientGetLogFileURLResponse{}, err
 	}
@@ -620,12 +623,12 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -642,20 +645,21 @@ func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response
 
 // GetRemoteDebuggingConfig - Get remote debugging config.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientGetRemoteDebuggingConfigOptions contains the optional parameters for the DeploymentsClient.GetRemoteDebuggingConfig
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientGetRemoteDebuggingConfigOptions contains the optional parameters for the DeploymentsClient.GetRemoteDebuggingConfig
+//     method.
 func (client *DeploymentsClient) GetRemoteDebuggingConfig(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientGetRemoteDebuggingConfigOptions) (DeploymentsClientGetRemoteDebuggingConfigResponse, error) {
 	req, err := client.getRemoteDebuggingConfigCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return DeploymentsClientGetRemoteDebuggingConfigResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentsClientGetRemoteDebuggingConfigResponse{}, err
 	}
@@ -688,12 +692,12 @@ func (client *DeploymentsClient) getRemoteDebuggingConfigCreateRequest(ctx conte
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -709,12 +713,13 @@ func (client *DeploymentsClient) getRemoteDebuggingConfigHandleResponse(resp *ht
 }
 
 // NewListPager - Handles requests to list all resources in an App.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 func (client *DeploymentsClient) NewListPager(resourceGroupName string, serviceName string, appName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListResponse]{
 		More: func(page DeploymentsClientListResponse) bool {
@@ -731,7 +736,7 @@ func (client *DeploymentsClient) NewListPager(resourceGroupName string, serviceN
 			if err != nil {
 				return DeploymentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentsClientListResponse{}, err
 			}
@@ -762,12 +767,12 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -788,12 +793,13 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 }
 
 // NewListForClusterPager - List deployments for a certain service
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.NewListForClusterPager
+//     method.
 func (client *DeploymentsClient) NewListForClusterPager(resourceGroupName string, serviceName string, options *DeploymentsClientListForClusterOptions) *runtime.Pager[DeploymentsClientListForClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListForClusterResponse]{
 		More: func(page DeploymentsClientListForClusterResponse) bool {
@@ -810,7 +816,7 @@ func (client *DeploymentsClient) NewListForClusterPager(resourceGroupName string
 			if err != nil {
 				return DeploymentsClientListForClusterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentsClientListForClusterResponse{}, err
 			}
@@ -837,12 +843,12 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -864,35 +870,37 @@ func (client *DeploymentsClient) listForClusterHandleResponse(resp *http.Respons
 
 // BeginRestart - Restart the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginRestartOptions contains the optional parameters for the DeploymentsClient.BeginRestart
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginRestartOptions contains the optional parameters for the DeploymentsClient.BeginRestart
+//     method.
 func (client *DeploymentsClient) BeginRestart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginRestartOptions) (*runtime.Poller[DeploymentsClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientRestartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientRestartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientRestartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Restart - Restart the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) restart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -925,12 +933,12 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -938,34 +946,36 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 
 // BeginStart - Start the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginStartOptions contains the optional parameters for the DeploymentsClient.BeginStart method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginStartOptions contains the optional parameters for the DeploymentsClient.BeginStart method.
 func (client *DeploymentsClient) BeginStart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStartOptions) (*runtime.Poller[DeploymentsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Start - Start the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) start(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -998,12 +1008,12 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1011,36 +1021,38 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 
 // BeginStartJFR - Start JFR
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// diagnosticParameters - Parameters for the diagnostic operation
-// options - DeploymentsClientBeginStartJFROptions contains the optional parameters for the DeploymentsClient.BeginStartJFR
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - diagnosticParameters - Parameters for the diagnostic operation
+//   - options - DeploymentsClientBeginStartJFROptions contains the optional parameters for the DeploymentsClient.BeginStartJFR
+//     method.
 func (client *DeploymentsClient) BeginStartJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginStartJFROptions) (*runtime.Poller[DeploymentsClientStartJFRResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startJFR(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientStartJFRResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientStartJFRResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientStartJFRResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientStartJFRResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartJFR - Start JFR
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) startJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsClientBeginStartJFROptions) (*http.Response, error) {
 	req, err := client.startJFRCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1073,12 +1085,12 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
@@ -1086,34 +1098,36 @@ func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, reso
 
 // BeginStop - Stop the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// options - DeploymentsClientBeginStopOptions contains the optional parameters for the DeploymentsClient.BeginStop method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - options - DeploymentsClientBeginStopOptions contains the optional parameters for the DeploymentsClient.BeginStop method.
 func (client *DeploymentsClient) BeginStop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStopOptions) (*runtime.Poller[DeploymentsClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientStopResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Stop - Stop the deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) stop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *DeploymentsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1146,12 +1160,12 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1159,35 +1173,37 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 
 // BeginUpdate - Operation to update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// deploymentName - The name of the Deployment resource.
-// deploymentResource - Parameters for the update operation
-// options - DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - deploymentName - The name of the Deployment resource.
+//   - deploymentResource - Parameters for the update operation
+//   - options - DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
 func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginUpdateOptions) (*runtime.Poller[DeploymentsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Operation to update an exiting Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *DeploymentsClient) update(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource, options *DeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1220,12 +1236,12 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deploymentResource)

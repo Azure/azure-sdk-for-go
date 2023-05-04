@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ThreatIntelligenceIndicatorClient contains the methods for the ThreatIntelligenceIndicator group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorClient() instead.
 type ThreatIntelligenceIndicatorClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewThreatIntelligenceIndicatorClient creates a new instance of ThreatIntelligenceIndicatorClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ThreatIntelligenceIndicatorClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ThreatIntelligenceIndicatorClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // AppendTags - Append tags to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// name - Threat intelligence indicator name field.
-// threatIntelligenceAppendTags - The threat intelligence append tags request body
-// options - ThreatIntelligenceIndicatorClientAppendTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.AppendTags
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - name - Threat intelligence indicator name field.
+//   - threatIntelligenceAppendTags - The threat intelligence append tags request body
+//   - options - ThreatIntelligenceIndicatorClientAppendTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.AppendTags
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceAppendTags ThreatIntelligenceAppendTags, options *ThreatIntelligenceIndicatorClientAppendTagsOptions) (ThreatIntelligenceIndicatorClientAppendTagsResponse, error) {
 	req, err := client.appendTagsCreateRequest(ctx, resourceGroupName, workspaceName, name, threatIntelligenceAppendTags, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, err
 	}
@@ -98,12 +88,12 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceAppendTags)
@@ -111,19 +101,20 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 
 // Create - Update a threat Intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// name - Threat intelligence indicator name field.
-// threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
-// options - ThreatIntelligenceIndicatorClientCreateOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Create
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - name - Threat intelligence indicator name field.
+//   - threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
+//   - options - ThreatIntelligenceIndicatorClientCreateOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Create
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateOptions) (ThreatIntelligenceIndicatorClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, name, threatIntelligenceProperties, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateResponse{}, err
 	}
@@ -152,12 +143,12 @@ func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceProperties)
@@ -174,18 +165,19 @@ func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http
 
 // CreateIndicator - Create a new threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
-// options - ThreatIntelligenceIndicatorClientCreateIndicatorOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.CreateIndicator
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
+//   - options - ThreatIntelligenceIndicatorClientCreateIndicatorOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.CreateIndicator
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error) {
 	req, err := client.createIndicatorCreateRequest(ctx, resourceGroupName, workspaceName, threatIntelligenceProperties, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}, err
 	}
@@ -210,12 +202,12 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ct
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceProperties)
@@ -232,18 +224,19 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorHandleResponse(r
 
 // Delete - Delete a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// name - Threat intelligence indicator name field.
-// options - ThreatIntelligenceIndicatorClientDeleteOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Delete
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - name - Threat intelligence indicator name field.
+//   - options - ThreatIntelligenceIndicatorClientDeleteOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Delete
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ThreatIntelligenceIndicatorClientDeleteOptions) (ThreatIntelligenceIndicatorClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientDeleteResponse{}, err
 	}
@@ -272,12 +265,12 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,18 +278,19 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 
 // Get - View a threat intelligence indicator by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// name - Threat intelligence indicator name field.
-// options - ThreatIntelligenceIndicatorClientGetOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Get
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - name - Threat intelligence indicator name field.
+//   - options - ThreatIntelligenceIndicatorClientGetOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Get
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ThreatIntelligenceIndicatorClientGetOptions) (ThreatIntelligenceIndicatorClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientGetResponse{}, err
 	}
@@ -325,12 +319,12 @@ func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -346,12 +340,13 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 }
 
 // NewQueryIndicatorsPager - Query threat intelligence indicators as per filtering criteria.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
-// options - ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.QueryIndicators
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
+//   - options - ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.NewQueryIndicatorsPager
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) NewQueryIndicatorsPager(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse]{
 		More: func(page ThreatIntelligenceIndicatorClientQueryIndicatorsResponse) bool {
@@ -368,7 +363,7 @@ func (client *ThreatIntelligenceIndicatorClient) NewQueryIndicatorsPager(resourc
 			if err != nil {
 				return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ThreatIntelligenceIndicatorClientQueryIndicatorsResponse{}, err
 			}
@@ -395,12 +390,12 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceFilteringCriteria)
@@ -417,19 +412,20 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(r
 
 // ReplaceTags - Replace tags added to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// name - Threat intelligence indicator name field.
-// threatIntelligenceReplaceTags - Tags in the threat intelligence indicator to be replaced.
-// options - ThreatIntelligenceIndicatorClientReplaceTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.ReplaceTags
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - name - Threat intelligence indicator name field.
+//   - threatIntelligenceReplaceTags - Tags in the threat intelligence indicator to be replaced.
+//   - options - ThreatIntelligenceIndicatorClientReplaceTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.ReplaceTags
+//     method.
 func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (ThreatIntelligenceIndicatorClientReplaceTagsResponse, error) {
 	req, err := client.replaceTagsCreateRequest(ctx, resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags, options)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientReplaceTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientReplaceTagsResponse{}, err
 	}
@@ -458,12 +454,12 @@ func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx co
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, threatIntelligenceReplaceTags)

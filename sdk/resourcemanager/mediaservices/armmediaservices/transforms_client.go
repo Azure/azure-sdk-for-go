@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // TransformsClient contains the methods for the Transforms group.
 // Don't use this type directly, use NewTransformsClient() instead.
 type TransformsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTransformsClient creates a new instance of TransformsClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTransformsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransformsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TransformsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TransformsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a new Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// parameters - The request parameters
-// options - TransformsClientCreateOrUpdateOptions contains the optional parameters for the TransformsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - parameters - The request parameters
+//   - options - TransformsClientCreateOrUpdateOptions contains the optional parameters for the TransformsClient.CreateOrUpdate
+//     method.
 func (client *TransformsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientCreateOrUpdateOptions) (TransformsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, transformName, parameters, options)
 	if err != nil {
 		return TransformsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TransformsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// options - TransformsClientDeleteOptions contains the optional parameters for the TransformsClient.Delete method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - options - TransformsClientDeleteOptions contains the optional parameters for the TransformsClient.Delete method.
 func (client *TransformsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientDeleteOptions) (TransformsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, transformName, options)
 	if err != nil {
 		return TransformsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TransformsClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// options - TransformsClientGetOptions contains the optional parameters for the TransformsClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - options - TransformsClientGetOptions contains the optional parameters for the TransformsClient.Get method.
 func (client *TransformsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, options *TransformsClientGetOptions) (TransformsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, transformName, options)
 	if err != nil {
 		return TransformsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TransformsClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *TransformsClient) getHandleResponse(resp *http.Response) (Transfor
 }
 
 // NewListPager - Lists the Transforms in the account.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - TransformsClientListOptions contains the optional parameters for the TransformsClient.NewListPager method.
 func (client *TransformsClient) NewListPager(resourceGroupName string, accountName string, options *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TransformsClientListResponse]{
 		More: func(page TransformsClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *TransformsClient) NewListPager(resourceGroupName string, accountNa
 			if err != nil {
 				return TransformsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TransformsClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,18 +300,19 @@ func (client *TransformsClient) listHandleResponse(resp *http.Response) (Transfo
 
 // Update - Updates a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// parameters - The request parameters
-// options - TransformsClientUpdateOptions contains the optional parameters for the TransformsClient.Update method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - parameters - The request parameters
+//   - options - TransformsClientUpdateOptions contains the optional parameters for the TransformsClient.Update method.
 func (client *TransformsClient) Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform, options *TransformsClientUpdateOptions) (TransformsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, transformName, parameters, options)
 	if err != nil {
 		return TransformsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TransformsClientUpdateResponse{}, err
 	}
@@ -347,7 +341,7 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter transformName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transformName}", url.PathEscape(transformName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

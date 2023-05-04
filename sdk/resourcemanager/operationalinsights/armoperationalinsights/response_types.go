@@ -15,12 +15,12 @@ type AvailableServiceTiersClientListByWorkspaceResponse struct {
 	AvailableServiceTierArray []*AvailableServiceTier
 }
 
-// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
 	Cluster
 }
 
-// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -30,17 +30,17 @@ type ClustersClientGetResponse struct {
 	Cluster
 }
 
-// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	ClusterListResult
 }
 
-// ClustersClientListResponse contains the response from method ClustersClient.List.
+// ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
 	ClusterListResult
 }
 
-// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+// ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
 	Cluster
 }
@@ -60,7 +60,7 @@ type DataExportsClientGetResponse struct {
 	DataExport
 }
 
-// DataExportsClientListByWorkspaceResponse contains the response from method DataExportsClient.ListByWorkspace.
+// DataExportsClientListByWorkspaceResponse contains the response from method DataExportsClient.NewListByWorkspacePager.
 type DataExportsClientListByWorkspaceResponse struct {
 	DataExportListResult
 }
@@ -80,17 +80,17 @@ type DataSourcesClientGetResponse struct {
 	DataSource
 }
 
-// DataSourcesClientListByWorkspaceResponse contains the response from method DataSourcesClient.ListByWorkspace.
+// DataSourcesClientListByWorkspaceResponse contains the response from method DataSourcesClient.NewListByWorkspacePager.
 type DataSourcesClientListByWorkspaceResponse struct {
 	DataSourceListResult
 }
 
-// DeletedWorkspacesClientListByResourceGroupResponse contains the response from method DeletedWorkspacesClient.ListByResourceGroup.
+// DeletedWorkspacesClientListByResourceGroupResponse contains the response from method DeletedWorkspacesClient.NewListByResourceGroupPager.
 type DeletedWorkspacesClientListByResourceGroupResponse struct {
 	WorkspaceListResult
 }
 
-// DeletedWorkspacesClientListResponse contains the response from method DeletedWorkspacesClient.List.
+// DeletedWorkspacesClientListResponse contains the response from method DeletedWorkspacesClient.NewListPager.
 type DeletedWorkspacesClientListResponse struct {
 	WorkspaceListResult
 }
@@ -116,12 +116,12 @@ type IntelligencePacksClientListResponse struct {
 	IntelligencePackArray []*IntelligencePack
 }
 
-// LinkedServicesClientCreateOrUpdateResponse contains the response from method LinkedServicesClient.CreateOrUpdate.
+// LinkedServicesClientCreateOrUpdateResponse contains the response from method LinkedServicesClient.BeginCreateOrUpdate.
 type LinkedServicesClientCreateOrUpdateResponse struct {
 	LinkedService
 }
 
-// LinkedServicesClientDeleteResponse contains the response from method LinkedServicesClient.Delete.
+// LinkedServicesClientDeleteResponse contains the response from method LinkedServicesClient.BeginDelete.
 type LinkedServicesClientDeleteResponse struct {
 	LinkedService
 }
@@ -131,7 +131,7 @@ type LinkedServicesClientGetResponse struct {
 	LinkedService
 }
 
-// LinkedServicesClientListByWorkspaceResponse contains the response from method LinkedServicesClient.ListByWorkspace.
+// LinkedServicesClientListByWorkspaceResponse contains the response from method LinkedServicesClient.NewListByWorkspacePager.
 type LinkedServicesClientListByWorkspaceResponse struct {
 	LinkedServiceListResult
 }
@@ -151,12 +151,12 @@ type LinkedStorageAccountsClientGetResponse struct {
 	LinkedStorageAccountsResource
 }
 
-// LinkedStorageAccountsClientListByWorkspaceResponse contains the response from method LinkedStorageAccountsClient.ListByWorkspace.
+// LinkedStorageAccountsClientListByWorkspaceResponse contains the response from method LinkedStorageAccountsClient.NewListByWorkspacePager.
 type LinkedStorageAccountsClientListByWorkspaceResponse struct {
 	LinkedStorageAccountsListResult
 }
 
-// ManagementGroupsClientListResponse contains the response from method ManagementGroupsClient.List.
+// ManagementGroupsClientListResponse contains the response from method ManagementGroupsClient.NewListPager.
 type ManagementGroupsClientListResponse struct {
 	WorkspaceListManagementGroupsResult
 }
@@ -166,69 +166,9 @@ type OperationStatusesClientGetResponse struct {
 	OperationStatus
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
-}
-
-// QueriesClientDeleteResponse contains the response from method QueriesClient.Delete.
-type QueriesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// QueriesClientGetResponse contains the response from method QueriesClient.Get.
-type QueriesClientGetResponse struct {
-	LogAnalyticsQueryPackQuery
-}
-
-// QueriesClientListResponse contains the response from method QueriesClient.List.
-type QueriesClientListResponse struct {
-	LogAnalyticsQueryPackQueryListResult
-}
-
-// QueriesClientPutResponse contains the response from method QueriesClient.Put.
-type QueriesClientPutResponse struct {
-	LogAnalyticsQueryPackQuery
-}
-
-// QueriesClientSearchResponse contains the response from method QueriesClient.Search.
-type QueriesClientSearchResponse struct {
-	LogAnalyticsQueryPackQueryListResult
-}
-
-// QueriesClientUpdateResponse contains the response from method QueriesClient.Update.
-type QueriesClientUpdateResponse struct {
-	LogAnalyticsQueryPackQuery
-}
-
-// QueryPacksClientCreateOrUpdateResponse contains the response from method QueryPacksClient.CreateOrUpdate.
-type QueryPacksClientCreateOrUpdateResponse struct {
-	LogAnalyticsQueryPack
-}
-
-// QueryPacksClientDeleteResponse contains the response from method QueryPacksClient.Delete.
-type QueryPacksClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// QueryPacksClientGetResponse contains the response from method QueryPacksClient.Get.
-type QueryPacksClientGetResponse struct {
-	LogAnalyticsQueryPack
-}
-
-// QueryPacksClientListByResourceGroupResponse contains the response from method QueryPacksClient.ListByResourceGroup.
-type QueryPacksClientListByResourceGroupResponse struct {
-	LogAnalyticsQueryPackListResult
-}
-
-// QueryPacksClientListResponse contains the response from method QueryPacksClient.List.
-type QueryPacksClientListResponse struct {
-	LogAnalyticsQueryPackListResult
-}
-
-// QueryPacksClientUpdateTagsResponse contains the response from method QueryPacksClient.UpdateTags.
-type QueryPacksClientUpdateTagsResponse struct {
-	LogAnalyticsQueryPack
 }
 
 // SavedSearchesClientCreateOrUpdateResponse contains the response from method SavedSearchesClient.CreateOrUpdate.
@@ -281,19 +221,9 @@ type StorageInsightConfigsClientGetResponse struct {
 	StorageInsight
 }
 
-// StorageInsightConfigsClientListByWorkspaceResponse contains the response from method StorageInsightConfigsClient.ListByWorkspace.
+// StorageInsightConfigsClientListByWorkspaceResponse contains the response from method StorageInsightConfigsClient.NewListByWorkspacePager.
 type StorageInsightConfigsClientListByWorkspaceResponse struct {
 	StorageInsightListResult
-}
-
-// TablesClientCreateOrUpdateResponse contains the response from method TablesClient.CreateOrUpdate.
-type TablesClientCreateOrUpdateResponse struct {
-	Table
-}
-
-// TablesClientDeleteResponse contains the response from method TablesClient.Delete.
-type TablesClientDeleteResponse struct {
-	// placeholder for future response values
 }
 
 // TablesClientGetResponse contains the response from method TablesClient.Get.
@@ -301,14 +231,9 @@ type TablesClientGetResponse struct {
 	Table
 }
 
-// TablesClientListByWorkspaceResponse contains the response from method TablesClient.ListByWorkspace.
+// TablesClientListByWorkspaceResponse contains the response from method TablesClient.NewListByWorkspacePager.
 type TablesClientListByWorkspaceResponse struct {
 	TablesListResult
-}
-
-// TablesClientMigrateResponse contains the response from method TablesClient.Migrate.
-type TablesClientMigrateResponse struct {
-	// placeholder for future response values
 }
 
 // TablesClientUpdateResponse contains the response from method TablesClient.Update.
@@ -316,7 +241,7 @@ type TablesClientUpdateResponse struct {
 	Table
 }
 
-// UsagesClientListResponse contains the response from method UsagesClient.List.
+// UsagesClientListResponse contains the response from method UsagesClient.NewListPager.
 type UsagesClientListResponse struct {
 	WorkspaceListUsagesResult
 }
@@ -333,12 +258,12 @@ type WorkspacePurgeClientPurgeResponse struct {
 	XMSStatusLocation *string
 }
 
-// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.CreateOrUpdate.
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
 type WorkspacesClientCreateOrUpdateResponse struct {
 	Workspace
 }
 
-// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.Delete.
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.BeginDelete.
 type WorkspacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -348,12 +273,12 @@ type WorkspacesClientGetResponse struct {
 	Workspace
 }
 
-// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.ListByResourceGroup.
+// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.NewListByResourceGroupPager.
 type WorkspacesClientListByResourceGroupResponse struct {
 	WorkspaceListResult
 }
 
-// WorkspacesClientListResponse contains the response from method WorkspacesClient.List.
+// WorkspacesClientListResponse contains the response from method WorkspacesClient.NewListPager.
 type WorkspacesClientListResponse struct {
 	WorkspaceListResult
 }

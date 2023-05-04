@@ -40,7 +40,7 @@ func TestMessageUnitTest(t *testing.T) {
 		require.EqualValues(t, "the body", string(amqpMessage.Data[0]))
 		require.EqualValues(t, 1, len(amqpMessage.Data))
 
-		require.EqualValues(t, map[interface{}]interface{}{
+		require.EqualValues(t, map[any]any{
 			partitionKeyAnnotation:          "partition key",
 			scheduledEnqueuedTimeAnnotation: scheduledEnqueuedTime,
 		}, amqpMessage.Annotations)
@@ -50,7 +50,7 @@ func TestMessageUnitTest(t *testing.T) {
 func TestAMQPMessageToReceivedMessage(t *testing.T) {
 	t.Run("empty_message", func(t *testing.T) {
 		// nothing should blow up.
-		rm := newReceivedMessage(&amqp.Message{})
+		rm := newReceivedMessage(&amqp.Message{}, "receiving_link")
 		require.NotNil(t, rm)
 	})
 
@@ -63,7 +63,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			Data: [][]byte{
 				[]byte("hello"),
 			},
-			Annotations: map[interface{}]interface{}{
+			Annotations: map[any]any{
 				"x-opt-locked-until":            lockedUntil,
 				"x-opt-sequence-number":         int64(101),
 				"x-opt-partition-key":           "partitionKey1",
@@ -73,7 +73,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			},
 		}
 
-		receivedMessage := newReceivedMessage(amqpMessage)
+		receivedMessage := newReceivedMessage(amqpMessage, "receiving_link")
 
 		require.Equal(t, []byte("hello"), receivedMessage.Body)
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
@@ -125,7 +125,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 			"x-opt-via-partition-key":       "via",
 			"custom-annotation":             "value",
 		},
-		ApplicationProperties: map[string]interface{}{
+		ApplicationProperties: map[string]any{
 			"test": "foo",
 		},
 		Header: &amqp.MessageHeader{
@@ -134,7 +134,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		Data: [][]byte{[]byte("foo")},
 	}
 
-	msg := newReceivedMessage(amqpMsg)
+	msg := newReceivedMessage(amqpMsg, "receiving_link")
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
@@ -153,14 +153,14 @@ func TestAMQPMessageToMessage(t *testing.T) {
 
 	require.EqualValues(t, msg.LockToken, expectedAMQPEncodedLockTokenGUID, "locktoken")
 
-	require.EqualValues(t, map[string]interface{}{
+	require.EqualValues(t, map[string]any{
 		"test": "foo",
 	}, msg.ApplicationProperties)
 }
 
 func TestMessageState(t *testing.T) {
 	testData := []struct {
-		PropValue interface{}
+		PropValue any
 		Expected  MessageState
 	}{
 		{PropValue: int32(0), Expected: MessageStateActive},
@@ -179,7 +179,7 @@ func TestMessageState(t *testing.T) {
 				Annotations: amqp.Annotations{
 					messageStateAnnotation: td.PropValue,
 				},
-			})
+			}, "receiving_link")
 			require.EqualValues(t, td.Expected, m.State)
 		})
 	}
@@ -187,7 +187,7 @@ func TestMessageState(t *testing.T) {
 	t.Run("NoAnnotations", func(t *testing.T) {
 		m := newReceivedMessage(&amqp.Message{
 			Annotations: nil,
-		})
+		}, "receiving_link")
 		require.EqualValues(t, MessageStateActive, m.State)
 	})
 }
@@ -195,17 +195,17 @@ func TestMessageState(t *testing.T) {
 func TestMessageWithIncorrectBody(t *testing.T) {
 	// these are cases where the simple ReceivedMessage can't represent the AMQP message's
 	// payload.
-	message := newReceivedMessage(&amqp.Message{})
+	message := newReceivedMessage(&amqp.Message{}, "receiving_link")
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
 		Value: "hello",
-	})
+	}, "receiving_link")
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
 		Sequence: [][]any{},
-	})
+	}, "receiving_link")
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
@@ -213,6 +213,6 @@ func TestMessageWithIncorrectBody(t *testing.T) {
 			[]byte("hello"),
 			[]byte("world"),
 		},
-	})
+	}, "receiving_link")
 	require.Nil(t, message.Body)
 }

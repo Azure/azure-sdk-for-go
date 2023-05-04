@@ -24,11 +24,11 @@ func ExampleExportJobsClient_BeginTrigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewExportJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginTrigger(ctx, "SwaggerTestRg", "NetSDKTestRsVault", nil)
+	poller, err := clientFactory.NewExportJobsClient().BeginTrigger(ctx, "SwaggerTestRg", "NetSDKTestRsVault", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

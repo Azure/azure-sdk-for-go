@@ -14,35 +14,35 @@ import "time"
 // APIPortalCustomDomainProperties - The properties of custom domain for API portal
 type APIPortalCustomDomainProperties struct {
 	// The thumbprint of bound certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 }
 
 // APIPortalCustomDomainResource - Custom domain of the API portal
 type APIPortalCustomDomainResource struct {
 	// The properties of custom domain for API portal
-	Properties *APIPortalCustomDomainProperties `json:"properties,omitempty"`
+	Properties *APIPortalCustomDomainProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIPortalCustomDomainResourceCollection - Object that includes an array of API portal custom domain resources and a possible
 // link for next set
 type APIPortalCustomDomainResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of API portal custom domain resources
-	Value []*APIPortalCustomDomainResource `json:"value,omitempty"`
+	Value []*APIPortalCustomDomainResource
 }
 
 // APIPortalCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginCreateOrUpdate
@@ -64,7 +64,8 @@ type APIPortalCustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List method.
+// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.NewListPager
+// method.
 type APIPortalCustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -72,79 +73,79 @@ type APIPortalCustomDomainsClientListOptions struct {
 // APIPortalInstance - Collection of instances belong to the API portal
 type APIPortalInstance struct {
 	// READ-ONLY; Name of the API portal instance
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the API portal instance
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // APIPortalProperties - API portal properties payload
 type APIPortalProperties struct {
 	// The array of resource Ids of gateway to integrate with API portal.
-	GatewayIDs []*string `json:"gatewayIds,omitempty"`
+	GatewayIDs []*string
 
 	// Indicate if only https is allowed.
-	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	HTTPSOnly *bool
 
 	// Indicates whether the API portal exposes endpoint.
-	Public *bool `json:"public,omitempty"`
+	Public *bool
 
 	// Collection of OpenAPI source URL locations.
-	SourceUrls []*string `json:"sourceUrls,omitempty"`
+	SourceUrls []*string
 
 	// Single sign-on related configuration
-	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+	SsoProperties *SsoProperties
 
 	// READ-ONLY; Collection of instances belong to API portal.
-	Instances []*APIPortalInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*APIPortalInstance
 
 	// READ-ONLY; State of the API portal.
-	ProvisioningState *APIPortalProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *APIPortalProvisioningState
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *APIPortalResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *APIPortalResourceRequests
 
 	// READ-ONLY; URL of the API portal, exposed when 'public' is true.
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // APIPortalResource - API portal resource
 type APIPortalResource struct {
 	// API portal properties payload
-	Properties *APIPortalProperties `json:"properties,omitempty"`
+	Properties *APIPortalProperties
 
 	// Sku of the API portal resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIPortalResourceCollection - Object that includes an array of API portal resources and a possible link for next set
 type APIPortalResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of API portal resources
-	Value []*APIPortalResource `json:"value,omitempty"`
+	Value []*APIPortalResource
 }
 
 // APIPortalResourceRequests - Resource requests of the API portal
 type APIPortalResourceRequests struct {
 	// READ-ONLY; Cpu allocated to each API portal instance
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Memory allocated to each API portal instance
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
@@ -165,7 +166,7 @@ type APIPortalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
+// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.NewListPager method.
 type APIPortalsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -187,7 +188,7 @@ type AcceleratorAuthSettingClassification interface {
 // AcceleratorAuthSetting - Auth setting payload.
 type AcceleratorAuthSetting struct {
 	// REQUIRED; The type of the auth setting.
-	AuthType *string `json:"authType,omitempty"`
+	AuthType *string
 }
 
 // GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorAuthSetting.
@@ -196,13 +197,13 @@ func (a *AcceleratorAuthSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSet
 // AcceleratorBasicAuthSetting - Auth setting for basic auth.
 type AcceleratorBasicAuthSetting struct {
 	// REQUIRED; The type of the auth setting.
-	AuthType *string `json:"authType,omitempty"`
+	AuthType *string
 
 	// REQUIRED; Username of git repository basic auth.
-	Username *string `json:"username,omitempty"`
+	Username *string
 
 	// Password of git repository basic auth.
-	Password *string `json:"password,omitempty"`
+	Password *string
 }
 
 // GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorBasicAuthSetting.
@@ -214,28 +215,28 @@ func (a *AcceleratorBasicAuthSetting) GetAcceleratorAuthSetting() *AcceleratorAu
 
 type AcceleratorGitRepository struct {
 	// REQUIRED; Properties of the auth setting payload.
-	AuthSetting AcceleratorAuthSettingClassification `json:"authSetting,omitempty"`
+	AuthSetting AcceleratorAuthSettingClassification
 
 	// REQUIRED; Git repository URL for the accelerator.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Git repository branch to be used.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// Git repository commit to be used.
-	Commit *string `json:"commit,omitempty"`
+	Commit *string
 
 	// Git repository tag to be used.
-	GitTag *string `json:"gitTag,omitempty"`
+	GitTag *string
 
 	// Interval for checking for updates to Git or image repository.
-	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
+	IntervalInSeconds *int32
 }
 
 // AcceleratorPublicSetting - Auth setting for public url.
 type AcceleratorPublicSetting struct {
 	// REQUIRED; The type of the auth setting.
-	AuthType *string `json:"authType,omitempty"`
+	AuthType *string
 }
 
 // GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorPublicSetting.
@@ -248,16 +249,16 @@ func (a *AcceleratorPublicSetting) GetAcceleratorAuthSetting() *AcceleratorAuthS
 // AcceleratorSSHSetting - Auth setting for SSH auth.
 type AcceleratorSSHSetting struct {
 	// REQUIRED; The type of the auth setting.
-	AuthType *string `json:"authType,omitempty"`
+	AuthType *string
 
 	// Public SSH Key of git repository.
-	HostKey *string `json:"hostKey,omitempty"`
+	HostKey *string
 
 	// SSH Key algorithm of git repository.
-	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
+	HostKeyAlgorithm *string
 
 	// Private SSH Key algorithm of git repository.
-	PrivateKey *string `json:"privateKey,omitempty"`
+	PrivateKey *string
 }
 
 // GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorSSHSetting.
@@ -270,160 +271,163 @@ func (a *AcceleratorSSHSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSett
 // ActiveDeploymentCollection - Object that includes an array of Deployment resource name and set them as active.
 type ActiveDeploymentCollection struct {
 	// Collection of Deployment name.
-	ActiveDeploymentNames []*string `json:"activeDeploymentNames,omitempty"`
+	ActiveDeploymentNames []*string
 }
 
 // AppResource - App resource payload
 type AppResource struct {
 	// The Managed Identity type of the app resource
-	Identity *ManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *ManagedIdentityProperties
 
 	// The GEO location of the application, always the same with its parent resource
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the App resource
-	Properties *AppResourceProperties `json:"properties,omitempty"`
+	Properties *AppResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AppResourceCollection - Object that includes an array of App resources and a possible link for next set
 type AppResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of App resources
-	Value []*AppResource `json:"value,omitempty"`
+	Value []*AppResource
 }
 
 // AppResourceProperties - App resource properties payload
 type AppResourceProperties struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
+	AddonConfigs map[string]any
 
 	// List of custom persistent disks
-	CustomPersistentDisks []*CustomPersistentDiskResource `json:"customPersistentDisks,omitempty"`
+	CustomPersistentDisks []*CustomPersistentDiskResource
 
 	// Indicate if end to end TLS is enabled.
-	EnableEndToEndTLS *bool `json:"enableEndToEndTLS,omitempty"`
+	EnableEndToEndTLS *bool
 
 	// Indicate if only https is allowed.
-	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	HTTPSOnly *bool
 
 	// App ingress settings payload.
-	IngressSettings *IngressSettings `json:"ingressSettings,omitempty"`
+	IngressSettings *IngressSettings
 
 	// Collection of loaded certificates
-	LoadedCertificates []*LoadedCertificate `json:"loadedCertificates,omitempty"`
+	LoadedCertificates []*LoadedCertificate
 
 	// Persistent disk settings
-	PersistentDisk *PersistentDisk `json:"persistentDisk,omitempty"`
+	PersistentDisk *PersistentDisk
 
 	// Indicates whether the App exposes public endpoint
-	Public *bool `json:"public,omitempty"`
+	Public *bool
+
+	// Collection of auth secrets
+	Secrets []*Secret
 
 	// Temporary disk settings
-	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
+	TemporaryDisk *TemporaryDisk
 
 	// Additional App settings in vnet injection instance
-	VnetAddons *AppVNetAddons `json:"vnetAddons,omitempty"`
+	VnetAddons *AppVNetAddons
 
 	// READ-ONLY; Fully qualified dns Name.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; Provisioning state of the App
-	ProvisioningState *AppResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AppResourceProvisioningState
 
 	// READ-ONLY; URL of the App
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // AppVNetAddons - Additional App settings in vnet injection instance
 type AppVNetAddons struct {
 	// Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
-	PublicEndpoint *bool `json:"publicEndpoint,omitempty"`
+	PublicEndpoint *bool
 
 	// READ-ONLY; URL of the App in vnet injection instance which could be accessed from internet
-	PublicEndpointURL *string `json:"publicEndpointUrl,omitempty" azure:"ro"`
+	PublicEndpointURL *string
 }
 
 type ApplicationAcceleratorComponent struct {
-	ResourceRequests *ApplicationAcceleratorResourceRequests `json:"resourceRequests,omitempty"`
+	ResourceRequests *ApplicationAcceleratorResourceRequests
 
 	// READ-ONLY
-	Instances []*ApplicationAcceleratorInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*ApplicationAcceleratorInstance
 
 	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 type ApplicationAcceleratorInstance struct {
 	// READ-ONLY; Name of the Application Accelerator instance.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Application Accelerator instance. It can be Pending, Running, Succeeded, Failed, Unknown.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ApplicationAcceleratorProperties - Application accelerator properties payload
 type ApplicationAcceleratorProperties struct {
 	// READ-ONLY; Collection of components belong to application accelerator.
-	Components []*ApplicationAcceleratorComponent `json:"components,omitempty" azure:"ro"`
+	Components []*ApplicationAcceleratorComponent
 
 	// READ-ONLY; State of the application accelerator.
-	ProvisioningState *ApplicationAcceleratorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ApplicationAcceleratorProvisioningState
 }
 
 // ApplicationAcceleratorResource - Application accelerator resource
 type ApplicationAcceleratorResource struct {
 	// Application accelerator properties payload
-	Properties *ApplicationAcceleratorProperties `json:"properties,omitempty"`
+	Properties *ApplicationAcceleratorProperties
 
 	// Sku of the application accelerator resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationAcceleratorResourceCollection - Object that includes an array of application accelerator resources and a possible
 // link for next set
 type ApplicationAcceleratorResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of application accelerator resources
-	Value []*ApplicationAcceleratorResource `json:"value,omitempty"`
+	Value []*ApplicationAcceleratorResource
 }
 
 type ApplicationAcceleratorResourceRequests struct {
 	// READ-ONLY; Cpu allocated to each application accelerator component. 1 core can be represented by 1 or 1000m
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Instance count of the application accelerator component.
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory allocated to each application accelerator component. 1 GB can be represented by 1Gi or 1024Mi.
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // ApplicationAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginCreateOrUpdate
@@ -445,7 +449,8 @@ type ApplicationAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.List method.
+// ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.NewListPager
+// method.
 type ApplicationAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -453,78 +458,78 @@ type ApplicationAcceleratorsClientListOptions struct {
 // ApplicationInsightsAgentVersions - Application Insights agent versions properties payload
 type ApplicationInsightsAgentVersions struct {
 	// READ-ONLY; Indicates the version of application insight java agent
-	Java *string `json:"java,omitempty" azure:"ro"`
+	Java *string
 }
 
 // ApplicationLiveViewComponent - Application Live View properties payload
 type ApplicationLiveViewComponent struct {
 	// READ-ONLY; Collection of instances belong to Application Live View.
-	Instances []*ApplicationLiveViewInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*ApplicationLiveViewInstance
 
 	// READ-ONLY; Name of the component.
-	Name interface{} `json:"name,omitempty" azure:"ro"`
+	Name any
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *ApplicationLiveViewResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *ApplicationLiveViewResourceRequests
 }
 
 // ApplicationLiveViewInstance - Collection of instances belong to the Application Live View
 type ApplicationLiveViewInstance struct {
 	// READ-ONLY; Name of the Application Live View instance.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Application Live View instance. It can be Pending, Running, Succeeded, Failed, Unknown.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ApplicationLiveViewProperties - Application Live View properties payload
 type ApplicationLiveViewProperties struct {
 	// READ-ONLY; Component details of Application Live View
-	Components []*ApplicationLiveViewComponent `json:"components,omitempty" azure:"ro"`
+	Components []*ApplicationLiveViewComponent
 
 	// READ-ONLY; State of the Application Live View.
-	ProvisioningState *ApplicationLiveViewProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ApplicationLiveViewProvisioningState
 }
 
 // ApplicationLiveViewResource - Application Live View resource
 type ApplicationLiveViewResource struct {
 	// Application Live View properties payload
-	Properties *ApplicationLiveViewProperties `json:"properties,omitempty"`
+	Properties *ApplicationLiveViewProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationLiveViewResourceCollection - Object that includes an array of Application Live View resources and a possible
 // link for next set
 type ApplicationLiveViewResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Application Live View resources
-	Value []*ApplicationLiveViewResource `json:"value,omitempty"`
+	Value []*ApplicationLiveViewResource
 }
 
 // ApplicationLiveViewResourceRequests - The resource quantity for required CPU and Memory of Application Live View component
 type ApplicationLiveViewResourceRequests struct {
 	// READ-ONLY; Cpu quantity allocated to each Application Live View component instance. 1 core can be represented by 1 or 1000m.
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Desired instance count of Application Live View component instance.
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory quantity allocated to each Application Live View component instance. 1 GB can be represented by 1Gi or
 	// 1024Mi.
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // ApplicationLiveViewsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginCreateOrUpdate
@@ -546,7 +551,8 @@ type ApplicationLiveViewsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.List method.
+// ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.NewListPager
+// method.
 type ApplicationLiveViewsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -587,7 +593,7 @@ type AppsClientGetResourceUploadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppsClientListOptions contains the optional parameters for the AppsClient.List method.
+// AppsClientListOptions contains the optional parameters for the AppsClient.NewListPager method.
 type AppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -600,97 +606,101 @@ type AppsClientValidateDomainOptions struct {
 // AvailableOperations - Available operations of the service
 type AvailableOperations struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of available operation details
-	Value []*OperationDetail `json:"value,omitempty"`
+	Value []*OperationDetail
 }
 
 type AvailableRuntimeVersions struct {
 	// READ-ONLY; A list of all supported runtime versions.
-	Value []*SupportedRuntimeVersion `json:"value,omitempty" azure:"ro"`
+	Value []*SupportedRuntimeVersion
 }
 
 // AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// REQUIRED; The mount path of the persistent disk.
-	MountPath *string `json:"mountPath,omitempty"`
-
-	// REQUIRED; The share name of the Azure File share.
-	ShareName *string `json:"shareName,omitempty"`
+	MountPath *string
 
 	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
-	Type *Type `json:"type,omitempty"`
+	Type *Type
+
+	// If set to true, it will create and mount a dedicated directory for every individual app instance.
+	EnableSubPath *bool
 
 	// These are the mount options for a persistent disk.
-	MountOptions []*string `json:"mountOptions,omitempty"`
+	MountOptions []*string
 
 	// Indicates whether the persistent disk is a readOnly one.
-	ReadOnly *bool `json:"readOnly,omitempty"`
+	ReadOnly *bool
+
+	// The share name of the Azure File share.
+	ShareName *string
 }
 
 // GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type AzureFileVolume.
 func (a *AzureFileVolume) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
 	return &CustomPersistentDiskProperties{
-		Type:         a.Type,
-		MountPath:    a.MountPath,
-		ReadOnly:     a.ReadOnly,
-		MountOptions: a.MountOptions,
+		Type:          a.Type,
+		MountPath:     a.MountPath,
+		ReadOnly:      a.ReadOnly,
+		EnableSubPath: a.EnableSubPath,
+		MountOptions:  a.MountOptions,
 	}
 }
 
 // BindingResource - Binding resource payload
 type BindingResource struct {
 	// Properties of the Binding resource
-	Properties *BindingResourceProperties `json:"properties,omitempty"`
+	Properties *BindingResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BindingResourceCollection - Object that includes an array of Binding resources and a possible link for next set
 type BindingResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Binding resources
-	Value []*BindingResource `json:"value,omitempty"`
+	Value []*BindingResource
 }
 
 // BindingResourceProperties - Binding resource properties payload
 type BindingResourceProperties struct {
 	// Binding parameters of the Binding resource
-	BindingParameters map[string]interface{} `json:"bindingParameters,omitempty"`
+	BindingParameters map[string]*string
 
 	// The key of the bound resource
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The Azure resource id of the bound resource
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// READ-ONLY; Creation time of the Binding resource
-	CreatedAt *string `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *string
 
 	// READ-ONLY; The generated Spring Boot property file for this binding. The secret will be deducted.
-	GeneratedProperties *string `json:"generatedProperties,omitempty" azure:"ro"`
+	GeneratedProperties *string
 
 	// READ-ONLY; The name of the bound resource
-	ResourceName *string `json:"resourceName,omitempty" azure:"ro"`
+	ResourceName *string
 
 	// READ-ONLY; The standard Azure resource type of the bound resource
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; Update time of the Binding resource
-	UpdatedAt *string `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *string
 }
 
 // BindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the BindingsClient.BeginCreateOrUpdate method.
@@ -716,7 +726,7 @@ type BindingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BindingsClientListOptions contains the optional parameters for the BindingsClient.List method.
+// BindingsClientListOptions contains the optional parameters for the BindingsClient.NewListPager method.
 type BindingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -724,126 +734,126 @@ type BindingsClientListOptions struct {
 // Build resource payload
 type Build struct {
 	// Properties of the build resource
-	Properties *BuildProperties `json:"properties,omitempty"`
+	Properties *BuildProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuildCollection - Object that includes an array of Build resources and a possible link for next set
 type BuildCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Build resources
-	Value []*Build `json:"value,omitempty"`
+	Value []*Build
 }
 
 // BuildProperties - Build resource properties payload
 type BuildProperties struct {
 	// The resource id of agent pool
-	AgentPool *string `json:"agentPool,omitempty"`
+	AgentPool *string
 
 	// The resource id of builder to build the source code
-	Builder *string `json:"builder,omitempty"`
+	Builder *string
 
 	// The environment variables for this build
-	Env map[string]*string `json:"env,omitempty"`
+	Env map[string]*string
 
 	// The relative path of source code
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// The customized build resource for this build
-	ResourceRequests *BuildResourceRequests `json:"resourceRequests,omitempty"`
+	ResourceRequests *BuildResourceRequests
 
 	// READ-ONLY; Provisioning state of the KPack build result
-	ProvisioningState *BuildProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *BuildProvisioningState
 
 	// READ-ONLY; The build result triggered by this build
-	TriggeredBuildResult *TriggeredBuildResult `json:"triggeredBuildResult,omitempty" azure:"ro"`
+	TriggeredBuildResult *TriggeredBuildResult
 }
 
 // BuildResourceRequests - Resource request payload of Build Resource.
 type BuildResourceRequests struct {
 	// Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m. The default value is 1, this should
 	// not exceed build service agent pool cpu size.
-	CPU *string `json:"cpu,omitempty"`
+	CPU *string
 
 	// Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi. The default value is 2Gi, this
 	// should not exceed build service agent pool memory size.
-	Memory *string `json:"memory,omitempty"`
+	Memory *string
 }
 
 // BuildResult - Build result resource payload
 type BuildResult struct {
 	// Properties of the build result resource
-	Properties *BuildResultProperties `json:"properties,omitempty"`
+	Properties *BuildResultProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuildResultCollection - Object that includes an array of Build result resources and a possible link for next set
 type BuildResultCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Build result resources
-	Value []*BuildResult `json:"value,omitempty"`
+	Value []*BuildResult
 }
 
 // BuildResultLog - Build result log resource properties payload
 type BuildResultLog struct {
 	// The public download URL of this build result log
-	BlobURL *string `json:"blobUrl,omitempty"`
+	BlobURL *string
 }
 
 // BuildResultProperties - Build result resource properties payload
 type BuildResultProperties struct {
 	// The build pod name which can be used to get the build log streaming.
-	BuildPodName *string `json:"buildPodName,omitempty"`
+	BuildPodName *string
 
 	// Error when build is failed.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// The name of this build result
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; All of the build stage (init-container and container) resources in build pod.
-	BuildStages []*BuildStageProperties `json:"buildStages,omitempty" azure:"ro"`
+	BuildStages []*BuildStageProperties
 
 	// READ-ONLY; Provisioning state of the KPack build result
-	ProvisioningState *BuildResultProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *BuildResultProvisioningState
 }
 
 // BuildResultUserSourceInfo - Reference to a build result
 type BuildResultUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Resource id of an existing succeeded build result under the same Spring instance.
-	BuildResultID *string `json:"buildResultId,omitempty"`
+	BuildResultID *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUserSourceInfo implements the UserSourceInfoClassification interface for type BuildResultUserSourceInfo.
@@ -857,19 +867,19 @@ func (b *BuildResultUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // BuildService - Build service resource payload
 type BuildService struct {
 	// Properties of the build resource
-	Properties *BuildServiceProperties `json:"properties,omitempty"`
+	Properties *BuildServiceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuildServiceAgentPoolClientBeginUpdatePutOptions contains the optional parameters for the BuildServiceAgentPoolClient.BeginUpdatePut
@@ -884,7 +894,8 @@ type BuildServiceAgentPoolClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List method.
+// BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.NewListPager
+// method.
 type BuildServiceAgentPoolClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -892,50 +903,50 @@ type BuildServiceAgentPoolClientListOptions struct {
 // BuildServiceAgentPoolProperties - Build service agent pool properties
 type BuildServiceAgentPoolProperties struct {
 	// build service agent pool size properties
-	PoolSize *BuildServiceAgentPoolSizeProperties `json:"poolSize,omitempty"`
+	PoolSize *BuildServiceAgentPoolSizeProperties
 
 	// READ-ONLY; Provisioning state of the build service agent pool
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // BuildServiceAgentPoolResource - The build service agent pool resource
 type BuildServiceAgentPoolResource struct {
 	// build service agent pool properties
-	Properties *BuildServiceAgentPoolProperties `json:"properties,omitempty"`
+	Properties *BuildServiceAgentPoolProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuildServiceAgentPoolResourceCollection - Object that includes an array of build service agent pool resources and a possible
 // link for next set
 type BuildServiceAgentPoolResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of build service agent pool resource
-	Value []*BuildServiceAgentPoolResource `json:"value,omitempty"`
+	Value []*BuildServiceAgentPoolResource
 }
 
 // BuildServiceAgentPoolSizeProperties - Build service agent pool size properties
 type BuildServiceAgentPoolSizeProperties struct {
 	// The name of build service agent pool size
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; The cpu property of build service agent pool size
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; The memory property of build service agent pool size
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // BuildServiceBuilderClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildServiceBuilderClient.BeginCreateOrUpdate
@@ -963,7 +974,7 @@ type BuildServiceBuilderClientListDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.List method.
+// BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.NewListPager method.
 type BuildServiceBuilderClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1013,19 +1024,19 @@ type BuildServiceClientGetSupportedStackOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
+// BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.NewListBuildResultsPager
 // method.
 type BuildServiceClientListBuildResultsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
+// BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.NewListBuildServicesPager
 // method.
 type BuildServiceClientListBuildServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
+// BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.NewListBuildsPager method.
 type BuildServiceClientListBuildsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1045,85 +1056,85 @@ type BuildServiceClientListSupportedStacksOptions struct {
 // BuildServiceCollection - Object that includes an array of Build service resources and a possible link for next set
 type BuildServiceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Build service resources
-	Value []*BuildService `json:"value,omitempty"`
+	Value []*BuildService
 }
 
 // BuildServiceProperties - Build service resource properties payload
 type BuildServiceProperties struct {
 	// The installed KPack version in this build service.
-	KPackVersion *string `json:"kPackVersion,omitempty"`
+	KPackVersion *string
 
 	// The runtime resource configuration of this build service.
-	ResourceRequests *BuildServicePropertiesResourceRequests `json:"resourceRequests,omitempty"`
+	ResourceRequests *BuildServicePropertiesResourceRequests
 
 	// READ-ONLY; Provisioning state of the KPack build result
-	ProvisioningState *BuildServiceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *BuildServiceProvisioningState
 }
 
 // BuildServicePropertiesResourceRequests - The runtime resource configuration of this build service.
 type BuildServicePropertiesResourceRequests struct {
 	// READ-ONLY; vCPU allocated to the entire build service node pool.
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Memory allocated to the entire build service node pool.
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // BuildStageProperties - The build stage (init-container and container) resources in build pod.
 type BuildStageProperties struct {
 	// READ-ONLY; The exit code of this build init container.
-	ExitCode *string `json:"exitCode,omitempty" azure:"ro"`
+	ExitCode *string
 
 	// READ-ONLY; The name of this build stage resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The reason of this build init container.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 
 	// READ-ONLY; The provisioning state of this build stage resource.
-	Status *KPackBuildStageProvisioningState `json:"status,omitempty" azure:"ro"`
+	Status *KPackBuildStageProvisioningState
 }
 
 // BuilderProperties - KPack Builder properties payload
 type BuilderProperties struct {
 	// Builder buildpack groups.
-	BuildpackGroups []*BuildpacksGroupProperties `json:"buildpackGroups,omitempty"`
+	BuildpackGroups []*BuildpacksGroupProperties
 
 	// Builder cluster stack property.
-	Stack *StackProperties `json:"stack,omitempty"`
+	Stack *StackProperties
 
 	// READ-ONLY; Builder provision status.
-	ProvisioningState *BuilderProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *BuilderProvisioningState
 }
 
 // BuilderResource - KPack Builder resource
 type BuilderResource struct {
 	// Property of the Builder resource.
-	Properties *BuilderProperties `json:"properties,omitempty"`
+	Properties *BuilderProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuilderResourceCollection - Object that includes an array of Builder resources and a possible link for next set
 type BuilderResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Builder resources
-	Value []*BuilderResource `json:"value,omitempty"`
+	Value []*BuilderResource
 }
 
 // BuildpackBindingClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildpackBindingClient.BeginCreateOrUpdate
@@ -1144,7 +1155,13 @@ type BuildpackBindingClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.List method.
+// BuildpackBindingClientListForClusterOptions contains the optional parameters for the BuildpackBindingClient.NewListForClusterPager
+// method.
+type BuildpackBindingClientListForClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingClientListOptions contains the optional parameters for the BuildpackBindingClient.NewListPager method.
 type BuildpackBindingClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1152,65 +1169,65 @@ type BuildpackBindingClientListOptions struct {
 // BuildpackBindingLaunchProperties - Buildpack Binding Launch Properties
 type BuildpackBindingLaunchProperties struct {
 	// Non-sensitive properties for launchProperties
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// Sensitive properties for launchProperties
-	Secrets map[string]*string `json:"secrets,omitempty"`
+	Secrets map[string]*string
 }
 
 // BuildpackBindingProperties - Properties of a buildpack binding
 type BuildpackBindingProperties struct {
 	// Buildpack Binding Type
-	BindingType *BindingType `json:"bindingType,omitempty"`
+	BindingType *BindingType
 
 	// The object describes the buildpack binding launch properties
-	LaunchProperties *BuildpackBindingLaunchProperties `json:"launchProperties,omitempty"`
+	LaunchProperties *BuildpackBindingLaunchProperties
 
 	// READ-ONLY; State of the Buildpack Binding.
-	ProvisioningState *BuildpackBindingProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *BuildpackBindingProvisioningState
 }
 
 // BuildpackBindingResource - Buildpack Binding Resource object
 type BuildpackBindingResource struct {
 	// Properties of a buildpack binding
-	Properties *BuildpackBindingProperties `json:"properties,omitempty"`
+	Properties *BuildpackBindingProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BuildpackBindingResourceCollection - Object that includes an array of BuildpackBinding resources and a possible link for
 // next set
 type BuildpackBindingResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of BuildpackBinding resources
-	Value []*BuildpackBindingResource `json:"value,omitempty"`
+	Value []*BuildpackBindingResource
 }
 
 // BuildpackProperties - Buildpack properties payload
 type BuildpackProperties struct {
 	// Id of the buildpack
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // BuildpacksGroupProperties - Buildpack group properties of the Builder
 type BuildpacksGroupProperties struct {
 	// Buildpacks in the buildpack group
-	Buildpacks []*BuildpackProperties `json:"buildpacks,omitempty"`
+	Buildpacks []*BuildpackProperties
 
 	// Buildpack group name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // CertificatePropertiesClassification provides polymorphic access to related types.
@@ -1225,31 +1242,31 @@ type CertificatePropertiesClassification interface {
 // CertificateProperties - Certificate resource payload.
 type CertificateProperties struct {
 	// REQUIRED; The type of the certificate source.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The activate date of certificate.
-	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
+	ActivateDate *string
 
 	// READ-ONLY; The domain list of certificate.
-	DNSNames []*string `json:"dnsNames,omitempty" azure:"ro"`
+	DNSNames []*string
 
 	// READ-ONLY; The expiration date of certificate.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; The issue date of certificate.
-	IssuedDate *string `json:"issuedDate,omitempty" azure:"ro"`
+	IssuedDate *string
 
 	// READ-ONLY; The issuer of certificate.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Provisioning state of the Certificate
-	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CertificateResourceProvisioningState
 
 	// READ-ONLY; The subject name of certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; The thumbprint of certificate.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type CertificateProperties.
@@ -1258,28 +1275,28 @@ func (c *CertificateProperties) GetCertificateProperties() *CertificatePropertie
 // CertificateResource - Certificate resource payload.
 type CertificateResource struct {
 	// Properties of the certificate resource payload.
-	Properties CertificatePropertiesClassification `json:"properties,omitempty"`
+	Properties CertificatePropertiesClassification
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateResourceCollection - Collection compose of certificate resources list and a possible link for next page.
 type CertificateResourceCollection struct {
 	// The link to next page of certificate list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The certificate resources list.
-	Value []*CertificateResource `json:"value,omitempty"`
+	Value []*CertificateResource
 }
 
 // CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
@@ -1300,127 +1317,133 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ClusterResourceProperties - Service properties payload
 type ClusterResourceProperties struct {
+	// The name of the resource group that contains the infrastructure resources
+	InfraResourceGroup *string
+
+	// The resource Id of the Managed Environment that the Spring Apps instance builds on
+	ManagedEnvironmentID *string
+
 	// Purchasing 3rd party product of the Service resource.
-	MarketplaceResource *MarketplaceResource `json:"marketplaceResource,omitempty"`
+	MarketplaceResource *MarketplaceResource
 
 	// Network profile of the Service
-	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	NetworkProfile *NetworkProfile
 
 	// Additional Service settings in vnet injection instance
-	VnetAddons    *ServiceVNetAddons `json:"vnetAddons,omitempty"`
-	ZoneRedundant *bool              `json:"zoneRedundant,omitempty"`
+	VnetAddons    *ServiceVNetAddons
+	ZoneRedundant *bool
 
 	// READ-ONLY; Fully qualified dns name of the service instance
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; Power state of the Service
-	PowerState *PowerState `json:"powerState,omitempty" azure:"ro"`
+	PowerState *PowerState
 
 	// READ-ONLY; Provisioning state of the Service
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; ServiceInstanceEntity GUID which uniquely identifies a created resource
-	ServiceID *string `json:"serviceId,omitempty" azure:"ro"`
+	ServiceID *string
 
 	// READ-ONLY; Version of the Service
-	Version *int32 `json:"version,omitempty" azure:"ro"`
+	Version *int32
 }
 
 // ConfigServerGitProperty - Property of git.
 type ConfigServerGitProperty struct {
 	// REQUIRED; URI of the repository
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// Public sshKey of git repository.
-	HostKey *string `json:"hostKey,omitempty"`
+	HostKey *string
 
 	// SshKey algorithm of git repository.
-	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
+	HostKeyAlgorithm *string
 
 	// Label of the repository
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Password of git repository basic auth.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Private sshKey algorithm of git repository.
-	PrivateKey *string `json:"privateKey,omitempty"`
+	PrivateKey *string
 
 	// Repositories of git.
-	Repositories []*GitPatternRepository `json:"repositories,omitempty"`
+	Repositories []*GitPatternRepository
 
 	// Searching path of the repository
-	SearchPaths []*string `json:"searchPaths,omitempty"`
+	SearchPaths []*string
 
 	// Strict host key checking or not.
-	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
+	StrictHostKeyChecking *bool
 
 	// Username of git repository basic auth.
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // ConfigServerProperties - Config server git properties payload
 type ConfigServerProperties struct {
 	// Settings of config server.
-	ConfigServer *ConfigServerSettings `json:"configServer,omitempty"`
+	ConfigServer *ConfigServerSettings
 
 	// Error when apply config server settings.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// READ-ONLY; State of the config server.
-	ProvisioningState *ConfigServerState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ConfigServerState
 }
 
 // ConfigServerResource - Config Server resource
 type ConfigServerResource struct {
 	// Properties of the Config Server resource
-	Properties *ConfigServerProperties `json:"properties,omitempty"`
+	Properties *ConfigServerProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigServerSettings - The settings of config server.
 type ConfigServerSettings struct {
 	// Property of git environment.
-	GitProperty *ConfigServerGitProperty `json:"gitProperty,omitempty"`
+	GitProperty *ConfigServerGitProperty
 }
 
 // ConfigServerSettingsErrorRecord - Error record of the config server settings
 type ConfigServerSettingsErrorRecord struct {
 	// The detail error messages of the record
-	Messages []*string `json:"messages,omitempty"`
+	Messages []*string
 
 	// The name of the config server settings error record
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The uri of the config server settings error record
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ConfigServerSettingsValidateResult - Validation result for config server settings
 type ConfigServerSettingsValidateResult struct {
 	// The detail validation results
-	Details []*ConfigServerSettingsErrorRecord `json:"details,omitempty"`
+	Details []*ConfigServerSettingsErrorRecord
 
 	// Indicate if the config server settings are valid
-	IsValid *bool `json:"isValid,omitempty"`
+	IsValid *bool
 }
 
 // ConfigServersClientBeginUpdatePatchOptions contains the optional parameters for the ConfigServersClient.BeginUpdatePatch
@@ -1450,128 +1473,128 @@ type ConfigServersClientGetOptions struct {
 // ConfigurationServiceGitProperty - Property of git environment.
 type ConfigurationServiceGitProperty struct {
 	// Repositories of Application Configuration Service git property.
-	Repositories []*ConfigurationServiceGitRepository `json:"repositories,omitempty"`
+	Repositories []*ConfigurationServiceGitRepository
 }
 
 // ConfigurationServiceGitPropertyValidateResult - Validation result for configuration service settings
 type ConfigurationServiceGitPropertyValidateResult struct {
 	// The detail validation results
-	GitReposValidationResult []*ValidationMessages `json:"gitReposValidationResult,omitempty"`
+	GitReposValidationResult []*ValidationMessages
 
 	// Indicate if the configuration service settings are valid
-	IsValid *bool `json:"isValid,omitempty"`
+	IsValid *bool
 }
 
 // ConfigurationServiceGitRepository - Git repository property payload for Application Configuration Service
 type ConfigurationServiceGitRepository struct {
 	// REQUIRED; Label of the repository
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// REQUIRED; Name of the repository
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Collection of patterns of the repository
-	Patterns []*string `json:"patterns,omitempty"`
+	Patterns []*string
 
 	// REQUIRED; URI of the repository
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// Public sshKey of git repository.
-	HostKey *string `json:"hostKey,omitempty"`
+	HostKey *string
 
 	// SshKey algorithm of git repository.
-	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
+	HostKeyAlgorithm *string
 
 	// Password of git repository basic auth.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Private sshKey algorithm of git repository.
-	PrivateKey *string `json:"privateKey,omitempty"`
+	PrivateKey *string
 
 	// Searching path of the repository
-	SearchPaths []*string `json:"searchPaths,omitempty"`
+	SearchPaths []*string
 
 	// Strict host key checking or not.
-	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
+	StrictHostKeyChecking *bool
 
 	// Username of git repository basic auth.
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // ConfigurationServiceInstance - Collection of instances belong to the Application Configuration Service
 type ConfigurationServiceInstance struct {
 	// READ-ONLY; Name of the Application Configuration Service instance
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Application Configuration Service instance
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ConfigurationServiceProperties - Application Configuration Service properties payload
 type ConfigurationServiceProperties struct {
 	// The settings of Application Configuration Service.
-	Settings *ConfigurationServiceSettings `json:"settings,omitempty"`
+	Settings *ConfigurationServiceSettings
 
 	// READ-ONLY; Collection of instances belong to Application Configuration Service.
-	Instances []*ConfigurationServiceInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*ConfigurationServiceInstance
 
 	// READ-ONLY; State of the Application Configuration Service.
-	ProvisioningState *ConfigurationServiceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ConfigurationServiceProvisioningState
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *ConfigurationServiceResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *ConfigurationServiceResourceRequests
 }
 
 // ConfigurationServiceResource - Application Configuration Service resource
 type ConfigurationServiceResource struct {
 	// Application Configuration Service properties payload
-	Properties *ConfigurationServiceProperties `json:"properties,omitempty"`
+	Properties *ConfigurationServiceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigurationServiceResourceCollection - Object that includes an array of configuration service resources and a possible
 // link for next set
 type ConfigurationServiceResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of configuration service resources
-	Value []*ConfigurationServiceResource `json:"value,omitempty"`
+	Value []*ConfigurationServiceResource
 }
 
 // ConfigurationServiceResourceRequests - Resource request payload of Application Configuration Service
 type ConfigurationServiceResourceRequests struct {
 	// READ-ONLY; Cpu allocated to each Application Configuration Service instance
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Instance count of the Application Configuration Service
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory allocated to each Application Configuration Service instance
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // ConfigurationServiceSettings - The settings of Application Configuration Service.
 type ConfigurationServiceSettings struct {
 	// Property of git environment.
-	GitProperty *ConfigurationServiceGitProperty `json:"gitProperty,omitempty"`
+	GitProperty *ConfigurationServiceGitProperty
 }
 
 // ConfigurationServiceSettingsValidateResult - Validation result for configuration service settings
 type ConfigurationServiceSettingsValidateResult struct {
 	// Validation result for configuration service settings
-	GitPropertyValidationResult *ConfigurationServiceGitPropertyValidateResult `json:"gitPropertyValidationResult,omitempty"`
+	GitPropertyValidationResult *ConfigurationServiceGitPropertyValidateResult
 }
 
 // ConfigurationServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationServicesClient.BeginCreateOrUpdate
@@ -1600,7 +1623,8 @@ type ConfigurationServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.List method.
+// ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.NewListPager
+// method.
 type ConfigurationServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1608,40 +1632,40 @@ type ConfigurationServicesClientListOptions struct {
 // ContainerProbeSettings - Container liveness and readiness probe settings
 type ContainerProbeSettings struct {
 	// Indicates whether disable the liveness and readiness probe
-	DisableProbe *bool `json:"disableProbe,omitempty"`
+	DisableProbe *bool
 }
 
 // ContentCertificateProperties - Properties of certificate imported from key vault.
 type ContentCertificateProperties struct {
 	// REQUIRED; The type of the certificate source.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The content of uploaded certificate.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// READ-ONLY; The activate date of certificate.
-	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
+	ActivateDate *string
 
 	// READ-ONLY; The domain list of certificate.
-	DNSNames []*string `json:"dnsNames,omitempty" azure:"ro"`
+	DNSNames []*string
 
 	// READ-ONLY; The expiration date of certificate.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; The issue date of certificate.
-	IssuedDate *string `json:"issuedDate,omitempty" azure:"ro"`
+	IssuedDate *string
 
 	// READ-ONLY; The issuer of certificate.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Provisioning state of the Certificate
-	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CertificateResourceProvisioningState
 
 	// READ-ONLY; The subject name of certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; The thumbprint of certificate.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type ContentCertificateProperties.
@@ -1662,34 +1686,34 @@ func (c *ContentCertificateProperties) GetCertificateProperties() *CertificatePr
 // CustomContainer - Custom container payload
 type CustomContainer struct {
 	// Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
-	Args []*string `json:"args,omitempty"`
+	Args []*string
 
 	// Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
-	Command []*string `json:"command,omitempty"`
+	Command []*string
 
 	// Container image of the custom container. This should be in the form of : without the server name of the registry
-	ContainerImage *string `json:"containerImage,omitempty"`
+	ContainerImage *string
 
 	// Credential of the image registry
-	ImageRegistryCredential *ImageRegistryCredential `json:"imageRegistryCredential,omitempty"`
+	ImageRegistryCredential *ImageRegistryCredential
 
 	// Language framework of the container image uploaded
-	LanguageFramework *string `json:"languageFramework,omitempty"`
+	LanguageFramework *string
 
 	// The name of the registry that contains the container image
-	Server *string `json:"server,omitempty"`
+	Server *string
 }
 
 // CustomContainerUserSourceInfo - Custom container user source info
 type CustomContainerUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Custom container payload
-	CustomContainer *CustomContainer `json:"customContainer,omitempty"`
+	CustomContainer *CustomContainer
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUserSourceInfo implements the UserSourceInfoClassification interface for type CustomContainerUserSourceInfo.
@@ -1703,58 +1727,58 @@ func (c *CustomContainerUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // CustomDomainProperties - Custom domain of app resource payload.
 type CustomDomainProperties struct {
 	// The bound certificate name of domain.
-	CertName *string `json:"certName,omitempty"`
+	CertName *string
 
 	// The thumbprint of bound certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// READ-ONLY; The app name of domain.
-	AppName *string `json:"appName,omitempty" azure:"ro"`
+	AppName *string
 
 	// READ-ONLY; Provisioning state of the Domain
-	ProvisioningState *CustomDomainResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CustomDomainResourceProvisioningState
 }
 
 // CustomDomainResource - Custom domain resource payload.
 type CustomDomainResource struct {
 	// Properties of the custom domain resource.
-	Properties *CustomDomainProperties `json:"properties,omitempty"`
+	Properties *CustomDomainProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomDomainResourceCollection - Collection compose of a custom domain resources list and a possible link for next page.
 type CustomDomainResourceCollection struct {
 	// The link to next page of custom domain list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The custom domain resources list.
-	Value []*CustomDomainResource `json:"value,omitempty"`
+	Value []*CustomDomainResource
 }
 
 // CustomDomainValidatePayload - Custom domain validate payload.
 type CustomDomainValidatePayload struct {
 	// REQUIRED; Name to be validated
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // CustomDomainValidateResult - Validation result for custom domain.
 type CustomDomainValidateResult struct {
 	// Indicates if domain name is valid.
-	IsValid *bool `json:"isValid,omitempty"`
+	IsValid *bool
 
 	// Message of why domain name is invalid.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
@@ -1781,7 +1805,7 @@ type CustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
 type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1798,16 +1822,19 @@ type CustomPersistentDiskPropertiesClassification interface {
 // CustomPersistentDiskProperties - Custom persistent disk resource payload.
 type CustomPersistentDiskProperties struct {
 	// REQUIRED; The mount path of the persistent disk.
-	MountPath *string `json:"mountPath,omitempty"`
+	MountPath *string
 
 	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
-	Type *Type `json:"type,omitempty"`
+	Type *Type
+
+	// If set to true, it will create and mount a dedicated directory for every individual app instance.
+	EnableSubPath *bool
 
 	// These are the mount options for a persistent disk.
-	MountOptions []*string `json:"mountOptions,omitempty"`
+	MountOptions []*string
 
 	// Indicates whether the persistent disk is a readOnly one.
-	ReadOnly *bool `json:"readOnly,omitempty"`
+	ReadOnly *bool
 }
 
 // GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type CustomPersistentDiskProperties.
@@ -1818,58 +1845,70 @@ func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *Cu
 // CustomPersistentDiskResource - Custom persistent disk resource payload.
 type CustomPersistentDiskResource struct {
 	// REQUIRED; The resource id of Azure Spring Apps Storage resource.
-	StorageID *string `json:"storageId,omitempty"`
+	StorageID *string
 
 	// Properties of the custom persistent disk resource payload.
-	CustomPersistentDiskProperties CustomPersistentDiskPropertiesClassification `json:"customPersistentDiskProperties,omitempty"`
+	CustomPersistentDiskProperties CustomPersistentDiskPropertiesClassification
+}
+
+// CustomScaleRule - Azure Spring Apps App Instance Custom scaling rule.
+type CustomScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe custom scale rule.
+	Metadata map[string]*string
+
+	// Type of the custom scale rule eg: azure-servicebus, redis etc.
+	Type *string
 }
 
 // CustomizedAcceleratorProperties - Customized accelerator properties payload
 type CustomizedAcceleratorProperties struct {
 	// REQUIRED
-	GitRepository   *AcceleratorGitRepository `json:"gitRepository,omitempty"`
-	AcceleratorTags []*string                 `json:"acceleratorTags,omitempty"`
-	Description     *string                   `json:"description,omitempty"`
-	DisplayName     *string                   `json:"displayName,omitempty"`
-	IconURL         *string                   `json:"iconUrl,omitempty"`
+	GitRepository   *AcceleratorGitRepository
+	AcceleratorTags []*string
+	Description     *string
+	DisplayName     *string
+	IconURL         *string
 
 	// READ-ONLY; State of the customized accelerator.
-	ProvisioningState *CustomizedAcceleratorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CustomizedAcceleratorProvisioningState
 }
 
 // CustomizedAcceleratorResource - Customized accelerator resource
 type CustomizedAcceleratorResource struct {
 	// Customized accelerator properties payload
-	Properties *CustomizedAcceleratorProperties `json:"properties,omitempty"`
+	Properties *CustomizedAcceleratorProperties
 
 	// Sku of the customized accelerator resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type CustomizedAcceleratorResourceCollection struct {
-	NextLink *string                          `json:"nextLink,omitempty"`
-	Value    []*CustomizedAcceleratorResource `json:"value,omitempty"`
+	NextLink *string
+	Value    []*CustomizedAcceleratorResource
 }
 
 // CustomizedAcceleratorValidateResult - Validation result for customized accelerator properties
 type CustomizedAcceleratorValidateResult struct {
 	// The detail validation results
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// State of the customized accelerator validation result
-	State *CustomizedAcceleratorValidateResultState `json:"state,omitempty"`
+	State *CustomizedAcceleratorValidateResultState
 }
 
 // CustomizedAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomizedAcceleratorsClient.BeginCreateOrUpdate
@@ -1891,7 +1930,8 @@ type CustomizedAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomizedAcceleratorsClientListOptions contains the optional parameters for the CustomizedAcceleratorsClient.List method.
+// CustomizedAcceleratorsClientListOptions contains the optional parameters for the CustomizedAcceleratorsClient.NewListPager
+// method.
 type CustomizedAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1905,111 +1945,114 @@ type CustomizedAcceleratorsClientValidateOptions struct {
 // DeploymentInstance - Deployment instance payload
 type DeploymentInstance struct {
 	// READ-ONLY; Discovery status of the deployment instance
-	DiscoveryStatus *string `json:"discoveryStatus,omitempty" azure:"ro"`
+	DiscoveryStatus *string
 
 	// READ-ONLY; Name of the deployment instance
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Failed reason of the deployment instance
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 
 	// READ-ONLY; Start time of the deployment instance
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; Status of the deployment instance
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; Availability zone information of the deployment instance
-	Zone *string `json:"zone,omitempty" azure:"ro"`
+	Zone *string
 }
 
 // DeploymentList - A list of deployments resource ids.
 type DeploymentList struct {
 	// A list of deployment resource ids.
-	Deployments []*string `json:"deployments,omitempty"`
+	Deployments []*string
 }
 
 // DeploymentResource - Deployment resource payload
 type DeploymentResource struct {
 	// Properties of the Deployment resource
-	Properties *DeploymentResourceProperties `json:"properties,omitempty"`
+	Properties *DeploymentResourceProperties
 
 	// Sku of the Deployment resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeploymentResourceCollection - Object that includes an array of App resources and a possible link for next set
 type DeploymentResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Deployment resources
-	Value []*DeploymentResource `json:"value,omitempty"`
+	Value []*DeploymentResource
 }
 
 // DeploymentResourceProperties - Deployment resource properties payload
 type DeploymentResourceProperties struct {
 	// Indicates whether the Deployment is active
-	Active *bool `json:"active,omitempty"`
+	Active *bool
 
 	// Deployment settings of the Deployment
-	DeploymentSettings *DeploymentSettings `json:"deploymentSettings,omitempty"`
+	DeploymentSettings *DeploymentSettings
 
 	// Uploaded source information of the deployment.
-	Source UserSourceInfoClassification `json:"source,omitempty"`
+	Source UserSourceInfoClassification
 
 	// READ-ONLY; Collection of instances belong to the Deployment
-	Instances []*DeploymentInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*DeploymentInstance
 
 	// READ-ONLY; Provisioning state of the Deployment
-	ProvisioningState *DeploymentResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DeploymentResourceProvisioningState
 
 	// READ-ONLY; Status of the Deployment
-	Status *DeploymentResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *DeploymentResourceStatus
 }
 
 // DeploymentSettings - Deployment settings payload
 type DeploymentSettings struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
+	AddonConfigs map[string]any
 
 	// Container liveness and readiness probe settings
-	ContainerProbeSettings *ContainerProbeSettings `json:"containerProbeSettings,omitempty"`
+	ContainerProbeSettings *ContainerProbeSettings
 
 	// Collection of environment variables
-	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+	EnvironmentVariables map[string]*string
 
 	// Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-	LivenessProbe *Probe `json:"livenessProbe,omitempty"`
+	LivenessProbe *Probe
 
 	// Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the probe fails.
 	// More info:
 	// https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
+	ReadinessProbe *Probe
 
 	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required
 	// CPU and Memory, the old field cpu and memoryInGB will be deprecated
 	// later.
-	ResourceRequests *ResourceRequests `json:"resourceRequests,omitempty"`
+	ResourceRequests *ResourceRequests
+
+	// Scaling properties for the Azure Spring Apps App Instance.
+	Scale *Scale
 
 	// StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are executed until
 	// this completes successfully. If this probe fails, the Pod will be restarted,
 	// just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App Instance's
 	// lifecycle, when it might take a long time to load data or warm a cache,
 	// than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-	StartupProbe *Probe `json:"startupProbe,omitempty"`
+	StartupProbe *Probe
 
 	// Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request. Value
 	// must be non-negative integer. The value zero indicates stop immediately via the
@@ -2018,7 +2061,7 @@ type DeploymentSettings struct {
 	// Instance are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
 	// value longer than the expected cleanup time for your process. Defaults to 90
 	// seconds.
-	TerminationGracePeriodSeconds *int32 `json:"terminationGracePeriodSeconds,omitempty"`
+	TerminationGracePeriodSeconds *int32
 }
 
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -2110,13 +2153,14 @@ type DeploymentsClientGetRemoteDebuggingConfigOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.ListForCluster method.
+// DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.NewListForClusterPager
+// method.
 type DeploymentsClientListForClusterOptions struct {
 	// Version of the deployments to be listed
 	Version []string
 }
 
-// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 type DeploymentsClientListOptions struct {
 	// Version of the deployments to be listed
 	Version []string
@@ -2125,107 +2169,107 @@ type DeploymentsClientListOptions struct {
 // DevToolPortalFeatureDetail - Detail settings for Dev Tool Portal feature
 type DevToolPortalFeatureDetail struct {
 	// State of the plugin
-	State *DevToolPortalFeatureState `json:"state,omitempty"`
+	State *DevToolPortalFeatureState
 
 	// READ-ONLY; Route path to visit the plugin
-	Route *string `json:"route,omitempty" azure:"ro"`
+	Route *string
 }
 
 // DevToolPortalFeatureSettings - Settings for Dev Tool Portal
 type DevToolPortalFeatureSettings struct {
 	// Detail of Accelerator plugin
-	ApplicationAccelerator *DevToolPortalFeatureDetail `json:"applicationAccelerator,omitempty"`
+	ApplicationAccelerator *DevToolPortalFeatureDetail
 
 	// Detail of App Live View plugin
-	ApplicationLiveView *DevToolPortalFeatureDetail `json:"applicationLiveView,omitempty"`
+	ApplicationLiveView *DevToolPortalFeatureDetail
 }
 
 // DevToolPortalInstance - Collection of instances belong to the Dev Tool Portal.
 type DevToolPortalInstance struct {
 	// READ-ONLY; Name of the Dev Tool Portal instance.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Dev Tool Portal instance. It can be Pending, Running, Succeeded, Failed, Unknown.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // DevToolPortalProperties - Dev Tool Portal properties payload
 type DevToolPortalProperties struct {
 	// Settings for Dev Tool Portal
-	Features *DevToolPortalFeatureSettings `json:"features,omitempty"`
+	Features *DevToolPortalFeatureSettings
 
 	// Indicates whether the resource exposes public endpoint
-	Public *bool `json:"public,omitempty"`
+	Public *bool
 
 	// Single sign-on related configuration
-	SsoProperties *DevToolPortalSsoProperties `json:"ssoProperties,omitempty"`
+	SsoProperties *DevToolPortalSsoProperties
 
 	// READ-ONLY; Collection of instances belong to Dev Tool Portal.
-	Instances []*DevToolPortalInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*DevToolPortalInstance
 
 	// READ-ONLY; State of the Dev Tool Portal.
-	ProvisioningState *DevToolPortalProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DevToolPortalProvisioningState
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *DevToolPortalResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *DevToolPortalResourceRequests
 
 	// READ-ONLY; URL of the resource, exposed when 'public' is true.
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // DevToolPortalResource - Dev Tool Portal resource
 type DevToolPortalResource struct {
 	// Dev Tool Portal properties payload
-	Properties *DevToolPortalProperties `json:"properties,omitempty"`
+	Properties *DevToolPortalProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DevToolPortalResourceCollection - Object that includes an array of Dev Tool Portal resources and a possible link for next
 // set
 type DevToolPortalResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Dev Tool Portal resources
-	Value []*DevToolPortalResource `json:"value,omitempty"`
+	Value []*DevToolPortalResource
 }
 
 // DevToolPortalResourceRequests - The resource quantity for required CPU and Memory of Dev Tool Portal
 type DevToolPortalResourceRequests struct {
 	// READ-ONLY; Cpu quantity allocated to each Dev Tool Portal instance. 1 core can be represented by 1 or 1000m
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Desired instance count of Dev Tool Portal.
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory quantity allocated to each Dev Tool Portal instance. 1 GB can be represented by 1Gi or 1024Mi.
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // DevToolPortalSsoProperties - Single sign-on related configuration
 type DevToolPortalSsoProperties struct {
 	// The public identifier for the application
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The secret known only to the application and the authorization server
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// The URI of a JSON file with generic OIDC provider configuration.
-	MetadataURL *string `json:"metadataUrl,omitempty"`
+	MetadataURL *string
 
 	// It defines the specific actions applications can be allowed to do on a user's behalf
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 }
 
 // DevToolPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevToolPortalsClient.BeginCreateOrUpdate
@@ -2246,7 +2290,7 @@ type DevToolPortalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.List method.
+// DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.NewListPager method.
 type DevToolPortalsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2254,34 +2298,34 @@ type DevToolPortalsClientListOptions struct {
 // DiagnosticParameters - Diagnostic parameters of diagnostic operations
 type DiagnosticParameters struct {
 	// App instance name
-	AppInstance *string `json:"appInstance,omitempty"`
+	AppInstance *string
 
 	// Duration of your JFR. 1 min can be represented by 1m or 60s.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// Your target file path in your own BYOS
-	FilePath *string `json:"filePath,omitempty"`
+	FilePath *string
 }
 
 // Error - The error code compose of code and message.
 type Error struct {
 	// The code of error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The message of error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ExecAction describes a "run in container" action.
 type ExecAction struct {
 	// REQUIRED; The type of the action to take to perform the health check.
-	Type *ProbeActionType `json:"type,omitempty"`
+	Type *ProbeActionType
 
 	// Command is the command line to execute inside the container, the working directory for the command is root ('/') in the
 	// container's filesystem. The command is not run inside a shell, so traditional
 	// shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of
 	// 0 is treated as live/healthy and non-zero is unhealthy.
-	Command []*string `json:"command,omitempty"`
+	Command []*string
 }
 
 // GetProbeAction implements the ProbeActionClassification interface for type ExecAction.
@@ -2295,107 +2339,107 @@ func (e *ExecAction) GetProbeAction() *ProbeAction {
 type GatewayAPIMetadataProperties struct {
 	// Detailed description of the APIs available on the Gateway instance (default: Generated OpenAPI 3 document that describes
 	// the API routes configured.)
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Location of additional documentation for the APIs available on the Gateway instance
-	Documentation *string `json:"documentation,omitempty"`
+	Documentation *string
 
 	// Base URL that API consumers will use to access APIs on the Gateway instance.
-	ServerURL *string `json:"serverUrl,omitempty"`
+	ServerURL *string
 
 	// Title describing the context of the APIs available on the Gateway instance (default: Spring Cloud Gateway for K8S)
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// Version of APIs available on this Gateway instance (default: unspecified).
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GatewayAPIRoute - API route config of the Spring Cloud Gateway
 type GatewayAPIRoute struct {
 	// A description, will be applied to methods in the generated OpenAPI documentation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// To modify the request before sending it to the target endpoint, or the received response.
-	Filters []*string `json:"filters,omitempty"`
+	Filters []*string
 
 	// Route processing order.
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 
 	// A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request headers and
 	// parameter values. All of the predicates associated with a route must evaluate
 	// to true for the route to be matched to the request.
-	Predicates []*string `json:"predicates,omitempty"`
+	Predicates []*string
 
 	// Enable sso validation.
-	SsoEnabled *bool `json:"ssoEnabled,omitempty"`
+	SsoEnabled *bool
 
 	// Classification tags, will be applied to methods in the generated OpenAPI documentation.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 
 	// A title, will be applied to methods in the generated OpenAPI documentation.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// Pass currently-authenticated user's identity token to application service, default is 'false'
-	TokenRelay *bool `json:"tokenRelay,omitempty"`
+	TokenRelay *bool
 
 	// Full uri, will override appName.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // GatewayCorsProperties - Cross-Origin Resource Sharing property
 type GatewayCorsProperties struct {
 	// Whether user credentials are supported on cross-site requests. Valid values: true, false.
-	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+	AllowCredentials *bool
 
 	// Allowed headers in cross-site requests. The special value * allows actual requests to send any header.
-	AllowedHeaders []*string `json:"allowedHeaders,omitempty"`
+	AllowedHeaders []*string
 
 	// Allowed HTTP methods on cross-site requests. The special value * allows all methods. If not set, GET and HEAD are allowed
 	// by default.
-	AllowedMethods []*string `json:"allowedMethods,omitempty"`
+	AllowedMethods []*string
 
 	// Allowed origins to make cross-site requests. The special value * allows all domains.
-	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
+	AllowedOrigins []*string
 
 	// HTTP response headers to expose for cross-site requests.
-	ExposedHeaders []*string `json:"exposedHeaders,omitempty"`
+	ExposedHeaders []*string
 
 	// How long, in seconds, the response from a pre-flight request can be cached by clients.
-	MaxAge *int32 `json:"maxAge,omitempty"`
+	MaxAge *int32
 }
 
 // GatewayCustomDomainProperties - The properties of custom domain for Spring Cloud Gateway
 type GatewayCustomDomainProperties struct {
 	// The thumbprint of bound certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 }
 
 // GatewayCustomDomainResource - Custom domain of the Spring Cloud Gateway
 type GatewayCustomDomainResource struct {
 	// The properties of custom domain for Spring Cloud Gateway
-	Properties *GatewayCustomDomainProperties `json:"properties,omitempty"`
+	Properties *GatewayCustomDomainProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayCustomDomainResourceCollection - Object that includes an array of Spring Cloud Gateway custom domain resources and
 // a possible link for next set
 type GatewayCustomDomainResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Spring Cloud Gateway custom domain resources
-	Value []*GatewayCustomDomainResource `json:"value,omitempty"`
+	Value []*GatewayCustomDomainResource
 }
 
 // GatewayCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginCreateOrUpdate
@@ -2417,7 +2461,8 @@ type GatewayCustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List method.
+// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.NewListPager
+// method.
 type GatewayCustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2425,181 +2470,181 @@ type GatewayCustomDomainsClientListOptions struct {
 // GatewayInstance - Collection of instances belong to the Spring Cloud Gateway
 type GatewayInstance struct {
 	// READ-ONLY; Name of the Spring Cloud Gateway instance
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Spring Cloud Gateway instance
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // GatewayOperatorProperties - Properties of the Spring Cloud Gateway Operator.
 type GatewayOperatorProperties struct {
 	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway operator.
-	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*GatewayInstance
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *GatewayOperatorResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *GatewayOperatorResourceRequests
 }
 
 // GatewayOperatorResourceRequests - Properties of the Spring Cloud Gateway Operator.
 type GatewayOperatorResourceRequests struct {
 	// READ-ONLY; Cpu allocated to each Spring Cloud Gateway Operator instance.
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Instance count of the Spring Cloud Gateway Operator.
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory allocated to each Spring Cloud Gateway Operator instance.
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // GatewayProperties - Spring Cloud Gateway properties payload
 type GatewayProperties struct {
 	// API metadata property for Spring Cloud Gateway
-	APIMetadataProperties *GatewayAPIMetadataProperties `json:"apiMetadataProperties,omitempty"`
+	APIMetadataProperties *GatewayAPIMetadataProperties
 
 	// Collection of APM type used in Spring Cloud Gateway
-	ApmTypes []*ApmType `json:"apmTypes,omitempty"`
+	ApmTypes []*ApmType
 
 	// Cross-Origin Resource Sharing property
-	CorsProperties *GatewayCorsProperties `json:"corsProperties,omitempty"`
+	CorsProperties *GatewayCorsProperties
 
 	// Environment variables of Spring Cloud Gateway
-	EnvironmentVariables *GatewayPropertiesEnvironmentVariables `json:"environmentVariables,omitempty"`
+	EnvironmentVariables *GatewayPropertiesEnvironmentVariables
 
 	// Indicate if only https is allowed.
-	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	HTTPSOnly *bool
 
 	// Indicates whether the Spring Cloud Gateway exposes endpoint.
-	Public *bool `json:"public,omitempty"`
+	Public *bool
 
 	// The requested resource quantity for required CPU and Memory.
-	ResourceRequests *GatewayResourceRequests `json:"resourceRequests,omitempty"`
+	ResourceRequests *GatewayResourceRequests
 
 	// Single sign-on related configuration
-	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+	SsoProperties *SsoProperties
 
 	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway.
-	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*GatewayInstance
 
 	// READ-ONLY; Properties of the Spring Cloud Gateway Operator.
-	OperatorProperties *GatewayOperatorProperties `json:"operatorProperties,omitempty" azure:"ro"`
+	OperatorProperties *GatewayOperatorProperties
 
 	// READ-ONLY; State of the Spring Cloud Gateway.
-	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GatewayProvisioningState
 
 	// READ-ONLY; URL of the Spring Cloud Gateway, exposed when 'public' is true.
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // GatewayPropertiesEnvironmentVariables - Environment variables of Spring Cloud Gateway
 type GatewayPropertiesEnvironmentVariables struct {
 	// Non-sensitive properties
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// Sensitive properties
-	Secrets map[string]*string `json:"secrets,omitempty"`
+	Secrets map[string]*string
 }
 
 // GatewayResource - Spring Cloud Gateway resource
 type GatewayResource struct {
 	// Spring Cloud Gateway properties payload
-	Properties *GatewayProperties `json:"properties,omitempty"`
+	Properties *GatewayProperties
 
 	// Sku of the Spring Cloud Gateway resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayResourceCollection - Object that includes an array of gateway resources and a possible link for next set
 type GatewayResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of gateway resources
-	Value []*GatewayResource `json:"value,omitempty"`
+	Value []*GatewayResource
 }
 
 // GatewayResourceRequests - Resource request payload of Spring Cloud Gateway.
 type GatewayResourceRequests struct {
 	// Cpu allocated to each Spring Cloud Gateway instance.
-	CPU *string `json:"cpu,omitempty"`
+	CPU *string
 
 	// Memory allocated to each Spring Cloud Gateway instance.
-	Memory *string `json:"memory,omitempty"`
+	Memory *string
 }
 
 // GatewayRouteConfigOpenAPIProperties - OpenAPI properties of Spring Cloud Gateway route config.
 type GatewayRouteConfigOpenAPIProperties struct {
 	// The URI of OpenAPI specification.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // GatewayRouteConfigProperties - API route config of the Spring Cloud Gateway
 type GatewayRouteConfigProperties struct {
 	// The resource Id of the Azure Spring Apps app, required unless route defines uri.
-	AppResourceID *string `json:"appResourceId,omitempty"`
+	AppResourceID *string
 
 	// To modify the request before sending it to the target endpoint, or the received response in app level.
-	Filters []*string `json:"filters,omitempty"`
+	Filters []*string
 
 	// OpenAPI properties of Spring Cloud Gateway route config.
-	OpenAPI *GatewayRouteConfigOpenAPIProperties `json:"openApi,omitempty"`
+	OpenAPI *GatewayRouteConfigOpenAPIProperties
 
 	// A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated against request
 	// headers and parameter values. All of the predicates associated with a route
 	// must evaluate to true for the route to be matched to the request.
-	Predicates []*string `json:"predicates,omitempty"`
+	Predicates []*string
 
 	// Protocol of routed Azure Spring Apps applications.
-	Protocol *GatewayRouteConfigProtocol `json:"protocol,omitempty"`
+	Protocol *GatewayRouteConfigProtocol
 
 	// Array of API routes, each route contains properties such as title, uri, ssoEnabled, predicates, filters.
-	Routes []*GatewayAPIRoute `json:"routes,omitempty"`
+	Routes []*GatewayAPIRoute
 
 	// Enable Single Sign-On in app level.
-	SsoEnabled *bool `json:"ssoEnabled,omitempty"`
+	SsoEnabled *bool
 
 	// READ-ONLY; State of the Spring Cloud Gateway route config.
-	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GatewayProvisioningState
 }
 
 // GatewayRouteConfigResource - Spring Cloud Gateway route config resource
 type GatewayRouteConfigResource struct {
 	// API route config of the Spring Cloud Gateway
-	Properties *GatewayRouteConfigProperties `json:"properties,omitempty"`
+	Properties *GatewayRouteConfigProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayRouteConfigResourceCollection - Object that includes an array of Spring Cloud Gateway route config resources and
 // a possible link for next set
 type GatewayRouteConfigResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Spring Cloud Gateway route config resources
-	Value []*GatewayRouteConfigResource `json:"value,omitempty"`
+	Value []*GatewayRouteConfigResource
 }
 
 // GatewayRouteConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginCreateOrUpdate
@@ -2621,7 +2666,7 @@ type GatewayRouteConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.List method.
+// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.NewListPager method.
 type GatewayRouteConfigsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2638,6 +2683,12 @@ type GatewaysClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// GatewaysClientBeginUpdateCapacityOptions contains the optional parameters for the GatewaysClient.BeginUpdateCapacity method.
+type GatewaysClientBeginUpdateCapacityOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // GatewaysClientGetOptions contains the optional parameters for the GatewaysClient.Get method.
 type GatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -2648,7 +2699,7 @@ type GatewaysClientListEnvSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
+// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.NewListPager method.
 type GatewaysClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2661,52 +2712,52 @@ type GatewaysClientValidateDomainOptions struct {
 // GitPatternRepository - Git repository property payload for config server
 type GitPatternRepository struct {
 	// REQUIRED; Name of the repository
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; URI of the repository
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// Public sshKey of git repository.
-	HostKey *string `json:"hostKey,omitempty"`
+	HostKey *string
 
 	// SshKey algorithm of git repository.
-	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
+	HostKeyAlgorithm *string
 
 	// Label of the repository
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Password of git repository basic auth.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Collection of pattern of the repository
-	Pattern []*string `json:"pattern,omitempty"`
+	Pattern []*string
 
 	// Private sshKey algorithm of git repository.
-	PrivateKey *string `json:"privateKey,omitempty"`
+	PrivateKey *string
 
 	// Searching path of the repository
-	SearchPaths []*string `json:"searchPaths,omitempty"`
+	SearchPaths []*string
 
 	// Strict host key checking or not.
-	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
+	StrictHostKeyChecking *bool
 
 	// Username of git repository basic auth.
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // HTTPGetAction describes an action based on HTTP Get requests.
 type HTTPGetAction struct {
 	// REQUIRED; The type of the action to take to perform the health check.
-	Type *ProbeActionType `json:"type,omitempty"`
+	Type *ProbeActionType
 
 	// Path to access on the HTTP server.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Scheme to use for connecting to the host. Defaults to HTTP.
 	// Possible enum values:
 	// * "HTTP" means that the scheme used will be http://
 	// * "HTTPS" means that the scheme used will be https://
-	Scheme *HTTPSchemeType `json:"scheme,omitempty"`
+	Scheme *HTTPSchemeType
 }
 
 // GetProbeAction implements the ProbeActionClassification interface for type HTTPGetAction.
@@ -2716,64 +2767,73 @@ func (h *HTTPGetAction) GetProbeAction() *ProbeAction {
 	}
 }
 
+// HTTPScaleRule - Azure Spring Apps App Instance Http scaling rule.
+type HTTPScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe http scale rule.
+	Metadata map[string]*string
+}
+
 // ImageRegistryCredential - Credential of the image registry
 type ImageRegistryCredential struct {
 	// The password of the image registry credential
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The username of the image registry credential
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // IngressConfig - Ingress configuration payload for Azure Spring Apps resource.
 type IngressConfig struct {
 	// Ingress read time out in seconds.
-	ReadTimeoutInSeconds *int32 `json:"readTimeoutInSeconds,omitempty"`
+	ReadTimeoutInSeconds *int32
 }
 
 // IngressSettings - App ingress settings payload.
 type IngressSettings struct {
 	// How ingress should communicate with this app backend service.
-	BackendProtocol *BackendProtocol `json:"backendProtocol,omitempty"`
+	BackendProtocol *BackendProtocol
 
 	// Client-Certification Authentication.
-	ClientAuth *IngressSettingsClientAuth `json:"clientAuth,omitempty"`
+	ClientAuth *IngressSettingsClientAuth
 
 	// Ingress read time out in seconds.
-	ReadTimeoutInSeconds *int32 `json:"readTimeoutInSeconds,omitempty"`
+	ReadTimeoutInSeconds *int32
 
 	// Ingress send time out in seconds.
-	SendTimeoutInSeconds *int32 `json:"sendTimeoutInSeconds,omitempty"`
+	SendTimeoutInSeconds *int32
 
 	// Type of the affinity, set this to Cookie to enable session affinity.
-	SessionAffinity *SessionAffinity `json:"sessionAffinity,omitempty"`
+	SessionAffinity *SessionAffinity
 
 	// Time in seconds until the cookie expires.
-	SessionCookieMaxAge *int32 `json:"sessionCookieMaxAge,omitempty"`
+	SessionCookieMaxAge *int32
 }
 
 // IngressSettingsClientAuth - Client-Certification Authentication.
 type IngressSettingsClientAuth struct {
 	// Collection of certificate resource id.
-	Certificates []*string `json:"certificates,omitempty"`
+	Certificates []*string
 }
 
 // JarUploadedUserSourceInfo - Uploaded Jar binary for a deployment
 type JarUploadedUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// JVM parameter
-	JvmOptions *string `json:"jvmOptions,omitempty"`
+	JvmOptions *string
 
 	// Relative path of the storage which stores the source
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// Runtime version of the Jar file
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type JarUploadedUserSourceInfo.
@@ -2796,43 +2856,43 @@ func (j *JarUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // KeyVaultCertificateProperties - Properties of certificate imported from key vault.
 type KeyVaultCertificateProperties struct {
 	// REQUIRED; The certificate name of key vault.
-	KeyVaultCertName *string `json:"keyVaultCertName,omitempty"`
+	KeyVaultCertName *string
 
 	// REQUIRED; The type of the certificate source.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; The vault uri of user key vault.
-	VaultURI *string `json:"vaultUri,omitempty"`
+	VaultURI *string
 
 	// The certificate version of key vault.
-	CertVersion *string `json:"certVersion,omitempty"`
+	CertVersion *string
 
 	// Optional. If set to true, it will not import private key from key vault.
-	ExcludePrivateKey *bool `json:"excludePrivateKey,omitempty"`
+	ExcludePrivateKey *bool
 
 	// READ-ONLY; The activate date of certificate.
-	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
+	ActivateDate *string
 
 	// READ-ONLY; The domain list of certificate.
-	DNSNames []*string `json:"dnsNames,omitempty" azure:"ro"`
+	DNSNames []*string
 
 	// READ-ONLY; The expiration date of certificate.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; The issue date of certificate.
-	IssuedDate *string `json:"issuedDate,omitempty" azure:"ro"`
+	IssuedDate *string
 
 	// READ-ONLY; The issuer of certificate.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Provisioning state of the Certificate
-	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CertificateResourceProvisioningState
 
 	// READ-ONLY; The subject name of certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; The thumbprint of certificate.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type KeyVaultCertificateProperties.
@@ -2853,144 +2913,144 @@ func (k *KeyVaultCertificateProperties) GetCertificateProperties() *CertificateP
 // LoadedCertificate - Loaded certificate payload
 type LoadedCertificate struct {
 	// REQUIRED; Resource Id of loaded certificate
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Indicate whether the certificate will be loaded into default trust store, only work for Java runtime.
-	LoadTrustStore *bool `json:"loadTrustStore,omitempty"`
+	LoadTrustStore *bool
 }
 
 // LogFileURLResponse - Log file URL payload
 type LogFileURLResponse struct {
 	// REQUIRED; URL of the log file
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // LogSpecification - Specifications of the Log for Azure Monitoring
 type LogSpecification struct {
 	// Blob duration of the log
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Localized friendly display name of the log
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the log
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagedIdentityProperties - Managed identity properties retrieved from ARM request headers.
 type ManagedIdentityProperties struct {
 	// Principal Id of system-assigned managed identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Tenant Id of system-assigned managed identity.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Type of the managed identity
-	Type *ManagedIdentityType `json:"type,omitempty"`
+	Type *ManagedIdentityType
 
 	// Properties of user-assigned managed identities
-	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedManagedIdentity
 }
 
 // MarketplaceResource - Purchasing 3rd Party product for one Azure Spring Apps instance
 type MarketplaceResource struct {
 	// The plan id of the 3rd Party Artifact that is being procured.
-	Plan *string `json:"plan,omitempty"`
+	Plan *string
 
 	// The 3rd Party artifact that is being procured.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// The publisher id of the 3rd Party Artifact that is being bought.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 }
 
 // MetricDimension - Specifications of the Dimension of metrics
 type MetricDimension struct {
 	// Localized friendly display name of the dimension
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the dimension
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Whether this dimension should be included for the Shoebox export scenario
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // MetricSpecification - Specifications of the Metrics for Azure Monitoring
 type MetricSpecification struct {
 	// Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// Name of the metric category that the metric belongs to. A metric can only belong to a single category.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// Dimensions of the metric
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// Localized friendly description of the metric
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Localized friendly display name of the metric
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// Name of the metric
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of the MDM namespace. Optional.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// Supported aggregation types
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// Supported time grain types
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// Unit that makes sense for the metric
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // MonitoringSettingProperties - Monitoring Setting properties payload
 type MonitoringSettingProperties struct {
 	// Indicates the versions of application insight agent
-	AppInsightsAgentVersions *ApplicationInsightsAgentVersions `json:"appInsightsAgentVersions,omitempty"`
+	AppInsightsAgentVersions *ApplicationInsightsAgentVersions
 
 	// Target application insight instrumentation key, null or whitespace include empty will disable monitoringSettings
-	AppInsightsInstrumentationKey *string `json:"appInsightsInstrumentationKey,omitempty"`
+	AppInsightsInstrumentationKey *string
 
 	// Indicates the sampling rate of application insight agent, should be in range [0.0, 100.0]
-	AppInsightsSamplingRate *float64 `json:"appInsightsSamplingRate,omitempty"`
+	AppInsightsSamplingRate *float64
 
 	// Error when apply Monitoring Setting changes.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview. Please
 	// leverage appInsightsInstrumentationKey to indicate if monitoringSettings enabled
 	// or not
-	TraceEnabled *bool `json:"traceEnabled,omitempty"`
+	TraceEnabled *bool
 
 	// READ-ONLY; State of the Monitoring Setting.
-	ProvisioningState *MonitoringSettingState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *MonitoringSettingState
 }
 
 // MonitoringSettingResource - Monitoring Setting resource
 type MonitoringSettingResource struct {
 	// Properties of the Monitoring Setting resource
-	Properties *MonitoringSettingProperties `json:"properties,omitempty"`
+	Properties *MonitoringSettingProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
@@ -3015,40 +3075,40 @@ type MonitoringSettingsClientGetOptions struct {
 // NameAvailability - Name availability result payload
 type NameAvailability struct {
 	// Message why the name is not available
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates whether the name is available
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Reason why the name is not available
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // NameAvailabilityParameters - Name availability parameters payload
 type NameAvailabilityParameters struct {
 	// REQUIRED; Name to be checked
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Type of the resource to check name availability
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // NetCoreZipUploadedUserSourceInfo - Uploaded Jar binary for a deployment
 type NetCoreZipUploadedUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The path to the .NET executable relative to zip root
-	NetCoreMainEntryPath *string `json:"netCoreMainEntryPath,omitempty"`
+	NetCoreMainEntryPath *string
 
 	// Relative path of the storage which stores the source
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// Runtime version of the .Net file
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type NetCoreZipUploadedUserSourceInfo.
@@ -3071,82 +3131,82 @@ func (n *NetCoreZipUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // NetworkProfile - Service network profile payload
 type NetworkProfile struct {
 	// Name of the resource group containing network resources for customer apps in Azure Spring Apps
-	AppNetworkResourceGroup *string `json:"appNetworkResourceGroup,omitempty"`
+	AppNetworkResourceGroup *string
 
 	// Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
-	AppSubnetID *string `json:"appSubnetId,omitempty"`
+	AppSubnetID *string
 
 	// Ingress configuration payload for Azure Spring Apps resource.
-	IngressConfig *IngressConfig `json:"ingressConfig,omitempty"`
+	IngressConfig *IngressConfig
 
 	// The egress traffic type of Azure Spring Apps VNet instances.
-	OutboundType *string `json:"outboundType,omitempty"`
+	OutboundType *string
 
 	// Azure Spring Apps service reserved CIDR
-	ServiceCidr *string `json:"serviceCidr,omitempty"`
+	ServiceCidr *string
 
 	// Name of the resource group containing network resources of Azure Spring Apps Service Runtime
-	ServiceRuntimeNetworkResourceGroup *string `json:"serviceRuntimeNetworkResourceGroup,omitempty"`
+	ServiceRuntimeNetworkResourceGroup *string
 
 	// Fully qualified resource Id of the subnet to host Azure Spring Apps Service Runtime
-	ServiceRuntimeSubnetID *string `json:"serviceRuntimeSubnetId,omitempty"`
+	ServiceRuntimeSubnetID *string
 
 	// READ-ONLY; Desired outbound IP resources for Azure Spring Apps resource.
-	OutboundIPs *NetworkProfileOutboundIPs `json:"outboundIPs,omitempty" azure:"ro"`
+	OutboundIPs *NetworkProfileOutboundIPs
 
 	// READ-ONLY; Required inbound or outbound traffics for Azure Spring Apps resource.
-	RequiredTraffics []*RequiredTraffic `json:"requiredTraffics,omitempty" azure:"ro"`
+	RequiredTraffics []*RequiredTraffic
 }
 
 // NetworkProfileOutboundIPs - Desired outbound IP resources for Azure Spring Apps resource.
 type NetworkProfileOutboundIPs struct {
 	// READ-ONLY; A list of public IP addresses.
-	PublicIPs []*string `json:"publicIPs,omitempty" azure:"ro"`
+	PublicIPs []*string
 }
 
 // OperationDetail - Operation detail payload
 type OperationDetail struct {
 	// Display of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 }
 
 // OperationDisplay - Operation display payload
 type OperationDisplay struct {
 	// Localized friendly description for the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider of the operation
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource of the operation
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationProperties - Extra Operation properties
 type OperationProperties struct {
 	// Service specifications of the operation
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3154,60 +3214,60 @@ type OperationsClientListOptions struct {
 // PersistentDisk - Persistent disk payload
 type PersistentDisk struct {
 	// Mount path of the persistent disk
-	MountPath *string `json:"mountPath,omitempty"`
+	MountPath *string
 
 	// Size of the persistent disk in GB
-	SizeInGB *int32 `json:"sizeInGB,omitempty"`
+	SizeInGB *int32
 
 	// READ-ONLY; Size of the used persistent disk in GB
-	UsedInGB *int32 `json:"usedInGB,omitempty" azure:"ro"`
+	UsedInGB *int32
 }
 
 // PredefinedAcceleratorProperties - Predefined accelerator properties payload
 type PredefinedAcceleratorProperties struct {
 	// State of the predefined accelerator.
-	State *PredefinedAcceleratorState `json:"state,omitempty"`
+	State *PredefinedAcceleratorState
 
 	// READ-ONLY
-	AcceleratorTags []*string `json:"acceleratorTags,omitempty" azure:"ro"`
+	AcceleratorTags []*string
 
 	// READ-ONLY
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY
-	IconURL *string `json:"iconUrl,omitempty" azure:"ro"`
+	IconURL *string
 
 	// READ-ONLY; Provisioning state of the predefined accelerator.
-	ProvisioningState *PredefinedAcceleratorProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PredefinedAcceleratorProvisioningState
 }
 
 // PredefinedAcceleratorResource - Predefined accelerator resource
 type PredefinedAcceleratorResource struct {
 	// Predefined accelerator properties payload
-	Properties *PredefinedAcceleratorProperties `json:"properties,omitempty"`
+	Properties *PredefinedAcceleratorProperties
 
 	// Sku of the predefined accelerator resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type PredefinedAcceleratorResourceCollection struct {
-	NextLink *string                          `json:"nextLink,omitempty"`
-	Value    []*PredefinedAcceleratorResource `json:"value,omitempty"`
+	NextLink *string
+	Value    []*PredefinedAcceleratorResource
 }
 
 // PredefinedAcceleratorsClientBeginDisableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginDisable
@@ -3229,7 +3289,8 @@ type PredefinedAcceleratorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.List method.
+// PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.NewListPager
+// method.
 type PredefinedAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3238,26 +3299,26 @@ type PredefinedAcceleratorsClientListOptions struct {
 // traffic.
 type Probe struct {
 	// REQUIRED; Indicate whether the probe is disabled.
-	DisableProbe *bool `json:"disableProbe,omitempty"`
+	DisableProbe *bool
 
 	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
-	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+	FailureThreshold *int32
 
 	// Number of seconds after the App Instance has started before probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+	InitialDelaySeconds *int32
 
 	// How often (in seconds) to perform the probe. Minimum value is 1.
-	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+	PeriodSeconds *int32
 
 	// The action of the probe.
-	ProbeAction ProbeActionClassification `json:"probeAction,omitempty"`
+	ProbeAction ProbeActionClassification
 
 	// Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and
 	// startup. Minimum value is 1.
-	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+	SuccessThreshold *int32
 
 	// Number of seconds after which the probe times out. Minimum value is 1.
-	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int32
 }
 
 // ProbeActionClassification provides polymorphic access to related types.
@@ -3272,7 +3333,7 @@ type ProbeActionClassification interface {
 // ProbeAction - The action of the probe.
 type ProbeAction struct {
 	// REQUIRED; The type of the action to take to perform the health check.
-	Type *ProbeActionType `json:"type,omitempty"`
+	Type *ProbeActionType
 }
 
 // GetProbeAction implements the ProbeActionClassification interface for type ProbeAction.
@@ -3282,177 +3343,189 @@ func (p *ProbeAction) GetProbeAction() *ProbeAction { return p }
 // and tags.
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// QueueScaleRule - Azure Spring Apps App Instance Azure Queue based scaling rule.
+type QueueScaleRule struct {
+	// Authentication secrets for the queue scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Queue length.
+	QueueLength *int32
+
+	// Queue name.
+	QueueName *string
 }
 
 // RegenerateTestKeyRequestPayload - Regenerate test key request payload
 type RegenerateTestKeyRequestPayload struct {
 	// REQUIRED; Type of the test key
-	KeyType *TestKeyType `json:"keyType,omitempty"`
+	KeyType *TestKeyType
 }
 
 // RemoteDebugging - Remote debugging config.
 type RemoteDebugging struct {
 	// Indicate if remote debugging is enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Application debugging port
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // RemoteDebuggingPayload - Remote debugging payload.
 type RemoteDebuggingPayload struct {
 	// Application debugging port.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // RequiredTraffic - Required inbound or outbound traffic for Azure Spring Apps resource.
 type RequiredTraffic struct {
 	// READ-ONLY; The direction of required traffic
-	Direction *TrafficDirection `json:"direction,omitempty" azure:"ro"`
+	Direction *TrafficDirection
 
 	// READ-ONLY; The FQDN list of required traffic
-	Fqdns []*string `json:"fqdns,omitempty" azure:"ro"`
+	Fqdns []*string
 
 	// READ-ONLY; The ip list of required traffic
-	IPs []*string `json:"ips,omitempty" azure:"ro"`
+	IPs []*string
 
 	// READ-ONLY; The port of required traffic
-	Port *int32 `json:"port,omitempty" azure:"ro"`
+	Port *int32
 
 	// READ-ONLY; The protocol of required traffic
-	Protocol *string `json:"protocol,omitempty" azure:"ro"`
+	Protocol *string
 }
 
 // Resource - The core properties of ARM resources.
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceRequests - Deployment resource request payload
 type ResourceRequests struct {
 	// Required CPU. 1 core can be represented by 1 or 1000m. This should be 500m or 1 for Basic tier, and {500m, 1, 2, 3, 4}
 	// for Standard tier.
-	CPU *string `json:"cpu,omitempty"`
+	CPU *string
 
 	// Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should be {512Mi, 1Gi, 2Gi} for Basic tier, and {512Mi,
 	// 1Gi, 2Gi, …, 8Gi} for Standard tier.
-	Memory *string `json:"memory,omitempty"`
+	Memory *string
 }
 
 // ResourceSKU - Describes an available Azure Spring Apps SKU.
 type ResourceSKU struct {
 	// Gets the capacity of SKU.
-	Capacity *SKUCapacity `json:"capacity,omitempty"`
+	Capacity *SKUCapacity
 
 	// Gets a list of locations and availability zones in those locations where the SKU is available.
-	LocationInfo []*ResourceSKULocationInfo `json:"locationInfo,omitempty"`
+	LocationInfo []*ResourceSKULocationInfo
 
 	// Gets the set of locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// Gets the name of SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets the type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Gets the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*ResourceSKURestrictions `json:"restrictions,omitempty"`
+	Restrictions []*ResourceSKURestrictions
 
 	// Gets the tier of SKU.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 type ResourceSKUCapabilities struct {
 	// Gets an invariant to describe the feature.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets an invariant if the feature is measured by quantity.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ResourceSKUCollection - Object that includes an array of Azure Spring Apps SKU and a possible link for next set
 type ResourceSKUCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of resource SKU
-	Value []*ResourceSKU `json:"value,omitempty"`
+	Value []*ResourceSKU
 }
 
 // ResourceSKULocationInfo - Locations and availability zones where the SKU is available
 type ResourceSKULocationInfo struct {
 	// Gets location of the SKU
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets details of capabilities available to a SKU in specific zones.
-	ZoneDetails []*ResourceSKUZoneDetails `json:"zoneDetails,omitempty"`
+	ZoneDetails []*ResourceSKUZoneDetails
 
 	// Gets list of availability zones where the SKU is supported.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // ResourceSKURestrictionInfo - Information about the restriction where the SKU cannot be used
 type ResourceSKURestrictionInfo struct {
 	// Gets locations where the SKU is restricted
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// Gets list of availability zones where the SKU is restricted.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // ResourceSKURestrictions - Restrictions where the SKU cannot be used
 type ResourceSKURestrictions struct {
 	// Gets the reason for restriction. Possible values include: 'QuotaId', 'NotAvailableForSubscription'
-	ReasonCode *ResourceSKURestrictionsReasonCode `json:"reasonCode,omitempty"`
+	ReasonCode *ResourceSKURestrictionsReasonCode
 
 	// Gets the information about the restriction where the SKU cannot be used.
-	RestrictionInfo *ResourceSKURestrictionInfo `json:"restrictionInfo,omitempty"`
+	RestrictionInfo *ResourceSKURestrictionInfo
 
 	// Gets the type of restrictions. Possible values include: 'Location', 'Zone'
-	Type *ResourceSKURestrictionsType `json:"type,omitempty"`
+	Type *ResourceSKURestrictionsType
 
 	// Gets the value of restrictions. If the restriction type is set to location. This would be different locations where the
 	// SKU is restricted.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // ResourceSKUZoneDetails - Details of capabilities available to a SKU in specific zones
 type ResourceSKUZoneDetails struct {
 	// Gets a list of capabilities that are available for the SKU in the specified list of zones.
-	Capabilities []*ResourceSKUCapabilities `json:"capabilities,omitempty"`
+	Capabilities []*ResourceSKUCapabilities
 
 	// Gets the set of zones that the SKU is available in with the specified capabilities.
-	Name []*string `json:"name,omitempty"`
+	Name []*string
 }
 
 // ResourceUploadDefinition - Resource upload definition payload
 type ResourceUploadDefinition struct {
 	// Source relative path
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// Upload URL
-	UploadURL *string `json:"uploadUrl,omitempty"`
+	UploadURL *string
 }
 
 // RuntimeVersionsClientListRuntimeVersionsOptions contains the optional parameters for the RuntimeVersionsClient.ListRuntimeVersions
@@ -3464,33 +3537,87 @@ type RuntimeVersionsClientListRuntimeVersionsOptions struct {
 // SKU - Sku of Azure Spring Apps
 type SKU struct {
 	// Current capacity of the target resource
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Name of the Sku
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Tier of the Sku
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SKUCapacity - The SKU capacity
 type SKUCapacity struct {
 	// REQUIRED; Gets or sets the minimum.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// Gets or sets the default.
-	Default *int32 `json:"default,omitempty"`
+	Default *int32
 
 	// Gets or sets the maximum.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// Gets or sets the type of the scale.
-	ScaleType *SKUScaleType `json:"scaleType,omitempty"`
+	ScaleType *SKUScaleType
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUObject - Resource Sku object used for scaling out and scaling in.
+type SKUObject struct {
+	// Sku of the Spring Cloud Gateway resource
+	SKU *SKU
+}
+
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Scale - Azure Spring Apps scaling configurations.
+type Scale struct {
+	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
+	MaxReplicas *int32
+
+	// Optional. Minimum number of container replicas.
+	MinReplicas *int32
+
+	// Scaling rules.
+	Rules []*ScaleRule
+}
+
+// ScaleRule - Azure Spring Apps App Instance scaling rule.
+type ScaleRule struct {
+	// Azure Queue based scaling.
+	AzureQueue *QueueScaleRule
+
+	// Custom scale rule.
+	Custom *CustomScaleRule
+
+	// HTTP requests based scaling.
+	HTTP *HTTPScaleRule
+
+	// Scale Rule Name
+	Name *string
+
+	// Tcp requests based scaling.
+	TCP *TCPScaleRule
+}
+
+// ScaleRuleAuth - Auth Secrets for Azure Spring Apps App Instance Scale Rule
+type ScaleRuleAuth struct {
+	// Name of the Azure Spring Apps App Instance secret from which to pull the auth params.
+	SecretRef *string
+
+	// Trigger Parameter that uses the secret
+	TriggerParameter *string
+}
+
+// Secret definition.
+type Secret struct {
+	// Secret Name.
+	Name *string
+
+	// Secret Value.
+	Value *string
 }
 
 // ServiceRegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceRegistriesClient.BeginCreateOrUpdate
@@ -3512,7 +3639,7 @@ type ServiceRegistriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.List method.
+// ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.NewListPager method.
 type ServiceRegistriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3520,113 +3647,113 @@ type ServiceRegistriesClientListOptions struct {
 // ServiceRegistryInstance - Collection of instances belong to the Service Registry
 type ServiceRegistryInstance struct {
 	// READ-ONLY; Name of the Service Registry instance
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the Service Registry instance
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ServiceRegistryProperties - Service Registry properties payload
 type ServiceRegistryProperties struct {
 	// READ-ONLY; Collection of instances belong to Service Registry.
-	Instances []*ServiceRegistryInstance `json:"instances,omitempty" azure:"ro"`
+	Instances []*ServiceRegistryInstance
 
 	// READ-ONLY; State of the Service Registry.
-	ProvisioningState *ServiceRegistryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ServiceRegistryProvisioningState
 
 	// READ-ONLY; The requested resource quantity for required CPU and Memory.
-	ResourceRequests *ServiceRegistryResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+	ResourceRequests *ServiceRegistryResourceRequests
 }
 
 // ServiceRegistryResource - Service Registry resource
 type ServiceRegistryResource struct {
 	// Service Registry properties payload
-	Properties *ServiceRegistryProperties `json:"properties,omitempty"`
+	Properties *ServiceRegistryProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceRegistryResourceCollection - Object that includes an array of Service Registry resources and a possible link for
 // next set
 type ServiceRegistryResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Service Registry resources
-	Value []*ServiceRegistryResource `json:"value,omitempty"`
+	Value []*ServiceRegistryResource
 }
 
 // ServiceRegistryResourceRequests - Resource request payload of Service Registry
 type ServiceRegistryResourceRequests struct {
 	// READ-ONLY; Cpu allocated to each Service Registry instance
-	CPU *string `json:"cpu,omitempty" azure:"ro"`
+	CPU *string
 
 	// READ-ONLY; Instance count of the Service Registry
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; Memory allocated to each Service Registry instance
-	Memory *string `json:"memory,omitempty" azure:"ro"`
+	Memory *string
 }
 
 // ServiceResource - Service resource
 type ServiceResource struct {
 	// The GEO location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Service resource
-	Properties *ClusterResourceProperties `json:"properties,omitempty"`
+	Properties *ClusterResourceProperties
 
 	// Sku of the Service resource
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Tags of the service which is a list of key value pairs that describe the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceResourceList - Object that includes an array of Service resources and a possible link for next set
 type ServiceResourceList struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of Service resources
-	Value []*ServiceResource `json:"value,omitempty"`
+	Value []*ServiceResource
 }
 
 // ServiceSpecification - Service specification payload
 type ServiceSpecification struct {
 	// Specifications of the Log for Azure Monitoring
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification
 
 	// Specifications of the Metrics for Azure Monitoring
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // ServiceVNetAddons - Additional Service settings in vnet injection instance
 type ServiceVNetAddons struct {
 	// Indicates whether the log stream in vnet injection instance could be accessed from internet.
-	LogStreamPublicEndpoint *bool `json:"logStreamPublicEndpoint,omitempty"`
+	LogStreamPublicEndpoint *bool
 }
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
@@ -3680,12 +3807,13 @@ type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
+// method.
 type ServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3703,20 +3831,20 @@ type ServicesClientRegenerateTestKeyOptions struct {
 // SourceUploadedUserSourceInfo - Uploaded Java source code binary for a deployment
 type SourceUploadedUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Selector for the artifact to be used for the deployment for multi-module projects. This should be the relative path to
 	// the target module/project.
-	ArtifactSelector *string `json:"artifactSelector,omitempty"`
+	ArtifactSelector *string
 
 	// Relative path of the storage which stores the source
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// Runtime version of the source file
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type SourceUploadedUserSourceInfo.
@@ -3739,37 +3867,37 @@ func (s *SourceUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // SsoProperties - Single sign-on related configuration
 type SsoProperties struct {
 	// The public identifier for the application
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The secret known only to the application and the authorization server
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// The URI of Issuer Identifier
-	IssuerURI *string `json:"issuerUri,omitempty"`
+	IssuerURI *string
 
 	// It defines the specific actions applications can be allowed to do on a user's behalf
-	Scope []*string `json:"scope,omitempty"`
+	Scope []*string
 }
 
 // StackProperties - KPack ClusterStack properties payload
 type StackProperties struct {
 	// Id of the ClusterStack.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Version of the ClusterStack
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // StorageAccount - storage resource of type Azure Storage Account.
 type StorageAccount struct {
 	// REQUIRED; The account key of the Azure Storage Account.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// REQUIRED; The account name of the Azure Storage Account.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// REQUIRED; The type of the storage.
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 }
 
 // GetStorageProperties implements the StoragePropertiesClassification interface for type StorageAccount.
@@ -3791,7 +3919,7 @@ type StoragePropertiesClassification interface {
 // StorageProperties - Storage resource payload.
 type StorageProperties struct {
 	// REQUIRED; The type of the storage.
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 }
 
 // GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
@@ -3800,28 +3928,28 @@ func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s
 // StorageResource - Storage resource payload.
 type StorageResource struct {
 	// Properties of the storage resource payload.
-	Properties StoragePropertiesClassification `json:"properties,omitempty"`
+	Properties StoragePropertiesClassification
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageResourceCollection - Collection compose of storage resources list and a possible link for next page.
 type StorageResourceCollection struct {
 	// The link to next page of storage list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The storage resources list.
-	Value []*StorageResource `json:"value,omitempty"`
+	Value []*StorageResource
 }
 
 // StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate method.
@@ -3841,7 +3969,7 @@ type StoragesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
+// StoragesClientListOptions contains the optional parameters for the StoragesClient.NewListPager method.
 type StoragesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3849,110 +3977,119 @@ type StoragesClientListOptions struct {
 // SupportedBuildpackResource - Supported buildpack resource payload
 type SupportedBuildpackResource struct {
 	// Supported buildpack resource properties
-	Properties *SupportedBuildpackResourceProperties `json:"properties,omitempty"`
+	Properties *SupportedBuildpackResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SupportedBuildpackResourceProperties - Supported buildpack resource properties
 type SupportedBuildpackResourceProperties struct {
 	// The id of supported buildpack
-	BuildpackID *string `json:"buildpackId,omitempty"`
+	BuildpackID *string
 }
 
 // SupportedBuildpacksCollection - Object that includes an array of supported buildpacks resources and a possible link for
 // next set
 type SupportedBuildpacksCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of supported buildpacks resources
-	Value []*SupportedBuildpackResource `json:"value,omitempty"`
+	Value []*SupportedBuildpackResource
 }
 
 // SupportedRuntimeVersion - Supported deployment runtime version descriptor.
 type SupportedRuntimeVersion struct {
 	// The platform of this runtime version (possible values: "Java" or ".NET").
-	Platform *SupportedRuntimePlatform `json:"platform,omitempty"`
+	Platform *SupportedRuntimePlatform
 
 	// The raw value which could be passed to deployment CRUD operations.
-	Value *SupportedRuntimeValue `json:"value,omitempty"`
+	Value *SupportedRuntimeValue
 
 	// The detailed version (major.minor) of the platform.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // SupportedStackResource - Supported stack resource payload
 type SupportedStackResource struct {
 	// Supported stack resource properties
-	Properties *SupportedStackResourceProperties `json:"properties,omitempty"`
+	Properties *SupportedStackResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SupportedStackResourceProperties - Supported stack resource properties
 type SupportedStackResourceProperties struct {
 	// The id of supported stack
-	StackID *string `json:"stackId,omitempty"`
+	StackID *string
 
 	// The version of supported stack
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // SupportedStacksCollection - Object that includes an array of supported stacks resources and a possible link for next set
 type SupportedStacksCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of supported stacks resources
-	Value []*SupportedStackResource `json:"value,omitempty"`
+	Value []*SupportedStackResource
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource modification (UTC).
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *LastModifiedByType
+}
+
+// TCPScaleRule - Azure Spring Apps App Instance Tcp scaling rule.
+type TCPScaleRule struct {
+	// Authentication secrets for the tcp scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe tcp scale rule.
+	Metadata map[string]*string
 }
 
 // TCPSocketAction describes an action based on opening a socket
 type TCPSocketAction struct {
 	// REQUIRED; The type of the action to take to perform the health check.
-	Type *ProbeActionType `json:"type,omitempty"`
+	Type *ProbeActionType
 }
 
 // GetProbeAction implements the ProbeActionClassification interface for type TCPSocketAction.
@@ -3965,55 +4102,55 @@ func (t *TCPSocketAction) GetProbeAction() *ProbeAction {
 // TemporaryDisk - Temporary disk payload
 type TemporaryDisk struct {
 	// Mount path of the temporary disk
-	MountPath *string `json:"mountPath,omitempty"`
+	MountPath *string
 
 	// Size of the temporary disk in GB
-	SizeInGB *int32 `json:"sizeInGB,omitempty"`
+	SizeInGB *int32
 }
 
 // TestKeys - Test keys payload
 type TestKeys struct {
 	// Indicates whether the test endpoint feature enabled or not
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Primary key
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Primary test endpoint
-	PrimaryTestEndpoint *string `json:"primaryTestEndpoint,omitempty"`
+	PrimaryTestEndpoint *string
 
 	// Secondary key
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// Secondary test endpoint
-	SecondaryTestEndpoint *string `json:"secondaryTestEndpoint,omitempty"`
+	SecondaryTestEndpoint *string
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
 	// The GEO location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Tags of the service which is a list of key value pairs that describe the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TriggeredBuildResult - The build result triggered by a build
 type TriggeredBuildResult struct {
 	// The unique build id of this build result
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // UploadedUserSourceInfoClassification provides polymorphic access to related types.
@@ -4029,13 +4166,13 @@ type UploadedUserSourceInfoClassification interface {
 // UploadedUserSourceInfo - Source with uploaded location
 type UploadedUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Relative path of the storage which stores the source
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type UploadedUserSourceInfo.
@@ -4052,10 +4189,10 @@ func (u *UploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 // UserAssignedManagedIdentity - The details of the user-assigned managed identity assigned to an App.
 type UserAssignedManagedIdentity struct {
 	// READ-ONLY; Client Id of user-assigned managed identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Principal Id of user-assigned managed identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserSourceInfoClassification provides polymorphic access to related types.
@@ -4071,10 +4208,10 @@ type UserSourceInfoClassification interface {
 // UserSourceInfo - Source information for a deployment
 type UserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Version of the source
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GetUserSourceInfo implements the UserSourceInfoClassification interface for type UserSourceInfo.
@@ -4083,8 +4220,8 @@ func (u *UserSourceInfo) GetUserSourceInfo() *UserSourceInfo { return u }
 // ValidationMessages - Validate messages of the configuration service git repositories
 type ValidationMessages struct {
 	// Detailed validation messages.
-	Messages []*string `json:"messages,omitempty"`
+	Messages []*string
 
 	// The name of the configuration service git repository.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }

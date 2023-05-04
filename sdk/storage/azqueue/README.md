@@ -1,6 +1,6 @@
 # Azure Queue Storage SDK for Go
 
-> Server Version: 2018-03-28
+> Service Version: 2018-03-28
 
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in 
 the world via authenticated calls using HTTP or HTTPS. 

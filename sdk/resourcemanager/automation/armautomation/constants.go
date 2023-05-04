@@ -11,7 +11,7 @@ package armautomation
 
 const (
 	moduleName    = "armautomation"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.8.1"
 )
 
 // AgentRegistrationKeyName - Gets or sets the agent registration key name - primary or secondary.

@@ -16,7 +16,9 @@ import (
 )
 
 func InfiniteSendAndReceiveRun(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("InfiniteSendAndReceiveRun")
+	sc := shared.MustCreateStressContext("InfiniteSendAndReceiveRun", &shared.StressContextOptions{
+		Duration: 5 * 24 * time.Hour,
+	})
 	defer sc.End()
 
 	topicName := fmt.Sprintf("topic-%s", sc.Nano)
@@ -27,17 +29,8 @@ func InfiniteSendAndReceiveRun(remainingArgs []string) {
 	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"batch"}, nil)
 	defer cleanup()
 
-	time.AfterFunc(5*24*time.Hour, func() {
-		sc.End()
-	})
-
-	go func() {
-		runBatchReceiver(sc, topicName, "batch", stats)
-	}()
-
-	go func() {
-		continuallySend(sc, topicName)
-	}()
+	go runBatchReceiver(sc, topicName, "batch", stats)
+	go continuallySend(sc, topicName)
 
 	<-sc.Context.Done()
 }
@@ -46,17 +39,19 @@ func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionNa
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create a client", err)
 
-	receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
+	defer client.Close(context.Background())
 
-	if err != nil {
-		log.Fatalf("Failed to create receiver: %s", err.Error())
-	}
+	receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
+	sc.PanicOnError("failed to create receiver", err)
+
+	defer receiver.Close(context.Background())
 
 	for {
 		messages, err := receiver.ReceiveMessages(sc.Context, 20, nil)
 
 		if err != nil {
-			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			if errors.Is(err, context.DeadlineExceeded) {
+				log.Printf("Test deadline reached, receiver is closing")
 				break
 			}
 
@@ -79,16 +74,13 @@ func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionNa
 }
 
 func continuallySend(sc *shared.StressContext, queueName string) {
-	ctx, cancel := context.WithTimeout(sc.Context, 5*24*time.Hour)
-	defer cancel()
-
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create a connection string", err)
 
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
-	defer sender.Close(ctx)
+	defer sender.Close(context.Background())
 
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
@@ -96,7 +88,7 @@ func continuallySend(sc *shared.StressContext, queueName string) {
 	senderStats := sc.NewStat("sender")
 
 	for t := range ticker.C {
-		err := sender.SendMessage(ctx, &azservicebus.Message{
+		err := sender.SendMessage(sc.Context, &azservicebus.Message{
 			Body: []byte(fmt.Sprintf("hello world: %s", t.String())),
 		}, nil)
 
@@ -104,8 +96,8 @@ func continuallySend(sc *shared.StressContext, queueName string) {
 		sc.TrackMetric(string(MetricNameMessageSent), 1)
 
 		if err != nil {
-			if err == context.Canceled || err == context.DeadlineExceeded {
-				log.Printf("Test complete, stopping sender loop")
+			if errors.Is(err, context.DeadlineExceeded) {
+				log.Printf("Test deadline reached, stopping sender loop")
 				break
 			}
 

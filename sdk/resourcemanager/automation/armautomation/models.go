@@ -14,31 +14,31 @@ import "time"
 // Account - Definition of the automation account type.
 type Account struct {
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the automation account properties.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountClientCreateOrUpdateOptions contains the optional parameters for the AccountClient.CreateOrUpdate method.
@@ -56,12 +56,13 @@ type AccountClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
+// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.NewListByResourceGroupPager
+// method.
 type AccountClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+// AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
 type AccountClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -74,124 +75,124 @@ type AccountClientUpdateOptions struct {
 // AccountCreateOrUpdateParameters - The parameters supplied to the create or update automation account operation.
 type AccountCreateOrUpdateParameters struct {
 	// Sets the identity property for automation account
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets account create or update properties.
-	Properties *AccountCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *AccountCreateOrUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AccountCreateOrUpdateProperties - The parameters supplied to the create or update account properties.
 type AccountCreateOrUpdateProperties struct {
 	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Set the encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	Encryption *EncryptionProperties
 
 	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *bool
 
 	// Gets or sets account SKU.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 }
 
 // AccountListResult - The response model for the list account operation.
 type AccountListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets list of accounts.
-	Value []*Account `json:"value,omitempty"`
+	Value []*Account
 }
 
 // AccountProperties - Definition of the account property.
 type AccountProperties struct {
 	// URL of automation hybrid service which is used for hybrid worker on-boarding.
-	AutomationHybridServiceURL *string `json:"automationHybridServiceUrl,omitempty"`
+	AutomationHybridServiceURL *string
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	Encryption *EncryptionProperties
 
 	// Gets or sets the last modified by.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// List of Automation operations supported by the Automation resource provider.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *bool
 
 	// Gets or sets the SKU of account.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets status of account.
-	State *AutomationAccountState `json:"state,omitempty" azure:"ro"`
+	State *AutomationAccountState
 }
 
 // AccountUpdateParameters - The parameters supplied to the update automation account operation.
 type AccountUpdateParameters struct {
 	// Sets the identity property for automation account
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets account update properties.
-	Properties *AccountUpdateProperties `json:"properties,omitempty"`
+	Properties *AccountUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AccountUpdateProperties - The parameters supplied to the update account properties.
 type AccountUpdateProperties struct {
 	// Indicates whether requests using non-AAD authentication are blocked
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Set the encryption properties for the automation account
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	Encryption *EncryptionProperties
 
 	// Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
-	PublicNetworkAccess *bool `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *bool
 
 	// Gets or sets account SKU.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 }
 
 // Activity - Definition of the activity.
 type Activity struct {
 	// Gets or sets the id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the properties of the activity.
-	Properties *ActivityProperties `json:"properties,omitempty"`
+	Properties *ActivityProperties
 
 	// READ-ONLY; Gets the name of the activity.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // ActivityClientGetOptions contains the optional parameters for the ActivityClient.Get method.
@@ -199,7 +200,7 @@ type ActivityClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
+// ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.NewListByModulePager method.
 type ActivityClientListByModuleOptions struct {
 	// placeholder for future optional parameters
 }
@@ -207,131 +208,131 @@ type ActivityClientListByModuleOptions struct {
 // ActivityListResult - The response model for the list activity operation.
 type ActivityListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of activities.
-	Value []*Activity `json:"value,omitempty"`
+	Value []*Activity
 }
 
 // ActivityOutputType - Definition of the activity output type.
 type ActivityOutputType struct {
 	// Gets or sets the name of the activity output type.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the type of the activity output type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ActivityParameter - Definition of the activity parameter.
 type ActivityParameter struct {
 	// Gets or sets the description of the activity parameter.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets a Boolean value that indicates true if the parameter is dynamic.
-	IsDynamic *bool `json:"isDynamic,omitempty"`
+	IsDynamic *bool
 
 	// Gets or sets a Boolean value that indicates true if the parameter is required. If the value is false, the parameter is
 	// optional.
-	IsMandatory *bool `json:"isMandatory,omitempty"`
+	IsMandatory *bool
 
 	// Gets or sets the name of the activity parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the position of the activity parameter.
-	Position *int64 `json:"position,omitempty"`
+	Position *int64
 
 	// Gets or sets the type of the activity parameter.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Gets or sets the validation set of activity parameter.
-	ValidationSet []*ActivityParameterValidationSet `json:"validationSet,omitempty"`
+	ValidationSet []*ActivityParameterValidationSet
 
 	// Gets or sets a Boolean value that indicates true if the parameter can take values from the incoming pipeline objects. This
 	// setting is used if the cmdlet must access the complete input object. false
 	// indicates that the parameter cannot take values from the complete input object.
-	ValueFromPipeline *bool `json:"valueFromPipeline,omitempty"`
+	ValueFromPipeline *bool
 
 	// Gets or sets a Boolean value that indicates true if the parameter can be filled from a property of the incoming pipeline
 	// object that has the same name as this parameter. false indicates that the
 	// parameter cannot be filled from the incoming pipeline object property with the same name.
-	ValueFromPipelineByPropertyName *bool `json:"valueFromPipelineByPropertyName,omitempty"`
+	ValueFromPipelineByPropertyName *bool
 
 	// Gets or sets a Boolean value that indicates true if the cmdlet parameter accepts all the remaining command-line arguments
 	// that are associated with this parameter in the form of an array. false if the
 	// cmdlet parameter does not accept all the remaining argument values.
-	ValueFromRemainingArguments *bool `json:"valueFromRemainingArguments,omitempty"`
+	ValueFromRemainingArguments *bool
 }
 
 // ActivityParameterSet - Definition of the activity parameter set.
 type ActivityParameterSet struct {
 	// Gets or sets the name of the activity parameter set.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the parameters of the activity parameter set.
-	Parameters []*ActivityParameter `json:"parameters,omitempty"`
+	Parameters []*ActivityParameter
 }
 
 // ActivityParameterValidationSet - Definition of the activity parameter validation set.
 type ActivityParameterValidationSet struct {
 	// Gets or sets the name of the activity parameter validation set member.
-	MemberValue *string `json:"memberValue,omitempty"`
+	MemberValue *string
 }
 
 // ActivityProperties - Properties of the activity.
 type ActivityProperties struct {
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the user name of the activity.
-	Definition *string `json:"definition,omitempty"`
+	Definition *string
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the output types of the activity.
-	OutputTypes []*ActivityOutputType `json:"outputTypes,omitempty"`
+	OutputTypes []*ActivityOutputType
 
 	// Gets or sets the parameter sets of the activity.
-	ParameterSets []*ActivityParameterSet `json:"parameterSets,omitempty"`
+	ParameterSets []*ActivityParameterSet
 }
 
 // AdvancedSchedule - The properties of the create Advanced Schedule.
 type AdvancedSchedule struct {
 	// Days of the month that the job should execute on. Must be between 1 and 31.
-	MonthDays []*int32 `json:"monthDays,omitempty"`
+	MonthDays []*int32
 
 	// Occurrences of days within a month.
-	MonthlyOccurrences []*AdvancedScheduleMonthlyOccurrence `json:"monthlyOccurrences,omitempty"`
+	MonthlyOccurrences []*AdvancedScheduleMonthlyOccurrence
 
 	// Days of the week that the job should execute on.
-	WeekDays []*string `json:"weekDays,omitempty"`
+	WeekDays []*string
 }
 
 // AdvancedScheduleMonthlyOccurrence - The properties of the create advanced schedule monthly occurrence.
 type AdvancedScheduleMonthlyOccurrence struct {
 	// Day of the occurrence. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.
-	Day *ScheduleDay `json:"day,omitempty"`
+	Day *ScheduleDay
 
 	// Occurrence of the week within the month. Must be between 1 and 5
-	Occurrence *int32 `json:"occurrence,omitempty"`
+	Occurrence *int32
 }
 
 // AgentRegistration - Definition of the agent registration information type.
 type AgentRegistration struct {
 	// Gets or sets the dsc meta configuration.
-	DscMetaConfiguration *string `json:"dscMetaConfiguration,omitempty"`
+	DscMetaConfiguration *string
 
 	// Gets or sets the dsc server endpoint.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// Gets or sets the id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the agent registration keys.
-	Keys *AgentRegistrationKeys `json:"keys,omitempty"`
+	Keys *AgentRegistrationKeys
 }
 
 // AgentRegistrationInformationClientGetOptions contains the optional parameters for the AgentRegistrationInformationClient.Get
@@ -349,43 +350,43 @@ type AgentRegistrationInformationClientRegenerateKeyOptions struct {
 // AgentRegistrationKeys - Definition of the agent registration keys.
 type AgentRegistrationKeys struct {
 	// Gets or sets the primary key.
-	Primary *string `json:"primary,omitempty"`
+	Primary *string
 
 	// Gets or sets the secondary key.
-	Secondary *string `json:"secondary,omitempty"`
+	Secondary *string
 }
 
 // AgentRegistrationRegenerateKeyParameter - The parameters supplied to the regenerate keys operation.
 type AgentRegistrationRegenerateKeyParameter struct {
 	// REQUIRED; Gets or sets the agent registration key name - primary or secondary.
-	KeyName *AgentRegistrationKeyName `json:"keyName,omitempty"`
+	KeyName *AgentRegistrationKeyName
 }
 
 // AzureQueryProperties - Azure query for the update configuration.
 type AzureQueryProperties struct {
 	// List of locations to scope the query to.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// List of Subscription or Resource Group ARM Ids.
-	Scope []*string `json:"scope,omitempty"`
+	Scope []*string
 
 	// Tag settings for the VM.
-	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
+	TagSettings *TagSettingsProperties
 }
 
 // Certificate - Definition of the certificate.
 type Certificate struct {
 	// Gets or sets the properties of the certificate.
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	Properties *CertificateProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate method.
@@ -403,7 +404,7 @@ type CertificateClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
+// CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.NewListByAutomationAccountPager
 // method.
 type CertificateClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -417,70 +418,70 @@ type CertificateClientUpdateOptions struct {
 // CertificateCreateOrUpdateParameters - The parameters supplied to the create or update or replace certificate operation.
 type CertificateCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the certificate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the properties of the certificate.
-	Properties *CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *CertificateCreateOrUpdateProperties
 }
 
 // CertificateCreateOrUpdateProperties - The properties of the create certificate operation.
 type CertificateCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the base64 encoded value of the certificate.
-	Base64Value *string `json:"base64Value,omitempty"`
+	Base64Value *string
 
 	// Gets or sets the description of the certificate.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the is exportable flag of the certificate.
-	IsExportable *bool `json:"isExportable,omitempty"`
+	IsExportable *bool
 
 	// Gets or sets the thumbprint of the certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 }
 
 // CertificateListResult - The response model for the list certificate operation.
 type CertificateListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of certificates.
-	Value []*Certificate `json:"value,omitempty"`
+	Value []*Certificate
 }
 
 // CertificateProperties - Properties of the certificate.
 type CertificateProperties struct {
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the expiry time of the certificate.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty" azure:"ro"`
+	ExpiryTime *time.Time
 
 	// READ-ONLY; Gets the is exportable flag of the certificate.
-	IsExportable *bool `json:"isExportable,omitempty" azure:"ro"`
+	IsExportable *bool
 
 	// READ-ONLY; Gets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets the thumbprint of the certificate.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // CertificateUpdateParameters - The parameters supplied to the update certificate operation.
 type CertificateUpdateParameters struct {
 	// Gets or sets the name of the certificate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the properties of the certificate.
-	Properties *CertificateUpdateProperties `json:"properties,omitempty"`
+	Properties *CertificateUpdateProperties
 }
 
 // CertificateUpdateProperties - The properties of the update certificate operation
 type CertificateUpdateProperties struct {
 	// Gets or sets the description of the certificate.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // ClientConvertGraphRunbookContentOptions contains the optional parameters for the Client.ConvertGraphRunbookContent method.
@@ -490,25 +491,25 @@ type ClientConvertGraphRunbookContentOptions struct {
 
 type ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // Connection - Definition of the connection.
 type Connection struct {
 	// Gets or sets the properties of the connection.
-	Properties *ConnectionProperties `json:"properties,omitempty"`
+	Properties *ConnectionProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConnectionClientCreateOrUpdateOptions contains the optional parameters for the ConnectionClient.CreateOrUpdate method.
@@ -526,7 +527,7 @@ type ConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
+// ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.NewListByAutomationAccountPager
 // method.
 type ConnectionClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -540,70 +541,70 @@ type ConnectionClientUpdateOptions struct {
 // ConnectionCreateOrUpdateParameters - The parameters supplied to the create or update connection operation.
 type ConnectionCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the connection.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the properties of the connection.
-	Properties *ConnectionCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *ConnectionCreateOrUpdateProperties
 }
 
 // ConnectionCreateOrUpdateProperties - The properties of the create connection properties
 type ConnectionCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the connectionType of the connection.
-	ConnectionType *ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
+	ConnectionType *ConnectionTypeAssociationProperty
 
 	// Gets or sets the description of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the field definition properties of the connection.
-	FieldDefinitionValues map[string]*string `json:"fieldDefinitionValues,omitempty"`
+	FieldDefinitionValues map[string]*string
 }
 
 // ConnectionListResult - The response model for the list connection operation.
 type ConnectionListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of connection.
-	Value []*Connection `json:"value,omitempty"`
+	Value []*Connection
 }
 
 // ConnectionProperties - Definition of the connection properties.
 type ConnectionProperties struct {
 	// Gets or sets the connectionType of the connection.
-	ConnectionType *ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
+	ConnectionType *ConnectionTypeAssociationProperty
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the field definition values of the connection.
-	FieldDefinitionValues map[string]*string `json:"fieldDefinitionValues,omitempty" azure:"ro"`
+	FieldDefinitionValues map[string]*string
 
 	// READ-ONLY; Gets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 }
 
 // ConnectionType - Definition of the connection type.
 type ConnectionType struct {
 	// Gets or sets the properties of the connection type.
-	Properties *ConnectionTypeProperties `json:"properties,omitempty"`
+	Properties *ConnectionTypeProperties
 
 	// READ-ONLY; Gets the id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the name of the connection type.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConnectionTypeAssociationProperty - The connection type property associated with the entity.
 type ConnectionTypeAssociationProperty struct {
 	// Gets or sets the name of the connection type.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ConnectionTypeClientCreateOrUpdateOptions contains the optional parameters for the ConnectionTypeClient.CreateOrUpdate
@@ -622,7 +623,7 @@ type ConnectionTypeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.ListByAutomationAccount
+// ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.NewListByAutomationAccountPager
 // method.
 type ConnectionTypeClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -631,115 +632,115 @@ type ConnectionTypeClientListByAutomationAccountOptions struct {
 // ConnectionTypeCreateOrUpdateParameters - The parameters supplied to the create or update connection type operation.
 type ConnectionTypeCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the connection type.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the value of the connection type.
-	Properties *ConnectionTypeCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *ConnectionTypeCreateOrUpdateProperties
 }
 
 // ConnectionTypeCreateOrUpdateProperties - The properties of the create connection type.
 type ConnectionTypeCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the field definitions of the connection type.
-	FieldDefinitions map[string]*FieldDefinition `json:"fieldDefinitions,omitempty"`
+	FieldDefinitions map[string]*FieldDefinition
 
 	// Gets or sets a Boolean value to indicate if the connection type is global.
-	IsGlobal *bool `json:"isGlobal,omitempty"`
+	IsGlobal *bool
 }
 
 // ConnectionTypeListResult - The response model for the list connection type operation.
 type ConnectionTypeListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of connection types.
-	Value []*ConnectionType `json:"value,omitempty"`
+	Value []*ConnectionType
 }
 
 // ConnectionTypeProperties - Properties of the connection type.
 type ConnectionTypeProperties struct {
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets a Boolean value to indicate if the connection type is global.
-	IsGlobal *bool `json:"isGlobal,omitempty"`
+	IsGlobal *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the field definitions of the connection type.
-	FieldDefinitions map[string]*FieldDefinition `json:"fieldDefinitions,omitempty" azure:"ro"`
+	FieldDefinitions map[string]*FieldDefinition
 }
 
 // ConnectionUpdateParameters - The parameters supplied to the update connection operation.
 type ConnectionUpdateParameters struct {
 	// Gets or sets the name of the connection.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the properties of the connection.
-	Properties *ConnectionUpdateProperties `json:"properties,omitempty"`
+	Properties *ConnectionUpdateProperties
 }
 
 // ConnectionUpdateProperties - The properties of the update connection operation.
 type ConnectionUpdateProperties struct {
 	// Gets or sets the description of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the field definition values of the connection.
-	FieldDefinitionValues map[string]*string `json:"fieldDefinitionValues,omitempty"`
+	FieldDefinitionValues map[string]*string
 }
 
 // ContentHash - Definition of the runbook property type.
 type ContentHash struct {
 	// REQUIRED; Gets or sets the content hash algorithm used to hash the content.
-	Algorithm *string `json:"algorithm,omitempty"`
+	Algorithm *string
 
 	// REQUIRED; Gets or sets expected hash value of the content.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContentLink - Definition of the content link.
 type ContentLink struct {
 	// Gets or sets the hash.
-	ContentHash *ContentHash `json:"contentHash,omitempty"`
+	ContentHash *ContentHash
 
 	// Gets or sets the uri of the runbook content.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// Gets or sets the version of the content.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // ContentSource - Definition of the content source.
 type ContentSource struct {
 	// Gets or sets the hash.
-	Hash *ContentHash `json:"hash,omitempty"`
+	Hash *ContentHash
 
 	// Gets or sets the content source type.
-	Type *ContentSourceType `json:"type,omitempty"`
+	Type *ContentSourceType
 
 	// Gets or sets the value of the content. This is based on the content source type.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Gets or sets the version of the content.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Credential - Definition of the credential.
 type Credential struct {
 	// Gets or sets the properties of the credential.
-	Properties *CredentialProperties `json:"properties,omitempty"`
+	Properties *CredentialProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CredentialClientCreateOrUpdateOptions contains the optional parameters for the CredentialClient.CreateOrUpdate method.
@@ -757,7 +758,7 @@ type CredentialClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
+// CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.NewListByAutomationAccountPager
 // method.
 type CredentialClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -771,106 +772,106 @@ type CredentialClientUpdateOptions struct {
 // CredentialCreateOrUpdateParameters - The parameters supplied to the create or update credential operation.
 type CredentialCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the credential.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the properties of the credential.
-	Properties *CredentialCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *CredentialCreateOrUpdateProperties
 }
 
 // CredentialCreateOrUpdateProperties - The properties of the create credential operation.
 type CredentialCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the password of the credential.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// REQUIRED; Gets or sets the user name of the credential.
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 
 	// Gets or sets the description of the credential.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // CredentialListResult - The response model for the list credential operation.
 type CredentialListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of credentials.
-	Value []*Credential `json:"value,omitempty"`
+	Value []*Credential
 }
 
 // CredentialProperties - Definition of the credential properties
 type CredentialProperties struct {
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Gets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets the user name of the credential.
-	UserName *string `json:"userName,omitempty" azure:"ro"`
+	UserName *string
 }
 
 // CredentialUpdateParameters - The parameters supplied to the Update credential operation.
 type CredentialUpdateParameters struct {
 	// Gets or sets the name of the credential.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the properties of the variable.
-	Properties *CredentialUpdateProperties `json:"properties,omitempty"`
+	Properties *CredentialUpdateProperties
 }
 
 // CredentialUpdateProperties - The properties of the Update credential
 type CredentialUpdateProperties struct {
 	// Gets or sets the description of the credential.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the password of the credential.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Gets or sets the user name of the credential.
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 }
 
 // DeletedAutomationAccount - Definition of the deleted automation account type.
 type DeletedAutomationAccount struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the automation account properties.
-	Properties *DeletedAutomationAccountProperties `json:"properties,omitempty"`
+	Properties *DeletedAutomationAccountProperties
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // DeletedAutomationAccountListResult - The response model for the list deleted automation account.
 type DeletedAutomationAccountListResult struct {
 	// Gets or sets the list of deleted automation accounts.
-	Value []*DeletedAutomationAccount `json:"value,omitempty"`
+	Value []*DeletedAutomationAccount
 }
 
 // DeletedAutomationAccountProperties - Definition of the deleted automation account properties.
 type DeletedAutomationAccountProperties struct {
 	// Gets or sets the Automation Account Id.
-	AutomationAccountID *string `json:"automationAccountId,omitempty"`
+	AutomationAccountID *string
 
 	// Gets or sets the Automation Account Resource Id.
-	AutomationAccountResourceID *string `json:"automationAccountResourceId,omitempty"`
+	AutomationAccountResourceID *string
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Gets the deletion time.
-	DeletionTime *time.Time `json:"deletionTime,omitempty" azure:"ro"`
+	DeletionTime *time.Time
 }
 
 // DeletedAutomationAccountsClientListBySubscriptionOptions contains the optional parameters for the DeletedAutomationAccountsClient.ListBySubscription
@@ -882,16 +883,16 @@ type DeletedAutomationAccountsClientListBySubscriptionOptions struct {
 // DscCompilationJob - Definition of the Dsc Compilation job.
 type DscCompilationJob struct {
 	// Gets or sets the properties of the Dsc Compilation job.
-	Properties *DscCompilationJobProperties `json:"properties,omitempty"`
+	Properties *DscCompilationJobProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DscCompilationJobClientBeginCreateOptions contains the optional parameters for the DscCompilationJobClient.BeginCreate
@@ -911,7 +912,7 @@ type DscCompilationJobClientGetStreamOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.ListByAutomationAccount
+// DscCompilationJobClientListByAutomationAccountOptions contains the optional parameters for the DscCompilationJobClient.NewListByAutomationAccountPager
 // method.
 type DscCompilationJobClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -921,82 +922,82 @@ type DscCompilationJobClientListByAutomationAccountOptions struct {
 // DscCompilationJobCreateParameters - The parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
 	// REQUIRED; Gets or sets the list of compilation job properties.
-	Properties *DscCompilationJobCreateProperties `json:"properties,omitempty"`
+	Properties *DscCompilationJobCreateProperties
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DscCompilationJobCreateProperties - The parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateProperties struct {
 	// REQUIRED; Gets or sets the configuration.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration *DscConfigurationAssociationProperty
 
 	// If a new build version of NodeConfiguration is required.
-	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
+	IncrementNodeConfigurationBuild *bool
 
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 }
 
 // DscCompilationJobListResult - The response model for the list job operation.
 type DscCompilationJobListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of Dsc Compilation jobs.
-	Value []*DscCompilationJob `json:"value,omitempty"`
+	Value []*DscCompilationJob
 }
 
 // DscCompilationJobProperties - Definition of Dsc Compilation job properties.
 type DscCompilationJobProperties struct {
 	// Gets or sets the configuration.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration *DscConfigurationAssociationProperty
 
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// The current provisioning state of the job.
-	ProvisioningState *JobProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *JobProvisioningState
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the status of the job.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// Gets or sets the status details of the job.
-	StatusDetails *string `json:"statusDetails,omitempty"`
+	StatusDetails *string
 
 	// READ-ONLY; Gets the creation time of the job.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Gets the end time of the job.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the exception of the job.
-	Exception *string `json:"exception,omitempty" azure:"ro"`
+	Exception *string
 
 	// READ-ONLY; Gets the id of the job.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; Gets the last modified time of the job.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets the last status modified time of the job.
-	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty" azure:"ro"`
+	LastStatusModifiedTime *time.Time
 
 	// READ-ONLY; Gets the start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the compilation job started by.
-	StartedBy *string `json:"startedBy,omitempty" azure:"ro"`
+	StartedBy *string
 }
 
 // DscCompilationJobStreamClientListByJobOptions contains the optional parameters for the DscCompilationJobStreamClient.ListByJob
@@ -1008,31 +1009,31 @@ type DscCompilationJobStreamClientListByJobOptions struct {
 // DscConfiguration - Definition of the configuration type.
 type DscConfiguration struct {
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the configuration properties.
-	Properties *DscConfigurationProperties `json:"properties,omitempty"`
+	Properties *DscConfigurationProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DscConfigurationAssociationProperty - The Dsc configuration property associated with the entity.
 type DscConfigurationAssociationProperty struct {
 	// Gets or sets the name of the Dsc configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DscConfigurationClientCreateOrUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.CreateOrUpdateWithJSON
@@ -1062,7 +1063,7 @@ type DscConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.ListByAutomationAccount
+// DscConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscConfigurationClient.NewListByAutomationAccountPager
 // method.
 type DscConfigurationClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1078,157 +1079,159 @@ type DscConfigurationClientListByAutomationAccountOptions struct {
 // DscConfigurationClientUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.UpdateWithJSON
 // method.
 type DscConfigurationClientUpdateWithJSONOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *DscConfigurationUpdateParameters
 }
 
 // DscConfigurationClientUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.UpdateWithText
 // method.
 type DscConfigurationClientUpdateWithTextOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *string
 }
 
 // DscConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update configuration operation.
 type DscConfigurationCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets configuration create or update properties.
-	Properties *DscConfigurationCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *DscConfigurationCreateOrUpdateProperties
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DscConfigurationCreateOrUpdateProperties - The properties to create or update configuration.
 type DscConfigurationCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	Source *ContentSource
 
 	// Gets or sets the description of the configuration.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets progress log option.
-	LogProgress *bool `json:"logProgress,omitempty"`
+	LogProgress *bool
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 
 	// Gets or sets the configuration parameters.
-	Parameters map[string]*DscConfigurationParameter `json:"parameters,omitempty"`
+	Parameters map[string]*DscConfigurationParameter
 }
 
 // DscConfigurationListResult - The response model for the list configuration operation.
 type DscConfigurationListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets the total number of configurations matching filter criteria.
-	TotalCount *int32 `json:"totalCount,omitempty"`
+	TotalCount *int32
 
 	// Gets or sets a list of configurations.
-	Value []*DscConfiguration `json:"value,omitempty"`
+	Value []*DscConfiguration
 }
 
 // DscConfigurationParameter - Definition of the configuration parameter type.
 type DscConfigurationParameter struct {
 	// Gets or sets the default value of parameter.
-	DefaultValue *string `json:"defaultValue,omitempty"`
+	DefaultValue *string
 
 	// Gets or sets a Boolean value to indicate whether the parameter is mandatory or not.
-	IsMandatory *bool `json:"isMandatory,omitempty"`
+	IsMandatory *bool
 
 	// Get or sets the position of the parameter.
-	Position *int32 `json:"position,omitempty"`
+	Position *int32
 
 	// Gets or sets the type of the parameter.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // DscConfigurationProperties - Definition of the configuration property type.
 type DscConfigurationProperties struct {
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the job count of the configuration.
-	JobCount *int32 `json:"jobCount,omitempty"`
+	JobCount *int32
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 
 	// Gets the number of compiled node configurations.
-	NodeConfigurationCount *int32 `json:"nodeConfigurationCount,omitempty"`
+	NodeConfigurationCount *int32
 
 	// Gets or sets the configuration parameters.
-	Parameters map[string]*DscConfigurationParameter `json:"parameters,omitempty"`
+	Parameters map[string]*DscConfigurationParameter
 
 	// Gets or sets the provisioning state of the configuration.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	Source *ContentSource
 
 	// Gets or sets the state of the configuration.
-	State *DscConfigurationState `json:"state,omitempty"`
+	State *DscConfigurationState
 }
 
 // DscConfigurationUpdateParameters - The parameters supplied to the create or update configuration operation.
 type DscConfigurationUpdateParameters struct {
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets configuration create or update properties.
-	Properties *DscConfigurationCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *DscConfigurationCreateOrUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DscMetaConfiguration - Definition of the DSC Meta Configuration.
 type DscMetaConfiguration struct {
 	// Gets or sets the ActionAfterReboot value of the meta configuration.
-	ActionAfterReboot *string `json:"actionAfterReboot,omitempty"`
+	ActionAfterReboot *string
 
 	// Gets or sets the AllowModuleOverwrite value of the meta configuration.
-	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
+	AllowModuleOverwrite *bool
 
 	// Gets or sets the CertificateId value of the meta configuration.
-	CertificateID *string `json:"certificateId,omitempty"`
+	CertificateID *string
 
 	// Gets or sets the ConfigurationMode value of the meta configuration.
-	ConfigurationMode *string `json:"configurationMode,omitempty"`
+	ConfigurationMode *string
 
 	// Gets or sets the ConfigurationModeFrequencyMins value of the meta configuration.
-	ConfigurationModeFrequencyMins *int32 `json:"configurationModeFrequencyMins,omitempty"`
+	ConfigurationModeFrequencyMins *int32
 
 	// Gets or sets the RebootNodeIfNeeded value of the meta configuration.
-	RebootNodeIfNeeded *bool `json:"rebootNodeIfNeeded,omitempty"`
+	RebootNodeIfNeeded *bool
 
 	// Gets or sets the RefreshFrequencyMins value of the meta configuration.
-	RefreshFrequencyMins *int32 `json:"refreshFrequencyMins,omitempty"`
+	RefreshFrequencyMins *int32
 }
 
 // DscNode - Definition of a DscNode
 type DscNode struct {
 	// The properties of a DscNode.
-	Properties *DscNodeProperties `json:"properties,omitempty"`
+	Properties *DscNodeProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DscNodeClientDeleteOptions contains the optional parameters for the DscNodeClient.Delete method.
@@ -1241,7 +1244,7 @@ type DscNodeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
+// DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.NewListByAutomationAccountPager
 // method.
 type DscNodeClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1262,22 +1265,22 @@ type DscNodeClientUpdateOptions struct {
 // DscNodeConfiguration - Definition of the dsc node configuration.
 type DscNodeConfiguration struct {
 	// Gets or sets the configuration properties.
-	Properties *DscNodeConfigurationProperties `json:"properties,omitempty"`
+	Properties *DscNodeConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DscNodeConfigurationAssociationProperty - The dsc node configuration property associated with the entity.
 type DscNodeConfigurationAssociationProperty struct {
 	// Gets or sets the name of the dsc node configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DscNodeConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the DscNodeConfigurationClient.BeginCreateOrUpdate
@@ -1297,7 +1300,7 @@ type DscNodeConfigurationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.ListByAutomationAccount
+// DscNodeConfigurationClientListByAutomationAccountOptions contains the optional parameters for the DscNodeConfigurationClient.NewListByAutomationAccountPager
 // method.
 type DscNodeConfigurationClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1313,297 +1316,297 @@ type DscNodeConfigurationClientListByAutomationAccountOptions struct {
 // DscNodeConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update node configuration operation.
 type DscNodeConfigurationCreateOrUpdateParameters struct {
 	// Name of the node configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Node configuration properties
-	Properties *DscNodeConfigurationCreateOrUpdateParametersProperties `json:"properties,omitempty"`
+	Properties *DscNodeConfigurationCreateOrUpdateParametersProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DscNodeConfigurationCreateOrUpdateParametersProperties - The parameter properties supplied to the create or update node
 // configuration operation.
 type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
 	// REQUIRED; Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration *DscConfigurationAssociationProperty
 
 	// REQUIRED; Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	Source *ContentSource
 
 	// If a new build version of NodeConfiguration is required.
-	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
+	IncrementNodeConfigurationBuild *bool
 }
 
 // DscNodeConfigurationListResult - The response model for the list job operation.
 type DscNodeConfigurationListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets the total rows in query.
-	TotalCount *int32 `json:"totalCount,omitempty"`
+	TotalCount *int32
 
 	// Gets or sets a list of Dsc node configurations.
-	Value []*DscNodeConfiguration `json:"value,omitempty"`
+	Value []*DscNodeConfiguration
 }
 
 // DscNodeConfigurationProperties - Properties for the DscNodeConfiguration
 type DscNodeConfigurationProperties struct {
 	// Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration *DscConfigurationAssociationProperty
 
 	// Gets or sets creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// If a new build version of NodeConfiguration is required.
-	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
+	IncrementNodeConfigurationBuild *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Number of nodes with this node configuration assigned
-	NodeCount *int64 `json:"nodeCount,omitempty"`
+	NodeCount *int64
 
 	// Source of node configuration.
-	Source *string `json:"source,omitempty"`
+	Source *string
 }
 
 // DscNodeExtensionHandlerAssociationProperty - The dsc extensionHandler property associated with the node
 type DscNodeExtensionHandlerAssociationProperty struct {
 	// Gets or sets the name of the extension handler.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the version of the extension handler.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // DscNodeListResult - The response model for the list dsc nodes operation.
 type DscNodeListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets the total number of nodes matching filter criteria.
-	TotalCount *int32 `json:"totalCount,omitempty"`
+	TotalCount *int32
 
 	// Gets or sets a list of dsc nodes.
-	Value []*DscNode `json:"value,omitempty"`
+	Value []*DscNode
 }
 
 // DscNodeProperties - The properties of a DscNode
 type DscNodeProperties struct {
 	// Gets or sets the account id of the node.
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler []*DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+	ExtensionHandler []*DscNodeExtensionHandlerAssociationProperty
 
 	// Gets or sets the ip of the node.
-	IP *string `json:"ip,omitempty"`
+	IP *string
 
 	// Gets or sets the last seen time of the node.
-	LastSeen *time.Time `json:"lastSeen,omitempty"`
+	LastSeen *time.Time
 
 	// Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	NodeConfiguration *DscNodeConfigurationAssociationProperty
 
 	// Gets or sets the node id.
-	NodeID *string `json:"nodeId,omitempty"`
+	NodeID *string
 
 	// Gets or sets the registration time of the node.
-	RegistrationTime *time.Time `json:"registrationTime,omitempty"`
+	RegistrationTime *time.Time
 
 	// Gets or sets the status of the node.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Gets the total number of records matching filter criteria.
-	TotalCount *int32 `json:"totalCount,omitempty"`
+	TotalCount *int32
 }
 
 // DscNodeReport - Definition of the dsc node report type.
 type DscNodeReport struct {
 	// Gets or sets the configurationVersion of the node report.
-	ConfigurationVersion *string `json:"configurationVersion,omitempty"`
+	ConfigurationVersion *string
 
 	// Gets or sets the end time of the node report.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Gets or sets the errors for the node report.
-	Errors []*DscReportError `json:"errors,omitempty"`
+	Errors []*DscReportError
 
 	// Gets or sets the hostname of the node that sent the report.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Gets or sets the id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the IPv4 address of the node that sent the report.
-	IPV4Addresses []*string `json:"iPV4Addresses,omitempty"`
+	IPV4Addresses []*string
 
 	// Gets or sets the IPv6 address of the node that sent the report.
-	IPV6Addresses []*string `json:"iPV6Addresses,omitempty"`
+	IPV6Addresses []*string
 
 	// Gets or sets the lastModifiedTime of the node report.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the metaConfiguration of the node at the time of the report.
-	MetaConfiguration *DscMetaConfiguration `json:"metaConfiguration,omitempty"`
+	MetaConfiguration *DscMetaConfiguration
 
 	// Gets or sets the number of resource in the node report.
-	NumberOfResources *int32 `json:"numberOfResources,omitempty"`
+	NumberOfResources *int32
 
 	// Gets or sets the unparsed errors for the node report.
-	RawErrors *string `json:"rawErrors,omitempty"`
+	RawErrors *string
 
 	// Gets or sets the rebootRequested of the node report.
-	RebootRequested *string `json:"rebootRequested,omitempty"`
+	RebootRequested *string
 
 	// Gets or sets the refreshMode of the node report.
-	RefreshMode *string `json:"refreshMode,omitempty"`
+	RefreshMode *string
 
 	// Gets or sets the reportFormatVersion of the node report.
-	ReportFormatVersion *string `json:"reportFormatVersion,omitempty"`
+	ReportFormatVersion *string
 
 	// Gets or sets the id of the node report.
-	ReportID *string `json:"reportId,omitempty"`
+	ReportID *string
 
 	// Gets or sets the resource for the node report.
-	Resources []*DscReportResource `json:"resources,omitempty"`
+	Resources []*DscReportResource
 
 	// Gets or sets the start time of the node report.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the status of the node report.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Gets or sets the type of the node report.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // DscNodeReportListResult - The response model for the list dsc nodes operation.
 type DscNodeReportListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of dsc node reports.
-	Value []*DscNodeReport `json:"value,omitempty"`
+	Value []*DscNodeReport
 }
 
 // DscNodeUpdateParameters - The parameters supplied to the update dsc node operation.
 type DscNodeUpdateParameters struct {
 	// Gets or sets the id of the dsc node.
-	NodeID     *string                            `json:"nodeId,omitempty"`
-	Properties *DscNodeUpdateParametersProperties `json:"properties,omitempty"`
+	NodeID     *string
+	Properties *DscNodeUpdateParametersProperties
 }
 
 type DscNodeUpdateParametersProperties struct {
 	// Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	NodeConfiguration *DscNodeConfigurationAssociationProperty
 }
 
 // DscReportError - Definition of the dsc node report error type.
 type DscReportError struct {
 	// Gets or sets the error code.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// Gets or sets the error details.
-	ErrorDetails *string `json:"errorDetails,omitempty"`
+	ErrorDetails *string
 
 	// Gets or sets the error message.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Gets or sets the source of the error.
-	ErrorSource *string `json:"errorSource,omitempty"`
+	ErrorSource *string
 
 	// Gets or sets the locale of the error.
-	Locale *string `json:"locale,omitempty"`
+	Locale *string
 
 	// Gets or sets the resource ID which generated the error.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // DscReportResource - Definition of the DSC Report Resource.
 type DscReportResource struct {
 	// Gets or sets the Resource Navigation values for resources the resource depends on.
-	DependsOn []*DscReportResourceNavigation `json:"dependsOn,omitempty"`
+	DependsOn []*DscReportResourceNavigation
 
 	// Gets or sets the duration in seconds for the resource.
-	DurationInSeconds *float64 `json:"durationInSeconds,omitempty"`
+	DurationInSeconds *float64
 
 	// Gets or sets the error of the resource.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// Gets or sets the module name of the resource.
-	ModuleName *string `json:"moduleName,omitempty"`
+	ModuleName *string
 
 	// Gets or sets the module version of the resource.
-	ModuleVersion *string `json:"moduleVersion,omitempty"`
+	ModuleVersion *string
 
 	// Gets or sets the ID of the resource.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Gets or sets the name of the resource.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// Gets or sets the source info of the resource.
-	SourceInfo *string `json:"sourceInfo,omitempty"`
+	SourceInfo *string
 
 	// Gets or sets the start date of the resource.
-	StartDate *time.Time `json:"startDate,omitempty"`
+	StartDate *time.Time
 
 	// Gets or sets the status of the resource.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // DscReportResourceNavigation - Navigation for DSC Report Resource.
 type DscReportResourceNavigation struct {
 	// Gets or sets the ID of the resource to navigate to.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // EncryptionProperties - The encryption settings for automation account
 type EncryptionProperties struct {
 	// User identity used for CMK.
-	Identity *EncryptionPropertiesIdentity `json:"identity,omitempty"`
+	Identity *EncryptionPropertiesIdentity
 
 	// Encryption Key Source
-	KeySource *EncryptionKeySourceType `json:"keySource,omitempty"`
+	KeySource *EncryptionKeySourceType
 
 	// Key vault properties.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 }
 
 // EncryptionPropertiesIdentity - User identity used for CMK.
 type EncryptionPropertiesIdentity struct {
 	// The user identity used for CMK. It will be an ARM resource id in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentity interface{} `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity any
 }
 
 // ErrorResponse - Error response of an operation failure
 type ErrorResponse struct {
 	// Error code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // FieldDefinition - Definition of the connection fields.
 type FieldDefinition struct {
 	// REQUIRED; Gets or sets the type of the connection field definition.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Gets or sets the isEncrypted flag of the connection field definition.
-	IsEncrypted *bool `json:"isEncrypted,omitempty"`
+	IsEncrypted *bool
 
 	// Gets or sets the isOptional flag of the connection field definition.
-	IsOptional *bool `json:"isOptional,omitempty"`
+	IsOptional *bool
 }
 
-// FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
+// FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.NewListByTypePager method.
 type FieldsClientListByTypeOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1611,61 +1614,61 @@ type FieldsClientListByTypeOptions struct {
 // GraphicalRunbookContent - Graphical Runbook Content
 type GraphicalRunbookContent struct {
 	// Graphical Runbook content as JSON
-	GraphRunbookJSON *string `json:"graphRunbookJson,omitempty"`
+	GraphRunbookJSON *string
 
 	// Raw graphical Runbook content.
-	RawContent *RawGraphicalRunbookContent `json:"rawContent,omitempty"`
+	RawContent *RawGraphicalRunbookContent
 }
 
 // HybridRunbookWorker - Definition of hybrid runbook worker.
 type HybridRunbookWorker struct {
 	// Gets or sets the hybrid worker group properties.
-	Properties *HybridRunbookWorkerProperties `json:"properties,omitempty"`
+	Properties *HybridRunbookWorkerProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridRunbookWorkerCreateOrUpdateParameters - The parameters supplied to the create or update hybrid runbook worker operation.
 type HybridRunbookWorkerCreateOrUpdateParameters struct {
 	// Azure Resource Manager Id for a virtual machine.
-	VMResourceID *string `json:"vmResourceId,omitempty"`
+	VMResourceID *string
 }
 
 // HybridRunbookWorkerCreateParameters - The parameters supplied to the create hybrid runbook worker operation.
 type HybridRunbookWorkerCreateParameters struct {
 	// REQUIRED; Gets or sets hybrid runbook worker group create or update properties.
-	Properties *HybridRunbookWorkerCreateOrUpdateParameters `json:"properties,omitempty"`
+	Properties *HybridRunbookWorkerCreateOrUpdateParameters
 
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // HybridRunbookWorkerGroup - Definition of hybrid runbook worker group.
 type HybridRunbookWorkerGroup struct {
 	// Gets or sets the hybrid worker group properties.
-	Properties *HybridRunbookWorkerGroupProperties `json:"properties,omitempty"`
+	Properties *HybridRunbookWorkerGroupProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridRunbookWorkerGroupClientCreateOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.Create
@@ -1685,7 +1688,7 @@ type HybridRunbookWorkerGroupClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.ListByAutomationAccount
+// HybridRunbookWorkerGroupClientListByAutomationAccountOptions contains the optional parameters for the HybridRunbookWorkerGroupClient.NewListByAutomationAccountPager
 // method.
 type HybridRunbookWorkerGroupClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -1701,61 +1704,61 @@ type HybridRunbookWorkerGroupClientUpdateOptions struct {
 // HybridRunbookWorkerGroupCreateOrUpdateParameters - The parameters supplied to the create hybrid runbook worker group operation.
 type HybridRunbookWorkerGroupCreateOrUpdateParameters struct {
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets hybrid runbook worker group create or update properties.
-	Properties *HybridRunbookWorkerGroupCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *HybridRunbookWorkerGroupCreateOrUpdateProperties
 }
 
 // HybridRunbookWorkerGroupCreateOrUpdateProperties - The hybrid runbook worker group properties.
 type HybridRunbookWorkerGroupCreateOrUpdateProperties struct {
 	// Sets the credential of a worker group.
-	Credential *RunAsCredentialAssociationProperty `json:"credential,omitempty"`
+	Credential *RunAsCredentialAssociationProperty
 }
 
 // HybridRunbookWorkerGroupProperties - Definition of hybrid runbook worker group property.
 type HybridRunbookWorkerGroupProperties struct {
 	// Sets the credential of a worker group.
-	Credential *RunAsCredentialAssociationProperty `json:"credential,omitempty"`
+	Credential *RunAsCredentialAssociationProperty
 
 	// Type of the HybridWorkerGroup.
-	GroupType *GroupTypeEnum `json:"groupType,omitempty"`
+	GroupType *GroupTypeEnum
 }
 
 // HybridRunbookWorkerGroupsListResult - The response model for the list hybrid runbook worker groups.
 type HybridRunbookWorkerGroupsListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of hybrid runbook worker groups.
-	Value []*HybridRunbookWorkerGroup `json:"value,omitempty"`
+	Value []*HybridRunbookWorkerGroup
 }
 
 // HybridRunbookWorkerMoveParameters - Parameters supplied to move hybrid worker operation.
 type HybridRunbookWorkerMoveParameters struct {
 	// Gets or sets the target hybrid runbook worker group.
-	HybridRunbookWorkerGroupName *string `json:"hybridRunbookWorkerGroupName,omitempty"`
+	HybridRunbookWorkerGroupName *string
 }
 
 // HybridRunbookWorkerProperties - Definition of hybrid runbook worker property.
 type HybridRunbookWorkerProperties struct {
 	// Gets or sets the assigned machine IP address.
-	IP *string `json:"ip,omitempty"`
+	IP *string
 
 	// Last Heartbeat from the Worker
-	LastSeenDateTime *time.Time `json:"lastSeenDateTime,omitempty"`
+	LastSeenDateTime *time.Time
 
 	// Gets or sets the registration time of the worker machine.
-	RegisteredDateTime *time.Time `json:"registeredDateTime,omitempty"`
+	RegisteredDateTime *time.Time
 
 	// Azure Resource Manager Id for a virtual machine.
-	VMResourceID *string `json:"vmResourceId,omitempty"`
+	VMResourceID *string
 
 	// Name of the HybridWorker.
-	WorkerName *string `json:"workerName,omitempty"`
+	WorkerName *string
 
 	// Type of the HybridWorker.
-	WorkerType *WorkerType `json:"workerType,omitempty"`
+	WorkerType *WorkerType
 }
 
 // HybridRunbookWorkersClientCreateOptions contains the optional parameters for the HybridRunbookWorkersClient.Create method.
@@ -1773,7 +1776,7 @@ type HybridRunbookWorkersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions contains the optional parameters for the HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager
 // method.
 type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupOptions struct {
 	// The filter to apply on the operation.
@@ -1788,42 +1791,42 @@ type HybridRunbookWorkersClientMoveOptions struct {
 // HybridRunbookWorkersListResult - The response model for the list hybrid runbook workers.
 type HybridRunbookWorkersListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of hybrid runbook workers.
-	Value []*HybridRunbookWorker `json:"value,omitempty"`
+	Value []*HybridRunbookWorker
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // Job - Definition of the job.
 type Job struct {
 	// The properties of the job.
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobClientCreateOptions contains the optional parameters for the JobClient.Create method.
@@ -1850,7 +1853,8 @@ type JobClientGetRunbookContentOptions struct {
 	ClientRequestID *string
 }
 
-// JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount method.
+// JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.NewListByAutomationAccountPager
+// method.
 type JobClientListByAutomationAccountOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
@@ -1879,138 +1883,138 @@ type JobClientSuspendOptions struct {
 // JobCollectionItem - Job collection item properties.
 type JobCollectionItem struct {
 	// REQUIRED; Job properties.
-	Properties *JobCollectionItemProperties `json:"properties,omitempty"`
+	Properties *JobCollectionItemProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobCollectionItemProperties - Job collection item properties.
 type JobCollectionItemProperties struct {
 	// Specifies the runOn group name where the job was executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// READ-ONLY; The creation time of the job.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The end time of the job.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; The id of the job.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; The last modified time of the job.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; The provisioning state of a resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The runbook association.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty" azure:"ro"`
+	Runbook *RunbookAssociationProperty
 
 	// READ-ONLY; The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The status of the job.
-	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+	Status *JobStatus
 }
 
 // JobCreateParameters - The parameters supplied to the create job operation.
 type JobCreateParameters struct {
 	// REQUIRED; Gets or sets the list of job properties.
-	Properties *JobCreateProperties `json:"properties,omitempty"`
+	Properties *JobCreateProperties
 }
 
 type JobCreateProperties struct {
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 }
 
 // JobListResultV2 - The response model for the list job operation.
 type JobListResultV2 struct {
 	// List of jobs.
-	Value []*JobCollectionItem `json:"value,omitempty"`
+	Value []*JobCollectionItem
 
 	// READ-ONLY; The link to the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // JobNavigation - Software update configuration machine run job navigation properties.
 type JobNavigation struct {
 	// READ-ONLY; Id of the job associated with the software update configuration run
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // JobProperties - Definition of job properties.
 type JobProperties struct {
 	// Gets or sets the creation time of the job.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the end time of the job.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Gets or sets the exception of the job.
-	Exception *string `json:"exception,omitempty"`
+	Exception *string
 
 	// Gets or sets the id of the job.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// Gets or sets the last modified time of the job.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the last status modified time of the job.
-	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty"`
+	LastStatusModifiedTime *time.Time
 
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// The current provisioning state of the job.
-	ProvisioningState *JobProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *JobProvisioningState
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 
 	// Gets or sets the start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the job started by.
-	StartedBy *string `json:"startedBy,omitempty"`
+	StartedBy *string
 
 	// Gets or sets the status of the job.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// Gets or sets the status details of the job.
-	StatusDetails *string `json:"statusDetails,omitempty"`
+	StatusDetails *string
 }
 
 // JobSchedule - Definition of the job schedule.
 type JobSchedule struct {
 	// Gets or sets the properties of the job schedule.
-	Properties *JobScheduleProperties `json:"properties,omitempty"`
+	Properties *JobScheduleProperties
 
 	// READ-ONLY; Gets the id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the name of the variable.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobScheduleClientCreateOptions contains the optional parameters for the JobScheduleClient.Create method.
@@ -2028,7 +2032,7 @@ type JobScheduleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.ListByAutomationAccount
+// JobScheduleClientListByAutomationAccountOptions contains the optional parameters for the JobScheduleClient.NewListByAutomationAccountPager
 // method.
 type JobScheduleClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -2038,58 +2042,58 @@ type JobScheduleClientListByAutomationAccountOptions struct {
 // JobScheduleCreateParameters - The parameters supplied to the create job schedule operation.
 type JobScheduleCreateParameters struct {
 	// REQUIRED; Gets or sets the list of job schedule properties.
-	Properties *JobScheduleCreateProperties `json:"properties,omitempty"`
+	Properties *JobScheduleCreateProperties
 }
 
 // JobScheduleCreateProperties - The parameters supplied to the create job schedule operation.
 type JobScheduleCreateProperties struct {
 	// REQUIRED; Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 
 	// REQUIRED; Gets or sets the schedule.
-	Schedule *ScheduleAssociationProperty `json:"schedule,omitempty"`
+	Schedule *ScheduleAssociationProperty
 
 	// Gets or sets a list of job properties.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the hybrid worker group that the scheduled job should run on.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 }
 
 // JobScheduleListResult - The response model for the list job schedule operation.
 type JobScheduleListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of job schedules.
-	Value []*JobSchedule `json:"value,omitempty"`
+	Value []*JobSchedule
 }
 
 // JobScheduleProperties - Definition of job schedule parameters.
 type JobScheduleProperties struct {
 	// Gets or sets the id of job schedule.
-	JobScheduleID *string `json:"jobScheduleId,omitempty"`
+	JobScheduleID *string
 
 	// Gets or sets the parameters of the job schedule.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the hybrid worker group that the scheduled job should run on.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 
 	// Gets or sets the schedule.
-	Schedule *ScheduleAssociationProperty `json:"schedule,omitempty"`
+	Schedule *ScheduleAssociationProperty
 }
 
 // JobStream - Definition of the job stream.
 type JobStream struct {
 	// Gets or sets the id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the id of the job stream.
-	Properties *JobStreamProperties `json:"properties,omitempty"`
+	Properties *JobStreamProperties
 }
 
 // JobStreamClientGetOptions contains the optional parameters for the JobStreamClient.Get method.
@@ -2098,7 +2102,7 @@ type JobStreamClientGetOptions struct {
 	ClientRequestID *string
 }
 
-// JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
+// JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.NewListByJobPager method.
 type JobStreamClientListByJobOptions struct {
 	// Identifies this specific client request.
 	ClientRequestID *string
@@ -2109,60 +2113,60 @@ type JobStreamClientListByJobOptions struct {
 // JobStreamListResult - The response model for the list job stream operation.
 type JobStreamListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of job streams.
-	Value []*JobStream `json:"value,omitempty"`
+	Value []*JobStream
 }
 
 // JobStreamProperties - Definition of the job stream.
 type JobStreamProperties struct {
 	// Gets or sets the id of the job stream.
-	JobStreamID *string `json:"jobStreamId,omitempty"`
+	JobStreamID *string
 
 	// Gets or sets the stream text.
-	StreamText *string `json:"streamText,omitempty"`
+	StreamText *string
 
 	// Gets or sets the stream type.
-	StreamType *JobStreamType `json:"streamType,omitempty"`
+	StreamType *JobStreamType
 
 	// Gets or sets the summary.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// Gets or sets the creation time of the job.
-	Time *time.Time `json:"time,omitempty"`
+	Time *time.Time
 
 	// Gets or sets the values of the job stream.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value map[string]any
 }
 
 // Key - Automation key which is used to register a DSC Node
 type Key struct {
 	// READ-ONLY; Automation key name.
-	KeyName *AutomationKeyName `json:"KeyName,omitempty" azure:"ro"`
+	KeyName *AutomationKeyName
 
 	// READ-ONLY; Automation key permissions.
-	Permissions *AutomationKeyPermissions `json:"Permissions,omitempty" azure:"ro"`
+	Permissions *AutomationKeyPermissions
 
 	// READ-ONLY; Value of the Automation Key used for registration.
-	Value *string `json:"Value,omitempty" azure:"ro"`
+	Value *string
 }
 
 type KeyListResult struct {
 	// Lists the automation keys.
-	Keys []*Key `json:"keys,omitempty"`
+	Keys []*Key
 }
 
 // KeyVaultProperties - Settings concerning key vault encryption for a configuration store.
 type KeyVaultProperties struct {
 	// The name of key used to encrypt data.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// The key version of the key used to encrypt data.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 
 	// The URI of the key vault key used to encrypt data.
-	KeyvaultURI *string `json:"keyvaultUri,omitempty"`
+	KeyvaultURI *string
 }
 
 // KeysClientListByAutomationAccountOptions contains the optional parameters for the KeysClient.ListByAutomationAccount method.
@@ -2173,7 +2177,7 @@ type KeysClientListByAutomationAccountOptions struct {
 // LinkedWorkspace - Definition of the linked workspace.
 type LinkedWorkspace struct {
 	// READ-ONLY; Gets the id of the linked workspace.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // LinkedWorkspaceClientGetOptions contains the optional parameters for the LinkedWorkspaceClient.Get method.
@@ -2184,40 +2188,40 @@ type LinkedWorkspaceClientGetOptions struct {
 // LinuxProperties - Linux specific update configuration.
 type LinuxProperties struct {
 	// packages excluded from the software update configuration.
-	ExcludedPackageNameMasks []*string `json:"excludedPackageNameMasks,omitempty"`
+	ExcludedPackageNameMasks []*string
 
 	// Update classifications included in the software update configuration.
-	IncludedPackageClassifications *LinuxUpdateClasses `json:"includedPackageClassifications,omitempty"`
+	IncludedPackageClassifications *LinuxUpdateClasses
 
 	// packages included from the software update configuration.
-	IncludedPackageNameMasks []*string `json:"includedPackageNameMasks,omitempty"`
+	IncludedPackageNameMasks []*string
 
 	// Reboot setting for the software update configuration.
-	RebootSetting *string `json:"rebootSetting,omitempty"`
+	RebootSetting *string
 }
 
 // Module - Definition of the module type.
 type Module struct {
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the module properties.
-	Properties *ModuleProperties `json:"properties,omitempty"`
+	Properties *ModuleProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ModuleClientCreateOrUpdateOptions contains the optional parameters for the ModuleClient.CreateOrUpdate method.
@@ -2235,7 +2239,7 @@ type ModuleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
+// ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.NewListByAutomationAccountPager
 // method.
 type ModuleClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2249,104 +2253,104 @@ type ModuleClientUpdateOptions struct {
 // ModuleCreateOrUpdateParameters - The parameters supplied to the create or update module operation.
 type ModuleCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the module create properties.
-	Properties *ModuleCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *ModuleCreateOrUpdateProperties
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ModuleCreateOrUpdateProperties - The parameters supplied to the create or update module properties.
 type ModuleCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the module content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 }
 
 // ModuleErrorInfo - Definition of the module error info type.
 type ModuleErrorInfo struct {
 	// Gets or sets the error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Gets or sets the error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ModuleListResult - The response model for the list module operation.
 type ModuleListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of modules.
-	Value []*Module `json:"value,omitempty"`
+	Value []*Module
 }
 
 // ModuleProperties - Definition of the module property type.
 type ModuleProperties struct {
 	// Gets or sets the activity count of the module.
-	ActivityCount *int32 `json:"activityCount,omitempty"`
+	ActivityCount *int32
 
 	// Gets or sets the contentLink of the module.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the error info of the module.
-	Error *ModuleErrorInfo `json:"error,omitempty"`
+	Error *ModuleErrorInfo
 
 	// Gets or sets type of module, if its composite or not.
-	IsComposite *bool `json:"isComposite,omitempty"`
+	IsComposite *bool
 
 	// Gets or sets the isGlobal flag of the module.
-	IsGlobal *bool `json:"isGlobal,omitempty"`
+	IsGlobal *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the provisioning state of the module.
-	ProvisioningState *ModuleProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ModuleProvisioningState
 
 	// Gets or sets the size in bytes of the module.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
+	SizeInBytes *int64
 
 	// Gets or sets the version of the module.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // ModuleUpdateParameters - The parameters supplied to the update module operation.
 type ModuleUpdateParameters struct {
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the module update properties.
-	Properties *ModuleUpdateProperties `json:"properties,omitempty"`
+	Properties *ModuleUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ModuleUpdateProperties - The parameters supplied to the update properties.
 type ModuleUpdateProperties struct {
 	// Gets or sets the module content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 }
 
 // NodeCount - Number of nodes based on the Filter
 type NodeCount struct {
 	// Gets the name of a count type
-	Name       *string              `json:"name,omitempty"`
-	Properties *NodeCountProperties `json:"properties,omitempty"`
+	Name       *string
+	Properties *NodeCountProperties
 }
 
 // NodeCountInformationClientGetOptions contains the optional parameters for the NodeCountInformationClient.Get method.
@@ -2356,16 +2360,16 @@ type NodeCountInformationClientGetOptions struct {
 
 type NodeCountProperties struct {
 	// Gets the count for the name
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 }
 
 // NodeCounts - Gets the count of nodes by count type
 type NodeCounts struct {
 	// Gets the total number of records matching countType criteria.
-	TotalCount *int32 `json:"totalCount,omitempty"`
+	TotalCount *int32
 
 	// Gets an array of counts
-	Value []*NodeCount `json:"value,omitempty"`
+	Value []*NodeCount
 }
 
 // NodeReportsClientGetContentOptions contains the optional parameters for the NodeReportsClient.GetContent method.
@@ -2378,7 +2382,7 @@ type NodeReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
+// NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.NewListByNodePager method.
 type NodeReportsClientListByNodeOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -2387,19 +2391,19 @@ type NodeReportsClientListByNodeOptions struct {
 // NonAzureQueryProperties - Non Azure query for the update configuration.
 type NonAzureQueryProperties struct {
 	// Log Analytics Saved Search name.
-	FunctionAlias *string `json:"functionAlias,omitempty"`
+	FunctionAlias *string
 
 	// Workspace Id for Log Analytics in which the saved Search is resided.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
-// ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByModuleAndType
+// ObjectDataTypesClientListFieldsByModuleAndTypeOptions contains the optional parameters for the ObjectDataTypesClient.NewListFieldsByModuleAndTypePager
 // method.
 type ObjectDataTypesClientListFieldsByModuleAndTypeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.ListFieldsByType
+// ObjectDataTypesClientListFieldsByTypeOptions contains the optional parameters for the ObjectDataTypesClient.NewListFieldsByTypePager
 // method.
 type ObjectDataTypesClientListFieldsByTypeOptions struct {
 	// placeholder for future optional parameters
@@ -2408,31 +2412,31 @@ type ObjectDataTypesClientListFieldsByTypeOptions struct {
 // Operation - Automation REST API operation
 type Operation struct {
 	// Provider, Resource and Operation values
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Provider, Resource and Operation values
 type OperationDisplay struct {
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Automation
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Runbooks, Jobs etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - The response model for the list of Automation operations
 type OperationListResult struct {
 	// List of Automation operations supported by the Automation resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2440,34 +2444,34 @@ type OperationsClientListOptions struct {
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// Gets the groupIds.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// Private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpointProperty
 
 	// Connection State of the Private Endpoint Connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -2490,7 +2494,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAutomationAccount
+// PrivateEndpointConnectionsClientListByAutomationAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAutomationAccountPager
 // method.
 type PrivateEndpointConnectionsClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2499,40 +2503,40 @@ type PrivateEndpointConnectionsClientListByAutomationAccountOptions struct {
 // PrivateEndpointProperty - Private endpoint which the connection belongs to.
 type PrivateEndpointProperty struct {
 	// Resource id of the private endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
-// PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.Automation
+// PrivateLinkResourcesClientAutomationOptions contains the optional parameters for the PrivateLinkResourcesClient.NewAutomationPager
 // method.
 type PrivateLinkResourcesClientAutomationOptions struct {
 	// placeholder for future optional parameters
@@ -2541,25 +2545,25 @@ type PrivateLinkResourcesClientAutomationOptions struct {
 // PrivateLinkServiceConnectionStateProperty - Connection State of the Private Endpoint Connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// The private link service connection description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The private link service connection status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; Any action that is required beyond basic workflow (approve/ reject/ disconnect)
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
+	ActionsRequired *string
 }
 
 // ProxyResource - ARM proxy resource.
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Python2PackageClientCreateOrUpdateOptions contains the optional parameters for the Python2PackageClient.CreateOrUpdate
@@ -2578,7 +2582,7 @@ type Python2PackageClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.ListByAutomationAccount
+// Python2PackageClientListByAutomationAccountOptions contains the optional parameters for the Python2PackageClient.NewListByAutomationAccountPager
 // method.
 type Python2PackageClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2592,82 +2596,82 @@ type Python2PackageClientUpdateOptions struct {
 // PythonPackageCreateParameters - The parameters supplied to the create or update module operation.
 type PythonPackageCreateParameters struct {
 	// REQUIRED; Gets or sets the module create properties.
-	Properties *PythonPackageCreateProperties `json:"properties,omitempty"`
+	Properties *PythonPackageCreateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PythonPackageCreateProperties - The parameters supplied to the create or update module properties.
 type PythonPackageCreateProperties struct {
 	// REQUIRED; Gets or sets the module content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 }
 
 // PythonPackageUpdateParameters - The parameters supplied to the update module operation.
 type PythonPackageUpdateParameters struct {
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // RawGraphicalRunbookContent - Raw Graphical Runbook content
 type RawGraphicalRunbookContent struct {
 	// Serialized Graphical runbook
-	RunbookDefinition *string `json:"runbookDefinition,omitempty"`
+	RunbookDefinition *string
 
 	// Runbook Type
-	RunbookType *GraphRunbookType `json:"runbookType,omitempty"`
+	RunbookType *GraphRunbookType
 
 	// Schema version of the serializer.
-	SchemaVersion *string `json:"schemaVersion,omitempty"`
+	SchemaVersion *string
 }
 
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RunAsCredentialAssociationProperty - Definition of RunAs credential to use for hybrid worker.
 type RunAsCredentialAssociationProperty struct {
 	// Gets or sets the name of the credential.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Runbook - Definition of the runbook type.
 type Runbook struct {
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the runbook properties.
-	Properties *RunbookProperties `json:"properties,omitempty"`
+	Properties *RunbookProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RunbookAssociationProperty - The runbook property associated with the entity.
 type RunbookAssociationProperty struct {
 	// Gets or sets the name of the runbook.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // RunbookClientBeginPublishOptions contains the optional parameters for the RunbookClient.BeginPublish method.
@@ -2696,7 +2700,7 @@ type RunbookClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.ListByAutomationAccount
+// RunbookClientListByAutomationAccountOptions contains the optional parameters for the RunbookClient.NewListByAutomationAccountPager
 // method.
 type RunbookClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -2710,87 +2714,87 @@ type RunbookClientUpdateOptions struct {
 // RunbookCreateOrUpdateDraftParameters - The parameters supplied to the create or update runbook operation.
 type RunbookCreateOrUpdateDraftParameters struct {
 	// REQUIRED; Content of the Runbook.
-	RunbookContent *string `json:"runbookContent,omitempty"`
+	RunbookContent *string
 }
 
 // RunbookCreateOrUpdateDraftProperties - The parameters supplied to the create or update draft runbook properties.
 type RunbookCreateOrUpdateDraftProperties struct {
 	// REQUIRED; Gets or sets the draft runbook properties.
-	Draft *RunbookDraft `json:"draft,omitempty"`
+	Draft *RunbookDraft
 
 	// REQUIRED; Gets or sets the type of the runbook.
-	RunbookType *RunbookTypeEnum `json:"runbookType,omitempty"`
+	RunbookType *RunbookTypeEnum
 
 	// Gets or sets the description of the runbook.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the activity-level tracing options of the runbook.
-	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
+	LogActivityTrace *int32
 
 	// Gets or sets progress log option.
-	LogProgress *bool `json:"logProgress,omitempty"`
+	LogProgress *bool
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 }
 
 // RunbookCreateOrUpdateParameters - The parameters supplied to the create or update runbook operation.
 type RunbookCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets runbook create or update properties.
-	Properties *RunbookCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *RunbookCreateOrUpdateProperties
 
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // RunbookCreateOrUpdateProperties - The parameters supplied to the create or update runbook properties.
 type RunbookCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the type of the runbook.
-	RunbookType *RunbookTypeEnum `json:"runbookType,omitempty"`
+	RunbookType *RunbookTypeEnum
 
 	// Gets or sets the description of the runbook.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the draft runbook properties.
-	Draft *RunbookDraft `json:"draft,omitempty"`
+	Draft *RunbookDraft
 
 	// Gets or sets the activity-level tracing options of the runbook.
-	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
+	LogActivityTrace *int32
 
 	// Gets or sets progress log option.
-	LogProgress *bool `json:"logProgress,omitempty"`
+	LogProgress *bool
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 
 	// Gets or sets the published runbook content link.
-	PublishContentLink *ContentLink `json:"publishContentLink,omitempty"`
+	PublishContentLink *ContentLink
 }
 
 type RunbookDraft struct {
 	// Gets or sets the creation time of the runbook draft.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the draft runbook content link.
-	DraftContentLink *ContentLink `json:"draftContentLink,omitempty"`
+	DraftContentLink *ContentLink
 
 	// Gets or sets whether runbook is in edit mode.
-	InEdit *bool `json:"inEdit,omitempty"`
+	InEdit *bool
 
 	// Gets or sets the last modified time of the runbook draft.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the runbook output types.
-	OutputTypes []*string `json:"outputTypes,omitempty"`
+	OutputTypes []*string
 
 	// Gets or sets the runbook draft parameters.
-	Parameters map[string]*RunbookParameter `json:"parameters,omitempty"`
+	Parameters map[string]*RunbookParameter
 }
 
 // RunbookDraftClientBeginReplaceContentOptions contains the optional parameters for the RunbookDraftClient.BeginReplaceContent
@@ -2817,188 +2821,188 @@ type RunbookDraftClientUndoEditOptions struct {
 
 // RunbookDraftUndoEditResult - The response model for the undo edit runbook operation.
 type RunbookDraftUndoEditResult struct {
-	RequestID  *string         `json:"requestId,omitempty"`
-	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
+	RequestID  *string
+	StatusCode *HTTPStatusCode
 }
 
 // RunbookListResult - The response model for the list runbook operation.
 type RunbookListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of runbooks.
-	Value []*Runbook `json:"value,omitempty"`
+	Value []*Runbook
 }
 
 // RunbookParameter - Definition of the runbook parameter type.
 type RunbookParameter struct {
 	// Gets or sets the default value of parameter.
-	DefaultValue *string `json:"defaultValue,omitempty"`
+	DefaultValue *string
 
 	// Gets or sets a Boolean value to indicate whether the parameter is mandatory or not.
-	IsMandatory *bool `json:"isMandatory,omitempty"`
+	IsMandatory *bool
 
 	// Get or sets the position of the parameter.
-	Position *int32 `json:"position,omitempty"`
+	Position *int32
 
 	// Gets or sets the type of the parameter.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // RunbookProperties - Definition of the runbook property type.
 type RunbookProperties struct {
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the draft runbook properties.
-	Draft *RunbookDraft `json:"draft,omitempty"`
+	Draft *RunbookDraft
 
 	// Gets or sets the job count of the runbook.
-	JobCount *int32 `json:"jobCount,omitempty"`
+	JobCount *int32
 
 	// Gets or sets the last modified by.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the option to log activity trace of the runbook.
-	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
+	LogActivityTrace *int32
 
 	// Gets or sets progress log option.
-	LogProgress *bool `json:"logProgress,omitempty"`
+	LogProgress *bool
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 
 	// Gets or sets the runbook output types.
-	OutputTypes []*string `json:"outputTypes,omitempty"`
+	OutputTypes []*string
 
 	// Gets or sets the runbook parameters.
-	Parameters map[string]*RunbookParameter `json:"parameters,omitempty"`
+	Parameters map[string]*RunbookParameter
 
 	// Gets or sets the provisioning state of the runbook.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Gets or sets the published runbook content link.
-	PublishContentLink *ContentLink `json:"publishContentLink,omitempty"`
+	PublishContentLink *ContentLink
 
 	// Gets or sets the type of the runbook.
-	RunbookType *RunbookTypeEnum `json:"runbookType,omitempty"`
+	RunbookType *RunbookTypeEnum
 
 	// Gets or sets the state of the runbook.
-	State *RunbookState `json:"state,omitempty"`
+	State *RunbookState
 }
 
 // RunbookUpdateParameters - The parameters supplied to the update runbook operation.
 type RunbookUpdateParameters struct {
 	// Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the runbook update properties.
-	Properties *RunbookUpdateProperties `json:"properties,omitempty"`
+	Properties *RunbookUpdateProperties
 
 	// Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // RunbookUpdateProperties - The parameters supplied to the update runbook properties.
 type RunbookUpdateProperties struct {
 	// Gets or sets the description of the runbook.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the activity-level tracing options of the runbook.
-	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
+	LogActivityTrace *int32
 
 	// Gets or sets progress log option.
-	LogProgress *bool `json:"logProgress,omitempty"`
+	LogProgress *bool
 
 	// Gets or sets verbose log option.
-	LogVerbose *bool `json:"logVerbose,omitempty"`
+	LogVerbose *bool
 }
 
 // SKU - The account SKU.
 type SKU struct {
 	// REQUIRED; Gets or sets the SKU name of the account.
-	Name *SKUNameEnum `json:"name,omitempty"`
+	Name *SKUNameEnum
 
 	// Gets or sets the SKU capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Gets or sets the SKU family.
-	Family *string `json:"family,omitempty"`
+	Family *string
 }
 
 // SUCScheduleProperties - Definition of schedule parameters.
 type SUCScheduleProperties struct {
 	// Gets or sets the advanced schedule.
-	AdvancedSchedule *AdvancedSchedule `json:"advancedSchedule,omitempty"`
+	AdvancedSchedule *AdvancedSchedule
 
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the end time of the schedule.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// Gets or sets the expiry time's offset in minutes.
-	ExpiryTimeOffsetMinutes *float64 `json:"expiryTimeOffsetMinutes,omitempty"`
+	ExpiryTimeOffsetMinutes *float64
 
 	// Gets or sets the frequency of the schedule.
-	Frequency *ScheduleFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduleFrequency
 
 	// Gets or sets the interval of the schedule.
-	Interval *int64 `json:"interval,omitempty"`
+	Interval *int64
 
 	// Gets or sets a value indicating whether this schedule is enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the next run time of the schedule.
-	NextRun *time.Time `json:"nextRun,omitempty"`
+	NextRun *time.Time
 
 	// Gets or sets the next run time's offset in minutes.
-	NextRunOffsetMinutes *float64 `json:"nextRunOffsetMinutes,omitempty"`
+	NextRunOffsetMinutes *float64
 
 	// Gets or sets the start time of the schedule.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the time zone of the schedule.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// READ-ONLY; Gets the start time's offset in minutes.
-	StartTimeOffsetMinutes *float64 `json:"startTimeOffsetMinutes,omitempty" azure:"ro"`
+	StartTimeOffsetMinutes *float64
 }
 
 // Schedule - Definition of the schedule.
 type Schedule struct {
 	// Gets or sets the properties of the schedule.
-	Properties *ScheduleProperties `json:"properties,omitempty"`
+	Properties *ScheduleProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScheduleAssociationProperty - The schedule property associated with the entity.
 type ScheduleAssociationProperty struct {
 	// Gets or sets the name of the Schedule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ScheduleClientCreateOrUpdateOptions contains the optional parameters for the ScheduleClient.CreateOrUpdate method.
@@ -3016,7 +3020,7 @@ type ScheduleClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.ListByAutomationAccount
+// ScheduleClientListByAutomationAccountOptions contains the optional parameters for the ScheduleClient.NewListByAutomationAccountPager
 // method.
 type ScheduleClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -3030,187 +3034,187 @@ type ScheduleClientUpdateOptions struct {
 // ScheduleCreateOrUpdateParameters - The parameters supplied to the create or update schedule operation.
 type ScheduleCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the Schedule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the list of schedule properties.
-	Properties *ScheduleCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *ScheduleCreateOrUpdateProperties
 }
 
 // ScheduleCreateOrUpdateProperties - The parameters supplied to the create or update schedule operation.
 type ScheduleCreateOrUpdateProperties struct {
 	// REQUIRED; Gets or sets the frequency of the schedule.
-	Frequency *ScheduleFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduleFrequency
 
 	// REQUIRED; Gets or sets the start time of the schedule.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the AdvancedSchedule.
-	AdvancedSchedule *AdvancedSchedule `json:"advancedSchedule,omitempty"`
+	AdvancedSchedule *AdvancedSchedule
 
 	// Gets or sets the description of the schedule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the end time of the schedule.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// Gets or sets the interval of the schedule.
-	Interval interface{} `json:"interval,omitempty"`
+	Interval any
 
 	// Gets or sets the time zone of the schedule.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // ScheduleListResult - The response model for the list schedule operation.
 type ScheduleListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of schedules.
-	Value []*Schedule `json:"value,omitempty"`
+	Value []*Schedule
 }
 
 // ScheduleProperties - Definition of schedule parameters.
 type ScheduleProperties struct {
 	// Gets or sets the advanced schedule.
-	AdvancedSchedule *AdvancedSchedule `json:"advancedSchedule,omitempty"`
+	AdvancedSchedule *AdvancedSchedule
 
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the end time of the schedule.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// Gets or sets the expiry time's offset in minutes.
-	ExpiryTimeOffsetMinutes *float64 `json:"expiryTimeOffsetMinutes,omitempty"`
+	ExpiryTimeOffsetMinutes *float64
 
 	// Gets or sets the frequency of the schedule.
-	Frequency *ScheduleFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduleFrequency
 
 	// Gets or sets the interval of the schedule.
-	Interval interface{} `json:"interval,omitempty"`
+	Interval any
 
 	// Gets or sets a value indicating whether this schedule is enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the next run time of the schedule.
-	NextRun *time.Time `json:"nextRun,omitempty"`
+	NextRun *time.Time
 
 	// Gets or sets the next run time's offset in minutes.
-	NextRunOffsetMinutes *float64 `json:"nextRunOffsetMinutes,omitempty"`
+	NextRunOffsetMinutes *float64
 
 	// Gets or sets the start time of the schedule.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the time zone of the schedule.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// READ-ONLY; Gets the start time's offset in minutes.
-	StartTimeOffsetMinutes *float64 `json:"startTimeOffsetMinutes,omitempty" azure:"ro"`
+	StartTimeOffsetMinutes *float64
 }
 
 // ScheduleUpdateParameters - The parameters supplied to the update schedule operation.
 type ScheduleUpdateParameters struct {
 	// Gets or sets the name of the Schedule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the list of schedule properties.
-	Properties *ScheduleUpdateProperties `json:"properties,omitempty"`
+	Properties *ScheduleUpdateProperties
 }
 
 // ScheduleUpdateProperties - The parameters supplied to the update schedule operation.
 type ScheduleUpdateProperties struct {
 	// Gets or sets the description of the schedule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets a value indicating whether this schedule is enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 }
 
 // SoftwareUpdateConfiguration - Software update configuration properties.
 type SoftwareUpdateConfiguration struct {
 	// REQUIRED; Software update configuration properties.
-	Properties *SoftwareUpdateConfigurationProperties `json:"properties,omitempty"`
+	Properties *SoftwareUpdateConfigurationProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SoftwareUpdateConfigurationCollectionItem - Software update configuration collection item properties.
 type SoftwareUpdateConfigurationCollectionItem struct {
 	// REQUIRED; Software update configuration properties.
-	Properties *SoftwareUpdateConfigurationCollectionItemProperties `json:"properties,omitempty"`
+	Properties *SoftwareUpdateConfigurationCollectionItemProperties
 
 	// READ-ONLY; Resource Id of the software update configuration
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the software update configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // SoftwareUpdateConfigurationCollectionItemProperties - Software update configuration collection item properties.
 type SoftwareUpdateConfigurationCollectionItemProperties struct {
 	// execution frequency of the schedule associated with the software update configuration
-	Frequency *ScheduleFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduleFrequency
 
 	// ext run time of the update.
-	NextRun *time.Time `json:"nextRun,omitempty"`
+	NextRun *time.Time
 
 	// the start time of the update.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Pre and Post Tasks defined
-	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
+	Tasks *SoftwareUpdateConfigurationTasks
 
 	// Update specific properties of the software update configuration.
-	UpdateConfiguration *UpdateConfiguration `json:"updateConfiguration,omitempty"`
+	UpdateConfiguration *UpdateConfiguration
 
 	// READ-ONLY; Creation time of the software update configuration, which only appears in the response.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Last time software update configuration was modified, which only appears in the response.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Provisioning state for the software update configuration, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SoftwareUpdateConfigurationListResult - result of listing all software update configuration
 type SoftwareUpdateConfigurationListResult struct {
 	// outer object returned when listing all software update configurations
-	Value []*SoftwareUpdateConfigurationCollectionItem `json:"value,omitempty"`
+	Value []*SoftwareUpdateConfigurationCollectionItem
 }
 
 // SoftwareUpdateConfigurationMachineRun - Software update configuration machine run model.
 type SoftwareUpdateConfigurationMachineRun struct {
 	// Software update configuration machine run properties.
-	Properties *UpdateConfigurationMachineRunProperties `json:"properties,omitempty"`
+	Properties *UpdateConfigurationMachineRunProperties
 
 	// READ-ONLY; Resource Id of the software update configuration machine run
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the software update configuration machine run
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // SoftwareUpdateConfigurationMachineRunListResult - result of listing all software update configuration machine runs
 type SoftwareUpdateConfigurationMachineRunListResult struct {
 	// link to next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// outer object returned when listing all software update configuration machine runs
-	Value []*SoftwareUpdateConfigurationMachineRun `json:"value,omitempty"`
+	Value []*SoftwareUpdateConfigurationMachineRun
 }
 
 // SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.GetByID
@@ -3237,115 +3241,115 @@ type SoftwareUpdateConfigurationMachineRunsClientListOptions struct {
 // SoftwareUpdateConfigurationProperties - Software update configuration properties.
 type SoftwareUpdateConfigurationProperties struct {
 	// REQUIRED; Schedule information for the Software update configuration
-	ScheduleInfo *SUCScheduleProperties `json:"scheduleInfo,omitempty"`
+	ScheduleInfo *SUCScheduleProperties
 
 	// REQUIRED; update specific properties for the Software update configuration
-	UpdateConfiguration *UpdateConfiguration `json:"updateConfiguration,omitempty"`
+	UpdateConfiguration *UpdateConfiguration
 
 	// Details of provisioning error
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// Tasks information for the Software update configuration.
-	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
+	Tasks *SoftwareUpdateConfigurationTasks
 
 	// READ-ONLY; CreatedBy property, which only appears in the response.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; Creation time of the resource, which only appears in the response.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; LastModifiedBy property, which only appears in the response.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; Last time resource was modified, which only appears in the response.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Provisioning state for the software update configuration, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SoftwareUpdateConfigurationRun - Software update configuration Run properties.
 type SoftwareUpdateConfigurationRun struct {
 	// Software update configuration Run properties.
-	Properties *SoftwareUpdateConfigurationRunProperties `json:"properties,omitempty"`
+	Properties *SoftwareUpdateConfigurationRunProperties
 
 	// READ-ONLY; Resource Id of the software update configuration run
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the software update configuration run.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // SoftwareUpdateConfigurationRunListResult - result of listing all software update configuration runs
 type SoftwareUpdateConfigurationRunListResult struct {
 	// link to next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// outer object returned when listing all software update configuration runs
-	Value []*SoftwareUpdateConfigurationRun `json:"value,omitempty"`
+	Value []*SoftwareUpdateConfigurationRun
 }
 
 // SoftwareUpdateConfigurationRunProperties - Software update configuration properties.
 type SoftwareUpdateConfigurationRunProperties struct {
 	// software update configuration triggered this run
-	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
+	SoftwareUpdateConfiguration *UpdateConfigurationNavigation
 
 	// Software update configuration tasks triggered in this run
-	Tasks *SoftwareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
+	Tasks *SoftwareUpdateConfigurationRunTasks
 
 	// READ-ONLY; Number of computers in the software update configuration run.
-	ComputerCount *int32 `json:"computerCount,omitempty" azure:"ro"`
+	ComputerCount *int32
 
 	// READ-ONLY; Configured duration for the software update configuration run.
-	ConfiguredDuration *string `json:"configuredDuration,omitempty" azure:"ro"`
+	ConfiguredDuration *string
 
 	// READ-ONLY; CreatedBy property, which only appears in the response.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; Creation time of the resource, which only appears in the response.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; End time of the software update configuration run.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Number of computers with failed status.
-	FailedCount *int32 `json:"failedCount,omitempty" azure:"ro"`
+	FailedCount *int32
 
 	// READ-ONLY; LastModifiedBy property, which only appears in the response.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; Last time resource was modified, which only appears in the response.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Operating system target of the software update configuration triggered this run
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; Start time of the software update configuration run.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Status of the software update configuration run.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // SoftwareUpdateConfigurationRunTaskProperties - Task properties of the software update configuration.
 type SoftwareUpdateConfigurationRunTaskProperties struct {
 	// The job id of the task.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// The name of the source of the task.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// The status of the task.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // SoftwareUpdateConfigurationRunTasks - Software update configuration run tasks model.
 type SoftwareUpdateConfigurationRunTasks struct {
 	// Post task properties.
-	PostTask *SoftwareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
+	PostTask *SoftwareUpdateConfigurationRunTaskProperties
 
 	// Pre task properties.
-	PreTask *SoftwareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
+	PreTask *SoftwareUpdateConfigurationRunTaskProperties
 }
 
 // SoftwareUpdateConfigurationRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationRunsClient.GetByID
@@ -3372,10 +3376,10 @@ type SoftwareUpdateConfigurationRunsClientListOptions struct {
 // SoftwareUpdateConfigurationTasks - Task properties of the software update configuration.
 type SoftwareUpdateConfigurationTasks struct {
 	// Post task properties.
-	PostTask *TaskProperties `json:"postTask,omitempty"`
+	PostTask *TaskProperties
 
 	// Pre task properties.
-	PreTask *TaskProperties `json:"preTask,omitempty"`
+	PreTask *TaskProperties
 }
 
 // SoftwareUpdateConfigurationsClientCreateOptions contains the optional parameters for the SoftwareUpdateConfigurationsClient.Create
@@ -3411,16 +3415,16 @@ type SoftwareUpdateConfigurationsClientListOptions struct {
 // SourceControl - Definition of the source control.
 type SourceControl struct {
 	// The properties of the source control.
-	Properties *SourceControlProperties `json:"properties,omitempty"`
+	Properties *SourceControlProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate method.
@@ -3438,7 +3442,7 @@ type SourceControlClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
+// SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.NewListByAutomationAccountPager
 // method.
 type SourceControlClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3453,132 +3457,132 @@ type SourceControlClientUpdateOptions struct {
 // SourceControlCreateOrUpdateParameters - The parameters supplied to the create or update source control operation.
 type SourceControlCreateOrUpdateParameters struct {
 	// REQUIRED; The properties of the source control.
-	Properties *SourceControlCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *SourceControlCreateOrUpdateProperties
 }
 
 // SourceControlCreateOrUpdateProperties - The properties of the create source control operation.
 type SourceControlCreateOrUpdateProperties struct {
 	// The auto async of the source control. Default is false.
-	AutoSync *bool `json:"autoSync,omitempty"`
+	AutoSync *bool
 
 	// The repo branch of the source control. Include branch as empty string for VsoTfvc.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The user description of the source control.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The folder path of the source control. Path must be relative.
-	FolderPath *string `json:"folderPath,omitempty"`
+	FolderPath *string
 
 	// The auto publish of the source control. Default is true.
-	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	PublishRunbook *bool
 
 	// The repo url of the source control.
-	RepoURL *string `json:"repoUrl,omitempty"`
+	RepoURL *string
 
 	// The authorization token for the repo of the source control.
-	SecurityToken *SourceControlSecurityTokenProperties `json:"securityToken,omitempty"`
+	SecurityToken *SourceControlSecurityTokenProperties
 
 	// The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-	SourceType *SourceType `json:"sourceType,omitempty"`
+	SourceType *SourceType
 }
 
 // SourceControlListResult - The response model for the list source controls operation.
 type SourceControlListResult struct {
 	// The next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of source controls.
-	Value []*SourceControl `json:"value,omitempty"`
+	Value []*SourceControl
 }
 
 // SourceControlProperties - Definition of the source control properties
 type SourceControlProperties struct {
 	// The auto sync of the source control. Default is false.
-	AutoSync *bool `json:"autoSync,omitempty"`
+	AutoSync *bool
 
 	// The repo branch of the source control. Include branch as empty string for VsoTfvc.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The folder path of the source control.
-	FolderPath *string `json:"folderPath,omitempty"`
+	FolderPath *string
 
 	// The last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// The auto publish of the source control. Default is true.
-	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	PublishRunbook *bool
 
 	// The repo url of the source control.
-	RepoURL *string `json:"repoUrl,omitempty"`
+	RepoURL *string
 
 	// The source type. Must be one of VsoGit, VsoTfvc, GitHub.
-	SourceType *SourceType `json:"sourceType,omitempty"`
+	SourceType *SourceType
 }
 
 type SourceControlSecurityTokenProperties struct {
 	// The access token.
-	AccessToken *string `json:"accessToken,omitempty"`
+	AccessToken *string
 
 	// The refresh token.
-	RefreshToken *string `json:"refreshToken,omitempty"`
+	RefreshToken *string
 
 	// The token type. Must be either PersonalAccessToken or Oauth.
-	TokenType *TokenType `json:"tokenType,omitempty"`
+	TokenType *TokenType
 }
 
 // SourceControlSyncJob - Definition of the source control sync job.
 type SourceControlSyncJob struct {
 	// The properties of the source control sync job.
-	Properties *SourceControlSyncJobProperties `json:"properties,omitempty"`
+	Properties *SourceControlSyncJobProperties
 
 	// READ-ONLY; Resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SourceControlSyncJobByID - Definition of the source control sync job.
 type SourceControlSyncJobByID struct {
 	// The id of the job.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The properties of the source control sync job.
-	Properties *SourceControlSyncJobByIDProperties `json:"properties,omitempty"`
+	Properties *SourceControlSyncJobByIDProperties
 }
 
 // SourceControlSyncJobByIDProperties - Definition of source control sync job properties.
 type SourceControlSyncJobByIDProperties struct {
 	// The exceptions that occurred while running the sync job.
-	Exception *string `json:"exception,omitempty"`
+	Exception *string
 
 	// The provisioning state of the job.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 
 	// The source control sync job id.
-	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	SourceControlSyncJobID *string
 
 	// The sync type.
-	SyncType *SyncType `json:"syncType,omitempty"`
+	SyncType *SyncType
 
 	// READ-ONLY; The creation time of the job.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The end time of the job.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // SourceControlSyncJobClientCreateOptions contains the optional parameters for the SourceControlSyncJobClient.Create method.
@@ -3591,7 +3595,7 @@ type SourceControlSyncJobClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
+// SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.NewListByAutomationAccountPager
 // method.
 type SourceControlSyncJobClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3601,97 +3605,97 @@ type SourceControlSyncJobClientListByAutomationAccountOptions struct {
 // SourceControlSyncJobCreateParameters - The parameters supplied to the create source control sync job operation.
 type SourceControlSyncJobCreateParameters struct {
 	// REQUIRED; The properties of the source control sync job.
-	Properties *SourceControlSyncJobCreateProperties `json:"properties,omitempty"`
+	Properties *SourceControlSyncJobCreateProperties
 }
 
 // SourceControlSyncJobCreateProperties - Definition of create source control sync job properties.
 type SourceControlSyncJobCreateProperties struct {
 	// REQUIRED; The commit id of the source control sync job. If not syncing to a commitId, enter an empty string.
-	CommitID *string `json:"commitId,omitempty"`
+	CommitID *string
 }
 
 // SourceControlSyncJobListResult - The response model for the list source control sync jobs operation.
 type SourceControlSyncJobListResult struct {
 	// The next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of source control sync jobs.
-	Value []*SourceControlSyncJob `json:"value,omitempty"`
+	Value []*SourceControlSyncJob
 }
 
 // SourceControlSyncJobProperties - Definition of source control sync job properties.
 type SourceControlSyncJobProperties struct {
 	// The provisioning state of the job.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 
 	// The source control sync job id.
-	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	SourceControlSyncJobID *string
 
 	// The sync type.
-	SyncType *SyncType `json:"syncType,omitempty"`
+	SyncType *SyncType
 
 	// READ-ONLY; The creation time of the job.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The end time of the job.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // SourceControlSyncJobStream - Definition of the source control sync job stream.
 type SourceControlSyncJobStream struct {
 	// The properties of the source control sync job stream.
-	Properties *SourceControlSyncJobStreamProperties `json:"properties,omitempty"`
+	Properties *SourceControlSyncJobStreamProperties
 
 	// READ-ONLY; Resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // SourceControlSyncJobStreamByID - Definition of the source control sync job stream by id.
 type SourceControlSyncJobStreamByID struct {
 	// The properties of the source control sync job stream.
-	Properties *SourceControlSyncJobStreamByIDProperties `json:"properties,omitempty"`
+	Properties *SourceControlSyncJobStreamByIDProperties
 
 	// READ-ONLY; Resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // SourceControlSyncJobStreamByIDProperties - Definition of source control sync job stream by id properties.
 type SourceControlSyncJobStreamByIDProperties struct {
 	// The sync job stream id.
-	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
+	SourceControlSyncJobStreamID *string
 
 	// The text of the sync job stream.
-	StreamText *string `json:"streamText,omitempty"`
+	StreamText *string
 
 	// The type of the sync job stream.
-	StreamType *StreamType `json:"streamType,omitempty"`
+	StreamType *StreamType
 
 	// The summary of the sync job stream.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// The values of the job stream.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value map[string]any
 
 	// READ-ONLY; The time of the sync job stream.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // SourceControlSyncJobStreamProperties - Definition of source control sync job stream properties.
 type SourceControlSyncJobStreamProperties struct {
 	// The sync job stream id.
-	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
+	SourceControlSyncJobStreamID *string
 
 	// The type of the sync job stream.
-	StreamType *StreamType `json:"streamType,omitempty"`
+	StreamType *StreamType
 
 	// The summary of the sync job stream.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// READ-ONLY; The time of the sync job stream.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // SourceControlSyncJobStreamsClientGetOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.Get
@@ -3700,7 +3704,7 @@ type SourceControlSyncJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.ListBySyncJob
+// SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.NewListBySyncJobPager
 // method.
 type SourceControlSyncJobStreamsClientListBySyncJobOptions struct {
 	// The filter to apply on the operation.
@@ -3710,58 +3714,58 @@ type SourceControlSyncJobStreamsClientListBySyncJobOptions struct {
 // SourceControlSyncJobStreamsListBySyncJob - The response model for the list source control sync job streams operation.
 type SourceControlSyncJobStreamsListBySyncJob struct {
 	// The list of source control sync job streams.
-	Value []*SourceControlSyncJobStream `json:"value,omitempty"`
+	Value []*SourceControlSyncJobStream
 
 	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SourceControlUpdateParameters - The parameters supplied to the update source control operation.
 type SourceControlUpdateParameters struct {
 	// The value of the source control.
-	Properties *SourceControlUpdateProperties `json:"properties,omitempty"`
+	Properties *SourceControlUpdateProperties
 }
 
 // SourceControlUpdateProperties - The properties of the update source control
 type SourceControlUpdateProperties struct {
 	// The auto sync of the source control. Default is false.
-	AutoSync *bool `json:"autoSync,omitempty"`
+	AutoSync *bool
 
 	// The repo branch of the source control.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The user description of the source control.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The folder path of the source control. Path must be relative.
-	FolderPath *string `json:"folderPath,omitempty"`
+	FolderPath *string
 
 	// The auto publish of the source control. Default is true.
-	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	PublishRunbook *bool
 
 	// The authorization token for the repo of the source control.
-	SecurityToken *SourceControlSecurityTokenProperties `json:"securityToken,omitempty"`
+	SecurityToken *SourceControlSecurityTokenProperties
 }
 
 // Statistics - Definition of the statistic.
 type Statistics struct {
 	// READ-ONLY; Gets the property value of the statistic.
-	CounterProperty *string `json:"counterProperty,omitempty" azure:"ro"`
+	CounterProperty *string
 
 	// READ-ONLY; Gets the value of the statistic.
-	CounterValue *int64 `json:"counterValue,omitempty" azure:"ro"`
+	CounterValue *int64
 
 	// READ-ONLY; Gets the endTime of the statistic.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the startTime of the statistic.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
-// StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.ListByAutomationAccount
+// StatisticsClientListByAutomationAccountOptions contains the optional parameters for the StatisticsClient.NewListByAutomationAccountPager
 // method.
 type StatisticsClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -3771,91 +3775,91 @@ type StatisticsClientListByAutomationAccountOptions struct {
 // StatisticsListResult - The response model for the list statistics operation.
 type StatisticsListResult struct {
 	// Gets or sets a list of statistics.
-	Value []*Statistics `json:"value,omitempty"`
+	Value []*Statistics
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagSettingsProperties - Tag filter information for the VM.
 type TagSettingsProperties struct {
 	// Filter VMs by Any or All specified tags.
-	FilterOperator *TagOperators `json:"filterOperator,omitempty"`
+	FilterOperator *TagOperators
 
 	// Dictionary of tags with its list of values.
-	Tags map[string][]*string `json:"tags,omitempty"`
+	Tags map[string][]*string
 }
 
 // TargetProperties - Group specific to the update configuration.
 type TargetProperties struct {
 	// List of Azure queries in the software update configuration.
-	AzureQueries []*AzureQueryProperties `json:"azureQueries,omitempty"`
+	AzureQueries []*AzureQueryProperties
 
 	// List of non Azure queries in the software update configuration.
-	NonAzureQueries []*NonAzureQueryProperties `json:"nonAzureQueries,omitempty"`
+	NonAzureQueries []*NonAzureQueryProperties
 }
 
 // TaskProperties - Task properties of the software update configuration.
 type TaskProperties struct {
 	// Gets or sets the parameters of the task.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the name of the runbook.
-	Source *string `json:"source,omitempty"`
+	Source *string
 }
 
 // TestJob - Definition of the test job.
 type TestJob struct {
 	// Gets or sets the creation time of the test job.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the end time of the test job.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Gets or sets the exception of the test job.
-	Exception *string `json:"exception,omitempty"`
+	Exception *string
 
 	// Gets or sets the last modified time of the test job.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the last status modified time of the test job.
-	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty"`
+	LastStatusModifiedTime *time.Time
 
 	// The activity-level tracing options of the runbook.
-	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
+	LogActivityTrace *int32
 
 	// Gets or sets the parameters of the test job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the start time of the test job.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Gets or sets the status of the test job.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Gets or sets the status details of the test job.
-	StatusDetails *string `json:"statusDetails,omitempty"`
+	StatusDetails *string
 }
 
 // TestJobClientCreateOptions contains the optional parameters for the TestJobClient.Create method.
@@ -3886,10 +3890,10 @@ type TestJobClientSuspendOptions struct {
 // TestJobCreateParameters - The parameters supplied to the create test job operation.
 type TestJobCreateParameters struct {
 	// Gets or sets the parameters of the test job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the runOn which specifies the group name where the job is to be executed.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 }
 
 // TestJobStreamsClientGetOptions contains the optional parameters for the TestJobStreamsClient.Get method.
@@ -3897,7 +3901,8 @@ type TestJobStreamsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.ListByTestJob method.
+// TestJobStreamsClientListByTestJobOptions contains the optional parameters for the TestJobStreamsClient.NewListByTestJobPager
+// method.
 type TestJobStreamsClientListByTestJobOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -3906,155 +3911,155 @@ type TestJobStreamsClientListByTestJobOptions struct {
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TypeField - Information about a field of a type.
 type TypeField struct {
 	// Gets or sets the name of the field.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the type of the field.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // TypeFieldListResult - The response model for the list fields operation.
 type TypeFieldListResult struct {
 	// Gets or sets a list of fields.
-	Value []*TypeField `json:"value,omitempty"`
+	Value []*TypeField
 }
 
 // UpdateConfiguration - Update specific properties of the software update configuration.
 type UpdateConfiguration struct {
 	// REQUIRED; operating system of target machines
-	OperatingSystem *OperatingSystemType `json:"operatingSystem,omitempty"`
+	OperatingSystem *OperatingSystemType
 
 	// List of azure resource Ids for azure virtual machines targeted by the software update configuration.
-	AzureVirtualMachines []*string `json:"azureVirtualMachines,omitempty"`
+	AzureVirtualMachines []*string
 
 	// Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S
 	// as per ISO8601
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// Linux specific update configuration.
-	Linux *LinuxProperties `json:"linux,omitempty"`
+	Linux *LinuxProperties
 
 	// List of names of non-azure machines targeted by the software update configuration.
-	NonAzureComputerNames []*string `json:"nonAzureComputerNames,omitempty"`
+	NonAzureComputerNames []*string
 
 	// Group targets for the software update configuration.
-	Targets *TargetProperties `json:"targets,omitempty"`
+	Targets *TargetProperties
 
 	// Windows specific update configuration.
-	Windows *WindowsProperties `json:"windows,omitempty"`
+	Windows *WindowsProperties
 }
 
 // UpdateConfigurationMachineRunProperties - Software update configuration machine run properties.
 type UpdateConfigurationMachineRunProperties struct {
 	// Details of provisioning error
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// Job associated with the software update configuration machine run
-	Job *JobNavigation `json:"job,omitempty"`
+	Job *JobNavigation
 
 	// software update configuration triggered this run
-	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
+	SoftwareUpdateConfiguration *UpdateConfigurationNavigation
 
 	// READ-ONLY; configured duration for the software update configuration run.
-	ConfiguredDuration *string `json:"configuredDuration,omitempty" azure:"ro"`
+	ConfiguredDuration *string
 
 	// READ-ONLY; correlation id of the software update configuration machine run
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; createdBy property, which only appears in the response.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; Creation time of the resource, which only appears in the response.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; End time of the software update configuration machine run.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; lastModifiedBy property, which only appears in the response.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; Last time resource was modified, which only appears in the response.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Operating system target of the software update configuration triggered this run
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; source computer id of the software update configuration machine run
-	SourceComputerID *string `json:"sourceComputerId,omitempty" azure:"ro"`
+	SourceComputerID *string
 
 	// READ-ONLY; Start time of the software update configuration machine run.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Status of the software update configuration machine run.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; name of the updated computer
-	TargetComputer *string `json:"targetComputer,omitempty" azure:"ro"`
+	TargetComputer *string
 
 	// READ-ONLY; type of the updated computer.
-	TargetComputerType *string `json:"targetComputerType,omitempty" azure:"ro"`
+	TargetComputerType *string
 }
 
 // UpdateConfigurationNavigation - Software update configuration Run Navigation model.
 type UpdateConfigurationNavigation struct {
 	// READ-ONLY; Name of the software update configuration triggered the software update configuration run
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // Usage - Definition of Usage.
 type Usage struct {
 	// Gets or sets the current usage value.
-	CurrentValue *float64 `json:"currentValue,omitempty"`
+	CurrentValue *float64
 
 	// Gets or sets the id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets max limit. -1 for unlimited
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// Gets or sets the usage counter name.
-	Name *UsageCounterName `json:"name,omitempty"`
+	Name *UsageCounterName
 
 	// Gets or sets the throttle status.
-	ThrottleStatus *string `json:"throttleStatus,omitempty"`
+	ThrottleStatus *string
 
 	// Gets or sets the usage unit name.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // UsageCounterName - Definition of usage counter name.
 type UsageCounterName struct {
 	// Gets or sets the localized usage counter name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// Gets or sets the usage counter name.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // UsageListResult - The response model for the get usage operation.
 type UsageListResult struct {
 	// Gets or sets usage.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 }
 
-// UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.ListByAutomationAccount
+// UsagesClientListByAutomationAccountOptions contains the optional parameters for the UsagesClient.NewListByAutomationAccountPager
 // method.
 type UsagesClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -4063,16 +4068,16 @@ type UsagesClientListByAutomationAccountOptions struct {
 // Variable - Definition of the variable.
 type Variable struct {
 	// Gets or sets the properties of the variable.
-	Properties *VariableProperties `json:"properties,omitempty"`
+	Properties *VariableProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VariableClientCreateOrUpdateOptions contains the optional parameters for the VariableClient.CreateOrUpdate method.
@@ -4090,7 +4095,7 @@ type VariableClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.ListByAutomationAccount
+// VariableClientListByAutomationAccountOptions contains the optional parameters for the VariableClient.NewListByAutomationAccountPager
 // method.
 type VariableClientListByAutomationAccountOptions struct {
 	// placeholder for future optional parameters
@@ -4104,91 +4109,91 @@ type VariableClientUpdateOptions struct {
 // VariableCreateOrUpdateParameters - The parameters supplied to the create or update variable operation.
 type VariableCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the variable.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the properties of the variable.
-	Properties *VariableCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *VariableCreateOrUpdateProperties
 }
 
 // VariableCreateOrUpdateProperties - The properties of the create variable operation.
 type VariableCreateOrUpdateProperties struct {
 	// Gets or sets the description of the variable.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the encrypted flag of the variable.
-	IsEncrypted *bool `json:"isEncrypted,omitempty"`
+	IsEncrypted *bool
 
 	// Gets or sets the value of the variable.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // VariableListResult - The response model for the list variables operation.
 type VariableListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of variables.
-	Value []*Variable `json:"value,omitempty"`
+	Value []*Variable
 }
 
 // VariableProperties - Definition of the variable properties
 type VariableProperties struct {
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the encrypted flag of the variable.
-	IsEncrypted *bool `json:"isEncrypted,omitempty"`
+	IsEncrypted *bool
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the value of the variable.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // VariableUpdateParameters - The parameters supplied to the update variable operation.
 type VariableUpdateParameters struct {
 	// Gets or sets the name of the variable.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the value of the variable.
-	Properties *VariableUpdateProperties `json:"properties,omitempty"`
+	Properties *VariableUpdateProperties
 }
 
 // VariableUpdateProperties - The properties of the update variable
 type VariableUpdateProperties struct {
 	// Gets or sets the description of the variable.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the value of the variable.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Watcher - Definition of the watcher type.
 type Watcher struct {
 	// Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the watcher properties.
-	Properties *WatcherProperties `json:"properties,omitempty"`
+	Properties *WatcherProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WatcherClientCreateOrUpdateOptions contains the optional parameters for the WatcherClient.CreateOrUpdate method.
@@ -4206,7 +4211,7 @@ type WatcherClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.ListByAutomationAccount
+// WatcherClientListByAutomationAccountOptions contains the optional parameters for the WatcherClient.NewListByAutomationAccountPager
 // method.
 type WatcherClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -4231,69 +4236,69 @@ type WatcherClientUpdateOptions struct {
 // WatcherListResult - The response model for the list watcher operation.
 type WatcherListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of watchers.
-	Value []*Watcher `json:"value,omitempty"`
+	Value []*Watcher
 }
 
 // WatcherProperties - Definition of the watcher properties
 type WatcherProperties struct {
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the frequency at which the watcher is invoked.
-	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
+	ExecutionFrequencyInSeconds *int64
 
 	// Gets or sets the name of the script the watcher is attached to, i.e. the name of an existing runbook.
-	ScriptName *string `json:"scriptName,omitempty"`
+	ScriptName *string
 
 	// Gets or sets the parameters of the script.
-	ScriptParameters map[string]*string `json:"scriptParameters,omitempty"`
+	ScriptParameters map[string]*string
 
 	// Gets or sets the name of the hybrid worker group the watcher will run on.
-	ScriptRunOn *string `json:"scriptRunOn,omitempty"`
+	ScriptRunOn *string
 
 	// READ-ONLY; Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; Details of the user who last modified the watcher.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *time.Time
 
 	// READ-ONLY; Gets the current status of the watcher.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 type WatcherUpdateParameters struct {
 	// Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the watcher update properties.
-	Properties *WatcherUpdateProperties `json:"properties,omitempty"`
+	Properties *WatcherUpdateProperties
 }
 
 // WatcherUpdateProperties - The properties of the update watcher operation.
 type WatcherUpdateProperties struct {
 	// Gets or sets the frequency at which the watcher is invoked.
-	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
+	ExecutionFrequencyInSeconds *int64
 }
 
 // Webhook - Definition of the webhook type.
 type Webhook struct {
 	// Gets or sets the webhook properties.
-	Properties *WebhookProperties `json:"properties,omitempty"`
+	Properties *WebhookProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebhookClientCreateOrUpdateOptions contains the optional parameters for the WebhookClient.CreateOrUpdate method.
@@ -4316,7 +4321,7 @@ type WebhookClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
+// WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.NewListByAutomationAccountPager
 // method.
 type WebhookClientListByAutomationAccountOptions struct {
 	// The filter to apply on the operation.
@@ -4331,113 +4336,113 @@ type WebhookClientUpdateOptions struct {
 // WebhookCreateOrUpdateParameters - The parameters supplied to the create or update webhook operation.
 type WebhookCreateOrUpdateParameters struct {
 	// REQUIRED; Gets or sets the name of the webhook.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Gets or sets the properties of the webhook.
-	Properties *WebhookCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *WebhookCreateOrUpdateProperties
 }
 
 // WebhookCreateOrUpdateProperties - The properties of the create webhook operation.
 type WebhookCreateOrUpdateProperties struct {
 	// Gets or sets the expiry time.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// Gets or sets the value of the enabled flag of webhook.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the name of the hybrid worker group the webhook job will run on.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 
 	// Gets or sets the uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // WebhookListResult - The response model for the list webhook operation.
 type WebhookListResult struct {
 	// Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets a list of webhooks.
-	Value []*Webhook `json:"value,omitempty"`
+	Value []*Webhook
 }
 
 // WebhookProperties - Definition of the webhook properties
 type WebhookProperties struct {
 	// Gets or sets the creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Gets or sets the description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the expiry time.
-	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time
 
 	// Gets or sets the value of the enabled flag of the webhook.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Gets or sets the last invoked time.
-	LastInvokedTime *time.Time `json:"lastInvokedTime,omitempty"`
+	LastInvokedTime *time.Time
 
 	// Details of the user who last modified the Webhook
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// Gets or sets the last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// Gets or sets the parameters of the job that is created when the webhook calls the runbook it is associated with.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the name of the hybrid worker group the webhook job will run on.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 
 	// Gets or sets the runbook the webhook is associated with.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook *RunbookAssociationProperty
 
 	// Gets or sets the webhook uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // WebhookUpdateParameters - The parameters supplied to the update webhook operation.
 type WebhookUpdateParameters struct {
 	// Gets or sets the name of the webhook.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the value of the webhook.
-	Properties *WebhookUpdateProperties `json:"properties,omitempty"`
+	Properties *WebhookUpdateProperties
 }
 
 // WebhookUpdateProperties - The properties of the update webhook.
 type WebhookUpdateProperties struct {
 	// Gets or sets the description of the webhook.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the value of the enabled flag of webhook.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Gets or sets the parameters of the job.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Gets or sets the name of the hybrid worker group the webhook job will run on.
-	RunOn *string `json:"runOn,omitempty"`
+	RunOn *string
 }
 
 // WindowsProperties - Windows specific update configuration.
 type WindowsProperties struct {
 	// KB numbers excluded from the software update configuration.
-	ExcludedKbNumbers []*string `json:"excludedKbNumbers,omitempty"`
+	ExcludedKbNumbers []*string
 
 	// KB numbers included from the software update configuration.
-	IncludedKbNumbers []*string `json:"includedKbNumbers,omitempty"`
+	IncludedKbNumbers []*string
 
 	// Update classification included in the software update configuration. A comma separated string with required values
-	IncludedUpdateClassifications *WindowsUpdateClasses `json:"includedUpdateClassifications,omitempty"`
+	IncludedUpdateClassifications *WindowsUpdateClasses
 
 	// Reboot setting for the software update configuration.
-	RebootSetting *string `json:"rebootSetting,omitempty"`
+	RebootSetting *string
 }

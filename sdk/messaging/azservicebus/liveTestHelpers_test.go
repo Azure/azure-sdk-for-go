@@ -127,8 +127,10 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 		queueProperties = &admin.QueueProperties{}
 	}
 
-	autoDeleteOnIdle := "PT5M"
-	queueProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
+	if queueProperties.AutoDeleteOnIdle == nil {
+		autoDeleteOnIdle := "PT5M"
+		queueProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
+	}
 
 	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
 		Properties: queueProperties,

@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,44 +22,36 @@ import (
 // ProviderOperationsMetadataClient contains the methods for the ProviderOperationsMetadata group.
 // Don't use this type directly, use NewProviderOperationsMetadataClient() instead.
 type ProviderOperationsMetadataClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewProviderOperationsMetadataClient creates a new instance of ProviderOperationsMetadataClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderOperationsMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProviderOperationsMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProviderOperationsMetadataClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Gets provider operations metadata for the specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// resourceProviderNamespace - The namespace of the resource provider.
-// options - ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
-// method.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - options - ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
+//     method.
 func (client *ProviderOperationsMetadataClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataClientGetOptions) (ProviderOperationsMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return ProviderOperationsMetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProviderOperationsMetadataClientGetResponse{}, err
 	}
@@ -75,7 +65,7 @@ func (client *ProviderOperationsMetadataClient) Get(ctx context.Context, resourc
 func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -99,10 +89,10 @@ func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Gets provider operations metadata for all resource providers.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
-// method.
+//   - options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.NewListPager
+//     method.
 func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOperationsMetadataClientListOptions) *runtime.Pager[ProviderOperationsMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderOperationsMetadataClientListResponse]{
 		More: func(page ProviderOperationsMetadataClientListResponse) bool {
@@ -119,7 +109,7 @@ func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOp
 			if err != nil {
 				return ProviderOperationsMetadataClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderOperationsMetadataClientListResponse{}, err
 			}
@@ -134,7 +124,7 @@ func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOp
 // listCreateRequest creates the List request.
 func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Context, options *ProviderOperationsMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/providerOperations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

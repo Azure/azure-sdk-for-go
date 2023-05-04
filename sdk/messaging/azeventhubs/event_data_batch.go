@@ -20,7 +20,7 @@ var ErrEventDataTooLarge = errors.New("the EventData could not be added because 
 type (
 	// EventDataBatch is used to efficiently pack up EventData before sending it to Event Hubs.
 	//
-	// EventDataBatch's are not meant to be created directly. Use [azeventhubs.ProducerClient.NewEventDataBatch],
+	// EventDataBatch's are not meant to be created directly. Use [ProducerClient.NewEventDataBatch],
 	// which will create them with the proper size limit for your Event Hub.
 	EventDataBatch struct {
 		mu sync.RWMutex
@@ -49,7 +49,7 @@ type AddEventDataOptions struct {
 // cause the EventDataBatch to be too large to send.
 //
 // This size limit was set when the EventDataBatch was created, in options to
-// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// [ProducerClient.NewEventDataBatch], or (by default) from Event
 // Hubs itself.
 //
 // Returns ErrMessageTooLarge if the event cannot fit, or a non-nil error for
@@ -62,7 +62,7 @@ func (b *EventDataBatch) AddEventData(ed *EventData, options *AddEventDataOption
 // if the AMQPAnnotatedMessage would cause the EventDataBatch to be too large to send.
 //
 // This size limit was set when the EventDataBatch was created, in options to
-// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// [ProducerClient.NewEventDataBatch], or (by default) from Event
 // Hubs itself.
 //
 // Returns ErrMessageTooLarge if the message cannot fit, or a non-nil error for
@@ -89,9 +89,13 @@ func (b *EventDataBatch) NumEvents() int32 {
 
 // toAMQPMessage converts this batch into a sendable *amqp.Message
 // NOTE: not idempotent!
-func (b *EventDataBatch) toAMQPMessage() *amqp.Message {
+func (b *EventDataBatch) toAMQPMessage() (*amqp.Message, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
+
+	if len(b.marshaledMessages) == 0 {
+		return nil, internal.NewErrNonRetriable("batch is nil or empty")
+	}
 
 	b.batchEnvelope.Data = make([][]byte, len(b.marshaledMessages))
 	b.batchEnvelope.Format = batchMessageFormat
@@ -105,7 +109,7 @@ func (b *EventDataBatch) toAMQPMessage() *amqp.Message {
 	}
 
 	copy(b.batchEnvelope.Data, b.marshaledMessages)
-	return b.batchEnvelope
+	return b.batchEnvelope, nil
 }
 
 func (b *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
@@ -211,9 +215,11 @@ func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *EventDataBatch
 	if options.PartitionID != nil {
 		// they want to send to a particular partition. The batch size should be the same for any
 		// link but we might as well use the one they're going to send to.
-		batch.partitionID = options.PartitionID
+		pid := *options.PartitionID
+		batch.partitionID = &pid
 	} else if options.PartitionKey != nil {
-		batch.partitionKey = options.PartitionKey
+		partKey := *options.PartitionKey
+		batch.partitionKey = &partKey
 	}
 
 	if options.MaxBytes == 0 {

@@ -1,5 +1,15 @@
 # Release History
 
+## 1.6.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.6.0 (2023-05-04)
 
 ### Features Added

@@ -148,6 +148,7 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 	amqp.ErrCondNotAllowed:                                 RecoveryKindFatal, // "amqp:not-allowed"
 	amqp.ErrCond("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
 	amqp.ErrCond("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
+	amqp.ErrCond("com.microsoft:argument-out-of-range"):    RecoveryKindFatal, // asked for a partition ID that doesn't exist
 	errorConditionLockLost:                                 RecoveryKindFatal,
 }
 

@@ -247,7 +247,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	}
 	st := o.format()
 
-	urlParts, err := sas.ParseURL(f.URL())
+	urlParts, err := ParseURL(f.URL())
 	if err != nil {
 		return "", err
 	}
@@ -282,7 +282,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	}
 
 	if log.Should(exported.EventUpload) {
-		urlParts, err := sas.ParseURL(f.URL())
+		urlParts, err := ParseURL(f.URL())
 		if err == nil {
 			log.Writef(exported.EventUpload, "file name %s actual size %v chunk-size %v chunk-count %v",
 				urlParts.DirectoryOrFilePath, actualSize, o.ChunkSize, ((actualSize-1)/o.ChunkSize)+1)

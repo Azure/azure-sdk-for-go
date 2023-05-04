@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"io"
 	"time"
 )
@@ -723,4 +724,14 @@ func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
 		LeaseAccessConditions: u.LeaseAccessConditions,
 	}
+}
+
+// URLParts object represents the components that make up an Azure Storage Container/Blob URL.
+// NOTE: Changing any SAS-related field requires computing a new SAS signature.
+type URLParts = sas.URLParts
+
+// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
+// query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
+func ParseURL(u string) (URLParts, error) {
+	return sas.ParseURL(u)
 }

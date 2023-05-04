@@ -62,3 +62,8 @@ func (c *ClientFactory) NewKeyValuesClient() *KeyValuesClient {
 	subClient, _ := NewKeyValuesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
+	subClient, _ := NewReplicasClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

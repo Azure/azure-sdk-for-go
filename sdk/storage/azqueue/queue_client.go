@@ -102,7 +102,10 @@ func NewQueueClientFromConnectionString(connectionString string, queueName strin
 	return NewQueueClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-// Create creates a new queue within a storage account. If a queue with the same name already exists, the operation fails.
+// Create creates a new queue within a storage account. If a queue with the specified name already exists, and
+// the existing metadata is identical to the metadata that's specified on the Create Queue request,
+// status code 204 (No Content) is returned. If the existing metadata doesn't match the metadata provided with the Create Queue request,
+// the operation fails and status code 409 (Conflict) is returned.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-queue4.
 func (q *QueueClient) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format()

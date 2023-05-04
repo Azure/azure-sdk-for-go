@@ -44,11 +44,6 @@ func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewConfigurationClient() *ConfigurationClient {
-	subClient, _ := NewConfigurationClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
 	subClient, _ := NewNamespacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -64,13 +59,18 @@ func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesCli
 	return subClient
 }
 
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationClient() *NetworkSecurityPerimeterConfigurationClient {
+	subClient, _ := NewNetworkSecurityPerimeterConfigurationClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewEventHubsClient() *EventHubsClient {
-	subClient, _ := NewEventHubsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	subClient, _ := NewNetworkSecurityPerimeterConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewConfigurationClient() *ConfigurationClient {
+	subClient, _ := NewConfigurationClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -79,12 +79,27 @@ func (c *ClientFactory) NewDisasterRecoveryConfigsClient() *DisasterRecoveryConf
 	return subClient
 }
 
+func (c *ClientFactory) NewEventHubsClient() *EventHubsClient {
+	subClient, _ := NewEventHubsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewConsumerGroupsClient() *ConsumerGroupsClient {
 	subClient, _ := NewConsumerGroupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewSchemaRegistryClient() *SchemaRegistryClient {
 	subClient, _ := NewSchemaRegistryClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewApplicationGroupClient() *ApplicationGroupClient {
+	subClient, _ := NewApplicationGroupClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

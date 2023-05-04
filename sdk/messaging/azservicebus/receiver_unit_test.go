@@ -183,9 +183,11 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	<-receiverClosed
 	t.Logf("Receiver has closed")
 
+	logs := logsFn()
+
 	require.Contains(t,
-		logsFn(),
-		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser pausing. Released %d messages", successfulReleases),
+		logs,
+		fmt.Sprintf("[azsb.Receiver] [prefix] Message releaser pausing. Released %d messages", successfulReleases),
 	)
 }
 
@@ -224,7 +226,7 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	require.Contains(t,
 		logsFn(),
-		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", &amqp.LinkError{}))
+		fmt.Sprintf("[azsb.Receiver] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", &amqp.LinkError{}))
 }
 
 func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {

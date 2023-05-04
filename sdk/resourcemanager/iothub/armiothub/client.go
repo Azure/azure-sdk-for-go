@@ -47,7 +47,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // BeginManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-02
+// Generated from API version 2022-11-15-preview
 //   - iotHubName - Name of the IoT hub to failover
 //   - resourceGroupName - Name of the resource group containing the IoT hub resource
 //   - failoverInput - Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the
@@ -68,7 +68,7 @@ func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string
 // ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-07-02
+// Generated from API version 2022-11-15-preview
 func (client *Client) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
 	req, err := client.manualFailoverCreateRequest(ctx, iotHubName, resourceGroupName, failoverInput, options)
 	if err != nil {
@@ -104,7 +104,7 @@ func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-02")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, failoverInput)

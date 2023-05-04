@@ -86,6 +86,12 @@ type CapabilitiesListResult struct {
 	Value []*Capabilities
 }
 
+// ConfidentialComputeProperties - The properties for confidential container group
+type ConfidentialComputeProperties struct {
+	// The base64 encoded confidential compute enforcement policy
+	CcePolicy *string
+}
+
 // Container - A container instance.
 type Container struct {
 	// REQUIRED; The user-provided name of the container instance.
@@ -224,6 +230,9 @@ type ContainerGroupPropertiesProperties struct {
 	// REQUIRED; The operating system type required by the containers in the container group.
 	OSType *OperatingSystemTypes
 
+	// The properties for confidential container group
+	ConfidentialComputeProperties *ConfidentialComputeProperties
+
 	// The DNS config information for a container group.
 	DNSConfig *DNSConfiguration
 
@@ -244,6 +253,9 @@ type ContainerGroupPropertiesProperties struct {
 
 	// The init containers for a container group.
 	InitContainers []*InitContainerDefinition
+
+	// The priority of the container group.
+	Priority *ContainerGroupPriority
 
 	// Restart policy for all containers within the container group.
 	// * Always Always restart
@@ -403,6 +415,9 @@ type ContainerProperties struct {
 
 	// The readiness probe.
 	ReadinessProbe *ContainerProbe
+
+	// The container security properties.
+	SecurityContext *SecurityContextDefinition
 
 	// The volume mounts available to the container instance.
 	VolumeMounts []*VolumeMount
@@ -644,6 +659,9 @@ type InitContainerPropertiesDefinition struct {
 	// The image of the init container.
 	Image *string
 
+	// The container security properties.
+	SecurityContext *SecurityContextDefinition
+
 	// The volume mounts available to the init container.
 	VolumeMounts []*VolumeMount
 
@@ -812,6 +830,36 @@ type ResourceRequirements struct {
 
 	// The resource limits of this container instance.
 	Limits *ResourceLimits
+}
+
+// SecurityContextCapabilitiesDefinition - The capabilities to add or drop from a container.
+type SecurityContextCapabilitiesDefinition struct {
+	// The capabilities to add to the container.
+	Add []*string
+
+	// The capabilities to drop from the container.
+	Drop []*string
+}
+
+// SecurityContextDefinition - The security context for the container.
+type SecurityContextDefinition struct {
+	// A boolean value indicating whether the init process can elevate its privileges
+	AllowPrivilegeEscalation *bool
+
+	// The capabilities to add or drop from a container.
+	Capabilities *SecurityContextCapabilitiesDefinition
+
+	// The flag to determine if the container permissions is elevated to Privileged.
+	Privileged *bool
+
+	// Sets the User GID for the container.
+	RunAsGroup *int32
+
+	// Sets the User UID for the container.
+	RunAsUser *int32
+
+	// a base64 encoded string containing the contents of the JSON in the seccomp profile
+	SeccompProfile *string
 }
 
 // SubnetServiceAssociationLinkClientBeginDeleteOptions contains the optional parameters for the SubnetServiceAssociationLinkClient.BeginDelete

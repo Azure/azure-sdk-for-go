@@ -44,6 +44,11 @@ func (c *ClientFactory) NewKeysClient() *KeysClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewManagedHsmKeysClient() *ManagedHsmKeysClient {
+	subClient, _ := NewManagedHsmKeysClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewVaultsClient() *VaultsClient {
 	subClient, _ := NewVaultsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -71,6 +76,11 @@ func (c *ClientFactory) NewMHSMPrivateEndpointConnectionsClient() *MHSMPrivateEn
 
 func (c *ClientFactory) NewMHSMPrivateLinkResourcesClient() *MHSMPrivateLinkResourcesClient {
 	subClient, _ := NewMHSMPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewMHSMRegionsClient() *MHSMRegionsClient {
+	subClient, _ := NewMHSMRegionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

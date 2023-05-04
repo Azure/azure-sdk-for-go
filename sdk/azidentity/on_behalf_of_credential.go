@@ -50,9 +50,9 @@ type OnBehalfOfCredentialOptions struct {
 	SendCertificateChain bool
 }
 
-// NewOnBehalfOfCredentialFromCertificate constructs an OnBehalfOfCredential that authenticates with a certificate.
+// NewOnBehalfOfCredentialWithCertificate constructs an OnBehalfOfCredential that authenticates with a certificate.
 // See [ParseCertificates] for help loading a certificate.
-func NewOnBehalfOfCredentialFromCertificate(tenantID, clientID, userAssertion string, certs []*x509.Certificate, key crypto.PrivateKey, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
+func NewOnBehalfOfCredentialWithCertificate(tenantID, clientID, userAssertion string, certs []*x509.Certificate, key crypto.PrivateKey, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
 	cred, err := confidential.NewCredFromCert(certs, key)
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func NewOnBehalfOfCredentialFromCertificate(tenantID, clientID, userAssertion st
 	return newOnBehalfOfCredential(tenantID, clientID, userAssertion, cred, options)
 }
 
-// NewOnBehalfOfCredentialFromSecret constructs an OnBehalfOfCredential that authenticates with a client secret.
-func NewOnBehalfOfCredentialFromSecret(tenantID, clientID, userAssertion, clientSecret string, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
+// NewOnBehalfOfCredentialWithSecret constructs an OnBehalfOfCredential that authenticates with a client secret.
+func NewOnBehalfOfCredentialWithSecret(tenantID, clientID, userAssertion, clientSecret string, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
 	cred, err := confidential.NewCredFromSecret(clientSecret)
 	if err != nil {
 		return nil, err
@@ -93,7 +93,7 @@ func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRe
 }
 
 func (o *OnBehalfOfCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes)
+	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes, confidential.WithTenantID(opts.TenantID))
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

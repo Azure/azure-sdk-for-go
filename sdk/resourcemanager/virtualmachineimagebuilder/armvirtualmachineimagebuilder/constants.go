@@ -11,7 +11,7 @@ package armvirtualmachineimagebuilder
 
 const (
 	moduleName    = "armvirtualmachineimagebuilder"
-	moduleVersion = "v1.2.1"
+	moduleVersion = "v2.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -85,6 +85,7 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -95,6 +96,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateFailed,
 		ProvisioningStateDeleting,
+		ProvisioningStateCanceled,
 	}
 }
 
@@ -146,6 +148,7 @@ const (
 	RunSubStateQueued       RunSubState = "Queued"
 	RunSubStateBuilding     RunSubState = "Building"
 	RunSubStateCustomizing  RunSubState = "Customizing"
+	RunSubStateOptimizing   RunSubState = "Optimizing"
 	RunSubStateValidating   RunSubState = "Validating"
 	RunSubStateDistributing RunSubState = "Distributing"
 )
@@ -156,15 +159,18 @@ func PossibleRunSubStateValues() []RunSubState {
 		RunSubStateQueued,
 		RunSubStateBuilding,
 		RunSubStateCustomizing,
+		RunSubStateOptimizing,
 		RunSubStateValidating,
 		RunSubStateDistributing,
 	}
 }
 
-// SharedImageStorageAccountType - Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS).
+// SharedImageStorageAccountType - Specifies the storage account type to be used to store the Azure Compute Gallery image
+// version in.
 type SharedImageStorageAccountType string
 
 const (
+	SharedImageStorageAccountTypePremiumLRS  SharedImageStorageAccountType = "Premium_LRS"
 	SharedImageStorageAccountTypeStandardLRS SharedImageStorageAccountType = "Standard_LRS"
 	SharedImageStorageAccountTypeStandardZRS SharedImageStorageAccountType = "Standard_ZRS"
 )
@@ -172,7 +178,24 @@ const (
 // PossibleSharedImageStorageAccountTypeValues returns the possible values for the SharedImageStorageAccountType const type.
 func PossibleSharedImageStorageAccountTypeValues() []SharedImageStorageAccountType {
 	return []SharedImageStorageAccountType{
+		SharedImageStorageAccountTypePremiumLRS,
 		SharedImageStorageAccountTypeStandardLRS,
 		SharedImageStorageAccountTypeStandardZRS,
+	}
+}
+
+// VMBootOptimizationState - Enabling this field will improve VM boot time by optimizing the final customized image output.
+type VMBootOptimizationState string
+
+const (
+	VMBootOptimizationStateEnabled  VMBootOptimizationState = "Enabled"
+	VMBootOptimizationStateDisabled VMBootOptimizationState = "Disabled"
+)
+
+// PossibleVMBootOptimizationStateValues returns the possible values for the VMBootOptimizationState const type.
+func PossibleVMBootOptimizationStateValues() []VMBootOptimizationState {
+	return []VMBootOptimizationState{
+		VMBootOptimizationStateEnabled,
+		VMBootOptimizationStateDisabled,
 	}
 }

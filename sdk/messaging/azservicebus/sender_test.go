@@ -734,3 +734,47 @@ func (rm receivedMessages) Less(i, j int) bool {
 func (rm receivedMessages) Swap(i, j int) {
 	rm[i], rm[j] = rm[j], rm[i]
 }
+
+func Test_Sender_Send_MessageTooBig(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		ClientOptions: &ClientOptions{
+			RetryOptions: RetryOptions{
+				// This is a purposefully ridiculous wait time but we'll never hit it
+				// because exceeding the max message size is NOT a retryable error.
+				RetryDelay: time.Hour,
+			},
+		},
+		QueueProperties: &admin.QueueProperties{
+			EnablePartitioning: to.Ptr(true),
+		}})
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	hugePayload := []byte{}
+
+	for i := 0; i < 1000*1000; i++ {
+		hugePayload = append(hugePayload, 100)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	err = sender.SendMessage(ctx, &Message{
+		MessageID: to.Ptr("message with a message ID"),
+		Body:      hugePayload,
+	}, nil)
+
+	require.ErrorIs(t, err, ErrMessageTooLarge)
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	err = sender.SendAMQPAnnotatedMessage(ctx, &AMQPAnnotatedMessage{
+		Body: AMQPAnnotatedMessageBody{
+			Data: [][]byte{hugePayload},
+		},
+	}, nil)
+
+	require.ErrorIs(t, err, ErrMessageTooLarge)
+}

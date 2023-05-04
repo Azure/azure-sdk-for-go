@@ -48,7 +48,7 @@ func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredentia
 // is issued for the same security connector id, then it will be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - securityConnector - The security connector resource
@@ -89,7 +89,7 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityConnector)
@@ -107,7 +107,7 @@ func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response
 // Delete - Deletes a security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - ConnectorsClientDeleteOptions contains the optional parameters for the ConnectorsClient.Delete method.
@@ -146,7 +146,7 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Retrieves details of a specific security connector
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - options - ConnectorsClientGetOptions contains the optional parameters for the ConnectorsClient.Get method.
@@ -194,7 +194,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (Connecto
 // NewListPager - Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response
 // to get the next page of security connectors for the specified subscription.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - options - ConnectorsClientListOptions contains the optional parameters for the ConnectorsClient.NewListPager method.
 func (client *ConnectorsClient) NewListPager(options *ConnectorsClientListOptions) *runtime.Pager[ConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConnectorsClientListResponse]{
@@ -254,7 +254,7 @@ func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -272,7 +272,7 @@ func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (Connect
 // NewListByResourceGroupPager - Lists all the security connectors in the specified resource group. Use the 'nextLink' property
 // in the response to get the next page of security connectors for the specified resource group.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - options - ConnectorsClientListByResourceGroupOptions contains the optional parameters for the ConnectorsClient.NewListByResourceGroupPager
 //     method.
@@ -320,7 +320,7 @@ func (client *ConnectorsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *ConnectorsClient) listByResourceGroupHandleResponse(resp *http.Res
 // Update - Updates a security connector
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
 //   - securityConnector - The security connector resource
@@ -378,7 +378,7 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityConnector)

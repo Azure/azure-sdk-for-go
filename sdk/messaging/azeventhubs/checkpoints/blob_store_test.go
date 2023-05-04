@@ -4,6 +4,7 @@ package checkpoints_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strconv"
 	"testing"
@@ -214,6 +215,126 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 	claimedOwnerships, err = store.ClaimOwnership(context.Background(), listedOwnerships, nil)
 	require.NoError(t, err)
 	require.Empty(t, claimedOwnerships)
+}
+
+func TestBlobStore_OnlyOneOwnershipClaimSucceeds(t *testing.T) {
+	testData := getContainerClient(t)
+	defer testData.Cleanup()
+
+	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	require.NoError(t, err)
+
+	store, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
+
+	// we're going to make multiple calls to the blob store but only _one_ should succeed
+	// since it's "first one in wins"
+	claimsCh := make(chan []azeventhubs.Ownership, 20)
+
+	t.Logf("Starting %d goroutines to claim ownership without an etag", cap(claimsCh))
+
+	// attempt to claim the same partition from multiple goroutines. Only _one_ of the
+	// goroutines should walk away thinking it claimed the partition.
+	for i := 0; i < cap(claimsCh); i++ {
+		go func() {
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+
+			ownerships, err := store.ClaimOwnership(ctx, []azeventhubs.Ownership{
+				{ConsumerGroup: azeventhubs.DefaultConsumerGroup, EventHubName: "name", FullyQualifiedNamespace: "ns", PartitionID: "0", OwnerID: "ownerID"},
+			}, nil)
+
+			if err != nil {
+				claimsCh <- nil
+				require.NoError(t, err)
+			} else {
+				claimsCh <- ownerships
+			}
+		}()
+	}
+
+	claimed := map[string]bool{}
+	numFailedClaims := 0
+
+	for i := 0; i < cap(claimsCh); i++ {
+		claims := <-claimsCh
+
+		if claims == nil {
+			numFailedClaims++
+			continue
+		}
+
+		for _, claim := range claims {
+			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s was claimed more than once", claim.PartitionID))
+			require.NotNil(t, claim.ETag)
+			claimed[claim.PartitionID] = true
+		}
+	}
+
+	require.Equal(t, cap(claimsCh)-1, numFailedClaims, fmt.Sprintf("One of the 1/%d wins and the rest all fail to claim", cap(claimsCh)))
+}
+
+func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
+	testData := getContainerClient(t)
+	defer testData.Cleanup()
+
+	cc, err := container.NewClientFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
+	require.NoError(t, err)
+
+	store, err := checkpoints.NewBlobStore(cc, nil)
+	require.NoError(t, err)
+
+	// we're going to make multiple calls to the blob store but only _one_ should succeed
+	// since it's "first one in wins"
+	claimsCh := make(chan []azeventhubs.Ownership, 20)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	ownerships, err := store.ClaimOwnership(ctx, []azeventhubs.Ownership{
+		{ConsumerGroup: azeventhubs.DefaultConsumerGroup, EventHubName: "name", FullyQualifiedNamespace: "ns", PartitionID: "0", OwnerID: "ownerID"},
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, "0", ownerships[0].PartitionID)
+	require.NotNil(t, ownerships[0].ETag)
+
+	t.Logf("Starting %d goroutines to claim ownership without an etag", cap(claimsCh))
+
+	// attempt to claim the same partition from multiple goroutines. Only _one_ of the
+	// goroutines should walk away thinking it claimed the partition.
+	for i := 0; i < cap(claimsCh); i++ {
+		go func() {
+
+			ownerships, err := store.ClaimOwnership(ctx, ownerships, nil)
+
+			if err != nil {
+				claimsCh <- nil
+				require.NoError(t, err)
+			} else {
+				claimsCh <- ownerships
+			}
+		}()
+	}
+
+	claimed := map[string]bool{}
+	numFailedClaims := 0
+
+	for i := 0; i < cap(claimsCh); i++ {
+		claims := <-claimsCh
+
+		if claims == nil {
+			numFailedClaims++
+			continue
+		}
+
+		for _, claim := range claims {
+			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s was claimed more than once", claim.PartitionID))
+			require.NotNil(t, claim.ETag)
+			claimed[claim.PartitionID] = true
+		}
+	}
+
+	require.Equal(t, cap(claimsCh)-1, numFailedClaims, fmt.Sprintf("One of the 1/%d wins and the rest all fail to claim", cap(claimsCh)))
 }
 
 func getContainerClient(t *testing.T) struct {

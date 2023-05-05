@@ -116,11 +116,14 @@ func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs [
 		return nil, err
 	}
 
-	log.Writef(EventConsumer, "[%0.5s] Asked for %s, got %s", lb.details.ClientID, extractPartition(ownerships), extractPartition(actual))
+	if log.Should(EventConsumer) {
+		log.Writef(EventConsumer, "[%0.5s] Asked for %s, got %s", lb.details.ClientID, partitionsForOwnerships(ownerships), partitionsForOwnerships(actual))
+	}
+
 	return actual, nil
 }
 
-func extractPartition(all []Ownership) string {
+func partitionsForOwnerships(all []Ownership) string {
 	var parts []string
 
 	for _, o := range all {

@@ -21,6 +21,12 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
+
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
 type SMBProperties = exported.SMBProperties
 

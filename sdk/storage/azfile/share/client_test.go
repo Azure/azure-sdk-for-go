@@ -1429,7 +1429,7 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_require.Greater(len(accountName), 0)
 	_require.Greater(len(accountKey), 0)
 
-	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := share.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
 
 	testName := s.T().Name()

@@ -184,29 +184,7 @@ directive:
   # change Table.Rows from type [][]interface{} to type []Row
   - from: models.go
     where: $
-    transform: return $.replace(/Rows \[\]\[\]any/, "Rows []Row");
-
-  # change render and statistics type to []byte
-  - from: models.go
-    where: $
-    transform: return $.replace(/Statistics any/g, "Statistics []byte");
-  - from: models.go
-    where: $
-    transform: return $.replace(/Visualization any/g, "Visualization []byte");
-  - from: models_serde.go
-    where: $
-    transform: return 
-      $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/err(.*)r\.Visualization\)/, "r.Visualization = val");
-  - from: models_serde.go
-    where: $
-    transform: return 
-      $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");
+    transform: return $.replace(/Rows \[\]\[\]byte/, "Rows []Row");
 
   # change type of timespan from *string to *TimeInterval
   - from: models.go

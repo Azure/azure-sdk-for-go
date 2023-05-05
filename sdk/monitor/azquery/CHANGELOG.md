@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated doc comments
 
 ## 1.1.0-beta.1 (2023-04-11)
 

@@ -49,7 +49,7 @@ An Event Hub [**namespace**][eventhubs_namespace] can have multiple event hubs. 
 Events are published to an event hub using an [event publisher][eventhubs_eventpublisher]. In this package, the event publisher is the [ProducerClient][azeventhubs_producerclient].
 
 Events can be consumed from an event hub using an [event consumer][eventhubs_eventconsumer]. In this package there are two types for consuming events: 
-- The basic event consumer is the, in the [ConsumerClient][azeventhubs_consumerclient]. This consumer is useful if you already known which partitions you want to receive from.
+- The basic event consumer is the, in the [ConsumerClient][azeventhubs_consumerclient]. This consumer is useful if you already know which partitions you want to receive from.
 - A distributed event consumer, which uses Azure Blobs for checkpointing and coordination. This is implemented in the [Processor][azeventhubs_processor]. This is useful when you want to have the partition assignment be dynamically chosen, and balanced with other Processor instances.
 
 For more information about Event Hubs features and terminology can be found here: [link][eventhubs_features_terminology]
@@ -87,21 +87,18 @@ azlog.SetEvents(
 ```
 
 ## Contributing
-For details on contributing to this repository, see the [contributing guide][azure_sdk_for_go_contributing].
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+ 
+If you'd like to contribute to this library, please read the [contributing guide] [contributing_guide] to learn more about how to build and test the code.
+ 
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+ 
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information, see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct][coc].
-For more information see the [Code of Conduct FAQ][coc_faq] or
-contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 ### Additional Helpful Links for Contributors  
+
 Many people all over the world have helped make this project better.  You'll want to check out:
 
 * [What are some good first issues for new contributors to the repo?][azure_sdk_for_go_contributing_first_issues]
@@ -139,9 +136,13 @@ Azure SDK for Go is licensed under the [MIT][azeventhubs_mit_license] license.
 [azeventhubs_producerclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ProducerClient
 [azeventhubs_serviceprinciple_consumerclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewConsumerClient
 [azeventhubs_serviceprinciple_producerclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewProducerClient
+
+[contributing_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
+[cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [eventhubs_about]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [eventhubs_eventconsumer]: https://docs.microsoft.com/azure/event-hubs/event-hubs-features#event-consumers

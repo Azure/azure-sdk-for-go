@@ -4560,6 +4560,41 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestUploadFromReader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	contentSize := 398457897
+	_, content := testcommon.GetDataAndReader(testName, contentSize)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	_, err = bbClient.UploadBuffer(context.Background(), content, nil)
+	_require.NoError(err)
+
+	destBuffer := make([]byte, contentSize)
+	cnt, err := bbClient.DownloadBuffer(context.Background(), destBuffer, nil)
+	_require.NoError(err)
+	_require.Equal(cnt, int64(contentSize))
+
+	downloadedMD5Value := md5.Sum(destBuffer)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

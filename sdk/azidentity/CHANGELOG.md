@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0 (2022-05-09)
+## 1.3.0 (2023-05-09)
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.3.0-beta.5

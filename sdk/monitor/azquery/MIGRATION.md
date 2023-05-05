@@ -36,22 +36,21 @@ Transitioning to a single package has resulted in a number of name changes, as d
     import (
         "context"
         "github.com/Azure/azure-sdk-for-go/services/operationalinsights/v1/operationalinsights"
-        "github.com/Azure/go-autorest/autorest/azure/auth"
+        "github.com/Azure/go-autorest/autorest"
     )
 
     // create the client
     client := operationalinsights.NewQueryClient()
 
-    authorizer, err := auth.NewAuthorizerFromCLI()
-	if err == nil {
-		client.Authorizer = authorizer
-	}
+    client.Authorizer = autorest.NewAPIKeyAuthorizerWithHeaders(map[string]interface{}{
+		"x-api-key": "DEMO_KEY",
+	})
 
     // execute the query
     query := "<kusto query>"
     timespan := "2023-12-25/2023-12-26"
 
-    res, err := client.Execute(context.TODO(), workspaceID, operationalinsights.QueryBody{Query: &query, Timespan: &timespan})
+    res, err := client.Execute(context.TODO(), "DEMO_WORKSPACE", operationalinsights.QueryBody{Query: &query, Timespan: &timespan})
 	if err != nil {
 		//TODO: handle error
 	}

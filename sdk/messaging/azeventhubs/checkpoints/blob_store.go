@@ -23,8 +23,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
-// BlobStore is a CheckpointStore implementation that uses Azure Blob storage.
-type BlobStore struct {
+// blobStore is a CheckpointStore implementation that uses Azure Blob storage.
+type blobStore struct {
 	cc *container.Client
 }
 
@@ -38,7 +38,7 @@ type BlobStoreOptions struct {
 // Azure Blob storage.
 // NOTE: the container must exist before the checkpoint store can be used.
 func NewBlobStore(containerClient *container.Client, options *BlobStoreOptions) (*azeventhubs.CheckpointStore, error) {
-	bs := &BlobStore{
+	bs := &blobStore{
 		cc: containerClient,
 	}
 
@@ -55,7 +55,7 @@ func NewBlobStore(containerClient *container.Client, options *BlobStoreOptions) 
 //
 // If we fail to claim ownership because of another update then it will be omitted from the
 // returned slice of [Ownership]'s. It is not considered an error.
-func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []azeventhubs.Ownership, options *azeventhubs.ClaimOwnershipOptions) ([]azeventhubs.Ownership, error) {
+func (b *blobStore) ClaimOwnership(ctx context.Context, partitionOwnership []azeventhubs.Ownership, options *azeventhubs.ClaimOwnershipOptions) ([]azeventhubs.Ownership, error) {
 	var ownerships []azeventhubs.Ownership
 
 	// TODO: in parallel?
@@ -90,7 +90,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 }
 
 // ListCheckpoints lists all the available checkpoints.
-func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
+func (b *blobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
 	prefix, err := prefixForCheckpointBlobs(azeventhubs.Checkpoint{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
@@ -141,7 +141,7 @@ func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace
 var partitionIDRegexp = regexp.MustCompile("[^/]+?$")
 
 // ListOwnership lists all ownerships.
-func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
+func (b *blobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
 	prefix, err := prefixForOwnershipBlobs(azeventhubs.Ownership{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
@@ -193,7 +193,7 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 // SetCheckpoint updates a specific checkpoint with a sequence and offset.
 //
 // NOTE: This function doesn't attempt to prevent simultaneous checkpoint updates - ownership is assumed.
-func (b *BlobStore) SetCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.SetCheckpointOptions) error {
+func (b *blobStore) SetCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.SetCheckpointOptions) error {
 	blobName, err := nameForCheckpointBlob(checkpoint)
 
 	if err != nil {
@@ -204,7 +204,7 @@ func (b *BlobStore) SetCheckpoint(ctx context.Context, checkpoint azeventhubs.Ch
 	return err
 }
 
-func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, ownership azeventhubs.Ownership) (*time.Time, azcore.ETag, error) {
+func (b *blobStore) setOwnershipMetadata(ctx context.Context, blobName string, ownership azeventhubs.Ownership) (*time.Time, azcore.ETag, error) {
 	blobMetadata := newOwnershipBlobMetadata(ownership)
 	blobClient := b.cc.NewBlockBlobClient(blobName)
 
@@ -247,7 +247,7 @@ func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, o
 //
 // NOTE: unlike [setOwnershipMetadata] this function doesn't attempt to prevent simultaneous
 // checkpoint updates - ownership is assumed.
-func (b *BlobStore) setCheckpointMetadata(ctx context.Context, blobName string, checkpoint azeventhubs.Checkpoint) (*time.Time, azcore.ETag, error) {
+func (b *blobStore) setCheckpointMetadata(ctx context.Context, blobName string, checkpoint azeventhubs.Checkpoint) (*time.Time, azcore.ETag, error) {
 	blobMetadata := newCheckpointBlobMetadata(checkpoint)
 	blobClient := b.cc.NewBlockBlobClient(blobName)
 

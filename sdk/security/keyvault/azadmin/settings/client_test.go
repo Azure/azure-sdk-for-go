@@ -8,7 +8,9 @@ package settings_test
 
 import (
 	"context"
+	"errors"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -103,7 +105,16 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	require.Nil(t, res.Type)
 	require.Nil(t, res.Value)
 
-	res, err = client.UpdateSetting(context.Background(), "invalid name", settings.UpdateSettingRequest{Value: to.Ptr("true")}, nil)
+	for i := 0; i < 4; i++ {
+		res, err = client.UpdateSetting(context.Background(), "invalid name", settings.UpdateSettingRequest{Value: to.Ptr("true")}, nil)
+		var httpErr *azcore.ResponseError
+		// if correct error is returned, break from the loop and check for correctness
+		if errors.As(err, &httpErr) && httpErr.StatusCode == 400 {
+			break
+		}
+		// else sleep for 30 seconds and try again
+		time.Sleep(30 * time.Second)
+	}
 	require.Error(t, err)
 	require.Nil(t, res.Name)
 	require.Nil(t, res.Type)

@@ -51,7 +51,7 @@ Use the key as the credential parameter to authenticate the client:
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handle(err)
 
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	serviceClient, err := azblob.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
 	handle(err)
 
 	fmt.Println(serviceClient.URL())
@@ -59,11 +59,12 @@ Use the key as the credential parameter to authenticate the client:
 Using a Connection String
 
 Depending on your use case and authorization method, you may prefer to initialize a client instance with a connection string instead of providing the account URL and credential separately.
-To do this, pass the connection string to the service client's `NewServiceClientFromConnectionString` method.
+To do this, pass the connection string to the service client's `NewClientFromConnectionString` method.
 The connection string can be found in your storage account in the Azure Portal under the "Access Keys" section.
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=<my_account_name>;AccountKey=<my_account_key>;EndpointSuffix=core.windows.net"
-	serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
+	serviceClient, err := azblob.NewClientFromConnectionString(connStr, nil)
+	handle(err)
 
 Using a Shared Access Signature (SAS) Token
 
@@ -82,7 +83,7 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handle(err)
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	serviceClient, err := azblob.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
 	handle(err)
 	fmt.Println(serviceClient.URL())
 
@@ -95,7 +96,7 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 	serviceURLWithSAS, err := serviceClient.GetSASURL(resources, permission, start, expiry)
 	handle(err)
 
-	serviceClientWithSAS, err := azblob.NewServiceClientWithNoCredential(serviceURLWithSAS, nil)
+	serviceClientWithSAS, err := azblob.NewClientWithNoCredential(serviceURLWithSAS, nil)
 	handle(err)
 
 	fmt.Println(serviceClientWithSAS.URL())
@@ -135,7 +136,7 @@ Examples
 	handle(err)
 
 	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := azblob.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
 	handle(err)
 
 	// ===== 1. Create a container =====

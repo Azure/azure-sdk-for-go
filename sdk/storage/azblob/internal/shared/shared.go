@@ -98,9 +98,18 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		if !ok {
 			return ParsedConnectionString{}, errors.New("connection string missing AccountKey and SharedAccessSignature")
 		}
-		return ParsedConnectionString{
-			ServiceURL: fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
-		}, nil
+
+		blobEndpoint, ok := connStrMap["BlobEndpoint"]
+		if !ok {
+			// We don't have a BlobEndpoint, assume the default
+			return ParsedConnectionString{
+				ServiceURL: fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
+			}, nil
+		} else {
+			return ParsedConnectionString{
+				ServiceURL: fmt.Sprintf("%v/?%v", blobEndpoint, sharedAccessSignature),
+			}, nil
+		}
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

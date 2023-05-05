@@ -78,6 +78,15 @@ func TestParseConnectionStringSAS(t *testing.T) {
 	require.Empty(t, parsed.AccountKey)
 }
 
+func TestParseConnectionStringSASAndCustomDomain(t *testing.T) {
+	connStr := "AccountName=devstoreaccount1;SharedAccessSignature=fakesharedaccesssignature;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
+	parsed, err := ParseConnectionString(connStr)
+	require.NoError(t, err)
+	require.Equal(t, "http://127.0.0.1:10000/devstoreaccount1/?fakesharedaccesssignature", parsed.ServiceURL)
+	require.Empty(t, parsed.AccountName)
+	require.Empty(t, parsed.AccountKey)
+}
+
 func TestParseConnectionStringChinaCloud(t *testing.T) {
 	connStr := "AccountName=dummyaccountname;AccountKey=secretkeykey;DefaultEndpointsProtocol=http;EndpointSuffix=core.chinacloudapi.cn;"
 	parsed, err := ParseConnectionString(connStr)

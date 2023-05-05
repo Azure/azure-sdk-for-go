@@ -36,10 +36,16 @@ Transitioning to a single package has resulted in a number of name changes, as d
     import (
         "context"
         "github.com/Azure/azure-sdk-for-go/services/operationalinsights/v1/operationalinsights"
+        "github.com/Azure/go-autorest/autorest/azure/auth"
     )
 
     // create the client
     client := operationalinsights.NewQueryClient()
+
+    authorizer, err := auth.NewAuthorizerFromCLI()
+	if err == nil {
+		client.Authorizer = authorizer
+	}
 
     // execute the query
     query := "<kusto query>"
@@ -101,10 +107,16 @@ There are also a number of changes in the shape of the response body to be mindf
         "context"
 
         "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2022-10-01-preview/insights"
+        "github.com/Azure/go-autorest/autorest/azure/auth"
     )
 
     // create the client
     client := insights.NewMetricsClient("<subscriptionID>")
+
+    authorizer, err := auth.NewAuthorizerFromCLI()
+	if err == nil {
+		client.Authorizer = authorizer
+	}
 
     // execute the query
     timespan := "2023-12-25/2023-12-26"

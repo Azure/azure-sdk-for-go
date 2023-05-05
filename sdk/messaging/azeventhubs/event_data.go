@@ -52,7 +52,7 @@ type ReceivedEventData struct {
 	PartitionKey *string
 
 	// Offset is the offset of the event.
-	Offset *int64
+	Offset int64
 
 	// RawAMQPMessage is the AMQP message, as received by the client. This can be useful to get access
 	// to properties that are not exposed by ReceivedEventData such as payloads encoded into the
@@ -177,7 +177,7 @@ func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) error
 		case offsetNumberAnnotation:
 			if offsetStr, ok := v.(string); ok {
 				if offset, err := strconv.ParseInt(offsetStr, 10, 64); err == nil {
-					dest.Offset = &offset
+					dest.Offset = offset
 					continue
 				}
 			}

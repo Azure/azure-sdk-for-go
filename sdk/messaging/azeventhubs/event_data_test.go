@@ -99,7 +99,7 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		SystemProperties: map[string]any{
 			"hello": "world",
 		},
-		Offset:       to.Ptr[int64](102),
+		Offset:       int64(102),
 		PartitionKey: to.Ptr("partition key"),
 		RawAMQPMessage: &AMQPAnnotatedMessage{
 			Properties: &AMQPAnnotatedMessageProperties{

@@ -79,3 +79,29 @@ directive:
         replace(/\(client \*ServiceClient\) listFileSystemsCreateRequest\(/, `(client *FileSystemClient) ListFileSystemsCreateRequest(`).
         replace(/\(client \*ServiceClient\) listFileSystemsHandleResponse\(/, `(client *FileSystemClient) ListFileSystemsHandleResponse(`);
 ```
+
+### Fix EncryptionAlgorithm
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    delete $.EncryptionAlgorithm.enum;
+    $.EncryptionAlgorithm.enum = [
+      "None",
+      "AES256"
+    ];
+```
+
+### Clean up some const type names so they don't stutter
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters['PathExpiryOptions']
+  transform: >
+    $["x-ms-enum"].name = "ExpiryOptions";
+    $["x-ms-client-name"].name = "ExpiryOptions";
+
+```

@@ -9,6 +9,40 @@
 
 package generated
 
+type EncryptionAlgorithmType string
+
+const (
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = "None"
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
+)
+
+// PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
+func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
+	return []EncryptionAlgorithmType{
+		EncryptionAlgorithmTypeNone,
+		EncryptionAlgorithmTypeAES256,
+	}
+}
+
+type ExpiryOptions string
+
+const (
+	ExpiryOptionsAbsolute           ExpiryOptions = "Absolute"
+	ExpiryOptionsNeverExpire        ExpiryOptions = "NeverExpire"
+	ExpiryOptionsRelativeToCreation ExpiryOptions = "RelativeToCreation"
+	ExpiryOptionsRelativeToNow      ExpiryOptions = "RelativeToNow"
+)
+
+// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
+func PossibleExpiryOptionsValues() []ExpiryOptions {
+	return []ExpiryOptions{
+		ExpiryOptionsAbsolute,
+		ExpiryOptionsNeverExpire,
+		ExpiryOptionsRelativeToCreation,
+		ExpiryOptionsRelativeToNow,
+	}
+}
+
 type ListBlobsIncludeItem string
 
 const (
@@ -31,25 +65,6 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 		ListBlobsIncludeItemUncommittedblobs,
 		ListBlobsIncludeItemVersions,
 		ListBlobsIncludeItemTags,
-	}
-}
-
-type PathExpiryOptions string
-
-const (
-	PathExpiryOptionsAbsolute           PathExpiryOptions = "Absolute"
-	PathExpiryOptionsNeverExpire        PathExpiryOptions = "NeverExpire"
-	PathExpiryOptionsRelativeToCreation PathExpiryOptions = "RelativeToCreation"
-	PathExpiryOptionsRelativeToNow      PathExpiryOptions = "RelativeToNow"
-)
-
-// PossiblePathExpiryOptionsValues returns the possible values for the PathExpiryOptions const type.
-func PossiblePathExpiryOptionsValues() []PathExpiryOptions {
-	return []PathExpiryOptions{
-		PathExpiryOptionsAbsolute,
-		PathExpiryOptionsNeverExpire,
-		PathExpiryOptionsRelativeToCreation,
-		PathExpiryOptionsRelativeToNow,
 	}
 }
 

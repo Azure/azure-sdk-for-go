@@ -90,8 +90,8 @@ type BlobPropertiesInternal struct {
 // CpkInfo contains a group of parameters for the PathClient.Create method.
 type CpkInfo struct {
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
-	// if the x-ms-encryption-key header is provided.. Specifying any value will set the value to AES256.
-	EncryptionAlgorithm *string
+	// if the x-ms-encryption-key header is provided.
+	EncryptionAlgorithm *EncryptionAlgorithmType
 	// Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption
 	// is performed with the root account encryption key. For more information, see
 	// Encryption at Rest for Azure Storage Services.

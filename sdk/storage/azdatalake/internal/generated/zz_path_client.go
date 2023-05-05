@@ -100,7 +100,7 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, req.SetBody(body, "application/json")
@@ -275,7 +275,7 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -513,7 +513,7 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -905,7 +905,7 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1192,7 +1192,7 @@ func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Res
 // Generated from API version 2020-10-02
 //   - expiryOptions - Required. Indicates mode of the expiry time
 //   - options - PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
-func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
+func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
 	req, err := client.setExpiryCreateRequest(ctx, expiryOptions, options)
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
@@ -1208,7 +1208,7 @@ func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpir
 }
 
 // setExpiryCreateRequest creates the SetExpiry request.
-func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOptions PathExpiryOptions, options *PathClientSetExpiryOptions) (*policy.Request, error) {
+func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err

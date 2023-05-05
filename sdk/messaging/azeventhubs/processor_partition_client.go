@@ -33,7 +33,8 @@ func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int,
 	return c.innerClient.ReceiveEvents(ctx, count, options)
 }
 
-// start from after this point.
+// UpdateCheckpoint updates the checkpoint in the CheckpointStore. New Processors will resume after
+// this checkpoint for this partition.
 func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestEvent *ReceivedEventData, options *UpdateCheckpointOptions) error {
 	seq := latestEvent.SequenceNumber
 	offset := latestEvent.Offset

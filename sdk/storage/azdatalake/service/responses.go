@@ -9,6 +9,18 @@
 
 package service
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+)
 
-type CreateFilesystemResponse = generated.FileSystemClientCreateResponse
+type CreateFilesystemResponse = filesystem.CreateResponse
+
+type DeleteFilesystemResponse = filesystem.DeleteResponse
+
+type SetPropertiesResponse = service.SetPropertiesResponse
+
+type GetPropertiesResponse = service.GetPropertiesResponse
+
+type ListFilesystemsResponse = generated.ListBlobsHierarchySegmentResponse

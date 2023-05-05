@@ -85,36 +85,24 @@ func (s *Client) URL() string {
 
 func (s *Client) CreateFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
+	resp, err := filesystemClient.Create(ctx, options)
+	return resp, err
 }
 
-func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
+func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, options *DeleteFilesystemOptions) (DeleteFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
+	resp, err := filesystemClient.Delete(ctx, options)
+	return resp, err
 }
 
-func (s *Client) UndeleteFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
+func (s *Client) SetServiceProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+	return SetPropertiesResponse{}, nil
 }
 
-func (s *Client) SetServiceProperties(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
+func (s *Client) GetServiceProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	return GetPropertiesResponse{}, nil
 }
 
-func (s *Client) GetServiceProperties(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
-}
-
-func (s *Client) ListFilesystems(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
-	filesystemClient := s.NewFilesystemClient(filesystem)
-	createShareResp, err := filesystemClient.Create(ctx, options)
-	return createShareResp, err
+func (s *Client) ListFilesystems(ctx context.Context, options *ListFilesystemsOptions) (ListFilesystemsResponse, error) {
+	return ListFilesystemsResponse{}, nil
 }

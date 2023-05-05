@@ -24,12 +24,11 @@ const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 type EnvironmentCredentialOptions struct {
 	azcore.ClientOptions
 
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 	// additionallyAllowedTenants is used only by NewDefaultAzureCredential() to enable that constructor's explicit
 	// option to override the value of AZURE_ADDITIONALLY_ALLOWED_TENANTS. Applications using EnvironmentCredential
 	// directly should set that variable instead. This field should remain unexported to preserve this credential's
@@ -102,7 +101,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		o := &ClientSecretCredentialOptions{
 			AdditionallyAllowedTenants: additionalTenants,
 			ClientOptions:              options.ClientOptions,
-			DisableAuthorityValidationAndInstanceDiscovery: options.DisableAuthorityValidationAndInstanceDiscovery,
+			DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
@@ -127,7 +126,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		o := &ClientCertificateCredentialOptions{
 			AdditionallyAllowedTenants: additionalTenants,
 			ClientOptions:              options.ClientOptions,
-			DisableAuthorityValidationAndInstanceDiscovery: options.DisableAuthorityValidationAndInstanceDiscovery,
+			DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		}
 		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
 			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
@@ -144,7 +143,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			o := &UsernamePasswordCredentialOptions{
 				AdditionallyAllowedTenants: additionalTenants,
 				ClientOptions:              options.ClientOptions,
-				DisableAuthorityValidationAndInstanceDiscovery: options.DisableAuthorityValidationAndInstanceDiscovery,
+				DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 			}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {

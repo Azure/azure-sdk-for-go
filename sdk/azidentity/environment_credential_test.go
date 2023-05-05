@@ -248,8 +248,8 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
 			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-				ClientOptions: opts,
-				DisableAuthorityValidationAndInstanceDiscovery: disabledID,
+				ClientOptions:            opts,
+				DisableInstanceDiscovery: disabledID,
 			})
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
@@ -275,8 +275,8 @@ func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
 	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-		ClientOptions: opts,
-		DisableAuthorityValidationAndInstanceDiscovery: true,
+		ClientOptions:            opts,
+		DisableInstanceDiscovery: true,
 	})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
@@ -330,8 +330,8 @@ func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
 			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-				ClientOptions: opts,
-				DisableAuthorityValidationAndInstanceDiscovery: disabledID,
+				ClientOptions:            opts,
+				DisableInstanceDiscovery: disabledID,
 			})
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
@@ -358,8 +358,8 @@ func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
 	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-		ClientOptions: opts,
-		DisableAuthorityValidationAndInstanceDiscovery: true,
+		ClientOptions:            opts,
+		DisableInstanceDiscovery: true,
 	})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

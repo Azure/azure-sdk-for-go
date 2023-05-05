@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -1586,7 +1585,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	_require.Greater(len(accountName), 0)
 	_require.Greater(len(accountKey), 0)
 
-	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := file.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
 
 	testName := f.T().Name()

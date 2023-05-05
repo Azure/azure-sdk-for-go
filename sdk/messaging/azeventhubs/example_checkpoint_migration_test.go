@@ -102,7 +102,7 @@ func Example_migrateCheckpoints() {
 		newCheckpoint.Offset = &offset
 		newCheckpoint.SequenceNumber = &oldCheckpoint.Checkpoint.SequenceNumber
 
-		if err := newCheckpointStore.UpdateCheckpoint(context.Background(), newCheckpoint, nil); err != nil {
+		if err := newCheckpointStore.SetCheckpoint(context.Background(), newCheckpoint, nil); err != nil {
 			panic(err)
 		}
 	}

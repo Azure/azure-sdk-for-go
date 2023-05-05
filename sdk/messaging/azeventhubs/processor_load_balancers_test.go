@@ -20,7 +20,7 @@ func TestProcessorLoadBalancers_Greedy_EnoughUnownedPartitions(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails("new-client"), ProcessorStrategyGreedy, time.Hour)
+	lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails("new-client"), ProcessorStrategyGreedy, time.Hour)
 
 	// "0" and "3" are already claimed, so we'll pick up the 2 free partitions.
 	ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3"})
@@ -42,7 +42,7 @@ func TestProcessorLoadBalancers_Balanced_UnownedPartitions(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails("new-client"), ProcessorStrategyBalanced, time.Hour)
+	lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails("new-client"), ProcessorStrategyBalanced, time.Hour)
 
 	// "0" and "3" are already claimed, so we'll pick up one partition each time we load balance
 	ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3"})
@@ -53,7 +53,7 @@ func TestProcessorLoadBalancers_Balanced_UnownedPartitions(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 2, len(ownerships))
 
-	requireBalanced(t, cps, 4, 2)
+	requireBalanced(t, cps.store, 4, 2)
 }
 
 func TestProcessorLoadBalancers_Greedy_ForcedToSteal(t *testing.T) {
@@ -79,7 +79,7 @@ func TestProcessorLoadBalancers_Greedy_ForcedToSteal(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails(stealingClientID), ProcessorStrategyGreedy, time.Hour)
+	lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(stealingClientID), ProcessorStrategyGreedy, time.Hour)
 
 	ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
 	require.NoError(t, err)
@@ -122,13 +122,13 @@ func TestProcessorLoadBalancers_AnyStrategy_GrabExpiredPartition(t *testing.T) {
 			// expire the middle partition (simulating that ClientC died, so nobody's updated it's ownership in awhile)
 			cps.ExpireOwnership(middleOwnership)
 
-			lb := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientB), strategy, time.Hour)
+			lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientB), strategy, time.Hour)
 
 			ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
 			require.NoError(t, err)
 			require.NotEmpty(t, mapToStrings(ownerships, extractPartitionID))
 
-			requireBalanced(t, cps, 5, 2)
+			requireBalanced(t, cps.store, 5, 2)
 		})
 	}
 }
@@ -151,21 +151,21 @@ func TestProcessorLoadBalancers_AnyStrategy_FullyBalancedOdd(t *testing.T) {
 			require.NoError(t, err)
 
 			{
-				lbB := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientB), strategy, time.Hour)
+				lbB := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientB), strategy, time.Hour)
 
 				ownerships, err := lbB.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
 				require.NoError(t, err)
 				require.Equal(t, []string{"3", "4"}, mapToStrings(ownerships, extractPartitionID))
-				requireBalanced(t, cps, 5, 2)
+				requireBalanced(t, cps.store, 5, 2)
 			}
 
 			{
-				lbA := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientA), strategy, time.Hour)
+				lbA := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientA), strategy, time.Hour)
 
 				ownerships, err := lbA.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
 				require.NoError(t, err)
 				require.Equal(t, []string{"0", "1", "2"}, mapToStrings(ownerships, extractPartitionID))
-				requireBalanced(t, cps, 5, 2)
+				requireBalanced(t, cps.store, 5, 2)
 			}
 		})
 	}
@@ -188,21 +188,21 @@ func TestProcessorLoadBalancers_AnyStrategy_FullyBalancedEven(t *testing.T) {
 			require.NoError(t, err)
 
 			{
-				lbB := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientB), strategy, time.Hour)
+				lbB := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientB), strategy, time.Hour)
 
 				ownerships, err := lbB.LoadBalance(context.Background(), []string{"0", "1", "2", "3"})
 				require.NoError(t, err)
 				require.Equal(t, []string{"2", "3"}, mapToStrings(ownerships, extractPartitionID))
-				requireBalanced(t, cps, 4, 2)
+				requireBalanced(t, cps.store, 4, 2)
 			}
 
 			{
-				lbA := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientA), strategy, time.Hour)
+				lbA := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientA), strategy, time.Hour)
 
 				ownerships, err := lbA.LoadBalance(context.Background(), []string{"0", "1", "2", "3"})
 				require.NoError(t, err)
 				require.Equal(t, []string{"0", "1"}, mapToStrings(ownerships, extractPartitionID))
-				requireBalanced(t, cps, 4, 2)
+				requireBalanced(t, cps.store, 4, 2)
 			}
 		})
 	}
@@ -225,13 +225,13 @@ func TestProcessorLoadBalancers_Any_GrabExtraPartitionBecauseAboveMax(t *testing
 			}, nil)
 			require.NoError(t, err)
 
-			lb := newProcessorLoadBalancer(cps, newTestConsumerDetails(clientB), strategy, time.Hour)
+			lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(clientB), strategy, time.Hour)
 
 			ownerships, err := lb.LoadBalance(context.Background(), []string{"0", "1", "2", "3", "4"})
 			require.NoError(t, err)
 			require.NotEmpty(t, mapToStrings(ownerships, extractPartitionID))
 
-			requireBalanced(t, cps, 5, 2)
+			requireBalanced(t, cps.store, 5, 2)
 		})
 	}
 }
@@ -254,7 +254,7 @@ func TestProcessorLoadBalancers_AnyStrategy_StealsToBalance(t *testing.T) {
 			require.NoError(t, err)
 
 			{
-				tooManyLB := newProcessorLoadBalancer(cps, newTestConsumerDetails(lotsClientID), strategy, time.Hour)
+				tooManyLB := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(lotsClientID), strategy, time.Hour)
 				require.NoError(t, err)
 
 				ownerships, err := tooManyLB.LoadBalance(context.Background(), allPartitionIDs)
@@ -266,7 +266,7 @@ func TestProcessorLoadBalancers_AnyStrategy_StealsToBalance(t *testing.T) {
 			}
 
 			{
-				tooFewLB := newProcessorLoadBalancer(cps, newTestConsumerDetails(littleClientID), strategy, time.Hour)
+				tooFewLB := newProcessorLoadBalancer(cps.store, newTestConsumerDetails(littleClientID), strategy, time.Hour)
 				require.NoError(t, err)
 
 				// either strategy will balance here by stealing.
@@ -275,7 +275,7 @@ func TestProcessorLoadBalancers_AnyStrategy_StealsToBalance(t *testing.T) {
 				require.Equal(t, 2, len(ownerships))
 			}
 
-			requireBalanced(t, cps, len(allPartitionIDs), 2)
+			requireBalanced(t, cps.store, len(allPartitionIDs), 2)
 		})
 	}
 }
@@ -283,12 +283,12 @@ func TestProcessorLoadBalancers_AnyStrategy_StealsToBalance(t *testing.T) {
 func TestProcessorLoadBalancers_InvalidStrategy(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails("does not matter"), "", time.Hour)
+	lb := newProcessorLoadBalancer(cps.store, newTestConsumerDetails("does not matter"), "", time.Hour)
 	ownerships, err := lb.LoadBalance(context.Background(), []string{"0"})
 	require.Nil(t, ownerships)
 	require.EqualError(t, err, "invalid load balancing strategy ''")
 
-	lb = newProcessorLoadBalancer(cps, newTestConsumerDetails("does not matter"), "super-greedy", time.Hour)
+	lb = newProcessorLoadBalancer(cps.store, newTestConsumerDetails("does not matter"), "super-greedy", time.Hour)
 	ownerships, err = lb.LoadBalance(context.Background(), []string{"0"})
 	require.Nil(t, ownerships)
 	require.EqualError(t, err, "invalid load balancing strategy 'super-greedy'")
@@ -328,7 +328,7 @@ func newTestConsumerDetails(clientID string) consumerClientDetails {
 	}
 }
 
-func requireBalanced(t *testing.T, cps CheckpointStore, totalPartitions int, numConsumers int) {
+func requireBalanced(t *testing.T, cps *CheckpointStore, totalPartitions int, numConsumers int) {
 	ownerships, err := cps.ListOwnership(context.Background(), testEventHubFQDN, testEventHubName, testConsumerGroup, nil)
 	require.NoError(t, err)
 

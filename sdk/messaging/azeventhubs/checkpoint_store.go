@@ -11,19 +11,19 @@ import (
 )
 
 // CheckpointStore is used by multiple consumers to coordinate progress and ownership for partitions.
-type CheckpointStore interface {
+type CheckpointStore struct {
 	// ClaimOwnership attempts to claim ownership of the partitions in partitionOwnership and returns
 	// the actual partitions that were claimed.
-	ClaimOwnership(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error)
+	ClaimOwnership func(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error)
 
 	// ListCheckpoints lists all the available checkpoints.
-	ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListCheckpointsOptions) ([]Checkpoint, error)
+	ListCheckpoints func(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListCheckpointsOptions) ([]Checkpoint, error)
 
 	// ListOwnership lists all ownerships.
-	ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
+	ListOwnership func(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
 
-	// UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
-	UpdateCheckpoint(ctx context.Context, checkpoint Checkpoint, options *UpdateCheckpointOptions) error
+	// SetCheckpoint creates or updates a specific checkpoint with a sequence and offset.
+	SetCheckpoint func(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error
 }
 
 // Ownership tracks which consumer owns a particular partition.
@@ -59,8 +59,8 @@ type ListOwnershipOptions struct {
 	// For future expansion
 }
 
-// UpdateCheckpointOptions contains optional parameters for the UpdateCheckpoint function
-type UpdateCheckpointOptions struct {
+// SetCheckpointOptions contains optional parameters for the UpdateCheckpoint function
+type SetCheckpointOptions struct {
 	// For future expansion
 }
 

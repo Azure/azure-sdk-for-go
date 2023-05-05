@@ -20,7 +20,7 @@ import (
 
 func TestUnit_Processor_loadBalancing(t *testing.T) {
 	cps := newCheckpointStoreForTest()
-	firstProcessor := newProcessorForTest(t, "first-processor", cps)
+	firstProcessor := newProcessorForTest(t, "first-processor", cps.store)
 	newTestOwnership := func(base Ownership) Ownership {
 		base.ConsumerGroup = "consumer-group"
 		base.EventHubName = "event-hub"
@@ -80,7 +80,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	// 1 of those partitions is owned by our client ("first-processor")
 	// 2 are still available.
 
-	secondProcessor := newProcessorForTest(t, "second-processor", cps)
+	secondProcessor := newProcessorForTest(t, "second-processor", cps.store)
 
 	// when we ask for available partitions we take into account the owners that are
 	// present in the checkpoint store and ourselves, since we're about to try to claim
@@ -133,7 +133,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 func TestUnit_Processor_Run(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	processor, err := newProcessorImpl(simpleFakeConsumerClient(), cps, &ProcessorOptions{
+	processor, err := newProcessorImpl(simpleFakeConsumerClient(), cps.store, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 
@@ -180,7 +180,7 @@ func TestUnit_Processor_Run_singleConsumerPerPartition(t *testing.T) {
 		},
 	}
 
-	processor, err := newProcessorImpl(cc, cps, &ProcessorOptions{
+	processor, err := newProcessorImpl(cc, cps.store, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 	require.NoError(t, err)
@@ -224,7 +224,7 @@ func TestUnit_Processor_Run_singleConsumerPerPartition(t *testing.T) {
 func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	err := cps.UpdateCheckpoint(context.Background(), Checkpoint{
+	err := cps.SetCheckpoint(context.Background(), Checkpoint{
 		ConsumerGroup:           "consumer-group",
 		EventHubName:            "event-hub",
 		FullyQualifiedNamespace: "fqdn",
@@ -242,7 +242,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 		return newFakePartitionClient(partitionID, offsetExpr), nil
 	}
 
-	processor, err := newProcessorImpl(fakeConsumerClient, cps, &ProcessorOptions{
+	processor, err := newProcessorImpl(fakeConsumerClient, cps.store, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 	require.NoError(t, err)
@@ -266,7 +266,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 
 	err = partClient.UpdateCheckpoint(context.Background(), &ReceivedEventData{
 		SequenceNumber: 405,
-	})
+	}, nil)
 	require.NoError(t, err)
 	checkpoints, err = cps.ListCheckpoints(context.Background(),
 		processor.consumerClientDetails.FullyQualifiedNamespace,
@@ -298,7 +298,7 @@ func TestUnit_Processor_Run_cancellation(t *testing.T) {
 			FullyQualifiedNamespace: "fqdn",
 			ClientID:                "my-client-id",
 		},
-	}, cps, &ProcessorOptions{
+	}, cps.store, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 
@@ -329,7 +329,7 @@ func updateDynamicData(t *testing.T, src Ownership, expected Ownership, allParti
 	return expected
 }
 
-func newProcessorForTest(t *testing.T, clientID string, cps CheckpointStore) *Processor {
+func newProcessorForTest(t *testing.T, clientID string, cps *CheckpointStore) *Processor {
 	processor, err := newProcessorImpl(&fakeConsumerClient{
 		details: consumerClientDetails{
 			ConsumerGroup:           "consumer-group",

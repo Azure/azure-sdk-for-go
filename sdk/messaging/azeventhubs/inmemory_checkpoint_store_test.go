@@ -23,7 +23,7 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 	require.Empty(t, checkpoints)
 
 	for i := int64(0); i < 5; i++ {
-		err = store.UpdateCheckpoint(context.Background(), Checkpoint{
+		err = store.SetCheckpoint(context.Background(), Checkpoint{
 			FullyQualifiedNamespace: "ns",
 			EventHubName:            "eh",
 			ConsumerGroup:           "cg",
@@ -167,13 +167,24 @@ type testCheckpointStore struct {
 
 	ownershipMu sync.RWMutex
 	ownerships  map[string]Ownership
+
+	store *CheckpointStore
 }
 
 func newCheckpointStoreForTest() *testCheckpointStore {
-	return &testCheckpointStore{
+	cps := &testCheckpointStore{
 		checkpoints: map[string]Checkpoint{},
 		ownerships:  map[string]Ownership{},
 	}
+
+	cps.store = &CheckpointStore{
+		ClaimOwnership:  cps.ClaimOwnership,
+		ListCheckpoints: cps.ListCheckpoints,
+		ListOwnership:   cps.ListOwnership,
+		SetCheckpoint:   cps.SetCheckpoint,
+	}
+
+	return cps
 }
 
 func (cps *testCheckpointStore) ExpireOwnership(o Ownership) {
@@ -269,7 +280,7 @@ func (cps *testCheckpointStore) ListOwnership(ctx context.Context, fullyQualifie
 	return ownerships, nil
 }
 
-func (cps *testCheckpointStore) UpdateCheckpoint(ctx context.Context, checkpoint Checkpoint, options *UpdateCheckpointOptions) error {
+func (cps *testCheckpointStore) SetCheckpoint(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error {
 	cps.checkpointsMu.Lock()
 	defer cps.checkpointsMu.Unlock()
 

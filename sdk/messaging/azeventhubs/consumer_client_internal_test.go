@@ -126,7 +126,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 			require.NoError(t, err)
 			require.EqualValues(t, 1, len(events))
 
-			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, *events[0].Offset)
+			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, events[0].Offset)
 
 			require.Equal(t, fmt.Sprintf("event 1 for partition %s", sr.PartitionID), string(events[0].Body))
 		}(i, sr)

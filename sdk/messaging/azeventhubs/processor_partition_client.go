@@ -20,7 +20,7 @@ import "context"
 type ProcessorPartitionClient struct {
 	partitionID           string
 	innerClient           *PartitionClient
-	checkpointStore       CheckpointStore
+	checkpointStore       *CheckpointStore
 	cleanupFn             func()
 	consumerClientDetails consumerClientDetails
 }
@@ -33,16 +33,18 @@ func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int,
 	return c.innerClient.ReceiveEvents(ctx, count, options)
 }
 
-// UpdateCheckpoint updates the checkpoint store. This ensure that if the Processor is restarted it will
 // start from after this point.
-func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestEvent *ReceivedEventData) error {
-	return p.checkpointStore.UpdateCheckpoint(ctx, Checkpoint{
+func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestEvent *ReceivedEventData, options *UpdateCheckpointOptions) error {
+	seq := latestEvent.SequenceNumber
+	offset := latestEvent.Offset
+
+	return p.checkpointStore.SetCheckpoint(ctx, Checkpoint{
 		ConsumerGroup:           p.consumerClientDetails.ConsumerGroup,
 		EventHubName:            p.consumerClientDetails.EventHubName,
 		FullyQualifiedNamespace: p.consumerClientDetails.FullyQualifiedNamespace,
 		PartitionID:             p.partitionID,
-		SequenceNumber:          &latestEvent.SequenceNumber,
-		Offset:                  latestEvent.Offset,
+		SequenceNumber:          &seq,
+		Offset:                  &offset,
 	}, nil)
 }
 
@@ -62,4 +64,9 @@ func (c *ProcessorPartitionClient) Close(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// UpdateCheckpointOptions contains optional parameters for the [ProcessorPartitionClient.UpdateCheckpoint] function.
+type UpdateCheckpointOptions struct {
+	// For future expansion
 }

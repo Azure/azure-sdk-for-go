@@ -20,7 +20,7 @@ func TestEventData_Annotations(t *testing.T) {
 		require.Empty(t, re.Body)
 		require.Nil(t, re.EnqueuedTime)
 		require.Equal(t, int64(0), re.SequenceNumber)
-		require.Nil(t, re.Offset)
+		require.Zero(t, re.Offset)
 		require.Nil(t, re.PartitionKey)
 	})
 

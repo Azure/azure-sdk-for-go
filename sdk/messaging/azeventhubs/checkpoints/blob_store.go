@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
@@ -36,9 +37,16 @@ type BlobStoreOptions struct {
 // NewBlobStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStore(containerClient *container.Client, options *BlobStoreOptions) (*BlobStore, error) {
-	return &BlobStore{
+func NewBlobStore(containerClient *container.Client, options *BlobStoreOptions) (*azeventhubs.CheckpointStore, error) {
+	bs := &BlobStore{
 		cc: containerClient,
+	}
+
+	return &azeventhubs.CheckpointStore{
+		ClaimOwnership:  bs.ClaimOwnership,
+		ListCheckpoints: bs.ListCheckpoints,
+		ListOwnership:   bs.ListOwnership,
+		SetCheckpoint:   bs.SetCheckpoint,
 	}, nil
 }
 
@@ -63,6 +71,8 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 			if bloberror.HasCode(err,
 				bloberror.ConditionNotMet,     // updated before we could update it
 				bloberror.BlobAlreadyExists) { // created before we could create it
+
+				log.Writef(azeventhubs.EventConsumer, "[%s] skipping %s because: %s", po.OwnerID, po.PartitionID, err)
 				continue
 			}
 
@@ -180,10 +190,10 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 	return ownerships, nil
 }
 
-// UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
+// SetCheckpoint updates a specific checkpoint with a sequence and offset.
 //
 // NOTE: This function doesn't attempt to prevent simultaneous checkpoint updates - ownership is assumed.
-func (b *BlobStore) UpdateCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.UpdateCheckpointOptions) error {
+func (b *BlobStore) SetCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.SetCheckpointOptions) error {
 	blobName, err := nameForCheckpointBlob(checkpoint)
 
 	if err != nil {
@@ -199,6 +209,7 @@ func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, o
 	blobClient := b.cc.NewBlockBlobClient(blobName)
 
 	if ownership.ETag != nil {
+		log.Writef(azeventhubs.EventConsumer, "[%s] claiming ownership for %s with etag %s", ownership.OwnerID, ownership.PartitionID, string(*ownership.ETag))
 		setMetadataResp, err := blobClient.SetMetadata(ctx, blobMetadata, &blob.SetMetadataOptions{
 			AccessConditions: &blob.AccessConditions{
 				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -214,6 +225,7 @@ func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, o
 		return setMetadataResp.LastModified, *setMetadataResp.ETag, nil
 	}
 
+	log.Writef(azeventhubs.EventConsumer, "[%s] claiming ownership for %s with NO etags", ownership.PartitionID, ownership.OwnerID)
 	uploadResp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte{})), &blockblob.UploadOptions{
 		Metadata: blobMetadata,
 		AccessConditions: &blob.AccessConditions{

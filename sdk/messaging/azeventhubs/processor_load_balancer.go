@@ -8,13 +8,14 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type processorLoadBalancer struct {
-	checkpointStore             CheckpointStore
+	checkpointStore             *CheckpointStore
 	details                     consumerClientDetails
 	strategy                    ProcessorStrategy
 	partitionExpirationDuration time.Duration
@@ -23,7 +24,7 @@ type processorLoadBalancer struct {
 	rnd *rand.Rand
 }
 
-func newProcessorLoadBalancer(checkpointStore CheckpointStore, details consumerClientDetails, strategy ProcessorStrategy, partitionExpiration time.Duration) *processorLoadBalancer {
+func newProcessorLoadBalancer(checkpointStore *CheckpointStore, details consumerClientDetails, strategy ProcessorStrategy, partitionExpiration time.Duration) *processorLoadBalancer {
 	return &processorLoadBalancer{
 		checkpointStore:             checkpointStore,
 		details:                     details,
@@ -109,7 +110,24 @@ func (lb *processorLoadBalancer) LoadBalance(ctx context.Context, partitionIDs [
 		}
 	}
 
-	return lb.checkpointStore.ClaimOwnership(ctx, ownerships, nil)
+	actual, err := lb.checkpointStore.ClaimOwnership(ctx, ownerships, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	log.Writef(EventConsumer, "[%0.5s] Asked for %s, got %s", lb.details.ClientID, extractPartition(ownerships), extractPartition(actual))
+	return actual, nil
+}
+
+func extractPartition(all []Ownership) string {
+	var parts []string
+
+	for _, o := range all {
+		parts = append(parts, o.PartitionID)
+	}
+
+	return strings.Join(parts, ",")
 }
 
 // getAvailablePartitions finds all partitions that are either completely unowned _or_

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type EventType string

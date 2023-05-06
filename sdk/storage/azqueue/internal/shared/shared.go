@@ -89,9 +89,18 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		if !ok {
 			return ParsedConnectionString{}, errors.New("connection string missing AccountKey and SharedAccessSignature")
 		}
-		return ParsedConnectionString{
-			ServiceURL: fmt.Sprintf("%v://%v.queue.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
-		}, nil
+
+		queueEndpoint, ok := connStrMap["QueueEndpoint"]
+		if !ok {
+			// We don't have a QueueEndpoint, assume the default
+			return ParsedConnectionString{
+				ServiceURL: fmt.Sprintf("%v://%v.queue.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
+			}, nil
+		} else {
+			return ParsedConnectionString{
+				ServiceURL: fmt.Sprintf("%v/?%v", queueEndpoint, sharedAccessSignature),
+			}, nil
+		}
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

@@ -37,7 +37,7 @@ func (testsuite *RecoveryservicesTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.vaultName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vaultnam", 8+6,false)
+	testsuite.vaultName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vaultnam", 8+6, false)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -118,11 +118,11 @@ func (testsuite *RecoveryservicesTestSuite) TestRecoveryServices() {
 	vaultExtendedInfoClient, err := armrecoveryservices.NewVaultExtendedInfoClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = vaultExtendedInfoClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.vaultName, armrecoveryservices.VaultExtendedInfoResource{
-        Properties: &armrecoveryservices.VaultExtendedInfo{
-            IntegrityKey: to.Ptr("myIntegrityKey"),
-            Algorithm:   to.Ptr("None"),
-        },
-    }, nil)
+		Properties: &armrecoveryservices.VaultExtendedInfo{
+			IntegrityKey: to.Ptr("myIntegrityKey"),
+			Algorithm:    to.Ptr("None"),
+		},
+	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step VaultExtendedInfo_Get
@@ -160,13 +160,12 @@ func (testsuite *RecoveryservicesTestSuite) TestRecoveryServices() {
 	for operationsClientNewListPager.More() {
 		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-
 		break
 	}
 
 	// From step RecoveryServices_Capabilities
 	fmt.Println("Call operation: RecoveryServices_Capabilities")
-    client, err := armrecoveryservices.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	client, err := armrecoveryservices.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = client.Capabilities(testsuite.ctx, testsuite.location, armrecoveryservices.ResourceCapabilities{
 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
@@ -182,7 +181,7 @@ func (testsuite *RecoveryservicesTestSuite) TestRecoveryServices() {
 	}, nil)
 	testsuite.Require().NoError(err)
 
-    var privateLinkResourceName string
+	var privateLinkResourceName string
 	// From step PrivateLinkResources_List
 	fmt.Println("Call operation: PrivateLinkResources_List")
 	privateLinkResourcesClient, err := armrecoveryservices.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -191,9 +190,7 @@ func (testsuite *RecoveryservicesTestSuite) TestRecoveryServices() {
 	for privateLinkResourcesClientNewListPager.More() {
 		result, err := privateLinkResourcesClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-        if len(result.Value) > 0 { 
-            privateLinkResourceName = *result.Value[0].Name
-        }
+		privateLinkResourceName = *result.Value[0].Name
 		break
 	}
 

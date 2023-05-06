@@ -255,6 +255,7 @@ func Test_authenticationPolicy(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 
 	req, err = runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
 	resp, err = pl.Do(req)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)

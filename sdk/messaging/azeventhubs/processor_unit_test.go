@@ -224,7 +224,7 @@ func TestUnit_Processor_Run_singleConsumerPerPartition(t *testing.T) {
 func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	err := cps.UpdateCheckpoint(context.Background(), Checkpoint{
+	err := cps.SetCheckpoint(context.Background(), Checkpoint{
 		ConsumerGroup:           "consumer-group",
 		EventHubName:            "event-hub",
 		FullyQualifiedNamespace: "fqdn",
@@ -266,7 +266,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 
 	err = partClient.UpdateCheckpoint(context.Background(), &ReceivedEventData{
 		SequenceNumber: 405,
-	})
+	}, nil)
 	require.NoError(t, err)
 	checkpoints, err = cps.ListCheckpoints(context.Background(),
 		processor.consumerClientDetails.FullyQualifiedNamespace,

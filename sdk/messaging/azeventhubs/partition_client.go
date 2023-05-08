@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // DefaultConsumerGroup is the name of the default consumer group in the Event Hubs service.

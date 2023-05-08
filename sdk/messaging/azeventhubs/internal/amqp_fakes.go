@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type FakeNSForPartClient struct {

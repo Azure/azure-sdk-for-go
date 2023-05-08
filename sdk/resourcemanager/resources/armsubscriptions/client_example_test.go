@@ -15,21 +15,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
 func ExampleClient_NewListLocationsPager_getLocationsWithASubscriptionId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClient().NewListLocationsPager("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", &armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
+	pager := clientFactory.NewClient().NewListLocationsPager(&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -41,22 +41,91 @@ func ExampleClient_NewListLocationsPager_getLocationsWithASubscriptionId() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.LocationListResult = armsubscriptions.LocationListResult{
+		// 	Value: []*armsubscriptions.Location{
+		// 		{
+		// 			Name: to.Ptr("eastus"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeRegion),
+		// 			AvailabilityZoneMappings: []*armsubscriptions.AvailabilityZoneMappings{
+		// 				{
+		// 					LogicalZone: to.Ptr("1"),
+		// 					PhysicalZone: to.Ptr("eastus-az1"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("2"),
+		// 					PhysicalZone: to.Ptr("eastus-az3"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("3"),
+		// 					PhysicalZone: to.Ptr("eastus-az2"),
+		// 			}},
+		// 			DisplayName: to.Ptr("East US"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/eastus"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("37.3719"),
+		// 				Longitude: to.Ptr("-79.8164"),
+		// 				PairedRegion: []*armsubscriptions.PairedRegion{
+		// 					{
+		// 						Name: to.Ptr("westus"),
+		// 						ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/westus"),
+		// 				}},
+		// 				PhysicalLocation: to.Ptr("Virginia"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryRecommended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) East US"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("eastus2"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeRegion),
+		// 			AvailabilityZoneMappings: []*armsubscriptions.AvailabilityZoneMappings{
+		// 				{
+		// 					LogicalZone: to.Ptr("1"),
+		// 					PhysicalZone: to.Ptr("eastus2-az1"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("2"),
+		// 					PhysicalZone: to.Ptr("eastus2-az3"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("3"),
+		// 					PhysicalZone: to.Ptr("eastus2-az2"),
+		// 			}},
+		// 			DisplayName: to.Ptr("East US 2"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/eastus2"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("36.6681"),
+		// 				Longitude: to.Ptr("-78.3889"),
+		// 				PairedRegion: []*armsubscriptions.PairedRegion{
+		// 					{
+		// 						Name: to.Ptr("centralus"),
+		// 						ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/centralus"),
+		// 				}},
+		// 				PhysicalLocation: to.Ptr("Virginia"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryRecommended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) East US 2"),
+		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetLocationsWithExtendedLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
 func ExampleClient_NewListLocationsPager_getLocationsWithExtendedLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClient().NewListLocationsPager("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", &armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: to.Ptr(true)})
+	pager := clientFactory.NewClient().NewListLocationsPager(&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: to.Ptr(true)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -68,22 +137,121 @@ func ExampleClient_NewListLocationsPager_getLocationsWithExtendedLocations() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.LocationListResult = armsubscriptions.LocationListResult{
+		// 	Value: []*armsubscriptions.Location{
+		// 		{
+		// 			Name: to.Ptr("eastus"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeRegion),
+		// 			AvailabilityZoneMappings: []*armsubscriptions.AvailabilityZoneMappings{
+		// 				{
+		// 					LogicalZone: to.Ptr("1"),
+		// 					PhysicalZone: to.Ptr("eastus-az1"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("2"),
+		// 					PhysicalZone: to.Ptr("eastus-az3"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("3"),
+		// 					PhysicalZone: to.Ptr("eastus-az2"),
+		// 			}},
+		// 			DisplayName: to.Ptr("East US"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/eastus"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("37.3719"),
+		// 				Longitude: to.Ptr("-79.8164"),
+		// 				PairedRegion: []*armsubscriptions.PairedRegion{
+		// 					{
+		// 						Name: to.Ptr("westus"),
+		// 						ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/westus"),
+		// 				}},
+		// 				PhysicalLocation: to.Ptr("Virginia"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryRecommended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) East US"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("eastus2"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeRegion),
+		// 			AvailabilityZoneMappings: []*armsubscriptions.AvailabilityZoneMappings{
+		// 				{
+		// 					LogicalZone: to.Ptr("1"),
+		// 					PhysicalZone: to.Ptr("eastus2-az1"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("2"),
+		// 					PhysicalZone: to.Ptr("eastus2-az3"),
+		// 				},
+		// 				{
+		// 					LogicalZone: to.Ptr("3"),
+		// 					PhysicalZone: to.Ptr("eastus2-az2"),
+		// 			}},
+		// 			DisplayName: to.Ptr("East US 2"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/eastus2"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("36.6681"),
+		// 				Longitude: to.Ptr("-78.3889"),
+		// 				PairedRegion: []*armsubscriptions.PairedRegion{
+		// 					{
+		// 						Name: to.Ptr("centralus"),
+		// 						ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/centralus"),
+		// 				}},
+		// 				PhysicalLocation: to.Ptr("Virginia"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryRecommended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) East US 2"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("ezecustomerlabboston1"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeEdgeZone),
+		// 			DisplayName: to.Ptr("EZE Customer Lab Boston 1"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/eastus/edgeZones/ezecustomerlabboston1"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("42.301218"),
+		// 				Longitude: to.Ptr("-71.219038"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryExtended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) EZE Customer Lab Boston 1"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("ezecustomerlabhouston1"),
+		// 			Type: to.Ptr(armsubscriptions.LocationTypeEdgeZone),
+		// 			DisplayName: to.Ptr("EZE Customer Lab Houston 1"),
+		// 			ID: to.Ptr("/subscriptions/a1ffc958-d2c7-493e-9f1e-125a0477f536/locations/southcentralus/edgeZones/ezecustomerlabhouston1"),
+		// 			Metadata: &armsubscriptions.LocationMetadata{
+		// 				Geography: to.Ptr("United States"),
+		// 				GeographyGroup: to.Ptr("US"),
+		// 				Latitude: to.Ptr("29.9411"),
+		// 				Longitude: to.Ptr("-95.41452"),
+		// 				RegionCategory: to.Ptr(armsubscriptions.RegionCategoryExtended),
+		// 				RegionType: to.Ptr(armsubscriptions.RegionTypePhysical),
+		// 			},
+		// 			RegionalDisplayName: to.Ptr("(US) EZE Customer Lab Houston 1"),
+		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscription.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().Get(ctx, "291bba3f-e0a5-47bc-a099-3bdcb2a50a05", nil)
+	res, err := clientFactory.NewClient().Get(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,14 +281,14 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetSubscriptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscriptions.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -186,18 +354,18 @@ func ExampleClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PostCheckZonePeers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
 func ExampleClient_CheckZonePeers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().CheckZonePeers(ctx, "00000000-0000-0000-0000-00000000000000", armsubscriptions.CheckZonePeersRequest{
+	res, err := clientFactory.NewClient().CheckZonePeers(ctx, armsubscriptions.CheckZonePeersRequest{
 		Location: to.Ptr("eastus"),
 		SubscriptionIDs: []*string{
 			to.Ptr("subscriptions/11111111-1111-1111-1111-111111111111")},
@@ -235,6 +403,6 @@ func ExampleClient_CheckZonePeers() {
 	// 			}},
 	// 	}},
 	// 	Location: to.Ptr("eastus2"),
-	// 	SubscriptionID: to.Ptr("00000000-0000-0000-0000-00000000000000"),
+	// 	SubscriptionID: to.Ptr("8d65815f-a5b6-402f-9298-045155da7d74"),
 	// }
 }

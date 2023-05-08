@@ -19,6 +19,8 @@ Transitioning to a single package has resulted in a number of name changes, as d
 | QueryClient.Execute      | LogsClient.QueryWorkspace     |
 | MetadataClient.Get and MetadataClient.Post | N/A |
 
+The `azquery` module does not contain the `MetadataClient`. For that functionality, please use the old `operationalinsights` module or [file an issue in our github repo](https://github.com/Azure/azure-sdk-for-go/issues), so we can prioritize adding it to `azquery`.
+
 ### Metrics name changes 
 
 | `insights` | `azquery` |

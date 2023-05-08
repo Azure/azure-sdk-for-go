@@ -48,7 +48,7 @@ func NewDevBoxDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Creates or updates a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - devBoxDefinitionName - The name of the Dev Box definition.
@@ -72,7 +72,7 @@ func (client *DevBoxDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Creates or updates a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 func (client *DevBoxDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinition, options *DevBoxDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *DevBoxDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -121,7 +121,7 @@ func (client *DevBoxDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 // BeginDelete - Deletes a Dev Box definition
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - devBoxDefinitionName - The name of the Dev Box definition.
@@ -144,7 +144,7 @@ func (client *DevBoxDefinitionsClient) BeginDelete(ctx context.Context, resource
 // Delete - Deletes a Dev Box definition
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 func (client *DevBoxDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *DevBoxDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *DevBoxDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *DevBoxDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets a Dev Box definition
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - devBoxDefinitionName - The name of the Dev Box definition.
@@ -237,7 +237,7 @@ func (client *DevBoxDefinitionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *DevBoxDefinitionsClient) getHandleResponse(resp *http.Response) (D
 // GetByProject - Gets a Dev Box definition configured for a project
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - devBoxDefinitionName - The name of the Dev Box definition.
@@ -300,7 +300,7 @@ func (client *DevBoxDefinitionsClient) getByProjectCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *DevBoxDefinitionsClient) getByProjectHandleResponse(resp *http.Res
 
 // NewListByDevCenterPager - List Dev Box definitions for a devcenter.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - DevBoxDefinitionsClientListByDevCenterOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByDevCenterPager
@@ -370,7 +370,7 @@ func (client *DevBoxDefinitionsClient) listByDevCenterCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -390,7 +390,7 @@ func (client *DevBoxDefinitionsClient) listByDevCenterHandleResponse(resp *http.
 
 // NewListByProjectPager - List Dev Box definitions configured for a project.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - options - DevBoxDefinitionsClientListByProjectOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByProjectPager
@@ -443,7 +443,7 @@ func (client *DevBoxDefinitionsClient) listByProjectCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -464,7 +464,7 @@ func (client *DevBoxDefinitionsClient) listByProjectHandleResponse(resp *http.Re
 // BeginUpdate - Partially updates a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - devBoxDefinitionName - The name of the Dev Box definition.
@@ -488,7 +488,7 @@ func (client *DevBoxDefinitionsClient) BeginUpdate(ctx context.Context, resource
 // Update - Partially updates a Dev Box definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 func (client *DevBoxDefinitionsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
 	if err != nil {
@@ -528,7 +528,7 @@ func (client *DevBoxDefinitionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

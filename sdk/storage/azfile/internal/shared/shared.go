@@ -100,7 +100,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		connStrMap[parts[0]] = parts[1]
 	}
 
-	accountName, _ := connStrMap["AccountName"]
+	accountName := connStrMap["AccountName"]
 	accountKey, ok := connStrMap["AccountKey"]
 	if !ok {
 		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]

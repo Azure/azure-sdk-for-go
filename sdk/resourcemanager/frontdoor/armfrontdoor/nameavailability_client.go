@@ -41,7 +41,7 @@ func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.C
 // Check - Check the availability of a Front Door resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - checkFrontDoorNameAvailabilityInput - Input to check.
 //   - options - NameAvailabilityClientCheckOptions contains the optional parameters for the NameAvailabilityClient.Check method.
 func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityClientCheckOptions) (NameAvailabilityClientCheckResponse, error) {
@@ -67,7 +67,7 @@ func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, ch
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput)

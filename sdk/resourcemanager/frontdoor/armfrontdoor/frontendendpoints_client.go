@@ -48,7 +48,7 @@ func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCr
 // BeginDisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -71,7 +71,7 @@ func (client *FrontendEndpointsClient) BeginDisableHTTPS(ctx context.Context, re
 // DisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*http.Response, error) {
 	req, err := client.disableHTTPSCreateRequest(ctx, resourceGroupName, frontDoorName, frontendEndpointName, options)
 	if err != nil {
@@ -111,7 +111,7 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +120,7 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 // BeginEnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -144,7 +144,7 @@ func (client *FrontendEndpointsClient) BeginEnableHTTPS(ctx context.Context, res
 // EnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*http.Response, error) {
 	req, err := client.enableHTTPSCreateRequest(ctx, resourceGroupName, frontDoorName, frontendEndpointName, customHTTPSConfiguration, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customHTTPSConfiguration)
@@ -193,7 +193,7 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 // Get - Gets a Frontend endpoint with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -237,7 +237,7 @@ func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,7 +254,7 @@ func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (F
 
 // NewListByFrontDoorPager - Lists all of the frontend endpoints within a Front Door.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2021-06-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontendEndpointsClientListByFrontDoorOptions contains the optional parameters for the FrontendEndpointsClient.NewListByFrontDoorPager
@@ -307,7 +307,7 @@ func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

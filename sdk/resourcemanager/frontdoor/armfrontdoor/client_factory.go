@@ -39,23 +39,13 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewNetworkExperimentProfilesClient() *NetworkExperimentProfilesClient {
-	subClient, _ := NewNetworkExperimentProfilesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
+	subClient, _ := NewPoliciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPreconfiguredEndpointsClient() *PreconfiguredEndpointsClient {
-	subClient, _ := NewPreconfiguredEndpointsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewExperimentsClient() *ExperimentsClient {
-	subClient, _ := NewExperimentsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewReportsClient() *ReportsClient {
-	subClient, _ := NewReportsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewManagedRuleSetsClient() *ManagedRuleSetsClient {
+	subClient, _ := NewManagedRuleSetsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -89,12 +79,22 @@ func (c *ClientFactory) NewRulesEnginesClient() *RulesEnginesClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
-	subClient, _ := NewPoliciesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewNetworkExperimentProfilesClient() *NetworkExperimentProfilesClient {
+	subClient, _ := NewNetworkExperimentProfilesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewManagedRuleSetsClient() *ManagedRuleSetsClient {
-	subClient, _ := NewManagedRuleSetsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewPreconfiguredEndpointsClient() *PreconfiguredEndpointsClient {
+	subClient, _ := NewPreconfiguredEndpointsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewExperimentsClient() *ExperimentsClient {
+	subClient, _ := NewExperimentsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewReportsClient() *ReportsClient {
+	subClient, _ := NewReportsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

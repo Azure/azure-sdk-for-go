@@ -7,6 +7,7 @@
 package shared
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -92,4 +93,43 @@ func TestCParseConnectionStringAzurite(t *testing.T) {
 	require.Equal(t, "http://local-machine:11002/custom/account/path/faketokensignature", parsed.ServiceURL)
 	require.Equal(t, "dummyaccountname", parsed.AccountName)
 	require.Equal(t, "secretkeykey", parsed.AccountKey)
+}
+
+func TestParseConnectionStringSASAndCustomDomain(t *testing.T) {
+	testData := []struct {
+		connectionStr     string
+		parsedServiceURL  string
+		parsedAccountName string
+		parsedAccountKey  string
+		err               error
+	}{
+		{
+			connectionStr:    "AccountName=dummyaccountname;SharedAccessSignature=fakesharedaccesssignature;FileEndpoint=http://127.0.0.1:10000/dummyaccountname;",
+			parsedServiceURL: "http://127.0.0.1:10000/dummyaccountname/?fakesharedaccesssignature",
+		},
+		{
+			connectionStr:    "BlobEndpoint=https://dummyaccountname.blob.core.windows.net/;FileEndpoint=https://dummyaccountname.file.core.windows.net/;SharedAccessSignature=fakesharedaccesssignature",
+			parsedServiceURL: "https://dummyaccountname.file.core.windows.net/?fakesharedaccesssignature",
+		},
+		{
+			connectionStr:    "BlobEndpoint=https://dummyaccountname.blob.core.windows.net;FileEndpoint=https://dummyaccountname.file.core.windows.net;SharedAccessSignature=fakesharedaccesssignature",
+			parsedServiceURL: "https://dummyaccountname.file.core.windows.net/?fakesharedaccesssignature",
+		},
+		{
+			connectionStr: "SharedAccessSignature=fakesharedaccesssignature",
+			err:           fmt.Errorf("connection string missing AccountName"),
+		},
+		{
+			connectionStr: "DefaultEndpointsProtocol=http;AccountKey=secretkeykey;EndpointSuffix=core.windows.net",
+			err:           fmt.Errorf("connection string missing AccountName"),
+		},
+	}
+
+	for _, td := range testData {
+		parsed, err := ParseConnectionString(td.connectionStr)
+		require.Equal(t, td.err, err)
+		require.Equal(t, td.parsedServiceURL, parsed.ServiceURL)
+		require.Equal(t, td.parsedAccountName, parsed.AccountName)
+		require.Equal(t, td.parsedAccountKey, parsed.AccountKey)
+	}
 }

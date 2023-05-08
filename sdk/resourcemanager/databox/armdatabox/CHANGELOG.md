@@ -1,5 +1,38 @@
 # Release History
 
+## 2.0.0 (2023-05-26)
+### Breaking Changes
+
+- Field `AccountName` of struct `DiskGranularCopyLogDetails` has been removed
+
+### Features Added
+
+- New enum type `HardwareEncryption` with values `HardwareEncryptionDisabled`, `HardwareEncryptionEnabled`
+- New enum type `ReverseShippingDetailsEditStatus` with values `ReverseShippingDetailsEditStatusDisabled`, `ReverseShippingDetailsEditStatusEnabled`, `ReverseShippingDetailsEditStatusNotSupported`
+- New enum type `ReverseTransportPreferenceEditStatus` with values `ReverseTransportPreferenceEditStatusDisabled`, `ReverseTransportPreferenceEditStatusEnabled`, `ReverseTransportPreferenceEditStatusNotSupported`
+- New struct `ContactInfo`
+- New struct `ReverseShippingDetails`
+- New field `ReverseShippingDetails` in struct `CommonJobDetails`
+- New field `Actions`, `Error` in struct `CopyProgress`
+- New field `Actions`, `Error` in struct `CustomerDiskCopyProgress`
+- New field `ReverseShippingDetails` in struct `CustomerDiskJobDetails`
+- New field `Actions`, `Error` in struct `DiskCopyProgress`
+- New field `AccountID` in struct `DiskGranularCopyLogDetails`
+- New field `Actions`, `Error` in struct `DiskGranularCopyProgress`
+- New field `GranularCopyLogDetails`, `ReverseShippingDetails` in struct `DiskJobDetails`
+- New field `HardwareEncryption` in struct `EncryptionPreferences`
+- New field `Actions`, `Error` in struct `GranularCopyProgress`
+- New field `ReverseShippingDetails` in struct `HeavyJobDetails`
+- New field `ReverseShippingDetails` in struct `JobDetails`
+- New field `ReverseShippingDetailsUpdate`, `ReverseTransportPreferenceUpdate` in struct `JobProperties`
+- New field `SerialNumberCustomerResolutionMap` in struct `MitigateJobRequest`
+- New field `ReverseTransportPreferences` in struct `Preferences`
+- New field `CountriesWithinCommerceBoundary` in struct `SKUProperties`
+- New field `SkipAddressValidation`, `TaxIdentificationNumber` in struct `ShippingAddress`
+- New field `IsUpdated` in struct `TransportPreferences`
+- New field `Preferences`, `ReverseShippingDetails` in struct `UpdateJobDetails`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

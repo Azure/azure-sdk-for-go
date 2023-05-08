@@ -15,7 +15,7 @@ import (
 )
 
 type processorLoadBalancer struct {
-	checkpointStore             *CheckpointStore
+	checkpointStore             CheckpointStore
 	details                     consumerClientDetails
 	strategy                    ProcessorStrategy
 	partitionExpirationDuration time.Duration
@@ -24,7 +24,7 @@ type processorLoadBalancer struct {
 	rnd *rand.Rand
 }
 
-func newProcessorLoadBalancer(checkpointStore *CheckpointStore, details consumerClientDetails, strategy ProcessorStrategy, partitionExpiration time.Duration) *processorLoadBalancer {
+func newProcessorLoadBalancer(checkpointStore CheckpointStore, details consumerClientDetails, strategy ProcessorStrategy, partitionExpiration time.Duration) *processorLoadBalancer {
 	return &processorLoadBalancer{
 		checkpointStore:             checkpointStore,
 		details:                     details,

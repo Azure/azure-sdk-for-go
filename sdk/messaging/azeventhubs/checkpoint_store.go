@@ -11,19 +11,19 @@ import (
 )
 
 // CheckpointStore is used by multiple consumers to coordinate progress and ownership for partitions.
-type CheckpointStore struct {
+type CheckpointStore interface {
 	// ClaimOwnership attempts to claim ownership of the partitions in partitionOwnership and returns
 	// the actual partitions that were claimed.
-	ClaimOwnership func(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error)
+	ClaimOwnership(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error)
 
 	// ListCheckpoints lists all the available checkpoints.
-	ListCheckpoints func(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListCheckpointsOptions) ([]Checkpoint, error)
+	ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListCheckpointsOptions) ([]Checkpoint, error)
 
 	// ListOwnership lists all ownerships.
-	ListOwnership func(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
+	ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
 
-	// SetCheckpoint creates or updates a specific checkpoint with a sequence and offset.
-	SetCheckpoint func(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error
+	// SetCheckpoint updates a specific checkpoint with a sequence and offset.
+	SetCheckpoint(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error
 }
 
 // Ownership tracks which consumer owns a particular partition.

@@ -413,7 +413,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 	}
 }
 
-func printOwnerships(ctx context.Context, t *testing.T, cps *azeventhubs.CheckpointStore, testParams test.ConnectionParamsForTest, partitionIDs []string, expectedConsumers int) {
+func printOwnerships(ctx context.Context, t *testing.T, cps azeventhubs.CheckpointStore, testParams test.ConnectionParamsForTest, partitionIDs []string, expectedConsumers int) {
 	max := len(partitionIDs) / expectedConsumers
 
 	if len(partitionIDs)%expectedConsumers > 0 {

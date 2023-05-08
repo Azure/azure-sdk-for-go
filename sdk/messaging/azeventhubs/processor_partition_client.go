@@ -20,7 +20,7 @@ import "context"
 type ProcessorPartitionClient struct {
 	partitionID           string
 	innerClient           *PartitionClient
-	checkpointStore       *CheckpointStore
+	checkpointStore       CheckpointStore
 	cleanupFn             func()
 	consumerClientDetails consumerClientDetails
 }

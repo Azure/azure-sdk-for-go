@@ -43,7 +43,7 @@ type processorStressTest struct {
 	prefetch     int32
 	sleepAfterFn func()
 
-	checkpointStore *azeventhubs.CheckpointStore
+	checkpointStore azeventhubs.CheckpointStore
 }
 
 func newProcessorStressTest(args []string) (*processorStressTest, error) {

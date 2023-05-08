@@ -88,7 +88,7 @@ type StartPositions struct {
 type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
-	checkpointStore         *CheckpointStore
+	checkpointStore         CheckpointStore
 	prefetch                int32
 
 	// consumerClient is actually a *azeventhubs.ConsumerClient
@@ -114,11 +114,11 @@ type consumerClientForProcessor interface {
 // type or the [example_consuming_with_checkpoints_test.go] for an example.
 //
 // [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
-func NewProcessor(consumerClient *ConsumerClient, checkpointStore *CheckpointStore, options *ProcessorOptions) (*Processor, error) {
+func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
 
-func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore *CheckpointStore, options *ProcessorOptions) (*Processor, error) {
+func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	if options == nil {
 		options = &ProcessorOptions{}
 	}

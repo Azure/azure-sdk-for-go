@@ -167,24 +167,13 @@ type testCheckpointStore struct {
 
 	ownershipMu sync.RWMutex
 	ownerships  map[string]Ownership
-
-	store *CheckpointStore
 }
 
 func newCheckpointStoreForTest() *testCheckpointStore {
-	cps := &testCheckpointStore{
+	return &testCheckpointStore{
 		checkpoints: map[string]Checkpoint{},
 		ownerships:  map[string]Ownership{},
 	}
-
-	cps.store = &CheckpointStore{
-		ClaimOwnership:  cps.ClaimOwnership,
-		ListCheckpoints: cps.ListCheckpoints,
-		ListOwnership:   cps.ListOwnership,
-		SetCheckpoint:   cps.SetCheckpoint,
-	}
-
-	return cps
 }
 
 func (cps *testCheckpointStore) ExpireOwnership(o Ownership) {

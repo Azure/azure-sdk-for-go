@@ -154,7 +154,7 @@ func shutdownPartitionResources(partitionClient *azeventhubs.ProcessorPartitionC
 	defer partitionClient.Close(context.TODO())
 }
 
-func createClientsForExample(eventHubConnectionString, eventHubName, storageConnectionString, storageContainerName string) (*azeventhubs.ConsumerClient, *azeventhubs.CheckpointStore, error) {
+func createClientsForExample(eventHubConnectionString, eventHubName, storageConnectionString, storageContainerName string) (*azeventhubs.ConsumerClient, azeventhubs.CheckpointStore, error) {
 	// NOTE: the storageContainerName must exist before the checkpoint store can be used.
 	azBlobContainerClient, err := container.NewClientFromConnectionString(storageConnectionString, storageContainerName, nil)
 

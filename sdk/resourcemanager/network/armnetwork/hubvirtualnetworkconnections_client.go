@@ -48,7 +48,7 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string, credential azc
 // BeginCreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the HubVirtualNetworkConnection.
 //   - virtualHubName - The name of the VirtualHub.
 //   - connectionName - The name of the HubVirtualNetworkConnection.
@@ -72,7 +72,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 // CreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, hubVirtualNetworkConnectionParameters)
@@ -121,7 +121,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 // BeginDelete - Deletes a HubVirtualNetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - connectionName - The name of the HubVirtualNetworkConnection.
@@ -144,7 +144,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 // Delete - Deletes a HubVirtualNetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 // Get - Retrieves the details of a HubVirtualNetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - connectionName - The name of the vpn connection.
@@ -238,7 +238,7 @@ func (client *HubVirtualNetworkConnectionsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Retrieves the details of all HubVirtualNetworkConnections.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VirtualHub.
 //   - virtualHubName - The name of the VirtualHub.
 //   - options - HubVirtualNetworkConnectionsClientListOptions contains the optional parameters for the HubVirtualNetworkConnectionsClient.NewListPager
@@ -308,7 +308,7 @@ func (client *HubVirtualNetworkConnectionsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

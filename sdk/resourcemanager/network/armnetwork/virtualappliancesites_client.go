@@ -48,7 +48,7 @@ func NewVirtualApplianceSitesClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - siteName - The name of the site.
@@ -72,7 +72,7 @@ func (client *VirtualApplianceSitesClient) BeginCreateOrUpdate(ctx context.Conte
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, siteName, parameters, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -121,7 +121,7 @@ func (client *VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Deletes the specified site from a Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - siteName - The name of the site.
@@ -144,7 +144,7 @@ func (client *VirtualApplianceSitesClient) BeginDelete(ctx context.Context, reso
 // Delete - Deletes the specified site from a Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VirtualApplianceSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, siteName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Conte
 // Get - Gets the specified Virtual Appliance Site.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - siteName - The name of the site.
@@ -238,7 +238,7 @@ func (client *VirtualApplianceSitesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *VirtualApplianceSitesClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - options - VirtualApplianceSitesClientListOptions contains the optional parameters for the VirtualApplianceSitesClient.NewListPager
@@ -308,7 +308,7 @@ func (client *VirtualApplianceSitesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

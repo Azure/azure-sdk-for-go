@@ -18,36 +18,36 @@ import (
 	"net/http"
 )
 
-// TenantsClient contains the methods for the Tenants group.
-// Don't use this type directly, use NewTenantsClient() instead.
-type TenantsClient struct {
+// OperationsClient contains the methods for the Operations group.
+// Don't use this type directly, use NewOperationsClient() instead.
+type OperationsClient struct {
 	internal *arm.Client
 }
 
-// NewTenantsClient creates a new instance of TenantsClient with the specified values.
+// NewOperationsClient creates a new instance of OperationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantsClient, error) {
-	cl, err := arm.NewClient(moduleName+".TenantsClient", moduleVersion, credential, options)
+func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+	cl, err := arm.NewClient(moduleName+".OperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &TenantsClient{
+	client := &OperationsClient{
 		internal: cl,
 	}
 	return client, nil
 }
 
-// NewListPager - Gets the tenants for your account.
+// NewListPager - Lists all of the available Microsoft.Resources REST API operations.
 //
 // Generated from API version 2022-12-01
-//   - options - TenantsClientListOptions contains the optional parameters for the TenantsClient.NewListPager method.
-func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TenantsClientListResponse]{
-		More: func(page TenantsClientListResponse) bool {
+//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
+		More: func(page OperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *TenantsClientListResponse) (TenantsClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -56,14 +56,14 @@ func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *ru
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return TenantsClientListResponse{}, err
+				return OperationsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return TenantsClientListResponse{}, err
+				return OperationsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TenantsClientListResponse{}, runtime.NewResponseError(resp)
+				return OperationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -71,8 +71,8 @@ func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *ru
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantsClient) listCreateRequest(ctx context.Context, options *TenantsClientListOptions) (*policy.Request, error) {
-	urlPath := "/tenants"
+func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Resources/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -85,10 +85,10 @@ func (client *TenantsClient) listCreateRequest(ctx context.Context, options *Ten
 }
 
 // listHandleResponse handles the List response.
-func (client *TenantsClient) listHandleResponse(resp *http.Response) (TenantsClientListResponse, error) {
-	result := TenantsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TenantListResult); err != nil {
-		return TenantsClientListResponse{}, err
+func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+	result := OperationsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
+		return OperationsClientListResponse{}, err
 	}
 	return result, nil
 }

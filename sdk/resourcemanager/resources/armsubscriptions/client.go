@@ -11,7 +11,6 @@ package armsubscriptions
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -25,19 +24,22 @@ import (
 // Client contains the methods for the Subscriptions group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	internal *arm.Client
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewClient creates a new instance of Client with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
-		internal: cl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -45,12 +47,11 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 // CheckZonePeers - Compares a subscriptions logical zone mapping
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-01-01
-//   - subscriptionID - The ID of the target subscription.
+// Generated from API version 2022-12-01
 //   - parameters - Parameters for checking zone peers.
 //   - options - ClientCheckZonePeersOptions contains the optional parameters for the Client.CheckZonePeers method.
-func (client *Client) CheckZonePeers(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (ClientCheckZonePeersResponse, error) {
-	req, err := client.checkZonePeersCreateRequest(ctx, subscriptionID, parameters, options)
+func (client *Client) CheckZonePeers(ctx context.Context, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (ClientCheckZonePeersResponse, error) {
+	req, err := client.checkZonePeersCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ClientCheckZonePeersResponse{}, err
 	}
@@ -65,18 +66,15 @@ func (client *Client) CheckZonePeers(ctx context.Context, subscriptionID string,
 }
 
 // checkZonePeersCreateRequest creates the CheckZonePeers request.
-func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (*policy.Request, error) {
+func (client *Client) checkZonePeersCreateRequest(ctx context.Context, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/checkZonePeers/"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -94,11 +92,10 @@ func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientC
 // Get - Gets details about a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-01-01
-//   - subscriptionID - The ID of the target subscription.
+// Generated from API version 2022-12-01
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
-func (client *Client) Get(ctx context.Context, subscriptionID string, options *ClientGetOptions) (ClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, subscriptionID, options)
+func (client *Client) Get(ctx context.Context, options *ClientGetOptions) (ClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -113,18 +110,15 @@ func (client *Client) Get(ctx context.Context, subscriptionID string, options *C
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, subscriptionID string, options *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, options *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +135,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Gets all subscriptions for a tenant.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
@@ -179,7 +173,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,16 +191,15 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
 //
-// Generated from API version 2021-01-01
-//   - subscriptionID - The ID of the target subscription.
+// Generated from API version 2022-12-01
 //   - options - ClientListLocationsOptions contains the optional parameters for the Client.NewListLocationsPager method.
-func (client *Client) NewListLocationsPager(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
+func (client *Client) NewListLocationsPager(options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListLocationsResponse]{
 		More: func(page ClientListLocationsResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClientListLocationsResponse) (ClientListLocationsResponse, error) {
-			req, err := client.listLocationsCreateRequest(ctx, subscriptionID, options)
+			req, err := client.listLocationsCreateRequest(ctx, options)
 			if err != nil {
 				return ClientListLocationsResponse{}, err
 			}
@@ -223,18 +216,15 @@ func (client *Client) NewListLocationsPager(subscriptionID string, options *Clie
 }
 
 // listLocationsCreateRequest creates the ListLocations request.
-func (client *Client) listLocationsCreateRequest(ctx context.Context, subscriptionID string, options *ClientListLocationsOptions) (*policy.Request, error) {
+func (client *Client) listLocationsCreateRequest(ctx context.Context, options *ClientListLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/locations"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	if options != nil && options.IncludeExtendedLocations != nil {
 		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 	}

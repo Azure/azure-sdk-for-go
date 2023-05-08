@@ -14,61 +14,61 @@ import "time"
 // AccountInfo - Account Info of the NewRelic account
 type AccountInfo struct {
 	// Account id
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// ingestion key of account
-	IngestionKey *string `json:"ingestionKey,omitempty"`
+	IngestionKey *string
 
 	// NewRelic account region
-	Region *string `json:"region,omitempty"`
+	Region *string
 }
 
 // AccountProperties - List of all the New relic accounts for the given user
 type AccountProperties struct {
 	// account id
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// account name
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// organization id
-	OrganizationID *string `json:"organizationId,omitempty"`
+	OrganizationID *string
 
 	// region
-	Region *string `json:"region,omitempty"`
+	Region *string
 }
 
 // AccountPropertiesForNewRelic - Properties of the NewRelic account
 type AccountPropertiesForNewRelic struct {
 	// NewRelic Account Information
-	AccountInfo *AccountInfo `json:"accountInfo,omitempty"`
+	AccountInfo *AccountInfo
 
 	// NewRelic Organization Information
-	OrganizationInfo *OrganizationInfo `json:"organizationInfo,omitempty"`
+	OrganizationInfo *OrganizationInfo
 
 	// date when plan was applied
-	SingleSignOnProperties *NewRelicSingleSignOnProperties `json:"singleSignOnProperties,omitempty"`
+	SingleSignOnProperties *NewRelicSingleSignOnProperties
 
 	// User id
-	UserID *string `json:"userId,omitempty"`
+	UserID *string
 }
 
 // AccountResource - The details of a account resource.
 type AccountResource struct {
 	// The resource-specific properties for this resource.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
@@ -79,62 +79,62 @@ type AccountsClientListOptions struct {
 // AccountsListResponse - Response of get all accounts Operation.
 type AccountsListResponse struct {
 	// REQUIRED; The AccountResource items on this page
-	Value []*AccountResource `json:"value,omitempty"`
+	Value []*AccountResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AppServiceInfo - Details of VM Resource having NewRelic OneAgent installed
 type AppServiceInfo struct {
 	// Status of the NewRelic agent installed on the App service.
-	AgentStatus *string `json:"agentStatus,omitempty"`
+	AgentStatus *string
 
 	// Version of the NewRelic agent installed on the App service.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Azure App service resource ID
-	AzureResourceID *string `json:"azureResourceId,omitempty"`
+	AzureResourceID *string
 }
 
 // AppServicesGetRequest - Request of a app services get Operation.
 type AppServicesGetRequest struct {
 	// REQUIRED; User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 
 	// Azure resource IDs
-	AzureResourceIDs []*string `json:"azureResourceIds,omitempty"`
+	AzureResourceIDs []*string
 }
 
 // AppServicesListResponse - Response of a list app services Operation.
 type AppServicesListResponse struct {
 	// REQUIRED; The AppServiceInfo items on this page
-	Value []*AppServiceInfo `json:"value,omitempty"`
+	Value []*AppServiceInfo
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag. Exclusion takes priority over inclusion.
-	Action *TagAction `json:"action,omitempty"`
+	Action *TagAction
 
 	// The name (also known as the key) of the tag.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the tag.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // HostsGetRequest - Request of a Hosts get Operation.
 type HostsGetRequest struct {
 	// REQUIRED; User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 
 	// VM resource IDs
-	VMIDs []*string `json:"vmIds,omitempty"`
+	VMIDs []*string
 }
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
@@ -143,144 +143,144 @@ type LogRules struct {
 	// all resources will be captured. If only Exclude action is specified, the
 	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
 	// resources with the associated tags.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
-	SendAADLogs *SendAADLogsStatus `json:"sendAadLogs,omitempty"`
+	SendAADLogs *SendAADLogsStatus
 
 	// Flag specifying if activity logs from Azure resources should be sent for the Monitor resource.
-	SendActivityLogs *SendActivityLogsStatus `json:"sendActivityLogs,omitempty"`
+	SendActivityLogs *SendActivityLogsStatus
 
 	// Flag specifying if subscription logs should be sent for the Monitor resource.
-	SendSubscriptionLogs *SendSubscriptionLogsStatus `json:"sendSubscriptionLogs,omitempty"`
+	SendSubscriptionLogs *SendSubscriptionLogsStatus
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // MetricRules - Set of rules for sending metrics for the Monitor resource.
 type MetricRules struct {
 	// List of filtering tags to be used for capturing metrics.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 
 	// Flag specifying if metrics should be sent for the Monitor resource.
-	SendMetrics *SendMetricsStatus `json:"sendMetrics,omitempty"`
+	SendMetrics *SendMetricsStatus
 
 	// User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 }
 
 // MetricsRequest - Request of get metrics Operation.
 type MetricsRequest struct {
 	// REQUIRED; User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 }
 
 // MetricsStatusRequest - Request of get metrics status Operation.
 type MetricsStatusRequest struct {
 	// REQUIRED; User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 
 	// Azure resource IDs
-	AzureResourceIDs []*string `json:"azureResourceIds,omitempty"`
+	AzureResourceIDs []*string
 }
 
 // MetricsStatusResponse - Response of get metrics status Operation.
 type MetricsStatusResponse struct {
 	// Azure resource IDs
-	AzureResourceIDs []*string `json:"azureResourceIds,omitempty"`
+	AzureResourceIDs []*string
 }
 
 // MonitorProperties - Properties specific to the NewRelic Monitor resource
 type MonitorProperties struct {
 	// Source of account creation
-	AccountCreationSource *AccountCreationSource `json:"accountCreationSource,omitempty"`
+	AccountCreationSource *AccountCreationSource
 
 	// MarketplaceSubscriptionStatus of the resource
-	NewRelicAccountProperties *AccountPropertiesForNewRelic `json:"newRelicAccountProperties,omitempty"`
+	NewRelicAccountProperties *AccountPropertiesForNewRelic
 
 	// Source of org creation
-	OrgCreationSource *OrgCreationSource `json:"orgCreationSource,omitempty"`
+	OrgCreationSource *OrgCreationSource
 
 	// Plan details
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
 
 	// User Info
-	UserInfo *UserInfo `json:"userInfo,omitempty"`
+	UserInfo *UserInfo
 
 	// READ-ONLY; Liftr resource category
-	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
+	LiftrResourceCategory *LiftrResourceCategories
 
 	// READ-ONLY; Liftr resource preference. The priority of the resource.
-	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
+	LiftrResourcePreference *int32
 
 	// READ-ONLY; Marketplace Subscription Id
-	MarketplaceSubscriptionID *string `json:"marketplaceSubscriptionId,omitempty" azure:"ro"`
+	MarketplaceSubscriptionID *string
 
 	// READ-ONLY; NewRelic Organization properties of the resource
-	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty" azure:"ro"`
+	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
 
 	// READ-ONLY; MonitoringStatus of the resource
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty" azure:"ro"`
+	MonitoringStatus *MonitoringStatus
 
 	// READ-ONLY; Provisioning State of the resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // MonitoredResource - Details of resource being monitored by NewRelic monitor resource
 type MonitoredResource struct {
 	// The ARM id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Reason for why the resource is sending logs (or why it is not sending).
-	ReasonForLogsStatus *string `json:"reasonForLogsStatus,omitempty"`
+	ReasonForLogsStatus *string
 
 	// Reason for why the resource is sending metrics (or why it is not sending).
-	ReasonForMetricsStatus *string `json:"reasonForMetricsStatus,omitempty"`
+	ReasonForMetricsStatus *string
 
 	// Flag indicating if resource is sending logs to NewRelic.
-	SendingLogs *SendingLogsStatus `json:"sendingLogs,omitempty"`
+	SendingLogs *SendingLogsStatus
 
 	// Flag indicating if resource is sending metrics to NewRelic.
-	SendingMetrics *SendingMetricsStatus `json:"sendingMetrics,omitempty"`
+	SendingMetrics *SendingMetricsStatus
 }
 
 // MonitoredResourceListResponse - List of all the resources being monitored by NewRelic monitor resource
 type MonitoredResourceListResponse struct {
 	// REQUIRED; The MonitoredResource items on this page
-	Value []*MonitoredResource `json:"value,omitempty"`
+	Value []*MonitoredResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // MonitoringTagRulesProperties - The resource-specific properties for this resource.
 type MonitoringTagRulesProperties struct {
 	// Set of rules for sending logs for the Monitor resource.
-	LogRules *LogRules `json:"logRules,omitempty"`
+	LogRules *LogRules
 
 	// Set of rules for sending metrics for the Monitor resource.
-	MetricRules *MetricRules `json:"metricRules,omitempty"`
+	MetricRules *MetricRules
 
 	// READ-ONLY; Provisioning State of the resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // MonitorsClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitorsClient.BeginCreateOrUpdate method.
@@ -356,131 +356,131 @@ type MonitorsClientVMHostPayloadOptions struct {
 // NewRelicMonitorResource - A Monitor Resource by NewRelic
 type NewRelicMonitorResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *MonitorProperties `json:"properties,omitempty"`
+	Properties *MonitorProperties
 
 	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NewRelicMonitorResourceListResult - The response of a NewRelicMonitorResource list operation.
 type NewRelicMonitorResourceListResult struct {
 	// REQUIRED; The NewRelicMonitorResource items on this page
-	Value []*NewRelicMonitorResource `json:"value,omitempty"`
+	Value []*NewRelicMonitorResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // NewRelicMonitorResourceUpdate - The type used for update operations of the NewRelicMonitorResource.
 type NewRelicMonitorResourceUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The updatable properties of the NewRelicMonitorResource.
-	Properties *NewRelicMonitorResourceUpdateProperties `json:"properties,omitempty"`
+	Properties *NewRelicMonitorResourceUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // NewRelicMonitorResourceUpdateProperties - The updatable properties of the NewRelicMonitorResource.
 type NewRelicMonitorResourceUpdateProperties struct {
 	// Source of account creation
-	AccountCreationSource *AccountCreationSource `json:"accountCreationSource,omitempty"`
+	AccountCreationSource *AccountCreationSource
 
 	// MarketplaceSubscriptionStatus of the resource
-	NewRelicAccountProperties *AccountPropertiesForNewRelic `json:"newRelicAccountProperties,omitempty"`
+	NewRelicAccountProperties *AccountPropertiesForNewRelic
 
 	// Source of org creation
-	OrgCreationSource *OrgCreationSource `json:"orgCreationSource,omitempty"`
+	OrgCreationSource *OrgCreationSource
 
 	// Plan details
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
 
 	// User Info
-	UserInfo *UserInfo `json:"userInfo,omitempty"`
+	UserInfo *UserInfo
 }
 
 // NewRelicSingleSignOnProperties - Single sign on Info of the NewRelic account
 type NewRelicSingleSignOnProperties struct {
 	// The Id of the Enterprise App used for Single sign-on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+	EnterpriseAppID *string
 
 	// Provisioning state
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 
 	// Single sign-on state
-	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
+	SingleSignOnState *SingleSignOnStates
 
 	// The login URL specific to this NewRelic Organization
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+	SingleSignOnURL *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -491,37 +491,37 @@ type OperationsClientListOptions struct {
 // OrganizationInfo - Organization Info of the NewRelic account
 type OrganizationInfo struct {
 	// Organization id
-	OrganizationID *string `json:"organizationId,omitempty"`
+	OrganizationID *string
 }
 
 // OrganizationProperties - Details of Organizations
 type OrganizationProperties struct {
 	// Billing source
-	BillingSource *BillingSource `json:"billingSource,omitempty"`
+	BillingSource *BillingSource
 
 	// organization id
-	OrganizationID *string `json:"organizationId,omitempty"`
+	OrganizationID *string
 
 	// organization name
-	OrganizationName *string `json:"organizationName,omitempty"`
+	OrganizationName *string
 }
 
 // OrganizationResource - The details of a Organization resource.
 type OrganizationResource struct {
 	// The resource-specific properties for this resource.
-	Properties *OrganizationProperties `json:"properties,omitempty"`
+	Properties *OrganizationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OrganizationsClientListOptions contains the optional parameters for the OrganizationsClient.NewListPager method.
@@ -532,64 +532,64 @@ type OrganizationsClientListOptions struct {
 // OrganizationsListResponse - Response of get all organizations Operation.
 type OrganizationsListResponse struct {
 	// REQUIRED; The OrganizationResource items on this page
-	Value []*OrganizationResource `json:"value,omitempty"`
+	Value []*OrganizationResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PlanData - Plan data of NewRelic Monitor resource
 type PlanData struct {
 	// Different billing cycles like MONTHLY/WEEKLY. this could be enum
-	BillingCycle *BillingCycle `json:"billingCycle,omitempty"`
+	BillingCycle *BillingCycle
 
 	// date when plan was applied
-	EffectiveDate *time.Time `json:"effectiveDate,omitempty"`
+	EffectiveDate *time.Time
 
 	// plan id as published by NewRelic
-	PlanDetails *string `json:"planDetails,omitempty"`
+	PlanDetails *string
 
 	// Different usage type like PAYG/COMMITTED. this could be enum
-	UsageType *UsageType `json:"usageType,omitempty"`
+	UsageType *UsageType
 }
 
 // PlanDataListResponse - Response of get all plan data Operation.
 type PlanDataListResponse struct {
 	// REQUIRED; The PlanDataResource items on this page
-	Value []*PlanDataResource `json:"value,omitempty"`
+	Value []*PlanDataResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PlanDataProperties - Plan details
 type PlanDataProperties struct {
 	// Source of account creation
-	AccountCreationSource *AccountCreationSource `json:"accountCreationSource,omitempty"`
+	AccountCreationSource *AccountCreationSource
 
 	// Source of org creation
-	OrgCreationSource *OrgCreationSource `json:"orgCreationSource,omitempty"`
+	OrgCreationSource *OrgCreationSource
 
 	// Plan details
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
 }
 
 // PlanDataResource - The details of a PlanData resource.
 type PlanDataResource struct {
 	// The resource-specific properties for this resource.
-	Properties *PlanDataProperties `json:"properties,omitempty"`
+	Properties *PlanDataProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
@@ -603,79 +603,79 @@ type PlansClientListOptions struct {
 // SwitchBillingRequest - Request of a switch billing Operation.
 type SwitchBillingRequest struct {
 	// REQUIRED; User Email
-	UserEmail *string `json:"userEmail,omitempty"`
+	UserEmail *string
 
 	// Azure resource Id
-	AzureResourceID *string `json:"azureResourceId,omitempty"`
+	AzureResourceID *string
 
 	// Organization id
-	OrganizationID *string `json:"organizationId,omitempty"`
+	OrganizationID *string
 
 	// Plan details
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagRule - A tag rule belonging to NewRelic account
 type TagRule struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *MonitoringTagRulesProperties `json:"properties,omitempty"`
+	Properties *MonitoringTagRulesProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TagRuleListResult - The response of a TagRule list operation.
 type TagRuleListResult struct {
 	// REQUIRED; The TagRule items on this page
-	Value []*TagRule `json:"value,omitempty"`
+	Value []*TagRule
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // TagRuleUpdate - The type used for update operations of the TagRule.
 type TagRuleUpdate struct {
 	// The updatable properties of the TagRule.
-	Properties *TagRuleUpdateProperties `json:"properties,omitempty"`
+	Properties *TagRuleUpdateProperties
 }
 
 // TagRuleUpdateProperties - The updatable properties of the TagRule.
 type TagRuleUpdateProperties struct {
 	// Set of rules for sending logs for the Monitor resource.
-	LogRules *LogRules `json:"logRules,omitempty"`
+	LogRules *LogRules
 
 	// Set of rules for sending metrics for the Monitor resource.
-	MetricRules *MetricRules `json:"metricRules,omitempty"`
+	MetricRules *MetricRules
 }
 
 // TagRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.BeginCreateOrUpdate method.
@@ -709,53 +709,53 @@ type TagRulesClientUpdateOptions struct {
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserInfo - User Info of NewRelic Monitor resource
 type UserInfo struct {
 	// country if user
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// User Email
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// First name
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Last name
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 
 	// Contact phone number
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
 }
 
 // VMExtensionPayload - Response of payload to be passed while installing VM agent.
 type VMExtensionPayload struct {
 	// Ingestion key of the account
-	IngestionKey *string `json:"ingestionKey,omitempty"`
+	IngestionKey *string
 }
 
 // VMHostsListResponse - Response of a list VM Host Operation.
 type VMHostsListResponse struct {
 	// REQUIRED; The VMInfo items on this page
-	Value []*VMInfo `json:"value,omitempty"`
+	Value []*VMInfo
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // VMInfo - Details of VM Resource having NewRelic OneAgent installed
 type VMInfo struct {
 	// Status of the NewRelic agent installed on the VM.
-	AgentStatus *string `json:"agentStatus,omitempty"`
+	AgentStatus *string
 
 	// Version of the NewRelic agent installed on the VM.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Azure VM resource ID
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 }

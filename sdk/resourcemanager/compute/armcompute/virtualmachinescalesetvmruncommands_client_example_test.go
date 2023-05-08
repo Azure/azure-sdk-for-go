@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,13 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myvmScaleSet", "0", "myRunCommand", armcompute.VirtualMachineRunCommand{
 		Location: to.Ptr("West US"),
 		Properties: &armcompute.VirtualMachineRunCommandProperties{
-			AsyncExecution: to.Ptr(false),
+			AsyncExecution:           to.Ptr(false),
+			ErrorBlobManagedIdentity: &armcompute.RunCommandManagedIdentity{},
+			ErrorBlobURI:             to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+			OutputBlobManagedIdentity: &armcompute.RunCommandManagedIdentity{
+				ClientID: to.Ptr("22d35efb-0c99-4041-8c5b-6d24db33a69a"),
+			},
+			OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
 			Parameters: []*armcompute.RunCommandInputParameter{
 				{
 					Name:  to.Ptr("param1"),
@@ -45,9 +51,13 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 			RunAsPassword: to.Ptr("<runAsPassword>"),
 			RunAsUser:     to.Ptr("user1"),
 			Source: &armcompute.VirtualMachineRunCommandScriptSource{
-				Script: to.Ptr("Write-Host Hello World!"),
+				ScriptURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/scriptcontainer/MyScript.ps1"),
+				ScriptURIManagedIdentity: &armcompute.RunCommandManagedIdentity{
+					ObjectID: to.Ptr("4231e4d2-33e4-4e23-96b2-17888afa6072"),
+				},
 			},
-			TimeoutInSeconds: to.Ptr[int32](3600),
+			TimeoutInSeconds:                to.Ptr[int32](3600),
+			TreatFailureAsDeploymentFailure: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -67,6 +77,8 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armcompute.VirtualMachineRunCommandProperties{
 	// 		AsyncExecution: to.Ptr(false),
+	// 		ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+	// 		OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
 	// 		Parameters: []*armcompute.RunCommandInputParameter{
 	// 			{
 	// 				Name: to.Ptr("param1"),
@@ -79,14 +91,15 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		RunAsUser: to.Ptr("user1"),
 	// 		Source: &armcompute.VirtualMachineRunCommandScriptSource{
-	// 			Script: to.Ptr("Write-Host Hello World!"),
+	// 			ScriptURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/scriptcontainer/MyScript.ps1"),
 	// 		},
 	// 		TimeoutInSeconds: to.Ptr[int32](3600),
+	// 		TreatFailureAsDeploymentFailure: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Update.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +113,10 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	poller, err := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().BeginUpdate(ctx, "myResourceGroup", "myvmScaleSet", "0", "myRunCommand", armcompute.VirtualMachineRunCommandUpdate{
 		Properties: &armcompute.VirtualMachineRunCommandProperties{
 			Source: &armcompute.VirtualMachineRunCommandScriptSource{
-				Script: to.Ptr("Write-Host Script Source Updated!"),
+				ScriptURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/scriptcontainer/MyScript.ps1"),
+				ScriptURIManagedIdentity: &armcompute.RunCommandManagedIdentity{
+					ObjectID: to.Ptr("4231e4d2-33e4-4e23-96b2-17888afa6072"),
+				},
 			},
 		},
 	}, nil)
@@ -125,6 +141,8 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armcompute.VirtualMachineRunCommandProperties{
 	// 		AsyncExecution: to.Ptr(false),
+	// 		ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+	// 		OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
 	// 		Parameters: []*armcompute.RunCommandInputParameter{
 	// 			{
 	// 				Name: to.Ptr("param1"),
@@ -137,14 +155,15 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		RunAsUser: to.Ptr("user1"),
 	// 		Source: &armcompute.VirtualMachineRunCommandScriptSource{
-	// 			Script: to.Ptr("Write-Host Script Source Updated!"),
+	// 			ScriptURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/scriptcontainer/MyScript.ps1"),
 	// 		},
 	// 		TimeoutInSeconds: to.Ptr[int32](3600),
+	// 		TreatFailureAsDeploymentFailure: to.Ptr(false),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +184,7 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,6 +213,8 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
 	// 	},
 	// 	Properties: &armcompute.VirtualMachineRunCommandProperties{
 	// 		AsyncExecution: to.Ptr(false),
+	// 		ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+	// 		OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
 	// 		Parameters: []*armcompute.RunCommandInputParameter{
 	// 			{
 	// 				Name: to.Ptr("param1"),
@@ -206,14 +227,15 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		RunAsUser: to.Ptr("user1"),
 	// 		Source: &armcompute.VirtualMachineRunCommandScriptSource{
-	// 			Script: to.Ptr("Write-Host Hello World!"),
+	// 			ScriptURI: to.Ptr("https://gist.githubusercontent.com/myusername/75fd3634w7511116063c60bcc50bee0/raw/04a4c68ac9e1d36asfasdc64bd1d889b104c7abdb8/HelloWorld.ps1"),
 	// 		},
 	// 		TimeoutInSeconds: to.Ptr[int32](3600),
+	// 		TreatFailureAsDeploymentFailure: to.Ptr(false),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,6 +266,8 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armcompute.VirtualMachineRunCommandProperties{
 		// 				AsyncExecution: to.Ptr(false),
+		// 				ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+		// 				OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
 		// 				Parameters: []*armcompute.RunCommandInputParameter{
 		// 					{
 		// 						Name: to.Ptr("param1"),
@@ -256,9 +280,10 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				RunAsUser: to.Ptr("user1"),
 		// 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-		// 					Script: to.Ptr("Write-Host Hello World!"),
+		// 					Script: to.Ptr("Write-Host Hello World! ; Remove-Item C:	est	estFile.txt"),
 		// 				},
 		// 				TimeoutInSeconds: to.Ptr[int32](0),
+		// 				TreatFailureAsDeploymentFailure: to.Ptr(false),
 		// 			},
 		// 	}},
 		// }

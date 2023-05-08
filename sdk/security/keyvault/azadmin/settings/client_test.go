@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings"
 	"github.com/stretchr/testify/require"
 )
@@ -113,7 +114,7 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 			break
 		}
 		// else sleep for 30 seconds and try again
-		time.Sleep(30 * time.Second)
+		recording.Sleep(30 * time.Second)
 	}
 	require.Error(t, err)
 	require.Nil(t, res.Name)

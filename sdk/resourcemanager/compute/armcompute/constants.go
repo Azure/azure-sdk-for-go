@@ -11,7 +11,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v4.2.1"
+	moduleVersion = "v5.0.0"
 )
 
 type AccessLevel string
@@ -118,12 +118,8 @@ func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
 	}
 }
 
-// CachingTypes - Specifies the caching requirements.
-// Possible values are:
-// None
-// ReadOnly
-// ReadWrite
-// Default: None for Standard storage. ReadOnly for Premium storage
+// CachingTypes - Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are:
+// None for Standard storage. ReadOnly for Premium storage
 type CachingTypes string
 
 const (
@@ -287,12 +283,7 @@ func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
 }
 
 // DedicatedHostLicenseTypes - Specifies the software license type that will be applied to the VMs deployed on the dedicated
-// host.
-// Possible values are:
-// None
-// WindowsServerHybrid
-// WindowsServerPerpetual
-// Default: None
+// host. Possible values are: None, WindowsServerHybrid, WindowsServerPerpetual. The default value is: None.
 type DedicatedHostLicenseTypes string
 
 const (
@@ -365,8 +356,9 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 // is only supported for virtual machines whose operating system disk and VM sku supports Generation 2
 // (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please check the HyperVGenerations capability returned
 // as part of VM sku capabilities in the response of Microsoft.Compute SKUs
-// api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list) .
-// For more information about Disk Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+// api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more information about
+// Disk Controller Types supported please refer to
+// https://aka.ms/azure-diskcontrollertypes.
 type DiskControllerTypes string
 
 const (
@@ -429,12 +421,11 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	}
 }
 
-// DiskCreateOptionTypes - Specifies how the virtual machine should be created.
-// Possible values are:
-// Attach \u2013 This value is used when you are using a specialized disk to create the virtual machine.
-// FromImage \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform
-// image, you also use the imageReference element described above. If you are
-// using a marketplace image, you also use the plan element previously described.
+// DiskCreateOptionTypes - Specifies how the virtual machine should be created. Possible values are: Attach. This value is
+// used when you are using a specialized disk to create the virtual machine. FromImage. This value is used
+// when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference
+// element described above. If you are using a marketplace image, you also
+// use the plan element previously described.
 type DiskCreateOptionTypes string
 
 const (
@@ -452,11 +443,10 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	}
 }
 
-// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted i.e whether the managed disk
-// is deleted or detached. Supported values:
-// Delete If this value is used, the managed disk is deleted when VM gets deleted.
-// Detach If this value is used, the managed disk is retained after VM gets deleted.
-// Minimum api-version: 2021-03-01
+// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted, for example whether the managed
+// disk is deleted or detached. Supported values are: Delete. If this value is used, the managed disk
+// is deleted when VM gets deleted. Detach. If this value is used, the managed disk is retained after VM gets deleted. Minimum
+// api-version: 2021-03-01.
 type DiskDeleteOptionTypes string
 
 const (
@@ -473,13 +463,13 @@ func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
 }
 
 // DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process
-// of detachment from the virtual machine. Supported values: ForceDetach.
-// detachOption: ForceDetach is applicable only for managed data disks. If a previous detachment attempt of the data disk
-// did not complete due to an unexpected failure from the virtual machine and the
-// disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes
-// might not have been flushed when using this detach behavior.
-// This feature is still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
-// toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+// of detachment from the virtual machine. Supported values are: ForceDetach. detachOption: ForceDetach
+// is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an
+// unexpected failure from the virtual machine and the disk is still not released
+// then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
+// when using this detach behavior. This feature is still in preview mode and
+// is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
+// detachOption: 'ForceDetach'.
 type DiskDetachOptionTypes string
 
 const (
@@ -693,6 +683,19 @@ func PossibleExecutionStateValues() []ExecutionState {
 	}
 }
 
+type ExpandTypeForListVMs string
+
+const (
+	ExpandTypeForListVMsInstanceView ExpandTypeForListVMs = "instanceView"
+)
+
+// PossibleExpandTypeForListVMsValues returns the possible values for the ExpandTypeForListVMs const type.
+func PossibleExpandTypeForListVMsValues() []ExpandTypeForListVMs {
+	return []ExpandTypeForListVMs{
+		ExpandTypeForListVMsInstanceView,
+	}
+}
+
 type ExpandTypesForGetCapacityReservationGroups string
 
 const (
@@ -718,6 +721,19 @@ const (
 func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets {
 	return []ExpandTypesForGetVMScaleSets{
 		ExpandTypesForGetVMScaleSetsUserData,
+	}
+}
+
+type ExpandTypesForListVMs string
+
+const (
+	ExpandTypesForListVMsInstanceView ExpandTypesForListVMs = "instanceView"
+)
+
+// PossibleExpandTypesForListVMsValues returns the possible values for the ExpandTypesForListVMs const type.
+func PossibleExpandTypesForListVMsValues() []ExpandTypesForListVMs {
+	return []ExpandTypesForListVMs{
+		ExpandTypesForListVMsInstanceView,
 	}
 }
 
@@ -1351,10 +1367,7 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ProtocolTypes - Specifies the protocol of WinRM listener.
-// Possible values are:
-// http
-// https
+// ProtocolTypes - Specifies the protocol of WinRM listener. Possible values are: http, https.
 type ProtocolTypes string
 
 const (
@@ -1370,10 +1383,8 @@ func PossibleProtocolTypesValues() []ProtocolTypes {
 	}
 }
 
-// ProximityPlacementGroupType - Specifies the type of the proximity placement group.
-// Possible values are:
-// Standard : Co-locate resources within an Azure region or Availability Zone.
-// Ultra : For future use.
+// ProximityPlacementGroupType - Specifies the type of the proximity placement group. Possible values are: Standard : Co-locate
+// resources within an Azure region or Availability Zone. Ultra : For future use.
 type ProximityPlacementGroupType string
 
 const (
@@ -1612,6 +1623,30 @@ func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectio
 	}
 }
 
+// RestorePointEncryptionType - The type of key used to encrypt the data of the disk restore point.
+type RestorePointEncryptionType string
+
+const (
+	// RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey - Disk Restore Point is encrypted at rest with Customer managed
+	// key that can be changed and revoked by a customer.
+	RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey RestorePointEncryptionType = "EncryptionAtRestWithCustomerKey"
+	// RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk Restore Point is encrypted at rest with 2
+	// layers of encryption. One of the keys is Customer managed and the other key is Platform managed.
+	RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys RestorePointEncryptionType = "EncryptionAtRestWithPlatformAndCustomerKeys"
+	// RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey - Disk Restore Point is encrypted at rest with Platform managed
+	// key.
+	RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey RestorePointEncryptionType = "EncryptionAtRestWithPlatformKey"
+)
+
+// PossibleRestorePointEncryptionTypeValues returns the possible values for the RestorePointEncryptionType const type.
+func PossibleRestorePointEncryptionTypeValues() []RestorePointEncryptionType {
+	return []RestorePointEncryptionType{
+		RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey,
+		RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys,
+		RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey,
+	}
+}
+
 type RestorePointExpandOptions string
 
 const (
@@ -1661,10 +1696,9 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	}
 }
 
-// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk.
-// It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly
-// for encryption of just the VMGuestState blob.
-// NOTE: It can be set for only Confidential VMs.
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption
+// of the managed disk along with VMGuestState blob, and VMGuestStateOnly for encryption of just the
+// VMGuestState blob. Note: It can be set for only Confidential VMs.
 type SecurityEncryptionTypes string
 
 const (
@@ -1681,7 +1715,8 @@ func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
 }
 
 // SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
-// Default: UefiSettings will not be enabled unless this property is set.
+// The default behavior is: UefiSettings will not be enabled unless this property is
+// set.
 type SecurityTypes string
 
 const (
@@ -2111,8 +2146,8 @@ func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionP
 }
 
 // VirtualMachinePriorityTypes - Specifies the priority for a standalone virtual machine or the virtual machines in the scale
-// set.
-// 'Low' enum will be deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot VM/VMSS.
+// set. 'Low' enum will be deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot
+// VM/VMSS.
 type VirtualMachinePriorityTypes string
 
 const (
@@ -2163,15 +2198,14 @@ func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSet
 	}
 }
 
-// VirtualMachineSizeTypes - Specifies the size of the virtual machine.
-// The enum data type is currently deprecated and will be removed by December 23rd 2023.
-// Recommended way to get the list of available sizes is using these APIs:
-// List all available virtual machine sizes in an availability set [https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes]
-// List all available virtual machine sizes in a region [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
-// List all available virtual machine sizes for resizing [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes].
-// For more information about virtual machine sizes, see Sizes for
-// virtual machines [https://docs.microsoft.com/azure/virtual-machines/sizes].
-// The available VM sizes depend on region and availability set.
+// VirtualMachineSizeTypes - Specifies the size of the virtual machine. The enum data type is currently deprecated and will
+// be removed by December 23rd 2023. The recommended way to get the list of available sizes is using these
+// APIs: List all available virtual machine sizes in an availability set [https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes],
+// List all available virtual machine sizes in a
+// region [https://docs.microsoft.com/rest/api/compute/resourceskus/list], List all available virtual machine sizes for resizing
+// [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes]. For more information about virtual machine
+// sizes, see Sizes for virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/sizes]. The available VM sizes depend on region and availability set.
 type VirtualMachineSizeTypes string
 
 const (

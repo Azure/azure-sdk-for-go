@@ -1,5 +1,44 @@
 # Release History
 
+## 5.0.0 (2023-05-26)
+### Breaking Changes
+
+- Type of `RestorePointSourceVMDataDisk.DiskRestorePoint` has been changed from `*APIEntityReference` to `*DiskRestorePointAttributes`
+- Type of `RestorePointSourceVMOSDisk.DiskRestorePoint` has been changed from `*APIEntityReference` to `*DiskRestorePointAttributes`
+- Field `ID` of struct `VirtualMachineScaleSetIPConfiguration` has been removed
+- Field `ID` of struct `VirtualMachineScaleSetNetworkConfiguration` has been removed
+- Field `ID` of struct `VirtualMachineScaleSetUpdateIPConfiguration` has been removed
+- Field `ID` of struct `VirtualMachineScaleSetUpdateNetworkConfiguration` has been removed
+
+### Features Added
+
+- New enum type `ExpandTypeForListVMs` with values `ExpandTypeForListVMsInstanceView`
+- New enum type `ExpandTypesForListVMs` with values `ExpandTypesForListVMsInstanceView`
+- New enum type `RestorePointEncryptionType` with values `RestorePointEncryptionTypeEncryptionAtRestWithCustomerKey`, `RestorePointEncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys`, `RestorePointEncryptionTypeEncryptionAtRestWithPlatformKey`
+- New function `*DedicatedHostsClient.NewListAvailableSizesPager(string, string, string, *DedicatedHostsClientListAvailableSizesOptions) *runtime.Pager[DedicatedHostsClientListAvailableSizesResponse]`
+- New function `*VirtualMachineScaleSetsClient.BeginReapply(context.Context, string, string, *VirtualMachineScaleSetsClientBeginReapplyOptions) (*runtime.Poller[VirtualMachineScaleSetsClientReapplyResponse], error)`
+- New struct `DedicatedHostSizeListResult`
+- New struct `DiskRestorePointAttributes`
+- New struct `RestorePointEncryption`
+- New struct `RunCommandManagedIdentity`
+- New struct `SecurityPostureReference`
+- New field `SKU` in struct `DedicatedHostUpdate`
+- New field `BypassPlatformSafetyChecksOnUserSchedule` in struct `LinuxVMGuestPatchAutomaticByPlatformSettings`
+- New field `HyperVGeneration` in struct `RestorePointSourceMetadata`
+- New field `WriteAcceleratorEnabled` in struct `RestorePointSourceVMDataDisk`
+- New field `WriteAcceleratorEnabled` in struct `RestorePointSourceVMOSDisk`
+- New field `ProvisionAfterExtensions` in struct `VirtualMachineExtensionProperties`
+- New field `ErrorBlobManagedIdentity`, `OutputBlobManagedIdentity`, `TreatFailureAsDeploymentFailure` in struct `VirtualMachineRunCommandProperties`
+- New field `ScriptURIManagedIdentity` in struct `VirtualMachineRunCommandScriptSource`
+- New field `PriorityMixPolicy`, `SpotRestorePolicy` in struct `VirtualMachineScaleSetUpdateProperties`
+- New field `Location` in struct `VirtualMachineScaleSetVMExtension`
+- New field `SecurityPostureReference` in struct `VirtualMachineScaleSetVMProfile`
+- New field `Hibernate` in struct `VirtualMachineScaleSetsClientBeginDeallocateOptions`
+- New field `Expand` in struct `VirtualMachinesClientListAllOptions`
+- New field `Expand` in struct `VirtualMachinesClientListOptions`
+- New field `BypassPlatformSafetyChecksOnUserSchedule` in struct `WindowsVMGuestPatchAutomaticByPlatformSettings`
+
+
 ## 4.2.1 (2023-04-14)
 ### Bug Fixes
 

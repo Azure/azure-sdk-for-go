@@ -49,7 +49,7 @@ func NewVPNConnectionsClient(subscriptionID string, credential azcore.TokenCrede
 // connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the connection.
@@ -73,7 +73,7 @@ func (client *VPNConnectionsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VPNConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VPNConnection, options *VPNConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, options)
 	if err != nil {
@@ -113,7 +113,7 @@ func (client *VPNConnectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, vpnConnectionParameters)
@@ -122,7 +122,7 @@ func (client *VPNConnectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Deletes a vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the connection.
@@ -145,7 +145,7 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Deletes a vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VPNConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
 	if err != nil {
@@ -185,7 +185,7 @@ func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Retrieves the details of a vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -238,7 +238,7 @@ func (client *VPNConnectionsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *VPNConnectionsClient) getHandleResponse(resp *http.Response) (VPNC
 
 // NewListByVPNGatewayPager - Retrieves all vpn connections for a particular virtual wan vpn gateway.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - gatewayName - The name of the gateway.
 //   - options - VPNConnectionsClientListByVPNGatewayOptions contains the optional parameters for the VPNConnectionsClient.NewListByVPNGatewayPager
@@ -308,7 +308,7 @@ func (client *VPNConnectionsClient) listByVPNGatewayCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *VPNConnectionsClient) listByVPNGatewayHandleResponse(resp *http.Re
 // BeginStartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - vpnConnectionName - The name of the vpn connection.
@@ -349,7 +349,7 @@ func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context,
 // StartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VPNConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
@@ -389,7 +389,7 @@ func (client *VPNConnectionsClient) startPacketCaptureCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -401,7 +401,7 @@ func (client *VPNConnectionsClient) startPacketCaptureCreateRequest(ctx context.
 // BeginStopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - vpnConnectionName - The name of the vpn connection.
@@ -424,7 +424,7 @@ func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, 
 // StopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *VPNConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*http.Response, error) {
 	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
 	if err != nil {
@@ -464,7 +464,7 @@ func (client *VPNConnectionsClient) stopPacketCaptureCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {

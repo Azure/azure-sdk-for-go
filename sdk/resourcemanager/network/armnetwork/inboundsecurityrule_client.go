@@ -48,7 +48,7 @@ func NewInboundSecurityRuleClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - ruleCollectionName - The name of security rule collection.
@@ -72,7 +72,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

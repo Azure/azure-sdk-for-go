@@ -48,7 +48,7 @@ func NewSecurityPartnerProvidersClient(subscriptionID string, credential azcore.
 // BeginCreateOrUpdate - Creates or updates the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - securityPartnerProviderName - The name of the Security Partner Provider.
 //   - parameters - Parameters supplied to the create or update Security Partner Provider operation.
@@ -71,7 +71,7 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 // CreateOrUpdate - Creates or updates the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, options *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, parameters, options)
 	if err != nil {
@@ -107,7 +107,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -116,7 +116,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 // BeginDelete - Deletes the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - securityPartnerProviderName - The name of the Security Partner Provider.
 //   - options - SecurityPartnerProvidersClientBeginDeleteOptions contains the optional parameters for the SecurityPartnerProvidersClient.BeginDelete
@@ -138,7 +138,7 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 // Delete - Deletes the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, options)
 	if err != nil {
@@ -174,7 +174,7 @@ func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Co
 // Get - Gets the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - securityPartnerProviderName - The name of the Security Partner Provider.
 //   - options - SecurityPartnerProvidersClientGetOptions contains the optional parameters for the SecurityPartnerProvidersClient.Get
@@ -223,7 +223,7 @@ func (client *SecurityPartnerProvidersClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,7 +240,7 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Gets all the Security Partner Providers in a subscription.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListPager
 //     method.
 func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
@@ -283,7 +283,7 @@ func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -300,7 +300,7 @@ func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Resp
 
 // NewListByResourceGroupPager - Lists all Security Partner Providers in a resource group.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListByResourceGroupPager
 //     method.
@@ -348,7 +348,7 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +366,7 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(
 // UpdateTags - Updates tags of a Security Partner Provider resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - securityPartnerProviderName - The name of the Security Partner Provider.
 //   - parameters - Parameters supplied to update Security Partner Provider tags.
@@ -407,7 +407,7 @@ func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

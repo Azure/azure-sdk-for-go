@@ -669,6 +669,11 @@ func (c *ClientFactory) NewExpressRouteConnectionsClient() *ExpressRouteConnecti
 	return subClient
 }
 
+func (c *ClientFactory) NewVirtualApplianceConnectionsClient() *VirtualApplianceConnectionsClient {
+	subClient, _ := NewVirtualApplianceConnectionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewVirtualHubBgpConnectionClient() *VirtualHubBgpConnectionClient {
 	subClient, _ := NewVirtualHubBgpConnectionClient(c.subscriptionID, c.credential, c.options)
 	return subClient

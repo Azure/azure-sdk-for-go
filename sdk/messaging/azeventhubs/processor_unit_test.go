@@ -236,7 +236,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	fakeConsumerClient := simpleFakeConsumerClient()
 
 	fakeConsumerClient.newPartitionClientFn = func(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
-		offsetExpr, err := getOffsetExpression(options.StartPosition)
+		offsetExpr, err := getStartExpression(options.StartPosition)
 		require.NoError(t, err)
 
 		return newFakePartitionClient(partitionID, offsetExpr), nil

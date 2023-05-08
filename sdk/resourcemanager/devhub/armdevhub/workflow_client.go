@@ -47,7 +47,7 @@ func NewWorkflowClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Creates or updates a workflow
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workflowName - The name of the workflow resource.
 //   - options - WorkflowClientCreateOrUpdateOptions contains the optional parameters for the WorkflowClient.CreateOrUpdate method.
@@ -86,7 +86,7 @@ func (client *WorkflowClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -104,7 +104,7 @@ func (client *WorkflowClient) createOrUpdateHandleResponse(resp *http.Response) 
 // Delete - Deletes a workflow
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workflowName - The name of the workflow resource.
 //   - options - WorkflowClientDeleteOptions contains the optional parameters for the WorkflowClient.Delete method.
@@ -143,7 +143,7 @@ func (client *WorkflowClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,7 +161,7 @@ func (client *WorkflowClient) deleteHandleResponse(resp *http.Response) (Workflo
 // Get - Gets a workflow.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workflowName - The name of the workflow resource.
 //   - options - WorkflowClientGetOptions contains the optional parameters for the WorkflowClient.Get method.
@@ -200,7 +200,7 @@ func (client *WorkflowClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -217,7 +217,7 @@ func (client *WorkflowClient) getHandleResponse(resp *http.Response) (WorkflowCl
 
 // NewListPager - Gets a list of workflows associated with the specified subscription.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - options - WorkflowClientListOptions contains the optional parameters for the WorkflowClient.NewListPager method.
 func (client *WorkflowClient) NewListPager(options *WorkflowClientListOptions) *runtime.Pager[WorkflowClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowClientListResponse]{
@@ -259,7 +259,7 @@ func (client *WorkflowClient) listCreateRequest(ctx context.Context, options *Wo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *WorkflowClient) listHandleResponse(resp *http.Response) (WorkflowC
 
 // NewListByResourceGroupPager - Gets a list of workflows within a resource group.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WorkflowClientListByResourceGroupOptions contains the optional parameters for the WorkflowClient.NewListByResourceGroupPager
 //     method.
@@ -324,7 +324,7 @@ func (client *WorkflowClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	if options != nil && options.ManagedClusterResource != nil {
 		reqQP.Set("managedClusterResource", *options.ManagedClusterResource)
 	}
@@ -345,7 +345,7 @@ func (client *WorkflowClient) listByResourceGroupHandleResponse(resp *http.Respo
 // UpdateTags - Updates tags on a workflow.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-10-11-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workflowName - The name of the workflow resource.
 //   - parameters - Parameters supplied to the Update Workflow Tags operation.
@@ -385,7 +385,7 @@ func (client *WorkflowClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-10-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

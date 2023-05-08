@@ -732,7 +732,7 @@ func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
 	}
 }
 
-// URLParts object represents the components that make up an Azure Storage Container/Blob URL.
+// URLParts object represents the components that make up an Azure Storage Share/Directory/File URL.
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
 type URLParts = sas.URLParts
 

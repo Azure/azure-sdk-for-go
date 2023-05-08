@@ -176,6 +176,284 @@ type AlertsResult struct {
 	Value []*Alert
 }
 
+// AllSavingsBenefitDetails - Benefit recommendation details.
+type AllSavingsBenefitDetails struct {
+	// READ-ONLY; Estimated average utilization percentage for the 'totalHours' in the look-back period, with this commitment.
+	AverageUtilizationPercentage *float64
+
+	// READ-ONLY; The estimated cost with benefit for the 'totalHours' in the look-back period. It's equal to (commitmentAmount
+	// * totalHours)
+	BenefitCost *float64
+
+	// READ-ONLY; The commitment amount at the commitmentGranularity.
+	CommitmentAmount *float64
+
+	// READ-ONLY; Estimated benefit coverage percentage for the 'totalHours' in the look-back period, with this commitment.
+	CoveragePercentage *float64
+
+	// READ-ONLY; The difference between total cost and benefit cost for the 'totalHours' in the look-back period.
+	OverageCost *float64
+
+	// READ-ONLY; The amount saved for the 'totalHours' in the look-back period, by purchasing the recommended quantity of the
+	// benefit.
+	SavingsAmount *float64
+
+	// READ-ONLY; The savings in percentage for the 'totalHours' in the look-back period, by purchasing the recommended quantity
+	// of benefit.
+	SavingsPercentage *float64
+
+	// READ-ONLY; Total cost, which is sum of benefit cost and overage cost.
+	TotalCost *float64
+
+	// READ-ONLY; Estimated unused portion of the 'benefitCost'.
+	WastageCost *float64
+}
+
+// AllSavingsList - The list of all benefit recommendations with the recommendation details.
+type AllSavingsList struct {
+	// READ-ONLY; The link (URL) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of benefit recommendations with the recommendation details..
+	Value []*AllSavingsBenefitDetails
+}
+
+// BenefitRecommendationModel - benefit plan recommendation details.
+type BenefitRecommendationModel struct {
+	// Reservation or SavingsPlan.
+	Kind *BenefitKind
+
+	// The properties of the benefit recommendations.
+	Properties BenefitRecommendationPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BenefitRecommendationPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBenefitRecommendationProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BenefitRecommendationProperties, *SharedScopeBenefitRecommendationProperties, *SingleScopeBenefitRecommendationProperties
+type BenefitRecommendationPropertiesClassification interface {
+	// GetBenefitRecommendationProperties returns the BenefitRecommendationProperties content of the underlying type.
+	GetBenefitRecommendationProperties() *BenefitRecommendationProperties
+}
+
+// BenefitRecommendationProperties - The properties of the benefit recommendations.
+type BenefitRecommendationProperties struct {
+	// REQUIRED; Benefit scope. For example, Single or Shared.
+	Scope *Scope
+
+	// Grain of the proposed commitment amount. Supported values: 'Hourly'
+	CommitmentGranularity *Grain
+
+	// The number of days of usage evaluated for computing the recommendations.
+	LookBackPeriod *LookBackPeriod
+
+	// The details of the proposed recommendation.
+	RecommendationDetails *AllSavingsBenefitDetails
+
+	// Term period of the benefit. For example, P1Y or P3Y.
+	Term *Term
+
+	// On-demand charges between firstConsumptionDate and lastConsumptionDate that were used for computing benefit recommendations.
+	Usage *RecommendationUsageDetails
+
+	// READ-ONLY; The list of all benefit recommendations with the recommendation details.
+	AllRecommendationDetails *AllSavingsList
+
+	// READ-ONLY; ARM SKU name. 'ComputeSavingsPlan' for SavingsPlan.
+	ArmSKUName *string
+
+	// READ-ONLY; The current cost without benefit, corresponds to 'totalHours' in the look-back period.
+	CostWithoutBenefit *float64
+
+	// READ-ONLY; An ISO 4217 currency code identifier for the costs and savings amounts.
+	CurrencyCode *string
+
+	// READ-ONLY; The first usage date used for looking back for computing the recommendations.
+	FirstConsumptionDate *time.Time
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendations.
+	LastConsumptionDate *time.Time
+
+	// READ-ONLY; The total hours for which the cost is covered. Its equal to number of records in a property 'properties/usage/charges'.
+	TotalHours *int32
+}
+
+// GetBenefitRecommendationProperties implements the BenefitRecommendationPropertiesClassification interface for type BenefitRecommendationProperties.
+func (b *BenefitRecommendationProperties) GetBenefitRecommendationProperties() *BenefitRecommendationProperties {
+	return b
+}
+
+// BenefitRecommendationsClientListOptions contains the optional parameters for the BenefitRecommendationsClient.NewListPager
+// method.
+type BenefitRecommendationsClientListOptions struct {
+	// May be used to expand the properties by: properties/usage, properties/allRecommendationDetails
+	Expand *string
+	// Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single', 'Shared'] and default
+	// value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+	// 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y'] and default
+	// value 'P3Y'; properties/subscriptionId; properties/resourceGroup
+	Filter *string
+	// May be used to order the recommendations by: properties/armSkuName. For the savings plan, the results are in order by default.
+	// There is no need to use this clause.
+	Orderby *string
+}
+
+// BenefitRecommendationsListResult - Result of listing benefit recommendations.
+type BenefitRecommendationsListResult struct {
+	// READ-ONLY; The link (URL) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of benefit recommendations.
+	Value []*BenefitRecommendationModel
+}
+
+// BenefitResource - The benefit resource model definition.
+type BenefitResource struct {
+	// Reservation or SavingsPlan.
+	Kind *BenefitKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BenefitUtilizationSummariesClientListByBillingAccountIDOptions contains the optional parameters for the BenefitUtilizationSummariesClient.NewListByBillingAccountIDPager
+// method.
+type BenefitUtilizationSummariesClientListByBillingAccountIDOptions struct {
+	// Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
+	Filter *string
+	// Grain.
+	GrainParameter *GrainParameter
+}
+
+// BenefitUtilizationSummariesClientListByBillingProfileIDOptions contains the optional parameters for the BenefitUtilizationSummariesClient.NewListByBillingProfileIDPager
+// method.
+type BenefitUtilizationSummariesClientListByBillingProfileIDOptions struct {
+	// Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
+	Filter *string
+	// Grain.
+	GrainParameter *GrainParameter
+}
+
+// BenefitUtilizationSummariesClientListBySavingsPlanIDOptions contains the optional parameters for the BenefitUtilizationSummariesClient.NewListBySavingsPlanIDPager
+// method.
+type BenefitUtilizationSummariesClientListBySavingsPlanIDOptions struct {
+	// Supports filtering by properties/usageDate.
+	Filter *string
+	// Grain.
+	GrainParameter *GrainParameter
+}
+
+// BenefitUtilizationSummariesClientListBySavingsPlanOrderOptions contains the optional parameters for the BenefitUtilizationSummariesClient.NewListBySavingsPlanOrderPager
+// method.
+type BenefitUtilizationSummariesClientListBySavingsPlanOrderOptions struct {
+	// Supports filtering by properties/usageDate.
+	Filter *string
+	// Grain.
+	GrainParameter *GrainParameter
+}
+
+// BenefitUtilizationSummariesListResult - List of benefit utilization summaries.
+type BenefitUtilizationSummariesListResult struct {
+	// READ-ONLY; The link (URL) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of benefit utilization summaries.
+	Value []BenefitUtilizationSummaryClassification
+}
+
+// BenefitUtilizationSummaryClassification provides polymorphic access to related types.
+// Call the interface's GetBenefitUtilizationSummary() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BenefitUtilizationSummary, *IncludedQuantityUtilizationSummary, *SavingsPlanUtilizationSummary
+type BenefitUtilizationSummaryClassification interface {
+	// GetBenefitUtilizationSummary returns the BenefitUtilizationSummary content of the underlying type.
+	GetBenefitUtilizationSummary() *BenefitUtilizationSummary
+}
+
+// BenefitUtilizationSummary - Benefit utilization summary resource.
+type BenefitUtilizationSummary struct {
+	// REQUIRED; Supported values: 'SavingsPlan'.
+	Kind *BenefitKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetBenefitUtilizationSummary implements the BenefitUtilizationSummaryClassification interface for type BenefitUtilizationSummary.
+func (b *BenefitUtilizationSummary) GetBenefitUtilizationSummary() *BenefitUtilizationSummary {
+	return b
+}
+
+// BenefitUtilizationSummaryProperties - The properties of a benefit utilization summary.
+type BenefitUtilizationSummaryProperties struct {
+	// The benefit type. Supported values: 'SavingsPlan'.
+	BenefitType *BenefitKind
+
+	// READ-ONLY; ARM SKU name. For example, 'ComputeSavingsPlan' for savings plan.
+	ArmSKUName *string
+
+	// READ-ONLY; The benefit ID is the identifier of the benefit.
+	BenefitID *string
+
+	// READ-ONLY; The benefit order ID is the identifier for a benefit purchase.
+	BenefitOrderID *string
+
+	// READ-ONLY; Date corresponding to the utilization summary record. If the grain of data is monthly, value for this field
+	// will be first day of the month.
+	UsageDate *time.Time
+}
+
+// BlobInfo - The blob information generated by this operation.
+type BlobInfo struct {
+	// Link to the blob to download file.
+	BlobLink *string
+
+	// Bytes in the blob.
+	ByteCount *int64
+}
+
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string
+
+	// The resource type.
+	Type *string
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason
+}
+
 // CommonExportProperties - The common properties of the export.
 type CommonExportProperties struct {
 	// REQUIRED; Has the definition for the export.
@@ -188,14 +466,49 @@ type CommonExportProperties struct {
 	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
-	// Note: this option is currently available only for modern commerce scopes.
+	// Note: this option is currently available only for Microsoft Customer Agreement
+	// commerce scopes.
 	PartitionData *bool
 
-	// If requested, has the most recent execution history for the export.
+	// If requested, has the most recent run history for the export.
 	RunHistory *ExportExecutionListResult
 
-	// READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
+	// READ-ONLY; If the export has an active schedule, provides an estimate of the next run time.
 	NextRunTimeEstimate *time.Time
+}
+
+// CostDetailsOperationResults - The result of the long running operation for cost details Api.
+type CostDetailsOperationResults struct {
+	// The details of the error.
+	Error *ErrorDetails
+
+	// The id of the long running operation.
+	ID *string
+
+	// The manifest of the report generated by the operation.
+	Manifest *ReportManifest
+
+	// The name of the long running operation.
+	Name *string
+
+	// The status of the cost details operation
+	Status *CostDetailsStatusType
+
+	// The type of the long running operation.
+	Type *string
+
+	// The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
+	ValidTill *time.Time
+}
+
+// CostDetailsTimePeriod - The start and end date for pulling data for the cost detailed report. API only allows data to be
+// pulled for 1 month or less and no older than 13 months.
+type CostDetailsTimePeriod struct {
+	// REQUIRED; The end date to pull data to. example format 2020-03-15
+	End *string
+
+	// REQUIRED; The start date to pull data from. example format 2020-03-15
+	Start *string
 }
 
 // Dimension - List of Dimension.
@@ -305,12 +618,27 @@ type DownloadURL struct {
 
 	// The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
 	ValidTill *time.Time
+
+	// READ-ONLY; The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
+	ExpiryTime *time.Time
 }
 
 // ErrorDetails - The details of the error.
 type ErrorDetails struct {
 	// READ-ONLY; Error code.
 	Code *string
+
+	// READ-ONLY; Error message indicating why the operation failed.
+	Message *string
+}
+
+// ErrorDetailsWithNestedDetails - The details of the error.
+type ErrorDetailsWithNestedDetails struct {
+	// READ-ONLY; Error code.
+	Code *string
+
+	// READ-ONLY; The additional details of the error.
+	Details []*ErrorDetailsWithNestedDetails
 
 	// READ-ONLY; Error message indicating why the operation failed.
 	Message *string
@@ -327,6 +655,19 @@ type ErrorDetails struct {
 type ErrorResponse struct {
 	// The details of the error.
 	Error *ErrorDetails
+}
+
+// ErrorResponseWithNestedDetails - Error response indicates that the service is not able to process the incoming request.
+// The reason is provided in the error message.
+// Some Error responses:
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
+// header.
+//
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
+type ErrorResponseWithNestedDetails struct {
+	// The details of the error.
+	Error *ErrorDetailsWithNestedDetails
 }
 
 // Export - An export resource.
@@ -423,60 +764,10 @@ type ExportDeliveryInfo struct {
 	Destination *ExportDeliveryDestination
 }
 
-// ExportExecution - An export execution.
-type ExportExecution struct {
-	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
-	// the latest version or not.
-	ETag *string
-
-	// The properties of the export execution.
-	Properties *ExportExecutionProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// ExportExecutionListResult - Result of listing the execution history of an export.
+// ExportExecutionListResult - Result of listing the run history of an export.
 type ExportExecutionListResult struct {
-	// READ-ONLY; A list of export executions.
-	Value []*ExportExecution
-}
-
-// ExportExecutionProperties - The properties of the export execution.
-type ExportExecutionProperties struct {
-	// The details of any error.
-	Error *ErrorDetails
-
-	// The type of the export execution.
-	ExecutionType *ExecutionType
-
-	// The name of the exported file.
-	FileName *string
-
-	// The time when the export execution finished.
-	ProcessingEndTime *time.Time
-
-	// The time when export was picked up to be executed.
-	ProcessingStartTime *time.Time
-
-	// The export settings that were in effect for this execution.
-	RunSettings *CommonExportProperties
-
-	// The last known status of the export execution.
-	Status *ExecutionStatus
-
-	// The identifier for the entity that executed the export. For OnDemand executions it is the user email. For scheduled executions
-	// it is 'System'.
-	SubmittedBy *string
-
-	// The time when export was queued to be executed.
-	SubmittedTime *time.Time
+	// READ-ONLY; A list of export runs.
+	Value []*ExportRun
 }
 
 // ExportListResult - Result of listing exports. It contains a list of available exports in the scope provided.
@@ -497,16 +788,17 @@ type ExportProperties struct {
 	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
-	// Note: this option is currently available only for modern commerce scopes.
+	// Note: this option is currently available only for Microsoft Customer Agreement
+	// commerce scopes.
 	PartitionData *bool
 
-	// If requested, has the most recent execution history for the export.
+	// If requested, has the most recent run history for the export.
 	RunHistory *ExportExecutionListResult
 
 	// Has schedule information for the export.
 	Schedule *ExportSchedule
 
-	// READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
+	// READ-ONLY; If the export has an active schedule, provides an estimate of the next run time.
 	NextRunTimeEstimate *time.Time
 }
 
@@ -517,6 +809,56 @@ type ExportRecurrencePeriod struct {
 
 	// The end date of recurrence.
 	To *time.Time
+}
+
+// ExportRun - An export run.
+type ExportRun struct {
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string
+
+	// The properties of the export run.
+	Properties *ExportRunProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ExportRunProperties - The properties of the export run.
+type ExportRunProperties struct {
+	// The details of any error.
+	Error *ErrorDetails
+
+	// The type of the export run.
+	ExecutionType *ExecutionType
+
+	// The name of the exported file.
+	FileName *string
+
+	// The time when the export run finished.
+	ProcessingEndTime *time.Time
+
+	// The time when export was picked up to be run.
+	ProcessingStartTime *time.Time
+
+	// The export settings that were in effect for this run.
+	RunSettings *CommonExportProperties
+
+	// The last known status of the export run.
+	Status *ExecutionStatus
+
+	// The identifier for the entity that triggered the export. For on-demand runs it is the user email. For scheduled runs it
+	// is 'System'.
+	SubmittedBy *string
+
+	// The time when export was queued to be run.
+	SubmittedTime *time.Time
 }
 
 // ExportSchedule - The schedule associated with the export.
@@ -565,15 +907,30 @@ type ExportsClientGetExecutionHistoryOptions struct {
 // ExportsClientGetOptions contains the optional parameters for the ExportsClient.Get method.
 type ExportsClientGetOptions struct {
 	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information
-	// for the last 10 executions of the export.
+	// for the last 10 runs of the export.
 	Expand *string
 }
 
 // ExportsClientListOptions contains the optional parameters for the ExportsClient.List method.
 type ExportsClientListOptions struct {
 	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information
-	// for the last execution of each export.
+	// for the last run of each export.
 	Expand *string
+}
+
+// FileDestination - Destination of the view data. This is optional. Currently only CSV format is supported.
+type FileDestination struct {
+	// Destination of the view data. Currently only CSV format is supported.
+	FileFormats []*FileFormat
+}
+
+// ForecastAggregation - The aggregation expression to be used in the forecast.
+type ForecastAggregation struct {
+	// REQUIRED; The name of the aggregation function to use.
+	Function *FunctionType
+
+	// REQUIRED; The name of the column to aggregate.
+	Name *FunctionName
 }
 
 // ForecastClientExternalCloudProviderUsageOptions contains the optional parameters for the ForecastClient.ExternalCloudProviderUsage
@@ -593,21 +950,49 @@ type ForecastClientUsageOptions struct {
 	Filter *string
 }
 
+// ForecastColumn - Forecast column properties
+type ForecastColumn struct {
+	// The name of column.
+	Name *string
+
+	// The type of column.
+	Type *string
+}
+
+// ForecastComparisonExpression - The comparison expression to be used in the forecast.
+type ForecastComparisonExpression struct {
+	// REQUIRED; The name of the column to use in comparison.
+	Name *string
+
+	// REQUIRED; The operator to use for comparison.
+	Operator *ForecastOperatorType
+
+	// REQUIRED; Array of values to use for comparison
+	Values []*string
+}
+
 // ForecastDataset - The definition of data present in the forecast.
 type ForecastDataset struct {
-	// Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias for the
-	// aggregated column. forecast can have up to 2 aggregation clauses.
-	Aggregation map[string]*QueryAggregation
+	// REQUIRED; Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias
+	// for the aggregated column. forecast can have up to 2 aggregation clauses.
+	Aggregation map[string]*ForecastAggregation
 
 	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping
 	// are provided.
-	Configuration *QueryDatasetConfiguration
+	Configuration *ForecastDatasetConfiguration
 
 	// Has filter expression to use in the forecast.
-	Filter *QueryFilter
+	Filter *ForecastFilter
 
 	// The granularity of rows in the forecast.
 	Granularity *GranularityType
+}
+
+// ForecastDatasetConfiguration - The configuration of dataset in the forecast.
+type ForecastDatasetConfiguration struct {
+	// Array of column names to be included in the forecast. Any valid forecast column name is allowed. If not provided, then
+	// forecast includes all columns.
+	Columns []*string
 }
 
 // ForecastDefinition - The definition of a forecast.
@@ -616,19 +1001,144 @@ type ForecastDefinition struct {
 	Dataset *ForecastDataset
 
 	// REQUIRED; The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
-	Timeframe *ForecastTimeframeType
+	Timeframe *ForecastTimeframe
 
 	// REQUIRED; The type of the forecast.
 	Type *ForecastType
 
-	// a boolean determining if actualCost will be included
+	// A boolean determining if actualCost will be included.
 	IncludeActualCost *bool
 
-	// a boolean determining if FreshPartialCost will be included
+	// A boolean determining if FreshPartialCost will be included.
 	IncludeFreshPartialCost *bool
 
 	// Has time period for pulling data for the forecast.
-	TimePeriod *QueryTimePeriod
+	TimePeriod *ForecastTimePeriod
+}
+
+// ForecastFilter - The filter expression to be used in the export.
+type ForecastFilter struct {
+	// The logical "AND" expression. Must have at least 2 items.
+	And []*ForecastFilter
+
+	// Has comparison expression for a dimension
+	Dimensions *ForecastComparisonExpression
+
+	// The logical "OR" expression. Must have at least 2 items.
+	Or []*ForecastFilter
+
+	// Has comparison expression for a tag
+	Tags *ForecastComparisonExpression
+}
+
+// ForecastProperties - Forecast properties
+type ForecastProperties struct {
+	// Array of columns
+	Columns []*ForecastColumn
+
+	// The link (url) to the next page of results.
+	NextLink *string
+
+	// Array of rows
+	Rows [][]any
+}
+
+// ForecastResult - Result of forecast. It contains all columns listed under groupings and aggregation.
+type ForecastResult struct {
+	// Forecast properties
+	Properties *ForecastProperties
+
+	// READ-ONLY; ETag of the resource.
+	ETag *string
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Location of the resource.
+	Location *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SKU of the resource.
+	SKU *string
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ForecastTimePeriod - Has time period for pulling data for the forecast.
+type ForecastTimePeriod struct {
+	// REQUIRED; The start date to pull data from.
+	From *time.Time
+
+	// REQUIRED; The end date to pull data to.
+	To *time.Time
+}
+
+// GenerateCostDetailsReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateCostDetailsReportClient.BeginCreateOperation
+// method.
+type GenerateCostDetailsReportClientBeginCreateOperationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GenerateCostDetailsReportClientBeginGetOperationResultsOptions contains the optional parameters for the GenerateCostDetailsReportClient.BeginGetOperationResults
+// method.
+type GenerateCostDetailsReportClientBeginGetOperationResultsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GenerateCostDetailsReportErrorResponse - Error response indicates that the service is not able to process the incoming
+// request. The reason is provided in the error message.
+// Some Error responses:
+// * 400 Bad Request - Invalid Request Payload. Request payload provided is not in a json format or had an invalid member
+// not accepted in the request payload.
+//
+// * 400 Bad Request - Invalid request payload: can only have either timePeriod or invoiceId or billingPeriod. API only allows
+// data to be pulled for either timePeriod or invoiceId or billingPeriod.
+// Customer should provide only one of these parameters.
+//
+// * 400 Bad Request - Start date must be after . API only allows data to be pulled no older than 13 months from now.
+//
+// * 400 Bad Request - The maximum allowed date range is 1 months. API only allows data to be pulled for 1 month or less.
+//
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "retry-after" header.
+//
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
+type GenerateCostDetailsReportErrorResponse struct {
+	// The details of the error.
+	Error *ErrorDetails
+}
+
+// GenerateCostDetailsReportRequestDefinition - The definition of a cost detailed report.
+type GenerateCostDetailsReportRequestDefinition struct {
+	// This parameter can be used only by Enterprise Agreement customers. Use the YearMonth(e.g. 202008) format. This parameter
+	// cannot be used alongside either the invoiceId or timePeriod parameters. If a
+	// timePeriod, invoiceId or billingPeriod parameter is not provided in the request body the API will return the current month's
+	// cost.
+	BillingPeriod *string
+
+	// This parameter can only be used by Microsoft Customer Agreement customers. Additionally, it can only be used at the Billing
+	// Profile or Customer scope. This parameter cannot be used alongside either
+	// the billingPeriod or timePeriod parameters. If a timePeriod, invoiceId or billingPeriod parameter is not provided in the
+	// request body the API will return the current month's cost.
+	InvoiceID *string
+
+	// The type of the detailed report. By default ActualCost is provided
+	Metric *CostDetailsMetricType
+
+	// The specific date range of cost details requested for the report. This parameter cannot be used alongside either the invoiceId
+	// or billingPeriod parameters. If a timePeriod, invoiceId or billingPeriod
+	// parameter is not provided in the request body the API will return the current month's cost. API only allows data to be
+	// pulled for 1 month or less and no older than 13 months. If no timePeriod or
+	// billingPeriod or invoiceId is provided the API defaults to the open month time period
+	TimePeriod *CostDetailsTimePeriod
 }
 
 // GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
@@ -640,15 +1150,15 @@ type GenerateDetailedCostReportClientBeginCreateOperationOptions struct {
 
 // GenerateDetailedCostReportDefinition - The definition of a cost detailed report.
 type GenerateDetailedCostReportDefinition struct {
-	// Billing Period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of
+	// Billing period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of
 	// either timePeriod or invoiceId or billingPeriod parameters. If none provided
 	// current month cost is provided.
 	BillingPeriod *string
 
-	// Customer Id for Modern (Invoice Id and billing profile is also required for this).
+	// Customer ID for Microsoft Customer Agreement scopes (Invoice Id is also required for this).
 	CustomerID *string
 
-	// Invoice Id for PayAsYouGo customers and Modern billing profile scope. Can only have one of either timePeriod or invoiceId
+	// Invoice ID for Pay-as-you-go and Microsoft Customer Agreement scopes. Can only have one of either timePeriod or invoiceId
 	// or billingPeriod parameters. If none provided current month cost is provided.
 	InvoiceID *string
 
@@ -678,7 +1188,7 @@ type GenerateDetailedCostReportErrorResponse struct {
 
 // GenerateDetailedCostReportOperationResult - The result of the long running operation for cost detailed report.
 type GenerateDetailedCostReportOperationResult struct {
-	// The id of the long running operation.
+	// The ARM resource id of the long running operation.
 	ID *string
 
 	// The name of the long running operation.
@@ -691,10 +1201,11 @@ type GenerateDetailedCostReportOperationResult struct {
 	Type *string
 }
 
-// GenerateDetailedCostReportOperationResultsClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResultsClient.Get
+// GenerateDetailedCostReportOperationResultsClientBeginGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResultsClient.BeginGet
 // method.
-type GenerateDetailedCostReportOperationResultsClientGetOptions struct {
-	// placeholder for future optional parameters
+type GenerateDetailedCostReportOperationResultsClientBeginGetOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // GenerateDetailedCostReportOperationStatusClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationStatusClient.Get
@@ -705,17 +1216,23 @@ type GenerateDetailedCostReportOperationStatusClientGetOptions struct {
 
 // GenerateDetailedCostReportOperationStatuses - The status of the long running operation for cost detailed report.
 type GenerateDetailedCostReportOperationStatuses struct {
+	// The endTime of the operation.
+	EndTime *string
+
 	// The details of the error.
 	Error *ErrorDetails
 
-	// The id of the long running operation.
+	// The ID of the long running operation.
 	ID *string
 
 	// The name of the long running operation.
 	Name *string
 
-	// The properties of the resource generated.
+	// The properties of the usage file generated.
 	Properties *DownloadURL
+
+	// The startTime of the operation.
+	StartTime *string
 
 	// The status of the long running operation.
 	Status *Status
@@ -747,6 +1264,56 @@ type GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions struct
 	ResumeToken string
 }
 
+// IncludedQuantityUtilizationSummary - Included Quantity utilization summary resource.
+type IncludedQuantityUtilizationSummary struct {
+	// REQUIRED; Supported values: 'SavingsPlan'.
+	Kind *BenefitKind
+
+	// Included Quantity utilization summary properties.
+	Properties *IncludedQuantityUtilizationSummaryProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetBenefitUtilizationSummary implements the BenefitUtilizationSummaryClassification interface for type IncludedQuantityUtilizationSummary.
+func (i *IncludedQuantityUtilizationSummary) GetBenefitUtilizationSummary() *BenefitUtilizationSummary {
+	return &BenefitUtilizationSummary{
+		Kind: i.Kind,
+		ID:   i.ID,
+		Name: i.Name,
+		Type: i.Type,
+	}
+}
+
+// IncludedQuantityUtilizationSummaryProperties - Included Quantity utilization summary properties.
+type IncludedQuantityUtilizationSummaryProperties struct {
+	// The benefit type. Supported values: 'SavingsPlan'.
+	BenefitType *BenefitKind
+
+	// READ-ONLY; ARM SKU name. For example, 'ComputeSavingsPlan' for savings plan.
+	ArmSKUName *string
+
+	// READ-ONLY; The benefit ID is the identifier of the benefit.
+	BenefitID *string
+
+	// READ-ONLY; The benefit order ID is the identifier for a benefit purchase.
+	BenefitOrderID *string
+
+	// READ-ONLY; Date corresponding to the utilization summary record. If the grain of data is monthly, value for this field
+	// will be first day of the month.
+	UsageDate *time.Time
+
+	// READ-ONLY; This is the utilized percentage for the benefit ID.
+	UtilizationPercentage *float64
+}
+
 // KpiProperties - Each KPI must contain a 'type' and 'enabled' key.
 type KpiProperties struct {
 	// show the KPI in the UI?
@@ -759,31 +1326,85 @@ type KpiProperties struct {
 	Type *KpiType
 }
 
-// Operation - A Cost management REST API operation.
+// NotificationProperties - The properties of the scheduled action notification.
+type NotificationProperties struct {
+	// REQUIRED; Subject of the email. Length is limited to 70 characters.
+	Subject *string
+
+	// REQUIRED; Array of email addresses.
+	To []*string
+
+	// Locale of the email.
+	Language *string
+
+	// Optional message to be added in the email. Length is limited to 250 characters.
+	Message *string
+
+	// Regional format used for formatting date/time and currency values in the email.
+	RegionalFormat *string
+}
+
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// The object that represents the operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
+	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
+}
+
+// OperationDisplay - Localized display information for this particular operation.
+type OperationDisplay struct {
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string
+
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string
+
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string
+
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string
+}
+
+// OperationForCostManagement - A Cost management REST API operation.
+type OperationForCostManagement struct {
+	// Localized display information for this particular operation.
+	Display *OperationDisplay
+
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Operation id: {provider}/{resource}/{operation}.
 	ID *string
 
-	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
-}
 
-// OperationDisplay - The object that represents the operation.
-type OperationDisplay struct {
-	// READ-ONLY; Operation description
-	Description *string
-
-	// READ-ONLY; Operation type: Read, write, delete, etc.
-	Operation *string
-
-	// READ-ONLY; Service provider: Microsoft.CostManagement.
-	Provider *string
-
-	// READ-ONLY; Resource on which the operation is performed: Dimensions, Query.
-	Resource *string
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
 // OperationListResult - Result of listing cost management operations. It contains a list of operations and a URL link to
@@ -793,7 +1414,7 @@ type OperationListResult struct {
 	NextLink *string
 
 	// READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
-	Value []*Operation
+	Value []*OperationForCostManagement
 }
 
 // OperationStatus - The status of the long running operation.
@@ -819,8 +1440,34 @@ type PivotProperties struct {
 	Type *PivotType
 }
 
-// ProxyResource - The Resource model definition.
+// PriceSheetClientBeginDownloadByBillingProfileOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingProfile
+// method.
+type PriceSheetClientBeginDownloadByBillingProfileOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PriceSheetClientBeginDownloadOptions contains the optional parameters for the PriceSheetClient.BeginDownload method.
+type PriceSheetClientBeginDownloadOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProxyResourceForCostManagement - The Resource model definition.
+type ProxyResourceForCostManagement struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
 	ETag *string
@@ -991,6 +1638,17 @@ type QueryTimePeriod struct {
 	To *time.Time
 }
 
+// RecommendationUsageDetails - On-demand charges between firstConsumptionDate and lastConsumptionDate that were used for
+// computing benefit recommendations.
+type RecommendationUsageDetails struct {
+	// The grain of the usage. Supported values: 'Hourly'
+	UsageGrain *Grain
+
+	// READ-ONLY; On-demand charges for each hour between firstConsumptionDate and lastConsumptionDate that were used for computing
+	// benefit recommendations.
+	Charges []*float64
+}
+
 // ReportConfigAggregation - The aggregation expression to be used in the report.
 type ReportConfigAggregation struct {
 	// REQUIRED; The name of the aggregation function to use.
@@ -1083,7 +1741,7 @@ type ReportConfigGrouping struct {
 	Name *string
 
 	// REQUIRED; Has type of the column to group.
-	Type *ReportConfigColumnType
+	Type *QueryColumnType
 }
 
 // ReportConfigSorting - The order by expression to be used in the report.
@@ -1104,6 +1762,30 @@ type ReportConfigTimePeriod struct {
 	To *time.Time
 }
 
+// ReportManifest - The manifest of the report generated by the operation.
+type ReportManifest struct {
+	// The total number of blobs.
+	BlobCount *int32
+
+	// List of blob information generated by this operation.
+	Blobs []*BlobInfo
+
+	// The total number of bytes in all blobs.
+	ByteCount *int64
+
+	// Is the data in compressed format.
+	CompressData *bool
+
+	// The data format of the report
+	DataFormat *CostDetailsDataFormat
+
+	// The Manifest version.
+	ManifestVersion *string
+
+	// The context of the Cost Details request.
+	RequestContext *RequestContext
+}
+
 // ReportURL - The URL to download the generated report.
 type ReportURL struct {
 	// The CSV file from the reportUrl blob link consists of reservation usage data with the following schema at daily granularity
@@ -1113,8 +1795,29 @@ type ReportURL struct {
 	ValidUntil *time.Time
 }
 
-// Resource - The Resource model definition.
+// RequestContext - The context of the Cost Details request.
+type RequestContext struct {
+	// The request payload body provided in Cost Details call
+	RequestBody *GenerateCostDetailsReportRequestDefinition
+
+	// The request scope of the request.
+	RequestScope *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceForCostManagement - The Resource model definition.
+type ResourceForCostManagement struct {
 	// READ-ONLY; ETag of the resource.
 	ETag *string
 
@@ -1137,10 +1840,429 @@ type Resource struct {
 	Type *string
 }
 
+// SavingsPlanUtilizationSummary - Savings plan utilization summary resource.
+type SavingsPlanUtilizationSummary struct {
+	// REQUIRED; Supported values: 'SavingsPlan'.
+	Kind *BenefitKind
+
+	// Savings plan utilization summary properties.
+	Properties *SavingsPlanUtilizationSummaryProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GetBenefitUtilizationSummary implements the BenefitUtilizationSummaryClassification interface for type SavingsPlanUtilizationSummary.
+func (s *SavingsPlanUtilizationSummary) GetBenefitUtilizationSummary() *BenefitUtilizationSummary {
+	return &BenefitUtilizationSummary{
+		Kind: s.Kind,
+		ID:   s.ID,
+		Name: s.Name,
+		Type: s.Type,
+	}
+}
+
+// SavingsPlanUtilizationSummaryProperties - Savings plan utilization summary properties.
+type SavingsPlanUtilizationSummaryProperties struct {
+	// The benefit type. Supported values: 'SavingsPlan'.
+	BenefitType *BenefitKind
+
+	// READ-ONLY; ARM SKU name. For example, 'ComputeSavingsPlan' for savings plan.
+	ArmSKUName *string
+
+	// READ-ONLY; This is the average hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
+	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// granularity. There will be one record per benefit id for each day. For a single day, the avgUtilizationPercentage value
+	// will be equal to the average of the set of values where the set contains 24
+	// utilization percentage entries one for each hour in a specific day.
+	AvgUtilizationPercentage *float64
+
+	// READ-ONLY; The benefit ID is the identifier of the benefit.
+	BenefitID *string
+
+	// READ-ONLY; The benefit order ID is the identifier for a benefit purchase.
+	BenefitOrderID *string
+
+	// READ-ONLY; This is the maximum hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
+	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// granularity. There will be one record per benefit id for each day. For a single day, the maxUtilizationPercentage value
+	// will be equal to the largest in the set of values where the set contains 24
+	// utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the largest utilization percentage
+	// was 90% at hour 5, then the value for the maxUtilizationPercentage in
+	// the response will be 90%.
+	MaxUtilizationPercentage *float64
+
+	// READ-ONLY; This is the minimum hourly utilization for each date range that corresponds to given grain (Daily, Monthly).
+	// Suppose the API call is for usageDate > 2022-10-01 and usageDate < 2022-10-31 at a daily
+	// granularity. There will be one record per benefit id for each day. For a single day, the minUtilizationPercentage value
+	// will be equal to the smallest in the set of values where the set contains 24
+	// utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the lowest utilization percentage
+	// was 10% at hour 4, then the value for the minUtilizationPercentage in
+	// the response will be 10%.
+	MinUtilizationPercentage *float64
+
+	// READ-ONLY; Date corresponding to the utilization summary record. If the grain of data is monthly, value for this field
+	// will be first day of the month.
+	UsageDate *time.Time
+}
+
+// ScheduleProperties - The properties of the schedule.
+type ScheduleProperties struct {
+	// REQUIRED; The end date and time of the scheduled action (UTC).
+	EndDate *time.Time
+
+	// REQUIRED; Frequency of the schedule.
+	Frequency *ScheduleFrequency
+
+	// REQUIRED; The start date and time of the scheduled action (UTC).
+	StartDate *time.Time
+
+	// UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This property is applicable when frequency
+	// is Monthly and overrides weeksOfMonth or daysOfWeek.
+	DayOfMonth *int32
+
+	// Day names in english on which cost analysis data will be emailed. This property is applicable when frequency is Weekly
+	// or Monthly.
+	DaysOfWeek []*DaysOfWeek
+
+	// UTC time at which cost analysis data will be emailed.
+	HourOfDay *int32
+
+	// Weeks in which cost analysis data will be emailed. This property is applicable when frequency is Monthly and used in combination
+	// with daysOfWeek.
+	WeeksOfMonth []*WeeksOfMonth
+}
+
+// ScheduledAction - Scheduled action definition.
+type ScheduledAction struct {
+	// Kind of the scheduled action.
+	Kind *ScheduledActionKind
+
+	// The properties of the scheduled action.
+	Properties *ScheduledActionProperties
+
+	// READ-ONLY; Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch
+	// the resource's eTag by doing a 'GET' call first and then including the latest eTag as
+	// part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not required.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Kind of the scheduled action.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScheduledActionListResult - Scheduled actions list result. It contains a list of scheduled actions.
+type ScheduledActionListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+
+	// READ-ONLY; The list of scheduled actions.
+	Value []*ScheduledAction
+}
+
+// ScheduledActionProperties - The properties of the scheduled action.
+type ScheduledActionProperties struct {
+	// REQUIRED; Scheduled action name.
+	DisplayName *string
+
+	// REQUIRED; Notification properties based on scheduled action kind.
+	Notification *NotificationProperties
+
+	// REQUIRED; Schedule of the scheduled action.
+	Schedule *ScheduleProperties
+
+	// REQUIRED; Status of the scheduled action.
+	Status *ScheduledActionStatus
+
+	// REQUIRED; Cost analysis viewId used for scheduled action. For example, '/providers/Microsoft.CostManagement/views/swaggerExample'
+	ViewID *string
+
+	// Destination format of the view data. This is optional.
+	FileDestination *FileDestination
+
+	// Email address of the point of contact that should get the unsubscribe requests and notification emails.
+	NotificationEmail *string
+
+	// Cost Management scope like 'subscriptions/{subscriptionId}' for subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
+	// for resourceGroup scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
+	// for Department
+	// scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+	// scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
+	// scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for InvoiceSection
+	// scope,
+	// '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for ExternalBillingAccount scope,
+	// and
+	// '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope.
+	Scope *string
+}
+
+// ScheduledActionProxyResource - The Resource model definition.
+type ScheduledActionProxyResource struct {
+	// Kind of the scheduled action.
+	Kind *ScheduledActionKind
+
+	// READ-ONLY; Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch
+	// the resource's eTag by doing a 'GET' call first and then including the latest eTag as
+	// part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not required.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Kind of the scheduled action.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScheduledActionsClientCheckNameAvailabilityByScopeOptions contains the optional parameters for the ScheduledActionsClient.CheckNameAvailabilityByScope
+// method.
+type ScheduledActionsClientCheckNameAvailabilityByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientCheckNameAvailabilityOptions contains the optional parameters for the ScheduledActionsClient.CheckNameAvailability
+// method.
+type ScheduledActionsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientCreateOrUpdateByScopeOptions contains the optional parameters for the ScheduledActionsClient.CreateOrUpdateByScope
+// method.
+type ScheduledActionsClientCreateOrUpdateByScopeOptions struct {
+	// ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can be specified to achieve
+	// optimistic concurrency.
+	IfMatch *string
+}
+
+// ScheduledActionsClientCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.CreateOrUpdate
+// method.
+type ScheduledActionsClientCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can be specified to achieve
+	// optimistic concurrency.
+	IfMatch *string
+}
+
+// ScheduledActionsClientDeleteByScopeOptions contains the optional parameters for the ScheduledActionsClient.DeleteByScope
+// method.
+type ScheduledActionsClientDeleteByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientDeleteOptions contains the optional parameters for the ScheduledActionsClient.Delete method.
+type ScheduledActionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientGetByScopeOptions contains the optional parameters for the ScheduledActionsClient.GetByScope method.
+type ScheduledActionsClientGetByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientGetOptions contains the optional parameters for the ScheduledActionsClient.Get method.
+type ScheduledActionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientListByScopeOptions contains the optional parameters for the ScheduledActionsClient.NewListByScopePager
+// method.
+type ScheduledActionsClientListByScopeOptions struct {
+	// May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
+	Filter *string
+}
+
+// ScheduledActionsClientListOptions contains the optional parameters for the ScheduledActionsClient.NewListPager method.
+type ScheduledActionsClientListOptions struct {
+	// May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
+	Filter *string
+}
+
+// ScheduledActionsClientRunByScopeOptions contains the optional parameters for the ScheduledActionsClient.RunByScope method.
+type ScheduledActionsClientRunByScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledActionsClientRunOptions contains the optional parameters for the ScheduledActionsClient.Run method.
+type ScheduledActionsClientRunOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedScopeBenefitRecommendationProperties - The properties of the benefit recommendation when scope is 'Shared'.
+type SharedScopeBenefitRecommendationProperties struct {
+	// REQUIRED; Benefit scope. For example, Single or Shared.
+	Scope *Scope
+
+	// Grain of the proposed commitment amount. Supported values: 'Hourly'
+	CommitmentGranularity *Grain
+
+	// The number of days of usage evaluated for computing the recommendations.
+	LookBackPeriod *LookBackPeriod
+
+	// The details of the proposed recommendation.
+	RecommendationDetails *AllSavingsBenefitDetails
+
+	// Term period of the benefit. For example, P1Y or P3Y.
+	Term *Term
+
+	// On-demand charges between firstConsumptionDate and lastConsumptionDate that were used for computing benefit recommendations.
+	Usage *RecommendationUsageDetails
+
+	// READ-ONLY; The list of all benefit recommendations with the recommendation details.
+	AllRecommendationDetails *AllSavingsList
+
+	// READ-ONLY; ARM SKU name. 'ComputeSavingsPlan' for SavingsPlan.
+	ArmSKUName *string
+
+	// READ-ONLY; The current cost without benefit, corresponds to 'totalHours' in the look-back period.
+	CostWithoutBenefit *float64
+
+	// READ-ONLY; An ISO 4217 currency code identifier for the costs and savings amounts.
+	CurrencyCode *string
+
+	// READ-ONLY; The first usage date used for looking back for computing the recommendations.
+	FirstConsumptionDate *time.Time
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendations.
+	LastConsumptionDate *time.Time
+
+	// READ-ONLY; The total hours for which the cost is covered. Its equal to number of records in a property 'properties/usage/charges'.
+	TotalHours *int32
+}
+
+// GetBenefitRecommendationProperties implements the BenefitRecommendationPropertiesClassification interface for type SharedScopeBenefitRecommendationProperties.
+func (s *SharedScopeBenefitRecommendationProperties) GetBenefitRecommendationProperties() *BenefitRecommendationProperties {
+	return &BenefitRecommendationProperties{
+		FirstConsumptionDate:     s.FirstConsumptionDate,
+		LastConsumptionDate:      s.LastConsumptionDate,
+		LookBackPeriod:           s.LookBackPeriod,
+		TotalHours:               s.TotalHours,
+		Usage:                    s.Usage,
+		ArmSKUName:               s.ArmSKUName,
+		Term:                     s.Term,
+		CommitmentGranularity:    s.CommitmentGranularity,
+		CurrencyCode:             s.CurrencyCode,
+		CostWithoutBenefit:       s.CostWithoutBenefit,
+		RecommendationDetails:    s.RecommendationDetails,
+		AllRecommendationDetails: s.AllRecommendationDetails,
+		Scope:                    s.Scope,
+	}
+}
+
+// SingleScopeBenefitRecommendationProperties - The properties of the benefit recommendations when scope is 'Single'.
+type SingleScopeBenefitRecommendationProperties struct {
+	// REQUIRED; Benefit scope. For example, Single or Shared.
+	Scope *Scope
+
+	// Grain of the proposed commitment amount. Supported values: 'Hourly'
+	CommitmentGranularity *Grain
+
+	// The number of days of usage evaluated for computing the recommendations.
+	LookBackPeriod *LookBackPeriod
+
+	// The details of the proposed recommendation.
+	RecommendationDetails *AllSavingsBenefitDetails
+
+	// Term period of the benefit. For example, P1Y or P3Y.
+	Term *Term
+
+	// On-demand charges between firstConsumptionDate and lastConsumptionDate that were used for computing benefit recommendations.
+	Usage *RecommendationUsageDetails
+
+	// READ-ONLY; The list of all benefit recommendations with the recommendation details.
+	AllRecommendationDetails *AllSavingsList
+
+	// READ-ONLY; ARM SKU name. 'ComputeSavingsPlan' for SavingsPlan.
+	ArmSKUName *string
+
+	// READ-ONLY; The current cost without benefit, corresponds to 'totalHours' in the look-back period.
+	CostWithoutBenefit *float64
+
+	// READ-ONLY; An ISO 4217 currency code identifier for the costs and savings amounts.
+	CurrencyCode *string
+
+	// READ-ONLY; The first usage date used for looking back for computing the recommendations.
+	FirstConsumptionDate *time.Time
+
+	// READ-ONLY; The last usage date used for looking back for computing the recommendations.
+	LastConsumptionDate *time.Time
+
+	// READ-ONLY; The resource group that this single scope recommendation is for. Applicable only if recommendation is for 'Single'
+	// scope and 'ResourceGroup' request scope.
+	ResourceGroup *string
+
+	// READ-ONLY; The subscription ID that this single scope recommendation is for. Applicable only if recommendation is for 'Single'
+	// scope.
+	SubscriptionID *string
+
+	// READ-ONLY; The total hours for which the cost is covered. Its equal to number of records in a property 'properties/usage/charges'.
+	TotalHours *int32
+}
+
+// GetBenefitRecommendationProperties implements the BenefitRecommendationPropertiesClassification interface for type SingleScopeBenefitRecommendationProperties.
+func (s *SingleScopeBenefitRecommendationProperties) GetBenefitRecommendationProperties() *BenefitRecommendationProperties {
+	return &BenefitRecommendationProperties{
+		FirstConsumptionDate:     s.FirstConsumptionDate,
+		LastConsumptionDate:      s.LastConsumptionDate,
+		LookBackPeriod:           s.LookBackPeriod,
+		TotalHours:               s.TotalHours,
+		Usage:                    s.Usage,
+		ArmSKUName:               s.ArmSKUName,
+		Term:                     s.Term,
+		CommitmentGranularity:    s.CommitmentGranularity,
+		CurrencyCode:             s.CurrencyCode,
+		CostWithoutBenefit:       s.CostWithoutBenefit,
+		RecommendationDetails:    s.RecommendationDetails,
+		AllRecommendationDetails: s.AllRecommendationDetails,
+		Scope:                    s.Scope,
+	}
+}
+
 // Status - The status of the long running operation.
 type Status struct {
 	// The status of the long running operation.
 	Status *ReportOperationStatusType
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // View - States and configurations of Cost Analysis.

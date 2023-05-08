@@ -1,5 +1,36 @@
 # Release History
 
+## 1.0.0 (2023-05-26)
+### Breaking Changes
+
+- Type of `ProjectEnvironmentTypeProperties.Status` has been changed from `*EnableStatus` to `*EnvironmentTypeEnableStatus`
+- Type of `ProjectEnvironmentTypeUpdateProperties.Status` has been changed from `*EnableStatus` to `*EnvironmentTypeEnableStatus`
+- Type of `ScheduleProperties.State` has been changed from `*EnableStatus` to `*ScheduleEnableStatus`
+- Type of `ScheduleUpdateProperties.State` has been changed from `*EnableStatus` to `*ScheduleEnableStatus`
+- Enum `EnableStatus` has been removed
+- Field `Offer`, `Publisher`, `SKU` of struct `ImageReference` has been removed
+
+### Features Added
+
+- New enum type `EnvironmentTypeEnableStatus` with values `EnvironmentTypeEnableStatusDisabled`, `EnvironmentTypeEnableStatusEnabled`
+- New enum type `HealthStatus` with values `HealthStatusHealthy`, `HealthStatusPending`, `HealthStatusUnhealthy`, `HealthStatusUnknown`, `HealthStatusWarning`
+- New enum type `ScheduleEnableStatus` with values `ScheduleEnableStatusDisabled`, `ScheduleEnableStatusEnabled`
+- New enum type `StopOnDisconnectEnableStatus` with values `StopOnDisconnectEnableStatusDisabled`, `StopOnDisconnectEnableStatusEnabled`
+- New function `*PoolsClient.BeginRunHealthChecks(context.Context, string, string, string, *PoolsClientBeginRunHealthChecksOptions) (*runtime.Poller[PoolsClientRunHealthChecksResponse], error)`
+- New function `*NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager(string, string, *NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse]`
+- New struct `EndpointDependency`
+- New struct `EndpointDetail`
+- New struct `HealthStatusDetail`
+- New struct `OutboundEnvironmentEndpoint`
+- New struct `OutboundEnvironmentEndpointCollection`
+- New struct `StopOnDisconnectConfiguration`
+- New field `HibernateSupport` in struct `ImageProperties`
+- New field `HealthStatus`, `HealthStatusDetails`, `StopOnDisconnect` in struct `PoolProperties`
+- New field `StopOnDisconnect` in struct `PoolUpdateProperties`
+- New field `MaxDevBoxesPerUser` in struct `ProjectProperties`
+- New field `MaxDevBoxesPerUser` in struct `ProjectUpdateProperties`
+
+
 ## 0.5.1 (2023-04-14)
 ### Bug Fixes
 

@@ -245,7 +245,7 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azfile
 [docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azfile
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
@@ -257,8 +257,8 @@ additional questions or comments.
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_sub]: https://azure.microsoft.com/free/
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
-[file_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage
-[samples]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage
+[file_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azfile/fileerror/error_codes.go
+[samples]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azfile/file/examples_test.go
 [storage_contrib]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

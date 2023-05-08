@@ -1,12 +1,12 @@
 # Guide to migrate from `operationalinsights` and monitor `insights` to `azquery`
 
-This guide is intended to assist in the migration from the track one legacy modules to the latest releases of the `azquery` module. `azquery` allows users to retrieve log and metric data from Azure Monitor.
+This guide is intended to assist in the migration to the `azquery` module. `azquery` allows users to retrieve log and metric data from Azure Monitor.
 
 ## Package consolidation
 
  Azure Monitor allows users to retrieve telemetry data for their Azure resources. The main two data catagories for Azure Monitor are [metrics](https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics) and [logs](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs). 
  
- There have been a number of [terminology](https://learn.microsoft.com/azure/azure-monitor/terminology) changes for Azure Monitor over the years which resulted in the operations being spread over multiple packages. For Go, metrics methods were contained in `azure-sdk-for-go/services/preview/monitor/mgmt/<version-number>/insights` and logs methods resided in `azure-sdk-for-go/services/operationalinsights/v1/operationalinsights`.
+ There have been a number of [terminology](https://learn.microsoft.com/azure/azure-monitor/terminology) changes for Azure Monitor over the years which resulted in the operations being spread over multiple packages. For Go, metrics methods were contained in `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/<version-number>/insights` and logs methods resided in `github.com/Azure/azure-sdk-for-go/services/operationalinsights/v1/operationalinsights`.
 
 The new `azquery` module condenses metrics and logs functionality into one package for simpler access. The `azquery` module contains two clients: LogsClient and MetricsClient.
 
@@ -18,8 +18,6 @@ Transitioning to a single package has resulted in a number of name changes, as d
 | ----------- | ----------- |
 | QueryClient.Execute      | LogsClient.QueryWorkspace     |
 | MetadataClient.Get and MetadataClient.Post | N/A |
-| N/A   | LogsClient.QueryBatch         |
-| N/A         | LogsClient.QueryResource        |
 
 ### Metrics name changes 
 

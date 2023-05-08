@@ -48,7 +48,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Create a new Kubernetes Cluster Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
@@ -73,7 +73,7 @@ func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Create a new Kubernetes Cluster Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, extension Extension, options *ExtensionsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, extension, options)
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extension)
@@ -130,7 +130,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
@@ -154,7 +154,7 @@ func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, options)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
@@ -214,7 +214,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Gets Kubernetes Cluster Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
@@ -268,7 +268,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +285,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 
 // NewListPager - List all Extensions in the cluster.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
@@ -347,7 +347,7 @@ func (client *ExtensionsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *ExtensionsClient) listHandleResponse(resp *http.Response) (Extensi
 // BeginUpdate - Patch an existing Kubernetes Cluster Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters.
@@ -390,7 +390,7 @@ func (client *ExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Patch an existing Kubernetes Cluster Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-01
+// Generated from API version 2022-11-01
 func (client *ExtensionsClient) update(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionName string, patchExtension PatchExtension, options *ExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, patchExtension, options)
 	if err != nil {
@@ -438,7 +438,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, patchExtension)

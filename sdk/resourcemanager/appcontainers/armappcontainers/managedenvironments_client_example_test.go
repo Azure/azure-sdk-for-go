@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_ListBySubscription.json
 func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,9 +50,44 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armappcontainers.ManagedEnvironmentProperties{
+		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+		// 					DNSSuffix: to.Ptr("www.my-name.com"),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					SubjectName: to.Ptr("CN=www.my-name.com"),
+		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				},
 		// 				DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
+		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 				InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 				StaticIP: to.Ptr("20.42.33.145"),
+		// 				VnetConfiguration: &armappcontainers.VnetConfiguration{
+		// 					InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+		// 				},
+		// 				WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+		// 					{
+		// 						Name: to.Ptr("My-GP-01"),
+		// 						MaximumCount: to.Ptr[int32](12),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("GeneralPurpose"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-MO-01"),
+		// 						MaximumCount: to.Ptr[int32](6),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("MemoryOptimized"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-CO-01"),
+		// 						MaximumCount: to.Ptr[int32](6),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("ComputeOptimized"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-consumption-01"),
+		// 						WorkloadProfileType: to.Ptr("Consumption"),
+		// 				}},
 		// 				ZoneRedundant: to.Ptr(true),
 		// 			},
 		// 		},
@@ -64,9 +99,21 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armappcontainers.ManagedEnvironmentProperties{
+		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+		// 					DNSSuffix: to.Ptr("www.my-name2.com"),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					SubjectName: to.Ptr("CN=www.my-name2.com"),
+		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				},
 		// 				DefaultDomain: to.Ptr("demo1.k4apps.io"),
+		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 				InfrastructureResourceGroup: to.Ptr("capp-svc-demo1-northcentralus"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 				StaticIP: to.Ptr("52.142.21.61"),
+		// 				VnetConfiguration: &armappcontainers.VnetConfiguration{
+		// 					InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+		// 				},
 		// 				ZoneRedundant: to.Ptr(true),
 		// 			},
 		// 	}},
@@ -74,7 +121,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_ListByResourceGroup.json
 func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,9 +153,44 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armappcontainers.ManagedEnvironmentProperties{
+		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+		// 					DNSSuffix: to.Ptr("www.my-name.com"),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					SubjectName: to.Ptr("CN=www.my-name.com"),
+		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				},
 		// 				DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
+		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 				InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 				StaticIP: to.Ptr("20.42.33.145"),
+		// 				VnetConfiguration: &armappcontainers.VnetConfiguration{
+		// 					InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+		// 				},
+		// 				WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+		// 					{
+		// 						Name: to.Ptr("My-GP-01"),
+		// 						MaximumCount: to.Ptr[int32](12),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("GeneralPurpose"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-MO-01"),
+		// 						MaximumCount: to.Ptr[int32](6),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("MemoryOptimized"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-CO-01"),
+		// 						MaximumCount: to.Ptr[int32](6),
+		// 						MinimumCount: to.Ptr[int32](3),
+		// 						WorkloadProfileType: to.Ptr("ComputeOptimized"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("My-consumption-01"),
+		// 						WorkloadProfileType: to.Ptr("Consumption"),
+		// 				}},
 		// 				ZoneRedundant: to.Ptr(true),
 		// 			},
 		// 		},
@@ -120,9 +202,21 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armappcontainers.ManagedEnvironmentProperties{
+		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+		// 					DNSSuffix: to.Ptr("www.my-name2.com"),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+		// 					SubjectName: to.Ptr("CN=www.my-name2.com"),
+		// 					Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+		// 				},
 		// 				DefaultDomain: to.Ptr("demo1.k4apps.io"),
+		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 				InfrastructureResourceGroup: to.Ptr("capp-svc-demo1-northcentralus"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 				StaticIP: to.Ptr("52.142.21.61"),
+		// 				VnetConfiguration: &armappcontainers.VnetConfiguration{
+		// 					InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+		// 				},
 		// 				ZoneRedundant: to.Ptr(true),
 		// 			},
 		// 	}},
@@ -130,7 +224,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_Get.json
 func ExampleManagedEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,16 +250,57 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armappcontainers.ManagedEnvironmentProperties{
+	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+	// 			DNSSuffix: to.Ptr("www.my-name.com"),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
+	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		},
+	// 		DaprConfiguration: &armappcontainers.DaprConfiguration{
+	// 			Version: to.Ptr("1.9"),
+	// 		},
 	// 		DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
+	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
+	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
+	// 		KedaConfiguration: &armappcontainers.KedaConfiguration{
+	// 			Version: to.Ptr("2.8.1"),
+	// 		},
 	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 	// 		StaticIP: to.Ptr("20.42.33.145"),
+	// 		VnetConfiguration: &armappcontainers.VnetConfiguration{
+	// 			InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+	// 		},
+	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+	// 			{
+	// 				Name: to.Ptr("My-GP-01"),
+	// 				MaximumCount: to.Ptr[int32](12),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-MO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("MemoryOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-CO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("ComputeOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-consumption-01"),
+	// 				WorkloadProfileType: to.Ptr("Consumption"),
+	// 		}},
 	// 		ZoneRedundant: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_CreateOrUpdate.json
-func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
+func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithCustomInfrastructureResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -184,8 +319,40 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate() {
 					SharedKey:  to.Ptr("string"),
 				},
 			},
-			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
-			ZoneRedundant:          to.Ptr(true),
+			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+				CertificatePassword: to.Ptr("1234"),
+				CertificateValue:    []byte("Y2VydA=="),
+				DNSSuffix:           to.Ptr("www.my-name.com"),
+			},
+			DaprAIConnectionString:      to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
+			InfrastructureResourceGroup: to.Ptr("myInfrastructureRgName"),
+			VnetConfiguration: &armappcontainers.VnetConfiguration{
+				InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+			},
+			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+				{
+					Name:                to.Ptr("My-GP-01"),
+					MaximumCount:        to.Ptr[int32](12),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("GeneralPurpose"),
+				},
+				{
+					Name:                to.Ptr("My-MO-01"),
+					MaximumCount:        to.Ptr[int32](6),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("MemoryOptimized"),
+				},
+				{
+					Name:                to.Ptr("My-CO-01"),
+					MaximumCount:        to.Ptr[int32](6),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("ComputeOptimized"),
+				},
+				{
+					Name:                to.Ptr("My-consumption-01"),
+					WorkloadProfileType: to.Ptr("Consumption"),
+				}},
+			ZoneRedundant: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -209,15 +376,169 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate() {
 	// 				CustomerID: to.Ptr("string"),
 	// 			},
 	// 		},
+	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+	// 			DNSSuffix: to.Ptr("www.my-name.com"),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
+	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		},
 	// 		DefaultDomain: to.Ptr("testcontainerenv.k4apps.io"),
+	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
+	// 		InfrastructureResourceGroup: to.Ptr("myInfrastructureRgName"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 	// 		StaticIP: to.Ptr("1.2.3.4"),
+	// 		VnetConfiguration: &armappcontainers.VnetConfiguration{
+	// 			InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+	// 		},
+	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+	// 			{
+	// 				Name: to.Ptr("My-GP-01"),
+	// 				MaximumCount: to.Ptr[int32](12),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-MO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("MemoryOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-CO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("ComputeOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-consumption-01"),
+	// 				WorkloadProfileType: to.Ptr("Consumption"),
+	// 		}},
 	// 		ZoneRedundant: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_CreateOrUpdate.json
+func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedEnvironmentsClient().BeginCreateOrUpdate(ctx, "examplerg", "testcontainerenv", armappcontainers.ManagedEnvironment{
+		Location: to.Ptr("East US"),
+		Properties: &armappcontainers.ManagedEnvironmentProperties{
+			AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
+				LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
+					CustomerID: to.Ptr("string"),
+					SharedKey:  to.Ptr("string"),
+				},
+			},
+			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+				CertificatePassword: to.Ptr("1234"),
+				CertificateValue:    []byte("Y2VydA=="),
+				DNSSuffix:           to.Ptr("www.my-name.com"),
+			},
+			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
+			VnetConfiguration: &armappcontainers.VnetConfiguration{
+				InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+			},
+			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+				{
+					Name:                to.Ptr("My-GP-01"),
+					MaximumCount:        to.Ptr[int32](12),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("GeneralPurpose"),
+				},
+				{
+					Name:                to.Ptr("My-MO-01"),
+					MaximumCount:        to.Ptr[int32](6),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("MemoryOptimized"),
+				},
+				{
+					Name:                to.Ptr("My-CO-01"),
+					MaximumCount:        to.Ptr[int32](6),
+					MinimumCount:        to.Ptr[int32](3),
+					WorkloadProfileType: to.Ptr("ComputeOptimized"),
+				},
+				{
+					Name:                to.Ptr("My-consumption-01"),
+					WorkloadProfileType: to.Ptr("Consumption"),
+				}},
+			ZoneRedundant: to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedEnvironment = armappcontainers.ManagedEnvironment{
+	// 	Name: to.Ptr("testcontainerenv"),
+	// 	Type: to.Ptr("Microsoft.App/managedEnvironments"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv"),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armappcontainers.ManagedEnvironmentProperties{
+	// 		AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
+	// 			LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
+	// 				CustomerID: to.Ptr("string"),
+	// 			},
+	// 		},
+	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+	// 			DNSSuffix: to.Ptr("www.my-name.com"),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
+	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		},
+	// 		DefaultDomain: to.Ptr("testcontainerenv.k4apps.io"),
+	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
+	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-testcontainerenv-eastus"),
+	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
+	// 		StaticIP: to.Ptr("1.2.3.4"),
+	// 		VnetConfiguration: &armappcontainers.VnetConfiguration{
+	// 			InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+	// 		},
+	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+	// 			{
+	// 				Name: to.Ptr("My-GP-01"),
+	// 				MaximumCount: to.Ptr[int32](12),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-MO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("MemoryOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-CO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("ComputeOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-consumption-01"),
+	// 				WorkloadProfileType: to.Ptr("Consumption"),
+	// 		}},
+	// 		ZoneRedundant: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_Delete.json
 func ExampleManagedEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +559,7 @@ func ExampleManagedEnvironmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9a65970ef1837c0af1800c906aa365ba95871b26/specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/ManagedEnvironments_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_Patch.json
 func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,8 +580,135 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedEnvironment = armappcontainers.ManagedEnvironment{
+	// 	Name: to.Ptr("jlaw-demo1"),
+	// 	Type: to.Ptr("Microsoft.App/managedEnvironments"),
+	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
+	// 	Location: to.Ptr("North Central US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armappcontainers.ManagedEnvironmentProperties{
+	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+	// 			CustomDomainVerificationID: to.Ptr("custom domain verification id"),
+	// 			DNSSuffix: to.Ptr("www.my-name.com"),
+	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
+	// 			SubjectName: to.Ptr("CN=www.my-name.com"),
+	// 			Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
+	// 		},
+	// 		DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
+	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
+	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
+	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
+	// 		StaticIP: to.Ptr("20.42.33.145"),
+	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+	// 			{
+	// 				Name: to.Ptr("My-GP-01"),
+	// 				MaximumCount: to.Ptr[int32](12),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-MO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("MemoryOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-CO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("ComputeOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-consumption-01"),
+	// 				WorkloadProfileType: to.Ptr("Consumption"),
+	// 		}},
+	// 		ZoneRedundant: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_GetAuthToken.json
+func ExampleManagedEnvironmentsClient_GetAuthToken() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedEnvironmentsClient().GetAuthToken(ctx, "rg", "testenv", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EnvironmentAuthToken = armappcontainers.EnvironmentAuthToken{
+	// 	Name: to.Ptr("testenv"),
+	// 	Type: to.Ptr("Microsoft.App/environments/accesstoken"),
+	// 	ID: to.Ptr("/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/testenv"),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armappcontainers.EnvironmentAuthTokenProperties{
+	// 		Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.3080223Z"); return t}()),
+	// 		Token: to.Ptr("testToken"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_ListWorkloadProfileStates.json
+func ExampleManagedEnvironmentsClient_NewListWorkloadProfileStatesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedEnvironmentsClient().NewListWorkloadProfileStatesPager("examplerg", "jlaw-demo1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkloadProfileStatesCollection = armappcontainers.WorkloadProfileStatesCollection{
+		// 	Value: []*armappcontainers.WorkloadProfileStates{
+		// 		{
+		// 			Name: to.Ptr("GP1"),
+		// 			Type: to.Ptr("/providers/Microsoft.App/workloadProfileStates"),
+		// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/workloadProfileStates/GP1"),
+		// 			Properties: &armappcontainers.WorkloadProfileStatesProperties{
+		// 				CurrentCount: to.Ptr[int32](3),
+		// 				MaximumCount: to.Ptr[int32](10),
+		// 				MinimumCount: to.Ptr[int32](3),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("MO3"),
+		// 			Type: to.Ptr("/providers/Microsoft.App/workloadProfileStates"),
+		// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/workloadProfileStates/MO3"),
+		// 			Properties: &armappcontainers.WorkloadProfileStatesProperties{
+		// 				CurrentCount: to.Ptr[int32](0),
+		// 				MaximumCount: to.Ptr[int32](2),
+		// 				MinimumCount: to.Ptr[int32](0),
+		// 			},
+		// 	}},
+		// }
 	}
 }

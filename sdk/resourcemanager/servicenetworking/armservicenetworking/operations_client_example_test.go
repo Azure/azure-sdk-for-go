@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/71121282e39bccae590462648e77bca283df6d2b/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/OperationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/OperationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleOperationsClient_NewListPager() {
 		// page.OperationListResult = armservicenetworking.OperationListResult{
 		// 	Value: []*armservicenetworking.Operation{
 		// 		{
-		// 			Name: to.Ptr("Microsoft.ServiceNetworking/trafficController/read"),
+		// 			Name: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/read"),
 		// 			Display: &armservicenetworking.OperationDisplay{
 		// 				Description: to.Ptr("Traffic Controller is a L7 Load Balancing solution for a Multi Cluster setup"),
 		// 				Operation: to.Ptr("Get Traffic Controller configuration"),

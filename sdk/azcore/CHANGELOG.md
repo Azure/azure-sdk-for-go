@@ -11,6 +11,9 @@
   * Added field `SpanFromContext` to `tracing.TracerOptions`.
   * Added methods `Enabled()`, `SetAttributes()`, and `SpanFromContext()` to `tracing.Tracer`.
   * Added supporting pipeline policies to include HTTP spans when creating clients.
+* Added package `fake` to support generated fakes packages in SDKs.
+  * The package contains public surface area exposed by fake servers and supporting APIs intended only for use by the fake server implementations.
+  * Added an internal fake poller implementation.
 
 ### Breaking Changes
 

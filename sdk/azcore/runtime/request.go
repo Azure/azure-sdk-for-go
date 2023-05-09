@@ -169,6 +169,9 @@ func SkipBodyDownload(req *policy.Request) {
 	req.SetOperationValue(bodyDownloadPolicyOpValues{Skip: true})
 }
 
+// CtxAPINameKey is used as a context key for adding/retrieving the API name.
+type CtxAPINameKey = shared.CtxAPINameKey
+
 // returns a clone of the object graph pointed to by v, omitting values of all read-only
 // fields. if there are no read-only fields in the object graph, no clone is created.
 func cloneWithoutReadOnlyFields(v interface{}) interface{} {

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/op"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -90,7 +91,9 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	// determine the polling method
 	var opr PollingHandler[T]
 	var err error
-	if async.Applicable(resp) {
+	if fake.Applicable(resp) {
+		opr, err = fake.New[T](pl, resp)
+	} else if async.Applicable(resp) {
 		// async poller must be checked first as it can also have a location header
 		opr, err = async.New[T](pl, resp, options.FinalStateVia)
 	} else if op.Applicable(resp) {
@@ -158,7 +161,9 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 
 	opr := options.Handler
 	// now rehydrate the poller based on the encoded poller type
-	if opr != nil {
+	if fake.CanResume(asJSON) {
+		opr, _ = fake.New[T](pl, nil)
+	} else if opr != nil {
 		log.Writef(log.EventLRO, "Resuming custom poller %T.", opr)
 	} else if async.CanResume(asJSON) {
 		opr, _ = async.New[T](pl, nil, "")

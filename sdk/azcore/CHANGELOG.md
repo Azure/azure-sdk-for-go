@@ -3,6 +3,14 @@
 ## 1.6.1 (Unreleased)
 
 ### Features Added
+* Added supporting features to enable distributed tracing.
+  * Added func `runtime.StartSpan()` for use by SDKs to start spans.
+  * Added method `WithContext()` to `runtime.Request` to support shallow cloning with a new context.
+  * Added field `TracingNamespace` to `runtime.PipelineOptions`.
+  * Added field `Tracer` to `runtime.NewPollerOptions` and `runtime.NewPollerFromResumeTokenOptions` types.
+  * Added field `SpanFromContext` to `tracing.TracerOptions`.
+  * Added methods `Enabled()`, `SetAttributes()`, and `SpanFromContext()` to `tracing.Tracer`.
+  * Added supporting pipeline policies to include HTTP spans when creating clients.
 
 ### Breaking Changes
 

@@ -14,10 +14,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -632,7 +632,9 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
+	logs := logsFn()
+
+	require.Contains(t, logs, "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Have 5000 credits, no new credits needed")
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
@@ -644,7 +646,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
-	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
+	require.Contains(t, logsFn(), "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Issuing 1 credits, have 4999")
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")

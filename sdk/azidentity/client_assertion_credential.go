@@ -36,12 +36,11 @@ type ClientAssertionCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 }
 
 // NewClientAssertionCredential constructs a ClientAssertionCredential. The getAssertion function must be thread safe. Pass nil for options to accept defaults.
@@ -57,7 +56,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 			return getAssertion(ctx)
 		},
 	)
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableAuthorityValidationAndInstanceDiscovery))
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

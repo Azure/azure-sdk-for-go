@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -35,14 +36,14 @@ type PostgresqlTestSuite struct {
 
 func (testsuite *PostgresqlTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/postgresql/armpostgresql/testdata")
+
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.serverName = testutil.GenerateAlphaNumericID(testsuite.T(), "pgservers", 6)
-	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "000000000000")
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
+	testsuite.serverName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "serverna", 14, true)
+	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
+	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -81,8 +82,8 @@ func (testsuite *PostgresqlTestSuite) Prepare() {
 			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
 		},
 		SKU: &armpostgresql.SKU{
-			Family: to.Ptr("Gen5"),
 			Name:   to.Ptr("GP_Gen5_8"),
+			Family: to.Ptr("Gen5"),
 			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 		Tags: map[string]*string{
@@ -94,7 +95,7 @@ func (testsuite *PostgresqlTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers
+// Microsoft.DBforPostgreSQL/servers/{serverName}
 func (testsuite *PostgresqlTestSuite) TestServers() {
 	var err error
 	// From step Servers_List
@@ -143,23 +144,8 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers/replicas
-func (testsuite *PostgresqlTestSuite) TestReplicas() {
-	var err error
-	// From step Replicas_ListByServer
-	fmt.Println("Call operation: Replicas_ListByServer")
-	replicasClient, err := armpostgresql.NewReplicasClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	replicasClientNewListByServerPager := replicasClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
-	for replicasClientNewListByServerPager.More() {
-		_, err := replicasClientNewListByServerPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-}
-
-// Microsoft.DBforPostgreSQL/servers/firewallRules
-func (testsuite *PostgresqlTestSuite) TestFirewallrules() {
+// Microsoft.DBforPostgreSQL/servers/{serverName}/firewallRules/{firewallRuleName}
+func (testsuite *PostgresqlTestSuite) TestFirewallRules() {
 	var err error
 	// From step FirewallRules_CreateOrUpdate
 	fmt.Println("Call operation: FirewallRules_CreateOrUpdate")
@@ -197,67 +183,63 @@ func (testsuite *PostgresqlTestSuite) TestFirewallrules() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers/virtualNetworkRules
-func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
+// Microsoft.DBforPostgreSQL/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}
+func (testsuite *PostgresqlTestSuite) TestVirtualNetworkRules() {
 	var subnetId string
 	var err error
 	// From step VirtualNetwork_Create
-	template := map[string]interface{}{
+	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 		"contentVersion": "1.0.0.0",
-		"outputs": map[string]interface{}{
-			"subnetId": map[string]interface{}{
+		"outputs": map[string]any{
+			"subnetId": map[string]any{
 				"type":  "string",
 				"value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), parameters('subnetName'))]",
 			},
 		},
-		"parameters": map[string]interface{}{
-			"location": map[string]interface{}{
+		"parameters": map[string]any{
+			"location": map[string]any{
 				"type":         "string",
-				"defaultValue": "$(location)",
+				"defaultValue": testsuite.location,
 			},
-			"subnetName": map[string]interface{}{
+			"subnetName": map[string]any{
 				"type":         "string",
 				"defaultValue": "pgsubnet",
 			},
-			"virtualNetworksName": map[string]interface{}{
+			"virtualNetworksName": map[string]any{
 				"type":         "string",
 				"defaultValue": "pgvnet",
 			},
 		},
-		"resources": []interface{}{
-			map[string]interface{}{
+		"resources": []any{
+			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
 				"apiVersion": "2021-05-01",
 				"location":   "[parameters('location')]",
-				"properties": map[string]interface{}{
-					"addressSpace": map[string]interface{}{
-						"addressPrefixes": []interface{}{
+				"properties": map[string]any{
+					"addressSpace": map[string]any{
+						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"subnets": []interface{}{
-						map[string]interface{}{
+					"subnets": []any{
+						map[string]any{
 							"name": "[parameters('subnetName')]",
-							"properties": map[string]interface{}{
+							"properties": map[string]any{
 								"addressPrefix": "10.0.0.0/24",
 							},
 						},
 					},
 				},
-				"tags": map[string]interface{}{},
+				"tags": map[string]any{},
 			},
 		},
 	}
-	params := map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
-	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Template: template,
+			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "VirtualNetwork_Create", &deployment)
@@ -300,7 +282,7 @@ func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers/databases
+// Microsoft.DBforPostgreSQL/servers/{serverName}/databases/{databaseName}
 func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	var err error
 	// From step Databases_CreateOrUpdate
@@ -339,7 +321,7 @@ func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers/configurations
+// Microsoft.DBforPostgreSQL/servers/{serverName}/configurations/{configurationName}
 func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	var err error
 	// From step Configurations_CreateOrUpdate
@@ -371,50 +353,8 @@ func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.DBforPostgreSQL/servers/updateConfigurations
-func (testsuite *PostgresqlTestSuite) TestServerparameters() {
-	var err error
-	// From step ServerParameters_ListUpdateConfigurations
-	fmt.Println("Call operation: ServerParameters_ListUpdateConfigurations")
-	serverParametersClient, err := armpostgresql.NewServerParametersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	serverParametersClientListUpdateConfigurationsResponsePoller, err := serverParametersClient.BeginListUpdateConfigurations(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ConfigurationListResult{
-		Value: []*armpostgresql.Configuration{
-			{
-				Name: to.Ptr("array_nulls"),
-				Properties: &armpostgresql.ConfigurationProperties{
-					Value: to.Ptr("on"),
-				},
-			},
-			{
-				Name: to.Ptr("backslash_quote"),
-				Properties: &armpostgresql.ConfigurationProperties{
-					Value: to.Ptr("on"),
-				},
-			}},
-	}, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, serverParametersClientListUpdateConfigurationsResponsePoller)
-	testsuite.Require().NoError(err)
-}
-
-// Microsoft.DBforPostgreSQL/servers/logFiles
-func (testsuite *PostgresqlTestSuite) TestLogfiles() {
-	var err error
-	// From step LogFiles_ListByServer
-	fmt.Println("Call operation: LogFiles_ListByServer")
-	logFilesClient, err := armpostgresql.NewLogFilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	logFilesClientNewListByServerPager := logFilesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
-	for logFilesClientNewListByServerPager.More() {
-		_, err := logFilesClientNewListByServerPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-}
-
-// Microsoft.DBforPostgreSQL/servers/administrators/activeDirectory
-func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
+// Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory
+func (testsuite *PostgresqlTestSuite) TestServerAdministrators() {
 	var err error
 	// From step ServerAdministrators_CreateOrUpdate
 	fmt.Println("Call operation: ServerAdministrators_CreateOrUpdate")
@@ -454,8 +394,65 @@ func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
 	testsuite.Require().NoError(err)
 }
 
+// Microsoft.DBforPostgreSQL/servers/replicas
+func (testsuite *PostgresqlTestSuite) TestReplicas() {
+	var err error
+	// From step Replicas_ListByServer
+	fmt.Println("Call operation: Replicas_ListByServer")
+	replicasClient, err := armpostgresql.NewReplicasClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	replicasClientNewListByServerPager := replicasClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
+	for replicasClientNewListByServerPager.More() {
+		_, err := replicasClientNewListByServerPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+}
+
+// Microsoft.DBforPostgreSQL/servers/updateConfigurations
+func (testsuite *PostgresqlTestSuite) TestServerParameters() {
+	var err error
+	// From step ServerParameters_ListUpdateConfigurations
+	fmt.Println("Call operation: ServerParameters_ListUpdateConfigurations")
+	serverParametersClient, err := armpostgresql.NewServerParametersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	serverParametersClientListUpdateConfigurationsResponsePoller, err := serverParametersClient.BeginListUpdateConfigurations(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ConfigurationListResult{
+		Value: []*armpostgresql.Configuration{
+			{
+				Name: to.Ptr("array_nulls"),
+				Properties: &armpostgresql.ConfigurationProperties{
+					Value: to.Ptr("on"),
+				},
+			},
+			{
+				Name: to.Ptr("backslash_quote"),
+				Properties: &armpostgresql.ConfigurationProperties{
+					Value: to.Ptr("on"),
+				},
+			}},
+	}, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, serverParametersClientListUpdateConfigurationsResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.DBforPostgreSQL/servers/logFiles
+func (testsuite *PostgresqlTestSuite) TestLogFiles() {
+	var err error
+	// From step LogFiles_ListByServer
+	fmt.Println("Call operation: LogFiles_ListByServer")
+	logFilesClient, err := armpostgresql.NewLogFilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	logFilesClientNewListByServerPager := logFilesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
+	for logFilesClientNewListByServerPager.More() {
+		_, err := logFilesClientNewListByServerPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+}
+
 // Microsoft.DBforPostgreSQL/servers/recoverableServers
-func (testsuite *PostgresqlTestSuite) TestRecoverableservers() {
+func (testsuite *PostgresqlTestSuite) TestRecoverableServers() {
 	var err error
 	// From step RecoverableServers_Get
 	fmt.Println("Call operation: RecoverableServers_Get")
@@ -466,7 +463,7 @@ func (testsuite *PostgresqlTestSuite) TestRecoverableservers() {
 }
 
 // Microsoft.DBforPostgreSQL/servers/performanceTiers
-func (testsuite *PostgresqlTestSuite) TestServerbasedperformancetier() {
+func (testsuite *PostgresqlTestSuite) TestServerBasedPerformanceTier() {
 	var err error
 	// From step ServerBasedPerformanceTier_List
 	fmt.Println("Call operation: ServerBasedPerformanceTier_List")
@@ -481,7 +478,7 @@ func (testsuite *PostgresqlTestSuite) TestServerbasedperformancetier() {
 }
 
 // Microsoft.DBforPostgreSQL/locations/performanceTiers
-func (testsuite *PostgresqlTestSuite) TestLocationbasedperformancetier() {
+func (testsuite *PostgresqlTestSuite) TestLocationBasedPerformanceTier() {
 	var err error
 	// From step LocationBasedPerformanceTier_List
 	fmt.Println("Call operation: LocationBasedPerformanceTier_List")
@@ -496,7 +493,7 @@ func (testsuite *PostgresqlTestSuite) TestLocationbasedperformancetier() {
 }
 
 // Microsoft.DBforPostgreSQL/checkNameAvailability
-func (testsuite *PostgresqlTestSuite) TestChecknameavailability() {
+func (testsuite *PostgresqlTestSuite) TestCheckNameAvailability() {
 	var err error
 	// From step CheckNameAvailability_Execute
 	fmt.Println("Call operation: CheckNameAvailability_Execute")

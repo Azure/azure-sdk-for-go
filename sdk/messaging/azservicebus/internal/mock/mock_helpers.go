@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 	gomock "github.com/golang/mock/gomock"
 )
 

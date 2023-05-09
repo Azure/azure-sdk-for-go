@@ -51,6 +51,10 @@ type AccessToken struct {
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
 // Exported as policy.TokenRequestOptions.
 type TokenRequestOptions struct {
+	// Claims are any additional claims required for the token to satisfy a conditional access policy, such as a
+	// service may return in a claims challenge following an authorization failure. If a service returned the
+	// claims value base64 encoded, it must be decoded before setting this field.
+	Claims string
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 

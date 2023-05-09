@@ -12,7 +12,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	go_amqp "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	go_amqp "github.com/Azure/go-amqp"
 	gomock "github.com/golang/mock/gomock"
 )
 

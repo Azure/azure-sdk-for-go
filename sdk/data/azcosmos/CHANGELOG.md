@@ -1,15 +1,22 @@
 # Release History
 
-## 0.3.5 (Unreleased)
+## 0.3.6 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed unmarshalling error when using projections in value queries
 
 ### Other Changes
+
+## 0.3.5 (2023-05-09)
+
+### Features Added
+* Added support for accounts with [merge support](https://aka.ms/cosmosdbsdksupportformerge) enabled
+
+### Bugs Fixed
+* Fixed unmarshalling error when using projections in value queries
 
 ## 0.3.4 (2023-04-11)
 

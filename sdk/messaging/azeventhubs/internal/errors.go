@@ -15,7 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type errNonRetriable struct {
@@ -139,12 +139,16 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 	amqp.ErrCondInternalError:    RecoveryKindConn, // "amqp:internal-error"
 
 	// No recovery possible - this operation is non retriable.
+
+	// ErrCondResourceLimitExceeded comes back if the entity is actually full.
+	amqp.ErrCondResourceLimitExceeded:                      RecoveryKindFatal, // "amqp:resource-limit-exceeded"
 	amqp.ErrCondMessageSizeExceeded:                        RecoveryKindFatal, // "amqp:link:message-size-exceeded"
 	amqp.ErrCondUnauthorizedAccess:                         RecoveryKindFatal, // creds are bad
 	amqp.ErrCondNotFound:                                   RecoveryKindFatal, // "amqp:not-found"
 	amqp.ErrCondNotAllowed:                                 RecoveryKindFatal, // "amqp:not-allowed"
 	amqp.ErrCond("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
 	amqp.ErrCond("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
+	amqp.ErrCond("com.microsoft:argument-out-of-range"):    RecoveryKindFatal, // asked for a partition ID that doesn't exist
 	errorConditionLockLost:                                 RecoveryKindFatal,
 }
 

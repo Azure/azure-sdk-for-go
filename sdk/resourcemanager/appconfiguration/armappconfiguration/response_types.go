@@ -79,11 +79,6 @@ type KeyValuesClientGetResponse struct {
 	KeyValue
 }
 
-// KeyValuesClientListByConfigurationStoreResponse contains the response from method KeyValuesClient.NewListByConfigurationStorePager.
-type KeyValuesClientListByConfigurationStoreResponse struct {
-	KeyValueListResult
-}
-
 // OperationsClientCheckNameAvailabilityResponse contains the response from method OperationsClient.CheckNameAvailability.
 type OperationsClientCheckNameAvailabilityResponse struct {
 	NameAvailabilityStatus
@@ -127,4 +122,24 @@ type PrivateLinkResourcesClientGetResponse struct {
 // PrivateLinkResourcesClientListByConfigurationStoreResponse contains the response from method PrivateLinkResourcesClient.NewListByConfigurationStorePager.
 type PrivateLinkResourcesClientListByConfigurationStoreResponse struct {
 	PrivateLinkResourceListResult
+}
+
+// ReplicasClientCreateResponse contains the response from method ReplicasClient.BeginCreate.
+type ReplicasClientCreateResponse struct {
+	Replica
+}
+
+// ReplicasClientDeleteResponse contains the response from method ReplicasClient.BeginDelete.
+type ReplicasClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ReplicasClientGetResponse contains the response from method ReplicasClient.Get.
+type ReplicasClientGetResponse struct {
+	Replica
+}
+
+// ReplicasClientListByConfigurationStoreResponse contains the response from method ReplicasClient.NewListByConfigurationStorePager.
+type ReplicasClientListByConfigurationStoreResponse struct {
+	ReplicaListResult
 }

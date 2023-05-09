@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsList.json
 func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 		// 						NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
 		// 					},
 		// 					SKU: &armcontainerservice.ManagedClusterSKU{
-		// 						Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+		// 						Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
 		// 						Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 		// 					},
 		// 				},
@@ -81,7 +81,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsListByResourceGroup.json
 func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 		// 						NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
 		// 					},
 		// 					SKU: &armcontainerservice.ManagedClusterSKU{
-		// 						Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+		// 						Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
 		// 						Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 		// 					},
 		// 				},
@@ -144,7 +144,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsGet.json
 func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// 				NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
 	// 			},
 	// 			SKU: &armcontainerservice.ManagedClusterSKU{
-	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
 	// 				Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 	// 			},
 	// 		},
@@ -199,7 +199,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsCreate.json
 func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// 				NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
 	// 			},
 	// 			SKU: &armcontainerservice.ManagedClusterSKU{
-	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
 	// 				Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 	// 			},
 	// 		},
@@ -265,7 +265,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsUpdateTags.json
 func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	// 				NetworkPolicy: to.Ptr(armcontainerservice.NetworkPolicyCalico),
 	// 			},
 	// 			SKU: &armcontainerservice.ManagedClusterSKU{
-	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUNameBasic),
+	// 				Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
 	// 				Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
 	// 			},
 	// 		},
@@ -325,7 +325,7 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/df863270270ad5b54fa8cce71d2c33becee0c097/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2023-01-02-preview/examples/ManagedClusterSnapshotsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17b0396c5ce59d801b9eb38fd6c47d149f6db2a2/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-03-02-preview/examples/ManagedClusterSnapshotsDelete.json
 func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

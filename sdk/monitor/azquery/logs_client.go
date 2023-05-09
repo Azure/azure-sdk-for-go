@@ -27,7 +27,8 @@ type LogsClient struct {
 	internal *azcore.Client
 }
 
-// QueryBatch - Executes a batch of Analytics queries for data.
+// QueryBatch - Executes a batch of Analytics queries for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries]
+// is an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-27
@@ -68,7 +69,7 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 	return result, nil
 }
 
-// QueryResource - Executes an Analytics query for data in the context of a resource. Here [https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries]
+// QueryResource - Executes an Analytics query for data in the context of a resource. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries]
 // is an example for using POST with an Analytics
 // query.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -116,11 +117,12 @@ func (client *LogsClient) queryResourceHandleResponse(resp *http.Response) (Logs
 	return result, nil
 }
 
-// QueryWorkspace - Executes an Analytics query for data.
+// QueryWorkspace - Executes an Analytics query for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/request-format]
+// is an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-27
-//   - workspaceID - Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal
+//   - workspaceID - Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 //   - options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 func (client *LogsClient) QueryWorkspace(ctx context.Context, workspaceID string, body Body, options *LogsClientQueryWorkspaceOptions) (LogsClientQueryWorkspaceResponse, error) {

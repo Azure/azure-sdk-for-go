@@ -6,7 +6,7 @@ package azeventhubs
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // AMQPAnnotatedMessage represents the AMQP message, as received from Event Hubs.

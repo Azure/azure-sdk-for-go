@@ -3117,5 +3117,3 @@ func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
 }
 
 // TODO: Add tests for retry header options
-
-// TODO: fix links in README: source, file_error, samples

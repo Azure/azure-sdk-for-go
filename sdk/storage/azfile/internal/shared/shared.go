@@ -100,20 +100,37 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		connStrMap[parts[0]] = parts[1]
 	}
 
-	accountName, ok := connStrMap["AccountName"]
-	if !ok {
-		return ParsedConnectionString{}, errors.New("connection string missing AccountName")
-	}
-
+	accountName := connStrMap["AccountName"]
 	accountKey, ok := connStrMap["AccountKey"]
 	if !ok {
 		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
 		if !ok {
 			return ParsedConnectionString{}, errors.New("connection string missing AccountKey and SharedAccessSignature")
 		}
-		return ParsedConnectionString{
-			ServiceURL: fmt.Sprintf("%v://%v.file.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
-		}, nil
+
+		fileEndpoint, ok := connStrMap["FileEndpoint"]
+		if !ok {
+			// We don't have a FileEndpoint, assume the default
+			if accountName != "" {
+				return ParsedConnectionString{
+					ServiceURL: fmt.Sprintf("%v://%v.file.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
+				}, nil
+			} else {
+				return ParsedConnectionString{}, errors.New("connection string missing AccountName")
+			}
+		} else {
+			if !strings.HasSuffix(fileEndpoint, "/") {
+				// add a trailing slash to be consistent with the portal
+				fileEndpoint += "/"
+			}
+			return ParsedConnectionString{
+				ServiceURL: fmt.Sprintf("%v?%v", fileEndpoint, sharedAccessSignature),
+			}, nil
+		}
+	} else {
+		if accountName == "" {
+			return ParsedConnectionString{}, errors.New("connection string missing AccountName")
+		}
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

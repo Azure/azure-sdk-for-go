@@ -7,11 +7,17 @@
 package azcore
 
 import (
+	"context"
+	"net/http"
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -130,4 +136,39 @@ func TestNewClientError(t *testing.T) {
 	client, err = NewClient("package.Client", "malformed", runtime.PipelineOptions{}, nil)
 	require.Error(t, err)
 	require.Nil(t, client)
+}
+
+func TestNewClientTracingEnabled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	var attrString string
+	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+				require.NotNil(t, options)
+				for _, attr := range options.Attributes {
+					if attr.Key == "az.namespace" {
+						v, ok := attr.Value.(string)
+						require.True(t, ok)
+						attrString = attr.Key + ":" + v
+					}
+				}
+				return ctx, tracing.Span{}
+			}, nil)
+		}, nil),
+		Transport: srv,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.NotZero(t, client.Pipeline())
+	require.NotZero(t, client.Tracer())
+
+	const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
+	req, err := exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, client.Tracer()), http.MethodGet, srv.URL()+requestEndpoint)
+	require.NoError(t, err)
+	srv.AppendResponse()
+	_, err = client.Pipeline().Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
 }

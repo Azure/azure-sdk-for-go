@@ -16,15 +16,13 @@ type BatchQueryRequest struct {
 	// REQUIRED; The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 	Body *Body `json:"body,omitempty"`
 
-	// REQUIRED; Unique ID corresponding to each request in the batch
+	// REQUIRED; Unique ID corresponding to each request in the batch.
 	CorrelationID *string `json:"id,omitempty"`
 
-	// REQUIRED; Primary Workspace ID of the query
+	// REQUIRED; Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
 	WorkspaceID *string `json:"workspace,omitempty"`
 
-	// Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information.
-	// For more information, see
-	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
+	// Headers of the request. Can use prefer header to set server timeout and to query statistics and visualization information.
 	Headers map[string]*string `json:"headers,omitempty"`
 
 	// The method of a single request in a batch, defaults to POST

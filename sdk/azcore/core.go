@@ -99,6 +99,9 @@ func NewClient(clientName, moduleVersion string, plOpts runtime.PipelineOptions,
 	pl := runtime.NewPipeline(pkg, moduleVersion, plOpts, options)
 
 	tr := options.TracingProvider.NewTracer(clientName, moduleVersion)
+	if tr.Enabled() && plOpts.TracingNamespace != "" {
+		tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: plOpts.TracingNamespace})
+	}
 	return &Client{pl: pl, tr: tr}, nil
 }
 

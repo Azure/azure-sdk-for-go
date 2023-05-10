@@ -84,7 +84,7 @@ func (testsuite *IothubTestSuite) Prepare() {
 			EnableDataResidency:           to.Ptr(false),
 			EnableFileUploadNotifications: to.Ptr(false),
 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
-				"events": &armiothub.EventHubProperties{
+				"events": {
 					PartitionCount:      to.Ptr[int32](2),
 					RetentionTimeInDays: to.Ptr[int64](1),
 				},
@@ -92,7 +92,7 @@ func (testsuite *IothubTestSuite) Prepare() {
 			Features:      to.Ptr(armiothub.CapabilitiesNone),
 			IPFilterRules: []*armiothub.IPFilterRule{},
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
-				"fileNotifications": &armiothub.MessagingEndpointProperties{
+				"fileNotifications": {
 					LockDurationAsIso8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
 					TTLAsIso8601:          to.Ptr("PT1H"),
@@ -132,7 +132,7 @@ func (testsuite *IothubTestSuite) Prepare() {
 				Routes: []*armiothub.RouteProperties{},
 			},
 			StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
-				"$default": &armiothub.StorageEndpointProperties{
+				"$default": {
 					ConnectionString: to.Ptr(""),
 					ContainerName:    to.Ptr(""),
 					SasTTLAsIso8601:  to.Ptr("PT1H"),

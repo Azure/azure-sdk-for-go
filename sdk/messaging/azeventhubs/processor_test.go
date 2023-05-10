@@ -95,9 +95,7 @@ func TestProcessor_Contention(t *testing.T) {
 
 		ctx, cancel := context.WithCancel(context.Background())
 
-		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
-			UpdateInterval: 10 * time.Second,
-		})
+		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, nil)
 		require.NoError(t, err)
 
 		processors = append(processors, testData{
@@ -142,8 +140,8 @@ func TestProcessor_Contention(t *testing.T) {
 			nextCtx, cancelNext := context.WithCancel(context.Background())
 			defer cancelNext()
 
-			// arbitrary, but basically if we go 20 seconds without a new partition acquisition we're probably balanced.
-			const idleInterval = 20 * time.Second
+			// arbitrary interval, we just want to give enough time that things seem balanced.
+			const idleInterval = 10 * time.Second
 			active := time.AfterFunc(idleInterval, cancelNext)
 
 			for {
@@ -160,7 +158,7 @@ func TestProcessor_Contention(t *testing.T) {
 				active.Reset(time.Minute)
 			}
 
-			t.Logf("%s hasn't received a new partition in %sseconds", procStuff.name, idleInterval/time.Second)
+			t.Logf("%s hasn't received a new partition in %s", procStuff.name, idleInterval)
 		}(client)
 	}
 
@@ -403,7 +401,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 
 			t.Logf("Updating checkpoint for partition %s", partitionClient.PartitionID())
 
-			if err := partitionClient.UpdateCheckpoint(context.TODO(), events[len(events)-1]); err != nil {
+			if err := partitionClient.UpdateCheckpoint(context.TODO(), events[len(events)-1], nil); err != nil {
 				return err
 			}
 

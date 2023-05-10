@@ -10,7 +10,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // AMQPReceiver is implemented by *amqp.Receiver

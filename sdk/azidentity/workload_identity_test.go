@@ -71,11 +71,11 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 			co, stop := initRecording(t)
 			defer stop()
 			cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-				ClientID:      liveSP.clientID,
-				ClientOptions: co,
-				DisableAuthorityValidationAndInstanceDiscovery: b,
-				TenantID:      liveSP.tenantID,
-				TokenFilePath: f,
+				ClientID:                 liveSP.clientID,
+				ClientOptions:            co,
+				DisableInstanceDiscovery: b,
+				TenantID:                 liveSP.tenantID,
+				TokenFilePath:            f,
 			})
 			if err != nil {
 				t.Fatal(err)

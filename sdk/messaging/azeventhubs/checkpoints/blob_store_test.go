@@ -33,7 +33,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, checkpoints)
 
-	err = store.UpdateCheckpoint(context.Background(), azeventhubs.Checkpoint{
+	err = store.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
 		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
@@ -57,7 +57,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 
 	// There's a code path to allow updating the blob after it's been created but without an etag
 	// in which case it just updates it.
-	err = store.UpdateCheckpoint(context.Background(), azeventhubs.Checkpoint{
+	err = store.SetCheckpoint(context.Background(), azeventhubs.Checkpoint{
 		ConsumerGroup:           "$Default",
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",

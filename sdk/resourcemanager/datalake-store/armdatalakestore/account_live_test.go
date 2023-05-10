@@ -307,7 +307,7 @@ func (testsuite *AccountTestSuite) TestFirewallRules() {
 func (testsuite *AccountTestSuite) TestTrustedIdProviders() {
 	var err error
 	// From step TrustedIdProviders_CreateOrUpdate
-	fmt.Println("Call operation: TrustedIDProviders_CreateOrUpdate")
+	fmt.Println("Call operation: TrustedIdProviders_CreateOrUpdate")
 	trustedIDProvidersClient, err := armdatalakestore.NewTrustedIDProvidersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = trustedIDProvidersClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.trustedIdProviderName, armdatalakestore.CreateOrUpdateTrustedIDProviderParameters{
@@ -318,7 +318,7 @@ func (testsuite *AccountTestSuite) TestTrustedIdProviders() {
 	testsuite.Require().NoError(err)
 
 	// From step TrustedIdProviders_ListByAccount
-	fmt.Println("Call operation: TrustedIDProviders_ListByAccount")
+	fmt.Println("Call operation: TrustedIdProviders_ListByAccount")
 	trustedIDProvidersClientNewListByAccountPager := trustedIDProvidersClient.NewListByAccountPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for trustedIDProvidersClientNewListByAccountPager.More() {
 		_, err := trustedIDProvidersClientNewListByAccountPager.NextPage(testsuite.ctx)
@@ -327,12 +327,12 @@ func (testsuite *AccountTestSuite) TestTrustedIdProviders() {
 	}
 
 	// From step TrustedIdProviders_Get
-	fmt.Println("Call operation: TrustedIDProviders_Get")
+	fmt.Println("Call operation: TrustedIdProviders_Get")
 	_, err = trustedIDProvidersClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.trustedIdProviderName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TrustedIdProviders_Update
-	fmt.Println("Call operation: TrustedIDProviders_Update")
+	fmt.Println("Call operation: TrustedIdProviders_Update")
 	_, err = trustedIDProvidersClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.trustedIdProviderName, &armdatalakestore.TrustedIDProvidersClientUpdateOptions{
 		Parameters: &armdatalakestore.UpdateTrustedIDProviderParameters{
 			Properties: &armdatalakestore.UpdateTrustedIDProviderProperties{
@@ -343,7 +343,7 @@ func (testsuite *AccountTestSuite) TestTrustedIdProviders() {
 	testsuite.Require().NoError(err)
 
 	// From step TrustedIdProviders_Delete
-	fmt.Println("Call operation: TrustedIDProviders_Delete")
+	fmt.Println("Call operation: TrustedIdProviders_Delete")
 	_, err = trustedIDProvidersClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.trustedIdProviderName, nil)
 	testsuite.Require().NoError(err)
 }

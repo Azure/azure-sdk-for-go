@@ -91,7 +91,7 @@ func (d *Client) URL() string {
 // NewSubdirectoryClient creates a new Client object by concatenating subDirectoryName to the end of this Client's URL.
 // The new subdirectory Client uses the same request policy pipeline as the parent directory Client.
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
-	subDirectoryName = url.PathEscape(subDirectoryName)
+	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
 	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey()))
 }

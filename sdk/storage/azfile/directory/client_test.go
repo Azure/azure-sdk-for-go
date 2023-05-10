@@ -73,10 +73,13 @@ func (d *DirectoryRecordedTestsSuite) TestDirNewDirectoryClient() {
 	shareClient := svcClient.NewShareClient(shareName)
 
 	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient := shareClient.NewDirectoryClient(dirName)
+	dirClient := shareClient.NewDirectoryClient(dirName + "/") // directory name having trailing '/'
+
+	correctDirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+	_require.Equal(dirClient.URL(), correctDirURL)
 
 	subDirName := "inner" + dirName
-	subDirClient := dirClient.NewSubdirectoryClient(subDirName)
+	subDirClient := dirClient.NewSubdirectoryClient(subDirName + "/") // subdirectory name having trailing '/'
 
 	correctURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + subDirName
 	_require.Equal(subDirClient.URL(), correctURL)

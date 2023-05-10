@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -88,7 +89,7 @@ func (s *Client) URL() string {
 // NewDirectoryClient creates a new directory.Client object by concatenating directoryName to the end of this Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
-	directoryName = url.PathEscape(directoryName)
+	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
 	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().Pipeline(), s.sharedKey()))
 }

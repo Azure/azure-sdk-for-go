@@ -26,6 +26,12 @@ type CtxWithRetryOptionsKey struct{}
 // CtxIncludeResponseKey is used as a context key for retrieving the raw response.
 type CtxIncludeResponseKey struct{}
 
+// CtxWithTracingTracer is used as a context key for adding/retrieving tracing.Tracer.
+type CtxWithTracingTracer struct{}
+
+// CtxAPINameKey is used as a context key for adding/retrieving the API name.
+type CtxAPINameKey struct{}
+
 // Delay waits for the duration to elapse or the context to be cancelled.
 func Delay(ctx context.Context, delay time.Duration) error {
 	select {

@@ -47,7 +47,7 @@ func TestUsernamePasswordCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			o, stop := initRecording(t)
 			defer stop()
-			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: disabledID}
+			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disabledID}
 			cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
 			if err != nil {
 				t.Fatalf("Unable to create credential. Received: %v", err)
@@ -66,7 +66,7 @@ func TestUsernamePasswordCredentialADFS_Live(t *testing.T) {
 	o, stop := initRecording(t)
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	defer stop()
-	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true}
+	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
 	cred, err := NewUsernamePasswordCredential("adfs", adfsLiveUser.clientID, adfsLiveUser.username, adfsLiveUser.password, &opts)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

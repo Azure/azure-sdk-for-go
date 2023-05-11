@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0-beta.1 (2023-05-09)
 
 ### Features Added
 
@@ -11,14 +11,10 @@
 * Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
 * Added support for tag permission in Container SAS. 
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
 * Fixed an issue where passing a blob tags map of length 0 would result in the x-ms-tags header to be sent to the service with an empty string as value.
-
-### Other Changes
 
 ## 1.0.0 (2023-02-07)
 

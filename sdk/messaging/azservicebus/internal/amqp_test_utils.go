@@ -8,10 +8,11 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
@@ -205,6 +206,14 @@ func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operatio
 	}
 
 	return fn(ctx, lwr, &utils.RetryFnArgs{})
+}
+
+func (l *FakeAMQPLinks) Writef(evt azlog.Event, format string, args ...any) {
+	log.Writef(evt, "[prefix] "+format, args...)
+}
+
+func (l *FakeAMQPLinks) Prefix() string {
+	return "prefix"
 }
 
 func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {

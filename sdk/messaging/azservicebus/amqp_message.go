@@ -6,7 +6,7 @@ package azservicebus
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // AMQPAnnotatedMessage represents the AMQP message, as received from Service Bus.

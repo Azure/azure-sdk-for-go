@@ -985,13 +985,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
-	sasURL := svcClient.URL()
-	if len(sasURL) > 0 && sasURL[len(sasURL)-1:] != "/" {
-		sasURL += "/"
-	}
-	sasURL += "?" + sasQueryParams.Encode()
+	srcBlobParts, _ := blob.ParseURL(svcClient.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
 
-	azClient, err := azblob.NewClientWithNoCredential(sasURL, nil)
+	azClient, err := azblob.NewClientWithNoCredential(srcBlobURLWithSAS, nil)
 	_require.Nil(err)
 
 	const blobData = "test data"

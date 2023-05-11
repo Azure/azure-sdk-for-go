@@ -49,7 +49,7 @@ func TestClientSecretCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
-			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: disabledID}
+			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID}
 			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
@@ -68,7 +68,7 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
 	opts.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
-	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: true}
+	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
 	cred, err := NewClientSecretCredential("adfs", adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

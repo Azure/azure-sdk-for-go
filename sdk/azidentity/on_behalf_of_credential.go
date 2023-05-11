@@ -38,12 +38,11 @@ type OnBehalfOfCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 	// SendCertificateChain applies only when the credential is configured to authenticate with a certificate.
 	// This setting controls whether the credential sends the public certificate chain in the x5c header of each
 	// token request's JWT. This is required for, and only used in, Subject Name/Issuer (SNI) authentication.
@@ -77,7 +76,7 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	if options.SendCertificateChain {
 		opts = append(opts, confidential.WithX5C())
 	}
-	opts = append(opts, confidential.WithInstanceDiscovery(!options.DisableAuthorityValidationAndInstanceDiscovery))
+	opts = append(opts, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, opts...)
 	if err != nil {
 		return nil, err

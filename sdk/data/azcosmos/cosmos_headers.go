@@ -33,6 +33,7 @@ const (
 	cosmosHeaderIsBatchRequest                     string = "x-ms-cosmos-is-batch-request"
 	cosmosHeaderIsBatchAtomic                      string = "x-ms-cosmos-batch-atomic"
 	cosmosHeaderIsBatchOrdered                     string = "x-ms-cosmos-batch-ordered"
+	cosmosHeaderSDKSupportedCapabilities           string = "x-ms-cosmos-sdk-supportedcapabilities"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

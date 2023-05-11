@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // DefaultConsumerGroup is the name of the default consumer group in the Event Hubs service.
@@ -184,7 +184,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 	numEvents := len(events)
 	lastSequenceNumber := events[numEvents-1].SequenceNumber
 
-	pc.offsetExpression = formatOffsetExpressionForSequence(">", lastSequenceNumber)
+	pc.offsetExpression = formatStartExpressionForSequence(">", lastSequenceNumber)
 	log.Writef(EventConsumer, "%d Events received, moving sequence to %d", numEvents, lastSequenceNumber)
 	return events, nil
 }
@@ -274,7 +274,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 		options = &PartitionClientOptions{}
 	}
 
-	offsetExpr, err := getOffsetExpression(options.StartPosition)
+	offsetExpr, err := getStartExpression(options.StartPosition)
 
 	if err != nil {
 		return nil, err
@@ -317,11 +317,11 @@ func getAllPrefetched(receiver amqpwrap.AMQPReceiver, max int) []*amqp.Message {
 	return messages
 }
 
-func getOffsetExpression(startPosition StartPosition) (string, error) {
-	lt := ">"
+func getStartExpression(startPosition StartPosition) (string, error) {
+	gt := ">"
 
 	if startPosition.Inclusive {
-		lt = ">="
+		gt = ">="
 	}
 
 	var errMultipleFieldsSet = errors.New("only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
@@ -330,7 +330,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 
 	if startPosition.EnqueuedTime != nil {
 		// time-based, non-inclusive
-		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-enqueued-time %s '%d'", lt, startPosition.EnqueuedTime.UnixMilli())
+		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-enqueued-time %s '%d'", gt, startPosition.EnqueuedTime.UnixMilli())
 	}
 
 	if startPosition.Offset != nil {
@@ -340,7 +340,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 			return "", errMultipleFieldsSet
 		}
 
-		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-offset %s '%d'", lt, *startPosition.Offset)
+		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-offset %s '%d'", gt, *startPosition.Offset)
 	}
 
 	if startPosition.Latest != nil && *startPosition.Latest {
@@ -348,7 +348,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 			return "", errMultipleFieldsSet
 		}
 
-		offsetExpr = "amqp.annotation.x-opt-offset > '@latest'"
+		offsetExpr = fmt.Sprintf("amqp.annotation.x-opt-offset %s '@latest'", gt)
 	}
 
 	if startPosition.SequenceNumber != nil {
@@ -356,7 +356,7 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 			return "", errMultipleFieldsSet
 		}
 
-		offsetExpr = formatOffsetExpressionForSequence(lt, *startPosition.SequenceNumber)
+		offsetExpr = formatStartExpressionForSequence(gt, *startPosition.SequenceNumber)
 	}
 
 	if startPosition.Earliest != nil && *startPosition.Earliest {
@@ -375,6 +375,6 @@ func getOffsetExpression(startPosition StartPosition) (string, error) {
 	return "amqp.annotation.x-opt-offset > '@latest'", nil
 }
 
-func formatOffsetExpressionForSequence(op string, sequenceNumber int64) string {
+func formatStartExpressionForSequence(op string, sequenceNumber int64) string {
 	return fmt.Sprintf("amqp.annotation.x-opt-sequence-number %s '%d'", op, sequenceNumber)
 }

@@ -17,12 +17,15 @@ const (
 	HeaderAzureAsync             = "Azure-AsyncOperation"
 	HeaderContentLength          = "Content-Length"
 	HeaderContentType            = "Content-Type"
+	HeaderFakePollerStatus       = "Fake-Poller-Status"
 	HeaderLocation               = "Location"
 	HeaderOperationLocation      = "Operation-Location"
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
 	HeaderWWWAuthenticate        = "WWW-Authenticate"
 	HeaderXMSClientRequestID     = "x-ms-client-request-id"
+	HeaderXMSRequestID           = "x-ms-request-id"
+	HeaderXMSErrorCode           = "x-ms-error-code"
 )
 
 const BearerTokenPrefix = "Bearer "
@@ -32,5 +35,5 @@ const (
 	Module = "azcore"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v1.5.1"
+	Version = "v1.6.1"
 )

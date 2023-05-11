@@ -100,10 +100,7 @@ func TestClientAssertionCredential_Live(t *testing.T) {
 				func(context.Context) (string, error) {
 					return getAssertion(certs[0], key)
 				},
-				&ClientAssertionCredentialOptions{
-					ClientOptions: o,
-					DisableAuthorityValidationAndInstanceDiscovery: d,
-				},
+				&ClientAssertionCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: d},
 			)
 			if err != nil {
 				t.Fatal(err)

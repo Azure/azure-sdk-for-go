@@ -9,7 +9,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 type ACLFailedEntry struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
@@ -49,7 +52,7 @@ type BlobPrefix struct {
 // BlobPropertiesInternal - Properties of a blob
 type BlobPropertiesInternal struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified         *time.Time `xml:"Last-Modified"`
@@ -87,8 +90,8 @@ type BlobPropertiesInternal struct {
 	TagCount               *int32     `xml:"TagCount"`
 }
 
-// CpkInfo contains a group of parameters for the PathClient.Create method.
-type CpkInfo struct {
+// CPKInfo contains a group of parameters for the PathClient.Create method.
+type CPKInfo struct {
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
 	// if the x-ms-encryption-key header is provided.
 	EncryptionAlgorithm *EncryptionAlgorithmType
@@ -247,11 +250,11 @@ type ListBlobsHierarchySegmentResponse struct {
 // ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties method.
 type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
+	IfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	IfUnmodifiedSince *time.Time
 }
@@ -655,11 +658,11 @@ type SetAccessControlRecursiveResponse struct {
 // SourceModifiedAccessConditions contains a group of parameters for the PathClient.Create method.
 type SourceModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
+	SourceIfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	SourceIfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
+	SourceIfNoneMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
 	SourceIfUnmodifiedSince *time.Time
 }

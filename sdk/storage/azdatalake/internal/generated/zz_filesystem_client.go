@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -93,7 +94,7 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -160,10 +161,10 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,7 +241,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -388,7 +389,7 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -457,10 +458,10 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -477,7 +478,7 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

@@ -62,7 +62,7 @@ func (client *FileSystemClient) ListFileSystemsCreateRequest(ctx context.Context
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

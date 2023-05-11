@@ -105,3 +105,126 @@ directive:
     $["x-ms-client-name"].name = "ExpiryOptions";
 
 ```
+
+### use azcore.ETag
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
+      replace(/Etag\s+\*string/g, `ETag *azcore.ETag`).
+      replace(/IfMatch\s+\*string/g, `IfMatch *azcore.ETag`).
+      replace(/IfNoneMatch\s+\*string/g, `IfNoneMatch *azcore.ETag`).
+      replace(/SourceIfMatch\s+\*string/g, `SourceIfMatch *azcore.ETag`).
+      replace(/SourceIfNoneMatch\s+\*string/g, `SourceIfNoneMatch *azcore.ETag`);
+
+- from: zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"time"/, `"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"`).
+      replace(/ETag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from:
+  - zz_filesystem_client.go
+  - zz_path_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
+      replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
+      replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
+      replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).
+      replace(/\*sourceModifiedAccessConditions.SourceIfMatch/g, `string(*sourceModifiedAccessConditions.SourceIfMatch)`).
+      replace(/\*sourceModifiedAccessConditions.SourceIfNoneMatch/g, `string(*sourceModifiedAccessConditions.SourceIfNoneMatch)`);
+
+```
+
+### Fix up x-ms-content-crc64 header response name
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.x-ms-paths.*.*.responses.*.headers.x-ms-content-crc64
+  transform: >
+    $["x-ms-client-name"] = "ContentCRC64"
+```
+
+### Updating encoding URL, Golang adds '+' which disrupts encoding with service
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
+```
+
+### Change `Duration` parameter in leases to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseDuration
+  transform: >
+    $.required = true;
+```
+
+### Change CPK acronym to be all caps
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/Cpk/g, "CPK");
+```
+
+### Change CORS acronym to be all caps
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/Cors/g, "CORS");
+```
+
+### Change cors xml to be correct
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
+```
+
+### Convert time to GMT for If-Modified-Since and If-Unmodified-Since request headers
+
+``` yaml
+directive:
+- from: 
+  - zz_filesystem_client.go
+  - zz_path.go
+  where: $
+  transform: >-
+    return $.
+      replace (/req\.Raw\(\)\.Header\[\"If-Modified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"If-Unmodified-Since\"\]\s+=\s+\[\]string\{modifiedAccessConditions\.IfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-modified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfModifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-source-if-modified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfModifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-source-if-unmodified-since\"\]\s+=\s+\[\]string\{sourceModifiedAccessConditions\.SourceIfUnmodifiedSince\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{(*sourceModifiedAccessConditions.SourceIfUnmodifiedSince).In(gmt).Format(time.RFC1123)}`).
+      replace (/req\.Raw\(\)\.Header\[\"x-ms-immutability-policy-until-date\"\]\s+=\s+\[\]string\{options\.ImmutabilityPolicyExpiry\.Format\(time\.RFC1123\)\}/g, 
+      `req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}`);
+      

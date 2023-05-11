@@ -27,7 +27,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -231,11 +230,11 @@ func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*
 // This function is typically called by the fake server internals.
 func MarshalResponseAsText(content ResponseContent, body *string, req *http.Request) (*http.Response, error) {
 	resp := newResponse(content, req)
-	// if the fake forgot to set the body, substitute an empty string (better than a panic)
-	if body == nil {
-		body = to.Ptr("")
+	var bodyAsBytes []byte
+	if body != nil {
+		bodyAsBytes = []byte(*body)
 	}
-	resp = setResponseBody(resp, []byte(*body), shared.ContentTypeTextPlain)
+	resp = setResponseBody(resp, bodyAsBytes, shared.ContentTypeTextPlain)
 	return resp, nil
 }
 

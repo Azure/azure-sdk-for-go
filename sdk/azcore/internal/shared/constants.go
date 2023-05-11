@@ -7,8 +7,9 @@
 package shared
 
 const (
-	ContentTypeAppJSON = "application/json"
-	ContentTypeAppXML  = "application/xml"
+	ContentTypeAppJSON   = "application/json"
+	ContentTypeAppXML    = "application/xml"
+	ContentTypeTextPlain = "text/plain"
 )
 
 const (

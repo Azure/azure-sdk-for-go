@@ -50,9 +50,9 @@ func ExampleResponder() {
 	resp := fake.Responder[WidgetResponse]{}
 
 	// here we set the instance of Widget the Responder is to return
-	resp.Set(WidgetResponse{
+	resp.SetResponse(WidgetResponse{
 		Widget{ID: 123, Shape: "triangle"},
-	})
+	}, nil)
 
 	// optional HTTP headers can also be included in the raw response
 	resp.SetHeader("custom-header1", "value1")
@@ -128,7 +128,7 @@ func ExamplePollerResponder() {
 			ID:    987,
 			Shape: "dodecahedron",
 		},
-	})
+	}, nil)
 }
 
 func ExamplePollerResponder_SetTerminalError() {

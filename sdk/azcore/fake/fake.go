@@ -63,7 +63,7 @@ type Responder[T any] struct {
 	opts   SetResponseOptions
 }
 
-// Set sets the specified value to be returned.
+// SetResponse sets the specified value to be returned.
 //   - resp is the response to be returned
 //   - o contains optional values, pass nil to accept the defaults
 func (r *Responder[T]) SetResponse(resp T, o *SetResponseOptions) {

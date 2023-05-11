@@ -1118,3 +1118,25 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateNegativeWithoutSAS() {
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.Error(err)
 }
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateWithTrailingSlash() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName) + "/"
+	dirClient := shareClient.NewDirectoryClient(dirName)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	subDirClient := dirClient.NewSubdirectoryClient("subdir/")
+
+	_, err = subDirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+}

@@ -34,37 +34,10 @@ type Logging = service.Logging
 type StaticWebsite = service.StaticWebsite
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
-type GetPropertiesOptions struct {
-	// placeholder for future options
-}
+type GetPropertiesOptions = service.GetPropertiesOptions
 
 // SetPropertiesOptions provides set of options for Client.SetProperties
-type SetPropertiesOptions struct {
-	// The set of CORS rules.
-	CORS []*CORSRule
-
-	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
-	// values include version 2008-10-27 and all more recent versions.
-	DefaultServiceVersion *string
-
-	// the retention policy which determines how long the associated data should persist.
-	DeleteRetentionPolicy *RetentionPolicy
-
-	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
-	// If version is not set - we default to "1.0"
-	HourMetrics *Metrics
-
-	// Azure Analytics Logging settings.
-	// If version is not set - we default to "1.0"
-	Logging *Logging
-
-	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
-	// If version is not set - we default to "1.0"
-	MinuteMetrics *Metrics
-
-	// The properties that enable an account to host a static website.
-	StaticWebsite *StaticWebsite
-}
+type SetPropertiesOptions = service.SetPropertiesOptions
 
 // ListFilesystemsOptions contains the optional parameters for the Client.List method.
 type ListFilesystemsOptions struct {

@@ -62,3 +62,7 @@ func (p *Client) sharedKey() *exported.SharedKeyCredential {
 func (p *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
+
+//func (p *Client) Create() string{
+//	return p.generated()
+//}

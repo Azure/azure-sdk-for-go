@@ -8,51 +8,34 @@ package filesystem
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
 // CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
 type CPKScopeInfo = container.CPKScopeInfo
 
 // AccessConditions identifies filesystem-specific access conditions which you optionally set.
-type AccessConditions = exported.AccessConditions
+type AccessConditions = container.AccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = exported.LeaseAccessConditions
+type LeaseAccessConditions = container.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+type ModifiedAccessConditions = container.ModifiedAccessConditions
 
 // SignedIdentifier - signed identifier.
 type SignedIdentifier = container.SignedIdentifier
 
-type CreateOptions struct {
-	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
-	Access *PublicAccessType
-
-	// Optional. Specifies a user-defined name-value pair.
-	Metadata map[string]*string
-
-	// Optional. Specifies the encryption scope settings to set on the filesystem.
-	CPKScopeInfo *CPKScopeInfo
-}
+// CreateOptions contains the optional parameters for the Filesystem.Create method.
+type CreateOptions = container.CreateOptions
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
-type DeleteOptions struct {
-	AccessConditions *AccessConditions
-}
+type DeleteOptions = container.DeleteOptions
 
 // SetMetadataOptions contains the optional parameters for the Filesystem.SetMetadata method.
-type SetMetadataOptions struct {
-	Metadata                 map[string]*string
-	LeaseAccessConditions    *LeaseAccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
-}
+type SetMetadataOptions = container.SetMetadataOptions
 
 // GetPropertiesOptions contains the optional parameters for the Filesystem.GetProperties method.
-type GetPropertiesOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
-}
+type GetPropertiesOptions = container.GetPropertiesOptions
 
 // SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
 type SetAccessPolicyOptions struct {
@@ -60,13 +43,11 @@ type SetAccessPolicyOptions struct {
 	// If this header is not included in the request, container data is private to the account owner.
 	Access           *PublicAccessType
 	AccessConditions *AccessConditions
-	ContainerACL     []*SignedIdentifier
+	FilesystemACL    []*SignedIdentifier
 }
 
 // GetAccessPolicyOptions contains the optional parameters for the Filesystem.GetAccessPolicy method.
-type GetAccessPolicyOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
-}
+type GetAccessPolicyOptions = container.GetAccessPolicyOptions
 
 type ListPathsOptions struct {
 }

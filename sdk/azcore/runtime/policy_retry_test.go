@@ -810,6 +810,47 @@ func TestRetryableRequestBodyWithCloser(t *testing.T) {
 	require.True(t, tr.closeCalled)
 }
 
+func TestRetryPolicySuccessWithRetryPreserveHeaders(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse()
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()), exported.PolicyFunc(challengeLikePolicy))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	body := newRewindTrackingBody("stuff")
+	require.NoError(t, req.SetBody(body, "text/plain"))
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, 2, srv.Requests())
+	require.EqualValues(t, 1, body.rcount)
+	require.True(t, body.closed)
+}
+
+type reqBody struct {
+	body        io.ReadSeekCloser
+	contentType string
+}
+
+func challengeLikePolicy(req *policy.Request) (*http.Response, error) {
+	if req.Body() == nil {
+		return nil, errors.New("request body wasn't restored")
+	}
+	if req.Raw().Header.Get("content-type") != "text/plain" {
+		return nil, errors.New("content-type header wasn't restored")
+	}
+
+	if body := req.Body(); body != nil {
+		rb := reqBody{body, req.Raw().Header.Get("content-type")}
+		req.SetOperationValue(rb)
+		if err := req.SetBody(nil, ""); err != nil {
+			return nil, err
+		}
+	}
+	return req.Next()
+}
+
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry
 	// 1. to get the body's size in SetBody()

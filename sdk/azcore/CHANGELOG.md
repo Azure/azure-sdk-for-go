@@ -18,6 +18,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Retry policy always clones the underlying `*http.Request` before invoking the next policy.
 
 ### Other Changes
 

@@ -25,7 +25,7 @@ import (
 )
 
 type scalar struct {
-	Value string
+	Value *string
 }
 
 type widget struct {
@@ -79,7 +79,7 @@ func TestResponderJSON(t *testing.T) {
 
 func TestResponderText(t *testing.T) {
 	respr := Responder[scalar]{}
-	respr.SetResponse(scalar{Value: "success"}, nil)
+	respr.SetResponse(scalar{Value: to.Ptr("success")}, nil)
 	respr.SetHeader("one", "1")
 	respr.SetHeader("two", "2")
 
@@ -98,6 +98,29 @@ func TestResponderText(t *testing.T) {
 	require.NoError(t, resp.Body.Close())
 
 	require.Equal(t, "success", string(body))
+}
+
+func TestResponderTextNil(t *testing.T) {
+	respr := Responder[scalar]{}
+	respr.SetResponse(scalar{}, nil)
+	respr.SetHeader("one", "1")
+	respr.SetHeader("two", "2")
+
+	req := &http.Request{}
+	resp, err := MarshalResponseAsText(GetResponseContent(respr), GetResponse(respr).Value, req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, req, resp.Request)
+	require.Equal(t, "1", resp.Header.Get("one"))
+	require.Equal(t, "2", resp.Header.Get("two"))
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+
+	require.Empty(t, string(body))
 }
 
 func TestResponderXML(t *testing.T) {

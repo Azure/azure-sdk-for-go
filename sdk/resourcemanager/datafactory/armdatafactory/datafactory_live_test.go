@@ -12,7 +12,6 @@ import (
 	"context"
 	"fmt"
 	"testing"
-
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -56,20 +55,20 @@ func (testsuite *DatafactoryTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.credentialName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "credenti", 8+6,false)
-	testsuite.dataFlowName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "dataflow", 8+6,false)
-	testsuite.datasetName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "datasetn", 8+6,false)
-	testsuite.factoryName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "factoryn", 8+6,false)
-	testsuite.integrationRuntimeName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "integrat", 8+6,false)
-	testsuite.linkedServiceName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "linkedse", 8+6,false)
-	testsuite.locationId,_ = recording.GenerateAlphaNumericID(testsuite.T(), "location", 8+6,false)
-	testsuite.managedPrivateEndpointName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "managedp", 8+6,false)
-	testsuite.managedVirtualNetworkName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "managedv", 8+6,false)
-	testsuite.nodeName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "nodename", 8+6,false)
-	testsuite.pipelineName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "pipeline", 8+6,false)
-	testsuite.runId,_ = recording.GenerateAlphaNumericID(testsuite.T(), "runid", 8+6,false)
-	testsuite.triggerName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "triggern", 8+6,false)
-testsuite.location = testutil.GetEnv("LOCATION", "eastus")
+	testsuite.credentialName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "credenti", 8+6, false)
+	testsuite.dataFlowName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "dataflow", 8+6, false)
+	testsuite.datasetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "datasetn", 8+6, false)
+	testsuite.factoryName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "factoryn", 8+6, false)
+	testsuite.integrationRuntimeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "integrat", 8+6, false)
+	testsuite.linkedServiceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "linkedse", 8+6, false)
+	testsuite.locationId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "location", 8+6, false)
+	testsuite.managedPrivateEndpointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedp", 8+6, false)
+	testsuite.managedVirtualNetworkName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "managedv", 8+6, false)
+	testsuite.nodeName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "nodename", 8+6, false)
+	testsuite.pipelineName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "pipeline", 8+6, false)
+	testsuite.runId, _ = recording.GenerateAlphaNumericID(testsuite.T(), "runid", 8+6, false)
+	testsuite.triggerName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "triggern", 8+6, false)
+	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
@@ -208,10 +207,10 @@ func (testsuite *DatafactoryTestSuite) Prepare() {
 					},
 				}},
 			Parameters: map[string]*armdatafactory.ParameterSpecification{
-				"JobId": &armdatafactory.ParameterSpecification{
+				"JobId": {
 					Type: to.Ptr(armdatafactory.ParameterTypeString),
 				},
-				"OutputBlobNameList": &armdatafactory.ParameterSpecification{
+				"OutputBlobNameList": {
 					Type: to.Ptr(armdatafactory.ParameterTypeArray),
 				},
 			},
@@ -227,7 +226,7 @@ func (testsuite *DatafactoryTestSuite) Prepare() {
 				},
 			},
 			Variables: map[string]*armdatafactory.VariableSpecification{
-				"TestVariableArray": &armdatafactory.VariableSpecification{
+				"TestVariableArray": {
 					Type: to.Ptr(armdatafactory.VariableTypeArray),
 				},
 			},
@@ -411,7 +410,7 @@ func (testsuite *DatafactoryTestSuite) TestIntegrationRuntimes() {
 
 // Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}
 func (testsuite *DatafactoryTestSuite) TestLinkedServices() {
-	var err error 
+	var err error
 	// From step LinkedServices_ListByFactory
 	fmt.Println("Call operation: LinkedServices_ListByFactory")
 	linkedServicesClient, err := armdatafactory.NewLinkedServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -802,7 +801,7 @@ func (testsuite *DatafactoryTestSuite) TestPrivateEndpointConnection() {
 		"contentVersion": "1.0.0.0",
 		"parameters": map[string]any{
 			"datafactoryId": map[string]any{
-				"type": "string",
+				"type":         "string",
 				"defaultValue": testsuite.datafactoryId,
 			},
 			"location": map[string]any{

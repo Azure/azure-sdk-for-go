@@ -119,7 +119,7 @@ func ExamplePollerResponder() {
 
 	// non-terminal errors can also be included in the sequence of responses.
 	// use this to simulate an error during polling.
-	pollerResp.AddNonTerminalError(errors.New("flaky network"))
+	pollerResp.AddPollingError(errors.New("flaky network"))
 
 	// use SetTerminalResponse to successfully terminate the long-running operation.
 	// the provided value will be returned as the terminal response.

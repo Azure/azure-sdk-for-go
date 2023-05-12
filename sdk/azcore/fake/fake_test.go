@@ -125,10 +125,7 @@ func TestResponderTextNil(t *testing.T) {
 
 func TestResponderXML(t *testing.T) {
 	respr := Responder[widget]{}
-	respr.SetResponse(widget{Name: "foo"}, &SetResponseOptions{
-		StatusCode: http.StatusCreated,
-		Status:     "Created",
-	})
+	respr.SetResponse(widget{Name: "foo"}, nil)
 	respr.SetHeader("one", "1")
 	respr.SetHeader("two", "2")
 
@@ -139,8 +136,8 @@ func TestResponderXML(t *testing.T) {
 	require.Equal(t, req, resp.Request)
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
-	require.EqualValues(t, http.StatusCreated, resp.StatusCode)
-	require.EqualValues(t, "Created", resp.Status)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -294,7 +291,7 @@ func TestPollerResponder(t *testing.T) {
 	require.Nil(t, resp)
 
 	pollerResp.AddNonTerminalResponse(nil)
-	pollerResp.AddNonTerminalError(errors.New("network glitch"))
+	pollerResp.AddPollingError(errors.New("network glitch"))
 	pollerResp.AddNonTerminalResponse(nil)
 	pollerResp.SetTerminalResponse(widget{Name: "dodo"}, nil)
 
@@ -339,7 +336,7 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
 
-	pollerResp.AddNonTerminalError(errors.New("network glitch"))
+	pollerResp.AddPollingError(errors.New("network glitch"))
 	pollerResp.AddNonTerminalResponse(nil)
 	pollerResp.SetTerminalError("ErrorConflictingOperation", http.StatusConflict)
 
@@ -372,19 +369,15 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 func TestNewResponse(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewResponse(ResponseContent{
-		StatusCode: http.StatusBadRequest,
-	}, req)
+	resp, err := NewResponse(ResponseContent{}, req)
 	require.NoError(t, err)
-	require.EqualValues(t, http.StatusBadRequest, resp.StatusCode)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 }
 
 func TestNewBinaryResponse(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewBinaryResponse(ResponseContent{
-		StatusCode: http.StatusOK,
-	}, io.NopCloser(strings.NewReader("the body")), req)
+	resp, err := NewBinaryResponse(ResponseContent{}, io.NopCloser(strings.NewReader("the body")), req)
 	require.NoError(t, err)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 	body, err := io.ReadAll(resp.Body)
@@ -400,6 +393,14 @@ func TestUnmarshalRequestAsJSON(t *testing.T) {
 	w, err := UnmarshalRequestAsJSON[widget](req)
 	require.NoError(t, err)
 	require.Equal(t, "foo", w.Name)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	w, err = UnmarshalRequestAsJSON[widget](req)
+	require.NoError(t, err)
+	require.Zero(t, w)
 }
 
 func TestUnmarshalRequestAsText(t *testing.T) {
@@ -410,6 +411,14 @@ func TestUnmarshalRequestAsText(t *testing.T) {
 	txt, err := UnmarshalRequestAsText(req)
 	require.NoError(t, err)
 	require.Equal(t, "some text", txt)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	txt, err = UnmarshalRequestAsText(req)
+	require.NoError(t, err)
+	require.Zero(t, txt)
 }
 
 func TestUnmarshalRequestAsXML(t *testing.T) {
@@ -420,6 +429,14 @@ func TestUnmarshalRequestAsXML(t *testing.T) {
 	w, err := UnmarshalRequestAsXML[widget](req)
 	require.NoError(t, err)
 	require.Equal(t, "foo", w.Name)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	w, err = UnmarshalRequestAsXML[widget](req)
+	require.NoError(t, err)
+	require.Zero(t, w)
 }
 
 func TestUnmarshalRequestAsJSONReadFailure(t *testing.T) {

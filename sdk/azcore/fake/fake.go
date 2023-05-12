@@ -58,9 +58,9 @@ func (t *TokenCredential) GetToken(ctx context.Context, opts policy.TokenRequest
 
 // Responder represents a scalar response.
 type Responder[T any] struct {
-	resp   T
-	header http.Header
-	opts   SetResponseOptions
+	resp    T
+	content ResponseContent
+	opts    SetResponseOptions
 }
 
 // SetResponse sets the specified value to be returned.
@@ -76,21 +76,15 @@ func (r *Responder[T]) SetResponse(resp T, o *SetResponseOptions) {
 // SetHeader sets the specified header key/value pairs to be returned.
 // Call multiple times to set multiple headers.
 func (r *Responder[T]) SetHeader(key, value string) {
-	if r.header == nil {
-		r.header = http.Header{}
+	if r.content.Header == nil {
+		r.content.Header = http.Header{}
 	}
-	r.header.Set(key, value)
+	r.content.Header.Set(key, value)
 }
 
 // SetResponseOptions contains the optional values for Responder[T].SetResponse.
 type SetResponseOptions struct {
-	// StatusCode is the HTTP status code to return in the response.
-	// The default value is http.StatusOK (200).
-	StatusCode int
-
-	// Status is the HTTP status message to return in the response.
-	// The default value is "OK".
-	Status string
+	// place holder for future optional values
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,9 +155,10 @@ func (p *PollerResponder[T]) AddNonTerminalResponse(o *AddNonTerminalResponseOpt
 	p.nonTermResps = append(p.nonTermResps, nonTermResp{status: "InProgress"})
 }
 
-// AddNonTerminalError adds a non-terminal error to the sequence of responses.
+// AddPollingError adds an error to the sequence of responses.
 // Use this to simulate an error durring polling.
-func (p *PollerResponder[T]) AddNonTerminalError(err error) {
+// NOTE: adding this as the first response will cause the Begin* LRO API to return this error.
+func (p *PollerResponder[T]) AddPollingError(err error) {
 	p.nonTermResps = append(p.nonTermResps, nonTermResp{err: err})
 }
 
@@ -194,9 +189,7 @@ type SetTerminalResponseOptions struct {
 // ResponseContent is used when building the *http.Response.
 // This type is typically used by the fake server internals.
 type ResponseContent struct {
-	StatusCode int
-	Status     string
-	Header     http.Header
+	Header http.Header
 }
 
 // NewResponse returns a *http.Response.
@@ -254,6 +247,9 @@ func MarshalResponseAsXML(content ResponseContent, v any, req *http.Request) (*h
 // This function is typically called by the fake server internals.
 func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	tt := *new(T)
+	if req.Body == nil {
+		return tt, nil
+	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return tt, &nonRetriableError{err}
@@ -268,6 +264,9 @@ func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 // UnmarshalRequestAsText unmarshalls the request body into a string.
 // This function is typically called by the fake server internals.
 func UnmarshalRequestAsText(req *http.Request) (string, error) {
+	if req.Body == nil {
+		return "", nil
+	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return "", &nonRetriableError{err}
@@ -280,6 +279,9 @@ func UnmarshalRequestAsText(req *http.Request) (string, error) {
 // This function is typically called by the fake server internals.
 func UnmarshalRequestAsXML[T any](req *http.Request) (T, error) {
 	tt := *new(T)
+	if req.Body == nil {
+		return tt, nil
+	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return tt, &nonRetriableError{err}
@@ -300,21 +302,7 @@ func GetResponse[T any](r Responder[T]) T {
 // GetResponseContent returns the ResponseContent associated with the Responder.
 // This function is typically called by the fake server internals.
 func GetResponseContent[T any](r Responder[T]) ResponseContent {
-	content := ResponseContent{
-		StatusCode: http.StatusOK,
-		Status:     "OK",
-		Header:     r.header,
-	}
-	if r.opts.StatusCode != 0 {
-		content.StatusCode = r.opts.StatusCode
-	}
-	if r.opts.Status != "" {
-		content.Status = r.opts.Status
-	}
-	if content.Header == nil {
-		content.Header = http.Header{}
-	}
-	return content
+	return r.content
 }
 
 // GetError returns the error for this responder.
@@ -349,11 +337,11 @@ func PagerResponderNext[T any](p *PagerResponder[T], req *http.Request) (*http.R
 			return nil, &nonRetriableError{err}
 		}
 		content := ResponseContent{
-			StatusCode: http.StatusOK,
-			Status:     "OK",
-			Header:     http.Header{},
+			Header: http.Header{},
 		}
 		resp := newResponse(content, req)
+		resp.Status = "OK"
+		resp.StatusCode = http.StatusOK
 		return setResponseBody(resp, body, shared.ContentTypeAppJSON), nil
 	}
 
@@ -426,9 +414,7 @@ func PollerResponderNext[T any](p *PollerResponder[T], req *http.Request) (*http
 		}
 
 		content := ResponseContent{
-			StatusCode: http.StatusOK,
-			Status:     "OK",
-			Header:     http.Header{},
+			Header: http.Header{},
 		}
 		httpResp := newResponse(content, req)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, resp.status)
@@ -452,9 +438,7 @@ func PollerResponderNext[T any](p *PollerResponder[T], req *http.Request) (*http
 		}
 		p.res = nil
 		content := ResponseContent{
-			StatusCode: http.StatusOK,
-			Status:     "OK",
-			Header:     http.Header{},
+			Header: http.Header{},
 		}
 		httpResp := setResponseBody(newResponse(content, req), body, shared.ContentTypeAppJSON)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, "Succeeded")
@@ -480,6 +464,9 @@ func setResponseBody(resp *http.Response, body []byte, contentType string) *http
 }
 
 func newResponse(content ResponseContent, req *http.Request) *http.Response {
+	if content.Header == nil {
+		content.Header = http.Header{}
+	}
 	return &http.Response{
 		Body:       http.NoBody,
 		Header:     content.Header,
@@ -487,18 +474,18 @@ func newResponse(content ResponseContent, req *http.Request) *http.Response {
 		ProtoMajor: 1,
 		ProtoMinor: 1,
 		Request:    req,
-		Status:     content.Status,
-		StatusCode: content.StatusCode,
+		Status:     "OK",
+		StatusCode: http.StatusOK,
 	}
 }
 
 func newErrorResponse(errorCode string, statusCode int, req *http.Request) *http.Response {
 	content := ResponseContent{
-		StatusCode: statusCode,
-		Status:     "Operation Failed",
-		Header:     http.Header{},
+		Header: http.Header{},
 	}
 	resp := newResponse(content, req)
+	resp.Status = "Operation Failed"
+	resp.StatusCode = http.StatusBadRequest
 	resp.Header.Set(shared.HeaderXMSErrorCode, errorCode)
 	return resp
 }

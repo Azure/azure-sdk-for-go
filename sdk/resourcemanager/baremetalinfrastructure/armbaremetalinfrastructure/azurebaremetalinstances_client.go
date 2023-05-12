@@ -47,7 +47,7 @@ func NewAzureBareMetalInstancesClient(subscriptionID string, credential azcore.T
 // Get - Gets an Azure BareMetal instance for the specified subscription, resource group, and instance name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-09
+// Generated from API version 2023-04-06
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureBareMetalInstanceName - Name of the Azure BareMetal on Azure instance.
 //   - options - AzureBareMetalInstancesClientGetOptions contains the optional parameters for the AzureBareMetalInstancesClient.Get
@@ -87,7 +87,7 @@ func (client *AzureBareMetalInstancesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-09")
+	reqQP.Set("api-version", "2023-04-06")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *AzureBareMetalInstancesClient) getHandleResponse(resp *http.Respon
 // NewListByResourceGroupPager - Gets a list of AzureBareMetal instances in the specified subscription and resource group.
 // The operations returns various properties of each Azure BareMetal instance.
 //
-// Generated from API version 2021-08-09
+// Generated from API version 2023-04-06
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AzureBareMetalInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstancesClient.NewListByResourceGroupPager
 //     method.
@@ -153,7 +153,7 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-09")
+	reqQP.Set("api-version", "2023-04-06")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *AzureBareMetalInstancesClient) listByResourceGroupHandleResponse(r
 // NewListBySubscriptionPager - Gets a list of AzureBareMetal instances in the specified subscription. The operations returns
 // various properties of each Azure BareMetal instance.
 //
-// Generated from API version 2021-08-09
+// Generated from API version 2023-04-06
 //   - options - AzureBareMetalInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstancesClient.NewListBySubscriptionPager
 //     method.
 func (client *AzureBareMetalInstancesClient) NewListBySubscriptionPager(options *AzureBareMetalInstancesClientListBySubscriptionOptions) *runtime.Pager[AzureBareMetalInstancesClientListBySubscriptionResponse] {
@@ -214,7 +214,7 @@ func (client *AzureBareMetalInstancesClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-09")
+	reqQP.Set("api-version", "2023-04-06")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,7 +233,7 @@ func (client *AzureBareMetalInstancesClient) listBySubscriptionHandleResponse(re
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-09
+// Generated from API version 2023-04-06
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureBareMetalInstanceName - Name of the Azure BareMetal on Azure instance.
 //   - tagsParameter - Request body that only contains the new Tags field
@@ -274,7 +274,7 @@ func (client *AzureBareMetalInstancesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-09")
+	reqQP.Set("api-version", "2023-04-06")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tagsParameter)

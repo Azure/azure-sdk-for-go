@@ -11,7 +11,7 @@ package armbaremetalinfrastructure
 
 const (
 	moduleName    = "armbaremetalinfrastructure"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 // AzureBareMetalHardwareTypeNamesEnum - Name of the hardware type (vendor and/or their product name)
@@ -195,5 +195,33 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// ProvisioningState - State of provisioning of the AzureBareMetalStorageInstance
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateMigrating ProvisioningState = "Migrating"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating  ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateMigrating,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }

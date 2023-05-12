@@ -47,3 +47,8 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewAzureBareMetalStorageInstancesClient() *AzureBareMetalStorageInstancesClient {
+	subClient, _ := NewAzureBareMetalStorageInstancesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

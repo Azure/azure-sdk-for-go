@@ -15,7 +15,7 @@ The Azure Monitor Query client module is used to execute read-only queries again
 * Azure subscription - [Create a free account][azure_sub]
 * To query Logs, you need one of the following things:
   * An [Azure Log Analytics workspace][log_analytics_workspace_create]
-  * An Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.)
+  * The resource URI of an Azure resource (Storage Account, Key Vault, Cosmos DB, etc.)
 * To query Metrics, the resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
 
 ### Install the packages

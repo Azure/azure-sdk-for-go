@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed block size and number of blocks calculation in `UploadBuffer` and `UploadFile`. Fixes [#20735](https://github.com/Azure/azure-sdk-for-go/issues/20735).
+
 ### Other Changes
 
 ## 1.1.0-beta.1 (2023-05-09)

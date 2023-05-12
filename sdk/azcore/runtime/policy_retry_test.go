@@ -828,11 +828,6 @@ func TestRetryPolicySuccessWithRetryPreserveHeaders(t *testing.T) {
 	require.True(t, body.closed)
 }
 
-type reqBody struct {
-	body        io.ReadSeekCloser
-	contentType string
-}
-
 func challengeLikePolicy(req *policy.Request) (*http.Response, error) {
 	if req.Body() == nil {
 		return nil, errors.New("request body wasn't restored")
@@ -841,12 +836,9 @@ func challengeLikePolicy(req *policy.Request) (*http.Response, error) {
 		return nil, errors.New("content-type header wasn't restored")
 	}
 
-	if body := req.Body(); body != nil {
-		rb := reqBody{body, req.Raw().Header.Get("content-type")}
-		req.SetOperationValue(rb)
-		if err := req.SetBody(nil, ""); err != nil {
-			return nil, err
-		}
+	// remove the body and header. the retry policy should restore them
+	if err := req.SetBody(nil, ""); err != nil {
+		return nil, err
 	}
 	return req.Next()
 }

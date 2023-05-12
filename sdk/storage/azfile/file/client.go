@@ -100,8 +100,8 @@ func (f *Client) URL() string {
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
 //   - fileContentLength: Specifies the maximum size for the file in bytes, up to 4 TB.
-// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 //
+// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()

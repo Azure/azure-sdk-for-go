@@ -4570,29 +4570,32 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadFromReader() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	contentSize := []int{398457897, 332398592, 19922944, 314572800, 269484032} // 380 MB, 317 MB, 19 MB, 300 MB, 257 MB
 
-	contentSize := 398457897
-	_, content := testcommon.GetDataAndReader(testName, contentSize)
-	md5Value := md5.Sum(content)
-	contentMD5 := md5Value[:]
+	for i, cs := range contentSize {
+		bbClient := testcommon.GetBlockBlobClient(fmt.Sprintf("%v%v", testcommon.GenerateBlobName(testName), i), containerClient)
 
-	_, err = bbClient.UploadBuffer(context.Background(), content, nil)
-	_require.NoError(err)
+		_, content := testcommon.GetDataAndReader(testName, cs)
+		md5Value := md5.Sum(content)
+		contentMD5 := md5Value[:]
 
-	destBuffer := make([]byte, contentSize)
-	cnt, err := bbClient.DownloadBuffer(context.Background(), destBuffer, nil)
-	_require.NoError(err)
-	_require.Equal(cnt, int64(contentSize))
+		_, err = bbClient.UploadBuffer(context.Background(), content, nil)
+		_require.NoError(err)
 
-	downloadedMD5Value := md5.Sum(destBuffer)
-	downloadedContentMD5 := downloadedMD5Value[:]
+		destBuffer := make([]byte, cs)
+		cnt, err := bbClient.DownloadBuffer(context.Background(), destBuffer, nil)
+		_require.NoError(err)
+		_require.Equal(cnt, int64(cs))
 
-	_require.EqualValues(downloadedContentMD5, contentMD5)
+		downloadedMD5Value := md5.Sum(destBuffer)
+		downloadedContentMD5 := downloadedMD5Value[:]
 
-	gResp2, err := bbClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+		_require.EqualValues(downloadedContentMD5, contentMD5)
+
+		gResp2, err := bbClient.GetProperties(context.Background(), nil)
+		_require.NoError(err)
+		_require.Equal(*gResp2.ContentLength, int64(cs))
+	}
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {

@@ -457,3 +457,25 @@ directive:
     transform: >
         $.ArtifactOperatingSystem.description = "The artifact platform's operating system.";
 ```
+
+### Remove useless Marshal method
+
+```yaml
+directive:
+  - from:
+      - models_serde.go
+    where: $
+    transform: >
+      return $
+      .replace(/\/\/ MarshalJSON.*TagList[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*TagAttributes[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*Repositories[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*Manifests[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*ManifestAttributes[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*ContainerRepositoryProperties[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*ArtifactTagProperties[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*ArtifactManifestProperties[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*ArtifactManifestPlatform[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*acrRefreshToken[^}]*}\n/g, "")
+      .replace(/\/\/ MarshalJSON.*acrAccessToken[^}]*}\n/g, "")
+```

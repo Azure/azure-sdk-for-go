@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `ParseNTFSFileAttributes` method for parsing the file attributes to `file.NTFSFileAttributes` type.
+
 ### Breaking Changes
 
 ### Bugs Fixed

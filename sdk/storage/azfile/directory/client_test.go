@@ -333,6 +333,13 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.Equal(*sResp.FileCreationTime, creationTime.UTC())
 	_require.Equal(*sResp.FileLastWriteTime, lastWriteTime.UTC())
 
+	fileAttributes, err := file.ParseNTFSFileAttributes(sResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.ReadOnly)
+	_require.True(fileAttributes.System)
+	_require.True(fileAttributes.Directory)
+
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(gResp.FileCreationTime)
@@ -342,6 +349,14 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.Equal(*gResp.FileCreationTime, *sResp.FileCreationTime)
 	_require.Equal(*gResp.FileLastWriteTime, *sResp.FileLastWriteTime)
 	_require.Equal(*gResp.FileAttributes, *sResp.FileAttributes)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.ReadOnly)
+	_require.True(fileAttributes2.System)
+	_require.True(fileAttributes2.Directory)
+	_require.EqualValues(fileAttributes2, fileAttributes)
 }
 
 func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
@@ -380,10 +395,21 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 	_require.Equal(cResp.LastModified.IsZero(), false)
 	_require.NotNil(cResp.RequestID)
 
+	fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.Directory)
+
 	gResp, err := dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp.FilePermissionKey, *cResp.FilePermissionKey)
 	_require.EqualValues(gResp.Metadata, md)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.Directory)
+	_require.EqualValues(fileAttributes, fileAttributes2)
 
 	// Creating again will result in 409 and ResourceAlreadyExists.
 	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{Metadata: md})

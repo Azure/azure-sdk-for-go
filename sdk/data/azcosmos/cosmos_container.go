@@ -575,7 +575,7 @@ func (c *ContainerClient) PartitionKeyRanges(ctx context.Context) (PartitionKeyR
 		return PartitionKeyRangesResponse{}, err
 	}
 
-	path += "/pkranges"
+	path += "/" + pathSegmentPartitionKeyRange
 
 	azResponse, err := c.database.client.sendGetRequest(
 		path,

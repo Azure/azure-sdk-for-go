@@ -649,3 +649,106 @@ func TestContainerPatchItem(t *testing.T) {
 		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs/doc1", verifier.requests[0].url.RequestURI())
 	}
 }
+
+func TestContainerPartitionKeyRanges(t *testing.T) {
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
+
+	etag := azcore.ETag("etag")
+	properties := &PartitionKeyRangesProperties{
+		ResourceID: "someResourceId",
+		Count:      1,
+		PartitionKeyRanges: []PartitionKeyRange{
+			{
+				ID:           "someId",
+				ETag:         &etag,
+				SelfLink:     "someSelfLink",
+				LastModified: nowAsUnix,
+				MinInclusive: "someMinInclusive",
+				MaxExclusive: "someMaxExclusive",
+			},
+		},
+	}
+	jsonString, err := json.Marshal(properties)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithStatusCode(200))
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	if container.ID() != "containerId" {
+		t.Errorf("Expected container ID to be %s, but got %s", "containerId", container.ID())
+	}
+
+	resp, err := container.PartitionKeyRanges(context.TODO())
+	if err != nil {
+		t.Fatalf("Failed to read container: %v", err)
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("parsedResponse.RawResponse is nil")
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("parsedResponse.RawResponse is nil")
+	}
+
+	if resp.PartitionKeyRangesProperties == nil {
+		t.Fatal("parsedResponse.PartitionKeyRangesProperties is nil")
+	}
+
+	if properties.ResourceID != resp.PartitionKeyRangesProperties.ResourceID {
+		t.Errorf("Expected ResourceID to be %s, but got %s", properties.ResourceID, resp.PartitionKeyRangesProperties.ResourceID)
+	}
+
+	if properties.Count != resp.PartitionKeyRangesProperties.Count {
+		t.Errorf("Expected Count to be %d, but got %d", properties.Count, resp.PartitionKeyRangesProperties.Count)
+	}
+
+	if len(properties.PartitionKeyRanges) != len(resp.PartitionKeyRangesProperties.PartitionKeyRanges) {
+		t.Errorf("Expected PartitionKeyRanges length to be %d, but got %d", len(properties.PartitionKeyRanges), len(resp.PartitionKeyRangesProperties.PartitionKeyRanges))
+	}
+
+	if properties.PartitionKeyRanges[0].ID != resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].ID {
+		t.Errorf("Expected ID to be %s, but got %s", properties.PartitionKeyRanges[0].ID, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].ID)
+	}
+
+	if *properties.PartitionKeyRanges[0].ETag != *resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].ETag {
+		t.Errorf("Expected ETag to be %v, but got %v", properties.PartitionKeyRanges[0].ETag, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].ETag)
+	}
+
+	if properties.PartitionKeyRanges[0].SelfLink != resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].SelfLink {
+		t.Errorf("Expected SelfLink to be %s, but got %s", properties.PartitionKeyRanges[0].SelfLink, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].SelfLink)
+	}
+
+	if properties.PartitionKeyRanges[0].LastModified != resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].LastModified {
+		t.Errorf("Expected LastModified to be %s, but got %s", properties.PartitionKeyRanges[0].LastModified, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].LastModified)
+	}
+
+	if properties.PartitionKeyRanges[0].MinInclusive != resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].MinInclusive {
+		t.Errorf("Expected MinInclusive to be %s, but got %s", properties.PartitionKeyRanges[0].MinInclusive, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].MinInclusive)
+	}
+
+	if properties.PartitionKeyRanges[0].MaxExclusive != resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].MaxExclusive {
+		t.Errorf("Expected MaxExclusive to be %s, but got %s", properties.PartitionKeyRanges[0].MaxExclusive, resp.PartitionKeyRangesProperties.PartitionKeyRanges[0].MaxExclusive)
+	}
+
+	if resp.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", resp.ActivityID)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+}

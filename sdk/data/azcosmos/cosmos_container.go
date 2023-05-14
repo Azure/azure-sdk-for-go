@@ -562,6 +562,34 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return newTransactionalBatchResponse(azResponse)
 }
 
+// PartitionKeyRanges obtains the information for the partition key ranges in a Cosmos container
+// ctx - The context for the request.
+func (c *ContainerClient) PartitionKeyRanges(ctx context.Context) (PartitionKeyRangesResponse, error) {
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypePartitionKeyRange,
+		resourceAddress: c.link,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
+	if err != nil {
+		return PartitionKeyRangesResponse{}, err
+	}
+
+	path += "/pkranges"
+
+	azResponse, err := c.database.client.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		nil,
+		nil)
+	if err != nil {
+		return PartitionKeyRangesResponse{}, err
+	}
+
+	return newPartitionKeyRangeResponse(azResponse)
+}
+
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	containerResponse, err := c.Read(ctx, nil)
 	if err != nil {

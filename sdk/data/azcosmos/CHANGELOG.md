@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added support for getting partition key ranges for a container
+
 ### Breaking Changes
 
 ### Bugs Fixed

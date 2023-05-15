@@ -12,6 +12,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"math"
 	"os"
 	"sync"
 	"time"
@@ -387,31 +388,26 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 
 // uploadFromReader uploads a buffer in blocks to a block blob.
 func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
-	readerSize := actualSize
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
-		if readerSize > MaxStageBlockBytes*MaxBlocks {
+		if actualSize > MaxStageBlockBytes*MaxBlocks {
 			return uploadFromReaderResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
-		if readerSize <= MaxUploadBlobBytes {
+		if actualSize <= MaxUploadBlobBytes {
 			o.BlockSize = MaxUploadBlobBytes // Default if unspecified
 		} else {
-			if remainder := readerSize % MaxBlocks; remainder > 0 {
-				// ensure readerSize is a multiple of MaxBlocks
-				readerSize += (MaxBlocks - remainder)
-			}
-			o.BlockSize = readerSize / MaxBlocks             // buffer / max blocks = block size to use all 50,000 blocks
-			if o.BlockSize < blob.DefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
+			o.BlockSize = int64(math.Ceil(float64(actualSize) / MaxBlocks)) // ceil(buffer / max blocks) = block size to use all 50,000 blocks
+			if o.BlockSize < blob.DefaultDownloadBlockSize {                // If the block size is smaller than 4MB, round up to 4MB
 				o.BlockSize = blob.DefaultDownloadBlockSize
 			}
 			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
 		}
 	}
 
-	if readerSize <= MaxUploadBlobBytes {
+	if actualSize <= MaxUploadBlobBytes {
 		// If the size can fit in 1 Upload call, do it this way
-		var body io.ReadSeeker = io.NewSectionReader(reader, 0, readerSize)
+		var body io.ReadSeeker = io.NewSectionReader(reader, 0, actualSize)
 		if o.Progress != nil {
 			body = streaming.NewRequestProgress(shared.NopCloser(body), o.Progress)
 		}
@@ -422,7 +418,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		return toUploadReaderAtResponseFromUploadResponse(resp), err
 	}
 
-	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
+	var numBlocks = uint16(((actualSize - 1) / o.BlockSize) + 1)
 	if numBlocks > MaxBlocks {
 		// prevent any math bugs from attempting to upload too many blocks which will always fail
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")
@@ -442,7 +438,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "uploadFromReader",
-		TransferSize:  readerSize,
+		TransferSize:  actualSize,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {

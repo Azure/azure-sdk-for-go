@@ -139,6 +139,10 @@ func (f *FileRecordedTestsSuite) TestFileCreateUsingSharedKey() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(resp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
 }
 
 func (f *FileRecordedTestsSuite) TestFileCreateUsingConnectionString() {
@@ -417,6 +421,11 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.Equal(setResp.Date.IsZero(), false)
 	_require.NotNil(setResp.IsServerEncrypted)
 
+	fileAttributes, err := file.ParseNTFSFileAttributes(setResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.Hidden)
+
 	getResp, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(setResp.LastModified.IsZero(), false)
@@ -432,6 +441,12 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	// We'll just ensure a permission exists, no need to test overlapping functionality.
 	_require.NotEqual(getResp.FilePermissionKey, "")
 	_require.Equal(*getResp.FileAttributes, options.SMBProperties.Attributes.String())
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(getResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.Hidden)
+	_require.EqualValues(fileAttributes, fileAttributes2)
 
 	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
 	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
@@ -832,6 +847,10 @@ func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require.NoError(err)
 	_require.EqualValues(srcContent, destContent)
 	_require.Equal(dResp.ContentMD5, srcContentMD5[:])
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(dResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
 }
 
 func (f *FileRecordedTestsSuite) TestFileStartCopyDestEmpty() {
@@ -1026,6 +1045,12 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
+	fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.ReadOnly)
+	_require.True(fileAttributes.Hidden)
+
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
 		CopyFileSMBInfo: &file.CopyFileSMBInfo{
 			CreationTime: file.SourceCopyFileCreationTime{},
@@ -1071,6 +1096,11 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
+	fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.System)
+
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
 		CopyFileSMBInfo: &file.CopyFileSMBInfo{
 			CreationTime:       file.SourceCopyFileCreationTime{},
@@ -1089,6 +1119,12 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 	_require.EqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
 	_require.EqualValues(resp2.FileAttributes, cResp.FileAttributes)
 	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(resp2.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.System)
+	_require.EqualValues(fileAttributes, fileAttributes2)
 }
 
 func (f *FileRecordedTestsSuite) TestFileStartCopyDifferentProperties() {

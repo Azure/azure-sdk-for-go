@@ -18,6 +18,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Retry policy always clones the underlying `*http.Request` before invoking the next policy.
+* Added `MissingRegistrationForResourceProvider` to the list of error codes for unregistered resource providers.
 
 ### Other Changes
 

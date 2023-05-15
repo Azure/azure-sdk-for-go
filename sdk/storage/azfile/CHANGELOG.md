@@ -4,9 +4,13 @@
 
 ### Features Added
 
+* Added `ParseNTFSFileAttributes` method for parsing the file attributes to `file.NTFSFileAttributes` type.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed the issue where trailing slash is encoded when passed in directory or subdirectory name while creating the directory client.
 
 ### Other Changes
 

@@ -1,6 +1,10 @@
 {
     "Packages": [
         {
+            "Name": "resourcemanager",
+            "CoverageGoal": 0.0
+        },
+        {
             "Name": "azappconfig",
             "CoverageGoal": 0.19
         },
@@ -88,10 +92,6 @@
         {
             "Name": "monitor/azquery",
             "CoverageGoal": 0.85
-        },
-        {
-            "Name": "resourcemanager",
-            "CoverageGoal": 0.0
         },
         {
             "Name": "security/keyvault/azadmin",

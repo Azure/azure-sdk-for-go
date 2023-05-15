@@ -4,7 +4,11 @@
 <title>Azure GO SDK MGMT REPORT</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+
 <style type="text/css">
 html {
     font-family: sans-serif;

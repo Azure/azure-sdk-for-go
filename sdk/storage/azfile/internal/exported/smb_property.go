@@ -7,6 +7,7 @@
 package exported
 
 import (
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"strings"
 	"time"
@@ -95,4 +96,45 @@ func (f *NTFSFileAttributes) String() string {
 
 	fileAttributes = strings.TrimSuffix(fileAttributes, "|")
 	return fileAttributes
+}
+
+// ParseNTFSFileAttributes parses the file attributes from *string to *NTFSFileAttributes.
+// It returns an error for any unknown file attribute.
+func ParseNTFSFileAttributes(attributes *string) (*NTFSFileAttributes, error) {
+	if attributes == nil {
+		return nil, nil
+	}
+
+	ntfsFileAttributes := NTFSFileAttributes{}
+	parts := strings.Split(*attributes, "|")
+
+	for _, p := range parts {
+		p = strings.ToLower(strings.TrimSpace(p))
+		switch p {
+		case "readonly":
+			ntfsFileAttributes.ReadOnly = true
+		case "hidden":
+			ntfsFileAttributes.Hidden = true
+		case "system":
+			ntfsFileAttributes.System = true
+		case "directory":
+			ntfsFileAttributes.Directory = true
+		case "archive":
+			ntfsFileAttributes.Archive = true
+		case "none":
+			ntfsFileAttributes.None = true
+		case "temporary":
+			ntfsFileAttributes.Temporary = true
+		case "offline":
+			ntfsFileAttributes.Offline = true
+		case "notcontentindexed":
+			ntfsFileAttributes.NotContentIndexed = true
+		case "noscrubdata":
+			ntfsFileAttributes.NoScrubData = true
+		default:
+			return nil, fmt.Errorf("unknown file attribute %v", p)
+		}
+	}
+
+	return &ntfsFileAttributes, nil
 }

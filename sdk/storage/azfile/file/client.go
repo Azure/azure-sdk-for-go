@@ -101,6 +101,7 @@ func (f *Client) URL() string {
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
 //   - fileContentLength: Specifies the maximum size for the file in bytes, up to 4 TB.
 //
+// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
@@ -117,6 +118,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 }
 
 // GetProperties operation returns all user-defined metadata, standard HTTP properties, and system properties for the file.
+// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file-properties.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts, leaseAccessConditions := options.format()
@@ -125,6 +127,7 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // SetHTTPHeaders operation sets HTTP headers on the file.
+// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
@@ -433,6 +436,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 }
 
 // DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
+// ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
 func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
 	opts, leaseAccessConditions := options.format()

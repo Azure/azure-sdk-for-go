@@ -129,10 +129,10 @@ func (testsuite *DatafactoryTestSuite) Prepare() {
 				ReferenceName: to.Ptr(testsuite.linkedServiceName),
 			},
 			Parameters: map[string]*armdatafactory.ParameterSpecification{
-				"MyFileName": &armdatafactory.ParameterSpecification{
+				"MyFileName": {
 					Type: to.Ptr(armdatafactory.ParameterTypeString),
 				},
-				"MyFolderPath": &armdatafactory.ParameterSpecification{
+				"MyFolderPath": {
 					Type: to.Ptr(armdatafactory.ParameterTypeString),
 				},
 			},
@@ -990,7 +990,7 @@ func (testsuite *DatafactoryTestSuite) TestGlobalParameters() {
 	testsuite.Require().NoError(err)
 	_, err = globalParametersClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.factoryName, "default", armdatafactory.GlobalParameterResource{
 		Properties: map[string]*armdatafactory.GlobalParameterSpecification{
-			"waitTime": &armdatafactory.GlobalParameterSpecification{
+			"waitTime": {
 				Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
 				Value: float64(5),
 			},

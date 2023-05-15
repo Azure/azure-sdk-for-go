@@ -104,9 +104,14 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 	if has_blobEndpoint {
 		serviceURL = blobEndpoint
 	} else if has_accountName {
-		serviceURL = fmt.Sprintf("%v://%v.blob.%v", protocol, accountName, suffix)
+		serviceURL = fmt.Sprintf("%v://%v.blob.%v/", protocol, accountName, suffix)
 	} else {
 		return ParsedConnectionString{}, errors.New("connection string needs either AccountName or BlobEndpoint")
+	}
+
+	if !strings.HasSuffix(serviceURL, "/") {
+		// add a trailing slash to be consistent with the portal
+		serviceURL += "/"
 	}
 
 	accountKey, has_accountKey := connStrMap["AccountKey"]
@@ -120,7 +125,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		}, nil
 	} else if has_sharedAccessSignature {
 		return ParsedConnectionString{
-			ServiceURL: fmt.Sprintf("%v/?%v", serviceURL, sharedAccessSignature),
+			ServiceURL: fmt.Sprintf("%v?%v", serviceURL, sharedAccessSignature),
 		}, nil
 	} else {
 		return ParsedConnectionString{}, errors.New("connection string needs either AccountKey or SharedAccessSignature")

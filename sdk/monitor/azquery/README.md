@@ -13,8 +13,10 @@ The Azure Monitor Query client module is used to execute read-only queries again
 
 * Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
-* To query some logs, an Azure Log Analytics workspace ID - Create an [Azure Log Analytics workspace][log_analytics_workspace_create]
-* To query metrics and some logs, the Resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
+* To query Logs, you need one of the following things:
+  * An [Azure Log Analytics workspace][log_analytics_workspace_create]
+  * The resource URI of an Azure resource (Storage Account, Key Vault, Cosmos DB, etc.)
+* To query Metrics, the resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
 
 ### Install the packages
 

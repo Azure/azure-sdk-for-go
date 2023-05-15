@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed the issue where trailing slash is encoded when passed in directory or subdirectory name while creating the directory client.
+
 ### Other Changes
 
 ## 0.1.0 (2023-05-09)

@@ -10,10 +10,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"io"
+	"net/http"
 	"testing"
 )
 
@@ -41,6 +45,16 @@ func TestClient_DeleteManifest_wrongDigest(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestClient_DeleteManifest_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.DeleteManifest(ctx, "", "digest", nil)
+	require.Error(t, err)
+	_, err = client.DeleteManifest(ctx, "name", "", nil)
+	require.Error(t, err)
+}
+
 func TestClient_DeleteRepository(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -51,6 +65,29 @@ func TestClient_DeleteRepository(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestClient_DeleteRepository_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.DeleteRepository(ctx, "", nil)
+	require.Error(t, err)
+}
+
+func TestClient_DeleteRepository_error(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	_, err := client.DeleteRepository(ctx, "test", nil)
+	require.Error(t, err)
+}
+
 func TestClient_DeleteTag(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -59,6 +96,31 @@ func TestClient_DeleteTag(t *testing.T) {
 	require.NoError(t, err)
 	_, err = client.DeleteTag(ctx, "alpine", "3.14.8", nil)
 	require.NoError(t, err)
+}
+
+func TestClient_DeleteTag_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.DeleteTag(ctx, "", "tag", nil)
+	require.Error(t, err)
+	_, err = client.DeleteTag(ctx, "name", "", nil)
+	require.Error(t, err)
+}
+
+func TestClient_DeleteTag_error(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	_, err := client.DeleteTag(ctx, "name", "tag", nil)
+	require.Error(t, err)
 }
 
 func TestClient_GetManifest(t *testing.T) {
@@ -73,6 +135,16 @@ func TestClient_GetManifest(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, manifest)
 	fmt.Printf("manifest content: %s\n", manifest)
+}
+
+func TestClient_GetManifest_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.GetManifest(ctx, "", "tag", nil)
+	require.Error(t, err)
+	_, err = client.GetManifest(ctx, "name", "", nil)
+	require.Error(t, err)
 }
 
 func TestClient_GetManifest_wrongTag(t *testing.T) {
@@ -103,6 +175,16 @@ func TestClient_GetManifestProperties(t *testing.T) {
 	require.Equal(t, digest, *tagRes.Manifest.Digest)
 }
 
+func TestClient_GetManifestProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.GetManifestProperties(ctx, "", "digest", nil)
+	require.Error(t, err)
+	_, err = client.GetManifestProperties(ctx, "name", "", nil)
+	require.Error(t, err)
+}
+
 func TestClient_GetManifestProperties_wrongDigest(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -129,6 +211,14 @@ func TestClient_GetRepositoryProperties(t *testing.T) {
 	fmt.Printf("repository manifest count: %d\n", *res.ManifestCount)
 }
 
+func TestClient_GetRepositoryProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.GetRepositoryProperties(ctx, "", nil)
+	require.Error(t, err)
+}
+
 func TestClient_GetRepositoryProperties_wrongName(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -151,6 +241,16 @@ func TestClient_GetTagProperties(t *testing.T) {
 	fmt.Printf("tag name: %s\n", *res.Tag.Name)
 	require.NotEmpty(t, *res.Tag.Digest)
 	fmt.Printf("tag digest: %s\n", *res.Tag.Digest)
+}
+
+func TestClient_GetTagProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.GetTagProperties(ctx, "", "", nil)
+	require.Error(t, err)
+	_, err = client.GetTagProperties(ctx, "name", "", nil)
+	require.Error(t, err)
 }
 
 func TestClient_GetTagProperties_wrongTag(t *testing.T) {
@@ -218,6 +318,18 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	}
 }
 
+func TestClient_NewListManifestsPager_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	pager := client.NewListManifestsPager("", nil)
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		require.Error(t, err)
+		break
+	}
+}
+
 func TestClient_NewListManifestsPager_wrongRepositoryName(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -255,6 +367,25 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 	}
 	require.Equal(t, 3, pages)
 	require.Equal(t, 3, items)
+}
+
+func TestClient_NewListRepositoriesPager_error(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	pager := client.NewListRepositoriesPager(nil)
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		require.Error(t, err)
+		break
+	}
 }
 
 func TestClient_NewListTagsPager(t *testing.T) {
@@ -313,6 +444,18 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	}
 }
 
+func TestClient_NewListTagsPager_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	pager := client.NewListTagsPager("", nil)
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		require.Error(t, err)
+		break
+	}
+}
+
 func TestClient_NewListTagsPager_wrongRepositoryName(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -351,6 +494,16 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	require.True(t, *res.Manifest.ChangeableAttributes.CanWrite)
 }
 
+func TestClient_UpdateManifestProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.UpdateManifestProperties(ctx, "", "digest", nil)
+	require.Error(t, err)
+	_, err = client.UpdateManifestProperties(ctx, "name", "", nil)
+	require.Error(t, err)
+}
+
 func TestClient_UpdateManifestProperties_wrongDigest(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -379,6 +532,14 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.True(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+}
+
+func TestClient_UpdateRepositoryProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.UpdateRepositoryProperties(ctx, "", nil)
+	require.Error(t, err)
 }
 
 func TestClient_UpdateRepositoryProperties_wrongRepository(t *testing.T) {
@@ -414,6 +575,16 @@ func TestClient_UpdateTagProperties(t *testing.T) {
 	require.True(t, *res.Tag.ChangeableAttributes.CanWrite)
 }
 
+func TestClient_UpdateTagProperties_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.UpdateTagProperties(ctx, "name", "", nil)
+	require.Error(t, err)
+	_, err = client.UpdateTagProperties(ctx, "", "tag", nil)
+	require.Error(t, err)
+}
+
 func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -441,4 +612,66 @@ func TestClient_UploadManifest(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadRes.DockerContentDigest)
 	fmt.Printf("uploaded manifest digest: %s\n", *uploadRes.DockerContentDigest)
+}
+
+func TestClient_UploadManifest_empty(t *testing.T) {
+	ctx := context.Background()
+	client, err := NewClient("endpoint", nil, nil)
+	require.NoError(t, err)
+	_, err = client.UploadManifest(ctx, "", "reference", "contentType", nil, nil)
+	require.Error(t, err)
+	_, err = client.UploadManifest(ctx, "name", "", "contentType", nil, nil)
+	require.Error(t, err)
+}
+
+func TestClient_UploadManifest_error(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	_, err := client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
+	require.Error(t, err)
+}
+
+func TestClient_wrongEndpoint(t *testing.T) {
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
+	client := &Client{
+		"wrong-endpoint",
+		pl,
+	}
+	ctx := context.Background()
+	_, err := client.DeleteManifest(ctx, "name", "digest", nil)
+	require.Error(t, err)
+	_, err = client.DeleteRepository(ctx, "name", nil)
+	require.Error(t, err)
+	_, err = client.DeleteTag(ctx, "name", "tag", nil)
+	require.Error(t, err)
+	_, err = client.GetManifest(ctx, "name", "reference", nil)
+	require.Error(t, err)
+	_, err = client.GetManifestProperties(ctx, "name", "digest", nil)
+	require.Error(t, err)
+	_, err = client.GetRepositoryProperties(ctx, "name", nil)
+	require.Error(t, err)
+	_, err = client.GetTagProperties(ctx, "name", "tag", nil)
+	require.Error(t, err)
+	_, err = client.NewListManifestsPager("name", nil).NextPage(ctx)
+	require.Error(t, err)
+	_, err = client.NewListRepositoriesPager(nil).NextPage(ctx)
+	require.Error(t, err)
+	_, err = client.NewListTagsPager("name", nil).NextPage(ctx)
+	require.Error(t, err)
+	_, err = client.UpdateManifestProperties(ctx, "name", "digest", nil)
+	require.Error(t, err)
+	_, err = client.UpdateRepositoryProperties(ctx, "name", nil)
+	require.Error(t, err)
+	_, err = client.UpdateTagProperties(ctx, "name", "tag", nil)
+	require.Error(t, err)
+	_, err = client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
+	require.Error(t, err)
 }

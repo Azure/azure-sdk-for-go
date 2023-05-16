@@ -35,7 +35,7 @@ func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewShareClient(shareURL, pl, nil)), nil
+	return (*Client)(base.NewShareClient(shareURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -48,7 +48,7 @@ func NewClientWithSharedKeyCredential(shareURL string, cred *SharedKeyCredential
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewShareClient(shareURL, pl, cred)), nil
+	return (*Client)(base.NewShareClient(shareURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -81,6 +81,10 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ShareClient])(s))
 }
 
+func (s *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.ShareClient])(s))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
@@ -91,14 +95,24 @@ func (s *Client) URL() string {
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().Pipeline(), s.sharedKey()))
+	clientOptions := s.getClientOptions()
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
+		AllowTrailingDot:       clientOptions.AllowTrailingDot,
+		FileRequestIntent:      clientOptions.FileRequestIntent,
+		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
+	}))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().Pipeline(), s.sharedKey()))
+	clientOptions := s.getClientOptions()
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
+		AllowTrailingDot:       clientOptions.AllowTrailingDot,
+		FileRequestIntent:      clientOptions.FileRequestIntent,
+		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
+	}))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.
@@ -109,8 +123,9 @@ func (s *Client) WithSnapshot(shareSnapshot string) (*Client, error) {
 		return nil, err
 	}
 	p.ShareSnapshot = shareSnapshot
+	clientOptions := base.GetClientOptions((*base.Client[generated.ShareClient])(s))
 
-	return (*Client)(base.NewShareClient(p.String(), s.generated().Pipeline(), s.sharedKey())), nil
+	return (*Client)(base.NewShareClient(p.String(), s.generated().Pipeline(), s.sharedKey(), clientOptions)), nil
 }
 
 // Create operation creates a new share within a storage account. If a share with the same name already exists, the operation fails.

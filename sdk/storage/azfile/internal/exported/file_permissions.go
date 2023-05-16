@@ -19,13 +19,13 @@ type Permissions struct {
 }
 
 // Format returns file permission string and permission key.
-func (p *Permissions) Format(defaultFilePermissionStr string) (*string, *string) {
+func (p *Permissions) Format() (*string, *string) {
 	if p == nil {
-		return &defaultFilePermissionStr, nil
+		return nil, nil
 	}
 
 	if p.Permission == nil && p.PermissionKey == nil {
-		return &defaultFilePermissionStr, nil
+		return nil, nil
 	} else {
 		return p.Permission, p.PermissionKey
 	}

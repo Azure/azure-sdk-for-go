@@ -9,7 +9,6 @@ package file
 import (
 	"encoding/binary"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -81,28 +80,25 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *CreateOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	createOptions *generated.FileClientCreateOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+func (o *CreateOptions) format() (string, *generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return shared.FileAttributesNone, shared.DefaultCurrentTimeString, shared.DefaultCurrentTimeString, &generated.FileClientCreateOptions{
-			FilePermission: to.Ptr(shared.DefaultFilePermissionString),
-		}, nil, nil
+		return shared.FileAttributesNone, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.Format(false, shared.FileAttributesNone, shared.DefaultCurrentTimeString)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.SMBProperties.Format(false, shared.FileAttributesNone)
 
-	permission, permissionKey := o.Permissions.Format(shared.DefaultFilePermissionString)
+	permission, permissionKey := o.Permissions.Format()
 
-	createOptions = &generated.FileClientCreateOptions{
+	createOptions := &generated.FileClientCreateOptions{
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
 	}
 
-	fileHTTPHeaders = o.HTTPHeaders
-	leaseAccessConditions = o.LeaseAccessConditions
-
-	return
+	return fileAttributes, createOptions, o.HTTPHeaders, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -156,28 +152,25 @@ type SetHTTPHeadersOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetHTTPHeadersOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	opts *generated.FileClientSetHTTPHeadersOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+func (o *SetHTTPHeadersOptions) format() (string, *generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString, &generated.FileClientSetHTTPHeadersOptions{
-			FilePermission: to.Ptr(shared.DefaultPreserveString),
-		}, nil, nil
+		return shared.DefaultPreserveString, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.Format(false, shared.DefaultPreserveString, shared.DefaultPreserveString)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.SMBProperties.Format(false, shared.DefaultPreserveString)
 
-	permission, permissionKey := o.Permissions.Format(shared.DefaultPreserveString)
+	permission, permissionKey := o.Permissions.Format()
 
-	opts = &generated.FileClientSetHTTPHeadersOptions{
+	opts := &generated.FileClientSetHTTPHeadersOptions{
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
 		FileContentLength: o.FileContentLength,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 	}
 
-	fileHTTPHeaders = o.HTTPHeaders
-	leaseAccessConditions = o.LeaseAccessConditions
-
-	return
+	return fileAttributes, opts, o.HTTPHeaders, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -444,20 +437,19 @@ type ResizeOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *ResizeOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	opts *generated.FileClientSetHTTPHeadersOptions, leaseAccessConditions *LeaseAccessConditions) {
-	fileAttributes, fileCreationTime, fileLastWriteTime = shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString
+func (o *ResizeOptions) format(contentLength int64) (string, *generated.FileClientSetHTTPHeadersOptions, *LeaseAccessConditions) {
+	fileAttributes := shared.DefaultPreserveString
 
-	opts = &generated.FileClientSetHTTPHeadersOptions{
+	opts := &generated.FileClientSetHTTPHeadersOptions{
 		FileContentLength: &contentLength,
-		FilePermission:    to.Ptr(shared.DefaultPreserveString),
 	}
 
+	var leaseAccessConditions *LeaseAccessConditions = nil
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
-	return
+	return fileAttributes, opts, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

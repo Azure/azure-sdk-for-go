@@ -8,6 +8,7 @@ package exported
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"strings"
 	"time"
@@ -22,12 +23,14 @@ type SMBProperties struct {
 	CreationTime *time.Time
 	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.
 	LastWriteTime *time.Time
+	// The Coordinated Universal Time (UTC) change time for the file/directory. Default value is 'now'.
+	ChangeTime *time.Time
 }
 
 // Format returns file attributes, creation time and last write time.
-func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
+func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string) (fileAttributes string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString
+		return defaultFileAttributes, nil, nil, nil
 	}
 
 	fileAttributes = defaultFileAttributes
@@ -41,14 +44,19 @@ func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaul
 		}
 	}
 
-	creationTime = defaultCurrentTimeString
+	creationTime = nil
 	if sp.CreationTime != nil {
-		creationTime = sp.CreationTime.UTC().Format(generated.ISO8601)
+		creationTime = to.Ptr(sp.CreationTime.UTC().Format(generated.ISO8601))
 	}
 
-	lastWriteTime = defaultCurrentTimeString
+	lastWriteTime = nil
 	if sp.LastWriteTime != nil {
-		lastWriteTime = sp.LastWriteTime.UTC().Format(generated.ISO8601)
+		lastWriteTime = to.Ptr(sp.LastWriteTime.UTC().Format(generated.ISO8601))
+	}
+
+	changeTime = nil
+	if sp.ChangeTime != nil {
+		changeTime = to.Ptr(sp.ChangeTime.UTC().Format(generated.ISO8601))
 	}
 
 	return

@@ -42,7 +42,7 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewFileClient(fileURL, pl, nil)), nil
+	return (*Client)(base.NewFileClient(fileURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -57,7 +57,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewFileClient(fileURL, pl, cred)), nil
+	return (*Client)(base.NewFileClient(fileURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -104,8 +104,8 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().Create(ctx, fileContentLength, fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -130,8 +130,8 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts, fileHTTPHeaders, leaseAccessConditions)
+	fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -166,8 +166,8 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts, leaseAccessConditions := options.format(size)
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts, nil, leaseAccessConditions)
+	fileAttributes, opts, leaseAccessConditions := options.format(size)
+	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, nil, leaseAccessConditions)
 	return resp, err
 }
 

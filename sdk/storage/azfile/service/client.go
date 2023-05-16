@@ -36,7 +36,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -49,7 +49,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -80,6 +80,10 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
+func (s *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.ServiceClient])(s))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
@@ -89,7 +93,12 @@ func (s *Client) URL() string {
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewShareClient(shareName string) *share.Client {
 	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
-	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey()))
+	clientOptions := s.getClientOptions()
+	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
+		AllowTrailingDot:       clientOptions.AllowTrailingDot,
+		FileRequestIntent:      clientOptions.FileRequestIntent,
+		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
+	}))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.

@@ -34,7 +34,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewDirectoryClient(directoryURL, pl, nil)), nil
+	return (*Client)(base.NewDirectoryClient(directoryURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -47,7 +47,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewDirectoryClient(directoryURL, pl, cred)), nil
+	return (*Client)(base.NewDirectoryClient(directoryURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -83,6 +83,10 @@ func (d *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.DirectoryClient])(d))
 }
 
+func (d *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.DirectoryClient])(d))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (d *Client) URL() string {
 	return d.generated().Endpoint()
@@ -93,7 +97,12 @@ func (d *Client) URL() string {
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
-	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey()))
+	clientOptions := d.getClientOptions()
+	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey(), &base.ClientOptions{
+		AllowTrailingDot:       clientOptions.AllowTrailingDot,
+		FileRequestIntent:      clientOptions.FileRequestIntent,
+		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
+	}))
 }
 
 // NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
@@ -101,15 +110,20 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey()))
+	clientOptions := d.getClientOptions()
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey(), &base.ClientOptions{
+		AllowTrailingDot:       clientOptions.AllowTrailingDot,
+		FileRequestIntent:      clientOptions.FileRequestIntent,
+		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
+	}))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()
-	resp, err := d.generated().Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts)
+	fileAttributes, opts := options.format()
+	resp, err := d.generated().Create(ctx, fileAttributes, opts)
 	return resp, err
 }
 
@@ -135,8 +149,8 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 func (d *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()
-	resp, err := d.generated().SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts)
+	fileAttributes, opts := options.format()
+	resp, err := d.generated().SetProperties(ctx, fileAttributes, opts)
 	return resp, err
 }
 

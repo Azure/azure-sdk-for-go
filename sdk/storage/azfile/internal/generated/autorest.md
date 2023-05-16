@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bbea558ac43d6ebec72455233c84b0158c89fcda/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-10-02/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7dcd41cd28d46eb256bac034760a7e2f0a036238/specification/storage/data-plane/Microsoft.FileStorage/preview/2022-11-02/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -141,6 +141,7 @@ directive:
 ``` yaml
 directive:
 - from:
+  - zz_directory_client.go
   - zz_file_client.go
   - zz_models.go
   where: $
@@ -255,6 +256,10 @@ directive:
     $.format = "str";
 - from: swagger-document
   where: $.parameters.FileLastWriteTime
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $.parameters.FileChangeTime
   transform: >
     $.format = "str";
 ```

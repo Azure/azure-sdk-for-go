@@ -43,6 +43,21 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	}
 }
 
+type FileLastWrittenMode string
+
+const (
+	FileLastWrittenModeNow      FileLastWrittenMode = "Now"
+	FileLastWrittenModePreserve FileLastWrittenMode = "Preserve"
+)
+
+// PossibleFileLastWrittenModeValues returns the possible values for the FileLastWrittenMode const type.
+func PossibleFileLastWrittenModeValues() []FileLastWrittenMode {
+	return []FileLastWrittenMode{
+		FileLastWrittenModeNow,
+		FileLastWrittenModePreserve,
+	}
+}
+
 type FileRangeWriteType string
 
 const (
@@ -194,6 +209,19 @@ func PossibleShareRootSquashValues() []ShareRootSquash {
 		ShareRootSquashNoRootSquash,
 		ShareRootSquashRootSquash,
 		ShareRootSquashAllSquash,
+	}
+}
+
+type ShareTokenIntent string
+
+const (
+	ShareTokenIntentBackup ShareTokenIntent = "backup"
+)
+
+// PossibleShareTokenIntentValues returns the possible values for the ShareTokenIntent const type.
+func PossibleShareTokenIntentValues() []ShareTokenIntent {
+	return []ShareTokenIntent{
+		ShareTokenIntentBackup,
 	}
 }
 

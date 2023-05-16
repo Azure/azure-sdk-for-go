@@ -25,4 +25,4 @@ To see more options just run:
 go run . processor --help
 ```
 
-For convenience there's a deploy.ps1 file that'll launch the deployment - by default it'll go to the `pg` cluster, which we use for adhoc workloads. For more information about prerequisites look at the official stress test docs here: [stress test readme.md](https://github.com/Azure/azure-sdk-tools/tree/main/tools/stress-cluster/chaos.)
+For convenience there's a deploy.ps1 file that'll launch the deployment - by default it'll go to the `pg` cluster, which we use for adhoc workloads. For more information about prerequisites look at the official stress test docs here: [stress test readme.md](https://github.com/Azure/azure-sdk-tools/tree/main/tools/stress-cluster/chaos).

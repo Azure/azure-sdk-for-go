@@ -15,13 +15,8 @@
 - Enum `ForecastTimeframeType` has been removed
 - Enum `ReportConfigColumnType` has been removed
 - Operation `*GenerateDetailedCostReportOperationResultsClient.Get` has been changed to LRO, use `*GenerateDetailedCostReportOperationResultsClient.BeginGet` instead.
-- Struct `ExportExecution` has been removed
-- Struct `ExportExecutionProperties` has been removed
 - Field `QueryResult` of struct `ForecastClientExternalCloudProviderUsageResponse` has been removed
 - Field `QueryResult` of struct `ForecastClientUsageResponse` has been removed
-- Field `ID` of struct `Operation` has been removed
-- Field `ETag` of struct `ProxyResource` has been removed
-- Field `ETag`, `Location`, `SKU`, `Tags` of struct `Resource` has been removed
 
 ### Features Added
 
@@ -66,6 +61,7 @@
 - New function `*GenerateCostDetailsReportClient.BeginCreateOperation(context.Context, string, GenerateCostDetailsReportRequestDefinition, *GenerateCostDetailsReportClientBeginCreateOperationOptions) (*runtime.Poller[GenerateCostDetailsReportClientCreateOperationResponse], error)`
 - New function `*GenerateCostDetailsReportClient.BeginGetOperationResults(context.Context, string, string, *GenerateCostDetailsReportClientBeginGetOperationResultsOptions) (*runtime.Poller[GenerateCostDetailsReportClientGetOperationResultsResponse], error)`
 - New function `*IncludedQuantityUtilizationSummary.GetBenefitUtilizationSummary() *BenefitUtilizationSummary`
+- New function `PossibleGrainValues() []Grain`
 - New function `NewPriceSheetClient(azcore.TokenCredential, *arm.ClientOptions) (*PriceSheetClient, error)`
 - New function `*PriceSheetClient.BeginDownload(context.Context, string, string, string, *PriceSheetClientBeginDownloadOptions) (*runtime.Poller[PriceSheetClientDownloadResponse], error)`
 - New function `*PriceSheetClient.BeginDownloadByBillingProfile(context.Context, string, string, *PriceSheetClientBeginDownloadByBillingProfileOptions) (*runtime.Poller[PriceSheetClientDownloadByBillingProfileResponse], error)`
@@ -89,16 +85,12 @@
 - New struct `AllSavingsList`
 - New struct `BenefitRecommendationModel`
 - New struct `BenefitRecommendationsListResult`
-- New struct `BenefitResource`
 - New struct `BenefitUtilizationSummariesListResult`
-- New struct `BenefitUtilizationSummaryProperties`
 - New struct `BlobInfo`
 - New struct `CheckNameAvailabilityRequest`
 - New struct `CheckNameAvailabilityResponse`
 - New struct `CostDetailsOperationResults`
 - New struct `CostDetailsTimePeriod`
-- New struct `ErrorDetailsWithNestedDetails`
-- New struct `ErrorResponseWithNestedDetails`
 - New struct `ExportRun`
 - New struct `ExportRunProperties`
 - New struct `FileDestination`
@@ -110,24 +102,20 @@
 - New struct `ForecastProperties`
 - New struct `ForecastResult`
 - New struct `ForecastTimePeriod`
-- New struct `GenerateCostDetailsReportErrorResponse`
 - New struct `GenerateCostDetailsReportRequestDefinition`
 - New struct `IncludedQuantityUtilizationSummary`
 - New struct `IncludedQuantityUtilizationSummaryProperties`
 - New struct `NotificationProperties`
 - New struct `OperationForCostManagement`
-- New struct `ProxyResourceForCostManagement`
 - New struct `RecommendationUsageDetails`
 - New struct `ReportManifest`
 - New struct `RequestContext`
-- New struct `ResourceForCostManagement`
 - New struct `SavingsPlanUtilizationSummary`
 - New struct `SavingsPlanUtilizationSummaryProperties`
 - New struct `ScheduleProperties`
 - New struct `ScheduledAction`
 - New struct `ScheduledActionListResult`
 - New struct `ScheduledActionProperties`
-- New struct `ScheduledActionProxyResource`
 - New struct `SharedScopeBenefitRecommendationProperties`
 - New struct `SingleScopeBenefitRecommendationProperties`
 - New struct `SystemData`
@@ -135,7 +123,6 @@
 - New anonymous field `ForecastResult` in struct `ForecastClientExternalCloudProviderUsageResponse`
 - New anonymous field `ForecastResult` in struct `ForecastClientUsageResponse`
 - New field `EndTime`, `StartTime` in struct `GenerateDetailedCostReportOperationStatuses`
-- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
 
 
 ## 1.1.1 (2023-04-14)

@@ -634,125 +634,92 @@ func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(
 ////	_require.NotNil(err)
 ////}
 //
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsNonexistentPrefix() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	createNewBlockBlob(c, containerClient)
-////
-////	prefix := testcommon.BlobPrefix + testcommon.BlobPrefix
-////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
-////		Prefix: &prefix,
-////	}
-////	listResponse, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 3, 0, &containerListBlobFlatSegmentOptions)
-////	_assert(<- errChan, chk.IsNil)
-////	_assert(listResponse, chk.IsNil)
-////}
-//
-//func (s *ContainerRecordedTestsSuite) TestContainerListBlobsSpecificValidPrefix() {
-//	svcClient := testcommon.GetServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-//	_, blobName := createNewBlockBlob(c, containerClient)
-//
-//	prefix := testcommon.BlobPrefix
-//	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
-//		Prefix: &prefix,
-//	}
-//	pager := containerClient.NewListBlobsFlatPager(&containerListBlobFlatSegmentOptions)
-//
-//	count := 0
-//
-//	for pager.NextPage(context.Background()) {
-//		resp := pager.PageResponse()
-//
-//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count++
-//			_assert(*blob.Name, chk.Equals, blobName)
-//		}
-//	}
-//
-//	_assert(pager.Err(), chk.IsNil)
-//
-//	_assert(count, chk.Equals, 1)
-//}
-//
-//func (s *ContainerRecordedTestsSuite) TestContainerListBlobsValidDelimiter() {
-//	svcClient := testcommon.GetServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-//	prefixes := []string{"a/1", "a/2", "b/2", "blob"}
-//	blobNames := make([]string, 4)
-//	for idx, prefix := range prefixes {
-//		_, blobNames[idx] = createNewBlockBlobWithPrefix(c, containerClient, prefix)
-//	}
-//
-//	pager := containerClient.NewListBlobsHierarchyPager("/", nil)
-//
-//	count := 0
-//
-//	for pager.NextPage(context.Background()) {
-//		resp := pager.PageResponse()
-//
-//		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			count++
-//			_assert(*blob.Name, chk.Equals, blobNames[3])
-//		}
-//	}
-//
-//	_assert(pager.Err(), chk.IsNil)
-//	_assert(count, chk.Equals, 1)
-//
-//	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
-//	//_require.Nil(err)
-//	//_assert(len(resp.Segment.BlobItems), chk.Equals, 1)
-//	//_assert(len(resp.Segment.BlobPrefixes), chk.Equals, 2)
-//	//_assert(resp.Segment.BlobPrefixes[0].Name, chk.Equals, "a/")
-//	//_assert(resp.Segment.BlobPrefixes[1].Name, chk.Equals, "b/")
-//	//_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//}
 
-//func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := testcommon.GenerateContainerName(testName)
-//	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-//
-//	// initialize a blob and create a snapshot of it
-//	snapBlobName := testcommon.GenerateBlobName(testName)
-//	snapBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, snapBlobName, containerClient)
-//	snap, err := snapBlob.CreateSnapshot(context.Background(), nil)
-//	// snap.
-//	_require.Nil(err)
-//
-//	listBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
-//		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
-//	}
-//	pager := containerClient.NewListBlobsFlatPager(&listBlobFlatSegmentOptions)
-//
-//	wasFound := false // hold the for loop accountable for finding the blob and it's snapshot
-//	for pager.More() {
-//		resp, err := pager.NextPage(context.Background())
-//		_require.Nil(err)
-//
-//		for _, blob := range resp.Segment.BlobItems {
-//			if *blob.Name == snapBlobName && blob.Snapshot != nil {
-//				wasFound = true
-//				_require.Equal(*blob.Snapshot, *snap.Snapshot)
-//			}
-//		}
-//		if err != nil {
-//			break
-//		}
-//	}
-//	_require.Equal(wasFound, true)
-//}
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsNonexistentPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	prefix := testcommon.BlobPrefix + testcommon.BlobPrefix
+	for i := 0; i < 3; i++ {
+		blobName := testcommon.GenerateBlobName(testName + strconv.Itoa(i))
+		testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	}
+
+	containerListBlobFlatSegmentOptions := container.ListBlobsFlatOptions{
+		Prefix: &prefix,
+	}
+	pager := containerClient.NewListBlobsFlatPager(&containerListBlobFlatSegmentOptions)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.Segment.BlobItems), 0)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsSpecificValidPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	prefix := testcommon.BlobPrefix
+	for i := 0; i < 3; i++ {
+		blobName := prefix + testcommon.GenerateBlobName(testName+strconv.Itoa(i))
+		testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	}
+
+	containerListBlobFlatSegmentOptions := container.ListBlobsFlatOptions{
+		Prefix: &prefix,
+	}
+	pager := containerClient.NewListBlobsFlatPager(&containerListBlobFlatSegmentOptions)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.Segment.BlobItems), 3)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsValidDelimiter() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
+	pre := []string{"a/", "b/"}
+	prefixMap := testcommon.BlobListToMap(pre)
+	for _, prefix := range prefixes {
+		blobName := prefix + testcommon.GenerateBlobName(testName)
+		testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	}
+
+	pager := containerClient.NewListBlobsHierarchyPager("/", nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, prefix := range resp.Segment.BlobPrefixes {
+			_require.Equal(prefixMap[*prefix.Name], true) // checks if prefix exists in prefixes
+		}
+		if err != nil {
+			break
+		}
+	}
+}
 
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	_require := require.New(s.T())
@@ -781,151 +748,190 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	}
 }
 
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeMetadata() {
-////	svcClient := testcommon.GetServiceClient()
-////	container, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(container)
-////	_, blobNameNoMetadata := createNewBlockBlobWithPrefix(c, container, "a")
-////	blobMetadata, blobNameMetadata := createNewBlockBlobWithPrefix(c, container, "b")
-////	_, err := blobMetadata.SetMetadata(context.Background(), Metadata{"field": "value"}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	resp, err := container.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
-////
-////	_require.Nil(err)
-////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobNameNoMetadata)
-////	_assert(resp.Segment.BlobItems[0].Metadata, chk.HasLen, 0)
-////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobNameMetadata)
-////	_assert(resp.Segment.BlobItems[1].Metadata["field"], chk.Equals, "value")
-////}
-//
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeSnapshots() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	blob, blobName := createNewBlockBlob(c, containerClient)
-////	_, err := blob.CreateSnapshot(context.Background(), Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
-////
-////	_require.Nil(err)
-////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
-////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-////	_assert(resp.Segment.BlobItems[0].Snapshot, chk.NotNil)
-////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName)
-////	_assert(resp.Segment.BlobItems[1].Snapshot, chk.Equals, "")
-////}
-////
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeCopy() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, blobName := createNewBlockBlob(c, containerClient)
-////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	_, err := blobCopyURL.StartCopyFromURL(context.Background(), bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
-////	_require.Nil(err)
-////
-////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{Copy: true}})
-////
-////	// These are sufficient to show that the blob copy was in fact included
-////	_require.Nil(err)
-////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
-////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName)
-////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobCopyName)
-////	_assert(*resp.Segment.BlobItems[0].Properties.ContentLength, chk.Equals, int64(len(testcommon.BlockBlobDefaultData)))
-////	temp := bbClient.URL()
-////	_assert(*resp.Segment.BlobItems[0].Properties.CopySource, chk.Equals, temp.String())
-////	_assert(resp.Segment.BlobItems[0].Properties.CopyStatus, chk.Equals, CopyStatusTypeSuccess)
-////}
-////
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeUncommitted() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, blobName := getBlockBlobURL(c, containerClient)
-////	_, err := bbClient.StageBlock(context.Background(), blockID, strings.NewReader(testcommon.BlockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{UncommittedBlobs: true}})
-////
-////	_require.Nil(err)
-////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
-////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-////}
-//
-////func testContainerListBlobsIncludeTypeDeletedImpl(, svcClient ServiceURL) error {
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewBlockBlob(c, containerClient)
-////
-////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_require.Nil(err)
-////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
-////
-////	_, err = bbClient.Delete(context.Background(), DeleteSnapshotsOptionInclude, LeaseAccessConditions{})
-////	_require.Nil(err)
-////
-////	resp, err = containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_require.Nil(err)
-////	if len(resp.Segment.BlobItems) != 1 {
-////		return errors.New("DeletedBlobNotFound")
-////	}
-////
-////	// resp.Segment.BlobItems[0].Deleted == true/false if versioning is disabled/enabled.
-////	_assert(resp.Segment.BlobItems[0].Deleted, chk.Equals, false)
-////	return nil
-////}
-////
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeDeleted() {
-////	svcClient := testcommon.GetServiceClient()
-////
-////	runTestRequiringServiceProperties(c, svcClient, "DeletedBlobNotFound", enableSoftDelete,
-////		testContainerListBlobsIncludeTypeDeletedImpl, disableSoftDelete)
-////}
-////
-////func testContainerListBlobsIncludeMultipleImpl(, svcClient ServiceURL) error {
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////
-////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
-////	_, err := bbClient.CreateSnapshot(context.Background(), Metadata{}, LeaseAccessConditions{}, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-////	resp2, err := blobURL2.StartCopyFromURL(context.Background(), bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, DefaultAccessTier, nil)
-////	_require.Nil(err)
-////	waitForCopy(c, blobURL2, resp2)
-////	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
-////
-////	_, err = blobURL3.Delete(context.Background(), DeleteSnapshotsOptionNone, LeaseAccessConditions{})
-////
-////	resp, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{},
-////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})
-////
-////	_require.Nil(err)
-////	if len(resp.Segment.BlobItems) != 6 {
-////		// If there are fewer blobs in the container than there should be, it will be because one was permanently deleted.
-////		return errors.New("DeletedBlobNotFound")
-////	}
-////
-////	//_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName2)
-////	//_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName) // With soft delete, the overwritten blob will have a backup snapshot
-////	//_assert(resp.Segment.BlobItems[2].Name, chk.Equals, blobName)
-////	return nil
-////}
-////
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeMultiple() {
-////	svcClient := testcommon.GetServiceClient()
-////
-////	runTestRequiringServiceProperties(c, svcClient, "DeletedBlobNotFound", enableSoftDelete,
-////		testContainerListBlobsIncludeMultipleImpl, disableSoftDelete)
-////}
-////
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// initialize a blob and create a snapshot of it
+	snapBlobName := testcommon.GenerateBlobName(testName)
+	snapBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, snapBlobName, containerClient)
+	snap, err := snapBlob.CreateSnapshot(context.Background(), nil)
+	_require.Nil(err)
+
+	listBlobFlatSegmentOptions := container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	}
+	pager := containerClient.NewListBlobsFlatPager(&listBlobFlatSegmentOptions)
+
+	wasFound := false // hold the for loop accountable for finding the blob and it's snapshot
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+
+		for _, blob := range resp.Segment.BlobItems {
+			if *blob.Name == snapBlobName && blob.Snapshot != nil {
+				wasFound = true
+				_require.Equal(*blob.Snapshot, *snap.Snapshot)
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+	_require.Equal(wasFound, true)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeCopy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	blobCopyName := testcommon.GenerateBlobName("copy" + testName)
+	blobCopyClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobCopyName, containerClient)
+
+	_, err = blobCopyClient.StartCopyFromURL(context.Background(), bbClient.URL(), nil)
+	_require.Nil(err)
+
+	opts := container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Copy: true},
+	}
+	pager := containerClient.NewListBlobsFlatPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+
+		// These are sufficient to show that the blob copy was in fact included
+		_require.Nil(err)
+		_require.Equal(len(resp.Segment.BlobItems), 2)
+		_require.EqualValues(*resp.Segment.BlobItems[1].Name, blobCopyName)
+		_require.EqualValues(*resp.Segment.BlobItems[0].Name, blobName)
+		_require.Equal(*resp.Segment.BlobItems[0].Properties.ContentLength, int64(len(testcommon.BlockBlobDefaultData)))
+		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopyStatus, container.CopyStatusTypeSuccess)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeUncommitted() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+	blockID := testcommon.GenerateBlockIDsList(1)
+
+	_, err = bbClient.StageBlock(context.Background(), blockID[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.NoError(err)
+
+	opts := container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{UncommittedBlobs: false},
+	}
+	pager := containerClient.NewListBlobsFlatPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.EqualValues(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeDeletedWithVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	opts := container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{DeletedWithVersions: true},
+	}
+	pager := containerClient.NewListBlobsFlatPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.EqualValues(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+
+	deleteOpts := blob.DeleteOptions{
+		DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeInclude),
+	}
+	_, err = bbClient.Delete(context.Background(), &deleteOpts)
+	_require.Nil(err)
+
+	pager = containerClient.NewListBlobsFlatPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.EqualValues(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeMultipleImpl() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "z"+blobName, containerClient)
+	_, err = bbClient.CreateSnapshot(context.Background(), nil)
+	_require.Nil(err)
+
+	bbClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, "copy"+blobName, containerClient)
+	_, err = bbClient2.StartCopyFromURL(context.Background(), bbClient.URL(), nil)
+	_require.Nil(err)
+
+	// Copy should finish within one minute
+	time.Sleep(60 * time.Second)
+
+	bbClient3 := testcommon.CreateNewBlockBlob(context.Background(), _require, "deleted"+blobName, containerClient)
+	_, err = bbClient3.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Copy: true, Deleted: true, Versions: true},
+	}
+	pager := containerClient.NewListBlobsFlatPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+
+		// These are sufficient to show that the blob copy was in fact included
+		_require.Nil(err)
+		_require.Equal(len(resp.Segment.BlobItems), 6)
+		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopyStatus, container.CopyStatusTypeSuccess)
+	}
+}
+
 ////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsNegative() {
 ////	svcClient := testcommon.GetServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
@@ -990,7 +996,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsExact() {
 		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
-			_require.Equal(nameMap[*blob.Name], true)
+			_require.Equal(nameMap[*blob.Name], true) // checks if name exists in blob names
 		}
 		if err != nil {
 			break
@@ -1027,7 +1033,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsSufficient
 		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
-			_require.Equal(nameMap[*blob.Name], true)
+			_require.Equal(nameMap[*blob.Name], true) // checks if name exists in blob names
 		}
 		if err != nil {
 			break

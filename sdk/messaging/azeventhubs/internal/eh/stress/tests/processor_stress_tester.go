@@ -285,7 +285,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 
 		if len(events) > 0 {
 			// we're okay, let's update our checkpoint
-			if err := partClient.UpdateCheckpoint(ctx, events[len(events)-1]); err != nil {
+			if err := partClient.UpdateCheckpoint(ctx, events[len(events)-1], nil); err != nil {
 				logger("Fatal error updating checkpoint: %s", err)
 				inf.TC.TrackException(err)
 				panic(err)

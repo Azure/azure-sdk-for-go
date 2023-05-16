@@ -4,12 +4,12 @@ Set-Location $PSScriptRoot
 function deployUsingLocalAddons() {
     $azureSDKToolsRoot="<Git clone of azure-sdk-tools>"
     $stressTestAddonsFolder = "$azureSDKToolsRoot/tools/stress-cluster/cluster/kubernetes/stress-test-addons"
-    $clusterResourceGroup = "<Resource Group for Cluster"
+    $clusterResourceGroup = "<Resource Group for Cluster>"
     $clusterSubscription = "<Azure Subscription>"
     $helmEnv = "pg2"
 
     if (-not (Get-ChildItem $stressTestAddonsFolder)) {
-        Write-Host "Can't find the the new stress test adons folder at $stressTestAddonsFolder"
+        Write-Host "Can't find the the new stress test addons folder at $stressTestAddonsFolder"
         return
     }
 
@@ -17,10 +17,8 @@ function deployUsingLocalAddons() {
         -LocalAddonsPath "$stressTestAddonsFolder"  `
         -clusterGroup "$clusterResourceGroup" `
         -subscription "$clusterSubscription" `
-        -Environment $helmEnv `
-        -Login `
-        -PushImages
+        -Environment $helmEnv
 }
 
 # deployUsingLocalAddons
-pwsh "../../../../../../eng/common/scripts/stress-testing/deploy-stress-tests.ps1" -Login -PushImages @args
+pwsh "../../../../../../eng/common/scripts/stress-testing/deploy-stress-tests.ps1" @args

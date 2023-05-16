@@ -16,7 +16,7 @@ There are two types of tests - batch and processor. Each test takes a variety of
 For instance, to run a `Processor` test to receive events:
 
 ```bash
-go run .  processor
+go run . processor
 ```
 
 To see more options just run:

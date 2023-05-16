@@ -20,6 +20,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -371,17 +372,21 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 func TestNewResponse(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewResponse(ResponseContent{}, req)
+	resp, err := NewResponse(ResponseContent{}, req, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 }
 
-func TestNewBinaryResponse(t *testing.T) {
+func TestNewResponseWithOptions(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewBinaryResponse(ResponseContent{}, io.NopCloser(strings.NewReader("the body")), req)
+	resp, err := NewResponse(ResponseContent{}, req, &ResponseOptions{
+		Body:        io.NopCloser(strings.NewReader("the body")),
+		ContentType: shared.ContentTypeTextPlain,
+	})
 	require.NoError(t, err)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, shared.ContentTypeTextPlain, resp.Header.Get(shared.HeaderContentType))
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
 	require.EqualValues(t, "the body", string(body))

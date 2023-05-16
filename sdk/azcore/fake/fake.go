@@ -189,21 +189,31 @@ type SetTerminalResponseOptions struct {
 // ResponseContent is used when building the *http.Response.
 // This type is typically used by the fake server internals.
 type ResponseContent struct {
+	// Header contains the headers from Responder[T].SetHeader to include in the HTTP response.
 	Header http.Header
+}
+
+// ResponseOptions contains the optional values for NewResponse().
+type ResponseOptions struct {
+	// Body is the HTTP response body.
+	Body io.ReadCloser
+
+	// ContentType is the value for the Content-Type HTTP header.
+	ContentType string
 }
 
 // NewResponse returns a *http.Response.
 // This function is typically called by the fake server internals.
-func NewResponse(content ResponseContent, req *http.Request) (*http.Response, error) {
+func NewResponse(content ResponseContent, req *http.Request, opts *ResponseOptions) (*http.Response, error) {
 	resp := newResponse(content, req)
-	return resp, nil
-}
-
-// NewBinaryResponse acquires the binary response and returns it in a *http.Response.
-// This function is typically called by the fake server internals.
-func NewBinaryResponse(content ResponseContent, body io.ReadCloser, req *http.Request) (*http.Response, error) {
-	resp := newResponse(content, req)
-	resp.Body = body
+	if opts != nil {
+		if opts.Body != nil {
+			resp.Body = opts.Body
+		}
+		if opts.ContentType != "" {
+			resp.Header.Set(shared.HeaderContentType, opts.ContentType)
+		}
+	}
 	return resp, nil
 }
 

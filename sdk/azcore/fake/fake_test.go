@@ -7,8 +7,10 @@
 package fake
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"io"
 	"net/http"
@@ -17,11 +19,17 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
 )
+
+type scalar struct {
+	Value *string
+}
 
 type widget struct {
 	Name string
@@ -47,19 +55,21 @@ func TestNewTokenCredential(t *testing.T) {
 	require.Zero(t, tk)
 }
 
-func TestResponder(t *testing.T) {
+func TestResponderJSON(t *testing.T) {
 	respr := Responder[widget]{}
-	respr.Set(widget{Name: "foo"})
+	respr.SetResponse(widget{Name: "foo"}, nil)
 	respr.SetHeader("one", "1")
 	respr.SetHeader("two", "2")
 
 	req := &http.Request{}
-	resp, err := MarshalResponseAsJSON(respr, req)
+	resp, err := MarshalResponseAsJSON(GetResponseContent(respr), GetResponse(respr), req)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.Equal(t, req, resp.Request)
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -67,6 +77,77 @@ func TestResponder(t *testing.T) {
 
 	w := widget{}
 	require.NoError(t, json.Unmarshal(body, &w))
+	require.Equal(t, "foo", w.Name)
+}
+
+func TestResponderText(t *testing.T) {
+	respr := Responder[scalar]{}
+	respr.SetResponse(scalar{Value: to.Ptr("success")}, nil)
+	respr.SetHeader("one", "1")
+	respr.SetHeader("two", "2")
+
+	req := &http.Request{}
+	resp, err := MarshalResponseAsText(GetResponseContent(respr), GetResponse(respr).Value, req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, req, resp.Request)
+	require.Equal(t, "1", resp.Header.Get("one"))
+	require.Equal(t, "2", resp.Header.Get("two"))
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+
+	require.Equal(t, "success", string(body))
+}
+
+func TestResponderTextNil(t *testing.T) {
+	respr := Responder[scalar]{}
+	respr.SetResponse(scalar{}, nil)
+	respr.SetHeader("one", "1")
+	respr.SetHeader("two", "2")
+
+	req := &http.Request{}
+	resp, err := MarshalResponseAsText(GetResponseContent(respr), GetResponse(respr).Value, req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, req, resp.Request)
+	require.Equal(t, "1", resp.Header.Get("one"))
+	require.Equal(t, "2", resp.Header.Get("two"))
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+
+	require.Empty(t, string(body))
+}
+
+func TestResponderXML(t *testing.T) {
+	respr := Responder[widget]{}
+	respr.SetResponse(widget{Name: "foo"}, nil)
+	respr.SetHeader("one", "1")
+	respr.SetHeader("two", "2")
+
+	req := &http.Request{}
+	resp, err := MarshalResponseAsXML(GetResponseContent(respr), GetResponse(respr), req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, req, resp.Request)
+	require.Equal(t, "1", resp.Header.Get("one"))
+	require.Equal(t, "2", resp.Header.Get("two"))
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, "OK", resp.Status)
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+
+	w := widget{}
+	require.NoError(t, xml.Unmarshal(body, &w))
 	require.Equal(t, "foo", w.Name)
 }
 
@@ -86,7 +167,7 @@ func TestResponderMarshallingError(t *testing.T) {
 	respr := Responder[badWidget]{}
 
 	req := &http.Request{}
-	resp, err := MarshalResponseAsJSON(respr, req)
+	resp, err := MarshalResponseAsJSON(GetResponseContent(respr), GetResponse(respr), req)
 	require.Error(t, err)
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
@@ -213,9 +294,9 @@ func TestPollerResponder(t *testing.T) {
 	require.Nil(t, resp)
 
 	pollerResp.AddNonTerminalResponse(nil)
-	pollerResp.AddNonTerminalError(errors.New("network glitch"))
+	pollerResp.AddPollingError(errors.New("network glitch"))
 	pollerResp.AddNonTerminalResponse(nil)
-	pollerResp.SetTerminalResponse(widget{Name: "dodo"})
+	pollerResp.SetTerminalResponse(widget{Name: "dodo"}, nil)
 
 	iterations := 0
 	for PollerResponderMore(&pollerResp) {
@@ -258,7 +339,7 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
 
-	pollerResp.AddNonTerminalError(errors.New("network glitch"))
+	pollerResp.AddPollingError(errors.New("network glitch"))
 	pollerResp.AddNonTerminalResponse(nil)
 	pollerResp.SetTerminalError("ErrorConflictingOperation", http.StatusConflict)
 
@@ -288,6 +369,29 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	require.Equal(t, 3, iterations)
 }
 
+func TestNewResponse(t *testing.T) {
+	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	resp, err := NewResponse(ResponseContent{}, req, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+}
+
+func TestNewResponseWithOptions(t *testing.T) {
+	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	resp, err := NewResponse(ResponseContent{}, req, &ResponseOptions{
+		Body:        io.NopCloser(strings.NewReader("the body")),
+		ContentType: shared.ContentTypeTextPlain,
+	})
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, shared.ContentTypeTextPlain, resp.Header.Get(shared.HeaderContentType))
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.EqualValues(t, "the body", string(body))
+}
+
 func TestUnmarshalRequestAsJSON(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", strings.NewReader(`{"Name": "foo"}`))
 	require.NoError(t, err)
@@ -296,6 +400,50 @@ func TestUnmarshalRequestAsJSON(t *testing.T) {
 	w, err := UnmarshalRequestAsJSON[widget](req)
 	require.NoError(t, err)
 	require.Equal(t, "foo", w.Name)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	w, err = UnmarshalRequestAsJSON[widget](req)
+	require.NoError(t, err)
+	require.Zero(t, w)
+}
+
+func TestUnmarshalRequestAsText(t *testing.T) {
+	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", strings.NewReader("some text"))
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	txt, err := UnmarshalRequestAsText(req)
+	require.NoError(t, err)
+	require.Equal(t, "some text", txt)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	txt, err = UnmarshalRequestAsText(req)
+	require.NoError(t, err)
+	require.Zero(t, txt)
+}
+
+func TestUnmarshalRequestAsXML(t *testing.T) {
+	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", strings.NewReader(`<widget><Name>foo</Name></widget>`))
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	w, err := UnmarshalRequestAsXML[widget](req)
+	require.NoError(t, err)
+	require.Equal(t, "foo", w.Name)
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+
+	w, err = UnmarshalRequestAsXML[widget](req)
+	require.NoError(t, err)
+	require.Zero(t, w)
 }
 
 func TestUnmarshalRequestAsJSONReadFailure(t *testing.T) {
@@ -316,6 +464,25 @@ func TestUnmarshalRequestAsJSONUnmarshalFailure(t *testing.T) {
 	w, err := UnmarshalRequestAsJSON[badWidget](req)
 	require.Error(t, err)
 	require.Zero(t, w)
+}
+
+func TestMarshalUnmarshalResponseAsByteArray(t *testing.T) {
+	const encodeVal = "encode me"
+	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
+	require.NoError(t, err)
+	require.NotNil(t, req)
+	resp, err := MarshalResponseAsByteArray(ResponseContent{}, []byte(encodeVal), exported.Base64StdFormat, req)
+	require.NoError(t, err)
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.EqualValues(t, "ZW5jb2RlIG1l", string(body))
+
+	req, err = http.NewRequest(http.MethodPut, "https://foo.bar/baz", io.NopCloser(bytes.NewReader(body)))
+	require.NoError(t, err)
+	require.NotNil(t, req)
+	body, err = UnmarshalRequestAsByteArray(req, exported.Base64StdFormat)
+	require.NoError(t, err)
+	require.EqualValues(t, encodeVal, string(body))
 }
 
 type readFailer struct {

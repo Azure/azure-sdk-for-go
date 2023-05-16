@@ -12,14 +12,15 @@
 package fake
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -57,22 +58,33 @@ func (t *TokenCredential) GetToken(ctx context.Context, opts policy.TokenRequest
 
 // Responder represents a scalar response.
 type Responder[T any] struct {
-	h    http.Header
-	resp T
+	resp    T
+	content ResponseContent
+	opts    SetResponseOptions
 }
 
-// Set sets the specified value to be returned.
-func (r *Responder[T]) Set(b T) {
-	r.resp = b
+// SetResponse sets the specified value to be returned.
+//   - resp is the response to be returned
+//   - o contains optional values, pass nil to accept the defaults
+func (r *Responder[T]) SetResponse(resp T, o *SetResponseOptions) {
+	r.resp = resp
+	if o != nil {
+		r.opts = *o
+	}
 }
 
 // SetHeader sets the specified header key/value pairs to be returned.
 // Call multiple times to set multiple headers.
 func (r *Responder[T]) SetHeader(key, value string) {
-	if r.h == nil {
-		r.h = http.Header{}
+	if r.content.Header == nil {
+		r.content.Header = http.Header{}
 	}
-	r.h.Set(key, value)
+	r.content.Header.Set(key, value)
+}
+
+// SetResponseOptions contains the optional values for Responder[T].SetResponse.
+type SetResponseOptions struct {
+	// place holder for future optional values
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +101,8 @@ func (e *ErrorResponder) SetError(err error) {
 }
 
 // SetResponseError sets an *azcore.ResponseError with the specified values to be returned.
+//   - errorCode is the value to be used in the ResponseError.Code field
+//   - httpStatus is the HTTP status code
 func (e *ErrorResponder) SetResponseError(errorCode string, httpStatus int) {
 	e.err = &nonRetriableError{err: &azcore.ResponseError{ErrorCode: errorCode, StatusCode: httpStatus}}
 }
@@ -102,6 +116,8 @@ type PagerResponder[T any] struct {
 }
 
 // AddPage adds a page to the sequence of respones.
+//   - page is the response page to be added
+//   - o contains optional values, pass nil to accept the defaults
 func (p *PagerResponder[T]) AddPage(page T, o *AddPageOptions) {
 	p.pages = append(p.pages, page)
 }
@@ -139,14 +155,15 @@ func (p *PollerResponder[T]) AddNonTerminalResponse(o *AddNonTerminalResponseOpt
 	p.nonTermResps = append(p.nonTermResps, nonTermResp{status: "InProgress"})
 }
 
-// AddNonTerminalError adds a non-terminal error to the sequence of responses.
+// AddPollingError adds an error to the sequence of responses.
 // Use this to simulate an error durring polling.
-func (p *PollerResponder[T]) AddNonTerminalError(err error) {
+// NOTE: adding this as the first response will cause the Begin* LRO API to return this error.
+func (p *PollerResponder[T]) AddPollingError(err error) {
 	p.nonTermResps = append(p.nonTermResps, nonTermResp{err: err})
 }
 
 // SetTerminalResponse sets the provided value as the successful, terminal response.
-func (p *PollerResponder[T]) SetTerminalResponse(result T) {
+func (p *PollerResponder[T]) SetTerminalResponse(result T, o *SetTerminalResponseOptions) {
 	p.res = &result
 }
 
@@ -160,28 +177,117 @@ type AddNonTerminalResponseOptions struct {
 	// place holder for future optional values
 }
 
+// SetTerminalResponseOptions contains the optional values for PollerResponder[T].SetTerminalResponse.
+type SetTerminalResponseOptions struct {
+	// place holder for future optional values
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // the following APIs are intended for use by fake servers
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// MarshalResponseAsJSON converts the body into JSON and returns it in a *http.Response.
-// This method is typically called by the fake server internals.
-func MarshalResponseAsJSON[T any](r Responder[T], req *http.Request) (*http.Response, error) {
-	body, err := json.Marshal(r.resp)
-	if err != nil {
-		return nil, &nonRetriableError{err}
-	}
-	resp := newResponse(http.StatusOK, "OK", req, string(body))
-	for key := range r.h {
-		resp.Header.Set(key, r.h.Get(key))
+// ResponseContent is used when building the *http.Response.
+// This type is typically used by the fake server internals.
+type ResponseContent struct {
+	// Header contains the headers from Responder[T].SetHeader to include in the HTTP response.
+	Header http.Header
+}
+
+// ResponseOptions contains the optional values for NewResponse().
+type ResponseOptions struct {
+	// Body is the HTTP response body.
+	Body io.ReadCloser
+
+	// ContentType is the value for the Content-Type HTTP header.
+	ContentType string
+}
+
+// NewResponse returns a *http.Response.
+// This function is typically called by the fake server internals.
+func NewResponse(content ResponseContent, req *http.Request, opts *ResponseOptions) (*http.Response, error) {
+	resp := newResponse(content, req)
+	if opts != nil {
+		if opts.Body != nil {
+			resp.Body = opts.Body
+		}
+		if opts.ContentType != "" {
+			resp.Header.Set(shared.HeaderContentType, opts.ContentType)
+		}
 	}
 	return resp, nil
 }
 
+// MarshalResponseAsByteArray base-64 encodes the body with the specified format and returns it in a *http.Response.
+// This function is typically called by the fake server internals.
+func MarshalResponseAsByteArray(content ResponseContent, body []byte, format exported.Base64Encoding, req *http.Request) (*http.Response, error) {
+	resp := newResponse(content, req)
+	if body != nil {
+		resp = setResponseBody(resp, []byte(exported.EncodeByteArray(body, format)), shared.ContentTypeAppJSON)
+	}
+	return resp, nil
+}
+
+// MarshalResponseAsJSON converts the body into JSON and returns it in a *http.Response.
+// This function is typically called by the fake server internals.
+func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*http.Response, error) {
+	body, err := json.Marshal(v)
+	if err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	resp := newResponse(content, req)
+	resp = setResponseBody(resp, body, shared.ContentTypeAppJSON)
+	return resp, nil
+}
+
+// MarshalResponseAsText converts the body into text and returns it in a *http.Response.
+// This function is typically called by the fake server internals.
+func MarshalResponseAsText(content ResponseContent, body *string, req *http.Request) (*http.Response, error) {
+	resp := newResponse(content, req)
+	var bodyAsBytes []byte
+	if body != nil {
+		bodyAsBytes = []byte(*body)
+	}
+	resp = setResponseBody(resp, bodyAsBytes, shared.ContentTypeTextPlain)
+	return resp, nil
+}
+
+// MarshalResponseAsXML converts the body into XML and returns it in a *http.Response.
+// This function is typically called by the fake server internals.
+func MarshalResponseAsXML(content ResponseContent, v any, req *http.Request) (*http.Response, error) {
+	body, err := xml.Marshal(v)
+	if err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	resp := newResponse(content, req)
+	resp = setResponseBody(resp, body, shared.ContentTypeAppXML)
+	return resp, nil
+}
+
+// UnmarshalRequestAsByteArray base-64 decodes the body in the specified format.
+// This function is typically called by the fake server internals.
+func UnmarshalRequestAsByteArray(req *http.Request, format exported.Base64Encoding) ([]byte, error) {
+	if req.Body == nil {
+		return nil, nil
+	}
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	req.Body.Close()
+	var val []byte
+	if err := exported.DecodeByteArray(string(body), &val, format); err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	return val, nil
+}
+
 // UnmarshalRequestAsJSON unmarshalls the request body into an instance of T.
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	tt := *new(T)
+	if req.Body == nil {
+		return tt, nil
+	}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return tt, &nonRetriableError{err}
@@ -193,8 +299,52 @@ func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	return tt, err
 }
 
+// UnmarshalRequestAsText unmarshalls the request body into a string.
+// This function is typically called by the fake server internals.
+func UnmarshalRequestAsText(req *http.Request) (string, error) {
+	if req.Body == nil {
+		return "", nil
+	}
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return "", &nonRetriableError{err}
+	}
+	req.Body.Close()
+	return string(body), nil
+}
+
+// UnmarshalRequestAsXML unmarshalls the request body into an instance of T.
+// This function is typically called by the fake server internals.
+func UnmarshalRequestAsXML[T any](req *http.Request) (T, error) {
+	tt := *new(T)
+	if req.Body == nil {
+		return tt, nil
+	}
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return tt, &nonRetriableError{err}
+	}
+	req.Body.Close()
+	if err = xml.Unmarshal(body, &tt); err != nil {
+		err = &nonRetriableError{err}
+	}
+	return tt, err
+}
+
+// GetResponse returns the response associated with the Responder.
+// This function is typically called by the fake server internals.
+func GetResponse[T any](r Responder[T]) T {
+	return r.resp
+}
+
+// GetResponseContent returns the ResponseContent associated with the Responder.
+// This function is typically called by the fake server internals.
+func GetResponseContent[T any](r Responder[T]) ResponseContent {
+	return r.content
+}
+
 // GetError returns the error for this responder.
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func GetError(e ErrorResponder, req *http.Request) error {
 	if e.err == nil {
 		return nil
@@ -209,7 +359,7 @@ func GetError(e ErrorResponder, req *http.Request) error {
 }
 
 // PagerResponderNext returns the next response in the sequence (a T or an error).
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func PagerResponderNext[T any](p *PagerResponder[T], req *http.Request) (*http.Response, error) {
 	if len(p.pages) == 0 {
 		return nil, &nonRetriableError{errors.New("paged response has no pages")}
@@ -224,7 +374,13 @@ func PagerResponderNext[T any](p *PagerResponder[T], req *http.Request) (*http.R
 		if err != nil {
 			return nil, &nonRetriableError{err}
 		}
-		return newResponse(http.StatusOK, "OK", req, string(body)), nil
+		content := ResponseContent{
+			Header: http.Header{},
+		}
+		resp := newResponse(content, req)
+		resp.Status = "OK"
+		resp.StatusCode = http.StatusOK
+		return setResponseBody(resp, body, shared.ContentTypeAppJSON), nil
 	}
 
 	err := page.(error)
@@ -237,7 +393,7 @@ func PagerResponderNext[T any](p *PagerResponder[T], req *http.Request) (*http.R
 }
 
 // PagerResponderMore returns true if there are more responses for consumption.
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func PagerResponderMore[T any](p *PagerResponder[T]) bool {
 	return len(p.pages) > 0
 }
@@ -249,7 +405,7 @@ type pageindex[T any] struct {
 
 // PagerResponderInjectNextLinks is used to populate the nextLink field.
 // The inject callback is executed for every T in the sequence except for the last one.
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func PagerResponderInjectNextLinks[T any](p *PagerResponder[T], req *http.Request, inject func(page *T, createLink func() string)) {
 	// first find all the actual pages in the list
 	pages := make([]pageindex[T], 0, len(p.pages))
@@ -279,13 +435,13 @@ func PagerResponderInjectNextLinks[T any](p *PagerResponder[T], req *http.Reques
 }
 
 // PollerResponderMore returns true if there are more responses for consumption.
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func PollerResponderMore[T any](p *PollerResponder[T]) bool {
 	return len(p.nonTermResps) > 0 || p.err != nil || p.res != nil
 }
 
 // PollerResponderNext returns the next response in the sequence (a *http.Response or an error).
-// This method is typically called by the fake server internals.
+// This function is typically called by the fake server internals.
 func PollerResponderNext[T any](p *PollerResponder[T], req *http.Request) (*http.Response, error) {
 	if len(p.nonTermResps) > 0 {
 		resp := p.nonTermResps[0]
@@ -295,7 +451,10 @@ func PollerResponderNext[T any](p *PollerResponder[T], req *http.Request) (*http
 			return nil, &nonRetriableError{resp.err}
 		}
 
-		httpResp := newResponse(http.StatusOK, "OK", req, "")
+		content := ResponseContent{
+			Header: http.Header{},
+		}
+		httpResp := newResponse(content, req)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, resp.status)
 
 		if resp.retryAfter > 0 {
@@ -316,7 +475,10 @@ func PollerResponderNext[T any](p *PollerResponder[T], req *http.Request) (*http
 			return nil, &nonRetriableError{err}
 		}
 		p.res = nil
-		httpResp := newResponse(http.StatusOK, "OK", req, string(body))
+		content := ResponseContent{
+			Header: http.Header{},
+		}
+		httpResp := setResponseBody(newResponse(content, req), body, shared.ContentTypeAppJSON)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, "Succeeded")
 		return httpResp, nil
 	} else {
@@ -330,29 +492,38 @@ type nonTermResp struct {
 	err        error
 }
 
-func newResponse(statusCode int, status string, req *http.Request, body string) *http.Response {
-	resp := &http.Response{
+func setResponseBody(resp *http.Response, body []byte, contentType string) *http.Response {
+	if l := int64(len(body)); l > 0 {
+		resp.Header.Set(shared.HeaderContentType, contentType)
+		resp.ContentLength = l
+		resp.Body = io.NopCloser(bytes.NewReader(body))
+	}
+	return resp
+}
+
+func newResponse(content ResponseContent, req *http.Request) *http.Response {
+	if content.Header == nil {
+		content.Header = http.Header{}
+	}
+	return &http.Response{
 		Body:       http.NoBody,
-		Header:     http.Header{},
+		Header:     content.Header,
 		Proto:      "HTTP/1.1",
 		ProtoMajor: 1,
 		ProtoMinor: 1,
 		Request:    req,
-		Status:     status,
-		StatusCode: statusCode,
+		Status:     "OK",
+		StatusCode: http.StatusOK,
 	}
-
-	if l := int64(len(body)); l > 0 {
-		resp.Header.Set(shared.HeaderContentType, shared.ContentTypeAppJSON)
-		resp.ContentLength = l
-		resp.Body = io.NopCloser(strings.NewReader(body))
-	}
-
-	return resp
 }
 
 func newErrorResponse(errorCode string, statusCode int, req *http.Request) *http.Response {
-	resp := newResponse(statusCode, "Operation Failed", req, "")
+	content := ResponseContent{
+		Header: http.Header{},
+	}
+	resp := newResponse(content, req)
+	resp.Status = "Operation Failed"
+	resp.StatusCode = http.StatusBadRequest
 	resp.Header.Set(shared.HeaderXMSErrorCode, errorCode)
 	return resp
 }

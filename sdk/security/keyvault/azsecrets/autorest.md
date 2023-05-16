@@ -17,6 +17,17 @@ security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 
+declare-directive:
+  rename-property: >-
+      [{
+      from: 'swagger-document',
+      transform: `if ($.properties[${JSON.stringify($.from)}]) { $.properties[${JSON.stringify($.from)}]["x-ms-client-name"] = ${JSON.stringify($.to)}; }`
+      },
+      {
+      from: 'openapi-document',
+      transform: `if ($.properties[${JSON.stringify($.from)}]) { $.properties[${JSON.stringify($.from)}]["x-ms-client-name"] = ${JSON.stringify($.to)}; }`
+      }]
+      
 directive:
   # delete unused model
   - remove-model: SecretProperties
@@ -36,17 +47,56 @@ directive:
   - rename-model:
       from: SecretUpdateParameters
       to: UpdateSecretParameters
+  - rename-model:
+      from: SecretBundle
+      to: Secret
+  - rename-model:
+      from: DeletedSecretBundle
+      to: DeletedSecret
+  - rename-model:
+      from: SecretItem
+      to: SecretProperties
+  - rename-model:
+      from: DeletedSecretItem
+      to: DeletedSecretProperties
+  - rename-model:
+      from: UpdateSecretParameters
+      to: UpdateSecretPropertiesParameters
+  - rename-model:
+      from: DeletedSecretListResult
+      to: DeletedSecretPropertiesListResult
+  - rename-model:
+      from: SecretListResult
+      to: SecretPropertiesListResult
 
-  # rename paged operations from Get* to List*
+  # rename operations
   - rename-operation:
       from: GetDeletedSecrets
-      to: ListDeletedSecrets
+      to: ListDeletedSecretProperties
   - rename-operation:
       from: GetSecrets
-      to: ListSecrets
+      to: ListSecretProperties
   - rename-operation:
       from: GetSecretVersions
-      to: ListSecretVersions
+      to: ListSecretPropertiesVersions
+  - rename-operation:
+      from: UpdateSecret
+      to: UpdateSecretProperties
+
+  # rename fields
+  - where-model: Secret
+    rename-property:
+      from: kid
+      to: KeyID
+  - where-model: RestoreSecretParameters
+    rename-property:
+      from: value
+      to: SecretBackup
+
+  # remove type DeletionRecoveryLevel, use string instead
+  - from: models.go
+    where: $
+    transform: return $.replace(/DeletionRecoveryLevel/g, "string");
 
   # delete unused error models
   - from: models.go

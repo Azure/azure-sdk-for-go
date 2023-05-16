@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (2023-05-11)
+## 1.0.0 (Unreleased)
+
+### Breaking Changes
+* Renamed `Client.ListSecrets` to `Client.ListSecretProperties`
+* Renamed `Client.ListSecretVersions` to `Client.ListSecretPropertiesVersions`
+* Renamed `SecretBundle` to `Secret`
+* Renamed `DeletedSecretBundle` to `DeletedSecret`
+* Renamed `SecretItem` to `SecretProperties`
+* Renamed `DeletedSecretItem` to `DeletedSecretProperties`
+* Renamed `Kid` to `KeyID`
+* Removed `DeletionRecoveryLevel` type
 
 ### Other Changes
 * Updated dependencies

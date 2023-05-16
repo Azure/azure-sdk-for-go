@@ -104,7 +104,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 	if has_blobEndpoint {
 		serviceURL = blobEndpoint
 	} else if has_accountName {
-		serviceURL = fmt.Sprintf("%v://%v.blob.%v/", protocol, accountName, suffix)
+		serviceURL = fmt.Sprintf("%v://%v.blob.%v", protocol, accountName, suffix)
 	} else {
 		return ParsedConnectionString{}, errors.New("connection string needs either AccountName or BlobEndpoint")
 	}

@@ -95,7 +95,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 	if has_queueEndpoint {
 		serviceURL = queueEndpoint
 	} else if has_accountName {
-		serviceURL = fmt.Sprintf("%v://%v.queue.%v/", protocol, accountName, suffix)
+		serviceURL = fmt.Sprintf("%v://%v.queue.%v", protocol, accountName, suffix)
 	} else {
 		return ParsedConnectionString{}, errors.New("connection string needs either AccountName or QueueEndpoint")
 	}

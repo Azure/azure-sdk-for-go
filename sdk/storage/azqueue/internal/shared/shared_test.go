@@ -50,6 +50,15 @@ func TestParseConnectionStringHTTP(t *testing.T) {
 	require.Equal(t, "secretkeykey", parsed.AccountKey)
 }
 
+func TestParseConnectionStringSuffixTrailingSlash(t *testing.T) {
+	connStr := "DefaultEndpointsProtocol=https;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net/"
+	parsed, err := ParseConnectionString(connStr)
+	require.NoError(t, err)
+	require.Equal(t, "https://dummyaccount.queue.core.windows.net/", parsed.ServiceURL)
+	require.Equal(t, "dummyaccount", parsed.AccountName)
+	require.Equal(t, "secretkeykey", parsed.AccountKey)
+}
+
 func TestParseConnectionStringBasic(t *testing.T) {
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey"
 	parsed, err := ParseConnectionString(connStr)
@@ -82,6 +91,15 @@ func TestParseConnectionStringSASAndEndpointAndCustomDomain(t *testing.T) {
 	parsed, err := ParseConnectionString(connStr)
 	require.NoError(t, err)
 	require.Equal(t, "http://127.0.0.1:10000/devstoreaccount1/?fakesharedaccesssignature", parsed.ServiceURL)
+	require.Empty(t, parsed.AccountName)
+	require.Empty(t, parsed.AccountKey)
+}
+
+func TestParseConnectionStringSASSuffixTrailingSlash(t *testing.T) {
+	connStr := "AccountName=dummyaccount;SharedAccessSignature=fakesharedaccesssignature;EndpointSuffix=core.windows.net/"
+	parsed, err := ParseConnectionString(connStr)
+	require.NoError(t, err)
+	require.Equal(t, "https://dummyaccount.queue.core.windows.net/?fakesharedaccesssignature", parsed.ServiceURL)
 	require.Empty(t, parsed.AccountName)
 	require.Empty(t, parsed.AccountKey)
 }

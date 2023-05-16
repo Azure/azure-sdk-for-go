@@ -9,6 +9,26 @@
 
 package armeventgrid
 
+// CaCertificatesClientCreateOrUpdateResponse contains the response from method CaCertificatesClient.BeginCreateOrUpdate.
+type CaCertificatesClientCreateOrUpdateResponse struct {
+	CaCertificate
+}
+
+// CaCertificatesClientDeleteResponse contains the response from method CaCertificatesClient.BeginDelete.
+type CaCertificatesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CaCertificatesClientGetResponse contains the response from method CaCertificatesClient.Get.
+type CaCertificatesClientGetResponse struct {
+	CaCertificate
+}
+
+// CaCertificatesClientListByNamespaceResponse contains the response from method CaCertificatesClient.NewListByNamespacePager.
+type CaCertificatesClientListByNamespaceResponse struct {
+	CaCertificatesListResult
+}
+
 // ChannelsClientCreateOrUpdateResponse contains the response from method ChannelsClient.CreateOrUpdate.
 type ChannelsClientCreateOrUpdateResponse struct {
 	Channel
@@ -37,6 +57,46 @@ type ChannelsClientListByPartnerNamespaceResponse struct {
 // ChannelsClientUpdateResponse contains the response from method ChannelsClient.Update.
 type ChannelsClientUpdateResponse struct {
 	// placeholder for future response values
+}
+
+// ClientGroupsClientCreateOrUpdateResponse contains the response from method ClientGroupsClient.BeginCreateOrUpdate.
+type ClientGroupsClientCreateOrUpdateResponse struct {
+	ClientGroup
+}
+
+// ClientGroupsClientDeleteResponse contains the response from method ClientGroupsClient.BeginDelete.
+type ClientGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientGroupsClientGetResponse contains the response from method ClientGroupsClient.Get.
+type ClientGroupsClientGetResponse struct {
+	ClientGroup
+}
+
+// ClientGroupsClientListByNamespaceResponse contains the response from method ClientGroupsClient.NewListByNamespacePager.
+type ClientGroupsClientListByNamespaceResponse struct {
+	ClientGroupsListResult
+}
+
+// ClientsClientCreateOrUpdateResponse contains the response from method ClientsClient.BeginCreateOrUpdate.
+type ClientsClientCreateOrUpdateResponse struct {
+	Client
+}
+
+// ClientsClientDeleteResponse contains the response from method ClientsClient.BeginDelete.
+type ClientsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientsClientGetResponse contains the response from method ClientsClient.Get.
+type ClientsClientGetResponse struct {
+	Client
+}
+
+// ClientsClientListByNamespaceResponse contains the response from method ClientsClient.NewListByNamespacePager.
+type ClientsClientListByNamespaceResponse struct {
+	ClientsListResult
 }
 
 // DomainEventSubscriptionsClientCreateOrUpdateResponse contains the response from method DomainEventSubscriptionsClient.BeginCreateOrUpdate.
@@ -254,6 +314,106 @@ type ExtensionTopicsClientGetResponse struct {
 	ExtensionTopic
 }
 
+// NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate.
+type NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse struct {
+	Subscription
+}
+
+// NamespaceTopicEventSubscriptionsClientDeleteResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginDelete.
+type NamespaceTopicEventSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceTopicEventSubscriptionsClientGetResponse contains the response from method NamespaceTopicEventSubscriptionsClient.Get.
+type NamespaceTopicEventSubscriptionsClientGetResponse struct {
+	Subscription
+}
+
+// NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse contains the response from method NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager.
+type NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse struct {
+	SubscriptionsListResult
+}
+
+// NamespaceTopicEventSubscriptionsClientUpdateResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginUpdate.
+type NamespaceTopicEventSubscriptionsClientUpdateResponse struct {
+	Subscription
+}
+
+// NamespaceTopicsClientCreateOrUpdateResponse contains the response from method NamespaceTopicsClient.BeginCreateOrUpdate.
+type NamespaceTopicsClientCreateOrUpdateResponse struct {
+	NamespaceTopic
+}
+
+// NamespaceTopicsClientDeleteResponse contains the response from method NamespaceTopicsClient.BeginDelete.
+type NamespaceTopicsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceTopicsClientGetResponse contains the response from method NamespaceTopicsClient.Get.
+type NamespaceTopicsClientGetResponse struct {
+	NamespaceTopic
+}
+
+// NamespaceTopicsClientListByNamespaceResponse contains the response from method NamespaceTopicsClient.NewListByNamespacePager.
+type NamespaceTopicsClientListByNamespaceResponse struct {
+	NamespaceTopicsListResult
+}
+
+// NamespaceTopicsClientListSharedAccessKeysResponse contains the response from method NamespaceTopicsClient.ListSharedAccessKeys.
+type NamespaceTopicsClientListSharedAccessKeysResponse struct {
+	TopicSharedAccessKeys
+}
+
+// NamespaceTopicsClientRegenerateKeyResponse contains the response from method NamespaceTopicsClient.BeginRegenerateKey.
+type NamespaceTopicsClientRegenerateKeyResponse struct {
+	TopicSharedAccessKeys
+}
+
+// NamespaceTopicsClientUpdateResponse contains the response from method NamespaceTopicsClient.BeginUpdate.
+type NamespaceTopicsClientUpdateResponse struct {
+	NamespaceTopic
+}
+
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
+type NamespacesClientCreateOrUpdateResponse struct {
+	Namespace
+}
+
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
+type NamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
+type NamespacesClientGetResponse struct {
+	Namespace
+}
+
+// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.NewListByResourceGroupPager.
+type NamespacesClientListByResourceGroupResponse struct {
+	NamespacesListResult
+}
+
+// NamespacesClientListBySubscriptionResponse contains the response from method NamespacesClient.NewListBySubscriptionPager.
+type NamespacesClientListBySubscriptionResponse struct {
+	NamespacesListResult
+}
+
+// NamespacesClientListSharedAccessKeysResponse contains the response from method NamespacesClient.ListSharedAccessKeys.
+type NamespacesClientListSharedAccessKeysResponse struct {
+	NamespaceSharedAccessKeys
+}
+
+// NamespacesClientRegenerateKeyResponse contains the response from method NamespacesClient.BeginRegenerateKey.
+type NamespacesClientRegenerateKeyResponse struct {
+	NamespaceSharedAccessKeys
+}
+
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.BeginUpdate.
+type NamespacesClientUpdateResponse struct {
+	Namespace
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsListResult
@@ -297,6 +457,41 @@ type PartnerConfigurationsClientUnauthorizePartnerResponse struct {
 // PartnerConfigurationsClientUpdateResponse contains the response from method PartnerConfigurationsClient.BeginUpdate.
 type PartnerConfigurationsClientUpdateResponse struct {
 	PartnerConfiguration
+}
+
+// PartnerDestinationsClientActivateResponse contains the response from method PartnerDestinationsClient.Activate.
+type PartnerDestinationsClientActivateResponse struct {
+	PartnerDestination
+}
+
+// PartnerDestinationsClientCreateOrUpdateResponse contains the response from method PartnerDestinationsClient.BeginCreateOrUpdate.
+type PartnerDestinationsClientCreateOrUpdateResponse struct {
+	PartnerDestination
+}
+
+// PartnerDestinationsClientDeleteResponse contains the response from method PartnerDestinationsClient.BeginDelete.
+type PartnerDestinationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PartnerDestinationsClientGetResponse contains the response from method PartnerDestinationsClient.Get.
+type PartnerDestinationsClientGetResponse struct {
+	PartnerDestination
+}
+
+// PartnerDestinationsClientListByResourceGroupResponse contains the response from method PartnerDestinationsClient.NewListByResourceGroupPager.
+type PartnerDestinationsClientListByResourceGroupResponse struct {
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientListBySubscriptionResponse contains the response from method PartnerDestinationsClient.NewListBySubscriptionPager.
+type PartnerDestinationsClientListBySubscriptionResponse struct {
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientUpdateResponse contains the response from method PartnerDestinationsClient.BeginUpdate.
+type PartnerDestinationsClientUpdateResponse struct {
+	PartnerDestination
 }
 
 // PartnerNamespacesClientCreateOrUpdateResponse contains the response from method PartnerNamespacesClient.BeginCreateOrUpdate.
@@ -444,6 +639,26 @@ type PartnerTopicsClientUpdateResponse struct {
 	PartnerTopic
 }
 
+// PermissionBindingsClientCreateOrUpdateResponse contains the response from method PermissionBindingsClient.BeginCreateOrUpdate.
+type PermissionBindingsClientCreateOrUpdateResponse struct {
+	PermissionBinding
+}
+
+// PermissionBindingsClientDeleteResponse contains the response from method PermissionBindingsClient.BeginDelete.
+type PermissionBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PermissionBindingsClientGetResponse contains the response from method PermissionBindingsClient.Get.
+type PermissionBindingsClientGetResponse struct {
+	PermissionBinding
+}
+
+// PermissionBindingsClientListByNamespaceResponse contains the response from method PermissionBindingsClient.NewListByNamespacePager.
+type PermissionBindingsClientListByNamespaceResponse struct {
+	PermissionBindingsListResult
+}
+
 // PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -572,6 +787,26 @@ type TopicEventSubscriptionsClientListResponse struct {
 // TopicEventSubscriptionsClientUpdateResponse contains the response from method TopicEventSubscriptionsClient.BeginUpdate.
 type TopicEventSubscriptionsClientUpdateResponse struct {
 	EventSubscription
+}
+
+// TopicSpacesClientCreateOrUpdateResponse contains the response from method TopicSpacesClient.BeginCreateOrUpdate.
+type TopicSpacesClientCreateOrUpdateResponse struct {
+	TopicSpace
+}
+
+// TopicSpacesClientDeleteResponse contains the response from method TopicSpacesClient.BeginDelete.
+type TopicSpacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TopicSpacesClientGetResponse contains the response from method TopicSpacesClient.Get.
+type TopicSpacesClientGetResponse struct {
+	TopicSpace
+}
+
+// TopicSpacesClientListByNamespaceResponse contains the response from method TopicSpacesClient.NewListByNamespacePager.
+type TopicSpacesClientListByNamespaceResponse struct {
+	TopicSpacesListResult
 }
 
 // TopicTypesClientGetResponse contains the response from method TopicTypesClient.Get.

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildAvailabilityStatus_GetByResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildAvailabilityStatus_GetByResource.json
 func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// 	Properties: &armresourcehealth.AvailabilityStatusProperties{
 	// 		AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 	// 		DetailedStatus: to.Ptr(""),
-	// 		OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+	// 		OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
 	// 		ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 	// 		ReasonType: to.Ptr(""),
 	// 		RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -66,7 +66,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildAvailabilityStatuses_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildAvailabilityStatuses_List.json
 func ExampleChildAvailabilityStatusesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -126,7 +126,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr("Customer Initiated"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -153,7 +153,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -178,7 +178,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr("Customer Initiated"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -205,7 +205,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{

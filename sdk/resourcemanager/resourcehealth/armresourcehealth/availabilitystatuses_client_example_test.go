@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_ListBySubscriptionId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_ListBySubscriptionId.json
 func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,13 +54,13 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// 				Category: to.Ptr("Unplanned"),
 		// 				Context: to.Ptr("Platform Initiated"),
 		// 				DetailedStatus: to.Ptr("We have not seen any issues with your virtual machine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr("Unplanned"),
 		// 				RecentlyResolved: &armresourcehealth.AvailabilityStatusPropertiesRecentlyResolved{
 		// 					ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:49:00Z"); return t}()),
-		// 					UnavailableOccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
-		// 					UnavailableSummary: to.Ptr("We are sorry your SQL database is unavailable"),
+		// 					UnavailableOccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
+		// 					UnavailabilitySummary: to.Ptr("We are sorry your SQL database is unavailable"),
 		// 				},
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
 		// 					{
@@ -81,7 +81,7 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr("Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr("Unplanned"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -106,7 +106,7 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_ListByResourceGroup.json
 func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,13 +142,13 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		// 				Category: to.Ptr("Unplanned"),
 		// 				Context: to.Ptr("Platform Initiated"),
 		// 				DetailedStatus: to.Ptr("We have not seen any issues with your virtual machine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr("Unplanned"),
 		// 				RecentlyResolved: &armresourcehealth.AvailabilityStatusPropertiesRecentlyResolved{
 		// 					ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:49:00Z"); return t}()),
-		// 					UnavailableOccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
-		// 					UnavailableSummary: to.Ptr("We are sorry your SQL database is unavailable"),
+		// 					UnavailableOccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
+		// 					UnavailabilitySummary: to.Ptr("We are sorry your SQL database is unavailable"),
 		// 				},
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
 		// 					{
@@ -169,7 +169,7 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr("Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr("Unplanned"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -194,7 +194,7 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatus_GetByResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatus_GetByResource.json
 func ExampleAvailabilityStatusesClient_GetByResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 	// 		Category: to.Ptr("Unplanned"),
 	// 		Context: to.Ptr("Platform Initiated"),
 	// 		DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
-	// 		OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+	// 		OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 	// 		ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 	// 		ReasonType: to.Ptr("Unplanned"),
 	// 		RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -247,7 +247,7 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_List.json
 func ExampleAvailabilityStatusesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 		// 				Category: to.Ptr("Unplanned"),
 		// 				Context: to.Ptr("Platform Initiated"),
 		// 				DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr("Unplanned"),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-04T14:11:29.7598931Z"); return t}()),
@@ -316,7 +316,7 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr("There aren’t any known Azure platform problems affecting this virtual machine"),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T16:23:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T16:23:00Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				Summary: to.Ptr("This virtual machine is running normally"),
 		// 			},

@@ -74,7 +74,7 @@ type AvailabilityStatusProperties struct {
 	HealthEventType *string
 
 	// Timestamp for when last change in health status occurred.
-	OccuredTime *time.Time
+	OccurredTime *time.Time
 
 	// Chronicity of the availability transition.
 	ReasonChronicity *ReasonChronicityTypes
@@ -116,11 +116,11 @@ type AvailabilityStatusPropertiesRecentlyResolved struct {
 	// Timestamp when the availabilityState changes to Available.
 	ResolvedTime *time.Time
 
-	// Timestamp for when the availabilityState changed to Unavailable
-	UnavailableOccuredTime *time.Time
-
 	// Brief description of cause of the resource becoming unavailable.
-	UnavailableSummary *string
+	UnavailabilitySummary *string
+
+	// Timestamp for when the availabilityState changed to Unavailable
+	UnavailableOccurredTime *time.Time
 }
 
 // AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
@@ -244,18 +244,6 @@ type EmergingIssuesGetResult struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ErrorResponse - Error details.
-type ErrorResponse struct {
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details *string
-
-	// READ-ONLY; The error message.
-	Message *string
 }
 
 // Event - Service health event
@@ -543,42 +531,6 @@ type ImpactedRegion struct {
 	Name *string
 }
 
-// ImpactedResourceStatus - impactedResource with health status
-type ImpactedResourceStatus struct {
-	// Properties of impacted resource status.
-	Properties *ImpactedResourceStatusProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ImpactedResourceStatusProperties - Properties of impacted resource status.
-type ImpactedResourceStatusProperties struct {
-	// Impacted resource status of the resource.
-	AvailabilityState *AvailabilityStateValues
-
-	// Timestamp for when last change in health status occurred.
-	OccurredTime *time.Time
-
-	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated.
-	ReasonType *ReasonTypeValues
-
-	// Summary description of the impacted resource status.
-	Summary *string
-
-	// Title description of the impacted resource status.
-	Title *string
-}
-
 // ImpactedResourcesClientGetByTenantIDOptions contains the optional parameters for the ImpactedResourcesClient.GetByTenantID
 // method.
 type ImpactedResourcesClientGetByTenantIDOptions struct {
@@ -760,22 +712,6 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // RecommendedAction - Lists actions the user can take based on the current availabilityState of the resource.
 type RecommendedAction struct {
 	// Recommended action.
@@ -789,21 +725,6 @@ type RecommendedAction struct {
 
 	// Substring of action, it describes which text should host the action URL.
 	ActionURLText *string
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager

@@ -1,13 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-05-26)
-### Breaking Changes
-
-- Struct `ErrorResponseError` has been removed
-- Field `OccurredTime` of struct `AvailabilityStatusProperties` has been removed
-- Field `UnavailabilitySummary`, `UnavailableOccurredTime` of struct `AvailabilityStatusPropertiesRecentlyResolved` has been removed
-- Field `Error` of struct `ErrorResponse` has been removed
-
+## 1.2.0 (2023-05-26)
 ### Features Added
 
 - New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
@@ -81,16 +74,11 @@
 - New struct `MetadataEntityListResult`
 - New struct `MetadataEntityProperties`
 - New struct `MetadataSupportedValueDetail`
-- New struct `ProxyResource`
 - New struct `StatusActiveEvent`
 - New struct `SystemData`
 - New struct `Update`
-- New field `ArticleID`, `Category`, `Context`, `OccuredTime` in struct `AvailabilityStatusProperties`
-- New field `UnavailableOccuredTime`, `UnavailableSummary` in struct `AvailabilityStatusPropertiesRecentlyResolved`
-- New field `Code`, `Details`, `Message` in struct `ErrorResponse`
-- New field `SystemData` in struct `ImpactedResourceStatus`
+- New field `ArticleID`, `Category`, `Context` in struct `AvailabilityStatusProperties`
 - New field `ActionURLComment` in struct `RecommendedAction`
-- New field `SystemData` in struct `Resource`
 
 
 ## 1.1.0 (2023-03-31)

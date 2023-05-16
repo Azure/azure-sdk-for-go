@@ -11,7 +11,7 @@ package armresourcehealth
 
 const (
 	moduleName    = "armresourcehealth"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.2.0"
 )
 
 // AvailabilityStateValues - Impacted resource status of the resource.
@@ -188,25 +188,6 @@ func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return []ReasonChronicityTypes{
 		ReasonChronicityTypesPersistent,
 		ReasonChronicityTypesTransient,
-	}
-}
-
-// ReasonTypeValues - When the resource's availabilityState is Unavailable, it describes where the health impacting event
-// was originated.
-type ReasonTypeValues string
-
-const (
-	ReasonTypeValuesPlanned       ReasonTypeValues = "Planned"
-	ReasonTypeValuesUnplanned     ReasonTypeValues = "Unplanned"
-	ReasonTypeValuesUserInitiated ReasonTypeValues = "UserInitiated"
-)
-
-// PossibleReasonTypeValuesValues returns the possible values for the ReasonTypeValues const type.
-func PossibleReasonTypeValuesValues() []ReasonTypeValues {
-	return []ReasonTypeValues{
-		ReasonTypeValuesPlanned,
-		ReasonTypeValuesUnplanned,
-		ReasonTypeValuesUserInitiated,
 	}
 }
 

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildResources_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildResources_List.json
 func ExampleChildResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleChildResourcesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:43Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:43Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr(""),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:18:25.575477Z"); return t}()),
@@ -66,7 +66,7 @@ func ExampleChildResourcesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:41Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:41Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr(""),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:18:25.575477Z"); return t}()),
@@ -81,7 +81,7 @@ func ExampleChildResourcesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:48Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:48Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr(""),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:18:25.575477Z"); return t}()),
@@ -96,7 +96,7 @@ func ExampleChildResourcesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:43Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:43Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr(""),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:18:25.575477Z"); return t}()),
@@ -111,7 +111,7 @@ func ExampleChildResourcesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 				ReasonType: to.Ptr(""),
 		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:18:25.575477Z"); return t}()),

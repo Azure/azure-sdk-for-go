@@ -915,6 +915,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeMultipleImpl(
 
 	bbClient3 := testcommon.CreateNewBlockBlob(context.Background(), _require, "deleted"+blobName, containerClient)
 	_, err = bbClient3.Delete(context.Background(), nil)
+	_require.NoError(err)
 
 	opts := container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true, Copy: true, Deleted: true, Versions: true},

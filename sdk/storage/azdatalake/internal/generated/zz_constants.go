@@ -68,6 +68,25 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
+type PathExpiryOptions string
+
+const (
+	PathExpiryOptionsAbsolute           PathExpiryOptions = "Absolute"
+	PathExpiryOptionsNeverExpire        PathExpiryOptions = "NeverExpire"
+	PathExpiryOptionsRelativeToCreation PathExpiryOptions = "RelativeToCreation"
+	PathExpiryOptionsRelativeToNow      PathExpiryOptions = "RelativeToNow"
+)
+
+// PossiblePathExpiryOptionsValues returns the possible values for the PathExpiryOptions const type.
+func PossiblePathExpiryOptionsValues() []PathExpiryOptions {
+	return []PathExpiryOptions{
+		PathExpiryOptionsAbsolute,
+		PathExpiryOptionsNeverExpire,
+		PathExpiryOptionsRelativeToCreation,
+		PathExpiryOptionsRelativeToNow,
+	}
+}
+
 type PathGetPropertiesAction string
 
 const (

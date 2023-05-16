@@ -24,17 +24,21 @@ import (
 // PathClient contains the methods for the Path group.
 // Don't use this type directly, use NewPathClient() instead.
 type PathClient struct {
-	endpoint string
-	pl       runtime.Pipeline
+	endpoint         string
+	xmsLeaseDuration int32
+	pl               runtime.Pipeline
 }
 
 // NewPathClient creates a new instance of PathClient with the specified values.
 //   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
+//   - xmsLeaseDuration - The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds.
+//     The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewPathClient(endpoint string, pl runtime.Pipeline) *PathClient {
+func NewPathClient(endpoint string, xmsLeaseDuration int32, pl runtime.Pipeline) *PathClient {
 	client := &PathClient{
-		endpoint: endpoint,
-		pl:       pl,
+		endpoint:         endpoint,
+		xmsLeaseDuration: xmsLeaseDuration,
+		pl:               pl,
 	}
 	return client
 }
@@ -277,6 +281,27 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
 		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
+	if options != nil && options.Group != nil {
+		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+	}
+	if options != nil && options.ACL != nil {
+		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+	}
+	if options != nil && options.ProposedLeaseID != nil {
+		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+	}
+	if options != nil && options.LeaseDuration != nil {
+		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
+	}
+	if options != nil && options.ExpiryOptions != nil {
+		req.Raw().Header["x-ms-expiry-option"] = []string{string(*options.ExpiryOptions)}
+	}
+	if options != nil && options.ExpiresOn != nil {
+		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -773,9 +798,7 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	req.Raw().Header["x-ms-lease-action"] = []string{string(xmsLeaseAction)}
-	if options != nil && options.XMSLeaseDuration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(*options.XMSLeaseDuration), 10)}
-	}
+	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(client.xmsLeaseDuration), 10)}
 	if options != nil && options.XMSLeaseBreakPeriod != nil {
 		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.XMSLeaseBreakPeriod), 10)}
 	}

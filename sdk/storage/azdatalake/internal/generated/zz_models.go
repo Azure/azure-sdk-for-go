@@ -300,14 +300,29 @@ type PathClientAppendDataOptions struct {
 
 // PathClientCreateOptions contains the optional parameters for the PathClient.Create method.
 type PathClientCreateOptions struct {
+	// Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries.
+	// Each access control entry (ACE) consists of a scope, a type, a user or group
+	// identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
+	ACL *string
 	// Optional. When deleting a directory, the number of paths that are deleted with each invocation is limited. If the number
 	// of paths to be deleted exceeds this limit, a continuation token is returned in
 	// this response header. When a continuation token is returned in the response, it must be specified in a subsequent invocation
 	// of the delete operation to continue deleting the directory.
 	Continuation *string
+	// The time to set the blob to expiry
+	ExpiresOn *string
+	// Required. Indicates mode of the expiry time
+	ExpiryOptions *PathExpiryOptions
+	// Optional. The owning group of the blob or directory.
+	Group *string
+	// The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The lease duration
+	// must be between 15 and 60 seconds or -1 for infinite lease.
+	LeaseDuration *int64
 	// Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename operation. The value
 	// must be "legacy" or "posix", and the default value will be "posix".
 	Mode *PathRenameMode
+	// Optional. The owner of the blob or directory.
+	Owner *string
 	// Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file
 	// owner, the file owning group, and others. Each class may be granted read,
 	// write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g.
@@ -320,6 +335,10 @@ type PathClientCreateOptions struct {
 	// header is omitted. To merge new and existing properties, first get all existing properties and the current E-Tag, then
 	// make a conditional request with the E-Tag and include values for all properties.
 	Properties *string
+	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
+	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+	// string formats.
+	ProposedLeaseID *string
 	// An optional file or directory to be renamed. The value must have the following format: "/{filesystem}/{path}". If "x-ms-properties"
 	// is specified, the properties will overwrite the existing properties;
 	// otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string
@@ -433,9 +452,6 @@ type PathClientLeaseOptions struct {
 	// The lease break period duration is optional to break a lease, and specifies the break period of the lease in seconds. The
 	// lease break duration must be between 0 and 60 seconds.
 	XMSLeaseBreakPeriod *int32
-	// The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The lease duration
-	// must be between 15 and 60 seconds or -1 for infinite lease.
-	XMSLeaseDuration *int32
 }
 
 // PathClientReadOptions contains the optional parameters for the PathClient.Read method.

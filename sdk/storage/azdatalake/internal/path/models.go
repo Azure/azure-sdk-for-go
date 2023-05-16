@@ -9,6 +9,8 @@ package path
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"time"
 )
 
 // CPKInfo contains a group of parameters for client provided encryption key.
@@ -20,26 +22,78 @@ type CPKScopeInfo = blob.CPKScopeInfo
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.PathAccessConditions
 
+// HTTPHeaders contains the HTTP headers for path operations.
+type HTTPHeaders = generated.PathHTTPHeaders
+
+// SourceModifiedAccessConditions identifies the source path access conditions.
+type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
+
 // CreateOptions contains the optional parameters when calling the Create operation.
 type CreateOptions struct {
-	AccessConditions  *AccessConditions
-	ContinuationToken *string
-	Permissions       *string
-	Properties        *string
-	SourceLeaseID     *string
-	Umask             *string
+	// AccessConditions identifies path-specific access conditions.
+	AccessConditions *AccessConditions
+	// Metadata contains name-value pairs for the path.
+	Metadata map[string]*string
+	// CPKInfo contains a group of parameters for client provided encryption key.
+	CPKInfo *CPKInfo
+	// HTTPHeaders contains the HTTP headers for path operations.
+	HTTPHeaders                    *HTTPHeaders
+	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	PathExpiryOptions              *ExpiryOptions
+	RenameMode                     *RenameMode
+	ExpiresOn                      *time.Time
+	Timeout                        *time.Duration
+	LeaseDuration                  *time.Duration
+	ProposedLeaseID                *string
+	Permissions                    *string
+	Umask                          *string
+	SourceLeaseID                  *string
+	Owner                          *string
+	Group                          *string
+	ACL                            *string
 }
 
 // DeleteOptions contains the optional parameters when calling the Delete operation.
 type DeleteOptions struct {
+	Recursive        *bool
+	AccessConditions *AccessConditions
 }
 
 // SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
 type SetAccessControlOptions struct {
+	Owner            *string
+	Group            *string
+	ACL              *string
+	Permissions      *string
+	AccessConditions *AccessConditions
 }
 
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveOptions struct {
+	Owner       *string
+	Group       *string
+	ACL         *string
+	Permissions *string
+	//Mode              *SetAccessControlRecursiveMode
+	MaxPaths          *int32
+	ContinueOnFailure *bool
+	ContinuationToken *string
+}
+
+// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
+type UpdateAccessControlRecursiveOptions struct {
+	ACL               *string
+	MaxPaths          *int32
+	ContinuationToken *string
+	ContinueOnFailure *bool
+}
+
+// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
+type RemoveAccessControlRecursiveOptions struct {
+	ACL               *string
+	ContinuationToken *string
+	MaxPaths          *int32
+	ContinueOnFailure *bool
 }
 
 // GetPropertiesOptions contains the optional parameters when calling the GetProperties operation.

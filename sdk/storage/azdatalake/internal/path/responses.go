@@ -23,6 +23,12 @@ type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
 
+// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+
+// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = blob.GetPropertiesResponse
 

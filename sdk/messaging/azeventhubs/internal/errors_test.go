@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,6 +44,7 @@ func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}), RecoveryKindFatal)
+	require.Equal(t, GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCondResourceLimitExceeded}), RecoveryKindFatal)
 }
 
 func Test_TransformError(t *testing.T) {

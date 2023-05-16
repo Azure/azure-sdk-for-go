@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fce0b25dda01303f2c70de34031169b5d326998b/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/75ece9197dbac70ac0ba651c53a79c1841944be2/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
-		// 					Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyType("SystemManaged")),
+		// 					Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc5rep.postgres.database.azure.com"),
 		// 				HighAvailability: &armpostgresqlflexibleservers.HighAvailability{

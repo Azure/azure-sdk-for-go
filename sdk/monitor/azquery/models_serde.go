@@ -113,9 +113,9 @@ func (b *BatchQueryResponse) UnmarshalJSON(data []byte) error {
 func (b BatchQueryResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", b.Error)
-	populate(objectMap, "statistics", &b.Statistics)
+	populate(objectMap, "statistics", json.RawMessage(b.Statistics))
 	populate(objectMap, "tables", b.Tables)
-	populate(objectMap, "render", &b.Visualization)
+	populate(objectMap, "render", json.RawMessage(b.Visualization))
 	return json.Marshal(objectMap)
 }
 
@@ -713,9 +713,9 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 func (r Results) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", r.Error)
-	populate(objectMap, "statistics", &r.Statistics)
+	populate(objectMap, "statistics", json.RawMessage(r.Statistics))
 	populate(objectMap, "tables", r.Tables)
-	populate(objectMap, "render", &r.Visualization)
+	populate(objectMap, "render", json.RawMessage(r.Visualization))
 	return json.Marshal(objectMap)
 }
 

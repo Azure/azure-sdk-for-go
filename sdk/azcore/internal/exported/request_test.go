@@ -194,3 +194,20 @@ func TestNewRequestFail(t *testing.T) {
 		t.Fatal("unexpected request")
 	}
 }
+
+func TestRequestWithContext(t *testing.T) {
+	type ctxKey1 struct{}
+	type ctxKey2 struct{}
+
+	req1, err := NewRequest(context.WithValue(context.Background(), ctxKey1{}, 1), http.MethodPost, testURL)
+	require.NoError(t, err)
+	require.NotNil(t, req1.Raw().Context().Value(ctxKey1{}))
+
+	req2 := req1.WithContext(context.WithValue(context.Background(), ctxKey2{}, 1))
+	require.Nil(t, req2.Raw().Context().Value(ctxKey1{}))
+	require.NotNil(t, req2.Raw().Context().Value(ctxKey2{}))
+
+	// shallow copy, so changing req2 affects req1
+	req2.Raw().Header.Add("added-req2", "value")
+	require.EqualValues(t, "value", req1.Raw().Header.Get("added-req2"))
+}

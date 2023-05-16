@@ -25,9 +25,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
+type ClientOptions base.ClientOptions
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type Client base.Client[generated.BlobClient]
@@ -325,12 +323,11 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
-		downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{}, nil)
-		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
+		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
 		if err != nil {
 			return 0, err
 		}
-		count = *dr.ContentLength - o.Range.Offset
+		count = *gr.ContentLength - o.Range.Offset
 	}
 
 	if count <= 0 {

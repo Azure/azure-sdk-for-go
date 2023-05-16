@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/078b90617e5e08137d0395963bd4119f4561a910/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/OperationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/OperationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,6 +136,36 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Operation: to.Ptr("Cancel a running image build"),
 		// 				Provider: to.Ptr("Virtual Machine Image Builder"),
 		// 				Resource: to.Ptr("VM Image template"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/triggers/write"),
+		// 			Display: &armvirtualmachineimagebuilder.OperationDisplay{
+		// 				Description: to.Ptr("Create or update a trigger for a VM image template resource"),
+		// 				Operation: to.Ptr("Create or update a trigger for a VM image template resource"),
+		// 				Provider: to.Ptr("Virtual Machine Image Builder"),
+		// 				Resource: to.Ptr("Trigger"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/triggers/read"),
+		// 			Display: &armvirtualmachineimagebuilder.OperationDisplay{
+		// 				Description: to.Ptr("Get a trigger for a VM image template resource"),
+		// 				Operation: to.Ptr("Get a trigger for a VM image template resource"),
+		// 				Provider: to.Ptr("Virtual Machine Image Builder"),
+		// 				Resource: to.Ptr("Trigger"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/triggers/delete"),
+		// 			Display: &armvirtualmachineimagebuilder.OperationDisplay{
+		// 				Description: to.Ptr("Delete a trigger for a VM image template resource"),
+		// 				Operation: to.Ptr("Delete a trigger for a VM image template resource"),
+		// 				Provider: to.Ptr("Virtual Machine Image Builder"),
+		// 				Resource: to.Ptr("Trigger"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 	}},

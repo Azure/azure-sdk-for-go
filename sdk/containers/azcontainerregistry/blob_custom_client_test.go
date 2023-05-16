@@ -100,6 +100,7 @@ func TestNewBlobClient(t *testing.T) {
 
 func TestBlobDigestCalculator_saveAndRestoreState(t *testing.T) {
 	calculator := NewBlobDigestCalculator()
+	calculator.restoreState()
 	calculator.saveState()
 	calculator.restoreState()
 	calculator.h.Write([]byte("test1"))

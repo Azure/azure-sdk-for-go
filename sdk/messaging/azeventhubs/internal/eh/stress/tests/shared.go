@@ -318,7 +318,7 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 			newCheckpoint.SequenceNumber = &partProps.LastEnqueuedSequenceNumber
 		}
 
-		if err = cps.UpdateCheckpoint(ctx, newCheckpoint, nil); err != nil {
+		if err = cps.SetCheckpoint(ctx, newCheckpoint, nil); err != nil {
 			return nil, err
 		}
 

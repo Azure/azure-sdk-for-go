@@ -8,10 +8,11 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
+	github.com/Azure/go-amqp v1.0.0
 	github.com/golang/mock v1.6.0
 	github.com/joho/godotenv v1.4.0
 	github.com/stretchr/testify v1.7.1
-	nhooyr.io/websocket v1.8.7
+	nhooyr.io/websocket v1.8.7	
 )
 
 require (

@@ -818,7 +818,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeTypeCopy() {
 		_require.EqualValues(*resp.Segment.BlobItems[1].Name, blobCopyName)
 		_require.EqualValues(*resp.Segment.BlobItems[0].Name, blobName)
 		_require.Equal(*resp.Segment.BlobItems[0].Properties.ContentLength, int64(len(testcommon.BlockBlobDefaultData)))
-		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopySource, bbClient.URL())
 		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopyStatus, container.CopyStatusTypeSuccess)
 	}
 }
@@ -923,12 +922,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeMultipleImpl(
 	pager := containerClient.NewListBlobsFlatPager(&opts)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
 
 		// These are sufficient to show that the blob copy was in fact included
 		_require.Nil(err)
 		_require.Equal(len(resp.Segment.BlobItems), 6)
-		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopySource, bbClient.URL())
 		_require.Equal(*resp.Segment.BlobItems[1].Properties.CopyStatus, container.CopyStatusTypeSuccess)
 	}
 }

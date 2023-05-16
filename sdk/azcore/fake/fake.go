@@ -207,6 +207,16 @@ func NewBinaryResponse(content ResponseContent, body io.ReadCloser, req *http.Re
 	return resp, nil
 }
 
+// MarshalResponseAsByteArray base-64 encodes the body with the specified format and returns it in a *http.Response.
+// This function is typically called by the fake server internals.
+func MarshalResponseAsByteArray(content ResponseContent, body []byte, format exported.Base64Encoding, req *http.Request) (*http.Response, error) {
+	resp := newResponse(content, req)
+	if body != nil {
+		resp = setResponseBody(resp, []byte(exported.EncodeByteArray(body, format)), shared.ContentTypeAppJSON)
+	}
+	return resp, nil
+}
+
 // MarshalResponseAsJSON converts the body into JSON and returns it in a *http.Response.
 // This function is typically called by the fake server internals.
 func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*http.Response, error) {
@@ -241,6 +251,24 @@ func MarshalResponseAsXML(content ResponseContent, v any, req *http.Request) (*h
 	resp := newResponse(content, req)
 	resp = setResponseBody(resp, body, shared.ContentTypeAppXML)
 	return resp, nil
+}
+
+// UnmarshalRequestAsByteArray base-64 decodes the body in the specified format.
+// This function is typically called by the fake server internals.
+func UnmarshalRequestAsByteArray(req *http.Request, format exported.Base64Encoding) ([]byte, error) {
+	if req.Body == nil {
+		return nil, nil
+	}
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	req.Body.Close()
+	var val []byte
+	if err := exported.DecodeByteArray(string(body), &val, format); err != nil {
+		return nil, &nonRetriableError{err}
+	}
+	return val, nil
 }
 
 // UnmarshalRequestAsJSON unmarshalls the request body into an instance of T.

@@ -11,9 +11,13 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"io"
+	"net/http"
 	"testing"
 )
 
@@ -143,4 +147,62 @@ func TestBlobClient_CompleteUpload_uploadByChunkFailOver(t *testing.T) {
 	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *completeResp.DockerContentDigest)
+}
+
+func TestBlobClient_GetBlob(t *testing.T) {
+	startRecording(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+	res, err := client.GetBlob(ctx, "alpine", digest, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, *res.ContentLength)
+}
+
+func TestBlobClient_GetBlob_fail(t *testing.T) {
+	startRecording(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetBlob(ctx, "alpine", "wrong digest", nil)
+	require.Error(t, err)
+}
+
+func TestBlobClient_GetChunk(t *testing.T) {
+	startRecording(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+	calculator := NewBlobDigestCalculator()
+	res, err := client.GetChunk(ctx, "alpine", digest, "bytes=0-999", calculator, nil)
+	require.NoError(t, err)
+	require.Equal(t, int64(1000), *res.ContentLength)
+	res, err = client.GetChunk(ctx, "alpine", digest, "bytes=1000-1471", calculator, nil)
+	require.NoError(t, err)
+	require.Equal(t, int64(472), *res.ContentLength)
+}
+
+func TestBlobClient_GetChunk_wrongDigest(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusPartialContent), mock.WithHeader("Content-Range", "bytes 0-9/20"), mock.WithBody([]byte("0123456789")))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusPartialContent), mock.WithHeader("Content-Range", "bytes 10-19/20"), mock.WithBody([]byte("0123456789")))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	blobClient := &BlobClient{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	calculator := NewBlobDigestCalculator()
+	res, err := blobClient.GetChunk(ctx, "test", "sha256:test", "bytes=0-9", calculator, nil)
+	require.NoError(t, err)
+	require.Equal(t, int64(10), *res.ContentLength)
+	_, err = blobClient.GetChunk(ctx, "test", "sha256:test", "bytes=10-19", calculator, nil)
+	require.Error(t, err)
 }

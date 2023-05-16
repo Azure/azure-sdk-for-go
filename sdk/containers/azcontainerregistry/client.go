@@ -152,14 +152,14 @@ func (client *Client) deleteTagCreateRequest(ctx context.Context, name string, t
 	return req, nil
 }
 
-// GetManifest - Get the manifest identified by name and reference where reference can be a tag or digest.
+// getManifest - Get the manifest identified by name and reference where reference can be a tag or digest.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - reference - A tag or a digest, pointing to a specific image
-//   - options - ClientGetManifestOptions contains the optional parameters for the Client.GetManifest method.
-func (client *Client) GetManifest(ctx context.Context, name string, reference string, options *ClientGetManifestOptions) (ClientGetManifestResponse, error) {
+//   - options - ClientGetManifestOptions contains the optional parameters for the Client.getManifest method.
+func (client *Client) getManifest(ctx context.Context, name string, reference string, options *ClientGetManifestOptions) (ClientGetManifestResponse, error) {
 	req, err := client.getManifestCreateRequest(ctx, name, reference, options)
 	if err != nil {
 		return ClientGetManifestResponse{}, err
@@ -174,7 +174,7 @@ func (client *Client) GetManifest(ctx context.Context, name string, reference st
 	return client.getManifestHandleResponse(resp)
 }
 
-// getManifestCreateRequest creates the GetManifest request.
+// getManifestCreateRequest creates the getManifest request.
 func (client *Client) getManifestCreateRequest(ctx context.Context, name string, reference string, options *ClientGetManifestOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/manifests/{reference}"
 	if name == "" {
@@ -197,7 +197,7 @@ func (client *Client) getManifestCreateRequest(ctx context.Context, name string,
 	return req, nil
 }
 
-// getManifestHandleResponse handles the GetManifest response.
+// getManifestHandleResponse handles the getManifest response.
 func (client *Client) getManifestHandleResponse(resp *http.Response) (ClientGetManifestResponse, error) {
 	result := ClientGetManifestResponse{ManifestData: resp.Body}
 	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
@@ -740,7 +740,7 @@ func (client *Client) updateTagPropertiesHandleResponse(resp *http.Response) (Cl
 	return result, nil
 }
 
-// UploadManifest - Put the manifest identified by name and reference where reference can be a tag or digest.
+// uploadManifest - Put the manifest identified by name and reference where reference can be a tag or digest.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
@@ -748,8 +748,8 @@ func (client *Client) updateTagPropertiesHandleResponse(resp *http.Response) (Cl
 //   - reference - A tag or a digest, pointing to a specific image
 //   - contentType - Upload file type
 //   - manifestData - Manifest body, can take v1 or v2 values depending on accept header
-//   - options - ClientUploadManifestOptions contains the optional parameters for the Client.UploadManifest method.
-func (client *Client) UploadManifest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (ClientUploadManifestResponse, error) {
+//   - options - ClientUploadManifestOptions contains the optional parameters for the Client.uploadManifest method.
+func (client *Client) uploadManifest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (ClientUploadManifestResponse, error) {
 	req, err := client.uploadManifestCreateRequest(ctx, name, reference, contentType, manifestData, options)
 	if err != nil {
 		return ClientUploadManifestResponse{}, err
@@ -764,7 +764,7 @@ func (client *Client) UploadManifest(ctx context.Context, name string, reference
 	return client.uploadManifestHandleResponse(resp)
 }
 
-// uploadManifestCreateRequest creates the UploadManifest request.
+// uploadManifestCreateRequest creates the uploadManifest request.
 func (client *Client) uploadManifestCreateRequest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/manifests/{reference}"
 	if name == "" {
@@ -784,7 +784,7 @@ func (client *Client) uploadManifestCreateRequest(ctx context.Context, name stri
 	return req, req.SetBody(manifestData, string(contentType))
 }
 
-// uploadManifestHandleResponse handles the UploadManifest response.
+// uploadManifestHandleResponse handles the uploadManifest response.
 func (client *Client) uploadManifestHandleResponse(resp *http.Response) (ClientUploadManifestResponse, error) {
 	result := ClientUploadManifestResponse{}
 	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {

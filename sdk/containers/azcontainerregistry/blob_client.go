@@ -280,14 +280,14 @@ func (client *BlobClient) deleteBlobHandleResponse(resp *http.Response) (BlobCli
 	return result, nil
 }
 
-// GetBlob - Retrieve the blob from the registry identified by digest.
+// getBlob - Retrieve the blob from the registry identified by digest.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
-//   - options - BlobClientGetBlobOptions contains the optional parameters for the BlobClient.GetBlob method.
-func (client *BlobClient) GetBlob(ctx context.Context, name string, digest string, options *BlobClientGetBlobOptions) (BlobClientGetBlobResponse, error) {
+//   - options - BlobClientGetBlobOptions contains the optional parameters for the BlobClient.getBlob method.
+func (client *BlobClient) getBlob(ctx context.Context, name string, digest string, options *BlobClientGetBlobOptions) (BlobClientGetBlobResponse, error) {
 	req, err := client.getBlobCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return BlobClientGetBlobResponse{}, err
@@ -302,7 +302,7 @@ func (client *BlobClient) GetBlob(ctx context.Context, name string, digest strin
 	return client.getBlobHandleResponse(resp)
 }
 
-// getBlobCreateRequest creates the GetBlob request.
+// getBlobCreateRequest creates the getBlob request.
 func (client *BlobClient) getBlobCreateRequest(ctx context.Context, name string, digest string, options *BlobClientGetBlobOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/blobs/{digest}"
 	if name == "" {
@@ -322,7 +322,7 @@ func (client *BlobClient) getBlobCreateRequest(ctx context.Context, name string,
 	return req, nil
 }
 
-// getBlobHandleResponse handles the GetBlob response.
+// getBlobHandleResponse handles the getBlob response.
 func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClientGetBlobResponse, error) {
 	result := BlobClientGetBlobResponse{BlobData: resp.Body}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -338,7 +338,7 @@ func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClient
 	return result, nil
 }
 
-// GetChunk - Retrieve the blob from the registry identified by digest. This endpoint may also support RFC7233 compliant range
+// getChunk - Retrieve the blob from the registry identified by digest. This endpoint may also support RFC7233 compliant range
 // requests. Support can be detected by issuing a HEAD request. If the header
 // Accept-Range: bytes is returned, range requests can be used to fetch partial content.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -347,8 +347,8 @@ func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClient
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - rangeParam - Format : bytes=-, HTTP Range header specifying blob chunk.
-//   - options - BlobClientGetChunkOptions contains the optional parameters for the BlobClient.GetChunk method.
-func (client *BlobClient) GetChunk(ctx context.Context, name string, digest string, rangeParam string, options *BlobClientGetChunkOptions) (BlobClientGetChunkResponse, error) {
+//   - options - BlobClientGetChunkOptions contains the optional parameters for the BlobClient.getChunk method.
+func (client *BlobClient) getChunk(ctx context.Context, name string, digest string, rangeParam string, options *BlobClientGetChunkOptions) (BlobClientGetChunkResponse, error) {
 	req, err := client.getChunkCreateRequest(ctx, name, digest, rangeParam, options)
 	if err != nil {
 		return BlobClientGetChunkResponse{}, err
@@ -363,7 +363,7 @@ func (client *BlobClient) GetChunk(ctx context.Context, name string, digest stri
 	return client.getChunkHandleResponse(resp)
 }
 
-// getChunkCreateRequest creates the GetChunk request.
+// getChunkCreateRequest creates the getChunk request.
 func (client *BlobClient) getChunkCreateRequest(ctx context.Context, name string, digest string, rangeParam string, options *BlobClientGetChunkOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/blobs/{digest}"
 	if name == "" {
@@ -384,7 +384,7 @@ func (client *BlobClient) getChunkCreateRequest(ctx context.Context, name string
 	return req, nil
 }
 
-// getChunkHandleResponse handles the GetChunk response.
+// getChunkHandleResponse handles the getChunk response.
 func (client *BlobClient) getChunkHandleResponse(resp *http.Response) (BlobClientGetChunkResponse, error) {
 	result := BlobClientGetChunkResponse{ChunkData: resp.Body}
 	if val := resp.Header.Get("Content-Length"); val != "" {

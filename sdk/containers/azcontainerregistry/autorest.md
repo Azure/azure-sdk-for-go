@@ -415,7 +415,7 @@ directive:
     transform: return $.replace(/Body io\.ReadCloser/, "BlobData io.ReadCloser").replace(/Body io\.ReadCloser/, "ChunkData io.ReadCloser").replace(/Body io\.ReadCloser/, "ManifestData io.ReadCloser");
 ```
 
-### Hide original UploadChunk and CompleteUpload method
+### Hide original methods and fix for pagination methods
 ```yaml
 directive:
   - from: containerregistry.json
@@ -425,7 +425,17 @@ directive:
   - from:
       - blob_client.go
     where: $
-    transform: return $.replaceAll(/ UploadChunk/g, " uploadChunk").replace(/\.UploadChunk/, ".uploadChunk").replaceAll(/ CompleteUpload/g, " completeUpload").replace(/\.CompleteUpload/, ".completeUpload");
+    transform: return $
+      .replaceAll(/ UploadChunk/g, " uploadChunk").replace(/\.UploadChunk/, ".uploadChunk")
+      .replaceAll(/ CompleteUpload/g, " completeUpload").replace(/\.CompleteUpload/, ".completeUpload")
+      .replaceAll(/ GetBlob/g, " getBlob").replace(/\.GetBlob/, ".getBlob")
+      .replaceAll(/ GetChunk/g, " getChunk").replace(/\.GetChunk/, ".getChunk");
+  - from:
+      - client.go
+    where: $
+    transform: return $
+      .replaceAll(/ GetManifest /g, " getManifest ").replace(/\.GetManifest /, ".getManifest ").replace(/GetManifest\(/, "getManifest(")
+      .replaceAll(/ UploadManifest/g, " uploadManifest").replace(/\.UploadManifest/, ".uploadManifest");
 ```
 
 ### Add content-range parameters to upload chunk

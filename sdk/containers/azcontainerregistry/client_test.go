@@ -7,16 +7,13 @@
 package azcontainerregistry
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
-	"io"
 	"net/http"
 	"testing"
 )
@@ -123,37 +120,23 @@ func TestClient_DeleteTag_error(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestClient_GetManifest(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	res, err := client.GetManifest(ctx, "alpine", "3.17.1", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
-	require.NoError(t, err)
-	manifest, err := io.ReadAll(res.ManifestData)
-	require.NoError(t, err)
-	require.NotEmpty(t, manifest)
-	fmt.Printf("manifest content: %s\n", manifest)
-}
-
-func TestClient_GetManifest_empty(t *testing.T) {
+func TestClient_getManifest_empty(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient("endpoint", nil, nil)
 	require.NoError(t, err)
-	_, err = client.GetManifest(ctx, "", "tag", nil)
+	_, err = client.getManifest(ctx, "", "tag", nil)
 	require.Error(t, err)
-	_, err = client.GetManifest(ctx, "name", "", nil)
+	_, err = client.getManifest(ctx, "name", "", nil)
 	require.Error(t, err)
 }
 
-func TestClient_GetManifest_wrongTag(t *testing.T) {
+func TestClient_getManifest_wrongTag(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	_, err = client.GetManifest(ctx, "alpine", "wrong-tag", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
+	_, err = client.getManifest(ctx, "alpine", "wrong-tag", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	require.Error(t, err)
 }
 
@@ -598,33 +581,17 @@ func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestClient_UploadManifest(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	getRes, err := client.GetManifest(ctx, "hello-world", "latest", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
-	require.NoError(t, err)
-	manifest, err := io.ReadAll(getRes.ManifestData)
-	require.NoError(t, err)
-	uploadRes, err := client.UploadManifest(ctx, "hello-world", "test", "application/vnd.docker.distribution.manifest.v2+json", streaming.NopCloser(bytes.NewReader(manifest)), nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadRes.DockerContentDigest)
-	fmt.Printf("uploaded manifest digest: %s\n", *uploadRes.DockerContentDigest)
-}
-
-func TestClient_UploadManifest_empty(t *testing.T) {
+func TestClient_uploadManifest_empty(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient("endpoint", nil, nil)
 	require.NoError(t, err)
-	_, err = client.UploadManifest(ctx, "", "reference", "contentType", nil, nil)
+	_, err = client.uploadManifest(ctx, "", "reference", "contentType", nil, nil)
 	require.Error(t, err)
-	_, err = client.UploadManifest(ctx, "name", "", "contentType", nil, nil)
+	_, err = client.uploadManifest(ctx, "name", "", "contentType", nil, nil)
 	require.Error(t, err)
 }
 
-func TestClient_UploadManifest_error(t *testing.T) {
+func TestClient_uploadManifest_error(t *testing.T) {
 	srv, closeServer := mock.NewServer()
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
@@ -635,7 +602,7 @@ func TestClient_UploadManifest_error(t *testing.T) {
 		pl,
 	}
 	ctx := context.Background()
-	_, err := client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
+	_, err := client.uploadManifest(ctx, "name", "reference", "contentType", nil, nil)
 	require.Error(t, err)
 }
 
@@ -652,7 +619,7 @@ func TestClient_wrongEndpoint(t *testing.T) {
 	require.Error(t, err)
 	_, err = client.DeleteTag(ctx, "name", "tag", nil)
 	require.Error(t, err)
-	_, err = client.GetManifest(ctx, "name", "reference", nil)
+	_, err = client.getManifest(ctx, "name", "reference", nil)
 	require.Error(t, err)
 	_, err = client.GetManifestProperties(ctx, "name", "digest", nil)
 	require.Error(t, err)
@@ -672,6 +639,6 @@ func TestClient_wrongEndpoint(t *testing.T) {
 	require.Error(t, err)
 	_, err = client.UpdateTagProperties(ctx, "name", "tag", nil)
 	require.Error(t, err)
-	_, err = client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
+	_, err = client.uploadManifest(ctx, "name", "reference", "contentType", nil, nil)
 	require.Error(t, err)
 }

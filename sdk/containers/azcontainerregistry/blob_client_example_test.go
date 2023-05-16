@@ -46,24 +46,6 @@ func ExampleBlobClient_DeleteBlob() {
 	}
 }
 
-func ExampleBlobClient_GetBlob() {
-	res, err := blobClient.GetBlob(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// deal with the blob io
-	_ = res.BlobData
-}
-
-func ExampleBlobClient_GetChunk() {
-	res, err := blobClient.GetChunk(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", "bytes=0-299", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// deal with the chunk io
-	_ = res.ChunkData
-}
-
 func ExampleBlobClient_GetUploadStatus() {
 	res, err := blobClient.GetUploadStatus(context.TODO(), "v2/blobland/blobs/uploads/2b28c60d-d296-44b7-b2b4-1f01c63195c6?_nouploadcache=false&_state=VYABvUSCNW2yY5e5VabLHppXqwU0K7cvT0YUdq57KBt7Ik5hbWUiOiJibG9ibGFuZCIsIlVVSUQiOiIyYjI4YzYwZC1kMjk2LTQ0YjctYjJiNC0xZjAxYzYzMTk1YzYiLCJPZmZzZXQiOjAsIlN0YXJ0ZWRBdCI6IjIwMTktMDgtMjdUMjM6NTI6NDcuMDUzNjU2Mjg1WiJ9", nil)
 	if err != nil {

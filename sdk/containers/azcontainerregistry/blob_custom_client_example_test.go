@@ -48,3 +48,23 @@ func ExampleBlobClient_UploadChunk() {
 	}
 	fmt.Printf("upload location: %s", *res.Location)
 }
+
+func ExampleBlobClient_GetBlob() {
+	res, err := blobClient.GetBlob(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// deal with the blob io
+	_ = res.BlobData
+}
+
+func ExampleBlobClient_GetChunk() {
+	// calculator should be created when starting get blob and passing to GetChunk method
+	calculator := azcontainerregistry.NewBlobDigestCalculator()
+	res, err := blobClient.GetChunk(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", "bytes=0-299", calculator, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// deal with the chunk io
+	_ = res.ChunkData
+}

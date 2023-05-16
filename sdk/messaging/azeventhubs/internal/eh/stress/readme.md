@@ -2,7 +2,7 @@
 
 These are the stress/reliability tests for the `azeventhubs` package.
 
-The entrypoint for the tests is [`stress.go`](./stress.go). All of the individual tests are in the `tests` sub-folder. These tests should run fine on your local machine - you'll need to create an `.env` file, in the root of the `azeventhubs` module, with the following values:
+The entrypoint for the tests is [`stress.go`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/internal/eh/stress/stress.go). All of the individual tests are in the `tests` sub-folder. These tests should run fine on your local machine - you'll need to create an `.env` file, in the root of the `azeventhubs` module, with the following values:
 
 ```bash
 EVENTHUB_CONNECTION_STRING=<connection string to the Event Hubs namespace>

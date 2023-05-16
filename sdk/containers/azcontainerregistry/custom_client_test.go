@@ -87,6 +87,7 @@ func TestClient_UploadManifest(t *testing.T) {
 	getRes, err := client.GetManifest(ctx, "hello-world", "latest", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	require.NoError(t, err)
 	manifest, err := io.ReadAll(getRes.ManifestData)
+	require.NoError(t, err)
 	uploadRes, err := client.UploadManifest(ctx, "hello-world", "test", "application/vnd.docker.distribution.manifest.v2+json", streaming.NopCloser(bytes.NewReader(manifest)), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadRes.DockerContentDigest)

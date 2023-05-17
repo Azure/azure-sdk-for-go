@@ -117,11 +117,10 @@ func produceEventsTool() error {
 
 func readEventsFromStdin(readMultiple bool, batch *azeventhubs.EventDataBatch) error {
 	if readMultiple {
-		fmt.Fprintf(os.Stderr, "Reading multiple events from stdin, one per line\n(type CTRL+d to send)...\n")
 		scanner := bufio.NewScanner(os.Stdin)
 
-		// This is a very simplified approach and will fail if the amount of messages exceeds the maximum
-		// allowed size. For an example of how to handle this see this example:
+		// This is a simplified approach and will fail if the size of the messages exceeds
+		// the maximum allowed size. For an example of how to handle this, see this example:
 		// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-package-ProducingEventsUsingProducerClient
 		for scanner.Scan() {
 			if err := batch.AddEventData(&azeventhubs.EventData{
@@ -133,7 +132,6 @@ func readEventsFromStdin(readMultiple bool, batch *azeventhubs.EventDataBatch) e
 
 		return scanner.Err()
 	} else {
-		fmt.Fprintf(os.Stderr, "Reading a single event from stdin\n(type CTRL+d to send)...\n")
 		bytes, err := io.ReadAll(os.Stdin)
 
 		if err != nil {

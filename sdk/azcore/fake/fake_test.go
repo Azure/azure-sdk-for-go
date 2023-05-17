@@ -57,9 +57,10 @@ func TestNewTokenCredential(t *testing.T) {
 
 func TestResponderJSON(t *testing.T) {
 	respr := Responder[widget]{}
-	respr.SetResponse(widget{Name: "foo"}, nil)
-	respr.SetHeader("one", "1")
-	respr.SetHeader("two", "2")
+	header := http.Header{}
+	header.Set("one", "1")
+	header.Set("two", "2")
+	respr.SetResponse(http.StatusOK, widget{Name: "foo"}, &SetResponseOptions{Header: header})
 
 	req := &http.Request{}
 	resp, err := MarshalResponseAsJSON(GetResponseContent(respr), GetResponse(respr), req)
@@ -69,7 +70,7 @@ func TestResponderJSON(t *testing.T) {
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
-	require.EqualValues(t, "OK", resp.Status)
+	require.EqualValues(t, "200 OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -82,9 +83,10 @@ func TestResponderJSON(t *testing.T) {
 
 func TestResponderText(t *testing.T) {
 	respr := Responder[scalar]{}
-	respr.SetResponse(scalar{Value: to.Ptr("success")}, nil)
-	respr.SetHeader("one", "1")
-	respr.SetHeader("two", "2")
+	header := http.Header{}
+	header.Set("one", "1")
+	header.Set("two", "2")
+	respr.SetResponse(http.StatusOK, scalar{Value: to.Ptr("success")}, &SetResponseOptions{Header: header})
 
 	req := &http.Request{}
 	resp, err := MarshalResponseAsText(GetResponseContent(respr), GetResponse(respr).Value, req)
@@ -94,7 +96,7 @@ func TestResponderText(t *testing.T) {
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
-	require.EqualValues(t, "OK", resp.Status)
+	require.EqualValues(t, "200 OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -105,9 +107,10 @@ func TestResponderText(t *testing.T) {
 
 func TestResponderTextNil(t *testing.T) {
 	respr := Responder[scalar]{}
-	respr.SetResponse(scalar{}, nil)
-	respr.SetHeader("one", "1")
-	respr.SetHeader("two", "2")
+	header := http.Header{}
+	header.Set("one", "1")
+	header.Set("two", "2")
+	respr.SetResponse(http.StatusOK, scalar{}, &SetResponseOptions{Header: header})
 
 	req := &http.Request{}
 	resp, err := MarshalResponseAsText(GetResponseContent(respr), GetResponse(respr).Value, req)
@@ -117,7 +120,7 @@ func TestResponderTextNil(t *testing.T) {
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
-	require.EqualValues(t, "OK", resp.Status)
+	require.EqualValues(t, "200 OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -128,9 +131,10 @@ func TestResponderTextNil(t *testing.T) {
 
 func TestResponderXML(t *testing.T) {
 	respr := Responder[widget]{}
-	respr.SetResponse(widget{Name: "foo"}, nil)
-	respr.SetHeader("one", "1")
-	respr.SetHeader("two", "2")
+	header := http.Header{}
+	header.Set("one", "1")
+	header.Set("two", "2")
+	respr.SetResponse(http.StatusOK, widget{Name: "foo"}, &SetResponseOptions{Header: header})
 
 	req := &http.Request{}
 	resp, err := MarshalResponseAsXML(GetResponseContent(respr), GetResponse(respr), req)
@@ -140,7 +144,7 @@ func TestResponderXML(t *testing.T) {
 	require.Equal(t, "1", resp.Header.Get("one"))
 	require.Equal(t, "2", resp.Header.Get("two"))
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
-	require.EqualValues(t, "OK", resp.Status)
+	require.EqualValues(t, "200 OK", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -184,7 +188,7 @@ func TestErrorResponder(t *testing.T) {
 	errResp.SetError(myErr)
 	require.ErrorIs(t, GetError(errResp, req), myErr)
 
-	errResp.SetResponseError("ErrorInvalidWidget", http.StatusBadRequest)
+	errResp.SetResponseError(http.StatusBadRequest, "ErrorInvalidWidget")
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, GetError(errResp, req), &respErr)
 	require.Equal(t, "ErrorInvalidWidget", respErr.ErrorCode)
@@ -220,19 +224,19 @@ func TestPagerResponder(t *testing.T) {
 	require.Nil(t, resp)
 
 	pagerResp.AddError(errors.New("one"))
-	pagerResp.AddPage(widgets{
+	pagerResp.AddPage(http.StatusOK, widgets{
 		Widgets: []widget{
 			{Name: "foo"},
 			{Name: "bar"},
 		},
 	}, nil)
 	pagerResp.AddError(errors.New("two"))
-	pagerResp.AddPage(widgets{
+	pagerResp.AddPage(http.StatusOK, widgets{
 		Widgets: []widget{
 			{Name: "baz"},
 		},
 	}, nil)
-	pagerResp.AddResponseError("ErrorPagerBlewUp", http.StatusBadRequest)
+	pagerResp.AddResponseError(http.StatusBadRequest, "ErrorPagerBlewUp")
 
 	PagerResponderInjectNextLinks(&pagerResp, req, func(p *widgets, create func() string) {
 		p.NextPage = to.Ptr(create())
@@ -293,10 +297,10 @@ func TestPollerResponder(t *testing.T) {
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
 
-	pollerResp.AddNonTerminalResponse(nil)
+	pollerResp.AddNonTerminalResponse(http.StatusOK, nil)
 	pollerResp.AddPollingError(errors.New("network glitch"))
-	pollerResp.AddNonTerminalResponse(nil)
-	pollerResp.SetTerminalResponse(widget{Name: "dodo"}, nil)
+	pollerResp.AddNonTerminalResponse(http.StatusOK, nil)
+	pollerResp.SetTerminalResponse(http.StatusOK, widget{Name: "dodo"}, nil)
 
 	iterations := 0
 	for PollerResponderMore(&pollerResp) {
@@ -340,8 +344,8 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	require.Nil(t, resp)
 
 	pollerResp.AddPollingError(errors.New("network glitch"))
-	pollerResp.AddNonTerminalResponse(nil)
-	pollerResp.SetTerminalError("ErrorConflictingOperation", http.StatusConflict)
+	pollerResp.AddNonTerminalResponse(http.StatusOK, nil)
+	pollerResp.SetTerminalError(http.StatusConflict, "ErrorConflictingOperation")
 
 	iterations := 0
 	for PollerResponderMore(&pollerResp) {
@@ -372,15 +376,15 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 func TestNewResponse(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewResponse(ResponseContent{}, req, nil)
+	resp, err := NewResponse(ResponseContent{HTTPStatus: http.StatusNoContent}, req, nil)
 	require.NoError(t, err)
-	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, http.StatusNoContent, resp.StatusCode)
 }
 
 func TestNewResponseWithOptions(t *testing.T) {
 	req, err := http.NewRequest(http.MethodPut, "https://foo.bar/baz", nil)
 	require.NoError(t, err)
-	resp, err := NewResponse(ResponseContent{}, req, &ResponseOptions{
+	resp, err := NewResponse(ResponseContent{HTTPStatus: http.StatusOK}, req, &ResponseOptions{
 		Body:        io.NopCloser(strings.NewReader("the body")),
 		ContentType: shared.ContentTypeTextPlain,
 	})

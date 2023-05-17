@@ -94,32 +94,77 @@ Blob metadata name/value pairs are valid HTTP headers and should adhere to all r
 
 ## Examples
 
+For a full list of examples see [examples_test.go](./examples_test.go)
+
 ### Uploading a blob
 
 ```go
-const (
-	account       = "https://MYSTORAGEACCOUNT.blob.core.windows.net/"
-	containerName = "sample-container"
-	blobName      = "sample-blob"
-	sampleFile    = "path/to/sample/file"
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
-// authenticate with Azure Active Directory
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-// TODO: handle error
+func handleError(err error) {
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
 
-// create a client for the specified storage account
-client, err := azblob.NewClient(account, cred, nil)
-// TODO: handle error
+func main() {
+	// Set up file to upload
+	fileSize := 8 * 1024 * 1024
+	fileName := "test_upload_file.txt"
+	fileData := make([]byte, fileSize)
+	err := os.WriteFile(fileName, fileData, 0666)
+	handleError(err)
 
-// open the file for reading
-file, err := os.OpenFile(sampleFile, os.O_RDONLY, 0)
-// TODO: handle error
-defer file.Close()
+	// Open the file to upload
+	fileHandler, err := os.Open(fileName)
+	handleError(err)
 
-// upload the file to the specified container with the specified blob name
-_, err = client.UploadFile(context.TODO(), containerName, blobName, file, nil)
-// TODO: handle error
+	// close the file after it is no longer required.
+	defer func(file *os.File) {
+		err = file.Close()
+		handleError(err)
+	}(fileHandler)
+
+	// delete the local file if required.
+	defer func(name string) {
+		err = os.Remove(name)
+		handleError(err)
+	}(fileName)
+
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	client, err := azblob.NewClient(serviceURL, cred, nil)
+	handleError(err)
+
+	// Upload the file to a block blob
+	_, err = client.UploadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+fileName, fileHandler,
+		&azblob.UploadFileOptions{
+			BlockSize:   int64(1024),
+			Concurrency: uint16(3),
+			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+			Progress: func(bytesTransferred int64) {
+				fmt.Println(bytesTransferred)
+			},
+		})
+	handleError(err)
+}
 ```
 
 ### Downloading a blob

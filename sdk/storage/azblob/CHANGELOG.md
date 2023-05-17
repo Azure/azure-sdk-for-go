@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Updated the "Uploading a blob" example in the README.md
+
 ## 1.1.0-beta.1 (2023-05-09)
 
 ### Features Added

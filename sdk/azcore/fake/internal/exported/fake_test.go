@@ -4,10 +4,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package fake_test
+package exported
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -16,9 +15,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
@@ -33,60 +29,31 @@ type widgets struct {
 	Widgets  []widget
 }
 
-func TestNewTokenCredential(t *testing.T) {
-	cred := fake.NewTokenCredential()
-	require.NotNil(t, cred)
-
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{})
-	require.NoError(t, err)
-	require.NotZero(t, tk)
-
-	myErr := errors.New("failed")
-	cred.SetError(myErr)
-	tk, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{})
-	require.ErrorIs(t, err, myErr)
-	require.Zero(t, tk)
-}
-
 func TestResponder(t *testing.T) {
-	respr := fake.Responder[widget]{}
+	respr := Responder[widget]{}
 	header := http.Header{}
 	header.Set("one", "1")
 	header.Set("two", "2")
-	respr.SetResponse(http.StatusOK, widget{Name: "foo"}, &fake.SetResponseOptions{Header: header})
-
-	req := &http.Request{}
-	resp, err := server.MarshalResponseAsJSON(server.GetResponseContent(respr), server.GetResponse(respr), req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.Equal(t, req, resp.Request)
-	require.Equal(t, "1", resp.Header.Get("one"))
-	require.Equal(t, "2", resp.Header.Get("two"))
-	require.EqualValues(t, http.StatusOK, resp.StatusCode)
-	require.EqualValues(t, "200 OK", resp.Status)
-
-	body, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-	require.NoError(t, resp.Body.Close())
-
-	w := widget{}
-	require.NoError(t, json.Unmarshal(body, &w))
-	require.Equal(t, "foo", w.Name)
+	thing := widget{Name: "foo"}
+	respr.SetResponse(http.StatusOK, thing, &SetResponseOptions{Header: header})
+	require.EqualValues(t, thing, respr.GetResponse())
+	require.EqualValues(t, http.StatusOK, respr.GetResponseContent().HTTPStatus)
+	require.EqualValues(t, header, respr.GetResponseContent().Header)
 }
 
 func TestErrorResponder(t *testing.T) {
 	req := &http.Request{}
 
-	errResp := fake.ErrorResponder{}
-	require.NoError(t, server.GetError(errResp, req))
+	errResp := ErrorResponder{}
+	require.NoError(t, errResp.GetError(req))
 
 	myErr := errors.New("failed")
 	errResp.SetError(myErr)
-	require.ErrorIs(t, server.GetError(errResp, req), myErr)
+	require.ErrorIs(t, errResp.GetError(req), myErr)
 
 	errResp.SetResponseError(http.StatusBadRequest, "ErrorInvalidWidget")
 	var respErr *azcore.ResponseError
-	require.ErrorAs(t, server.GetError(errResp, req), &respErr)
+	require.ErrorAs(t, errResp.GetError(req), &respErr)
 	require.Equal(t, "ErrorInvalidWidget", respErr.ErrorCode)
 	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
 	require.NotNil(t, respErr.RawResponse)
@@ -111,10 +78,10 @@ func TestPagerResponder(t *testing.T) {
 	req.URL.Host = "fakehost.org"
 	req.URL.Path = "/lister"
 
-	pagerResp := fake.PagerResponder[widgets]{}
+	pagerResp := PagerResponder[widgets]{}
 
-	require.False(t, server.PagerResponderMore(&pagerResp))
-	resp, err := server.PagerResponderNext(&pagerResp, req)
+	require.False(t, pagerResp.More())
+	resp, err := pagerResp.Next(req)
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
@@ -134,13 +101,13 @@ func TestPagerResponder(t *testing.T) {
 	}, nil)
 	pagerResp.AddResponseError(http.StatusBadRequest, "ErrorPagerBlewUp")
 
-	server.PagerResponderInjectNextLinks(&pagerResp, req, func(p *widgets, create func() string) {
+	pagerResp.InjectNextLinks(req, func(p *widgets, create func() string) {
 		p.NextPage = to.Ptr(create())
 	})
 
 	iterations := 0
-	for server.PagerResponderMore(&pagerResp) {
-		resp, err := server.PagerResponderNext(&pagerResp, req)
+	for pagerResp.More() {
+		resp, err := pagerResp.Next(req)
 		switch iterations {
 		case 0:
 			require.Error(t, err)
@@ -185,10 +152,10 @@ func TestPollerResponder(t *testing.T) {
 	req.URL.Host = "fakehost.org"
 	req.URL.Path = "/lro"
 
-	pollerResp := fake.PollerResponder[widget]{}
+	pollerResp := PollerResponder[widget]{}
 
-	require.False(t, server.PollerResponderMore(&pollerResp))
-	resp, err := server.PollerResponderNext(&pollerResp, req)
+	require.False(t, pollerResp.More())
+	resp, err := pollerResp.Next(req)
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
@@ -199,8 +166,8 @@ func TestPollerResponder(t *testing.T) {
 	pollerResp.SetTerminalResponse(http.StatusOK, widget{Name: "dodo"}, nil)
 
 	iterations := 0
-	for server.PollerResponderMore(&pollerResp) {
-		resp, err := server.PollerResponderNext(&pollerResp, req)
+	for pollerResp.More() {
+		resp, err := pollerResp.Next(req)
 		switch iterations {
 		case 0:
 			require.NoError(t, err)
@@ -231,10 +198,10 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	req.URL.Host = "fakehost.org"
 	req.URL.Path = "/lro"
 
-	pollerResp := fake.PollerResponder[widget]{}
+	pollerResp := PollerResponder[widget]{}
 
-	require.False(t, server.PollerResponderMore(&pollerResp))
-	resp, err := server.PollerResponderNext(&pollerResp, req)
+	require.False(t, pollerResp.More())
+	resp, err := pollerResp.Next(req)
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
 	require.Nil(t, resp)
@@ -244,8 +211,8 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 	pollerResp.SetTerminalError(http.StatusConflict, "ErrorConflictingOperation")
 
 	iterations := 0
-	for server.PollerResponderMore(&pollerResp) {
-		resp, err := server.PollerResponderNext(&pollerResp, req)
+	for pollerResp.More() {
+		resp, err := pollerResp.Next(req)
 		switch iterations {
 		case 0:
 			require.Error(t, err)

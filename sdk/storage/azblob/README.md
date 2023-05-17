@@ -255,7 +255,7 @@ additional questions or comments.
 [product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
-[go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
+[go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/main/README.md)
 [storage_account_docs]: https://learn.microsoft.com/azure/storage/common/storage-account-overview
 [storage_account_create_ps]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
 [storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli

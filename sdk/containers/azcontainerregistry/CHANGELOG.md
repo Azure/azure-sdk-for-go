@@ -10,6 +10,7 @@
 * Add state restore for hash calculator when upload fails
 
 ### Other Changes
+* Change default audience to https://containerregistry.azure.net
 
 ## 0.1.1 (2023-03-07)
 

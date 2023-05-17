@@ -24,3 +24,7 @@ func init() {
 		Audience: "https://management.core.windows.net/",
 	}
 }
+
+var defaultCloud = cloud.Configuration{
+	Services: map[cloud.ServiceName]cloud.ServiceConfiguration{ServiceName: {Audience: defaultAudience}},
+}

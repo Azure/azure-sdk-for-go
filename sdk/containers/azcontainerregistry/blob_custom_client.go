@@ -13,7 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -38,7 +37,7 @@ func NewBlobClient(endpoint string, credential azcore.TokenCredential, options *
 	}
 
 	if reflect.ValueOf(options.Cloud).IsZero() {
-		options.Cloud = cloud.AzurePublic
+		options.Cloud = defaultCloud
 	}
 	c, ok := options.Cloud.Services[ServiceName]
 	if !ok || c.Audience == "" {

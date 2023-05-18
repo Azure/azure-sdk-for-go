@@ -22,13 +22,6 @@ pr:
     - sdk/samples
 
 stages:
-- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
     ServiceDirectory: 'sdk/samples'
-    RunLiveTests: false
-    SupportedClouds: 'Public'
-    EnvVars:
-      AZURE_CLIENT_ID: $(AZEVENTHUBS_CLIENT_ID)
-      AZURE_TENANT_ID: $(AZEVENTHUBS_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(AZEVENTHUBS_CLIENT_SECRET)
-      AZURE_SUBSCRIPTION_ID: $(AZEVENTHUBS_SUBSCRIPTION_ID)

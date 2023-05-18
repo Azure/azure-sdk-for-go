@@ -103,16 +103,16 @@ type limitTeeReader struct {
 	n int64
 }
 
-func (lt *limitTeeReader) Read(p []byte) (n int, err error) {
-	n, err = lt.r.Read(p)
+func (lt *limitTeeReader) Read(p []byte) (int, error) {
+	n, err := lt.r.Read(p)
 	if n > 0 && lt.n > 0 {
 		wn, werr := lt.w.Write(p[:n])
 		if werr != nil {
-			return n, werr
+			return wn, werr
 		}
 		lt.n -= int64(wn)
 	}
-	return
+	return n, err
 }
 
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.

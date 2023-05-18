@@ -93,12 +93,7 @@ func (s *Client) URL() string {
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewShareClient(shareName string) *share.Client {
 	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
-	clientOptions := s.getClientOptions()
-	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
-		AllowTrailingDot:       clientOptions.AllowTrailingDot,
-		FileRequestIntent:      clientOptions.FileRequestIntent,
-		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
-	}))
+	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey(), s.getClientOptions()))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.

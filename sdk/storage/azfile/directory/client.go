@@ -97,12 +97,7 @@ func (d *Client) URL() string {
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
-	clientOptions := d.getClientOptions()
-	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey(), &base.ClientOptions{
-		AllowTrailingDot:       clientOptions.AllowTrailingDot,
-		FileRequestIntent:      clientOptions.FileRequestIntent,
-		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
-	}))
+	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey(), d.getClientOptions()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
@@ -110,12 +105,7 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	clientOptions := d.getClientOptions()
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey(), &base.ClientOptions{
-		AllowTrailingDot:       clientOptions.AllowTrailingDot,
-		FileRequestIntent:      clientOptions.FileRequestIntent,
-		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
-	}))
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey(), d.getClientOptions()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

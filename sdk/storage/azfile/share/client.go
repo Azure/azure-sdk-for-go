@@ -95,24 +95,14 @@ func (s *Client) URL() string {
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
-	clientOptions := s.getClientOptions()
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
-		AllowTrailingDot:       clientOptions.AllowTrailingDot,
-		FileRequestIntent:      clientOptions.FileRequestIntent,
-		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
-	}))
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().Pipeline(), s.sharedKey(), s.getClientOptions()))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
-	clientOptions := s.getClientOptions()
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().Pipeline(), s.sharedKey(), &base.ClientOptions{
-		AllowTrailingDot:       clientOptions.AllowTrailingDot,
-		FileRequestIntent:      clientOptions.FileRequestIntent,
-		AllowSourceTrailingDot: clientOptions.AllowSourceTrailingDot,
-	}))
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().Pipeline(), s.sharedKey(), s.getClientOptions()))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

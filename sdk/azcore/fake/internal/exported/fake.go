@@ -368,7 +368,7 @@ func SetResponseBody(resp *http.Response, body []byte, contentType string) *http
 // NewResponse creates a new *http.Response with the specified content and req as the response's request.
 func NewResponse(content ResponseContent, req *http.Request) (*http.Response, error) {
 	if content.HTTPStatus == 0 {
-		return nil, errors.New("no HTTP status code was specified")
+		return nil, errors.New("fake: no HTTP status code was specified")
 	} else if content.Header == nil {
 		content.Header = http.Header{}
 	}

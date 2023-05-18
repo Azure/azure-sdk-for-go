@@ -104,3 +104,6 @@ type SetMetadataOptions = blob.SetMetadataOptions
 
 // SetHTTPHeadersOptions contains the optional parameters when calling the SetHTTPHeaders operation.
 type SetHTTPHeadersOptions = blob.SetHTTPHeadersOptions
+
+type RenameFileOptions struct {
+}

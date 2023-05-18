@@ -128,7 +128,7 @@ func TestAMQPSenderWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 
 			require.ErrorAs(t, err, &wrapErr)
 			require.EqualError(t, wrapErr, msg)
@@ -202,7 +202,7 @@ func TestAMQPSessionWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 
 			require.ErrorAs(t, err, &wrapErr)
 			require.EqualError(t, wrapErr, msg)
@@ -248,7 +248,7 @@ func TestAMQPConnWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 			require.ErrorAs(t, err, &wrapErr)
 			require.EqualError(t, wrapErr, msg)
 			require.Equal(t, uint64(101), wrapErr.ConnID)

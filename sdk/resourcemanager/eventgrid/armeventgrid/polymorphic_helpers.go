@@ -157,6 +157,8 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 		b = &EventHubEventSubscriptionDestination{}
 	case string(EndpointTypeHybridConnection):
 		b = &HybridConnectionEventSubscriptionDestination{}
+	case string(EndpointTypePartnerDestination):
+		b = &PartnerEventSubscriptionDestination{}
 	case string(EndpointTypeServiceBusQueue):
 		b = &ServiceBusQueueEventSubscriptionDestination{}
 	case string(EndpointTypeServiceBusTopic):
@@ -169,6 +171,79 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 		b = &EventSubscriptionDestination{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalFilterClassification(rawMsg json.RawMessage) (FilterClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b FilterClassification
+	switch m["operatorType"] {
+	case string(FilterOperatorTypeBoolEquals):
+		b = &BoolEqualsFilter{}
+	case string(FilterOperatorTypeIsNotNull):
+		b = &IsNotNullFilter{}
+	case string(FilterOperatorTypeIsNullOrUndefined):
+		b = &IsNullOrUndefinedFilter{}
+	case string(FilterOperatorTypeNumberGreaterThan):
+		b = &NumberGreaterThanFilter{}
+	case string(FilterOperatorTypeNumberGreaterThanOrEquals):
+		b = &NumberGreaterThanOrEqualsFilter{}
+	case string(FilterOperatorTypeNumberIn):
+		b = &NumberInFilter{}
+	case string(FilterOperatorTypeNumberInRange):
+		b = &NumberInRangeFilter{}
+	case string(FilterOperatorTypeNumberLessThan):
+		b = &NumberLessThanFilter{}
+	case string(FilterOperatorTypeNumberLessThanOrEquals):
+		b = &NumberLessThanOrEqualsFilter{}
+	case string(FilterOperatorTypeNumberNotIn):
+		b = &NumberNotInFilter{}
+	case string(FilterOperatorTypeNumberNotInRange):
+		b = &NumberNotInRangeFilter{}
+	case string(FilterOperatorTypeStringBeginsWith):
+		b = &StringBeginsWithFilter{}
+	case string(FilterOperatorTypeStringContains):
+		b = &StringContainsFilter{}
+	case string(FilterOperatorTypeStringEndsWith):
+		b = &StringEndsWithFilter{}
+	case string(FilterOperatorTypeStringIn):
+		b = &StringInFilter{}
+	case string(FilterOperatorTypeStringNotBeginsWith):
+		b = &StringNotBeginsWithFilter{}
+	case string(FilterOperatorTypeStringNotContains):
+		b = &StringNotContainsFilter{}
+	case string(FilterOperatorTypeStringNotEndsWith):
+		b = &StringNotEndsWithFilter{}
+	case string(FilterOperatorTypeStringNotIn):
+		b = &StringNotInFilter{}
+	default:
+		b = &Filter{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalFilterClassificationArray(rawMsg json.RawMessage) ([]FilterClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]FilterClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalFilterClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
 }
 
 func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSchemaMappingClassification, error) {
@@ -185,6 +260,60 @@ func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSch
 		b = &JSONInputSchemaMapping{}
 	default:
 		b = &InputSchemaMapping{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalPartnerClientAuthenticationClassification(rawMsg json.RawMessage) (PartnerClientAuthenticationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerClientAuthenticationClassification
+	switch m["clientAuthenticationType"] {
+	case string(PartnerClientAuthenticationTypeAzureAD):
+		b = &AzureADPartnerClientAuthentication{}
+	default:
+		b = &PartnerClientAuthentication{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalPartnerDestinationInfoClassification(rawMsg json.RawMessage) (PartnerDestinationInfoClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerDestinationInfoClassification
+	switch m["endpointType"] {
+	case string(PartnerEndpointTypeWebHook):
+		b = &WebhookPartnerDestinationInfo{}
+	default:
+		b = &PartnerDestinationInfo{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalPartnerUpdateDestinationInfoClassification(rawMsg json.RawMessage) (PartnerUpdateDestinationInfoClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerUpdateDestinationInfoClassification
+	switch m["endpointType"] {
+	case string(PartnerEndpointTypeWebHook):
+		b = &WebhookUpdatePartnerDestinationInfo{}
+	default:
+		b = &PartnerUpdateDestinationInfo{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

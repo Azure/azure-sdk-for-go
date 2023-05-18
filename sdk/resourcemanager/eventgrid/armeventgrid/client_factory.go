@@ -39,8 +39,23 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+func (c *ClientFactory) NewCaCertificatesClient() *CaCertificatesClient {
+	subClient, _ := NewCaCertificatesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewChannelsClient() *ChannelsClient {
 	subClient, _ := NewChannelsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewClientGroupsClient() *ClientGroupsClient {
+	subClient, _ := NewClientGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewClientsClient() *ClientsClient {
+	subClient, _ := NewClientsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -51,6 +66,11 @@ func (c *ClientFactory) NewDomainsClient() *DomainsClient {
 
 func (c *ClientFactory) NewDomainTopicsClient() *DomainTopicsClient {
 	subClient, _ := NewDomainTopicsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDomainTopicEventSubscriptionsClient() *DomainTopicEventSubscriptionsClient {
+	subClient, _ := NewDomainTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -69,13 +89,13 @@ func (c *ClientFactory) NewEventSubscriptionsClient() *EventSubscriptionsClient 
 	return subClient
 }
 
-func (c *ClientFactory) NewDomainTopicEventSubscriptionsClient() *DomainTopicEventSubscriptionsClient {
-	subClient, _ := NewDomainTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewSystemTopicEventSubscriptionsClient() *SystemTopicEventSubscriptionsClient {
+	subClient, _ := NewSystemTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewSystemTopicEventSubscriptionsClient() *SystemTopicEventSubscriptionsClient {
-	subClient, _ := NewSystemTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewNamespaceTopicEventSubscriptionsClient() *NamespaceTopicEventSubscriptionsClient {
+	subClient, _ := NewNamespaceTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -84,18 +104,28 @@ func (c *ClientFactory) NewPartnerTopicEventSubscriptionsClient() *PartnerTopicE
 	return subClient
 }
 
+func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
+	subClient, _ := NewNamespacesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewNamespaceTopicsClient() *NamespaceTopicsClient {
+	subClient, _ := NewNamespaceTopicsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewTopicsClient() *TopicsClient {
-	subClient, _ := NewTopicsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewPartnerConfigurationsClient() *PartnerConfigurationsClient {
+	subClient, _ := NewPartnerConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewPartnerConfigurationsClient() *PartnerConfigurationsClient {
-	subClient, _ := NewPartnerConfigurationsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewPartnerDestinationsClient() *PartnerDestinationsClient {
+	subClient, _ := NewPartnerDestinationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -114,6 +144,11 @@ func (c *ClientFactory) NewPartnerTopicsClient() *PartnerTopicsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewPermissionBindingsClient() *PermissionBindingsClient {
+	subClient, _ := NewPermissionBindingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -129,8 +164,18 @@ func (c *ClientFactory) NewSystemTopicsClient() *SystemTopicsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewTopicsClient() *TopicsClient {
+	subClient, _ := NewTopicsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewExtensionTopicsClient() *ExtensionTopicsClient {
 	subClient, _ := NewExtensionTopicsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTopicSpacesClient() *TopicSpacesClient {
+	subClient, _ := NewTopicSpacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

@@ -24,7 +24,7 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    #ServiceDirectory: 'messaging/azeventhubs'
+    ServiceDirectory: 'sdk/samples'
     RunLiveTests: false
     SupportedClouds: 'Public'
     EnvVars:

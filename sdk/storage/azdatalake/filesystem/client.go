@@ -9,6 +9,7 @@ package filesystem
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -51,43 +52,55 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return nil, nil
 }
 
-func (f *Client) generated() *generated.FileSystemClient {
-	return base.InnerClient((*base.Client[generated.FileSystemClient])(f))
+func (fs *Client) generated() *generated.FileSystemClient {
+	return base.InnerClient((*base.Client[generated.FileSystemClient])(fs))
 }
 
-func (f *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKey((*base.Client[generated.FileSystemClient])(f))
+func (fs *Client) sharedKey() *exported.SharedKeyCredential {
+	return base.SharedKey((*base.Client[generated.FileSystemClient])(fs))
 }
 
 // URL returns the URL endpoint used by the Client object.
-func (f *Client) URL() string {
+func (fs *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
 
-func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
+func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
 }
 
-func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
+func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	return DeleteResponse{}, nil
 }
 
-func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
-func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	return SetMetadataResponse{}, nil
 }
 
-func (f *Client) ListPaths(ctx context.Context, options *ListPathsOptions) (ListPathsResponse, error) {
-	return ListPathsResponse{}, nil
-}
-
-func (f *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	return SetAccessPolicyResponse{}, nil
 }
 
-func (f *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
+func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	return GetAccessPolicyResponse{}, nil
+}
+
+func (fs *Client) UndeletePath(ctx context.Context, options *UndeletePathOptions) error {
+	return nil
+}
+
+// NewListPathsPager operation returns a pager of the shares under the specified account.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
+func (fs *Client) NewListPathsPager(options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
+	return nil
+}
+
+// NewListDeletedPathsPager operation returns a pager of the shares under the specified account.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
+func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *runtime.Pager[ListDeletedPathsSegmentResponse] {
+	return nil
 }

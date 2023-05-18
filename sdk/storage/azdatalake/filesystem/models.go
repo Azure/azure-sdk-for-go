@@ -51,3 +51,9 @@ type GetAccessPolicyOptions = container.GetAccessPolicyOptions
 
 type ListPathsOptions struct {
 }
+
+type ListDeletedPathsOptions struct {
+}
+
+type UndeletePathOptions struct {
+}

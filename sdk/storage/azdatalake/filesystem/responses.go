@@ -23,11 +23,14 @@ type SetMetadataResponse = container.SetMetadataResponse
 // GetPropertiesResponse contains the response from method FilesystemClient.GetProperties.
 type GetPropertiesResponse = container.GetPropertiesResponse
 
-// ListPathsResponse contains the response from method FilesystemClient.ListPaths.
-type ListPathsResponse = generated.FileSystemClientListPathsResponse
-
 // SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
 type SetAccessPolicyResponse = container.SetAccessPolicyResponse
 
 // GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
 type GetAccessPolicyResponse = container.GetAccessPolicyResponse
+
+// ListPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
+
+// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+type ListDeletedPathsSegmentResponse = generated.FileSystemClientListBlobHierarchySegmentResponse

@@ -63,6 +63,6 @@ func (d *DirectoryClient) GetProperties(options *GetPropertiesOptions) (GetPrope
 
 }
 
-func (d *DirectoryClient) Rename(newName string, options *RenameFileOptions) error {
+func (d *DirectoryClient) Rename(newName string, options *RenameDirectoryOptions) error {
 	return nil
 }

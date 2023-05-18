@@ -9,11 +9,16 @@ package azcontainerregistry
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"io"
+	"net/http"
 	"testing"
 )
 
@@ -143,4 +148,24 @@ func TestBlobClient_CompleteUpload_uploadByChunkFailOver(t *testing.T) {
 	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *completeResp.DockerContentDigest)
+}
+
+func TestBlobClient_UploadChunk_retry(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusGatewayTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusGatewayTimeout))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &BlobClient{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	chunkData := bytes.NewReader([]byte("test"))
+	calculator := NewBlobDigestCalculator()
+	_, err := client.UploadChunk(ctx, "location", chunkData, calculator, nil)
+	require.NoError(t, err)
+	require.Equal(t, "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", fmt.Sprintf("%x", calculator.h.Sum(nil)))
 }

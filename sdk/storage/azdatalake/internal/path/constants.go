@@ -6,7 +6,10 @@
 
 package path
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+)
 
 type ResourceType = generated.PathResourceType
 
@@ -37,4 +40,11 @@ const (
 	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeSet
 	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeModify
 	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeRemove
+)
+
+type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
+
+const (
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
 )

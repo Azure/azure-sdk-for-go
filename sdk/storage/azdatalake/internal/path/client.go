@@ -63,38 +63,47 @@ func (p *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
 
+// dfs
 func (p *Client) Create(resourceType ResourceType, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
 }
 
+// dfs
 func (p *Client) Delete(options *DeleteOptions) (DeleteResponse, error) {
 	return DeleteResponse{}, nil
 }
 
+// dfs
 func (p *Client) SetAccessControl(options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	return SetAccessControlResponse{}, nil
 }
 
+// dfs
 func (p *Client) SetAccessControlRecursive(options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
+// dfs
 func (p *Client) UpdateAccessControlRecursive(options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
+// dfs
 func (p *Client) RemoveAccessControlRecursive(options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
+// dfs
 func (p *Client) GetProperties(options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
+// blob
 func (p *Client) SetMetadata(options *SetMetadataOptions) (SetMetadataResponse, error) {
 	return SetMetadataResponse{}, nil
 }
 
+// blob
 func (p *Client) SetHTTPHeaders(options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	return SetHTTPHeadersResponse{}, nil
 }

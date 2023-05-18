@@ -28,15 +28,11 @@ type HTTPHeaders = generated.PathHTTPHeaders
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// CreateOptions contains the optional parameters when calling the Create operation.
+// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
 type CreateOptions struct {
-	// AccessConditions identifies path-specific access conditions.
-	AccessConditions *AccessConditions
-	// Metadata contains name-value pairs for the path.
-	Metadata map[string]*string
-	// CPKInfo contains a group of parameters for client provided encryption key.
-	CPKInfo *CPKInfo
-	// HTTPHeaders contains the HTTP headers for path operations.
+	AccessConditions               *AccessConditions
+	Metadata                       map[string]*string
+	CPKInfo                        *CPKInfo
 	HTTPHeaders                    *HTTPHeaders
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	PathExpiryOptions              *ExpiryOptions
@@ -53,13 +49,14 @@ type CreateOptions struct {
 	ACL                            *string
 }
 
-// DeleteOptions contains the optional parameters when calling the Delete operation.
+// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
+	// used to distinguish between dir or file deletion
 	Recursive        *bool
 	AccessConditions *AccessConditions
 }
 
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
 type SetAccessControlOptions struct {
 	Owner            *string
 	Group            *string
@@ -97,7 +94,10 @@ type RemoveAccessControlRecursiveOptions struct {
 }
 
 // GetPropertiesOptions contains the optional parameters when calling the GetProperties operation.
-type GetPropertiesOptions = blob.GetPropertiesOptions
+type GetPropertiesOptions struct {
+	UPN              *bool
+	AccessConditions *AccessConditions
+}
 
 // SetMetadataOptions contains the optional parameters when calling the SetMetadata operation.
 type SetMetadataOptions = blob.SetMetadataOptions

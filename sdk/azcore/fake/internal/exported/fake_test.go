@@ -15,6 +15,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
@@ -234,4 +235,27 @@ func TestPollerResponderTerminalFailure(t *testing.T) {
 		iterations++
 	}
 	require.Equal(t, 3, iterations)
+}
+
+func TestNewResponse(t *testing.T) {
+	resp, err := NewResponse(ResponseContent{}, nil)
+	require.Error(t, err)
+	require.Nil(t, resp)
+
+	resp, err = NewResponse(ResponseContent{HTTPStatus: http.StatusNoContent}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusNoContent, resp.StatusCode)
+	require.Empty(t, resp.Header)
+}
+
+func TestNewErrorResponse(t *testing.T) {
+	resp, err := newErrorResponse(0, "", nil)
+	require.Error(t, err)
+	require.Nil(t, resp)
+	const errorCode = "YouCantDoThat"
+	resp, err = newErrorResponse(http.StatusForbidden, errorCode, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusForbidden, resp.StatusCode)
+	require.EqualValues(t, errorCode, resp.Header.Get(shared.HeaderXMSErrorCode))
 }

@@ -30,7 +30,10 @@ type ResponseOptions = exported.ResponseOptions
 // NewResponse returns a *http.Response.
 // This function is called by the fake server internals.
 func NewResponse(content ResponseContent, req *http.Request, opts *ResponseOptions) (*http.Response, error) {
-	resp := exported.NewResponse(content, req)
+	resp, err := exported.NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	if opts != nil {
 		if opts.Body != nil {
 			resp.Body = opts.Body
@@ -45,7 +48,10 @@ func NewResponse(content ResponseContent, req *http.Request, opts *ResponseOptio
 // MarshalResponseAsByteArray base-64 encodes the body with the specified format and returns it in a *http.Response.
 // This function is called by the fake server internals.
 func MarshalResponseAsByteArray(content ResponseContent, body []byte, format azexported.Base64Encoding, req *http.Request) (*http.Response, error) {
-	resp := exported.NewResponse(content, req)
+	resp, err := exported.NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	if body != nil {
 		resp = exported.SetResponseBody(resp, []byte(azexported.EncodeByteArray(body, format)), shared.ContentTypeAppJSON)
 	}
@@ -59,7 +65,10 @@ func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*
 	if err != nil {
 		return nil, shared.NonRetriableError(err)
 	}
-	resp := exported.NewResponse(content, req)
+	resp, err := exported.NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	resp = exported.SetResponseBody(resp, body, shared.ContentTypeAppJSON)
 	return resp, nil
 }
@@ -67,7 +76,10 @@ func MarshalResponseAsJSON(content ResponseContent, v any, req *http.Request) (*
 // MarshalResponseAsText converts the body into text and returns it in a *http.Response.
 // This function is called by the fake server internals.
 func MarshalResponseAsText(content ResponseContent, body *string, req *http.Request) (*http.Response, error) {
-	resp := exported.NewResponse(content, req)
+	resp, err := exported.NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	var bodyAsBytes []byte
 	if body != nil {
 		bodyAsBytes = []byte(*body)
@@ -83,7 +95,10 @@ func MarshalResponseAsXML(content ResponseContent, v any, req *http.Request) (*h
 	if err != nil {
 		return nil, shared.NonRetriableError(err)
 	}
-	resp := exported.NewResponse(content, req)
+	resp, err := exported.NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	resp = exported.SetResponseBody(resp, body, shared.ContentTypeAppXML)
 	return resp, nil
 }

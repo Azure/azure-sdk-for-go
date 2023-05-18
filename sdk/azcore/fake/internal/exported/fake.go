@@ -87,7 +87,11 @@ func (e ErrorResponder) GetError(req *http.Request) error {
 	var respErr *azcore.ResponseError
 	if errors.As(e.err, &respErr) {
 		// fix up the raw response
-		respErr.RawResponse = newErrorResponse(respErr.ErrorCode, respErr.StatusCode, req)
+		rawResp, err := newErrorResponse(respErr.StatusCode, respErr.ErrorCode, req)
+		if err != nil {
+			return shared.NonRetriableError(err)
+		}
+		respErr.RawResponse = rawResp
 	}
 	return shared.NonRetriableError(e.err)
 }
@@ -144,7 +148,10 @@ func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 			HTTPStatus: pageT.httpStatus,
 			Header:     http.Header{},
 		}
-		resp := NewResponse(content, req)
+		resp, err := NewResponse(content, req)
+		if err != nil {
+			return nil, shared.NonRetriableError(err)
+		}
 		return SetResponseBody(resp, body, shared.ContentTypeAppJSON), nil
 	}
 
@@ -152,7 +159,11 @@ func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
 		// fix up the raw response
-		respErr.RawResponse = newErrorResponse(respErr.ErrorCode, respErr.StatusCode, req)
+		rawResp, err := newErrorResponse(respErr.StatusCode, respErr.ErrorCode, req)
+		if err != nil {
+			return nil, shared.NonRetriableError(err)
+		}
+		respErr.RawResponse = rawResp
 	}
 	return nil, shared.NonRetriableError(err)
 }
@@ -265,7 +276,10 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 			HTTPStatus: resp.httpStatus,
 			Header:     http.Header{},
 		}
-		httpResp := NewResponse(content, req)
+		httpResp, err := NewResponse(content, req)
+		if err != nil {
+			return nil, shared.NonRetriableError(err)
+		}
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, resp.status)
 
 		if resp.retryAfter > 0 {
@@ -276,10 +290,14 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	}
 
 	if p.err != nil {
-		err := p.err
-		err.RawResponse = newErrorResponse(p.err.ErrorCode, p.err.StatusCode, req)
+		respErr := p.err
+		rawResp, err := newErrorResponse(p.err.StatusCode, p.err.ErrorCode, req)
+		if err != nil {
+			return nil, shared.NonRetriableError(err)
+		}
+		respErr.RawResponse = rawResp
 		p.err = nil
-		return nil, shared.NonRetriableError(err)
+		return nil, shared.NonRetriableError(respErr)
 	} else if p.res != nil {
 		body, err := json.Marshal(*p.res)
 		if err != nil {
@@ -290,7 +308,11 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 			HTTPStatus: p.httpStatus,
 			Header:     http.Header{},
 		}
-		httpResp := SetResponseBody(NewResponse(content, req), body, shared.ContentTypeAppJSON)
+		resp, err := NewResponse(content, req)
+		if err != nil {
+			return nil, shared.NonRetriableError(err)
+		}
+		httpResp := SetResponseBody(resp, body, shared.ContentTypeAppJSON)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, "Succeeded")
 		return httpResp, nil
 	} else {
@@ -344,8 +366,10 @@ func SetResponseBody(resp *http.Response, body []byte, contentType string) *http
 }
 
 // NewResponse creates a new *http.Response with the specified content and req as the response's request.
-func NewResponse(content ResponseContent, req *http.Request) *http.Response {
-	if content.Header == nil {
+func NewResponse(content ResponseContent, req *http.Request) (*http.Response, error) {
+	if content.HTTPStatus == 0 {
+		return nil, errors.New("no HTTP status code was specified")
+	} else if content.Header == nil {
 		content.Header = http.Header{}
 	}
 	return &http.Response{
@@ -357,16 +381,18 @@ func NewResponse(content ResponseContent, req *http.Request) *http.Response {
 		Request:    req,
 		Status:     fmt.Sprintf("%d %s", content.HTTPStatus, http.StatusText(content.HTTPStatus)),
 		StatusCode: content.HTTPStatus,
-	}
+	}, nil
 }
 
-func newErrorResponse(errorCode string, statusCode int, req *http.Request) *http.Response {
+func newErrorResponse(statusCode int, errorCode string, req *http.Request) (*http.Response, error) {
 	content := ResponseContent{
-		Header: http.Header{},
+		HTTPStatus: statusCode,
+		Header:     http.Header{},
 	}
-	resp := NewResponse(content, req)
-	resp.Status = fmt.Sprintf("%d %s", http.StatusBadRequest, http.StatusText(http.StatusBadRequest))
-	resp.StatusCode = http.StatusBadRequest
+	resp, err := NewResponse(content, req)
+	if err != nil {
+		return nil, err
+	}
 	resp.Header.Set(shared.HeaderXMSErrorCode, errorCode)
-	return resp
+	return resp, nil
 }

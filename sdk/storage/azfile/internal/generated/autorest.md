@@ -312,3 +312,14 @@ directive:
       return $.
         replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
 ```
+
+### Convert StringEncoded to string type
+
+``` yaml
+directive:
+  - from: zz_models.go
+    where: $
+    transform: >-
+      return $.
+        replace(/\*StringEncoded/g, `*string`);
+```

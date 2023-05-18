@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/servicefabric/armservicefabric",
-  "Tag": ""
+  "Tag": "go/resourcemanager/servicefabric/armservicefabric_6095f8310d"
 }

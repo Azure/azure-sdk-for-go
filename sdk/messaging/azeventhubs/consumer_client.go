@@ -142,26 +142,48 @@ func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *Partit
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	rpcLink, err := cc.links.GetManagementLink(ctx)
+	var props EventHubProperties
+
+	err := cc.links.RetryManagement(ctx, EventConsumer, "GetEventHubProperties", cc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
+		tmpProps, err := getEventHubProperties(ctx, cc.namespace, lwid.Link, cc.eventHub, options)
+
+		if err != nil {
+			return err
+		}
+
+		props = tmpProps
+		return nil
+	})
 
 	if err != nil {
 		return EventHubProperties{}, err
 	}
 
-	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, options)
+	return props, nil
 }
 
 // GetPartitionProperties gets properties for a specific partition. This includes data like the
 // last enqueued sequence number, the first sequence number and when an event was last enqueued
 // to the partition.
 func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	rpcLink, err := cc.links.GetManagementLink(ctx)
+	var partProps PartitionProperties
+
+	err := cc.links.RetryManagement(ctx, EventConsumer, "GetPartitionProperties", cc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
+		tmpPartProps, err := getPartitionProperties(ctx, cc.namespace, lwid.Link, cc.eventHub, partitionID, options)
+
+		if err != nil {
+			return err
+		}
+
+		partProps = tmpPartProps
+		return nil
+	})
 
 	if err != nil {
 		return PartitionProperties{}, err
 	}
 
-	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+	return partProps, nil
 }
 
 // InstanceID is the identifier for this ConsumerClient.

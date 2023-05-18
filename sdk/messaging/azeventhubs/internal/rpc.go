@@ -97,6 +97,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	}
 
 	id := linkID.String()
+
 	link := &rpcLink{
 		session:       session,
 		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
@@ -300,6 +301,10 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 	}
 
 	return response, err
+}
+
+func (l *rpcLink) ConnID() uint64 {
+	return l.session.ConnID()
 }
 
 // Close the link receiver, sender and session

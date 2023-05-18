@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/telemetry"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
@@ -54,7 +54,7 @@ type (
 		closedPermanently bool
 
 		// newClientFn exists so we can stub out newClient for unit tests.
-		newClientFn func(ctx context.Context) (amqpwrap.AMQPClient, error)
+		newClientFn func(ctx context.Context, id uint64) (amqpwrap.AMQPClient, error)
 	}
 
 	// NamespaceOption provides structure for configuring a new Event Hub namespace
@@ -69,8 +69,8 @@ type NamespaceWithNewAMQPLinks interface {
 // NamespaceForAMQPLinks is the Namespace surface needed for the internals of AMQPLinks.
 type NamespaceForAMQPLinks interface {
 	NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error)
-	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
-	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error)
+	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, error)
+	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error)
 	GetEntityAudience(entityPath string) string
 
 	// Recover destroys the currently held AMQP connection and recreates it, if needed.
@@ -159,7 +159,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, error) {
+func (ns *Namespace) newClientImpl(ctx context.Context, id uint64) (amqpwrap.AMQPClient, error) {
 	connOptions := amqp.ConnOptions{
 		SASLType:    amqp.SASLTypeAnonymous(),
 		MaxSessions: 65535,
@@ -187,29 +187,29 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 
 		connOptions.HostName = ns.FQDN
 		client, err := amqp.NewConn(ctx, nConn, &connOptions)
-		return &amqpwrap.AMQPClientWrapper{Inner: client}, err
+		return &amqpwrap.AMQPClientWrapper{Inner: client, ConnID: id}, err
 	}
 
 	client, err := amqp.Dial(ctx, ns.getAMQPHostURI(), &connOptions)
-	return &amqpwrap.AMQPClientWrapper{Inner: client}, err
+	return &amqpwrap.AMQPClientWrapper{Inner: client, ConnID: id}, err
 }
 
 // NewAMQPSession creates a new AMQP session with the internally cached *amqp.Client.
 // Returns a closeable AMQP session and the current client revision.
-func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error) {
-	client, clientRevision, err := ns.GetAMQPClientImpl(ctx)
+func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, error) {
+	client, _, err := ns.GetAMQPClientImpl(ctx)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
 	session, err := client.NewSession(ctx, nil)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
-	return session, clientRevision, err
+	return session, err
 }
 
 // Close closes the current cached client.
@@ -226,7 +226,7 @@ func (ns *Namespace) Close(ctx context.Context, permanently bool) error {
 		ns.client = nil
 
 		if err != nil {
-			log.Writef(exported.EventConn, "Failed when closing AMQP connection: %s", err)
+			azlog.Writef(exported.EventConn, "Failed when closing AMQP connection: %s", err)
 		}
 	}
 
@@ -264,7 +264,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 	}
 
 	if ns.connID != theirConnID {
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
+		azlog.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
 		return nil
 	}
 
@@ -275,11 +275,11 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 		if err := oldClient.Close(); err != nil {
 			// the error on close isn't critical, we don't need to exit or
 			// return it.
-			log.Writef(exported.EventConn, "Error closing old client: %s", err.Error())
+			azlog.Writef(exported.EventConn, "Error closing old client: %s", err.Error())
 		}
 	}
 
-	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
+	azlog.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
 
 	if _, _, err := ns.updateClientWithoutLock(ctx); err != nil {
 		return err
@@ -312,7 +312,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	audience := ns.GetEntityAudience(entityPath)
 
 	refreshClaim := func(ctx context.Context) (time.Time, error) {
-		log.Writef(exported.EventAuth, "(%s) refreshing claim", entityPath)
+		azlog.Writef(exported.EventAuth, "(%s) refreshing claim", entityPath)
 
 		amqpClient, clientRevision, err := ns.GetAMQPClientImpl(ctx)
 
@@ -323,11 +323,11 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		token, expiration, err := ns.TokenProvider.GetTokenAsTokenProvider(audience)
 
 		if err != nil {
-			log.Writef(exported.EventAuth, "(%s) negotiate claim, failed getting token: %s", entityPath, err.Error())
+			azlog.Writef(exported.EventAuth, "(%s) negotiate claim, failed getting token: %s", entityPath, err.Error())
 			return time.Time{}, err
 		}
 
-		log.Writef(exported.EventAuth, "(%s) negotiate claim, token expires on %s", entityPath, expiration.Format(time.RFC3339))
+		azlog.Writef(exported.EventAuth, "(%s) negotiate claim, token expires on %s", entityPath, expiration.Format(time.RFC3339))
 
 		// You're not allowed to have multiple $cbs links open in a single connection.
 		// The current cbs.NegotiateClaim implementation automatically creates and shuts
@@ -341,11 +341,11 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			// the negotiateClaim code creates it's own link each time.
 			if GetRecoveryKind(err) == RecoveryKindConn {
 				if err := ns.Recover(ctx, clientRevision); err != nil {
-					log.Writef(exported.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
+					azlog.Writef(exported.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
 				}
 			}
 
-			log.Writef(exported.EventAuth, "(%s) negotiate claim, failed: %s", entityPath, err.Error())
+			azlog.Writef(exported.EventAuth, "(%s) negotiate claim, failed: %s", entityPath, err.Error())
 			return time.Time{}, err
 		}
 
@@ -364,7 +364,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 	// connection strings with embedded SAS tokens will return a zero expiration time since they can't be renewed.
 	if expiresOn.IsZero() {
-		log.Writef(exported.EventAuth, "Token does not have an expiration date, no background renewal needed.")
+		azlog.Writef(exported.EventAuth, "Token does not have an expiration date, no background renewal needed.")
 
 		// cancel everything related to the claims refresh loop.
 		cancelRefreshCtx()
@@ -381,7 +381,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		for {
 			nextClaimAt := nextClaimRefreshDurationFn(expiresOn, time.Now())
 
-			log.Writef(exported.EventAuth, "(%s) next refresh in %s", entityPath, nextClaimAt)
+			azlog.Writef(exported.EventAuth, "(%s) next refresh in %s", entityPath, nextClaimAt)
 
 			select {
 			case <-refreshCtx.Done():
@@ -404,7 +404,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 					}
 
 					if GetRecoveryKind(err) == RecoveryKindFatal {
-						log.Writef(exported.EventAuth, "[%s] fatal error, stopping token refresh loop: %s", entityPath, err.Error())
+						azlog.Writef(exported.EventAuth, "[%s] fatal error, stopping token refresh loop: %s", entityPath, err.Error())
 						break TokenRefreshLoop
 					}
 				}
@@ -441,16 +441,17 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 	}
 
 	connStart := time.Now()
-	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
-	tempClient, err := ns.newClientFn(ctx)
+	azlog.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
+	nextID := ns.connID + 1
+	tempClient, err := ns.newClientFn(ctx, nextID)
 
 	if err != nil {
 		return nil, 0, err
 	}
 
-	ns.connID++
+	ns.connID = nextID
 	ns.client = tempClient
-	log.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", ns.connID, time.Since(connStart)/time.Millisecond)
+	azlog.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", ns.connID, time.Since(connStart)/time.Millisecond)
 
 	return ns.client, ns.connID, err
 }

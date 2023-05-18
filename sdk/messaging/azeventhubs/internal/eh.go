@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package internal
 
 import (
@@ -14,11 +15,11 @@ func (l *rpcLink) LinkName() string {
 	return l.sender.LinkName()
 }
 
-func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
-	client, connID, err := ns.GetAMQPClientImpl(ctx)
+func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
+	client, _, err := ns.GetAMQPClientImpl(ctx)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
 	rpcLink, err := NewRPCLink(ctx, RPCLinkArgs{
@@ -28,10 +29,10 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amq
 	})
 
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
-	return rpcLink, connID, nil
+	return rpcLink, nil
 }
 
 func (ns *Namespace) GetTokenForEntity(eventHub string) (*auth.Token, error) {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 // Package auth provides an abstraction over claims-based security for Azure Event Hub and Service Bus.
+
 package auth
 
 const (

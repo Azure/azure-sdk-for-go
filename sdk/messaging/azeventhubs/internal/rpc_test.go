@@ -92,6 +92,8 @@ func TestRPCLink(t *testing.T) {
 // a link recreation/connection recovery (or potentially just fail out)
 func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
+	messages := make(chan string, 10000)
+	_ = test.CaptureLogsForTestWithChannel(messages)
 
 	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
@@ -104,10 +106,6 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	require.NotNil(t, link)
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
-
-	messagesCh := make(chan string, 10000)
-	endCapture := test.CaptureLogsForTestWithChannel(messagesCh)
-	defer endCapture()
 
 	responses := []*rpcTestResp{
 		// this error requires recovery (in this case, connection but there's no
@@ -131,7 +129,7 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 LogLoop:
 	for {
 		select {
-		case msg := <-messagesCh:
+		case msg := <-messages:
 			if msg == "[rpctesting] "+responseRouterShutdownMessage {
 				break LogLoop
 			}
@@ -144,6 +142,8 @@ LogLoop:
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
 
+	getLogs := test.CaptureLogsForTest()
+
 	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
@@ -155,9 +155,6 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	require.NotNil(t, link)
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
-
-	cleanupLogs := test.CaptureLogsForTest()
-	defer cleanupLogs()
 
 	responses := []*rpcTestResp{
 		// server busy is a "retry, no reconnect needed" type of error. The response router
@@ -187,7 +184,9 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
 
 	require.NoError(t, link.Close(context.Background()))
-	logMessages := cleanupLogs()
+
+	logMessages := getLogs()
+
 	require.Contains(t, logMessages, "[rpctesting] RPCLink had no response channel for correlation ID you've-never-seen-this", "exampleUncorrelatedMessage causes warning for uncorrelated message")
 	require.Contains(t, logMessages, "[rpctesting] Non-fatal error in RPCLink, starting to receive again: *Error{Condition: com.microsoft:server-busy, Description: , Info: map[]}")
 }
@@ -242,7 +241,7 @@ func TestRPCLinkClosingClean_SessionCreationFailed(t *testing.T) {
 
 	sessionErr := errors.New("failed to create session")
 
-	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(nil, sessionErr)
+	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(nil, sessionErr)
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client:   conn,
@@ -260,9 +259,9 @@ func TestRPCLinkClosingClean_SenderCreationFailed(t *testing.T) {
 
 	senderErr := errors.New("failed to create sender")
 
-	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
-	sess.EXPECT().Close(mock.NotCancelled).Return(nil)
+	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().Close(test.NotCancelled).Return(nil)
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client:   conn,
@@ -281,11 +280,11 @@ func TestRPCLinkClosingClean_ReceiverCreationFailed(t *testing.T) {
 
 	receiverErr := errors.New("failed to create receiver")
 
-	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(sender, nil)
-	sess.EXPECT().NewReceiver(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, receiverErr)
+	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(sender, nil)
+	sess.EXPECT().NewReceiver(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, receiverErr)
 
-	sess.EXPECT().Close(mock.NotCancelled).Return(nil)
+	sess.EXPECT().Close(test.NotCancelled).Return(nil)
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client:   conn,
@@ -303,9 +302,9 @@ func TestRPCLinkClosingClean_CreationFailsButSessionCloseFailsToo(t *testing.T) 
 
 	senderErr := errors.New("failed to create receiver")
 
-	conn.EXPECT().NewSession(mock.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(mock.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
-	sess.EXPECT().Close(mock.NotCancelled).Return(errors.New("session closing failed"))
+	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().Close(test.NotCancelled).Return(errors.New("session closing failed"))
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client:   conn,
@@ -346,6 +345,12 @@ type rpcTester struct {
 	Accepted    chan *amqp.Message
 	ResponsesCh chan *rpcTestResp
 	t           *testing.T
+
+	connID uint64
+}
+
+func (c *rpcTester) ConnID() uint64 {
+	return c.connID
 }
 
 type rpcTestResp struct {
@@ -355,6 +360,11 @@ type rpcTestResp struct {
 
 type rpcTesterClient struct {
 	session amqpwrap.AMQPSession
+	connID  uint64
+}
+
+func (c *rpcTesterClient) ID() uint64 {
+	return c.connID
 }
 
 func (c *rpcTesterClient) Name() string {

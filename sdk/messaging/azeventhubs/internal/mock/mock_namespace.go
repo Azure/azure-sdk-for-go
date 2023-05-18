@@ -6,6 +6,7 @@
 // Source: ../namespace.go
 
 // Package mock is a generated GoMock package.
+
 package mock
 
 import (
@@ -121,13 +122,12 @@ func (mr *MockNamespaceForAMQPLinksMockRecorder) NegotiateClaim(ctx, entityPath 
 }
 
 // NewAMQPSession mocks base method.
-func (m *MockNamespaceForAMQPLinks) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error) {
+func (m *MockNamespaceForAMQPLinks) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewAMQPSession", ctx)
 	ret0, _ := ret[0].(amqpwrap.AMQPSession)
-	ret1, _ := ret[1].(uint64)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NewAMQPSession indicates an expected call of NewAMQPSession.
@@ -137,13 +137,12 @@ func (mr *MockNamespaceForAMQPLinksMockRecorder) NewAMQPSession(ctx interface{})
 }
 
 // NewRPCLink mocks base method.
-func (m *MockNamespaceForAMQPLinks) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
+func (m *MockNamespaceForAMQPLinks) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewRPCLink", ctx, managementPath)
 	ret0, _ := ret[0].(amqpwrap.RPCLink)
-	ret1, _ := ret[1].(uint64)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NewRPCLink indicates an expected call of NewRPCLink.

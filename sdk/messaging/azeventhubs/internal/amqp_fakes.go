@@ -52,6 +52,8 @@ type FakeAMQPReceiver struct {
 
 	CloseCalled int
 	CloseError  error
+
+	connID uint64
 }
 
 func (ns *FakeNSForPartClient) Recover(ctx context.Context, clientRevision uint64) error {
@@ -63,10 +65,10 @@ func (ns *FakeNSForPartClient) NegotiateClaim(ctx context.Context, entityPath st
 	return cancel, ctx.Done(), nil
 }
 
-func (ns *FakeNSForPartClient) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error) {
+func (ns *FakeNSForPartClient) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, error) {
 	return &FakeAMQPSession{
 		NS: ns,
-	}, 1, nil
+	}, nil
 }
 
 func (sess *FakeAMQPSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
@@ -89,6 +91,10 @@ func (sess *FakeAMQPSession) NewSender(ctx context.Context, target string, opts 
 func (sess *FakeAMQPSession) Close(ctx context.Context) error {
 	sess.CloseCalled++
 	return nil
+}
+
+func (r *FakeAMQPReceiver) ConnID() uint64 {
+	return r.connID
 }
 
 func (r *FakeAMQPReceiver) Credits() uint32 {

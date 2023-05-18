@@ -33,7 +33,9 @@ func TestConsumerClient_Recovery(t *testing.T) {
 	// 2. Receive one event per partition. This'll ensure the links are live.
 	// 3. Grub into the client to get access to it's connection and shut it off.
 	// 4. Try again, everything should recover.
-	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, &ProducerClientOptions{
+		RetryOptions: testParams.RetryOptions,
+	})
 	require.NoError(t, err)
 
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
@@ -98,7 +100,9 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	// now we'll receive an event (so we know each partition client is alive)
 	// each partition actually has two offsets.
-	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, nil)
+	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, &ConsumerClientOptions{
+		RetryOptions: testParams.RetryOptions,
+	})
 	require.NoError(t, err)
 
 	partitionClients := make([]*PartitionClient, len(sendResults))
@@ -152,7 +156,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 		go func(i int, pc *PartitionClient) {
 			defer wg.Done()
 
-			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 
 			events, err := pc.ReceiveEvents(ctx, 1, nil)
@@ -182,7 +186,9 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 	// 2. Receive one event per partition. This'll ensure the links are live.
 	// 3. Grub into the client to get access to it's connection and shut it off.
 	// 4. Try again, everything should recover.
-	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, nil)
+	producerClient, err := NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, dac, &ProducerClientOptions{
+		RetryOptions: testParams.RetryOptions,
+	})
 	require.NoError(t, err)
 
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
@@ -236,7 +242,9 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 
 	// now we'll receive an event (so we know each partition client is alive)
 	// each partition actually has two offsets.
-	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, nil)
+	consumerClient, err := NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, DefaultConsumerGroup, dac, &ConsumerClientOptions{
+		RetryOptions: testParams.RetryOptions,
+	})
 	require.NoError(t, err)
 
 	partitionClients := make([]*PartitionClient, len(sendResults))

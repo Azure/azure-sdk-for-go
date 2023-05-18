@@ -51,21 +51,20 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 	})
 
 	return func() []string {
-		if messagesCh == nil {
-			// already been closed, probably manually.
-			return nil
-		}
-
 		setAzLogListener(nil)
-		close(messagesCh)
 
 		var messages []string
 
-		for msg := range messagesCh {
-			messages = append(messages, msg)
+	Loop:
+		for {
+			select {
+			case msg := <-messagesCh:
+				messages = append(messages, msg)
+			default:
+				break Loop
+			}
 		}
 
-		messagesCh = nil
 		return messages
 	}
 }
@@ -103,6 +102,7 @@ type ConnectionParamsForTest struct {
 	ConnectionString           string
 	ConnectionStringListenOnly string
 	ConnectionStringSendOnly   string
+	RetryOptions               exported.RetryOptions
 	EventHubName               string
 	EventHubLinksOnlyName      string
 	EventHubNamespace          string
@@ -132,6 +132,13 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		"RESOURCE_GROUP",
 	})
 
+	retryOptions := exported.RetryOptions{}
+
+	if os.Getenv("AZEVENTHUBS_ENVIRONMENT") == "AzureChinaCloud" {
+		retryOptions.MaxRetries = 10
+		t.Logf("Using %d retries for %q", retryOptions.MaxRetries, os.Getenv("AZEVENTHUBS_ENVIRONMENT"))
+	}
+
 	connProps, err := exported.ParseConnectionString(envVars["EVENTHUB_CONNECTION_STRING"])
 	require.NoError(t, err)
 
@@ -143,6 +150,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		EventHubLinksOnlyName:      envVars["EVENTHUB_LINKSONLY_NAME"],
 		EventHubNamespace:          connProps.FullyQualifiedNamespace,
 		ResourceGroup:              envVars["RESOURCE_GROUP"],
+		RetryOptions:               retryOptions,
 		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
 		SubscriptionID:             envVars["AZURE_SUBSCRIPTION_ID"],
 		TenantID:                   envVars["AZURE_TENANT_ID"],

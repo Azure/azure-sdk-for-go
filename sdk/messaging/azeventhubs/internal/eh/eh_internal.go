@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package eh
 
 // ConvertToInt64 converts any int-like value to be an int64.

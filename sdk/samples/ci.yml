@@ -24,4 +24,4 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'sdk/samples'
+    ServiceDirectory: 'samples'

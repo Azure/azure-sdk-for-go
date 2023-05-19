@@ -8,9 +8,12 @@ package azsecrets_test
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"hash/fnv"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -156,4 +159,46 @@ type FakeCredential struct{}
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+}
+
+// pollStatus calls a function until it stops returning a response error with the given status code.
+// If this takes more than 2 minutes, it fails the test.
+func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
+	var err error
+	for i := 0; i < 12; i++ {
+		err = fn()
+		var respErr *azcore.ResponseError
+		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+			break
+		}
+		if i < 11 {
+			recording.Sleep(10 * time.Second)
+		}
+	}
+	require.NoError(t, err)
+}
+
+type serdeModel interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func testSerde[T serdeModel](t *testing.T, model T) {
+	data, err := model.MarshalJSON()
+	require.NoError(t, err)
+	err = model.UnmarshalJSON(data)
+	require.NoError(t, err)
+
+	// testing unmarshal error scenarios
+	var data2 []byte
+	err = model.UnmarshalJSON(data2)
+	require.Error(t, err)
+
+	m := regexp.MustCompile(":.*$")
+	modifiedData := m.ReplaceAllString(string(data), ":false}")
+	if modifiedData != "{}" {
+		data3 := []byte(modifiedData)
+		err = model.UnmarshalJSON(data3)
+		require.Error(t, err)
+	}
 }

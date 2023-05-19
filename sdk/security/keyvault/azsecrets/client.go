@@ -120,7 +120,7 @@ func (client *Client) deleteSecretCreateRequest(ctx context.Context, name string
 // deleteSecretHandleResponse handles the DeleteSecret response.
 func (client *Client) deleteSecretHandleResponse(resp *http.Response) (DeleteSecretResponse, error) {
 	result := DeleteSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecret); err != nil {
 		return DeleteSecretResponse{}, err
 	}
 	return result, nil
@@ -169,7 +169,7 @@ func (client *Client) getDeletedSecretCreateRequest(ctx context.Context, name st
 // getDeletedSecretHandleResponse handles the GetDeletedSecret response.
 func (client *Client) getDeletedSecretHandleResponse(resp *http.Response) (GetDeletedSecretResponse, error) {
 	result := GetDeletedSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecret); err != nil {
 		return GetDeletedSecretResponse{}, err
 	}
 	return result, nil
@@ -221,47 +221,48 @@ func (client *Client) getSecretCreateRequest(ctx context.Context, name string, v
 // getSecretHandleResponse handles the GetSecret response.
 func (client *Client) getSecretHandleResponse(resp *http.Response) (GetSecretResponse, error) {
 	result := GetSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return GetSecretResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListDeletedSecretsPager - The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled
-// for soft-delete. This operation requires the secrets/list permission.
+// NewListDeletedSecretPropertiesPager - The Get Deleted Secrets operation returns the secrets that have been deleted for
+// a vault enabled for soft-delete. This operation requires the secrets/list permission.
 //
 // Generated from API version 7.4
-//   - options - ListDeletedSecretsOptions contains the optional parameters for the Client.NewListDeletedSecretsPager method.
-func (client *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) *runtime.Pager[ListDeletedSecretsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretsResponse]{
-		More: func(page ListDeletedSecretsResponse) bool {
+//   - options - ListDeletedSecretPropertiesOptions contains the optional parameters for the Client.NewListDeletedSecretPropertiesPager
+//     method.
+func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSecretPropertiesOptions) *runtime.Pager[ListDeletedSecretPropertiesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretPropertiesResponse]{
+		More: func(page ListDeletedSecretPropertiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListDeletedSecretsResponse) (ListDeletedSecretsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListDeletedSecretPropertiesResponse) (ListDeletedSecretPropertiesResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listDeletedSecretsCreateRequest(ctx, options)
+				req, err = client.listDeletedSecretPropertiesCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListDeletedSecretsResponse{}, err
+				return ListDeletedSecretPropertiesResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ListDeletedSecretsResponse{}, err
+				return ListDeletedSecretPropertiesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListDeletedSecretsResponse{}, runtime.NewResponseError(resp)
+				return ListDeletedSecretPropertiesResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listDeletedSecretsHandleResponse(resp)
+			return client.listDeletedSecretPropertiesHandleResponse(resp)
 		},
 	})
 }
 
-// listDeletedSecretsCreateRequest creates the ListDeletedSecrets request.
-func (client *Client) listDeletedSecretsCreateRequest(ctx context.Context, options *ListDeletedSecretsOptions) (*policy.Request, error) {
+// listDeletedSecretPropertiesCreateRequest creates the ListDeletedSecretProperties request.
+func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, options *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/deletedsecrets"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -277,51 +278,113 @@ func (client *Client) listDeletedSecretsCreateRequest(ctx context.Context, optio
 	return req, nil
 }
 
-// listDeletedSecretsHandleResponse handles the ListDeletedSecrets response.
-func (client *Client) listDeletedSecretsHandleResponse(resp *http.Response) (ListDeletedSecretsResponse, error) {
-	result := ListDeletedSecretsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretListResult); err != nil {
-		return ListDeletedSecretsResponse{}, err
+// listDeletedSecretPropertiesHandleResponse handles the ListDeletedSecretProperties response.
+func (client *Client) listDeletedSecretPropertiesHandleResponse(resp *http.Response) (ListDeletedSecretPropertiesResponse, error) {
+	result := ListDeletedSecretPropertiesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretPropertiesListResult); err != nil {
+		return ListDeletedSecretPropertiesResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListSecretVersionsPager - The full secret identifier and attributes are provided in the response. No values are returned
-// for the secrets. This operations requires the secrets/list permission.
+// NewListSecretPropertiesPager - The Get Secrets operation is applicable to the entire vault. However, only the base secret
+// identifier and its attributes are provided in the response. Individual secret versions are not listed in the
+// response. This operation requires the secrets/list permission.
 //
 // Generated from API version 7.4
-//   - name - The name of the secret.
-//   - options - ListSecretVersionsOptions contains the optional parameters for the Client.NewListSecretVersionsPager method.
-func (client *Client) NewListSecretVersionsPager(name string, options *ListSecretVersionsOptions) *runtime.Pager[ListSecretVersionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListSecretVersionsResponse]{
-		More: func(page ListSecretVersionsResponse) bool {
+//   - options - ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager
+//     method.
+func (client *Client) NewListSecretPropertiesPager(options *ListSecretPropertiesOptions) *runtime.Pager[ListSecretPropertiesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListSecretPropertiesResponse]{
+		More: func(page ListSecretPropertiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ListSecretVersionsResponse) (ListSecretVersionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListSecretPropertiesResponse) (ListSecretPropertiesResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listSecretVersionsCreateRequest(ctx, name, options)
+				req, err = client.listSecretPropertiesCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ListSecretVersionsResponse{}, err
+				return ListSecretPropertiesResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ListSecretVersionsResponse{}, err
+				return ListSecretPropertiesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListSecretVersionsResponse{}, runtime.NewResponseError(resp)
+				return ListSecretPropertiesResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listSecretVersionsHandleResponse(resp)
+			return client.listSecretPropertiesHandleResponse(resp)
 		},
 	})
 }
 
-// listSecretVersionsCreateRequest creates the ListSecretVersions request.
-func (client *Client) listSecretVersionsCreateRequest(ctx context.Context, name string, options *ListSecretVersionsOptions) (*policy.Request, error) {
+// listSecretPropertiesCreateRequest creates the ListSecretProperties request.
+func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, options *ListSecretPropertiesOptions) (*policy.Request, error) {
+	urlPath := "/secrets"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
+	reqQP.Set("api-version", "7.4")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecretPropertiesHandleResponse handles the ListSecretProperties response.
+func (client *Client) listSecretPropertiesHandleResponse(resp *http.Response) (ListSecretPropertiesResponse, error) {
+	result := ListSecretPropertiesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecretPropertiesListResult); err != nil {
+		return ListSecretPropertiesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListSecretPropertiesVersionsPager - The full secret identifier and attributes are provided in the response. No values
+// are returned for the secrets. This operations requires the secrets/list permission.
+//
+// Generated from API version 7.4
+//   - name - The name of the secret.
+//   - options - ListSecretPropertiesVersionsOptions contains the optional parameters for the Client.NewListSecretPropertiesVersionsPager
+//     method.
+func (client *Client) NewListSecretPropertiesVersionsPager(name string, options *ListSecretPropertiesVersionsOptions) *runtime.Pager[ListSecretPropertiesVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListSecretPropertiesVersionsResponse]{
+		More: func(page ListSecretPropertiesVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListSecretPropertiesVersionsResponse) (ListSecretPropertiesVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSecretPropertiesVersionsCreateRequest(ctx, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ListSecretPropertiesVersionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListSecretPropertiesVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListSecretPropertiesVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSecretPropertiesVersionsHandleResponse(resp)
+		},
+	})
+}
+
+// listSecretPropertiesVersionsCreateRequest creates the ListSecretPropertiesVersions request.
+func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, options *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
 	urlPath := "/secrets/{secret-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -341,71 +404,11 @@ func (client *Client) listSecretVersionsCreateRequest(ctx context.Context, name 
 	return req, nil
 }
 
-// listSecretVersionsHandleResponse handles the ListSecretVersions response.
-func (client *Client) listSecretVersionsHandleResponse(resp *http.Response) (ListSecretVersionsResponse, error) {
-	result := ListSecretVersionsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return ListSecretVersionsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListSecretsPager - The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier
-// and its attributes are provided in the response. Individual secret versions are not listed in the
-// response. This operation requires the secrets/list permission.
-//
-// Generated from API version 7.4
-//   - options - ListSecretsOptions contains the optional parameters for the Client.NewListSecretsPager method.
-func (client *Client) NewListSecretsPager(options *ListSecretsOptions) *runtime.Pager[ListSecretsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ListSecretsResponse]{
-		More: func(page ListSecretsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ListSecretsResponse) (ListSecretsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listSecretsCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return ListSecretsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ListSecretsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListSecretsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listSecretsHandleResponse(resp)
-		},
-	})
-}
-
-// listSecretsCreateRequest creates the ListSecrets request.
-func (client *Client) listSecretsCreateRequest(ctx context.Context, options *ListSecretsOptions) (*policy.Request, error) {
-	urlPath := "/secrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	reqQP.Set("api-version", "7.4")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecretsHandleResponse handles the ListSecrets response.
-func (client *Client) listSecretsHandleResponse(resp *http.Response) (ListSecretsResponse, error) {
-	result := ListSecretsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return ListSecretsResponse{}, err
+// listSecretPropertiesVersionsHandleResponse handles the ListSecretPropertiesVersions response.
+func (client *Client) listSecretPropertiesVersionsHandleResponse(resp *http.Response) (ListSecretPropertiesVersionsResponse, error) {
+	result := ListSecretPropertiesVersionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecretPropertiesListResult); err != nil {
+		return ListSecretPropertiesVersionsResponse{}, err
 	}
 	return result, nil
 }
@@ -494,7 +497,7 @@ func (client *Client) recoverDeletedSecretCreateRequest(ctx context.Context, nam
 // recoverDeletedSecretHandleResponse handles the RecoverDeletedSecret response.
 func (client *Client) recoverDeletedSecretHandleResponse(resp *http.Response) (RecoverDeletedSecretResponse, error) {
 	result := RecoverDeletedSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return RecoverDeletedSecretResponse{}, err
 	}
 	return result, nil
@@ -539,7 +542,7 @@ func (client *Client) restoreSecretCreateRequest(ctx context.Context, parameters
 // restoreSecretHandleResponse handles the RestoreSecret response.
 func (client *Client) restoreSecretHandleResponse(resp *http.Response) (RestoreSecretResponse, error) {
 	result := RestoreSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return RestoreSecretResponse{}, err
 	}
 	return result, nil
@@ -590,14 +593,14 @@ func (client *Client) setSecretCreateRequest(ctx context.Context, name string, p
 // setSecretHandleResponse handles the SetSecret response.
 func (client *Client) setSecretHandleResponse(resp *http.Response) (SetSecretResponse, error) {
 	result := SetSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return SetSecretResponse{}, err
 	}
 	return result, nil
 }
 
-// UpdateSecret - The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-// specified in the request are left unchanged. The value of a secret itself cannot be changed.
+// UpdateSecretProperties - The UPDATE operation changes specified attributes of an existing stored secret. Attributes that
+// are not specified in the request are left unchanged. The value of a secret itself cannot be changed.
 // This operation requires the secrets/set permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -605,24 +608,24 @@ func (client *Client) setSecretHandleResponse(resp *http.Response) (SetSecretRes
 //   - name - The name of the secret.
 //   - version - The version of the secret.
 //   - parameters - The parameters for update secret operation.
-//   - options - UpdateSecretOptions contains the optional parameters for the Client.UpdateSecret method.
-func (client *Client) UpdateSecret(ctx context.Context, name string, version string, parameters UpdateSecretParameters, options *UpdateSecretOptions) (UpdateSecretResponse, error) {
-	req, err := client.updateSecretCreateRequest(ctx, name, version, parameters, options)
+//   - options - UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
+func (client *Client) UpdateSecretProperties(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+	req, err := client.updateSecretPropertiesCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
-		return UpdateSecretResponse{}, err
+		return UpdateSecretPropertiesResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return UpdateSecretResponse{}, err
+		return UpdateSecretPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UpdateSecretResponse{}, runtime.NewResponseError(resp)
+		return UpdateSecretPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.updateSecretHandleResponse(resp)
+	return client.updateSecretPropertiesHandleResponse(resp)
 }
 
-// updateSecretCreateRequest creates the UpdateSecret request.
-func (client *Client) updateSecretCreateRequest(ctx context.Context, name string, version string, parameters UpdateSecretParameters, options *UpdateSecretOptions) (*policy.Request, error) {
+// updateSecretPropertiesCreateRequest creates the UpdateSecretProperties request.
+func (client *Client) updateSecretPropertiesCreateRequest(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, options *UpdateSecretPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/secrets/{secret-name}/{secret-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -640,11 +643,11 @@ func (client *Client) updateSecretCreateRequest(ctx context.Context, name string
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// updateSecretHandleResponse handles the UpdateSecret response.
-func (client *Client) updateSecretHandleResponse(resp *http.Response) (UpdateSecretResponse, error) {
-	result := UpdateSecretResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecretBundle); err != nil {
-		return UpdateSecretResponse{}, err
+// updateSecretPropertiesHandleResponse handles the UpdateSecretProperties response.
+func (client *Client) updateSecretPropertiesHandleResponse(resp *http.Response) (UpdateSecretPropertiesResponse, error) {
+	result := UpdateSecretPropertiesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
+		return UpdateSecretPropertiesResponse{}, err
 	}
 	return result, nil
 }

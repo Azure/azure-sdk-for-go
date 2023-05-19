@@ -16,32 +16,32 @@ type BackupSecretResponse struct {
 
 // DeleteSecretResponse contains the response from method Client.DeleteSecret.
 type DeleteSecretResponse struct {
-	DeletedSecretBundle
+	DeletedSecret
 }
 
 // GetDeletedSecretResponse contains the response from method Client.GetDeletedSecret.
 type GetDeletedSecretResponse struct {
-	DeletedSecretBundle
+	DeletedSecret
 }
 
 // GetSecretResponse contains the response from method Client.GetSecret.
 type GetSecretResponse struct {
-	SecretBundle
+	Secret
 }
 
-// ListDeletedSecretsResponse contains the response from method Client.NewListDeletedSecretsPager.
-type ListDeletedSecretsResponse struct {
-	DeletedSecretListResult
+// ListDeletedSecretPropertiesResponse contains the response from method Client.NewListDeletedSecretPropertiesPager.
+type ListDeletedSecretPropertiesResponse struct {
+	DeletedSecretPropertiesListResult
 }
 
-// ListSecretVersionsResponse contains the response from method Client.NewListSecretVersionsPager.
-type ListSecretVersionsResponse struct {
-	SecretListResult
+// ListSecretPropertiesResponse contains the response from method Client.NewListSecretPropertiesPager.
+type ListSecretPropertiesResponse struct {
+	SecretPropertiesListResult
 }
 
-// ListSecretsResponse contains the response from method Client.NewListSecretsPager.
-type ListSecretsResponse struct {
-	SecretListResult
+// ListSecretPropertiesVersionsResponse contains the response from method Client.NewListSecretPropertiesVersionsPager.
+type ListSecretPropertiesVersionsResponse struct {
+	SecretPropertiesListResult
 }
 
 // PurgeDeletedSecretResponse contains the response from method Client.PurgeDeletedSecret.
@@ -51,20 +51,20 @@ type PurgeDeletedSecretResponse struct {
 
 // RecoverDeletedSecretResponse contains the response from method Client.RecoverDeletedSecret.
 type RecoverDeletedSecretResponse struct {
-	SecretBundle
+	Secret
 }
 
 // RestoreSecretResponse contains the response from method Client.RestoreSecret.
 type RestoreSecretResponse struct {
-	SecretBundle
+	Secret
 }
 
 // SetSecretResponse contains the response from method Client.SetSecret.
 type SetSecretResponse struct {
-	SecretBundle
+	Secret
 }
 
-// UpdateSecretResponse contains the response from method Client.UpdateSecret.
-type UpdateSecretResponse struct {
-	SecretBundle
+// UpdateSecretPropertiesResponse contains the response from method Client.UpdateSecretProperties.
+type UpdateSecretPropertiesResponse struct {
+	Secret
 }

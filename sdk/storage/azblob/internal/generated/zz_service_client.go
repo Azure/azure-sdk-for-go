@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
@@ -22,21 +23,10 @@ import (
 )
 
 // ServiceClient contains the methods for the Service group.
-// Don't use this type directly, use NewServiceClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ServiceClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewServiceClient creates a new instance of ServiceClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
-	client := &ServiceClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // FilterBlobs - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
@@ -52,7 +42,7 @@ func (client *ServiceClient) FilterBlobs(ctx context.Context, where string, opti
 	if err != nil {
 		return ServiceClientFilterBlobsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientFilterBlobsResponse{}, err
 	}
@@ -127,7 +117,7 @@ func (client *ServiceClient) GetAccountInfo(ctx context.Context, options *Servic
 	if err != nil {
 		return ServiceClientGetAccountInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetAccountInfoResponse{}, err
 	}
@@ -198,7 +188,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
@@ -258,7 +248,7 @@ func (client *ServiceClient) GetStatistics(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceClientGetStatisticsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetStatisticsResponse{}, err
 	}
@@ -327,7 +317,7 @@ func (client *ServiceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 	if err != nil {
 		return ServiceClientGetUserDelegationKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetUserDelegationKeyResponse{}, err
 	}
@@ -355,7 +345,10 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsXML(req, keyInfo)
+	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
@@ -452,7 +445,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, storageServicePr
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
@@ -480,7 +473,10 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsXML(req, storageServiceProperties)
+	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
@@ -512,7 +508,7 @@ func (client *ServiceClient) SubmitBatch(ctx context.Context, contentLength int6
 	if err != nil {
 		return ServiceClientSubmitBatchResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientSubmitBatchResponse{}, err
 	}
@@ -542,7 +538,10 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, multipartContentType)
+	if err := req.SetBody(body, multipartContentType); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

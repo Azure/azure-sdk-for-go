@@ -22,21 +22,10 @@ import (
 )
 
 // PageBlobClient contains the methods for the PageBlob group.
-// Don't use this type directly, use NewPageBlobClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type PageBlobClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewPageBlobClient creates a new instance of PageBlobClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewPageBlobClient(endpoint string, pl runtime.Pipeline) *PageBlobClient {
-	client := &PageBlobClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // ClearPages - The Clear Pages operation clears a set of pages from a page blob
@@ -56,7 +45,7 @@ func (client *PageBlobClient) ClearPages(ctx context.Context, contentLength int6
 	if err != nil {
 		return PageBlobClientClearPagesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientClearPagesResponse{}, err
 	}
@@ -202,7 +191,7 @@ func (client *PageBlobClient) CopyIncremental(ctx context.Context, copySource st
 	if err != nil {
 		return PageBlobClientCopyIncrementalResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientCopyIncrementalResponse{}, err
 	}
@@ -304,7 +293,7 @@ func (client *PageBlobClient) Create(ctx context.Context, contentLength int64, b
 	if err != nil {
 		return PageBlobClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientCreateResponse{}, err
 	}
@@ -488,7 +477,7 @@ func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPa
 			if err != nil {
 				return PageBlobClientGetPageRangesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PageBlobClientGetPageRangesResponse{}, err
 			}
@@ -616,7 +605,7 @@ func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientG
 			if err != nil {
 				return PageBlobClientGetPageRangesDiffResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PageBlobClientGetPageRangesDiffResponse{}, err
 			}
@@ -742,7 +731,7 @@ func (client *PageBlobClient) Resize(ctx context.Context, blobContentLength int6
 	if err != nil {
 		return PageBlobClientResizeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientResizeResponse{}, err
 	}
@@ -857,7 +846,7 @@ func (client *PageBlobClient) UpdateSequenceNumber(ctx context.Context, sequence
 	if err != nil {
 		return PageBlobClientUpdateSequenceNumberResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientUpdateSequenceNumberResponse{}, err
 	}
@@ -966,7 +955,7 @@ func (client *PageBlobClient) UploadPages(ctx context.Context, contentLength int
 	if err != nil {
 		return PageBlobClientUploadPagesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientUploadPagesResponse{}, err
 	}
@@ -1043,7 +1032,10 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, cont
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, "application/octet-stream")
+	if err := req.SetBody(body, "application/octet-stream"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // uploadPagesHandleResponse handles the UploadPages response.
@@ -1138,7 +1130,7 @@ func (client *PageBlobClient) UploadPagesFromURL(ctx context.Context, sourceURL 
 	if err != nil {
 		return PageBlobClientUploadPagesFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PageBlobClientUploadPagesFromURLResponse{}, err
 	}

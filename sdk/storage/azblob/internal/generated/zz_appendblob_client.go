@@ -22,21 +22,10 @@ import (
 )
 
 // AppendBlobClient contains the methods for the AppendBlob group.
-// Don't use this type directly, use NewAppendBlobClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type AppendBlobClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewAppendBlobClient creates a new instance of AppendBlobClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewAppendBlobClient(endpoint string, pl runtime.Pipeline) *AppendBlobClient {
-	client := &AppendBlobClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append
@@ -59,7 +48,7 @@ func (client *AppendBlobClient) AppendBlock(ctx context.Context, contentLength i
 	if err != nil {
 		return AppendBlobClientAppendBlockResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppendBlobClientAppendBlockResponse{}, err
 	}
@@ -129,7 +118,10 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, "application/octet-stream")
+	if err := req.SetBody(body, "application/octet-stream"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // appendBlockHandleResponse handles the AppendBlock response.
@@ -225,7 +217,7 @@ func (client *AppendBlobClient) AppendBlockFromURL(ctx context.Context, sourceUR
 	if err != nil {
 		return AppendBlobClientAppendBlockFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppendBlobClientAppendBlockFromURLResponse{}, err
 	}
@@ -403,7 +395,7 @@ func (client *AppendBlobClient) Create(ctx context.Context, contentLength int64,
 	if err != nil {
 		return AppendBlobClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppendBlobClientCreateResponse{}, err
 	}
@@ -571,7 +563,7 @@ func (client *AppendBlobClient) Seal(ctx context.Context, options *AppendBlobCli
 	if err != nil {
 		return AppendBlobClientSealResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppendBlobClientSealResponse{}, err
 	}

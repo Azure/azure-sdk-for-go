@@ -558,7 +558,7 @@ type BlobItem struct {
 
 type BlobName struct {
 	// The name of the blob.
-	Content *string `xml:"content"`
+	Content *string `xml:",chardata"`
 
 	// Indicates if the blob name is encoded.
 	Encoded *bool `xml:"Encoded,attr"`
@@ -1716,7 +1716,7 @@ type StaticWebsite struct {
 }
 
 type StorageError struct {
-	Message *string `json:"Message,omitempty"`
+	Message *string
 }
 
 // StorageServiceProperties - Storage Service Properties.

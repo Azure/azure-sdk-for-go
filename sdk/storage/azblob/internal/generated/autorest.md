@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.45"
+use: "@autorest/go@4.0.0-preview.49"
 ```
 
 ### Remove pager methods and export various generated methods in container client

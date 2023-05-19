@@ -23,21 +23,10 @@ import (
 )
 
 // BlobClient contains the methods for the Blob group.
-// Don't use this type directly, use NewBlobClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type BlobClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewBlobClient creates a new instance of BlobClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewBlobClient(endpoint string, pl runtime.Pipeline) *BlobClient {
-	client := &BlobClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // AbortCopyFromURL - The Abort Copy From URL operation aborts a pending Copy From URL operation, and leaves a destination
@@ -53,7 +42,7 @@ func (client *BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, o
 	if err != nil {
 		return BlobClientAbortCopyFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientAbortCopyFromURLResponse{}, err
 	}
@@ -124,7 +113,7 @@ func (client *BlobClient) AcquireLease(ctx context.Context, duration int32, opti
 	if err != nil {
 		return BlobClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientAcquireLeaseResponse{}, err
 	}
@@ -220,7 +209,7 @@ func (client *BlobClient) BreakLease(ctx context.Context, options *BlobClientBre
 	if err != nil {
 		return BlobClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientBreakLeaseResponse{}, err
 	}
@@ -324,7 +313,7 @@ func (client *BlobClient) ChangeLease(ctx context.Context, leaseID string, propo
 	if err != nil {
 		return BlobClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientChangeLeaseResponse{}, err
 	}
@@ -426,7 +415,7 @@ func (client *BlobClient) CopyFromURL(ctx context.Context, copySource string, op
 	if err != nil {
 		return BlobClientCopyFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientCopyFromURLResponse{}, err
 	}
@@ -593,7 +582,7 @@ func (client *BlobClient) CreateSnapshot(ctx context.Context, options *BlobClien
 	if err != nil {
 		return BlobClientCreateSnapshotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientCreateSnapshotResponse{}, err
 	}
@@ -727,7 +716,7 @@ func (client *BlobClient) Delete(ctx context.Context, options *BlobClientDeleteO
 	if err != nil {
 		return BlobClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientDeleteResponse{}, err
 	}
@@ -819,7 +808,7 @@ func (client *BlobClient) DeleteImmutabilityPolicy(ctx context.Context, options 
 	if err != nil {
 		return BlobClientDeleteImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientDeleteImmutabilityPolicyResponse{}, err
 	}
@@ -885,7 +874,7 @@ func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownl
 	if err != nil {
 		return BlobClientDownloadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientDownloadResponse{}, err
 	}
@@ -1180,7 +1169,7 @@ func (client *BlobClient) GetAccountInfo(ctx context.Context, options *BlobClien
 	if err != nil {
 		return BlobClientGetAccountInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientGetAccountInfoResponse{}, err
 	}
@@ -1247,7 +1236,7 @@ func (client *BlobClient) GetProperties(ctx context.Context, options *BlobClient
 	if err != nil {
 		return BlobClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientGetPropertiesResponse{}, err
 	}
@@ -1561,7 +1550,7 @@ func (client *BlobClient) GetTags(ctx context.Context, options *BlobClientGetTag
 	if err != nil {
 		return BlobClientGetTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientGetTagsResponse{}, err
 	}
@@ -1641,7 +1630,7 @@ func (client *BlobClient) Query(ctx context.Context, options *BlobClientQueryOpt
 	if err != nil {
 		return BlobClientQueryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientQueryResponse{}, err
 	}
@@ -1700,7 +1689,10 @@ func (client *BlobClient) queryCreateRequest(ctx context.Context, options *BlobC
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.QueryRequest != nil {
-		return req, runtime.MarshalAsXML(req, *options.QueryRequest)
+		if err := runtime.MarshalAsXML(req, *options.QueryRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
 	}
 	return req, nil
 }
@@ -1868,7 +1860,7 @@ func (client *BlobClient) ReleaseLease(ctx context.Context, leaseID string, opti
 	if err != nil {
 		return BlobClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientReleaseLeaseResponse{}, err
 	}
@@ -1959,7 +1951,7 @@ func (client *BlobClient) RenewLease(ctx context.Context, leaseID string, option
 	if err != nil {
 		return BlobClientRenewLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientRenewLeaseResponse{}, err
 	}
@@ -2052,7 +2044,7 @@ func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOpt
 	if err != nil {
 		return BlobClientSetExpiryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetExpiryResponse{}, err
 	}
@@ -2131,7 +2123,7 @@ func (client *BlobClient) SetHTTPHeaders(ctx context.Context, options *BlobClien
 	if err != nil {
 		return BlobClientSetHTTPHeadersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetHTTPHeadersResponse{}, err
 	}
@@ -2248,7 +2240,7 @@ func (client *BlobClient) SetImmutabilityPolicy(ctx context.Context, options *Bl
 	if err != nil {
 		return BlobClientSetImmutabilityPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetImmutabilityPolicyResponse{}, err
 	}
@@ -2330,7 +2322,7 @@ func (client *BlobClient) SetLegalHold(ctx context.Context, legalHold bool, opti
 	if err != nil {
 		return BlobClientSetLegalHoldResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetLegalHoldResponse{}, err
 	}
@@ -2405,7 +2397,7 @@ func (client *BlobClient) SetMetadata(ctx context.Context, options *BlobClientSe
 	if err != nil {
 		return BlobClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetMetadataResponse{}, err
 	}
@@ -2533,7 +2525,7 @@ func (client *BlobClient) SetTags(ctx context.Context, tags BlobTags, options *B
 	if err != nil {
 		return BlobClientSetTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetTagsResponse{}, err
 	}
@@ -2575,7 +2567,10 @@ func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTag
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsXML(req, tags)
+	if err := runtime.MarshalAsXML(req, tags); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setTagsHandleResponse handles the SetTags response.
@@ -2616,7 +2611,7 @@ func (client *BlobClient) SetTier(ctx context.Context, tier AccessTier, options 
 	if err != nil {
 		return BlobClientSetTierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientSetTierResponse{}, err
 	}
@@ -2694,7 +2689,7 @@ func (client *BlobClient) StartCopyFromURL(ctx context.Context, copySource strin
 	if err != nil {
 		return BlobClientStartCopyFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientStartCopyFromURLResponse{}, err
 	}
@@ -2836,7 +2831,7 @@ func (client *BlobClient) Undelete(ctx context.Context, options *BlobClientUndel
 	if err != nil {
 		return BlobClientUndeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BlobClientUndeleteResponse{}, err
 	}

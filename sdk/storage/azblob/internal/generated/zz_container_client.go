@@ -25,21 +25,10 @@ import (
 )
 
 // ContainerClient contains the methods for the Container group.
-// Don't use this type directly, use NewContainerClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ContainerClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewContainerClient creates a new instance of ContainerClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewContainerClient(endpoint string, pl runtime.Pipeline) *ContainerClient {
-	client := &ContainerClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15
@@ -57,7 +46,7 @@ func (client *ContainerClient) AcquireLease(ctx context.Context, duration int32,
 	if err != nil {
 		return ContainerClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientAcquireLeaseResponse{}, err
 	}
@@ -146,7 +135,7 @@ func (client *ContainerClient) BreakLease(ctx context.Context, options *Containe
 	if err != nil {
 		return ContainerClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientBreakLeaseResponse{}, err
 	}
@@ -243,7 +232,7 @@ func (client *ContainerClient) ChangeLease(ctx context.Context, leaseID string, 
 	if err != nil {
 		return ContainerClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientChangeLeaseResponse{}, err
 	}
@@ -330,7 +319,7 @@ func (client *ContainerClient) Create(ctx context.Context, options *ContainerCli
 	if err != nil {
 		return ContainerClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientCreateResponse{}, err
 	}
@@ -421,7 +410,7 @@ func (client *ContainerClient) Delete(ctx context.Context, options *ContainerCli
 	if err != nil {
 		return ContainerClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientDeleteResponse{}, err
 	}
@@ -494,7 +483,7 @@ func (client *ContainerClient) FilterBlobs(ctx context.Context, where string, op
 	if err != nil {
 		return ContainerClientFilterBlobsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientFilterBlobsResponse{}, err
 	}
@@ -573,7 +562,7 @@ func (client *ContainerClient) GetAccessPolicy(ctx context.Context, options *Con
 	if err != nil {
 		return ContainerClientGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientGetAccessPolicyResponse{}, err
 	}
@@ -656,7 +645,7 @@ func (client *ContainerClient) GetAccountInfo(ctx context.Context, options *Cont
 	if err != nil {
 		return ContainerClientGetAccountInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientGetAccountInfoResponse{}, err
 	}
@@ -721,7 +710,7 @@ func (client *ContainerClient) GetProperties(ctx context.Context, options *Conta
 	if err != nil {
 		return ContainerClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientGetPropertiesResponse{}, err
 	}
@@ -928,7 +917,7 @@ func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string
 			if err != nil {
 				return ContainerClientListBlobHierarchySegmentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ContainerClientListBlobHierarchySegmentResponse{}, err
 			}
@@ -1015,7 +1004,7 @@ func (client *ContainerClient) ReleaseLease(ctx context.Context, leaseID string,
 	if err != nil {
 		return ContainerClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientReleaseLeaseResponse{}, err
 	}
@@ -1097,7 +1086,7 @@ func (client *ContainerClient) Rename(ctx context.Context, sourceContainerName s
 	if err != nil {
 		return ContainerClientRenameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientRenameResponse{}, err
 	}
@@ -1167,7 +1156,7 @@ func (client *ContainerClient) RenewLease(ctx context.Context, leaseID string, o
 	if err != nil {
 		return ContainerClientRenewLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientRenewLeaseResponse{}, err
 	}
@@ -1251,7 +1240,7 @@ func (client *ContainerClient) Restore(ctx context.Context, options *ContainerCl
 	if err != nil {
 		return ContainerClientRestoreResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientRestoreResponse{}, err
 	}
@@ -1325,7 +1314,7 @@ func (client *ContainerClient) SetAccessPolicy(ctx context.Context, containerACL
 	if err != nil {
 		return ContainerClientSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientSetAccessPolicyResponse{}, err
 	}
@@ -1369,7 +1358,10 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
-	return req, runtime.MarshalAsXML(req, wrapper{ContainerACL: &containerACL})
+	if err := runtime.MarshalAsXML(req, wrapper{ContainerACL: &containerACL}); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
@@ -1416,7 +1408,7 @@ func (client *ContainerClient) SetMetadata(ctx context.Context, options *Contain
 	if err != nil {
 		return ContainerClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientSetMetadataResponse{}, err
 	}
@@ -1506,7 +1498,7 @@ func (client *ContainerClient) SubmitBatch(ctx context.Context, contentLength in
 	if err != nil {
 		return ContainerClientSubmitBatchResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ContainerClientSubmitBatchResponse{}, err
 	}
@@ -1537,7 +1529,10 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, con
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, multipartContentType)
+	if err := req.SetBody(body, multipartContentType); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

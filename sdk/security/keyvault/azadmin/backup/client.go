@@ -35,7 +35,7 @@ type Client struct {
 //     full backup needs to be stored. This token needs to be valid for at least next 24 hours from the time of making
 //     this call
 //   - options - BeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
-func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*runtime.Poller[FullBackupResponse], error) {
+func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*runtime.Poller[FullBackupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.fullBackup(ctx, azureStorageBlobContainerURI, options)
 		if err != nil {
@@ -53,7 +53,7 @@ func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobConta
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.4
-func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*http.Response, error) {
+func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*http.Response, error) {
 	req, err := client.fullBackupCreateRequest(ctx, azureStorageBlobContainerURI, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerU
 }
 
 // fullBackupCreateRequest creates the FullBackup request.
-func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*policy.Request, error) {
+func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*policy.Request, error) {
 	urlPath := "/backup"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {

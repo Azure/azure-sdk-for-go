@@ -80,11 +80,11 @@ type RestoreOperationParameters struct {
 	FolderToRestore *string `json:"folderToRestore,omitempty"`
 
 	// REQUIRED; Contains the information required to access blob storage.
-	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
+	SASTokenParameters *SASTokenParameters `json:"sasTokenParameters,omitempty"`
 }
 
-// SASTokenParameter - Contains the information required to access blob storage.
-type SASTokenParameter struct {
+// SASTokenParameters - Contains the information required to access blob storage.
+type SASTokenParameters struct {
 	// REQUIRED; Azure Blob storage container Uri
 	StorageResourceURI *string `json:"storageResourceUri,omitempty"`
 
@@ -119,5 +119,5 @@ type SelectiveKeyRestoreOperationParameters struct {
 	Folder *string `json:"folder,omitempty"`
 
 	// REQUIRED; Contains the information required to access blob storage.
-	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
+	SASTokenParameters *SASTokenParameters `json:"sasTokenParameters,omitempty"`
 }

@@ -76,6 +76,9 @@ directive:
   - from: swagger-document
     where: $.definitions.RestoreSecretParameters.properties.value
     transform: $["x-ms-client-name"] = "SecretBackup"
+  - from: swagger-document
+    where: $.definitions.Secret.properties.kid
+    transform: $["x-ms-client-name"] = "KID"
 
   # remove type DeletionRecoveryLevel, use string instead
   - from: models.go

@@ -9,7 +9,6 @@
 * Renamed `DeletedSecretBundle` to `DeletedSecret`
 * Renamed `SecretItem` to `SecretProperties`
 * Renamed `DeletedSecretItem` to `DeletedSecretProperties`
-* Renamed `Kid` to `KeyID`
 * Removed `DeletionRecoveryLevel` type
 
 ### Other Changes

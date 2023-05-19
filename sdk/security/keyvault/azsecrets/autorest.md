@@ -16,17 +16,6 @@ security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
-
-declare-directive:
-  rename-property: >-
-      [{
-      from: 'swagger-document',
-      transform: `if ($.properties[${JSON.stringify($.from)}]) { $.properties[${JSON.stringify($.from)}]["x-ms-client-name"] = ${JSON.stringify($.to)}; }`
-      },
-      {
-      from: 'openapi-document',
-      transform: `if ($.properties[${JSON.stringify($.from)}]) { $.properties[${JSON.stringify($.from)}]["x-ms-client-name"] = ${JSON.stringify($.to)}; }`
-      }]
       
 directive:
   # delete unused model
@@ -84,14 +73,9 @@ directive:
       to: UpdateSecretProperties
 
   # rename fields
-  - where-model: Secret
-    rename-property:
-      from: kid
-      to: KeyID
-  - where-model: RestoreSecretParameters
-    rename-property:
-      from: value
-      to: SecretBackup
+  - from: swagger-document
+    where: $.definitions.RestoreSecretParameters.properties.value
+    transform: $["x-ms-client-name"] = "SecretBackup"
 
   # remove type DeletionRecoveryLevel, use string instead
   - from: models.go

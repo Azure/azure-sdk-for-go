@@ -13,5 +13,5 @@ func (client *PageBlobClient) Endpoint() string {
 }
 
 func (client *PageBlobClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }

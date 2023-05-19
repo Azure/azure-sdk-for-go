@@ -13,5 +13,5 @@ func (client *ServiceClient) Endpoint() string {
 }
 
 func (client *ServiceClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }

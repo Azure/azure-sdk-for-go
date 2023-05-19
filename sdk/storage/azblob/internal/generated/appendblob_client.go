@@ -15,5 +15,5 @@ func (client *AppendBlobClient) Endpoint() string {
 }
 
 func (client *AppendBlobClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }

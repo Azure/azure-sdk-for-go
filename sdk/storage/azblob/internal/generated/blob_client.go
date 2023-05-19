@@ -21,7 +21,7 @@ func (client *BlobClient) Endpoint() string {
 }
 
 func (client *BlobClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }
 
 func (client *BlobClient) DeleteCreateRequest(ctx context.Context, options *BlobClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {

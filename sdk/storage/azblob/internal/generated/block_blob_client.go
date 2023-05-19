@@ -15,5 +15,5 @@ func (client *BlockBlobClient) Endpoint() string {
 }
 
 func (client *BlockBlobClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }

@@ -287,7 +287,10 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			} else {
 				prl = FirstGALabel
 			}
-		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
+		} else if changelog.HasBreakingChanges() {
+			newVersion = version.IncMinor()
+			prl = BetaBreakingChangeLabel
+		} else if changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 			prl = BetaLabel
 		} else {

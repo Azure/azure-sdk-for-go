@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7787874571cb910702c87b909a0e74e12f97be/specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CheckNameAvailability.json
-func ExampleCheckNameAvailabilityClient_Execute() {
+func ExampleCheckNameAvailabilityWithoutLocationClient_Execute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Execute(ctx, "SouthEastAsia", armmysqlflexibleservers.NameAvailabilityRequest{
+	res, err := clientFactory.NewCheckNameAvailabilityWithoutLocationClient().Execute(ctx, armmysqlflexibleservers.NameAvailabilityRequest{
 		Name: to.Ptr("name1"),
 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
 	}, nil)

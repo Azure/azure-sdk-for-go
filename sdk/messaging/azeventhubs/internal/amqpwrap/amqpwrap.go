@@ -3,7 +3,6 @@
 
 // Package amqpwrap has some simple wrappers to make it easier to
 // abstract the go-amqp types.
-
 package amqpwrap
 
 import (

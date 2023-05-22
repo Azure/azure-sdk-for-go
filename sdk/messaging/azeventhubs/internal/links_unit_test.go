@@ -130,8 +130,8 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 
 	negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-	ns.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
-	ns.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+	ns.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
+	ns.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
 	receiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
@@ -149,9 +149,9 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 	// if the connection has closed in response to an error then it'll propagate it's error to
 	// the children, including receivers. Which means closing the receiver here will _also_ return
 	// a connection error.
-	receiver.EXPECT().Close(mock.NotCancelled).Return(&amqp.ConnError{})
+	receiver.EXPECT().Close(test.NotCancelled).Return(&amqp.ConnError{})
 
-	ns.EXPECT().Recover(mock.NotCancelled, gomock.Any()).Return(nil)
+	ns.EXPECT().Recover(test.NotCancelled, gomock.Any()).Return(nil)
 
 	// initiate a connection level recovery
 	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnError{})
@@ -222,8 +222,8 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 
 			negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-			ns.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
-			ns.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+			ns.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
+			ns.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
 			receiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
@@ -241,7 +241,7 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 
 			// now set ourselves up so Close() is "slow" and we end up timing out, or
 			// the user "cancels"
-			receiver.EXPECT().Close(mock.NotCancelled).DoAndReturn(func(ctx context.Context) error {
+			receiver.EXPECT().Close(test.NotCancelled).DoAndReturn(func(ctx context.Context) error {
 				cancelUserCtx()
 				<-ctx.Done()
 				return errToReturn
@@ -266,16 +266,16 @@ func TestLinks_linkRecoveryOnly(t *testing.T) {
 
 	negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-	fakeNS.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(
+	fakeNS.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(
 		cancelNegotiateClaim, negotiateClaimCtx.Done(), nil,
 	)
-	fakeNS.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+	fakeNS.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
 	fakeReceiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
 	// super important that when we close we're given a context that properly times out.
 	// (in this test the Close(ctx) call doesn't time out)
-	fakeReceiver.EXPECT().Close(mock.NotCancelled).Return(nil)
+	fakeReceiver.EXPECT().Close(test.NotCancelled).Return(nil)
 
 	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
 		return fmt.Sprintf("part:%s", partitionID)
@@ -301,17 +301,17 @@ func TestLinks_linkRecoveryFailsWithLinkFailure(t *testing.T) {
 
 	negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-	fakeNS.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(
+	fakeNS.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(
 		cancelNegotiateClaim, negotiateClaimCtx.Done(), nil,
 	)
-	fakeNS.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+	fakeNS.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
 	fakeReceiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
 	// super important that when we close we're given a context that properly times out.
 	// (in this test the Close(ctx) call doesn't time out)
 	detachErr := &amqp.LinkError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondDetachForced}}
-	fakeReceiver.EXPECT().Close(mock.NotCancelled).Return(detachErr)
+	fakeReceiver.EXPECT().Close(test.NotCancelled).Return(detachErr)
 
 	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
 		return fmt.Sprintf("part:%s", partitionID)

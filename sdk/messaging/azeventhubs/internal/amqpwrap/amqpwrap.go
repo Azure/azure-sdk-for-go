@@ -119,14 +119,14 @@ func (w *AMQPClientWrapper) ID() uint64 {
 
 func (w *AMQPClientWrapper) Close() error {
 	err := w.Inner.Close()
-	return NewError(err, w.ConnID, "")
+	return WrapError(err, w.ConnID, "")
 }
 
 func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error) {
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, NewError(err, w.ConnID, "")
+		return nil, WrapError(err, w.ConnID, "")
 	}
 
 	return &AMQPSessionWrapper{
@@ -150,14 +150,14 @@ func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 	ctx, cancel := w.ContextWithTimeoutFn(ctx, defaultCloseTimeout)
 	defer cancel()
 	err := w.Inner.Close(ctx)
-	return NewError(err, w.connID, "")
+	return WrapError(err, w.connID, "")
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, NewError(err, w.connID, "")
+		return nil, WrapError(err, w.connID, "")
 	}
 
 	return &AMQPReceiverWrapper{connID: w.connID, Inner: receiver, ContextWithTimeoutFn: context.WithTimeout}, nil
@@ -167,7 +167,7 @@ func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts 
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, NewError(err, w.connID, "")
+		return nil, WrapError(err, w.connID, "")
 	}
 
 	return &AMQPSenderWrapper{connID: w.connID, Inner: sender, ContextWithTimeoutFn: context.WithTimeout}, nil
@@ -195,14 +195,14 @@ func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
 		rw.credits += credit
 	}
 
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	message, err := rw.Inner.Receive(ctx, o)
 
 	if err != nil {
-		return nil, NewError(err, rw.connID, rw.LinkName())
+		return nil, WrapError(err, rw.connID, rw.LinkName())
 	}
 
 	rw.credits--
@@ -223,22 +223,22 @@ func (rw *AMQPReceiverWrapper) Prefetched() *amqp.Message {
 // settlement functions
 func (rw *AMQPReceiverWrapper) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
 	err := rw.Inner.AcceptMessage(ctx, msg)
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 func (rw *AMQPReceiverWrapper) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error {
 	err := rw.Inner.RejectMessage(ctx, msg, e)
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 func (rw *AMQPReceiverWrapper) ReleaseMessage(ctx context.Context, msg *amqp.Message) error {
 	err := rw.Inner.ReleaseMessage(ctx, msg)
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 func (rw *AMQPReceiverWrapper) ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
 	err := rw.Inner.ModifyMessage(ctx, msg, options)
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 func (rw *AMQPReceiverWrapper) LinkName() string {
@@ -254,7 +254,7 @@ func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
 	defer cancel()
 	err := rw.Inner.Close(ctx)
 
-	return NewError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName())
 }
 
 type AMQPSenderWrapper struct {
@@ -269,7 +269,7 @@ func (sw *AMQPSenderWrapper) ConnID() uint64 {
 
 func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	err := sw.Inner.Send(ctx, msg, o)
-	return NewError(err, sw.connID, sw.LinkName())
+	return WrapError(err, sw.connID, sw.LinkName())
 }
 
 func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
@@ -285,7 +285,7 @@ func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
 	defer cancel()
 	err := sw.Inner.Close(ctx)
 
-	return NewError(err, sw.connID, sw.LinkName())
+	return WrapError(err, sw.connID, sw.LinkName())
 }
 
 var ErrConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

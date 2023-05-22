@@ -27,7 +27,7 @@ func (e Error) Is(target error) bool {
 	return errors.Is(e.Err, target)
 }
 
-func NewError(err error, connID uint64, linkName string) error {
+func WrapError(err error, connID uint64, linkName string) error {
 	if err == nil {
 		return nil
 	}

@@ -88,7 +88,7 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 
 	// now recover like normal
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -130,12 +130,12 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	var netErr net.Error
 	require.ErrorAs(t, err, &netErr)
 
 	// now recover like normal
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -168,13 +168,13 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -208,7 +208,7 @@ func TestLinkFailure(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")

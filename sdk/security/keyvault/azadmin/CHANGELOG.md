@@ -1,6 +1,10 @@
 ## Release History
 
-## 1.0.0 (2023-05-11)
+## 1.0.0 (unreleased)
+
+### Breatking Changes
+* Renamed `SASTokenParameter` to `SASTokenParameters`
+* Renamed `RestoreOperationParameters.SasTokenParameters` to `RestoreOperationParameters.SASTokenParameters`
 
 ### Other Changes
 * Updated dependencies

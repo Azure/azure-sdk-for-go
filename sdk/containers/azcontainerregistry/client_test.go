@@ -131,10 +131,31 @@ func TestClient_GetManifest(t *testing.T) {
 	require.NoError(t, err)
 	res, err := client.GetManifest(ctx, "alpine", "3.17.1", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	require.NoError(t, err)
-	manifest, err := io.ReadAll(res.ManifestData)
+	reader, err := NewDigestValidationReader(*res.DockerContentDigest, res.ManifestData)
+	require.NoError(t, err)
+	manifest, err := io.ReadAll(reader)
 	require.NoError(t, err)
 	require.NotEmpty(t, manifest)
 	fmt.Printf("manifest content: %s\n", manifest)
+}
+
+func TestClient_GetManifest_wrongServerDigest(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("test")), mock.WithHeader("Docker-Content-Digest", "sha256:wrong"))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &Client{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	resp, err := client.GetManifest(ctx, "name", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", nil)
+	require.NoError(t, err)
+	reader, err := NewDigestValidationReader(*resp.DockerContentDigest, resp.ManifestData)
+	require.NoError(t, err)
+	_, err = io.ReadAll(reader)
+	require.Error(t, err, ErrMismatchedHash)
 }
 
 func TestClient_GetManifest_empty(t *testing.T) {
@@ -608,10 +629,17 @@ func TestClient_UploadManifest(t *testing.T) {
 	require.NoError(t, err)
 	manifest, err := io.ReadAll(getRes.ManifestData)
 	require.NoError(t, err)
-	uploadRes, err := client.UploadManifest(ctx, "hello-world", "test", "application/vnd.docker.distribution.manifest.v2+json", streaming.NopCloser(bytes.NewReader(manifest)), nil)
+	reader := bytes.NewReader(manifest)
+	uploadRes, err := client.UploadManifest(ctx, "hello-world", "test", "application/vnd.docker.distribution.manifest.v2+json", streaming.NopCloser(reader), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadRes.DockerContentDigest)
 	fmt.Printf("uploaded manifest digest: %s\n", *uploadRes.DockerContentDigest)
+	_, err = reader.Seek(0, io.SeekStart)
+	require.NoError(t, err)
+	validateReader, err := NewDigestValidationReader(*uploadRes.DockerContentDigest, reader)
+	require.NoError(t, err)
+	_, err = io.ReadAll(validateReader)
+	require.NoError(t, err)
 }
 
 func TestClient_UploadManifest_empty(t *testing.T) {

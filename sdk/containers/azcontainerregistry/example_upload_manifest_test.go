@@ -67,24 +67,25 @@ func Example_uploadManifest() {
 		log.Fatalf("failed to complete config upload: %v", err)
 	}
 	manifest := fmt.Sprintf(`{
-  schemaVersion: 2,
-  config: {
-	mediaType: "application/vnd.oci.image.config.v1+json",
-	digest: %s,
-	size: %d,
+  "schemaVersion": 2,
+  "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+  "config": {
+	"mediaType": "application/vnd.oci.image.config.v1+json",
+	"digest": "%s",
+	"size": %d
   },
-  layers: [
+  "layers": [
 	{
-	  mediaType: "application/vnd.oci.image.layer.v1.tar",
-	  digest: %s,
-	  size: %d,
-	  annotations: {
-		title: "artifact.txt",
-	  },
-	  },
-  ],
+	  "mediaType": "application/vnd.oci.image.layer.v1.tar",
+	  "digest": "%s",
+	  "size": %d,
+	  "annotations": {
+		"title": "artifact.txt"
+	  }
+    }
+  ]
 }`, layerDigest, len(config), *completeResp.DockerContentDigest, len(layer))
-	uploadManifestRes, err := client.UploadManifest(ctx, "library/hello-world", "1.0.0", "application/vnd.oci.image.config.v1+json", streaming.NopCloser(bytes.NewReader([]byte(manifest))), nil)
+	uploadManifestRes, err := client.UploadManifest(ctx, "library/hello-world", "1.0.0", azcontainerregistry.ContentTypeApplicationVndDockerDistributionManifestV2JSON, streaming.NopCloser(bytes.NewReader([]byte(manifest))), nil)
 	if err != nil {
 		log.Fatalf("failed to upload manifest: %v", err)
 	}

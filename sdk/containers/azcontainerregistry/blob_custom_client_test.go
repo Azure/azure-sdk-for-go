@@ -103,20 +103,6 @@ func TestNewBlobClient(t *testing.T) {
 	require.Errorf(t, err, "provided Cloud field is missing Azure Container Registry configuration")
 }
 
-func TestBlobDigestCalculator_saveAndRestoreState(t *testing.T) {
-	calculator := NewBlobDigestCalculator()
-	calculator.restoreState()
-	calculator.saveState()
-	calculator.restoreState()
-	calculator.h.Write([]byte("test1"))
-	sum := calculator.h.Sum(nil)
-	calculator.saveState()
-	calculator.h.Write([]byte("test2"))
-	require.NotEqual(t, sum, calculator.h.Sum(nil))
-	calculator.restoreState()
-	require.Equal(t, sum, calculator.h.Sum(nil))
-}
-
 func TestBlobClient_CompleteUpload_uploadByChunkFailOver(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)

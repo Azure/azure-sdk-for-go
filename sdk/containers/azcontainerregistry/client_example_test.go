@@ -44,12 +44,36 @@ func ExampleClient_DeleteTag() {
 	}
 }
 
-func ExampleClient_GetManifest() {
+func ExampleClient_GetManifest_tag() {
 	res, err := client.GetManifest(context.TODO(), "hello-world-dangling", "20190628-033033z", &azcontainerregistry.ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	manifest, err := io.ReadAll(res.ManifestData)
+	reader, err := azcontainerregistry.NewDigestValidationReader(*res.DockerContentDigest, res.ManifestData)
+	if err != nil {
+		log.Fatalf("failed to create validation reader: %v", err)
+	}
+	manifest, err := io.ReadAll(reader)
+	if err != nil {
+		log.Fatalf("failed to read manifest data: %v", err)
+	}
+	fmt.Printf("manifest content: %s\n", manifest)
+}
+
+func ExampleClient_GetManifest_reference() {
+	reference := "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086"
+	res, err := client.GetManifest(context.TODO(), "nanoserver", reference, &azcontainerregistry.ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	if reference != *res.DockerContentDigest {
+		log.Fatalf("failed to fetch manifest correctly: %v", err)
+	}
+	reader, err := azcontainerregistry.NewDigestValidationReader(reference, res.ManifestData)
+	if err != nil {
+		log.Fatalf("failed to create validation reader: %v", err)
+	}
+	manifest, err := io.ReadAll(reader)
 	if err != nil {
 		log.Fatalf("failed to read manifest data: %v", err)
 	}
@@ -155,14 +179,40 @@ func ExampleClient_UpdateTagProperties() {
 	fmt.Printf("repository namoserver - tag 4.7.2-20180905-nanoserver-1803 - 'CanWrite' property: %t\n", *res.Tag.ChangeableAttributes.CanWrite)
 }
 
-func ExampleClient_UploadManifest() {
-	payload, err := os.Open("example-manifest.json")
+func ExampleClient_UploadManifest_tag() {
+	f, err := os.Open("example-manifest.json")
 	if err != nil {
 		log.Fatalf("failed to read manifest file: %v", err)
 	}
-	resp, err := client.UploadManifest(context.TODO(), "nanoserver", "test", "application/vnd.docker.distribution.manifest.v2+json", payload, nil)
+	resp, err := client.UploadManifest(context.TODO(), "nanoserver", "test", "application/vnd.docker.distribution.manifest.v2+json", f, nil)
 	if err != nil {
 		log.Fatalf("failed to upload manifest: %v", err)
 	}
-	fmt.Printf("uploaded manifest digest: %s", *resp.DockerContentDigest)
+	_, err = f.Seek(0, io.SeekStart)
+	if err != nil {
+		log.Fatalf("failed to validate manifest digest: %v", err)
+	}
+	reader, err := azcontainerregistry.NewDigestValidationReader(*resp.DockerContentDigest, f)
+	if err != nil {
+		log.Fatalf("failed to validate manifest digest: %v", err)
+	}
+	_, err = io.ReadAll(reader)
+	if err != nil {
+		log.Fatalf("failed to validate manifest digest: %v", err)
+	}
+}
+
+func ExampleClient_UploadManifest_reference() {
+	f, err := os.Open("example-manifest.json")
+	if err != nil {
+		log.Fatalf("failed to read manifest file: %v", err)
+	}
+	reference := "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086"
+	resp, err := client.UploadManifest(context.TODO(), "nanoserver", reference, "application/vnd.docker.distribution.manifest.v2+json", f, nil)
+	if err != nil {
+		log.Fatalf("failed to upload manifest: %v", err)
+	}
+	if *resp.DockerContentDigest != reference {
+		log.Fatalf("failed to validate manifest digest: %v", err)
+	}
 }

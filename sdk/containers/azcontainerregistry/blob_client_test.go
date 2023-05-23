@@ -9,10 +9,16 @@ package azcontainerregistry
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"io"
+	"net/http"
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -162,6 +168,29 @@ func TestBlobClient_GetBlob(t *testing.T) {
 	res, err := client.GetBlob(ctx, "alpine", digest, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *res.ContentLength)
+	reader, err := NewDigestValidationReader(digest, res.BlobData)
+	require.NoError(t, err)
+	_, err = io.ReadAll(reader)
+	require.NoError(t, err)
+}
+
+func TestBlobClient_GetBlob_wrongDigest(t *testing.T) {
+	srv, closeServer := mock.NewServer()
+	defer closeServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("test")))
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	client := &BlobClient{
+		srv.URL(),
+		pl,
+	}
+	ctx := context.Background()
+	resp, err := client.GetBlob(ctx, "name", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", nil)
+	require.NoError(t, err)
+	reader, err := NewDigestValidationReader("sha256:wrong", resp.BlobData)
+	require.NoError(t, err)
+	_, err = io.ReadAll(reader)
+	require.Error(t, err, ErrMismatchedHash)
 }
 
 func TestBlobClient_GetBlob_fail(t *testing.T) {
@@ -190,10 +219,28 @@ func TestBlobClient_GetChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
+	name := "alpine"
 	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	res, err := client.GetChunk(ctx, "alpine", digest, "bytes=0-999", nil)
+	chunkSize := 1000
+	current := 0
+	blob := bytes.NewBuffer(nil)
+	for {
+		res, err := client.GetChunk(ctx, name, digest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
+		require.NoError(t, err)
+		chunk, err := io.ReadAll(res.ChunkData)
+		require.NoError(t, err)
+		_, err = blob.Write(chunk)
+		require.NoError(t, err)
+		totalSize, _ := strconv.Atoi(strings.Split(*res.ContentRange, "/")[1])
+		currentRangeEnd, _ := strconv.Atoi(strings.Split(strings.Split(*res.ContentRange, "/")[0], "-")[1])
+		if totalSize == currentRangeEnd+1 {
+			break
+		}
+		current += chunkSize
+	}
+	reader, err := NewDigestValidationReader(digest, blob)
+	_, err = io.ReadAll(reader)
 	require.NoError(t, err)
-	require.Equal(t, int64(1000), *res.ContentLength)
 }
 
 func TestBlobClient_GetChunk_fail(t *testing.T) {

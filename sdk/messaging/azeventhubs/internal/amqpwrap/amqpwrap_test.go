@@ -128,7 +128,7 @@ func TestAMQPSenderWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 
 			require.ErrorAs(t, err, &wrapErr)
 			require.EqualError(t, wrapErr, msg)
@@ -181,11 +181,11 @@ func TestAMQPSessionWrapper(t *testing.T) {
 
 		require.Equal(t, uint64(101), sessWrapper.ConnID())
 
-		rc, err := sessWrapper.NewReceiver(context.Background(), "source", nil)
+		rc, err := sessWrapper.NewReceiver(context.Background(), "source", "1", nil)
 		require.NoError(t, err)
 		require.Equal(t, sessWrapper.ConnID(), rc.ConnID())
 
-		sc, err := sessWrapper.NewSender(context.Background(), "target", nil)
+		sc, err := sessWrapper.NewSender(context.Background(), "target", "1", nil)
 		require.NoError(t, err)
 		require.Equal(t, sessWrapper.ConnID(), sc.ConnID())
 	})
@@ -202,18 +202,20 @@ func TestAMQPSessionWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 
 			require.ErrorAs(t, err, &wrapErr)
+
 			require.EqualError(t, wrapErr, msg)
 			require.Equal(t, uint64(101), wrapErr.ConnID)
 			require.Empty(t, wrapErr.LinkName)
+			require.Equal(t, "1", wrapErr.PartitionID)
 		}
 
-		_, err := sw.NewReceiver(context.Background(), "source", nil)
+		_, err := sw.NewReceiver(context.Background(), "source", "1", nil)
 		assertErr(err, "new receiver failed")
 
-		_, err = sw.NewSender(context.Background(), "target", nil)
+		_, err = sw.NewSender(context.Background(), "target", "1", nil)
 		assertErr(err, "new sender failed")
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -248,7 +250,7 @@ func TestAMQPConnWrapper(t *testing.T) {
 
 		assertErr := func(err error, msg string) {
 			t.Helper()
-			var wrapErr *Error
+			var wrapErr Error
 			require.ErrorAs(t, err, &wrapErr)
 			require.EqualError(t, wrapErr, msg)
 			require.Equal(t, uint64(101), wrapErr.ConnID)

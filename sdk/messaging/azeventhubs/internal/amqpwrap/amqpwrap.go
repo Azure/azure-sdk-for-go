@@ -61,8 +61,8 @@ type AMQPSenderCloser interface {
 type AMQPSession interface {
 	Close(ctx context.Context) error
 	ConnID() uint64
-	NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error)
-	NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error)
+	NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error)
+	NewSender(ctx context.Context, target string, partitionID string, opts *amqp.SenderOptions) (AMQPSenderCloser, error)
 }
 
 type AMQPClient interface {
@@ -119,14 +119,14 @@ func (w *AMQPClientWrapper) ID() uint64 {
 
 func (w *AMQPClientWrapper) Close() error {
 	err := w.Inner.Close()
-	return WrapError(err, w.ConnID, "")
+	return WrapError(err, w.ConnID, "", "")
 }
 
 func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error) {
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, WrapError(err, w.ConnID, "")
+		return nil, WrapError(err, w.ConnID, "", "")
 	}
 
 	return &AMQPSessionWrapper{
@@ -150,31 +150,40 @@ func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 	ctx, cancel := w.ContextWithTimeoutFn(ctx, defaultCloseTimeout)
 	defer cancel()
 	err := w.Inner.Close(ctx)
-	return WrapError(err, w.connID, "")
+	return WrapError(err, w.connID, "", "")
 }
 
-func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
+func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, WrapError(err, w.connID, "")
+		return nil, WrapError(err, w.connID, "", partitionID)
 	}
 
-	return &AMQPReceiverWrapper{connID: w.connID, Inner: receiver, ContextWithTimeoutFn: context.WithTimeout}, nil
+	return &AMQPReceiverWrapper{
+		connID:               w.connID,
+		partitionID:          partitionID,
+		Inner:                receiver,
+		ContextWithTimeoutFn: context.WithTimeout}, nil
 }
 
-func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
+func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, partitionID string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, WrapError(err, w.connID, "")
+		return nil, WrapError(err, w.connID, "", partitionID)
 	}
 
-	return &AMQPSenderWrapper{connID: w.connID, Inner: sender, ContextWithTimeoutFn: context.WithTimeout}, nil
+	return &AMQPSenderWrapper{
+		connID:               w.connID,
+		partitionID:          partitionID,
+		Inner:                sender,
+		ContextWithTimeoutFn: context.WithTimeout}, nil
 }
 
 type AMQPReceiverWrapper struct {
 	connID               uint64
+	partitionID          string
 	Inner                goamqpReceiver
 	credits              uint32
 	ContextWithTimeoutFn ContextWithTimeoutFn
@@ -195,14 +204,14 @@ func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
 		rw.credits += credit
 	}
 
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	message, err := rw.Inner.Receive(ctx, o)
 
 	if err != nil {
-		return nil, WrapError(err, rw.connID, rw.LinkName())
+		return nil, WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 	}
 
 	rw.credits--
@@ -223,22 +232,22 @@ func (rw *AMQPReceiverWrapper) Prefetched() *amqp.Message {
 // settlement functions
 func (rw *AMQPReceiverWrapper) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
 	err := rw.Inner.AcceptMessage(ctx, msg)
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 func (rw *AMQPReceiverWrapper) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error {
 	err := rw.Inner.RejectMessage(ctx, msg, e)
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 func (rw *AMQPReceiverWrapper) ReleaseMessage(ctx context.Context, msg *amqp.Message) error {
 	err := rw.Inner.ReleaseMessage(ctx, msg)
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 func (rw *AMQPReceiverWrapper) ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
 	err := rw.Inner.ModifyMessage(ctx, msg, options)
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 func (rw *AMQPReceiverWrapper) LinkName() string {
@@ -254,11 +263,12 @@ func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
 	defer cancel()
 	err := rw.Inner.Close(ctx)
 
-	return WrapError(err, rw.connID, rw.LinkName())
+	return WrapError(err, rw.connID, rw.LinkName(), rw.partitionID)
 }
 
 type AMQPSenderWrapper struct {
 	connID               uint64
+	partitionID          string
 	Inner                goamqpSender
 	ContextWithTimeoutFn ContextWithTimeoutFn
 }
@@ -269,7 +279,7 @@ func (sw *AMQPSenderWrapper) ConnID() uint64 {
 
 func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	err := sw.Inner.Send(ctx, msg, o)
-	return WrapError(err, sw.connID, sw.LinkName())
+	return WrapError(err, sw.connID, sw.LinkName(), sw.partitionID)
 }
 
 func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
@@ -285,7 +295,7 @@ func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
 	defer cancel()
 	err := sw.Inner.Close(ctx)
 
-	return WrapError(err, sw.connID, sw.LinkName())
+	return WrapError(err, sw.connID, sw.LinkName(), sw.partitionID)
 }
 
 var ErrConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

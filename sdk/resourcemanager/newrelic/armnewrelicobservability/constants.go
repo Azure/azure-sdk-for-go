@@ -11,7 +11,7 @@ package armnewrelicobservability
 
 const (
 	moduleName    = "armnewrelicobservability"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AccountCreationSource - Source of Account creation

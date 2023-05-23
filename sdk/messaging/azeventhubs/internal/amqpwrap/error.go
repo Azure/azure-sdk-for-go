@@ -10,10 +10,10 @@ import (
 // Error is a wrapper that has the context of which connection and
 // link the error happened with.
 type Error struct {
-	ConnID      uint64
-	LinkName    string
-	PartitionID string
-	Err         error
+	ConnID   uint64
+	LinkName string
+	KeyID    string
+	Err      error
 }
 
 func (e Error) Error() string {
@@ -38,9 +38,9 @@ func WrapError(err error, connID uint64, linkName string, partitionID string) er
 	}
 
 	return Error{
-		ConnID:      connID,
-		LinkName:    linkName,
-		PartitionID: partitionID,
-		Err:         err,
+		ConnID:   connID,
+		LinkName: linkName,
+		KeyID:    partitionID,
+		Err:      err,
 	}
 }

@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Add `dragonfly` to the list of build constraints for `blockblob`.
+
 ## 1.1.0-beta.1 (2023-05-09)
 
 ### Features Added

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceList.json
 func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,15 +192,17 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +252,7 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +291,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +327,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableList.json
 func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +385,7 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableGet.json
 func ExampleCassandraResourcesClient_GetCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +438,7 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +518,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -537,7 +539,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,15 +569,17 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -622,7 +626,7 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +665,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

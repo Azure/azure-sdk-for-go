@@ -11,7 +11,7 @@ package armdevhub
 
 const (
 	moduleName    = "armdevhub"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,6 +25,27 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AuthorizationStatus - Determines the authorization status of requests.
+type AuthorizationStatus string
+
+const (
+	// AuthorizationStatusAuthorized - Requests authorized successfully
+	AuthorizationStatusAuthorized AuthorizationStatus = "Authorized"
+	// AuthorizationStatusError - Requests returned other error response
+	AuthorizationStatusError AuthorizationStatus = "Error"
+	// AuthorizationStatusNotFound - Requests returned NotFound response
+	AuthorizationStatusNotFound AuthorizationStatus = "NotFound"
+)
+
+// PossibleAuthorizationStatusValues returns the possible values for the AuthorizationStatus const type.
+func PossibleAuthorizationStatusValues() []AuthorizationStatus {
+	return []AuthorizationStatus{
+		AuthorizationStatusAuthorized,
+		AuthorizationStatusError,
+		AuthorizationStatusNotFound,
 	}
 }
 
@@ -45,6 +66,111 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DockerfileGenerationMode - The mode of generation to be used for generating Dockerfiles.
+type DockerfileGenerationMode string
+
+const (
+	// DockerfileGenerationModeDisabled - Dockerfiles will not be generated
+	DockerfileGenerationModeDisabled DockerfileGenerationMode = "disabled"
+	// DockerfileGenerationModeEnabled - Dockerfiles will be generated
+	DockerfileGenerationModeEnabled DockerfileGenerationMode = "enabled"
+)
+
+// PossibleDockerfileGenerationModeValues returns the possible values for the DockerfileGenerationMode const type.
+func PossibleDockerfileGenerationModeValues() []DockerfileGenerationMode {
+	return []DockerfileGenerationMode{
+		DockerfileGenerationModeDisabled,
+		DockerfileGenerationModeEnabled,
+	}
+}
+
+// GenerationLanguage - The programming language used.
+type GenerationLanguage string
+
+const (
+	// GenerationLanguageClojure - clojure language
+	GenerationLanguageClojure GenerationLanguage = "clojure"
+	// GenerationLanguageCsharp - csharp language
+	GenerationLanguageCsharp GenerationLanguage = "csharp"
+	// GenerationLanguageErlang - erlang language
+	GenerationLanguageErlang GenerationLanguage = "erlang"
+	// GenerationLanguageGo - go language
+	GenerationLanguageGo GenerationLanguage = "go"
+	// GenerationLanguageGomodule - gomodule language
+	GenerationLanguageGomodule GenerationLanguage = "gomodule"
+	// GenerationLanguageGradle - gradle language
+	GenerationLanguageGradle GenerationLanguage = "gradle"
+	// GenerationLanguageJava - java language
+	GenerationLanguageJava GenerationLanguage = "java"
+	// GenerationLanguageJavascript - javascript language
+	GenerationLanguageJavascript GenerationLanguage = "javascript"
+	// GenerationLanguagePhp - php language
+	GenerationLanguagePhp GenerationLanguage = "php"
+	// GenerationLanguagePython - python language
+	GenerationLanguagePython GenerationLanguage = "python"
+	// GenerationLanguageRuby - ruby language
+	GenerationLanguageRuby GenerationLanguage = "ruby"
+	// GenerationLanguageRust - rust language
+	GenerationLanguageRust GenerationLanguage = "rust"
+	// GenerationLanguageSwift - swift language
+	GenerationLanguageSwift GenerationLanguage = "swift"
+)
+
+// PossibleGenerationLanguageValues returns the possible values for the GenerationLanguage const type.
+func PossibleGenerationLanguageValues() []GenerationLanguage {
+	return []GenerationLanguage{
+		GenerationLanguageClojure,
+		GenerationLanguageCsharp,
+		GenerationLanguageErlang,
+		GenerationLanguageGo,
+		GenerationLanguageGomodule,
+		GenerationLanguageGradle,
+		GenerationLanguageJava,
+		GenerationLanguageJavascript,
+		GenerationLanguagePhp,
+		GenerationLanguagePython,
+		GenerationLanguageRuby,
+		GenerationLanguageRust,
+		GenerationLanguageSwift,
+	}
+}
+
+// GenerationManifestType - Determines the type of manifests to be generated.
+type GenerationManifestType string
+
+const (
+	// GenerationManifestTypeHelm - Helm manifests
+	GenerationManifestTypeHelm GenerationManifestType = "helm"
+	// GenerationManifestTypeKube - Kubernetes manifests
+	GenerationManifestTypeKube GenerationManifestType = "kube"
+)
+
+// PossibleGenerationManifestTypeValues returns the possible values for the GenerationManifestType const type.
+func PossibleGenerationManifestTypeValues() []GenerationManifestType {
+	return []GenerationManifestType{
+		GenerationManifestTypeHelm,
+		GenerationManifestTypeKube,
+	}
+}
+
+// ManifestGenerationMode - The mode of generation to be used for generating Manifest.
+type ManifestGenerationMode string
+
+const (
+	// ManifestGenerationModeDisabled - Manifests will not be generated
+	ManifestGenerationModeDisabled ManifestGenerationMode = "disabled"
+	// ManifestGenerationModeEnabled - Manifests will be generated
+	ManifestGenerationModeEnabled ManifestGenerationMode = "enabled"
+)
+
+// PossibleManifestGenerationModeValues returns the possible values for the ManifestGenerationMode const type.
+func PossibleManifestGenerationModeValues() []ManifestGenerationMode {
+	return []ManifestGenerationMode{
+		ManifestGenerationModeDisabled,
+		ManifestGenerationModeEnabled,
 	}
 }
 
@@ -106,5 +232,26 @@ func PossiblePullRequestStatusValues() []PullRequestStatus {
 		PullRequestStatusRemoved,
 		PullRequestStatusSubmitted,
 		PullRequestStatusUnknown,
+	}
+}
+
+// WorkflowRunStatus - Describes the status of the workflow run
+type WorkflowRunStatus string
+
+const (
+	// WorkflowRunStatusCompleted - Workflow run is completed
+	WorkflowRunStatusCompleted WorkflowRunStatus = "completed"
+	// WorkflowRunStatusInprogress - Workflow run is inprogress
+	WorkflowRunStatusInprogress WorkflowRunStatus = "inprogress"
+	// WorkflowRunStatusQueued - Workflow run is queued
+	WorkflowRunStatusQueued WorkflowRunStatus = "queued"
+)
+
+// PossibleWorkflowRunStatusValues returns the possible values for the WorkflowRunStatus const type.
+func PossibleWorkflowRunStatusValues() []WorkflowRunStatus {
+	return []WorkflowRunStatus{
+		WorkflowRunStatusCompleted,
+		WorkflowRunStatusInprogress,
+		WorkflowRunStatusQueued,
 	}
 }

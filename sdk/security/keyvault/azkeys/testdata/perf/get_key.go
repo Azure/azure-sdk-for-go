@@ -47,8 +47,11 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 			Transport: options.Transporter,
 		},
 	})
+	if err != nil {
+		panic(err)
+	}
 
-	_, err = client.CreateKey(ctx, d.keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA), KeySize: to.Ptr(int32(2048))}, nil)
+	_, err = client.CreateKey(ctx, d.keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA), KeySize: to.Ptr(int32(2048))}, nil)
 	if err != nil {
 		return nil, err
 	}

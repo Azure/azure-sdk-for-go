@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * Add state restore for hash calculator when upload fails
+* Do not re-calculate digest when retry
 
 ### Other Changes
 * Change default audience to https://containerregistry.azure.net

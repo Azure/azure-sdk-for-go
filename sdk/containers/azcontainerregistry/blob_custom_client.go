@@ -91,6 +91,29 @@ func (b *BlobDigestCalculator) restoreState() {
 	_ = b.h.(encoding.BinaryUnmarshaler).UnmarshalBinary(b.hashState)
 }
 
+// newLimitTeeReader returns a Reader that writes to w what it reads from r with n bytes limit.
+func newLimitTeeReader(r io.Reader, w io.Writer, n int64) io.Reader {
+	return &limitTeeReader{r, w, n}
+}
+
+type limitTeeReader struct {
+	r io.Reader
+	w io.Writer
+	n int64
+}
+
+func (lt *limitTeeReader) Read(p []byte) (int, error) {
+	n, err := lt.r.Read(p)
+	if n > 0 && lt.n > 0 {
+		wn, werr := lt.w.Write(p[:n])
+		if werr != nil {
+			return wn, werr
+		}
+		lt.n -= int64(wn)
+	}
+	return n, err
+}
+
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 type BlobClientUploadChunkOptions struct {
 	// Start of range for the blob to be uploaded.
@@ -107,7 +130,15 @@ type BlobClientUploadChunkOptions struct {
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	blobDigestCalculator.saveState()
-	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
+	size, err := chunkData.Seek(0, io.SeekEnd) // Seek to the end to get the stream's size
+	if err != nil {
+		return BlobClientUploadChunkResponse{}, err
+	}
+	_, err = chunkData.Seek(0, io.SeekStart)
+	if err != nil {
+		return BlobClientUploadChunkResponse{}, err
+	}
+	wrappedChunkData := &wrappedReadSeeker{Reader: newLimitTeeReader(chunkData, blobDigestCalculator.h, size), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions
 	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
 		requestOptions = &blobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", *options.RangeStart, *options.RangeEnd))}

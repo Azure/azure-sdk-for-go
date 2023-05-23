@@ -9,244 +9,191 @@
 
 package azkeys
 
-// DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
-// 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system
-// can purge the key, at the end of the retention interval.
-type DeletionRecoveryLevel string
+// KeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+type KeyCurveName string
 
 const (
-	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility
-	// for immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability
-	// of the deleted entity during the retention interval and while the subscription is still available.
-	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
-	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion
-	// is recoverable, immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot
-	// be permanently canceled when 7<= SoftDeleteRetentionInDays < 90. This level guarantees the recoverability of the deleted
-	// entity during the retention interval, and also reflects the fact that the subscription itself cannot be cancelled.
-	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which
-	// also permits immediate and permanent deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees
-	// the recoverability of the deleted entity during the retention interval, unless a Purge operation is requested, or the subscription
-	// is cancelled.
-	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
-	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility
-	// for recovery. This level corresponds to no protection being available against a Delete operation; the data is irretrievably
-	// lost upon accepting a Delete operation at the entity level or higher (vault, resource group, subscription etc.)
-	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
-	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate
-	// and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention
-	// interval(90 days) and while the subscription is still available. System wil permanently delete it after 90 days, if not
-	// recovered
-	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
-	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable
-	// within retention interval (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription
-	// itself cannot be permanently canceled. System wil permanently delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits
-	// immediate and permanent deletion (i.e. purge). This level guarantees the recoverability of the deleted entity during the
-	// retention interval (90 days), unless a Purge operation is requested, or the subscription is cancelled. System wil permanently
-	// delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
+	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	KeyCurveNameP256 KeyCurveName = "P-256"
+	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
+	KeyCurveNameP256K KeyCurveName = "P-256K"
+	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	KeyCurveNameP384 KeyCurveName = "P-384"
+	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	KeyCurveNameP521 KeyCurveName = "P-521"
 )
 
-// PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
-func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
-	return []DeletionRecoveryLevel{
-		DeletionRecoveryLevelCustomizedRecoverable,
-		DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription,
-		DeletionRecoveryLevelCustomizedRecoverablePurgeable,
-		DeletionRecoveryLevelPurgeable,
-		DeletionRecoveryLevelRecoverable,
-		DeletionRecoveryLevelRecoverableProtectedSubscription,
-		DeletionRecoveryLevelRecoverablePurgeable,
+// PossibleKeyCurveNameValues returns the possible values for the KeyCurveName const type.
+func PossibleKeyCurveNameValues() []KeyCurveName {
+	return []KeyCurveName{
+		KeyCurveNameP256,
+		KeyCurveNameP256K,
+		KeyCurveNameP384,
+		KeyCurveNameP521,
 	}
 }
 
-// JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type JSONWebKeyCurveName string
+// EncryptionAlgorithm - algorithm identifier
+type EncryptionAlgorithm string
 
 const (
-	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
-	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
-	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
-	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
+	EncryptionAlgorithmA128CBC    EncryptionAlgorithm = "A128CBC"
+	EncryptionAlgorithmA128CBCPAD EncryptionAlgorithm = "A128CBCPAD"
+	EncryptionAlgorithmA128GCM    EncryptionAlgorithm = "A128GCM"
+	EncryptionAlgorithmA128KW     EncryptionAlgorithm = "A128KW"
+	EncryptionAlgorithmA192CBC    EncryptionAlgorithm = "A192CBC"
+	EncryptionAlgorithmA192CBCPAD EncryptionAlgorithm = "A192CBCPAD"
+	EncryptionAlgorithmA192GCM    EncryptionAlgorithm = "A192GCM"
+	EncryptionAlgorithmA192KW     EncryptionAlgorithm = "A192KW"
+	EncryptionAlgorithmA256CBC    EncryptionAlgorithm = "A256CBC"
+	EncryptionAlgorithmA256CBCPAD EncryptionAlgorithm = "A256CBCPAD"
+	EncryptionAlgorithmA256GCM    EncryptionAlgorithm = "A256GCM"
+	EncryptionAlgorithmA256KW     EncryptionAlgorithm = "A256KW"
+	EncryptionAlgorithmRSA15      EncryptionAlgorithm = "RSA1_5"
+	EncryptionAlgorithmRSAOAEP    EncryptionAlgorithm = "RSA-OAEP"
+	EncryptionAlgorithmRSAOAEP256 EncryptionAlgorithm = "RSA-OAEP-256"
 )
 
-// PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
-func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
-	return []JSONWebKeyCurveName{
-		JSONWebKeyCurveNameP256,
-		JSONWebKeyCurveNameP256K,
-		JSONWebKeyCurveNameP384,
-		JSONWebKeyCurveNameP521,
+// PossibleEncryptionAlgorithmValues returns the possible values for the EncryptionAlgorithm const type.
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return []EncryptionAlgorithm{
+		EncryptionAlgorithmA128CBC,
+		EncryptionAlgorithmA128CBCPAD,
+		EncryptionAlgorithmA128GCM,
+		EncryptionAlgorithmA128KW,
+		EncryptionAlgorithmA192CBC,
+		EncryptionAlgorithmA192CBCPAD,
+		EncryptionAlgorithmA192GCM,
+		EncryptionAlgorithmA192KW,
+		EncryptionAlgorithmA256CBC,
+		EncryptionAlgorithmA256CBCPAD,
+		EncryptionAlgorithmA256GCM,
+		EncryptionAlgorithmA256KW,
+		EncryptionAlgorithmRSA15,
+		EncryptionAlgorithmRSAOAEP,
+		EncryptionAlgorithmRSAOAEP256,
 	}
 }
 
-// JSONWebKeyEncryptionAlgorithm - algorithm identifier
-type JSONWebKeyEncryptionAlgorithm string
+// KeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
+type KeyOperation string
 
 const (
-	JSONWebKeyEncryptionAlgorithmA128CBC    JSONWebKeyEncryptionAlgorithm = "A128CBC"
-	JSONWebKeyEncryptionAlgorithmA128CBCPAD JSONWebKeyEncryptionAlgorithm = "A128CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA128GCM    JSONWebKeyEncryptionAlgorithm = "A128GCM"
-	JSONWebKeyEncryptionAlgorithmA128KW     JSONWebKeyEncryptionAlgorithm = "A128KW"
-	JSONWebKeyEncryptionAlgorithmA192CBC    JSONWebKeyEncryptionAlgorithm = "A192CBC"
-	JSONWebKeyEncryptionAlgorithmA192CBCPAD JSONWebKeyEncryptionAlgorithm = "A192CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA192GCM    JSONWebKeyEncryptionAlgorithm = "A192GCM"
-	JSONWebKeyEncryptionAlgorithmA192KW     JSONWebKeyEncryptionAlgorithm = "A192KW"
-	JSONWebKeyEncryptionAlgorithmA256CBC    JSONWebKeyEncryptionAlgorithm = "A256CBC"
-	JSONWebKeyEncryptionAlgorithmA256CBCPAD JSONWebKeyEncryptionAlgorithm = "A256CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA256GCM    JSONWebKeyEncryptionAlgorithm = "A256GCM"
-	JSONWebKeyEncryptionAlgorithmA256KW     JSONWebKeyEncryptionAlgorithm = "A256KW"
-	JSONWebKeyEncryptionAlgorithmRSA15      JSONWebKeyEncryptionAlgorithm = "RSA1_5"
-	JSONWebKeyEncryptionAlgorithmRSAOAEP    JSONWebKeyEncryptionAlgorithm = "RSA-OAEP"
-	JSONWebKeyEncryptionAlgorithmRSAOAEP256 JSONWebKeyEncryptionAlgorithm = "RSA-OAEP-256"
+	KeyOperationDecrypt   KeyOperation = "decrypt"
+	KeyOperationEncrypt   KeyOperation = "encrypt"
+	KeyOperationExport    KeyOperation = "export"
+	KeyOperationImport    KeyOperation = "import"
+	KeyOperationSign      KeyOperation = "sign"
+	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
+	KeyOperationVerify    KeyOperation = "verify"
+	KeyOperationWrapKey   KeyOperation = "wrapKey"
 )
 
-// PossibleJSONWebKeyEncryptionAlgorithmValues returns the possible values for the JSONWebKeyEncryptionAlgorithm const type.
-func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
-	return []JSONWebKeyEncryptionAlgorithm{
-		JSONWebKeyEncryptionAlgorithmA128CBC,
-		JSONWebKeyEncryptionAlgorithmA128CBCPAD,
-		JSONWebKeyEncryptionAlgorithmA128GCM,
-		JSONWebKeyEncryptionAlgorithmA128KW,
-		JSONWebKeyEncryptionAlgorithmA192CBC,
-		JSONWebKeyEncryptionAlgorithmA192CBCPAD,
-		JSONWebKeyEncryptionAlgorithmA192GCM,
-		JSONWebKeyEncryptionAlgorithmA192KW,
-		JSONWebKeyEncryptionAlgorithmA256CBC,
-		JSONWebKeyEncryptionAlgorithmA256CBCPAD,
-		JSONWebKeyEncryptionAlgorithmA256GCM,
-		JSONWebKeyEncryptionAlgorithmA256KW,
-		JSONWebKeyEncryptionAlgorithmRSA15,
-		JSONWebKeyEncryptionAlgorithmRSAOAEP,
-		JSONWebKeyEncryptionAlgorithmRSAOAEP256,
+// PossibleKeyOperationValues returns the possible values for the KeyOperation const type.
+func PossibleKeyOperationValues() []KeyOperation {
+	return []KeyOperation{
+		KeyOperationDecrypt,
+		KeyOperationEncrypt,
+		KeyOperationExport,
+		KeyOperationImport,
+		KeyOperationSign,
+		KeyOperationUnwrapKey,
+		KeyOperationVerify,
+		KeyOperationWrapKey,
 	}
 }
 
-// JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
-type JSONWebKeyOperation string
-
-const (
-	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationExport    JSONWebKeyOperation = "export"
-	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
-	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
-)
-
-// PossibleJSONWebKeyOperationValues returns the possible values for the JSONWebKeyOperation const type.
-func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
-	return []JSONWebKeyOperation{
-		JSONWebKeyOperationDecrypt,
-		JSONWebKeyOperationEncrypt,
-		JSONWebKeyOperationExport,
-		JSONWebKeyOperationImport,
-		JSONWebKeyOperationSign,
-		JSONWebKeyOperationUnwrapKey,
-		JSONWebKeyOperationVerify,
-		JSONWebKeyOperationWrapKey,
-	}
-}
-
-// JSONWebKeySignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm
+// SignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm
 // types, see JsonWebKeySignatureAlgorithm.
-type JSONWebKeySignatureAlgorithm string
+type SignatureAlgorithm string
 
 const (
-	// JSONWebKeySignatureAlgorithmES256 - ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
-	JSONWebKeySignatureAlgorithmES256 JSONWebKeySignatureAlgorithm = "ES256"
-	// JSONWebKeySignatureAlgorithmES256K - ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmES256K JSONWebKeySignatureAlgorithm = "ES256K"
-	// JSONWebKeySignatureAlgorithmES384 - ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmES384 JSONWebKeySignatureAlgorithm = "ES384"
-	// JSONWebKeySignatureAlgorithmES512 - ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmES512 JSONWebKeySignatureAlgorithm = "ES512"
-	// JSONWebKeySignatureAlgorithmPS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmPS256 JSONWebKeySignatureAlgorithm = "PS256"
-	// JSONWebKeySignatureAlgorithmPS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmPS384 JSONWebKeySignatureAlgorithm = "PS384"
-	// JSONWebKeySignatureAlgorithmPS512 - RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmPS512 JSONWebKeySignatureAlgorithm = "PS512"
-	// JSONWebKeySignatureAlgorithmRS256 - RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmRS256 JSONWebKeySignatureAlgorithm = "RS256"
-	// JSONWebKeySignatureAlgorithmRS384 - RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmRS384 JSONWebKeySignatureAlgorithm = "RS384"
-	// JSONWebKeySignatureAlgorithmRS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
-	JSONWebKeySignatureAlgorithmRS512 JSONWebKeySignatureAlgorithm = "RS512"
-	// JSONWebKeySignatureAlgorithmRSNULL - Reserved
-	JSONWebKeySignatureAlgorithmRSNULL JSONWebKeySignatureAlgorithm = "RSNULL"
+	// SignatureAlgorithmES256 - ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
+	SignatureAlgorithmES256 SignatureAlgorithm = "ES256"
+	// SignatureAlgorithmES256K - ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmES256K SignatureAlgorithm = "ES256K"
+	// SignatureAlgorithmES384 - ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmES384 SignatureAlgorithm = "ES384"
+	// SignatureAlgorithmES512 - ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmES512 SignatureAlgorithm = "ES512"
+	// SignatureAlgorithmPS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmPS256 SignatureAlgorithm = "PS256"
+	// SignatureAlgorithmPS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmPS384 SignatureAlgorithm = "PS384"
+	// SignatureAlgorithmPS512 - RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmPS512 SignatureAlgorithm = "PS512"
+	// SignatureAlgorithmRS256 - RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmRS256 SignatureAlgorithm = "RS256"
+	// SignatureAlgorithmRS384 - RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmRS384 SignatureAlgorithm = "RS384"
+	// SignatureAlgorithmRS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
+	SignatureAlgorithmRS512 SignatureAlgorithm = "RS512"
+	// SignatureAlgorithmRSNULL - Reserved
+	SignatureAlgorithmRSNULL SignatureAlgorithm = "RSNULL"
 )
 
-// PossibleJSONWebKeySignatureAlgorithmValues returns the possible values for the JSONWebKeySignatureAlgorithm const type.
-func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
-	return []JSONWebKeySignatureAlgorithm{
-		JSONWebKeySignatureAlgorithmES256,
-		JSONWebKeySignatureAlgorithmES256K,
-		JSONWebKeySignatureAlgorithmES384,
-		JSONWebKeySignatureAlgorithmES512,
-		JSONWebKeySignatureAlgorithmPS256,
-		JSONWebKeySignatureAlgorithmPS384,
-		JSONWebKeySignatureAlgorithmPS512,
-		JSONWebKeySignatureAlgorithmRS256,
-		JSONWebKeySignatureAlgorithmRS384,
-		JSONWebKeySignatureAlgorithmRS512,
-		JSONWebKeySignatureAlgorithmRSNULL,
+// PossibleSignatureAlgorithmValues returns the possible values for the SignatureAlgorithm const type.
+func PossibleSignatureAlgorithmValues() []SignatureAlgorithm {
+	return []SignatureAlgorithm{
+		SignatureAlgorithmES256,
+		SignatureAlgorithmES256K,
+		SignatureAlgorithmES384,
+		SignatureAlgorithmES512,
+		SignatureAlgorithmPS256,
+		SignatureAlgorithmPS384,
+		SignatureAlgorithmPS512,
+		SignatureAlgorithmRS256,
+		SignatureAlgorithmRS384,
+		SignatureAlgorithmRS512,
+		SignatureAlgorithmRSNULL,
 	}
 }
 
-// JSONWebKeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-type JSONWebKeyType string
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type KeyType string
 
 const (
-	// JSONWebKeyTypeEC - Elliptic Curve.
-	JSONWebKeyTypeEC JSONWebKeyType = "EC"
-	// JSONWebKeyTypeECHSM - Elliptic Curve with a private key which is stored in the HSM.
-	JSONWebKeyTypeECHSM JSONWebKeyType = "EC-HSM"
-	// JSONWebKeyTypeOct - Octet sequence (used to represent symmetric keys)
-	JSONWebKeyTypeOct JSONWebKeyType = "oct"
-	// JSONWebKeyTypeOctHSM - Octet sequence (used to represent symmetric keys) which is stored the HSM.
-	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
-	// JSONWebKeyTypeRSA - RSA (https://tools.ietf.org/html/rfc3447)
-	JSONWebKeyTypeRSA JSONWebKeyType = "RSA"
-	// JSONWebKeyTypeRSAHSM - RSA with a private key which is stored in the HSM.
-	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
+	// KeyTypeEC - Elliptic Curve.
+	KeyTypeEC KeyType = "EC"
+	// KeyTypeECHSM - Elliptic Curve with a private key which is stored in the HSM.
+	KeyTypeECHSM KeyType = "EC-HSM"
+	// KeyTypeOct - Octet sequence (used to represent symmetric keys)
+	KeyTypeOct KeyType = "oct"
+	// KeyTypeOctHSM - Octet sequence (used to represent symmetric keys) which is stored the HSM.
+	KeyTypeOctHSM KeyType = "oct-HSM"
+	// KeyTypeRSA - RSA (https://tools.ietf.org/html/rfc3447)
+	KeyTypeRSA KeyType = "RSA"
+	// KeyTypeRSAHSM - RSA with a private key which is stored in the HSM.
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
 
-// PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
-func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
-	return []JSONWebKeyType{
-		JSONWebKeyTypeEC,
-		JSONWebKeyTypeECHSM,
-		JSONWebKeyTypeOct,
-		JSONWebKeyTypeOctHSM,
-		JSONWebKeyTypeRSA,
-		JSONWebKeyTypeRSAHSM,
+// PossibleKeyTypeValues returns the possible values for the KeyType const type.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeOct,
+		KeyTypeOctHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
 	}
 }
 
-// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type KeyEncryptionAlgorithm string
+// KeyExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type KeyExportEncryptionAlgorithm string
 
 const (
-	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	KeyExportEncryptionAlgorithmCKMRSAAESKEYWRAP KeyExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	KeyExportEncryptionAlgorithmRSAAESKEYWRAP256 KeyExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	KeyExportEncryptionAlgorithmRSAAESKEYWRAP384 KeyExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
 
-// PossibleKeyEncryptionAlgorithmValues returns the possible values for the KeyEncryptionAlgorithm const type.
-func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
-	return []KeyEncryptionAlgorithm{
-		KeyEncryptionAlgorithmCKMRSAAESKEYWRAP,
-		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
-		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
+// PossibleKeyExportEncryptionAlgorithmValues returns the possible values for the KeyExportEncryptionAlgorithm const type.
+func PossibleKeyExportEncryptionAlgorithmValues() []KeyExportEncryptionAlgorithm {
+	return []KeyExportEncryptionAlgorithm{
+		KeyExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
+		KeyExportEncryptionAlgorithmRSAAESKEYWRAP256,
+		KeyExportEncryptionAlgorithmRSAAESKEYWRAP384,
 	}
 }
 

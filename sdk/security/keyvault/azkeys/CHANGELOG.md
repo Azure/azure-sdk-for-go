@@ -1,6 +1,31 @@
 # Release History
 
-## 1.0.0 (2023-05-11)
+## 1.0.0 (unreleased)
+
+### Breaking Changes
+* Renamed `GetRandomBytesRequest` to `GetRandomBytesParameters`
+* `ListDeletedKey` to `ListDeletedKeyProperties`
+* `ListKeys` to `ListKeyProperties`
+* `DeletedKeyBundle` to `DeletedKey`
+* `KeyBundle` to `KeyVaultKey`
+* `RestoreKeyParameters.KeyBundleBackup` to `RestoreKeyParameters.KeyBackup`
+* `DeletedKeyItem` to `DeletedKeyProperties`
+* `KeyItem` to `KeyProperties`
+* `DeletedKeyListResult` to `DeletedKeyPropertiesListResult`
+* `KeyListResult` `KeyPropertiesListResult`
+* `KeyOperationsParameters` to `KeyOperationParameters`
+* `KeyOps` field to `KeyOperations`
+* Changed `JSONWebKey.KeyOperations` from type []*string to []*KeyOperation
+* `KeyEncryptionAlgorithm` to `KeyExportEncryptionAlgorithm`
+* `ReleaseParameters.Enc` to `ReleaseParameters.Algorithm`
+* `KeyOperationParameters.AAD` to `KeyOperationParameters.AdditionalAuthenticationData`
+* `KeyOperationParameters.Tag` to `KeyOperationParameters.AuthenticationTag`
+* `JSONWebKeyOperation` to `KeyOperation`
+* `JSONWebKeyCurveName` to `KeyCurveName`
+* `JSONWebKeyEncryptionAlgorithm` to `EncryptionAlgorithm`
+* `JSONWebKeySignatureAlgorithm` to `SignatureAlgorithm`
+* `JSONWebKeyType` to `KeyType`
+* Removed `DeletionRecoveryLevel` type
 
 ### Other Changes
 * Updated dependencies

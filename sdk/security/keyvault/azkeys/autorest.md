@@ -25,30 +25,6 @@ directive:
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
 
-  # capitalize acronyms
-  - from: swagger-document
-    where: $.definitions.KeyImportParameters.properties.Hsm
-    transform: $["x-ms-client-name"] = "HSM"
-  - from: swagger-document
-    where: $.definitions..properties..iv
-    transform: $["x-ms-client-name"] = "IV"
-  - from: swagger-document
-    where: $.definitions..properties..kid
-    transform: $["x-ms-client-name"] = "KID"
-
-  # Maxresults -> MaxResults
-  - from: swagger-document
-    where: $.paths..parameters..[?(@.name=='maxresults')]
-    transform: $["x-ms-client-name"] = "MaxResults"
-
-  # keyName, keyVersion -> name, version
-  - from: swagger-document
-    where: $.paths..parameters..[?(@.name=='key-name')]
-    transform: $["x-ms-client-name"] = "name"
-  - from: swagger-document
-    where: $.paths..parameters..[?(@.name=='key-version')]
-    transform: $["x-ms-client-name"] = "version"
-
   # rename parameter models to match their methods
   - rename-model:
       from: KeyCreateParameters
@@ -74,17 +50,144 @@ directive:
   - rename-model:
       from: KeyVerifyParameters
       to: VerifyParameters
+  - rename-model:
+      from: GetRandomBytesRequest
+      to: GetRandomBytesParameters
 
   # rename paged operations from Get* to List*
   - rename-operation:
       from: GetDeletedKeys
-      to: ListDeletedKeys
+      to: ListDeletedKeyProperties
   - rename-operation:
       from: GetKeys
-      to: ListKeys
+      to: ListKeyProperties
   - rename-operation:
       from: GetKeyVersions
-      to: ListKeyVersions
+      to: ListKeyPropertiesVersions
+
+  # add in KeyRotation prefix
+  - rename-model:
+      from: LifetimeActions
+      to: KeyRotationLifetimeActions
+  - rename-model:
+      from: LifetimeActionsTrigger
+      to: KeyRotationLifetimeActionsTrigger
+  - rename-model:
+      from: LifetimeActionsType
+      to: KeyRotationLifetimeActionsType
+
+  # rename KeyItem and KeyBundle
+  - rename-model:
+      from: DeletedKeyBundle
+      to: DeletedKey
+  - rename-model:
+      from: KeyBundle
+      to: KeyVaultKey
+  - rename-model:
+      from: KeyItem
+      to: KeyProperties
+  - rename-model:
+      from: DeletedKeyItem
+      to: DeletedKeyProperties
+  - rename-model:
+      from: DeletedKeyListResult
+      to: DeletedKeyPropertiesListResult
+  - rename-model:
+      from: KeyListResult
+      to: KeyPropertiesListResult
+  - from: swagger-document
+    where: $.definitions.RestoreKeyParameters.properties.value
+    transform: $["x-ms-client-name"] = "KeyBackup"
+
+  # Rename KeyOps to KeyOperations and update type
+  - rename-model:
+      from: KeyOperationsParameters
+      to: KeyOperationParameters
+  - from: swagger-document
+    where: $.definitions..properties.key_ops
+    transform: $["x-ms-client-name"] = "KeyOperations"
+  - from: models.go
+    where: $
+    transform: return $.replace(/KeyOperations \[\]\*string/, "KeyOperations []*KeyOperation");
+
+  # fix capitalization
+  - from: swagger-document
+    where: $.definitions.ImportKeyParameters.properties.Hsm
+    transform: $["x-ms-client-name"] = "HSM"
+  - from: swagger-document
+    where: $.definitions..properties..iv
+    transform: $["x-ms-client-name"] = "IV"
+  - from: swagger-document
+    where: $.definitions..properties..kid
+    transform: $["x-ms-client-name"] = "KID"
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='maxresults')]
+    transform: $["x-ms-client-name"] = "MaxResults"
+
+  # keyName, keyVersion -> name, version
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='key-name')]
+    transform: $["x-ms-client-name"] = "name"
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='key-version')]
+    transform: $["x-ms-client-name"] = "version"
+  
+  # KeyEncryptionAlgorithm renames
+  - from: swagger-document
+    where: $.definitions.ReleaseParameters.properties.enc.x-ms-enum
+    transform: $["name"] = "KeyExportEncryptionAlgorithm"
+  - from: swagger-document
+    where: $.definitions.ReleaseParameters.properties.enc
+    transform: $["x-ms-client-name"] = "algorithm"
+
+  # rename KeyOperationsParameters fields
+  - from: swagger-document
+    where: $.definitions.KeyOperationParameters.properties.aad
+    transform: $["x-ms-client-name"] = "AdditionalAuthenticatedData"
+  - from: swagger-document
+    where: $.definitions.KeyOperationParameters.properties.tag
+    transform: $["x-ms-client-name"] = "AuthenticationTag"
+
+  # remove JSONWeb Prefix
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyOperation/g, "KeyOperation");
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyCurveName/g, "KeyCurveName");
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyEncryptionAlgorithm/g, "EncryptionAlgorithm");
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeySignatureAlgorithm/g, "SignatureAlgorithm");
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyType/g, "KeyType");
+
+  # remove DeletionRecoveryLevel type
+  - from: models.go
+    where: $
+    transform: return $.replace(/RecoveryLevel \*DeletionRecoveryLevel/g, "RecoveryLevel *string");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type DeletionRecoveryLevel string/, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}/, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const \(\n\s\/\/ DeletionRecoveryLevel(?:.+\s)+\)/, "");
 
   # delete unused error models
   - from: models.go

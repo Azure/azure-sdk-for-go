@@ -67,20 +67,22 @@ type ImportKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListDeletedKeysOptions contains the optional parameters for the Client.NewListDeletedKeysPager method.
-type ListDeletedKeysOptions struct {
+// ListDeletedKeyPropertiesOptions contains the optional parameters for the Client.NewListDeletedKeyPropertiesPager
+// method.
+type ListDeletedKeyPropertiesOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeyVersionsOptions contains the optional parameters for the Client.NewListKeyVersionsPager method.
-type ListKeyVersionsOptions struct {
+// ListKeyPropertiesOptions contains the optional parameters for the Client.NewListKeyPropertiesPager method.
+type ListKeyPropertiesOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeysOptions contains the optional parameters for the Client.NewListKeysPager method.
-type ListKeysOptions struct {
+// ListKeyPropertiesVersionsOptions contains the optional parameters for the Client.NewListKeyPropertiesVersionsPager
+// method.
+type ListKeyPropertiesVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
@@ -143,14 +145,14 @@ type WrapKeyOptions struct {
 // CreateKeyParameters - The key create parameters.
 type CreateKeyParameters struct {
 	// REQUIRED; The type of key to create. For valid values, see JsonWebKeyType.
-	Kty *JSONWebKeyType `json:"kty,omitempty"`
+	Kty *KeyType `json:"kty,omitempty"`
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
+	Curve *KeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -165,8 +167,8 @@ type CreateKeyParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// DeletedKeyBundle - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
-type DeletedKeyBundle struct {
+// DeletedKey - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+type DeletedKey struct {
 	// The key management attributes.
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 
@@ -193,8 +195,8 @@ type DeletedKeyBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
-type DeletedKeyItem struct {
+// DeletedKeyProperties - The deleted key item containing the deleted key metadata and information about deletion.
+type DeletedKeyProperties struct {
 	// The key management attributes.
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 
@@ -218,18 +220,18 @@ type DeletedKeyItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// DeletedKeyListResult - A list of keys that have been deleted in this vault.
-type DeletedKeyListResult struct {
+// DeletedKeyPropertiesListResult - A list of keys that have been deleted in this vault.
+type DeletedKeyPropertiesListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of deleted keys in the vault along with a link to the next page of deleted
 	// keys
-	Value []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
+	Value []*DeletedKeyProperties `json:"value,omitempty" azure:"ro"`
 }
 
-// GetRandomBytesRequest - The get random bytes request object.
-type GetRandomBytesRequest struct {
+// GetRandomBytesParameters - The get random bytes request object.
+type GetRandomBytesParameters struct {
 	// REQUIRED; The requested number of random bytes.
 	Count *int32 `json:"count,omitempty"`
 }
@@ -255,7 +257,7 @@ type ImportKeyParameters struct {
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
+	Crv *KeyCurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -273,11 +275,11 @@ type JSONWebKey struct {
 	K []byte `json:"k,omitempty"`
 
 	// Key identifier.
-	KID    *ID       `json:"kid,omitempty"`
-	KeyOps []*string `json:"key_ops,omitempty"`
+	KID           *ID             `json:"kid,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	Kty *JSONWebKeyType `json:"kty,omitempty"`
+	Kty *KeyType `json:"kty,omitempty"`
 
 	// RSA modulus.
 	N []byte `json:"n,omitempty"`
@@ -325,54 +327,28 @@ type KeyAttributes struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
 	// the key can be permanently deleted by a privileged user; otherwise, only the system
 	// can purge the key, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// KeyBundle - A KeyBundle consisting of a WebKey plus its attributes.
-type KeyBundle struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
+// KeyOperationParameters - The key operations parameters.
+type KeyOperationParameters struct {
+	// REQUIRED; algorithm identifier
+	Algorithm *EncryptionAlgorithm `json:"alg,omitempty"`
 
-	// The Json web key.
-	Key *JSONWebKey `json:"key,omitempty"`
+	// REQUIRED
+	Value []byte `json:"value,omitempty"`
 
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+	AdditionalAuthenticatedData []byte `json:"aad,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	// The tag to authenticate when performing decryption with an authenticated algorithm.
+	AuthenticationTag []byte `json:"tag,omitempty"`
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
-}
-
-// KeyItem - The key item containing key metadata.
-type KeyItem struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
-
-	// Key identifier.
-	KID *ID `json:"kid,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
-}
-
-// KeyListResult - The key list result.
-type KeyListResult struct {
-	// READ-ONLY; The URL to get the next set of keys.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
-	Value []*KeyItem `json:"value,omitempty" azure:"ro"`
+	// Cryptographically random, non-repeating initialization vector for symmetric algorithms.
+	IV []byte `json:"iv,omitempty"`
 }
 
 // KeyOperationResult - The key operation result.
@@ -393,22 +369,29 @@ type KeyOperationResult struct {
 	Result []byte `json:"value,omitempty" azure:"ro"`
 }
 
-// KeyOperationsParameters - The key operations parameters.
-type KeyOperationsParameters struct {
-	// REQUIRED; algorithm identifier
-	Algorithm *JSONWebKeyEncryptionAlgorithm `json:"alg,omitempty"`
+// KeyProperties - The key item containing key metadata.
+type KeyProperties struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
 
-	// REQUIRED
-	Value []byte `json:"value,omitempty"`
+	// Key identifier.
+	KID *ID `json:"kid,omitempty"`
 
-	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-	AAD []byte `json:"aad,omitempty"`
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-	// Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-	IV []byte `json:"iv,omitempty"`
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
 
-	// The tag to authenticate when performing decryption with an authenticated algorithm.
-	Tag []byte `json:"tag,omitempty"`
+// KeyPropertiesListResult - The key list result.
+type KeyPropertiesListResult struct {
+	// READ-ONLY; The URL to get the next set of keys.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
+	Value []*KeyProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // KeyReleasePolicy - The policy rules under which the key can be exported.
@@ -430,6 +413,31 @@ type KeyReleaseResult struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
+// KeyRotationLifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+type KeyRotationLifetimeActions struct {
+	// The action that will be executed.
+	Action *KeyRotationLifetimeActionsType `json:"action,omitempty"`
+
+	// The condition that will execute the action.
+	Trigger *KeyRotationLifetimeActionsTrigger `json:"trigger,omitempty"`
+}
+
+// KeyRotationLifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
+type KeyRotationLifetimeActionsTrigger struct {
+	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
+	// days : "P90D"
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
+// KeyRotationLifetimeActionsType - The action that will be executed.
+type KeyRotationLifetimeActionsType struct {
+	// The type of the action.
+	Type *KeyRotationPolicyAction `json:"type,omitempty"`
+}
+
 // KeyRotationPolicy - Management policy for a key.
 type KeyRotationPolicy struct {
 	// The key rotation policy attributes.
@@ -438,7 +446,7 @@ type KeyRotationPolicy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two
 	// items at maximum: one for rotate, one for notify. Notification time would be
 	// default to 30 days before expiry and it is not configurable.
-	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+	LifetimeActions []*KeyRotationLifetimeActions `json:"lifetimeActions,omitempty"`
 
 	// READ-ONLY; The key policy id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -457,35 +465,29 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
+// KeyVaultKey - A KeyBundle consisting of a WebKey plus its attributes.
+type KeyVaultKey struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The Json web key.
+	Key *JSONWebKey `json:"key,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
 // KeyVerifyResult - The key verify result.
 type KeyVerifyResult struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
 	Value *bool `json:"value,omitempty" azure:"ro"`
-}
-
-// LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
-type LifetimeActions struct {
-	// The action that will be executed.
-	Action *LifetimeActionsType `json:"action,omitempty"`
-
-	// The condition that will execute the action.
-	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
-}
-
-// LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
-type LifetimeActionsTrigger struct {
-	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
-	// days : "P90D"
-	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
-
-	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
-	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
-}
-
-// LifetimeActionsType - The action that will be executed.
-type LifetimeActionsType struct {
-	// The type of the action.
-	Type *KeyRotationPolicyAction `json:"type,omitempty"`
 }
 
 // RandomBytes - The get random bytes response object containing the bytes.
@@ -500,7 +502,7 @@ type ReleaseParameters struct {
 	TargetAttestationToken *string `json:"target,omitempty"`
 
 	// The encryption algorithm to use to protected the exported key material
-	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
+	Algorithm *KeyExportEncryptionAlgorithm `json:"enc,omitempty"`
 
 	// A client provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`
@@ -509,13 +511,13 @@ type ReleaseParameters struct {
 // RestoreKeyParameters - The key restore parameters.
 type RestoreKeyParameters struct {
 	// REQUIRED; The backup blob associated with a key bundle.
-	KeyBundleBackup []byte `json:"value,omitempty"`
+	KeyBackup []byte `json:"value,omitempty"`
 }
 
 // SignParameters - The key operations parameters.
 type SignParameters struct {
 	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
-	Algorithm *JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
+	Algorithm *SignatureAlgorithm `json:"alg,omitempty"`
 
 	// REQUIRED
 	Value []byte `json:"value,omitempty"`
@@ -527,7 +529,7 @@ type UpdateKeyParameters struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
@@ -539,7 +541,7 @@ type UpdateKeyParameters struct {
 // VerifyParameters - The key verify parameters.
 type VerifyParameters struct {
 	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
-	Algorithm *JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
+	Algorithm *SignatureAlgorithm `json:"alg,omitempty"`
 
 	// REQUIRED; The digest used for signing.
 	Digest []byte `json:"digest,omitempty"`

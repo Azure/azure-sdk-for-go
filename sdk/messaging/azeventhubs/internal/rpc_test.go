@@ -260,7 +260,7 @@ func TestRPCLinkClosingClean_SenderCreationFailed(t *testing.T) {
 	senderErr := errors.New("failed to create sender")
 
 	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any(), gomock.Any()).Return(nil, senderErr)
 	sess.EXPECT().Close(test.NotCancelled).Return(nil)
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
@@ -281,8 +281,8 @@ func TestRPCLinkClosingClean_ReceiverCreationFailed(t *testing.T) {
 	receiverErr := errors.New("failed to create receiver")
 
 	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(sender, nil)
-	sess.EXPECT().NewReceiver(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, receiverErr)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any(), gomock.Any()).Return(sender, nil)
+	sess.EXPECT().NewReceiver(test.NotCancelled, "rpcAddress", gomock.Any(), gomock.Any()).Return(nil, receiverErr)
 
 	sess.EXPECT().Close(test.NotCancelled).Return(nil)
 
@@ -303,7 +303,7 @@ func TestRPCLinkClosingClean_CreationFailsButSessionCloseFailsToo(t *testing.T) 
 	senderErr := errors.New("failed to create receiver")
 
 	conn.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(sess, nil)
-	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any()).Return(nil, senderErr)
+	sess.EXPECT().NewSender(test.NotCancelled, "rpcAddress", gomock.Any(), gomock.Any()).Return(nil, senderErr)
 	sess.EXPECT().Close(test.NotCancelled).Return(errors.New("session closing failed"))
 
 	rpcLink, err := NewRPCLink(context.Background(), RPCLinkArgs{
@@ -377,11 +377,11 @@ func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOpti
 
 func (c *rpcTesterClient) Close() error { return nil }
 
-func (tester *rpcTester) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
+func (tester *rpcTester) NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
 	return tester, nil
 }
 
-func (tester *rpcTester) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
+func (tester *rpcTester) NewSender(ctx context.Context, target string, partitionID string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
 	return tester, nil
 }
 

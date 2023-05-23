@@ -112,6 +112,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	sender, err := session.NewSender(
 		ctx,
 		args.Address,
+		"",
 		nil,
 	)
 	if err != nil {
@@ -134,7 +135,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		}
 	}
 
-	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
+	receiver, err := session.NewReceiver(ctx, args.Address, "", receiverOpts)
 	if err != nil {
 		_ = session.Close(ctx)
 		return nil, err

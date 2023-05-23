@@ -244,6 +244,11 @@ type NetworkConnectionsClientListHealthDetailsResponse struct {
 	HealthCheckStatusDetailsListResult
 }
 
+// NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager.
+type NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse struct {
+	OutboundEnvironmentEndpointCollection
+}
+
 // NetworkConnectionsClientRunHealthChecksResponse contains the response from method NetworkConnectionsClient.BeginRunHealthChecks.
 type NetworkConnectionsClientRunHealthChecksResponse struct {
 	// placeholder for future response values
@@ -282,6 +287,11 @@ type PoolsClientGetResponse struct {
 // PoolsClientListByProjectResponse contains the response from method PoolsClient.NewListByProjectPager.
 type PoolsClientListByProjectResponse struct {
 	PoolListResult
+}
+
+// PoolsClientRunHealthChecksResponse contains the response from method PoolsClient.BeginRunHealthChecks.
+type PoolsClientRunHealthChecksResponse struct {
+	// placeholder for future response values
 }
 
 // PoolsClientUpdateResponse contains the response from method PoolsClient.BeginUpdate.

@@ -22,6 +22,25 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.49"
 ```
 
+### Undo breaking change with BlobName 
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/Name\s+\*BlobName/g, `Name *string`);
+```
+
+### Removing UnmarshalXML for BlobItems to create customer UnmarshalXML function
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.BlobItemInternal["x-ms-go-omit-serde-methods"] = true;
+```
+
 ### Remove pager methods and export various generated methods in container client
 
 ``` yaml

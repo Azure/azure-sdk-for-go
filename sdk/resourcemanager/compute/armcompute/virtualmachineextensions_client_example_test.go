@@ -17,11 +17,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionsCreateOrUpdateMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,8 +125,8 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionsCreateOrUpdateMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,7 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualMachineExtensionsClient().BeginCreateOrUpdate(ctx, "rgcompute", "aaaa", "aaaaaaaaaaaaaaaaaaaaaaaa", armcompute.VirtualMachineExtension{
+	poller, err := clientFactory.NewVirtualMachineExtensionsClient().BeginCreateOrUpdate(ctx, "rgcompute", "myVM", "myVMExtension", armcompute.VirtualMachineExtension{
 		Location: to.Ptr("westus"),
 	}, nil)
 	if err != nil {
@@ -150,11 +150,12 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualMachineExtension = armcompute.VirtualMachineExtension{
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
 	// 	Location: to.Ptr("westus"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Update.json
 func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,8 +219,8 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionsDeleteMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -239,8 +240,8 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionsD
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MinimumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionsDeleteMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -260,8 +261,8 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionsD
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Get_MaximumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionsGetMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Get_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -324,8 +325,8 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionsGetMaximu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Get_MinimumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionsGetMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Get_MinimumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -335,7 +336,7 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionsGetMinimu
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineExtensionsClient().Get(ctx, "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineExtensionsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewVirtualMachineExtensionsClient().Get(ctx, "rgcompute", "myVM", "myVMExtension", &armcompute.VirtualMachineExtensionsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -343,12 +344,13 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionsGetMinimu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualMachineExtension = armcompute.VirtualMachineExtension{
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
 	// 	Location: to.Ptr("westus"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MaximumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionsListMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MaximumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -414,8 +416,8 @@ func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionsListMaxi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MinimumSet_Gen.json
-func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionsListMinimumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MinimumSet_Gen.json
+func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

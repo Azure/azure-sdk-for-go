@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2
 
 go 1.18
 

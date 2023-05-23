@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsList.json
 func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,9 +54,9 @@ func ExampleJobsClient_NewListPager() {
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
-		// 			Name: to.Ptr("mnaustest"),
+		// 			Name: to.Ptr("TestJobName1"),
 		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/ausresgrpmn/providers/Microsoft.DataBox/jobs/mnaustest"),
+		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
@@ -83,9 +83,9 @@ func ExampleJobsClient_NewListPager() {
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
-		// 			Name: to.Ptr("portalcontractAUS"),
+		// 			Name: to.Ptr("TestJobName2"),
 		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/ausresgrpmn/providers/Microsoft.DataBox/jobs/portalcontractAUS"),
+		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/TestResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName2"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
@@ -101,759 +101,12 @@ func ExampleJobsClient_NewListPager() {
 		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
 		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("australiaeast"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testBB-diskAU"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/testBB/providers/Microsoft.DataBox/jobs/testBB-diskAU"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T15:17:17.3753642+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("allXML"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/allXML"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-04T11:12:15.5972523+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("bothExportAllxml"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/bothExportAllxml"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-07T15:51:08.4479315+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("exportAll"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/exportAll"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-04T19:44:59.2410723+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("importRegressnTest"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/importRegressnTest"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-04T18:31:05.3036028+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testBotthXMLAndAll"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/testBotthXMLAndAll"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-09T01:57:03.8985885+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testExportAllOrder"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/testExportAllOrder"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-05T15:56:52.6983398+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testPayload"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/testPayload"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-04T17:45:25.464989+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("xmlOnlyOrder"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat12/providers/Microsoft.DataBox/jobs/xmlOnlyOrder"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-04T10:43:04.8775864+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testbadresourcegroup"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat3198inh0-9)inh(il(h)_fyoin)(upf(yLASD0-FJ(hal-DSNWP0JDS0P3-0SJ93/providers/Microsoft.DataBox/jobs/testbadresourcegroup"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-27T15:17:49.0760408+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("andipodtest4jan"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/andipodtest4jan"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-04T09:08:49.9928621+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("dbtest1"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/dbtest1"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("NoLongerNeeded null"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-28T15:20:48.1058546+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("degautam14-04-Clone"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/degautam14-04-Clone"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("IncorrectOrder null"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-14T08:51:18.2067875+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("degautamtestexport"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/degautamtestexport"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-27T18:08:30.6622356+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("DegautamTestExportOrder"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/DegautamTestExportOrder"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-21T20:41:02.3837388+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("degautamtestorder"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/degautamtestorder"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-24T07:56:23.6839464+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("degautamTestOrder14-04"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/degautamTestOrder14-04"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("IncorrectOrder null"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-14T08:48:21.2260174+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("export"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/export"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-12T12:19:19.8627264+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("exportTestResource"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.DataBox/jobs/exportTestResource"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-05T19:50:20.9692355+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("sanakTestImportNew"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.DataBox/jobs/sanakTestImportNew"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-10T15:09:45.7080012+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("sanakTestImportOld"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.DataBox/jobs/sanakTestImportOld"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-10T15:13:02.5724966+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("sanakTestImportOld1"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.DataBox/jobs/sanakTestImportOld1"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-20T13:39:28.1940929+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("sanakTestImportOld2"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.DataBox/jobs/sanakTestImportOld2"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-10T15:14:59.6879599+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("saranyagorder"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/saranyagorder"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(true),
-		// 				IsCancellableWithoutFee: to.Ptr(true),
-		// 				IsDeletable: to.Ptr(false),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-21T23:43:34.513148+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testdeepak04-07"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/testdeepak04-07"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("IncorrectOrder null"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-04T14:01:50.9232807+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
-		// 		},
-		// 		{
-		// 			Identity: &armdatabox.ResourceIdentity{
-		// 				Type: to.Ptr("None"),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armdatabox.SKU{
-		// 				Name: to.Ptr(armdatabox.SKUNameDataBoxHeavy),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Name: to.Ptr("testdurga-heavy"),
-		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/akvenkat/providers/Microsoft.DataBox/jobs/testdurga-heavy"),
-		// 			Properties: &armdatabox.JobProperties{
-		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
-		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 				},
-		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
-		// 				IsCancellable: to.Ptr(false),
-		// 				IsCancellableWithoutFee: to.Ptr(false),
-		// 				IsDeletable: to.Ptr(true),
-		// 				IsPrepareToShipEnabled: to.Ptr(false),
-		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-02-11T12:33:16.6231232+05:30"); return t}()),
-		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
-		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/MarkDevicesShipped.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/MarkDevicesShipped.json
 func ExampleJobsClient_MarkDevicesShipped() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,10 +117,10 @@ func ExampleJobsClient_MarkDevicesShipped() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewJobsClient().MarkDevicesShipped(ctx, "SdkJob8367", "SdkRg9836", armdatabox.MarkDevicesShippedRequest{
+	_, err = clientFactory.NewJobsClient().MarkDevicesShipped(ctx, "TestJobName1", "YourResourceGroupName", armdatabox.MarkDevicesShippedRequest{
 		DeliverToDcPackageDetails: &armdatabox.PackageCarrierInfo{
-			CarrierName: to.Ptr("DHL"),
-			TrackingID:  to.Ptr("123456"),
+			CarrierName: to.Ptr("testCarrier"),
+			TrackingID:  to.Ptr("000000"),
 		},
 	}, nil)
 	if err != nil {
@@ -875,7 +128,7 @@ func ExampleJobsClient_MarkDevicesShipped() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListByResourceGroup.json
 func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,7 +139,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobsClient().NewListByResourceGroupPager("SdkRg5154", &armdatabox.JobsClientListByResourceGroupOptions{SkipToken: nil})
+	pager := clientFactory.NewJobsClient().NewListByResourceGroupPager("YourResourceGroupName", &armdatabox.JobsClientListByResourceGroupOptions{SkipToken: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -902,8 +155,8 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Identity: &armdatabox.ResourceIdentity{
 		// 				Type: to.Ptr("SystemAssigned"),
-		// 				PrincipalID: to.Ptr("fac84c35-5490-4b11-81b9-770053ccbe3b"),
-		// 				TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 				PrincipalID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		// 				TenantID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
 		// 			},
 		// 			Location: to.Ptr("westus"),
 		// 			SKU: &armdatabox.SKU{
@@ -911,9 +164,9 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
-		// 			Name: to.Ptr("SdkJob5928"),
+		// 			Name: to.Ptr("TestJobName1"),
 		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg5154/providers/Microsoft.DataBox/jobs/SdkJob5928"),
+		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
 		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -939,9 +192,9 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
-		// 			Name: to.Ptr("SdkJob952"),
+		// 			Name: to.Ptr("TestJobName2"),
 		// 			Type: to.Ptr("Microsoft.DataBox/jobs"),
-		// 			ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg5154/providers/Microsoft.DataBox/jobs/SdkJob952"),
+		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName2"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
 		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -961,7 +214,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGet.json
 func ExampleJobsClient_Get_jobsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +225,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "SdkRg5154", "SdkJob952", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	res, err := clientFactory.NewJobsClient().Get(ctx, "YourResourceGroupName", "TestJobName1", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -989,9 +242,9 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob952"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg5154/providers/Microsoft.DataBox/jobs/SdkJob952"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -1007,9 +260,9 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -1035,8 +288,8 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -1044,7 +297,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 					{
 	// 						AccountDetails: &armdatabox.StorageAccountDetails{
 	// 							DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-	// 							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+	// 							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 						},
 	// 				}},
 	// 				DeliveryPackage: &armdatabox.PackageShippingDetails{
@@ -1103,16 +356,16 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 					TrackingID: to.Ptr(""),
 	// 					TrackingURL: to.Ptr(""),
 	// 				},
-	// 				ReverseShipmentLabelSasKey: to.Ptr("https://wusbeta.blob.core.windows.net/customer-reverse-shipment-instructions/CustomerShipmentInstructions_MicrosoftManaged.PDF?sv=2018-03-28&sr=b&sig=urwfAELvNV69IGHdcXlRCn6o3O3dWZQKaRipmoAdrI0%3D&st=2020-08-07T05%3A10%3A58Z&se=2020-08-08T05%3A20%3A58Z&sp=r"),
+	// 				ReverseShipmentLabelSasKey: to.Ptr("https://xxx.xxx.xx"),
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -1121,7 +374,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGetCmk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCmk.json
 func ExampleJobsClient_Get_jobsGetCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1132,7 +385,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "SdkRg7937", "SdkJob1735", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	res, err := clientFactory.NewJobsClient().Get(ctx, "YourResourceGroupName", "TestJobName1", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1142,8 +395,8 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// res.JobResource = armdatabox.JobResource{
 	// 	Identity: &armdatabox.ResourceIdentity{
 	// 		Type: to.Ptr("SystemAssigned"),
-	// 		PrincipalID: to.Ptr("9a68a7c4-0a18-4d06-a5fb-7058e9e98458"),
-	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		PrincipalID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+	// 		TenantID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
 	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
@@ -1151,9 +404,9 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob1735"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg7937/providers/Microsoft.DataBox/jobs/SdkJob1735"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -1169,9 +422,9 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -1197,8 +450,8 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -1206,7 +459,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 					{
 	// 						AccountDetails: &armdatabox.StorageAccountDetails{
 	// 							DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-	// 							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/databoxbvt1/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount2"),
+	// 							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 						},
 	// 				}},
 	// 				DeliveryPackage: &armdatabox.PackageShippingDetails{
@@ -1259,24 +512,24 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 				}},
 	// 				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
 	// 					KekType: to.Ptr(armdatabox.KekTypeCustomerManaged),
-	// 					KekURL: to.Ptr("https://sdkkeyvault.vault.azure.net/keys/SSDKEY/"),
-	// 					KekVaultResourceID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault"),
+	// 					KekURL: to.Ptr("https://xxx.xxx.xx"),
+	// 					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
 	// 				},
 	// 				ReturnPackage: &armdatabox.PackageShippingDetails{
 	// 					CarrierName: to.Ptr(""),
 	// 					TrackingID: to.Ptr(""),
 	// 					TrackingURL: to.Ptr(""),
 	// 				},
-	// 				ReverseShipmentLabelSasKey: to.Ptr("https://wusbeta.blob.core.windows.net/customer-reverse-shipment-instructions/CustomerShipmentInstructions_MicrosoftManaged.PDF?sv=2018-03-28&sr=b&sig=JSZSeKrFrrwWbZ4zd7PNdGdNYKExKpxa98vRDDH6ZIk%3D&st=2020-08-07T05%3A08%3A51Z&se=2020-08-08T05%3A18%3A51Z&sp=r"),
+	// 				ReverseShipmentLabelSasKey: to.Ptr("https://xxx.xxx.xx"),
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -1285,7 +538,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGetCopyStuck.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCopyStuck.json
 func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1296,7 +549,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "dmstestresource", "TJx-637505258985313014", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	res, err := clientFactory.NewJobsClient().Get(ctx, "YourResourceGroupName", "TestJobName1", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1314,9 +567,9 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 	Tags: map[string]*string{
 	// 		"defaultTagsKey": to.Ptr("defaultTagsValue"),
 	// 	},
-	// 	Name: to.Ptr("TJx-637505258985313014"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/dmstestresource/providers/Microsoft.DataBox/jobs/TJx-637505258985313014"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(false),
@@ -1331,10 +584,9 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 			Actions: []*armdatabox.CustomerResolutionCode{
 	// 			},
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Andrew Tribone"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("ssemmail@microsoft.com"),
-	// 					to.Ptr("vishwamdir@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -1360,26 +612,26 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 					&armdatabox.AccountCopyLogDetails{
 	// 						CopyLogDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
-	// 						AccountName: to.Ptr("databoxbvttestaccount"),
-	// 						CopyLogLink: to.Ptr("databoxcopylog/strtrinidad01_ZTS18520041_CopyLog_8425fb8f9c2b447288caa4dd6f5d34bb.xml"),
+	// 						AccountName: to.Ptr("YourStorageAccountName"),
+	// 						CopyLogLink: to.Ptr("databoxcopylog/xxx.xml"),
 	// 				}},
 	// 				DataImportDetails: []*armdatabox.DataImportDetails{
 	// 					{
 	// 						AccountDetails: &armdatabox.StorageAccountDetails{
 	// 							DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-	// 							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+	// 							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 						},
 	// 				}},
 	// 				DeliveryPackage: &armdatabox.PackageShippingDetails{
 	// 					CarrierName: to.Ptr("Ups"),
 	// 					TrackingID: to.Ptr("5fb6965e-0b80-4f38-b21a-32673fed2d84"),
-	// 					TrackingURL: to.Ptr("https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=5fb6965e-0b80-4f38-b21a-32673fed2d84"),
+	// 					TrackingURL: to.Ptr("https://xxx.xxx.xx"),
 	// 				},
 	// 				ExpectedDataSizeInTeraBytes: to.Ptr[int32](0),
 	// 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
@@ -1444,22 +696,22 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 				ReturnPackage: &armdatabox.PackageShippingDetails{
 	// 					CarrierName: to.Ptr("Ups"),
 	// 					TrackingID: to.Ptr("b3875a34-aad6-4dbe-83a9-3f39cb21b0e8"),
-	// 					TrackingURL: to.Ptr("https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=b3875a34-aad6-4dbe-83a9-3f39cb21b0e8"),
+	// 					TrackingURL: to.Ptr("https://xxx.xxx.xx"),
 	// 				},
-	// 				ReverseShipmentLabelSasKey: to.Ptr("http://wusbeta.blob.core.windows.net/devstoreaccount1/f6be6ea8-77da-419b-9f6b-3043c28b04e4/ReverseShipment/b3875a34-aad6-4dbe-83a9-3f39cb21b0e8.PDF?sv=2018-03-28&sr=b&sig=%2BJmOyIkG0ALrKQp%2F7NCOBYccQ80DRLvN%2FHtb6Z97heg%3D&st=2021-03-05T09%3A45%3A05Z&se=2021-03-05T10%3A15%3A05Z&sp=r"),
+	// 				ReverseShipmentLabelSasKey: to.Ptr("http://xxx.xxx.xxx"),
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeNone),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
 	// 					StreetAddress1: to.Ptr("164 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("UNIT 1"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 					{
-	// 						AccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+	// 						AccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 						BytesProcessed: to.Ptr[int64](2000),
 	// 						DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
 	// 						DirectoriesErroredOut: to.Ptr[int64](0),
@@ -1470,7 +722,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 						InvalidFilesProcessed: to.Ptr[int64](10),
 	// 						IsEnumerationInProgress: to.Ptr(false),
 	// 						RenamedContainerCount: to.Ptr[int64](60),
-	// 						StorageAccountName: to.Ptr("databoxbvttestaccount"),
+	// 						StorageAccountName: to.Ptr("YourStorageAccountName"),
 	// 						TotalBytesToProcess: to.Ptr[int64](2000),
 	// 						TotalFilesToProcess: to.Ptr[int64](110),
 	// 						TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -1480,7 +732,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGetExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetExport.json
 func ExampleJobsClient_Get_jobsGetExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1491,7 +743,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "SdkRg8091", "SdkJob6429", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	res, err := clientFactory.NewJobsClient().Get(ctx, "YourResourceGroupName", "TestJobName1", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1508,9 +760,9 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob6429"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg8091/providers/Microsoft.DataBox/jobs/SdkJob6429"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		CancellationReason: to.Ptr("CancelTest"),
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
@@ -1526,15 +778,15 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 		Status: to.Ptr(armdatabox.StageNameCancelled),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
-	// 			ChainOfCustodySasKey: to.Ptr("https://wusbeta.blob.core.windows.net/chainofcustody/9a6ee052-bcff-4b5e-a478-7dcbfb86e9fb.txt?sv=2018-03-28&sr=b&sig=JbBBXZKharvfg35ZfmrhowO1DuOpzcZCNUdeFzklvWs%3D&st=2020-08-07T05%3A10%3A05Z&se=2020-08-07T05%3A40%3A05Z&sp=r"),
+	// 			ChainOfCustodySasKey: to.Ptr("https://xxx.xxx.xx"),
 	// 			ContactDetails: &armdatabox.ContactDetails{
 	// 				ContactName: to.Ptr(" "),
 	// 				EmailList: []*string{
 	// 				},
 	// 				NotificationPreference: []*armdatabox.NotificationPreference{
 	// 				},
-	// 				Phone: to.Ptr("1234567890"),
-	// 				PhoneExtension: to.Ptr("1234"),
+	// 				Phone: to.Ptr("0000000000"),
+	// 				PhoneExtension: to.Ptr(""),
 	// 			},
 	// 			CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 			},
@@ -1542,7 +794,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 				{
 	// 					AccountDetails: &armdatabox.StorageAccountDetails{
 	// 						DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-	// 						StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.Storage/storageAccounts/aaaaaa2"),
+	// 						StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 					},
 	// 					LogCollectionLevel: to.Ptr(armdatabox.LogCollectionLevelError),
 	// 					TransferConfiguration: &armdatabox.TransferConfiguration{
@@ -1587,24 +839,24 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 				TrackingID: to.Ptr(""),
 	// 				TrackingURL: to.Ptr(""),
 	// 			},
-	// 			ReverseShipmentLabelSasKey: to.Ptr("https://wusbeta.blob.core.windows.net/customer-reverse-shipment-instructions/CustomerShipmentInstructions_MicrosoftManaged.PDF?sv=2018-03-28&sr=b&sig=04aL%2FTe7998qQJlhmGI3C0Q%2FxsCVo1t0B4uQUIx7TmQ%3D&st=2020-08-07T05%3A10%3A05Z&se=2020-08-08T05%3A20%3A05Z&sp=r"),
+	// 			ReverseShipmentLabelSasKey: to.Ptr("https://xxx.xxx.xx"),
 	// 			ShippingAddress: &armdatabox.ShippingAddress{
 	// 				AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 				City: to.Ptr("San Francisco"),
-	// 				CompanyName: to.Ptr("Microsoft"),
-	// 				Country: to.Ptr("US"),
-	// 				PostalCode: to.Ptr("94107"),
-	// 				StateOrProvince: to.Ptr("CA"),
-	// 				StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 				StreetAddress2: to.Ptr("Unit 1"),
+	// 				City: to.Ptr("XXXX XXXX"),
+	// 				CompanyName: to.Ptr("XXXX XXXX"),
+	// 				Country: to.Ptr("XX"),
+	// 				PostalCode: to.Ptr("00000"),
+	// 				StateOrProvince: to.Ptr("XX"),
+	// 				StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 				StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 			},
 	// 			CopyProgress: []*armdatabox.CopyProgress{
 	// 				{
-	// 					AccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.Storage/storageAccounts/aaaaaa2"),
+	// 					AccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 					BytesProcessed: to.Ptr[int64](0),
 	// 					DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
 	// 					IsEnumerationInProgress: to.Ptr(false),
-	// 					StorageAccountName: to.Ptr("aaaaaa2"),
+	// 					StorageAccountName: to.Ptr("YourStorageAccountName"),
 	// 					TotalBytesToProcess: to.Ptr[int64](0),
 	// 					TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 			}},
@@ -1613,7 +865,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGetWaitingForAction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetWaitingForAction.json
 func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1624,7 +876,7 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "dmstestresource", "TJx-637505258985313014", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	res, err := clientFactory.NewJobsClient().Get(ctx, "YourResourceGroupName", "TestJobName1", &armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1642,9 +894,9 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 	Tags: map[string]*string{
 	// 		"defaultTagsKey": to.Ptr("defaultTagsValue"),
 	// 	},
-	// 	Name: to.Ptr("TJx-637505258985313014"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/dmstestresource/providers/Microsoft.DataBox/jobs/TJx-637505258985313014"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		Error: &armdatabox.CloudError{
@@ -1668,10 +920,9 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 			Actions: []*armdatabox.CustomerResolutionCode{
 	// 				to.Ptr(armdatabox.CustomerResolutionCodeMoveToCleanUpDevice)},
 	// 				ContactDetails: &armdatabox.ContactDetails{
-	// 					ContactName: to.Ptr("Andrew Tribone"),
+	// 					ContactName: to.Ptr("XXXX XXXX"),
 	// 					EmailList: []*string{
-	// 						to.Ptr("ssemmail@microsoft.com"),
-	// 						to.Ptr("vishwamdir@microsoft.com")},
+	// 						to.Ptr("xxxx@xxxx.xxx")},
 	// 						NotificationPreference: []*armdatabox.NotificationPreference{
 	// 							{
 	// 								SendNotification: to.Ptr(true),
@@ -1697,38 +948,38 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 								SendNotification: to.Ptr(true),
 	// 								StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 						}},
-	// 						Phone: to.Ptr("1234567890"),
-	// 						PhoneExtension: to.Ptr("1234"),
+	// 						Phone: to.Ptr("0000000000"),
+	// 						PhoneExtension: to.Ptr(""),
 	// 					},
 	// 					CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 						&armdatabox.AccountCopyLogDetails{
 	// 							CopyLogDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
-	// 							AccountName: to.Ptr("databoxbvttestaccount"),
-	// 							CopyLogLink: to.Ptr("databoxcopylog/strtrinidad01_ZTS18520041_CopyLog_8425fb8f9c2b447288caa4dd6f5d34bb.xml"),
+	// 							AccountName: to.Ptr("YourStorageAccountName"),
+	// 							CopyLogLink: to.Ptr("databoxcopylog/xxx.xml"),
 	// 						},
 	// 						&armdatabox.AccountCopyLogDetails{
 	// 							CopyLogDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
-	// 							AccountName: to.Ptr("akvenkat3198inh0-9)inh(il(h)_fyoin)(upf(yLASD0-FJ(hal-DSNWP0JDS0P3-0SJ94"),
-	// 							CopyLogLink: to.Ptr("databoxcopylog/strtrinidad01_ZTS18520041_CopyLog_8425fb8f9c2b447288caa4dd6f5d34bb.xml"),
+	// 							AccountName: to.Ptr("YourResourceGroupName"),
+	// 							CopyLogLink: to.Ptr("databoxcopylog/xxx.xml"),
 	// 					}},
 	// 					DataImportDetails: []*armdatabox.DataImportDetails{
 	// 						{
 	// 							AccountDetails: &armdatabox.StorageAccountDetails{
 	// 								DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-	// 								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+	// 								StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 							},
 	// 						},
 	// 						{
 	// 							AccountDetails: &armdatabox.ManagedDiskDetails{
 	// 								DataAccountType: to.Ptr(armdatabox.DataAccountTypeManagedDisk),
-	// 								ResourceGroupID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat3198inh0-9)inh(il(h)_fyoin)(upf(yLASD0-FJ(hal-DSNWP0JDS0P3-0SJ94"),
-	// 								StagingStorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/manageddisktest/providers/Microsoft.Storage/storageAccounts/sojainmanageddisk"),
+	// 								ResourceGroupID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName"),
+	// 								StagingStorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 							},
 	// 					}},
 	// 					DeliveryPackage: &armdatabox.PackageShippingDetails{
 	// 						CarrierName: to.Ptr("Ups"),
-	// 						TrackingID: to.Ptr("6f00fcce-1eec-4ee7-99a8-0acc68efd1c7"),
-	// 						TrackingURL: to.Ptr("https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=6f00fcce-1eec-4ee7-99a8-0acc68efd1c7"),
+	// 						TrackingID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+	// 						TrackingURL: to.Ptr("https://xxx.xxx.xx"),
 	// 					},
 	// 					ExpectedDataSizeInTeraBytes: to.Ptr[int32](0),
 	// 					JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
@@ -1795,23 +1046,23 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 					},
 	// 					ReturnPackage: &armdatabox.PackageShippingDetails{
 	// 						CarrierName: to.Ptr("Ups"),
-	// 						TrackingID: to.Ptr("79148759-b772-4a90-933b-da5ae5ac6ebb"),
-	// 						TrackingURL: to.Ptr("https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=79148759-b772-4a90-933b-da5ae5ac6ebb"),
+	// 						TrackingID: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+	// 						TrackingURL: to.Ptr("https://xxx.xxx.xx"),
 	// 					},
-	// 					ReverseShipmentLabelSasKey: to.Ptr("https://wusbeta.blob.core.windows.net/10dcd296-ed09-4037-ac19-2f16c4866452/ReverseShipment/79148759-b772-4a90-933b-da5ae5ac6ebb.PDF?sv=2018-03-28&sr=b&sig=bNtVcKRfYq1kiz0vxxSV%2FIZodCK8nUsCPu6MYK%2B6Erk%3D&st=2021-06-21T15%3A35%3A29Z&se=2021-06-21T16%3A05%3A29Z&sp=r"),
+	// 					ReverseShipmentLabelSasKey: to.Ptr("https://xxx.xxx.xx"),
 	// 					ShippingAddress: &armdatabox.ShippingAddress{
 	// 						AddressType: to.Ptr(armdatabox.AddressTypeNone),
-	// 						City: to.Ptr("San Francisco"),
-	// 						CompanyName: to.Ptr("Microsoft"),
-	// 						Country: to.Ptr("US"),
-	// 						PostalCode: to.Ptr("94107"),
-	// 						StateOrProvince: to.Ptr("CA"),
+	// 						City: to.Ptr("XXXX XXXX"),
+	// 						CompanyName: to.Ptr("XXXX XXXX"),
+	// 						Country: to.Ptr("XX"),
+	// 						PostalCode: to.Ptr("00000"),
+	// 						StateOrProvince: to.Ptr("XX"),
 	// 						StreetAddress1: to.Ptr("164 TOWNSEND ST"),
-	// 						StreetAddress2: to.Ptr("UNIT 1"),
+	// 						StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 					},
 	// 					CopyProgress: []*armdatabox.CopyProgress{
 	// 						{
-	// 							AccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+	// 							AccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 	// 							BytesProcessed: to.Ptr[int64](2000),
 	// 							DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
 	// 							DirectoriesErroredOut: to.Ptr[int64](0),
@@ -1822,13 +1073,13 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 							InvalidFilesProcessed: to.Ptr[int64](10),
 	// 							IsEnumerationInProgress: to.Ptr(false),
 	// 							RenamedContainerCount: to.Ptr[int64](60),
-	// 							StorageAccountName: to.Ptr("databoxbvttestaccount"),
+	// 							StorageAccountName: to.Ptr("YourStorageAccountName"),
 	// 							TotalBytesToProcess: to.Ptr[int64](2000),
 	// 							TotalFilesToProcess: to.Ptr[int64](110),
 	// 							TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 						},
 	// 						{
-	// 							AccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat3198inh0-9)inh(il(h)_fyoin)(upf(yLASD0-FJ(hal-DSNWP0JDS0P3-0SJ94"),
+	// 							AccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName"),
 	// 							BytesProcessed: to.Ptr[int64](2000),
 	// 							DataAccountType: to.Ptr(armdatabox.DataAccountTypeManagedDisk),
 	// 							DirectoriesErroredOut: to.Ptr[int64](0),
@@ -1845,18 +1096,10 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 					}},
 	// 				},
 	// 			},
-	// 			SystemData: &armdatabox.SystemData{
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:48.349255+00:00"); return t}()),
-	// 				CreatedBy: to.Ptr("5ff6737b-7c50-45d1-b2cb-63a6cd723138"),
-	// 				CreatedByType: to.Ptr("Application"),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:48.349255+00:00"); return t}()),
-	// 				LastModifiedBy: to.Ptr("5ff6737b-7c50-45d1-b2cb-63a6cd723138"),
-	// 				LastModifiedByType: to.Ptr("Application"),
-	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreate.json
 func ExampleJobsClient_BeginCreate_jobsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1867,7 +1110,7 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "SdkRg5154", "SdkJob952", armdatabox.JobResource{
+	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
 			Name: to.Ptr(armdatabox.SKUNameDataBox),
@@ -1876,29 +1119,29 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			Details: &armdatabox.JobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Public SDK Test"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				DataImportDetails: []*armdatabox.DataImportDetails{
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 			},
 		},
@@ -1920,9 +1163,9 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob952"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg5154/providers/Microsoft.DataBox/jobs/SdkJob952"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -1937,9 +1180,9 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -1965,8 +1208,8 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -2015,13 +1258,13 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 				}},
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -2030,7 +1273,7 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreateDevicePassword.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDevicePassword.json
 func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2041,7 +1284,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "SdkRg7478", "SdkJob9640", armdatabox.JobResource{
+	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
 			Name: to.Ptr(armdatabox.SKUNameDataBox),
@@ -2050,30 +1293,30 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			Details: &armdatabox.JobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Public SDK Test"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				DataImportDetails: []*armdatabox.DataImportDetails{
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
 							SharePassword:    to.Ptr("<sharePassword>"),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/databoxbvt1/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount2"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 				DevicePassword: to.Ptr("<devicePassword>"),
 			},
@@ -2096,9 +1339,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob9640"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg7478/providers/Microsoft.DataBox/jobs/SdkJob9640"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -2113,9 +1356,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -2141,8 +1384,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameDataCopy),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -2191,13 +1434,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 				}},
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -2206,7 +1449,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreateDoubleEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDoubleEncryption.json
 func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2217,7 +1460,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "SdkRg608", "SdkJob6599", armdatabox.JobResource{
+	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
 			Name: to.Ptr(armdatabox.SKUNameDataBox),
@@ -2226,17 +1469,17 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			Details: &armdatabox.JobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Public SDK Test"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				DataImportDetails: []*armdatabox.DataImportDetails{
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
@@ -2247,13 +1490,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 				},
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 			},
 		},
@@ -2275,9 +1518,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob6599"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg608/providers/Microsoft.DataBox/jobs/SdkJob6599"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -2292,9 +1535,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -2320,8 +1563,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameAtAzureDC),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -2370,13 +1613,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 				}},
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -2385,7 +1628,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreateExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateExport.json
 func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2396,7 +1639,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "SdkRg8091", "SdkJob6429", armdatabox.JobResource{
+	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
 			Name: to.Ptr(armdatabox.SKUNameDataBox),
@@ -2405,17 +1648,17 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 			TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 			Details: &armdatabox.JobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Public SDK Test"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				DataExportDetails: []*armdatabox.DataExportDetails{
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.Storage/storageAccounts/aaaaaa2"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 						TransferConfiguration: &armdatabox.TransferConfiguration{
 							TransferAllDetails: &armdatabox.TransferConfigurationTransferAllDetails{
@@ -2431,13 +1674,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 			},
 		},
@@ -2459,9 +1702,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob6429"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg8091/providers/Microsoft.DataBox/jobs/SdkJob6429"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -2476,9 +1719,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -2504,8 +1747,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameAtAzureDC),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -2554,13 +1797,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 				}},
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -2569,7 +1812,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreateWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateWithUserAssignedIdentity.json
 func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2580,11 +1823,11 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "SdkRg7552", "SdkJob5337", armdatabox.JobResource{
+	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Identity: &armdatabox.ResourceIdentity{
 			Type: to.Ptr("UserAssigned"),
 			UserAssignedIdentities: map[string]*armdatabox.UserAssignedIdentity{
-				"/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity": {},
+				"/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity": {},
 			},
 		},
 		Location: to.Ptr("westus"),
@@ -2595,29 +1838,29 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			Details: &armdatabox.JobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Public SDK Test"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				DataImportDetails: []*armdatabox.DataImportDetails{
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/databoxbvt1/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount2"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 			},
 		},
@@ -2639,9 +1882,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob5337"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg7552/providers/Microsoft.DataBox/jobs/SdkJob5337"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
@@ -2656,9 +1899,9 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
 	// 			ContactDetails: &armdatabox.ContactDetails{
-	// 				ContactName: to.Ptr("Public SDK Test"),
+	// 				ContactName: to.Ptr("XXXX XXXX"),
 	// 				EmailList: []*string{
-	// 					to.Ptr("testing@microsoft.com")},
+	// 					to.Ptr("xxxx@xxxx.xxx")},
 	// 					NotificationPreference: []*armdatabox.NotificationPreference{
 	// 						{
 	// 							SendNotification: to.Ptr(true),
@@ -2684,8 +1927,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 							SendNotification: to.Ptr(true),
 	// 							StageName: to.Ptr(armdatabox.NotificationStageNameAtAzureDC),
 	// 					}},
-	// 					Phone: to.Ptr("1234567890"),
-	// 					PhoneExtension: to.Ptr("1234"),
+	// 					Phone: to.Ptr("0000000000"),
+	// 					PhoneExtension: to.Ptr(""),
 	// 				},
 	// 				CopyLogDetails: []armdatabox.CopyLogDetailsClassification{
 	// 				},
@@ -2734,13 +1977,13 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 				}},
 	// 				ShippingAddress: &armdatabox.ShippingAddress{
 	// 					AddressType: to.Ptr(armdatabox.AddressTypeCommercial),
-	// 					City: to.Ptr("San Francisco"),
-	// 					CompanyName: to.Ptr("Microsoft"),
-	// 					Country: to.Ptr("US"),
-	// 					PostalCode: to.Ptr("94107"),
-	// 					StateOrProvince: to.Ptr("CA"),
-	// 					StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 					StreetAddress2: to.Ptr("Unit 1"),
+	// 					City: to.Ptr("XXXX XXXX"),
+	// 					CompanyName: to.Ptr("XXXX XXXX"),
+	// 					Country: to.Ptr("XX"),
+	// 					PostalCode: to.Ptr("00000"),
+	// 					StateOrProvince: to.Ptr("XX"),
+	// 					StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 					StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				},
 	// 				CopyProgress: []*armdatabox.CopyProgress{
 	// 				},
@@ -2749,7 +1992,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsDelete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2760,7 +2003,7 @@ func ExampleJobsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginDelete(ctx, "SdkRg5154", "SdkJob952", nil)
+	poller, err := clientFactory.NewJobsClient().BeginDelete(ctx, "YourResourceGroupName", "TestJobName1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2770,7 +2013,7 @@ func ExampleJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatch.json
 func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2781,25 +2024,25 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "SdkRg5154", "SdkJob952", armdatabox.JobResourceUpdateParameter{
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
 		Properties: &armdatabox.UpdateJobProperties{
 			Details: &armdatabox.UpdateJobDetails{
 				ContactDetails: &armdatabox.ContactDetails{
-					ContactName: to.Ptr("Update Job"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.Ptr("testing@microsoft.com")},
-					Phone:          to.Ptr("1234567890"),
-					PhoneExtension: to.Ptr("1234"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 			},
 		},
@@ -2821,9 +2064,9 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob952"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg5154/providers/Microsoft.DataBox/jobs/SdkJob952"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
@@ -2834,7 +2077,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsPatchCmk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchCmk.json
 func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2845,13 +2088,13 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "SdkRg7937", "SdkJob1735", armdatabox.JobResourceUpdateParameter{
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
 		Properties: &armdatabox.UpdateJobProperties{
 			Details: &armdatabox.UpdateJobDetails{
 				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
 					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
-					KekURL:             to.Ptr("https://sdkkeyvault.vault.azure.net/keys/SSDKEY/"),
-					KekVaultResourceID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault"),
+					KekURL:             to.Ptr("https://xxx.xxx.xx"),
+					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
 				},
 			},
 		},
@@ -2873,9 +2116,9 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob1735"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg7937/providers/Microsoft.DataBox/jobs/SdkJob1735"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
@@ -2886,7 +2129,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsPatchSystemAssignedToUserAssigned.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchSystemAssignedToUserAssigned.json
 func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2897,11 +2140,11 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "SdkRg9765", "SdkJob2965", armdatabox.JobResourceUpdateParameter{
+	poller, err := clientFactory.NewJobsClient().BeginUpdate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResourceUpdateParameter{
 		Identity: &armdatabox.ResourceIdentity{
 			Type: to.Ptr("SystemAssigned,UserAssigned"),
 			UserAssignedIdentities: map[string]*armdatabox.UserAssignedIdentity{
-				"/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity": {},
+				"/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity": {},
 			},
 		},
 		Properties: &armdatabox.UpdateJobProperties{
@@ -2910,12 +2153,12 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 					IdentityProperties: &armdatabox.IdentityProperties{
 						Type: to.Ptr("UserAssigned"),
 						UserAssigned: &armdatabox.UserAssignedProperties{
-							ResourceID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity"),
+							ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity"),
 						},
 					},
 					KekType:            to.Ptr(armdatabox.KekTypeCustomerManaged),
-					KekURL:             to.Ptr("https://sdkkeyvault.vault.azure.net/keys/SSDKEY/"),
-					KekVaultResourceID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault"),
+					KekURL:             to.Ptr("https://xxx.xxx.xx"),
+					KekVaultResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName"),
 				},
 			},
 		},
@@ -2937,9 +2180,9 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
-	// 	Name: to.Ptr("SdkJob2965"),
+	// 	Name: to.Ptr("TestJobName1"),
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
-	// 	ID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/SdkRg9765/providers/Microsoft.DataBox/jobs/SdkJob2965"),
+	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
@@ -2950,7 +2193,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/BookShipmentPickupPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/BookShipmentPickupPost.json
 func ExampleJobsClient_BookShipmentPickUp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2961,7 +2204,7 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().BookShipmentPickUp(ctx, "bvttoolrg6", "TJ-636646322037905056", armdatabox.ShipmentPickUpRequest{
+	res, err := clientFactory.NewJobsClient().BookShipmentPickUp(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.ShipmentPickUpRequest{
 		EndTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-22T18:30:00Z"); return t }()),
 		ShipmentLocation: to.Ptr("Front desk"),
 		StartTime:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t }()),
@@ -2973,12 +2216,12 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ShipmentPickUpResponse = armdatabox.ShipmentPickUpResponse{
-	// 	ConfirmationNumber: to.Ptr("2929602E9CP"),
+	// 	ConfirmationNumber: to.Ptr("XXXXXXXXXXX"),
 	// 	ReadyByTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t}()),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCancelPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCancelPost.json
 func ExampleJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2989,7 +2232,7 @@ func ExampleJobsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewJobsClient().Cancel(ctx, "SdkRg5154", "SdkJob952", armdatabox.CancellationReason{
+	_, err = clientFactory.NewJobsClient().Cancel(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.CancellationReason{
 		Reason: to.Ptr("CancelTest"),
 	}, nil)
 	if err != nil {
@@ -2997,7 +2240,7 @@ func ExampleJobsClient_Cancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListCredentials.json
 func ExampleJobsClient_NewListCredentialsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3008,7 +2251,7 @@ func ExampleJobsClient_NewListCredentialsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobsClient().NewListCredentialsPager("bvttoolrg6", "TJ-636646322037905056", nil)
+	pager := clientFactory.NewJobsClient().NewListCredentialsPager("YourResourceGroupName", "TestJobName1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -3022,7 +2265,7 @@ func ExampleJobsClient_NewListCredentialsPager() {
 		// page.UnencryptedCredentialsList = armdatabox.UnencryptedCredentialsList{
 		// 	Value: []*armdatabox.UnencryptedCredentials{
 		// 		{
-		// 			JobName: to.Ptr("TJ-636646322037905056"),
+		// 			JobName: to.Ptr("TestJobName1"),
 		// 			JobSecrets: &armdatabox.JobSecrets{
 		// 				DcAccessSecurityCode: &armdatabox.DcAccessSecurityCode{
 		// 				},
@@ -3032,49 +2275,49 @@ func ExampleJobsClient_NewListCredentialsPager() {
 		// 						AccountCredentialDetails: []*armdatabox.AccountCredentialDetails{
 		// 							{
 		// 								AccountConnectionString: to.Ptr(""),
-		// 								AccountName: to.Ptr("databoxbvttestaccount"),
+		// 								AccountName: to.Ptr("YourStorageAccountName"),
 		// 								DataAccountType: to.Ptr(armdatabox.DataAccountTypeStorageAccount),
 		// 								ShareCredentialDetails: []*armdatabox.ShareCredentialDetails{
 		// 									{
 		// 										Password: to.Ptr("<password>"),
-		// 										ShareName: to.Ptr("databoxbvttestaccount_PageBlob"),
+		// 										ShareName: to.Ptr("testsharename_PageBlob"),
 		// 										ShareType: to.Ptr(armdatabox.ShareDestinationFormatTypePageBlob),
 		// 										SupportedAccessProtocols: []*armdatabox.AccessProtocol{
 		// 											to.Ptr(armdatabox.AccessProtocolSMB)},
-		// 											UserName: to.Ptr("databoxbvttestac_903"),
+		// 											UserName: to.Ptr("testusername"),
 		// 										},
 		// 										{
 		// 											Password: to.Ptr("<password>"),
-		// 											ShareName: to.Ptr("databoxbvttestaccount_BlockBlob"),
+		// 											ShareName: to.Ptr("testsharename_BlockBlob"),
 		// 											ShareType: to.Ptr(armdatabox.ShareDestinationFormatTypeBlockBlob),
 		// 											SupportedAccessProtocols: []*armdatabox.AccessProtocol{
 		// 												to.Ptr(armdatabox.AccessProtocolSMB)},
-		// 												UserName: to.Ptr("databoxbvttestac_903"),
+		// 												UserName: to.Ptr("testusername"),
 		// 											},
 		// 											{
 		// 												Password: to.Ptr("<password>"),
-		// 												ShareName: to.Ptr("databoxbvttestaccount_AzFile"),
+		// 												ShareName: to.Ptr("testsharename_AzFile"),
 		// 												ShareType: to.Ptr(armdatabox.ShareDestinationFormatTypeAzureFile),
 		// 												SupportedAccessProtocols: []*armdatabox.AccessProtocol{
 		// 													to.Ptr(armdatabox.AccessProtocolSMB)},
-		// 													UserName: to.Ptr("databoxbvttestac_903"),
+		// 													UserName: to.Ptr("testusername"),
 		// 											}},
 		// 									}},
 		// 									DevicePassword: to.Ptr("<devicePassword>"),
-		// 									DeviceSerialNumber: to.Ptr("testimolapod-3ecc44ce"),
-		// 									EncodedValidationCertPubKey: to.Ptr("5CYoAoVKEBa4WgPVis8keX94w30pon4jGMADSqcdE/NlHLChj6Cmhbl4q9QOFKSB/US4AwhS7zY1QS3YMDrkAPfOy7Hi6kWMBpJWZidTq3oXX8FAQjg+IqQESti/2jvAlcDpO2453rgd7Yb6XZ43P8MMTpTjcarI0ImCf//eITQWnFa3AzfIJ9C+hxCCaA7HTYhwQEPUBMwyQJsI6v6WuQysROtlBgx1YtbWFhDVbcqYRSLIbaj+RdzlvxvDJSo70kv+8em5upuDTpVE7xP+WePLlARdSPNwwfRzHnvCUqC2UqXHpRUhQlYnMqAJEcjjroRnyIGumPmmQ8O155X8aw=="),
+		// 									DeviceSerialNumber: to.Ptr("testserialnumber"),
+		// 									EncodedValidationCertPubKey: to.Ptr("xxxxxxxxxx"),
 		// 									NetworkConfigurations: []*armdatabox.ApplianceNetworkConfiguration{
 		// 										{
 		// 											Name: to.Ptr("DataPort3"),
-		// 											MacAddress: to.Ptr("D05099C1F439"),
+		// 											MacAddress: to.Ptr("XXXXXXXXXXXX"),
 		// 										},
 		// 										{
 		// 											Name: to.Ptr("DataPort1"),
-		// 											MacAddress: to.Ptr("EC0D9A21A6C0"),
+		// 											MacAddress: to.Ptr("XXXXXXXXXXXX"),
 		// 										},
 		// 										{
 		// 											Name: to.Ptr("DataPort2"),
-		// 											MacAddress: to.Ptr("EC0D9A21A6C1"),
+		// 											MacAddress: to.Ptr("XXXXXXXXXXXX"),
 		// 									}},
 		// 							}},
 		// 						},

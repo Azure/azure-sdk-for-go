@@ -149,9 +149,19 @@ type PoliciesClientGetResponse struct {
 	WebApplicationFirewallPolicy
 }
 
+// PoliciesClientListBySubscriptionResponse contains the response from method PoliciesClient.NewListBySubscriptionPager.
+type PoliciesClientListBySubscriptionResponse struct {
+	WebApplicationFirewallPolicyList
+}
+
 // PoliciesClientListResponse contains the response from method PoliciesClient.NewListPager.
 type PoliciesClientListResponse struct {
 	WebApplicationFirewallPolicyList
+}
+
+// PoliciesClientUpdateResponse contains the response from method PoliciesClient.BeginUpdate.
+type PoliciesClientUpdateResponse struct {
+	WebApplicationFirewallPolicy
 }
 
 // PreconfiguredEndpointsClientListResponse contains the response from method PreconfiguredEndpointsClient.NewListPager.

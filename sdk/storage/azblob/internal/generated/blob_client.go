@@ -8,8 +8,10 @@ package generated
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"time"
 )
 
@@ -30,4 +32,18 @@ func (client *BlobClient) DeleteCreateRequest(ctx context.Context, options *Blob
 
 func (client *BlobClient) SetTierCreateRequest(ctx context.Context, tier AccessTier, options *BlobClientSetTierOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	return client.setTierCreateRequest(ctx, tier, options, leaseAccessConditions, modifiedAccessConditions)
+}
+
+// NewBlobClient creates a new instance of BlobClient with the specified values.
+//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
+func NewBlobClient(endpoint string, pl runtime.PipelineOptions, clientOptions *azcore.ClientOptions) (*BlobClient, error) {
+	azClient, err := azcore.NewClient("blob.Client", exported.ModuleVersion, pl, clientOptions)
+	if err != nil {
+		return nil, err
+	}
+	client := &BlobClient{
+		endpoint: endpoint,
+		internal: azClient,
+	}
+	return client, nil
 }

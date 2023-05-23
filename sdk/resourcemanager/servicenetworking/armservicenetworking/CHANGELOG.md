@@ -1,5 +1,25 @@
 # Release History
 
+## 0.3.0 (2023-05-26)
+### Breaking Changes
+
+- Type of `AssociationProperties.AssociationType` has been changed from `*string` to `*AssociationType`
+- Type of `AssociationUpdateProperties.AssociationType` has been changed from `*string` to `*AssociationType`
+- Type of `AssociationUpdateProperties.Subnet` has been changed from `*AssociationSubnet` to `*AssociationSubnetUpdate`
+- Enum `FrontendIPAddressVersion` has been removed
+- Struct `FrontendPropertiesIPAddress` has been removed
+- Struct `FrontendUpdateProperties` has been removed
+- Field `IPAddressVersion`, `Mode`, `PublicIPAddress` of struct `FrontendProperties` has been removed
+- Field `Properties` of struct `FrontendUpdate` has been removed
+- Field `Properties` of struct `TrafficControllerUpdate` has been removed
+
+### Features Added
+
+- New enum type `AssociationType` with values `AssociationTypeSubnets`
+- New struct `AssociationSubnetUpdate`
+- New field `Fqdn` in struct `FrontendProperties`
+
+
 ## 0.2.1 (2023-04-14)
 ### Bug Fixes
 

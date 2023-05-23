@@ -35,7 +35,7 @@ type Association struct {
 	Type *string
 }
 
-// AssociationListResult - The response of a Traffic Controller Association list operation.
+// AssociationListResult - The response of a Association list operation.
 type AssociationListResult struct {
 	// REQUIRED; The Association items on this page
 	Value []*Association
@@ -46,20 +46,25 @@ type AssociationListResult struct {
 
 // AssociationProperties - Association Properties.
 type AssociationProperties struct {
-	// CONSTANT; Association Type
-	// Field has constant value "subnets", any specified value is ignored.
-	AssociationType *string
+	// REQUIRED; Association Type
+	AssociationType *AssociationType
 
 	// Association Subnet
 	Subnet *AssociationSubnet
 
-	// READ-ONLY; Provisioning State
+	// READ-ONLY; Provisioning State of Traffic Controller Association Resource
 	ProvisioningState *ProvisioningState
 }
 
 // AssociationSubnet - Association Subnet.
 type AssociationSubnet struct {
 	// REQUIRED; Association ID.
+	ID *string
+}
+
+// AssociationSubnetUpdate - Association Subnet.
+type AssociationSubnetUpdate struct {
+	// Association ID.
 	ID *string
 }
 
@@ -75,10 +80,10 @@ type AssociationUpdate struct {
 // AssociationUpdateProperties - The updatable properties of the Association.
 type AssociationUpdateProperties struct {
 	// Association Type
-	AssociationType *string
+	AssociationType *AssociationType
 
 	// Association Subnet
-	Subnet *AssociationSubnet
+	Subnet *AssociationSubnetUpdate
 }
 
 // AssociationsInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsInterfaceClient.BeginCreateOrUpdate
@@ -135,7 +140,7 @@ type Frontend struct {
 	Type *string
 }
 
-// FrontendListResult - The response of a Traffic Controller Frontend list operation.
+// FrontendListResult - The response of a Frontend list operation.
 type FrontendListResult struct {
 	// REQUIRED; The Frontend items on this page
 	Value []*Frontend
@@ -146,44 +151,17 @@ type FrontendListResult struct {
 
 // FrontendProperties - Frontend Properties.
 type FrontendProperties struct {
-	// Frontend IP Address Version (Optional).
-	IPAddressVersion *FrontendIPAddressVersion
+	// READ-ONLY; The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller frontend.
+	Fqdn *string
 
-	// Frontend Mode (Optional).
-	Mode *string
-
-	// Frontend Public IP Address (Optional).
-	PublicIPAddress *FrontendPropertiesIPAddress
-
-	// READ-ONLY; test doc
+	// READ-ONLY; Provisioning State of Traffic Controller Frontend Resource
 	ProvisioningState *ProvisioningState
-}
-
-// FrontendPropertiesIPAddress - Frontend IP Address.
-type FrontendPropertiesIPAddress struct {
-	// REQUIRED; IP Address.
-	ID *string
 }
 
 // FrontendUpdate - The type used for update operations of the Frontend.
 type FrontendUpdate struct {
-	// The updatable properties of the Frontend.
-	Properties *FrontendUpdateProperties
-
 	// Resource tags.
 	Tags map[string]*string
-}
-
-// FrontendUpdateProperties - The updatable properties of the Frontend.
-type FrontendUpdateProperties struct {
-	// Frontend IP Address Type (Optional).
-	IPAddressVersion *FrontendIPAddressVersion
-
-	// Frontend Mode (Optional).
-	Mode *string
-
-	// Frontend Public IP Address (Optional).
-	PublicIPAddress *FrontendPropertiesIPAddress
 }
 
 // FrontendsInterfaceClientBeginCreateOrUpdateOptions contains the optional parameters for the FrontendsInterfaceClient.BeginCreateOrUpdate
@@ -385,9 +363,6 @@ type TrafficControllerProperties struct {
 
 // TrafficControllerUpdate - The type used for update operations of the TrafficController.
 type TrafficControllerUpdate struct {
-	// The updatable properties of the TrafficController.
-	Properties any
-
 	// Resource tags.
 	Tags map[string]*string
 }

@@ -21,23 +21,23 @@ import (
 	"strings"
 )
 
-// CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
-// Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
-type CheckNameAvailabilityClient struct {
+// CheckNameAvailabilityWithoutLocationClient contains the methods for the CheckNameAvailabilityWithoutLocation group.
+// Don't use this type directly, use NewCheckNameAvailabilityWithoutLocationClient() instead.
+type CheckNameAvailabilityWithoutLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
+// NewCheckNameAvailabilityWithoutLocationClient creates a new instance of CheckNameAvailabilityWithoutLocationClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
-	cl, err := arm.NewClient(moduleName+".CheckNameAvailabilityClient", moduleVersion, credential, options)
+func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityWithoutLocationClient, error) {
+	cl, err := arm.NewClient(moduleName+".CheckNameAvailabilityWithoutLocationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &CheckNameAvailabilityClient{
+	client := &CheckNameAvailabilityWithoutLocationClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -48,36 +48,31 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
-//   - locationName - The name of the location.
 //   - nameAvailabilityRequest - The required parameters for checking if server name is available.
-//   - options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
+//   - options - CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
 //     method.
-func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, locationName string, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error) {
-	req, err := client.executeCreateRequest(ctx, locationName, nameAvailabilityRequest, options)
+func (client *CheckNameAvailabilityWithoutLocationClient) Execute(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityWithoutLocationClientExecuteOptions) (CheckNameAvailabilityWithoutLocationClientExecuteResponse, error) {
+	req, err := client.executeCreateRequest(ctx, nameAvailabilityRequest, options)
 	if err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CheckNameAvailabilityClientExecuteResponse{}, runtime.NewResponseError(resp)
+		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, locationName string, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkNameAvailability"
+func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityWithoutLocationClientExecuteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -90,10 +85,10 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityClientExecuteResponse, error) {
-	result := CheckNameAvailabilityClientExecuteResponse{}
+func (client *CheckNameAvailabilityWithoutLocationClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityWithoutLocationClientExecuteResponse, error) {
+	result := CheckNameAvailabilityWithoutLocationClientExecuteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
-		return CheckNameAvailabilityClientExecuteResponse{}, err
+		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
 	}
 	return result, nil
 }

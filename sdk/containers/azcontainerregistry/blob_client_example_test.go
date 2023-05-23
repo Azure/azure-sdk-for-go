@@ -120,6 +120,9 @@ func ExampleBlobClient_GetChunk() {
 		log.Fatalf("failed to set to the start of the file: %v", err)
 	}
 	reader, err := azcontainerregistry.NewDigestValidationReader(digest, f)
+	if err != nil {
+		log.Fatalf("failed to create digest validation reader: %v", err)
+	}
 	_, err = io.ReadAll(reader)
 	if err != nil {
 		log.Fatalf("failed to validate digest: %v", err)

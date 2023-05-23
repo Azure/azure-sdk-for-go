@@ -77,6 +77,7 @@ func NewDigestValidationReader(digest string, reader io.Reader) (*DigestValidati
 	}
 }
 
+// Read write to digest validator while read and validate digest when reach EOF.
 func (d *DigestValidationReader) Read(p []byte) (int, error) {
 	n, err := d.reader.Read(p)
 	if err == nil || err == io.EOF {

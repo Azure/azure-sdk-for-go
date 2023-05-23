@@ -46,6 +46,9 @@ func Example_uploadAndDownloadBlob() {
 		log.Fatalf("failed to download blob: %v", err)
 	}
 	reader, err := azcontainerregistry.NewDigestValidationReader(*completeResp.DockerContentDigest, downloadRes.BlobData)
+	if err != nil {
+		log.Fatalf("failed to create digest validation reader: %v", err)
+	}
 	downloadBlob, err := io.ReadAll(reader)
 	if err != nil {
 		log.Fatalf("failed to read blob: %v", err)

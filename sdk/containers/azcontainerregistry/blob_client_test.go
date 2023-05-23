@@ -239,6 +239,7 @@ func TestBlobClient_GetChunk(t *testing.T) {
 		current += chunkSize
 	}
 	reader, err := NewDigestValidationReader(digest, blob)
+	require.NoError(t, err)
 	_, err = io.ReadAll(reader)
 	require.NoError(t, err)
 }

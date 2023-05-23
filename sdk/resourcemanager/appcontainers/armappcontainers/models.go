@@ -14,151 +14,205 @@ import "time"
 // AllowedAudiencesValidation - The configuration settings of the Allowed Audiences validation flow.
 type AllowedAudiencesValidation struct {
 	// The configuration settings of the allowed list of audiences from which to validate the JWT token.
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+	AllowedAudiences []*string
 }
 
 // AllowedPrincipals - The configuration settings of the Azure Active Directory allowed principals.
 type AllowedPrincipals struct {
 	// The list of the allowed groups.
-	Groups []*string `json:"groups,omitempty"`
+	Groups []*string
 
 	// The list of the allowed identities.
-	Identities []*string `json:"identities,omitempty"`
+	Identities []*string
 }
 
 // AppLogsConfiguration - Configuration of application logs
 type AppLogsConfiguration struct {
 	// Logs destination
-	Destination *string `json:"destination,omitempty"`
+	Destination *string
 
 	// Log Analytics configuration
-	LogAnalyticsConfiguration *LogAnalyticsConfiguration `json:"logAnalyticsConfiguration,omitempty"`
+	LogAnalyticsConfiguration *LogAnalyticsConfiguration
 }
 
 // AppRegistration - The configuration settings of the app registration for providers that have app ids and app secrets
 type AppRegistration struct {
 	// The App ID of the app used for login.
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// The app setting name that contains the app secret.
-	AppSecretSettingName *string `json:"appSecretSettingName,omitempty"`
+	AppSecretSettingName *string
 }
 
 // Apple - The configuration settings of the Apple provider.
 type Apple struct {
 	// false if the Apple provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the Apple registration.
-	Registration *AppleRegistration `json:"registration,omitempty"`
+	Registration *AppleRegistration
 }
 
 // AppleRegistration - The configuration settings of the registration for the Apple provider
 type AppleRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The app setting name that contains the client secret.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 }
 
 // AuthConfig - Configuration settings for the Azure ContainerApp Service Authentication / Authorization feature.
 type AuthConfig struct {
 	// AuthConfig resource specific properties
-	Properties *AuthConfigProperties `json:"properties,omitempty"`
+	Properties *AuthConfigProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AuthConfigCollection - AuthConfig collection ARM resource.
 type AuthConfigCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*AuthConfig `json:"value,omitempty"`
+	Value []*AuthConfig
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AuthConfigProperties - AuthConfig resource specific properties
 type AuthConfigProperties struct {
 	// The configuration settings that determines the validation flow of users using Service Authentication/Authorization.
-	GlobalValidation *GlobalValidation `json:"globalValidation,omitempty"`
+	GlobalValidation *GlobalValidation
 
 	// The configuration settings of the HTTP requests for authentication and authorization requests made against ContainerApp
 	// Service Authentication/Authorization.
-	HTTPSettings *HTTPSettings `json:"httpSettings,omitempty"`
+	HTTPSettings *HTTPSettings
 
 	// The configuration settings of each of the identity providers used to configure ContainerApp Service Authentication/Authorization.
-	IdentityProviders *IdentityProviders `json:"identityProviders,omitempty"`
+	IdentityProviders *IdentityProviders
 
 	// The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
-	Login *Login `json:"login,omitempty"`
+	Login *Login
 
 	// The configuration settings of the platform of ContainerApp Service Authentication/Authorization.
-	Platform *AuthPlatform `json:"platform,omitempty"`
+	Platform *AuthPlatform
 }
 
 // AuthPlatform - The configuration settings of the platform of ContainerApp Service Authentication/Authorization.
 type AuthPlatform struct {
 	// true if the Authentication / Authorization feature is enabled for the current app; otherwise, false.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
 	// can control the behavior of certain features in the Authentication /
 	// Authorization module.
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 }
 
 // AvailableOperations - Available operations of the service
 type AvailableOperations struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of available operation details
-	Value []*OperationDetail `json:"value,omitempty"`
+	Value []*OperationDetail
+}
+
+// AvailableWorkloadProfile - A workload profile with specific hardware configure to run container apps.
+type AvailableWorkloadProfile struct {
+	// Region of the workload profile.
+	Location *string
+
+	// Revision resource specific properties
+	Properties *AvailableWorkloadProfileProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AvailableWorkloadProfileProperties - Revision resource specific properties
+type AvailableWorkloadProfileProperties struct {
+	// indicates whether the profile is default for the location.
+	Applicability *Applicability
+
+	// Used to categorize workload profiles.
+	Category *string
+
+	// Number of cores in CPU.
+	Cores *int32
+
+	// The everyday name of the workload profile.
+	DisplayName *string
+
+	// Memory in GiB.
+	MemoryGiB *int32
+}
+
+// AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
+// method.
+type AvailableWorkloadProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AvailableWorkloadProfilesCollection - Collection of available workload profiles in the location.
+type AvailableWorkloadProfilesCollection struct {
+	// REQUIRED; Collection of workload profiles.
+	Value []*AvailableWorkloadProfile
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
 }
 
 // AzureActiveDirectory - The configuration settings of the Azure Active directory provider.
 type AzureActiveDirectory struct {
 	// false if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling. This is an internal
 	// flag primarily intended to support the Azure Management Portal. Users
 	// should not read or write to this property.
-	IsAutoProvisioned *bool `json:"isAutoProvisioned,omitempty"`
+	IsAutoProvisioned *bool
 
 	// The configuration settings of the Azure Active Directory login flow.
-	Login *AzureActiveDirectoryLogin `json:"login,omitempty"`
+	Login *AzureActiveDirectoryLogin
 
 	// The configuration settings of the Azure Active Directory app registration.
-	Registration *AzureActiveDirectoryRegistration `json:"registration,omitempty"`
+	Registration *AzureActiveDirectoryRegistration
 
 	// The configuration settings of the Azure Active Directory token validation flow.
-	Validation *AzureActiveDirectoryValidation `json:"validation,omitempty"`
+	Validation *AzureActiveDirectoryValidation
 }
 
 // AzureActiveDirectoryLogin - The configuration settings of the Azure Active Directory login flow.
 type AzureActiveDirectoryLogin struct {
 	// true if the www-authenticate provider should be omitted from the request; otherwise, false.
-	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
+	DisableWWWAuthenticate *bool
 
 	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
 	// form "key=value".
-	LoginParameters []*string `json:"loginParameters,omitempty"`
+	LoginParameters []*string
 }
 
 // AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
@@ -166,160 +220,231 @@ type AzureActiveDirectoryRegistration struct {
 	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
 	// authentication with Azure Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property
 	// acts as a replacement for the Client Secret Certificate Thumbprint. It is
 	// also optional.
-	ClientSecretCertificateIssuer *string `json:"clientSecretCertificateIssuer,omitempty"`
+	ClientSecretCertificateIssuer *string
 
 	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing
 	// purposes. This property acts as a replacement for the Client Secret Certificate
 	// Thumbprint. It is also optional.
-	ClientSecretCertificateSubjectAlternativeName *string `json:"clientSecretCertificateSubjectAlternativeName,omitempty"`
+	ClientSecretCertificateSubjectAlternativeName *string
 
 	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
 	// as a replacement for the Client Secret. It is also optional.
-	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
+	ClientSecretCertificateThumbprint *string
 
 	// The app setting name that contains the client secret of the relying party application.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 
 	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
 	// Active Directory, this value is the URI of the directory tenant, e.g.
 	// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More
 	// information on OpenID Connect Discovery:
 	// http://openid.net/specs/openid-connect-discovery-1_0.html
-	OpenIDIssuer *string `json:"openIdIssuer,omitempty"`
+	OpenIDIssuer *string
 }
 
 // AzureActiveDirectoryValidation - The configuration settings of the Azure Active Directory token validation flow.
 type AzureActiveDirectoryValidation struct {
 	// The list of audiences that can make successful authentication/authorization requests.
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+	AllowedAudiences []*string
 
 	// The configuration settings of the default authorization policy.
-	DefaultAuthorizationPolicy *DefaultAuthorizationPolicy `json:"defaultAuthorizationPolicy,omitempty"`
+	DefaultAuthorizationPolicy *DefaultAuthorizationPolicy
 
 	// The configuration settings of the checks that should be made while validating the JWT Claims.
-	JwtClaimChecks *JwtClaimChecks `json:"jwtClaimChecks,omitempty"`
+	JwtClaimChecks *JwtClaimChecks
 }
 
 // AzureCredentials - Container App credentials.
 type AzureCredentials struct {
 	// Client Id.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Client Secret.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Subscription Id.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Tenant Id.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // AzureFileProperties - Azure File Properties.
 type AzureFileProperties struct {
 	// Access mode for storage
-	AccessMode *AccessMode `json:"accessMode,omitempty"`
+	AccessMode *AccessMode
 
 	// Storage account key for azure file.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// Storage account name for azure file.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Azure file share name.
-	ShareName *string `json:"shareName,omitempty"`
+	ShareName *string
 }
 
 // AzureStaticWebApps - The configuration settings of the Azure Static Web Apps provider.
 type AzureStaticWebApps struct {
 	// false if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the Azure Static Web Apps registration.
-	Registration *AzureStaticWebAppsRegistration `json:"registration,omitempty"`
+	Registration *AzureStaticWebAppsRegistration
 }
 
 // AzureStaticWebAppsRegistration - The configuration settings of the registration for the Azure Static Web Apps provider
 type AzureStaticWebAppsRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
+}
+
+// BaseContainer - Container App base container definition.
+type BaseContainer struct {
+	// Container start command arguments.
+	Args []*string
+
+	// Container start command.
+	Command []*string
+
+	// Container environment variables.
+	Env []*EnvironmentVar
+
+	// Container image tag.
+	Image *string
+
+	// Custom container name.
+	Name *string
+
+	// Container resource requirements.
+	Resources *ContainerResources
+
+	// Container volume mounts.
+	VolumeMounts []*VolumeMount
+}
+
+// BillingMeter - Billing meter.
+type BillingMeter struct {
+	// Region for the billing meter.
+	Location *string
+
+	// Revision resource specific properties
+	Properties *BillingMeterProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BillingMeterCollection - Collection of billing meters.
+type BillingMeterCollection struct {
+	// REQUIRED; Collection of billing meters.
+	Value []*BillingMeter
+}
+
+// BillingMeterProperties - Revision resource specific properties
+type BillingMeterProperties struct {
+	// Used to categorize billing meters.
+	Category *string
+
+	// The everyday name of the billing meter.
+	DisplayName *string
+
+	// Billing meter type.
+	MeterType *string
+}
+
+// BillingMetersClientGetOptions contains the optional parameters for the BillingMetersClient.Get method.
+type BillingMetersClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Certificate used for Custom Domain bindings of Container Apps in a Managed Environment
 type Certificate struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Certificate resource specific properties
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	Properties *CertificateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateCollection - Collection of Certificates.
 type CertificateCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Certificate `json:"value,omitempty"`
+	Value []*Certificate
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CertificatePatch - A certificate to update
 type CertificatePatch struct {
 	// Application-specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // CertificateProperties - Certificate resource specific properties
 type CertificateProperties struct {
 	// Certificate password.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// PFX or PEM blob
-	Value []byte `json:"value,omitempty"`
+	Value []byte
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *time.Time
 
 	// READ-ONLY; Certificate issue Date.
-	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
+	IssueDate *time.Time
 
 	// READ-ONLY; Certificate issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Provisioning state of the certificate.
-	ProvisioningState *CertificateProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CertificateProvisioningState
 
 	// READ-ONLY; Public key hash.
-	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
+	PublicKeyHash *string
+
+	// READ-ONLY; Subject alternative names the certificate applies to.
+	SubjectAlternativeNames []*string
 
 	// READ-ONLY; Subject name of the certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; Is the certificate valid?.
-	Valid *bool `json:"valid,omitempty" azure:"ro"`
+	Valid *bool
 }
 
 // CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate method.
@@ -351,31 +476,31 @@ type CertificatesClientUpdateOptions struct {
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponse - The check availability result.
 type CheckNameAvailabilityResponse struct {
 	// Detailed reason why the given name is available.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates if the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason why the given name is not available.
-	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+	Reason *CheckNameAvailabilityReason
 }
 
 // ClientRegistration - The configuration settings of the app registration for providers that have client ids and client secrets
 type ClientRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The app setting name that contains the client secret.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 }
 
 // Configuration - Non versioned Container App configuration properties that define the mutable settings of a Container app
@@ -383,83 +508,350 @@ type Configuration struct {
 	// ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple revisions can be
 	// active.Single: Only one revision can be active at a time. Revision weights can
 	// not be used in this mode. If no value if provided, this is the default.
-	ActiveRevisionsMode *ActiveRevisionsMode `json:"activeRevisionsMode,omitempty"`
+	ActiveRevisionsMode *ActiveRevisionsMode
 
 	// Dapr configuration for the Container App.
-	Dapr *Dapr `json:"dapr,omitempty"`
+	Dapr *Dapr
 
 	// Ingress configurations.
-	Ingress *Ingress `json:"ingress,omitempty"`
+	Ingress *Ingress
+
+	// Optional. Max inactive revisions a Container App can have.
+	MaxInactiveRevisions *int32
 
 	// Collection of private container registry credentials for containers used by the Container app
-	Registries []*RegistryCredentials `json:"registries,omitempty"`
+	Registries []*RegistryCredentials
 
 	// Collection of secrets used by a Container app
-	Secrets []*Secret `json:"secrets,omitempty"`
+	Secrets []*Secret
 }
 
-// Container App container definition.
+// ConnectedEnvironment - An environment for Kubernetes cluster specialized for web workloads by Azure App Service
+type ConnectedEnvironment struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The complex type of the extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// ConnectedEnvironment resource specific properties
+	Properties *ConnectedEnvironmentProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ConnectedEnvironmentCollection - Collection of connectedEnvironments
+type ConnectedEnvironmentCollection struct {
+	// Collection of resources.
+	Value []*ConnectedEnvironment
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// ConnectedEnvironmentProperties - ConnectedEnvironment resource specific properties
+type ConnectedEnvironmentProperties struct {
+	// Custom domain configuration for the environment
+	CustomDomainConfiguration *CustomDomainConfiguration
+
+	// Application Insights connection string used by Dapr to export Service to Service communication telemetry
+	DaprAIConnectionString *string
+
+	// Static IP of the connectedEnvironment
+	StaticIP *string
+
+	// READ-ONLY; Default Domain Name for the cluster
+	DefaultDomain *string
+
+	// READ-ONLY; Any errors that occurred during deployment or deployment validation
+	DeploymentErrors *string
+
+	// READ-ONLY; Provisioning state of the Kubernetes Environment.
+	ProvisioningState *ConnectedEnvironmentProvisioningState
+}
+
+// ConnectedEnvironmentStorage - Storage resource for connectedEnvironment.
+type ConnectedEnvironmentStorage struct {
+	// Storage properties
+	Properties *ConnectedEnvironmentStorageProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ConnectedEnvironmentStorageProperties - Storage properties
+type ConnectedEnvironmentStorageProperties struct {
+	// Azure file properties
+	AzureFile *AzureFileProperties
+}
+
+// ConnectedEnvironmentStoragesCollection - Collection of Storage for Environments
+type ConnectedEnvironmentStoragesCollection struct {
+	// REQUIRED; Collection of storage resources.
+	Value []*ConnectedEnvironmentStorage
+}
+
+// ConnectedEnvironmentsCertificatesClientCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.CreateOrUpdate
+// method.
+type ConnectedEnvironmentsCertificatesClientCreateOrUpdateOptions struct {
+	// Certificate to be created or updated
+	CertificateEnvelope *Certificate
+}
+
+// ConnectedEnvironmentsCertificatesClientDeleteOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.Delete
+// method.
+type ConnectedEnvironmentsCertificatesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsCertificatesClientGetOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.Get
+// method.
+type ConnectedEnvironmentsCertificatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsCertificatesClientListOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.NewListPager
+// method.
+type ConnectedEnvironmentsCertificatesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsCertificatesClientUpdateOptions contains the optional parameters for the ConnectedEnvironmentsCertificatesClient.Update
+// method.
+type ConnectedEnvironmentsCertificatesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginCreateOrUpdate
+// method.
+type ConnectedEnvironmentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedEnvironmentsClientBeginDeleteOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginDelete
+// method.
+type ConnectedEnvironmentsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedEnvironmentsClientCheckNameAvailabilityOptions contains the optional parameters for the ConnectedEnvironmentsClient.CheckNameAvailability
+// method.
+type ConnectedEnvironmentsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsClientGetOptions contains the optional parameters for the ConnectedEnvironmentsClient.Get method.
+type ConnectedEnvironmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListByResourceGroupPager
+// method.
+type ConnectedEnvironmentsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the ConnectedEnvironmentsClient.NewListBySubscriptionPager
+// method.
+type ConnectedEnvironmentsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsClientUpdateOptions contains the optional parameters for the ConnectedEnvironmentsClient.Update method.
+type ConnectedEnvironmentsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.CreateOrUpdate
+// method.
+type ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsDaprComponentsClientDeleteOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.Delete
+// method.
+type ConnectedEnvironmentsDaprComponentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsDaprComponentsClientGetOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.Get
+// method.
+type ConnectedEnvironmentsDaprComponentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsDaprComponentsClientListOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.NewListPager
+// method.
+type ConnectedEnvironmentsDaprComponentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsDaprComponentsClientListSecretsOptions contains the optional parameters for the ConnectedEnvironmentsDaprComponentsClient.ListSecrets
+// method.
+type ConnectedEnvironmentsDaprComponentsClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsStoragesClientCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsStoragesClient.CreateOrUpdate
+// method.
+type ConnectedEnvironmentsStoragesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsStoragesClientDeleteOptions contains the optional parameters for the ConnectedEnvironmentsStoragesClient.Delete
+// method.
+type ConnectedEnvironmentsStoragesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsStoragesClientGetOptions contains the optional parameters for the ConnectedEnvironmentsStoragesClient.Get
+// method.
+type ConnectedEnvironmentsStoragesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedEnvironmentsStoragesClientListOptions contains the optional parameters for the ConnectedEnvironmentsStoragesClient.List
+// method.
+type ConnectedEnvironmentsStoragesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Container App container definition
 type Container struct {
 	// Container start command arguments.
-	Args []*string `json:"args,omitempty"`
+	Args []*string
 
 	// Container start command.
-	Command []*string `json:"command,omitempty"`
+	Command []*string
 
 	// Container environment variables.
-	Env []*EnvironmentVar `json:"env,omitempty"`
+	Env []*EnvironmentVar
 
 	// Container image tag.
-	Image *string `json:"image,omitempty"`
+	Image *string
 
 	// Custom container name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of probes for the container.
-	Probes []*ContainerAppProbe `json:"probes,omitempty"`
+	Probes []*ContainerAppProbe
 
 	// Container resource requirements.
-	Resources *ContainerResources `json:"resources,omitempty"`
+	Resources *ContainerResources
 
 	// Container volume mounts.
-	VolumeMounts []*VolumeMount `json:"volumeMounts,omitempty"`
+	VolumeMounts []*VolumeMount
 }
 
 // ContainerApp - Container App.
 type ContainerApp struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
+
+	// The complex type of the extended location.
+	ExtendedLocation *ExtendedLocation
 
 	// managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials
 	// in code.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
+
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not
+	// delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string
 
 	// ContainerApp resource specific properties
-	Properties *ContainerAppProperties `json:"properties,omitempty"`
+	Properties *ContainerAppProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// ContainerAppAuthToken - Container App Auth Token.
+type ContainerAppAuthToken struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Container App auth token resource specific properties
+	Properties *ContainerAppAuthTokenProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContainerAppAuthTokenProperties - Container App auth token resource specific properties
+type ContainerAppAuthTokenProperties struct {
+	// READ-ONLY; Token expiration date.
+	Expires *time.Time
+
+	// READ-ONLY; Auth token value.
+	Token *string
 }
 
 // ContainerAppCollection - Container App collection ARM resource.
 type ContainerAppCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ContainerApp `json:"value,omitempty"`
+	Value []*ContainerApp
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
+}
+
+// ContainerAppJobExecutions - Container App executions collection ARM resource.
+type ContainerAppJobExecutions struct {
+	// REQUIRED; Collection of resources.
+	Value []*JobExecution
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
 }
 
 // ContainerAppProbe - Probe describes a health check to be performed against a container to determine whether it is alive
@@ -467,24 +859,24 @@ type ContainerAppCollection struct {
 type ContainerAppProbe struct {
 	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value
 	// is 1. Maximum value is 10.
-	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+	FailureThreshold *int32
 
 	// HTTPGet specifies the http request to perform.
-	HTTPGet *ContainerAppProbeHTTPGet `json:"httpGet,omitempty"`
+	HTTPGet *ContainerAppProbeHTTPGet
 
 	// Number of seconds after the container has started before liveness probes are initiated. Minimum value is 1. Maximum value
 	// is 60.
-	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+	InitialDelaySeconds *int32
 
 	// How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value is 240.
-	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+	PeriodSeconds *int32
 
 	// Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for
 	// liveness and startup. Minimum value is 1. Maximum value is 10.
-	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+	SuccessThreshold *int32
 
 	// TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
-	TCPSocket *ContainerAppProbeTCPSocket `json:"tcpSocket,omitempty"`
+	TCPSocket *ContainerAppProbeTCPSocket
 
 	// Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration
 	// in seconds after the processes running in the pod are sent a termination signal
@@ -494,87 +886,105 @@ type ContainerAppProbe struct {
 	// be non-negative integer. The value zero indicates stop immediately via the
 	// kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
 	// gate. Maximum value is 3600 seconds (1 hour)
-	TerminationGracePeriodSeconds *int64 `json:"terminationGracePeriodSeconds,omitempty"`
+	TerminationGracePeriodSeconds *int64
 
 	// Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 240.
-	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int32
 
 	// The type of probe.
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 }
 
 // ContainerAppProbeHTTPGet - HTTPGet specifies the http request to perform.
 type ContainerAppProbeHTTPGet struct {
 	// REQUIRED; Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
 	// IANASVCNAME.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// Custom headers to set in the request. HTTP allows repeated headers.
-	HTTPHeaders []*ContainerAppProbeHTTPGetHTTPHeadersItem `json:"httpHeaders,omitempty"`
+	HTTPHeaders []*ContainerAppProbeHTTPGetHTTPHeadersItem
 
 	// Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
-	Host *string `json:"host,omitempty"`
+	Host *string
 
 	// Path to access on the HTTP server.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Scheme to use for connecting to the host. Defaults to HTTP.
-	Scheme *Scheme `json:"scheme,omitempty"`
+	Scheme *Scheme
 }
 
 // ContainerAppProbeHTTPGetHTTPHeadersItem - HTTPHeader describes a custom header to be used in HTTP probes
 type ContainerAppProbeHTTPGetHTTPHeadersItem struct {
 	// REQUIRED; The header field name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The header field value
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContainerAppProbeTCPSocket - TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
 type ContainerAppProbeTCPSocket struct {
 	// REQUIRED; Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
 	// IANASVCNAME.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// Optional: Host name to connect to, defaults to the pod IP.
-	Host *string `json:"host,omitempty"`
+	Host *string
 }
 
 // ContainerAppProperties - ContainerApp resource specific properties
 type ContainerAppProperties struct {
 	// Non versioned Container App configuration properties.
-	Configuration *Configuration `json:"configuration,omitempty"`
+	Configuration *Configuration
 
-	// Resource ID of the Container App's environment.
-	ManagedEnvironmentID *string `json:"managedEnvironmentId,omitempty"`
+	// Resource ID of environment.
+	EnvironmentID *string
+
+	// Deprecated. Resource ID of the Container App's environment.
+	ManagedEnvironmentID *string
 
 	// Container App versioned application definition.
-	Template *Template `json:"template,omitempty"`
+	Template *Template
+
+	// Workload profile name to pin for container app execution.
+	WorkloadProfileName *string
 
 	// READ-ONLY; Id used to verify domain name ownership
-	CustomDomainVerificationID *string `json:"customDomainVerificationId,omitempty" azure:"ro"`
+	CustomDomainVerificationID *string
+
+	// READ-ONLY; The endpoint of the eventstream of the container app.
+	EventStreamEndpoint *string
+
+	// READ-ONLY; Name of the latest ready revision of the Container App.
+	LatestReadyRevisionName *string
 
 	// READ-ONLY; Fully Qualified Domain Name of the latest revision of the Container App.
-	LatestRevisionFqdn *string `json:"latestRevisionFqdn,omitempty" azure:"ro"`
+	LatestRevisionFqdn *string
 
 	// READ-ONLY; Name of the latest revision of the Container App.
-	LatestRevisionName *string `json:"latestRevisionName,omitempty" azure:"ro"`
+	LatestRevisionName *string
 
 	// READ-ONLY; Outbound IP Addresses for container app.
-	OutboundIPAddresses []*string `json:"outboundIPAddresses,omitempty" azure:"ro"`
+	OutboundIPAddresses []*string
 
 	// READ-ONLY; Provisioning state of the Container App.
-	ProvisioningState *ContainerAppProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ContainerAppProvisioningState
 }
 
 // ContainerAppSecret - Container App Secret.
 type ContainerAppSecret struct {
+	// READ-ONLY; Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
+	Identity *string
+
+	// READ-ONLY; Azure Key Vault URL pointing to the secret referenced by the container app.
+	KeyVaultURL *string
+
 	// READ-ONLY; Secret Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Secret Value.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // ContainerAppsAuthConfigsClientCreateOrUpdateOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.CreateOrUpdate
@@ -619,6 +1029,11 @@ type ContainerAppsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// ContainerAppsClientGetAuthTokenOptions contains the optional parameters for the ContainerAppsClient.GetAuthToken method.
+type ContainerAppsClientGetAuthTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ContainerAppsClientGetOptions contains the optional parameters for the ContainerAppsClient.Get method.
 type ContainerAppsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -646,6 +1061,37 @@ type ContainerAppsClientListCustomHostNameAnalysisOptions struct {
 // ContainerAppsClientListSecretsOptions contains the optional parameters for the ContainerAppsClient.ListSecrets method.
 type ContainerAppsClientListSecretsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ContainerAppsDiagnosticsClientGetDetectorOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetDetector
+// method.
+type ContainerAppsDiagnosticsClientGetDetectorOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsDiagnosticsClientGetRevisionOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRevision
+// method.
+type ContainerAppsDiagnosticsClientGetRevisionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsDiagnosticsClientGetRootOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRoot
+// method.
+type ContainerAppsDiagnosticsClientGetRootOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListDetectorsPager
+// method.
+type ContainerAppsDiagnosticsClientListDetectorsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListRevisionsPager
+// method.
+type ContainerAppsDiagnosticsClientListRevisionsOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // ContainerAppsRevisionReplicasClientGetReplicaOptions contains the optional parameters for the ContainerAppsRevisionReplicasClient.GetReplica
@@ -720,169 +1166,242 @@ type ContainerAppsSourceControlsClientListByContainerAppOptions struct {
 // ContainerResources - Container App container resource requirements.
 type ContainerResources struct {
 	// Required CPU in cores, e.g. 0.5
-	CPU *float64 `json:"cpu,omitempty"`
+	CPU *float64
 
 	// Required memory, e.g. "250Mb"
-	Memory *string `json:"memory,omitempty"`
+	Memory *string
 
 	// READ-ONLY; Ephemeral Storage, e.g. "1Gi"
-	EphemeralStorage *string `json:"ephemeralStorage,omitempty" azure:"ro"`
+	EphemeralStorage *string
 }
 
 // CookieExpiration - The configuration settings of the session cookie's expiration.
 type CookieExpiration struct {
 	// The convention used when determining the session cookie's expiration.
-	Convention *CookieExpirationConvention `json:"convention,omitempty"`
+	Convention *CookieExpirationConvention
 
 	// The time after the request is made when the session cookie should expire.
-	TimeToExpiration *string `json:"timeToExpiration,omitempty"`
+	TimeToExpiration *string
+}
+
+// CorsPolicy - Cross-Origin-Resource-Sharing policy
+type CorsPolicy struct {
+	// REQUIRED; Specifies the content for the access-control-allow-origins header
+	AllowedOrigins []*string
+
+	// Specifies whether the resource allows credentials
+	AllowCredentials *bool
+
+	// Specifies the content for the access-control-allow-headers header
+	AllowedHeaders []*string
+
+	// Specifies the content for the access-control-allow-methods header
+	AllowedMethods []*string
+
+	// Specifies the content for the access-control-expose-headers header
+	ExposeHeaders []*string
+
+	// Specifies the content for the access-control-max-age header
+	MaxAge *int32
 }
 
 // CustomDomain - Custom Domain of a Container App
 type CustomDomain struct {
-	// REQUIRED; Resource Id of the Certificate to be bound to this hostname. Must exist in the Managed Environment.
-	CertificateID *string `json:"certificateId,omitempty"`
-
 	// REQUIRED; Hostname.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Custom Domain binding type.
-	BindingType *BindingType `json:"bindingType,omitempty"`
+	BindingType *BindingType
+
+	// Resource Id of the Certificate to be bound to this hostname. Must exist in the Managed Environment.
+	CertificateID *string
+}
+
+// CustomDomainConfiguration - Configuration properties for apps environment custom domain
+type CustomDomainConfiguration struct {
+	// Certificate password
+	CertificatePassword *string
+
+	// PFX or PEM blob
+	CertificateValue []byte
+
+	// Dns suffix for the environment domain
+	DNSSuffix *string
+
+	// READ-ONLY; Id used to verify domain name ownership
+	CustomDomainVerificationID *string
+
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *time.Time
+
+	// READ-ONLY; Subject name of the certificate.
+	SubjectName *string
+
+	// READ-ONLY; Certificate thumbprint.
+	Thumbprint *string
 }
 
 // CustomHostnameAnalysisResult - Custom domain analysis.
 type CustomHostnameAnalysisResult struct {
-	// CustomHostnameAnalysisResult resource specific properties
-	Properties *CustomHostnameAnalysisResultProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// CustomHostnameAnalysisResultProperties - CustomHostnameAnalysisResult resource specific properties
-type CustomHostnameAnalysisResultProperties struct {
 	// A records visible for this hostname.
-	ARecords []*string `json:"aRecords,omitempty"`
+	ARecords []*string
 
 	// Alternate CName records visible for this hostname.
-	AlternateCNameRecords []*string `json:"alternateCNameRecords,omitempty"`
+	AlternateCNameRecords []*string
 
 	// Alternate TXT records visible for this hostname.
-	AlternateTxtRecords []*string `json:"alternateTxtRecords,omitempty"`
+	AlternateTxtRecords []*string
 
 	// CName records visible for this hostname.
-	CNameRecords []*string `json:"cNameRecords,omitempty"`
+	CNameRecords []*string
 
 	// TXT records visible for this hostname.
-	TxtRecords []*string `json:"txtRecords,omitempty"`
+	TxtRecords []*string
+
+	// READ-ONLY; true if there is a conflict on the Container App's managed environment level custom domain; otherwise, false.
+	ConflictWithEnvironmentCustomDomain *bool
 
 	// READ-ONLY; Name of the conflicting Container App on the Managed Environment if it's within the same subscription.
-	ConflictingContainerAppResourceID *string `json:"conflictingContainerAppResourceId,omitempty" azure:"ro"`
+	ConflictingContainerAppResourceID *string
 
 	// READ-ONLY; Raw failure information if DNS verification fails.
-	CustomDomainVerificationFailureInfo *DefaultErrorResponse `json:"customDomainVerificationFailureInfo,omitempty" azure:"ro"`
+	CustomDomainVerificationFailureInfo *CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo
 
 	// READ-ONLY; DNS verification test result.
-	CustomDomainVerificationTest *DNSVerificationTestResult `json:"customDomainVerificationTest,omitempty" azure:"ro"`
+	CustomDomainVerificationTest *DNSVerificationTestResult
 
 	// READ-ONLY; true if there is a conflict on the Container App's managed environment; otherwise, false.
-	HasConflictOnManagedEnvironment *bool `json:"hasConflictOnManagedEnvironment,omitempty" azure:"ro"`
+	HasConflictOnManagedEnvironment *bool
 
 	// READ-ONLY; Host name that was analyzed
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; true if hostname is already verified; otherwise, false.
-	IsHostnameAlreadyVerified *bool `json:"isHostnameAlreadyVerified,omitempty" azure:"ro"`
+	IsHostnameAlreadyVerified *bool
+}
+
+// CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo - Raw failure information if DNS verification fails.
+type CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo struct {
+	// Details or the error
+	Details []*CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem
+
+	// READ-ONLY; Standardized string to programmatically identify the error.
+	Code *string
+
+	// READ-ONLY; Detailed error description and debugging information.
+	Message *string
+
+	// READ-ONLY; Detailed error description and debugging information.
+	Target *string
+}
+
+// CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem - Detailed errors.
+type CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem struct {
+	// READ-ONLY; Standardized string to programmatically identify the error.
+	Code *string
+
+	// READ-ONLY; Detailed error description and debugging information.
+	Message *string
+
+	// READ-ONLY; Detailed error description and debugging information.
+	Target *string
 }
 
 // CustomOpenIDConnectProvider - The configuration settings of the custom Open ID Connect provider.
 type CustomOpenIDConnectProvider struct {
 	// false if the custom Open ID provider provider should not be enabled; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow of the custom Open ID Connect provider.
-	Login *OpenIDConnectLogin `json:"login,omitempty"`
+	Login *OpenIDConnectLogin
 
 	// The configuration settings of the app registration for the custom Open ID Connect provider.
-	Registration *OpenIDConnectRegistration `json:"registration,omitempty"`
+	Registration *OpenIDConnectRegistration
 }
 
 // CustomScaleRule - Container App container Custom scaling rule.
 type CustomScaleRule struct {
 	// Authentication secrets for the custom scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Metadata properties to describe custom scale rule.
-	Metadata map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string
 
 	// Type of the custom scale rule eg: azure-servicebus, redis etc.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // Dapr - Container App Dapr configuration.
 type Dapr struct {
 	// Dapr application identifier
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Tells Dapr which port your application is listening on
-	AppPort *int32 `json:"appPort,omitempty"`
+	AppPort *int32
 
 	// Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http
-	AppProtocol *AppProtocol `json:"appProtocol,omitempty"`
+	AppProtocol *AppProtocol
+
+	// Enables API logging for the Dapr sidecar
+	EnableAPILogging *bool
 
 	// Boolean indicating if the Dapr side car is enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
+
+	// Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is
+	// 4 MB.
+	HTTPMaxRequestSize *int32
+
+	// Dapr max size of http header read buffer in KB to handle when sending multi-KB headers. Default is 65KB.
+	HTTPReadBufferSize *int32
+
+	// Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
+	LogLevel *LogLevel
 }
 
 // DaprComponent - Dapr Component.
 type DaprComponent struct {
 	// Dapr Component resource specific properties
-	Properties *DaprComponentProperties `json:"properties,omitempty"`
+	Properties *DaprComponentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DaprComponentProperties - Dapr Component resource specific properties
 type DaprComponentProperties struct {
 	// Component type
-	ComponentType *string `json:"componentType,omitempty"`
+	ComponentType *string
 
 	// Boolean describing if the component errors are ignores
-	IgnoreErrors *bool `json:"ignoreErrors,omitempty"`
+	IgnoreErrors *bool
 
 	// Initialization timeout
-	InitTimeout *string `json:"initTimeout,omitempty"`
+	InitTimeout *string
 
 	// Component metadata
-	Metadata []*DaprMetadata `json:"metadata,omitempty"`
+	Metadata []*DaprMetadata
 
 	// Names of container apps that can use this Dapr component
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
+
+	// Name of a Dapr component to retrieve component secrets from
+	SecretStoreComponent *string
 
 	// Collection of secrets used by a Dapr component
-	Secrets []*Secret `json:"secrets,omitempty"`
+	Secrets []*Secret
 
 	// Component version
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // DaprComponentsClientCreateOrUpdateOptions contains the optional parameters for the DaprComponentsClient.CreateOrUpdate
@@ -914,280 +1433,884 @@ type DaprComponentsClientListSecretsOptions struct {
 // DaprComponentsCollection - Dapr Components ARM resource.
 type DaprComponentsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DaprComponent `json:"value,omitempty"`
+	Value []*DaprComponent
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
+}
+
+// DaprConfiguration - Configuration properties Dapr component
+type DaprConfiguration struct {
+	// READ-ONLY; The version of Dapr
+	Version *string
 }
 
 // DaprMetadata - Dapr component metadata.
 type DaprMetadata struct {
 	// Metadata property name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of the Dapr Component secret from which to pull the metadata property value.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Metadata property value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
-// DaprSecretsCollection - Dapr component Secrets Collection ARM resource.
+// DaprSecret - Dapr component Secret for ListSecrets Action
+type DaprSecret struct {
+	// READ-ONLY; Secret Name.
+	Name *string
+
+	// READ-ONLY; Secret Value.
+	Value *string
+}
+
+// DaprSecretsCollection - Dapr component Secrets Collection for ListSecrets Action.
 type DaprSecretsCollection struct {
 	// REQUIRED; Collection of secrets used by a Dapr component
-	Value []*Secret `json:"value,omitempty"`
+	Value []*DaprSecret
 }
 
 // DefaultAuthorizationPolicy - The configuration settings of the Azure Active Directory default authorization policy.
 type DefaultAuthorizationPolicy struct {
 	// The configuration settings of the Azure Active Directory allowed applications.
-	AllowedApplications []*string `json:"allowedApplications,omitempty"`
+	AllowedApplications []*string
 
 	// The configuration settings of the Azure Active Directory allowed principals.
-	AllowedPrincipals *AllowedPrincipals `json:"allowedPrincipals,omitempty"`
+	AllowedPrincipals *AllowedPrincipals
 }
 
 // DefaultErrorResponse - App Service error response.
 type DefaultErrorResponse struct {
 	// READ-ONLY; Error model.
-	Error *DefaultErrorResponseError `json:"error,omitempty" azure:"ro"`
+	Error *DefaultErrorResponseError
 }
 
 // DefaultErrorResponseError - Error model.
 type DefaultErrorResponseError struct {
 	// Details or the error
-	Details []*DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	Details []*DefaultErrorResponseErrorDetailsItem
 
 	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; More information to debug error.
-	Innererror *string `json:"innererror,omitempty" azure:"ro"`
+	Innererror *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // DefaultErrorResponseErrorDetailsItem - Detailed errors.
 type DefaultErrorResponseErrorDetailsItem struct {
 	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
+}
+
+// DiagnosticDataProviderMetadata - Details of a diagnostics data provider
+type DiagnosticDataProviderMetadata struct {
+	// Collection of properties
+	PropertyBag []*DiagnosticDataProviderMetadataPropertyBagItem
+
+	// Name of data provider
+	ProviderName *string
+}
+
+// DiagnosticDataProviderMetadataPropertyBagItem - Property details
+type DiagnosticDataProviderMetadataPropertyBagItem struct {
+	// Property name
+	Name *string
+
+	// Property value
+	Value *string
+}
+
+// DiagnosticDataTableResponseColumn - Diagnostics data column
+type DiagnosticDataTableResponseColumn struct {
+	// Column name
+	ColumnName *string
+
+	// Column type
+	ColumnType *string
+
+	// Data type of the column
+	DataType *string
+}
+
+// DiagnosticDataTableResponseObject - Diagnostics data table
+type DiagnosticDataTableResponseObject struct {
+	// Columns in the table
+	Columns []*DiagnosticDataTableResponseColumn
+
+	// Rows in the table
+	Rows []any
+
+	// Table name
+	TableName *string
+}
+
+// DiagnosticRendering - Rendering details of a diagnostics table
+type DiagnosticRendering struct {
+	// Description of the table
+	Description *string
+
+	// Flag if the table should be rendered
+	IsVisible *bool
+
+	// Title of the table
+	Title *string
+
+	// Rendering type
+	Type *int32
+}
+
+// DiagnosticSupportTopic - Support topic information
+type DiagnosticSupportTopic struct {
+	// READ-ONLY; Unique topic identifier
+	ID *string
+
+	// READ-ONLY; PES identifier
+	PesID *string
+}
+
+// Diagnostics data for a resource.
+type Diagnostics struct {
+	// Diagnostics resource specific properties
+	Properties *DiagnosticsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiagnosticsCollection - Diagnostics data collection for a resource.
+type DiagnosticsCollection struct {
+	// REQUIRED; Collection of diagnostic data.
+	Value []*Diagnostics
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// DiagnosticsDataAPIResponse - Diagnostics data returned from a detector
+type DiagnosticsDataAPIResponse struct {
+	// Details of the table response
+	RenderingProperties *DiagnosticRendering
+
+	// Table response
+	Table *DiagnosticDataTableResponseObject
+}
+
+// DiagnosticsDefinition - Metadata of the diagnostics response
+type DiagnosticsDefinition struct {
+	// List of analysis types
+	AnalysisTypes []*string
+
+	// List of support topics
+	SupportTopicList []*DiagnosticSupportTopic
+
+	// READ-ONLY; Authors' names of the detector
+	Author *string
+
+	// READ-ONLY; Category of the detector
+	Category *string
+
+	// READ-ONLY; Details of the diagnostics info
+	Description *string
+
+	// READ-ONLY; Unique detector name
+	ID *string
+
+	// READ-ONLY; Display Name of the detector
+	Name *string
+
+	// READ-ONLY; Authors' names of the detector
+	Score *float32
+
+	// READ-ONLY; Authors' names of the detector
+	Type *string
+}
+
+// DiagnosticsProperties - Diagnostics resource specific properties
+type DiagnosticsProperties struct {
+	// List of data providers' metadata.
+	DataProviderMetadata *DiagnosticDataProviderMetadata
+
+	// Set of data collections associated with the response.
+	Dataset []*DiagnosticsDataAPIResponse
+
+	// Metadata of the diagnostics response.
+	Metadata *DiagnosticsDefinition
+
+	// Status of the diagnostics response.
+	Status *DiagnosticsStatus
+}
+
+// DiagnosticsStatus - Rendering details of a diagnostics table
+type DiagnosticsStatus struct {
+	// Diagnostic message
+	Message *string
+
+	// Status
+	StatusID *int32
+}
+
+// EnvironmentAuthToken - Environment Auth Token.
+type EnvironmentAuthToken struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Environment auth token resource specific properties
+	Properties *EnvironmentAuthTokenProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EnvironmentAuthTokenProperties - Environment auth token resource specific properties
+type EnvironmentAuthTokenProperties struct {
+	// READ-ONLY; Token expiration date.
+	Expires *time.Time
+
+	// READ-ONLY; Auth token value.
+	Token *string
 }
 
 // EnvironmentVar - Container App container environment variable.
 type EnvironmentVar struct {
 	// Environment variable name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of the Container App secret from which to pull the environment variable value.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Non-secret environment variable value.
-	Value *string `json:"value,omitempty"`
+	Value *string
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
+// ExtendedLocation - The complex type of the extended location.
+type ExtendedLocation struct {
+	// The name of the extended location.
+	Name *string
+
+	// The type of the extended location.
+	Type *ExtendedLocationTypes
 }
 
 // Facebook - The configuration settings of the Facebook provider.
 type Facebook struct {
 	// false if the Facebook provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The version of the Facebook api to be used while logging in.
-	GraphAPIVersion *string `json:"graphApiVersion,omitempty"`
+	GraphAPIVersion *string
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the Facebook provider.
-	Registration *AppRegistration `json:"registration,omitempty"`
+	Registration *AppRegistration
 }
 
 // ForwardProxy - The configuration settings of a forward proxy used to make the requests.
 type ForwardProxy struct {
 	// The convention used to determine the url of the request made.
-	Convention *ForwardProxyConvention `json:"convention,omitempty"`
+	Convention *ForwardProxyConvention
 
 	// The name of the header containing the host of the request.
-	CustomHostHeaderName *string `json:"customHostHeaderName,omitempty"`
+	CustomHostHeaderName *string
 
 	// The name of the header containing the scheme of the request.
-	CustomProtoHeaderName *string `json:"customProtoHeaderName,omitempty"`
+	CustomProtoHeaderName *string
 }
 
 // GitHub - The configuration settings of the GitHub provider.
 type GitHub struct {
 	// false if the GitHub provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the GitHub provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
+	Registration *ClientRegistration
 }
 
 // GithubActionConfiguration - Configuration properties that define the mutable settings of a Container App SourceControl
 type GithubActionConfiguration struct {
 	// AzureCredentials configurations.
-	AzureCredentials *AzureCredentials `json:"azureCredentials,omitempty"`
+	AzureCredentials *AzureCredentials
 
 	// Context path
-	ContextPath *string `json:"contextPath,omitempty"`
+	ContextPath *string
 
 	// Image name
-	Image *string `json:"image,omitempty"`
+	Image *string
 
 	// Operation system
-	OS *string `json:"os,omitempty"`
+	OS *string
 
 	// Code or Image
-	PublishType *string `json:"publishType,omitempty"`
+	PublishType *string
 
 	// Registry configurations.
-	RegistryInfo *RegistryInfo `json:"registryInfo,omitempty"`
+	RegistryInfo *RegistryInfo
 
 	// Runtime stack
-	RuntimeStack *string `json:"runtimeStack,omitempty"`
+	RuntimeStack *string
 
 	// Runtime version
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 }
 
 // GlobalValidation - The configuration settings that determines the validation flow of users using ContainerApp Service Authentication/Authorization.
 type GlobalValidation struct {
 	// The paths for which unauthenticated flow would not be redirected to the login page.
-	ExcludedPaths []*string `json:"excludedPaths,omitempty"`
+	ExcludedPaths []*string
 
 	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
 	// providers are configured and the unauthenticated client action is set to
 	// "RedirectToLoginPage".
-	RedirectToProvider *string `json:"redirectToProvider,omitempty"`
+	RedirectToProvider *string
 
 	// The action to take when an unauthenticated client attempts to access the app.
-	UnauthenticatedClientAction *UnauthenticatedClientActionV2 `json:"unauthenticatedClientAction,omitempty"`
+	UnauthenticatedClientAction *UnauthenticatedClientActionV2
 }
 
 // Google - The configuration settings of the Google provider.
 type Google struct {
 	// false if the Google provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the Google provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
+	Registration *ClientRegistration
 
 	// The configuration settings of the Azure Active Directory token validation flow.
-	Validation *AllowedAudiencesValidation `json:"validation,omitempty"`
+	Validation *AllowedAudiencesValidation
 }
 
-// HTTPScaleRule - Container App container Custom scaling rule.
+// HTTPScaleRule - Container App container Http scaling rule.
 type HTTPScaleRule struct {
 	// Authentication secrets for the custom scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Metadata properties to describe http scale rule.
-	Metadata map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string
 }
 
 // HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against
 // ContainerApp Service Authentication/Authorization.
 type HTTPSettings struct {
 	// The configuration settings of a forward proxy used to make the requests.
-	ForwardProxy *ForwardProxy `json:"forwardProxy,omitempty"`
+	ForwardProxy *ForwardProxy
 
 	// false if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, true.
-	RequireHTTPS *bool `json:"requireHttps,omitempty"`
+	RequireHTTPS *bool
 
 	// The configuration settings of the paths HTTP requests.
-	Routes *HTTPSettingsRoutes `json:"routes,omitempty"`
+	Routes *HTTPSettingsRoutes
 }
 
 // HTTPSettingsRoutes - The configuration settings of the paths HTTP requests.
 type HTTPSettingsRoutes struct {
 	// The prefix that should precede all the authentication/authorization paths.
-	APIPrefix *string `json:"apiPrefix,omitempty"`
+	APIPrefix *string
+}
+
+// IPSecurityRestrictionRule - Rule to restrict incoming IP address.
+type IPSecurityRestrictionRule struct {
+	// REQUIRED; Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny
+	Action *Action
+
+	// REQUIRED; CIDR notation to match incoming IP address
+	IPAddressRange *string
+
+	// REQUIRED; Name for the IP restriction rule.
+	Name *string
+
+	// Describe the IP restriction rule that is being sent to the container-app. This is an optional field.
+	Description *string
 }
 
 // IdentityProviders - The configuration settings of each of the identity providers used to configure ContainerApp Service
 // Authentication/Authorization.
 type IdentityProviders struct {
 	// The configuration settings of the Apple provider.
-	Apple *Apple `json:"apple,omitempty"`
+	Apple *Apple
 
 	// The configuration settings of the Azure Active directory provider.
-	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
+	AzureActiveDirectory *AzureActiveDirectory
 
 	// The configuration settings of the Azure Static Web Apps provider.
-	AzureStaticWebApps *AzureStaticWebApps `json:"azureStaticWebApps,omitempty"`
+	AzureStaticWebApps *AzureStaticWebApps
 
 	// The map of the name of the alias of each custom Open ID Connect provider to the configuration settings of the custom Open
 	// ID Connect provider.
-	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider `json:"customOpenIdConnectProviders,omitempty"`
+	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider
 
 	// The configuration settings of the Facebook provider.
-	Facebook *Facebook `json:"facebook,omitempty"`
+	Facebook *Facebook
 
 	// The configuration settings of the GitHub provider.
-	GitHub *GitHub `json:"gitHub,omitempty"`
+	GitHub *GitHub
 
 	// The configuration settings of the Google provider.
-	Google *Google `json:"google,omitempty"`
+	Google *Google
 
 	// The configuration settings of the Twitter provider.
-	Twitter *Twitter `json:"twitter,omitempty"`
+	Twitter *Twitter
 }
 
 // Ingress - Container App Ingress configuration.
 type Ingress struct {
 	// Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS
 	// connections
-	AllowInsecure *bool `json:"allowInsecure,omitempty"`
+	AllowInsecure *bool
+
+	// Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate on forwarding. Accept
+	// indicates server forwards client certificate but does not require a client
+	// certificate. Require indicates server requires a client certificate.
+	ClientCertificateMode *IngressClientCertificateMode
+
+	// CORS policy for container app
+	CorsPolicy *CorsPolicy
 
 	// custom domain bindings for Container Apps' hostnames.
-	CustomDomains []*CustomDomain `json:"customDomains,omitempty"`
+	CustomDomains []*CustomDomain
+
+	// Exposed Port in containers for TCP traffic from ingress
+	ExposedPort *int32
 
 	// Bool indicating if app exposes an external http endpoint
-	External *bool `json:"external,omitempty"`
+	External *bool
+
+	// Rules to restrict incoming IP address.
+	IPSecurityRestrictions []*IPSecurityRestrictionRule
+
+	// Sticky Sessions for Single Revision Mode
+	StickySessions *IngressStickySessions
 
 	// Target Port in containers for traffic from ingress
-	TargetPort *int32 `json:"targetPort,omitempty"`
+	TargetPort *int32
 
 	// Traffic weights for app's revisions
-	Traffic []*TrafficWeight `json:"traffic,omitempty"`
+	Traffic []*TrafficWeight
 
 	// Ingress transport protocol
-	Transport *IngressTransportMethod `json:"transport,omitempty"`
+	Transport *IngressTransportMethod
 
 	// READ-ONLY; Hostname.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
+}
+
+// IngressStickySessions - Sticky Sessions for Single Revision Mode
+type IngressStickySessions struct {
+	// Sticky Session Affinity
+	Affinity *Affinity
+}
+
+// InitContainer - Container App init container definition
+type InitContainer struct {
+	// Container start command arguments.
+	Args []*string
+
+	// Container start command.
+	Command []*string
+
+	// Container environment variables.
+	Env []*EnvironmentVar
+
+	// Container image tag.
+	Image *string
+
+	// Custom container name.
+	Name *string
+
+	// Container resource requirements.
+	Resources *ContainerResources
+
+	// Container volume mounts.
+	VolumeMounts []*VolumeMount
+}
+
+// Job - Container App Job
+type Job struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
+	// in code.
+	Identity *ManagedServiceIdentity
+
+	// Container Apps Job resource specific properties.
+	Properties *JobProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// JobConfiguration - Non versioned Container Apps Job configuration properties
+type JobConfiguration struct {
+	// REQUIRED; Maximum number of seconds a replica is allowed to run.
+	ReplicaTimeout *int32
+
+	// REQUIRED; Trigger type of the job
+	TriggerType *TriggerType
+
+	// Manual trigger configuration for a single execution job. Properties replicaCompletionCount and parallelism would be set
+	// to 1 by default
+	ManualTriggerConfig *JobConfigurationManualTriggerConfig
+
+	// Collection of private container registry credentials used by a Container apps job
+	Registries []*RegistryCredentials
+
+	// Maximum number of retries before failing the job.
+	ReplicaRetryLimit *int32
+
+	// Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would be set
+	// to 1 by default
+	ScheduleTriggerConfig *JobConfigurationScheduleTriggerConfig
+
+	// Collection of secrets used by a Container Apps Job
+	Secrets []*Secret
+}
+
+// JobConfigurationManualTriggerConfig - Manual trigger configuration for a single execution job. Properties replicaCompletionCount
+// and parallelism would be set to 1 by default
+type JobConfigurationManualTriggerConfig struct {
+	// Number of parallel replicas of a job that can run at a given time.
+	Parallelism *int32
+
+	// Minimum number of successful replica completions before overall job completion.
+	ReplicaCompletionCount *int32
+}
+
+// JobConfigurationScheduleTriggerConfig - Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties
+// completions and parallelism would be set to 1 by default
+type JobConfigurationScheduleTriggerConfig struct {
+	// REQUIRED; Cron formatted repeating schedule ("* * * * *") of a Cron Job.
+	CronExpression *string
+
+	// Number of parallel replicas of a job that can run at a given time.
+	Parallelism *int32
+
+	// Minimum number of successful replica completions before overall job completion.
+	ReplicaCompletionCount *int32
+}
+
+// JobExecution - Container Apps Jobs execution.
+type JobExecution struct {
+	// Job execution start time.
+	EndTime *time.Time
+
+	// Job execution Id.
+	ID *string
+
+	// Job execution Name.
+	Name *string
+
+	// Job execution start time.
+	StartTime *time.Time
+
+	// Job's execution container.
+	Template *JobExecutionTemplate
+
+	// Job Type.
+	Type *string
+
+	// READ-ONLY; Current running State of the job
+	Status *JobExecutionRunningState
+}
+
+// JobExecutionBase - Container App's Job execution name.
+type JobExecutionBase struct {
+	// Job execution Id.
+	ID *string
+
+	// Job execution name.
+	Name *string
+}
+
+// JobExecutionContainer - Container Apps Jobs execution container definition.
+type JobExecutionContainer struct {
+	// Container start command arguments.
+	Args []*string
+
+	// Container start command.
+	Command []*string
+
+	// Container environment variables.
+	Env []*EnvironmentVar
+
+	// Container image tag.
+	Image *string
+
+	// Custom container name.
+	Name *string
+
+	// Container resource requirements.
+	Resources *ContainerResources
+}
+
+// JobExecutionNamesCollection - Container App executions names list.
+type JobExecutionNamesCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*JobExecutionBase
+}
+
+// JobExecutionTemplate - Job's execution template, containing container configuration for a job's execution
+type JobExecutionTemplate struct {
+	// List of container definitions for the Container Apps Job.
+	Containers []*JobExecutionContainer
+
+	// List of specialized containers that run before job containers.
+	InitContainers []*JobExecutionContainer
+}
+
+// JobPatchProperties - Container Apps Job resource specific properties.
+type JobPatchProperties struct {
+	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
+	// in code.
+	Identity   *ManagedServiceIdentity
+	Properties *JobPatchPropertiesProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+type JobPatchPropertiesProperties struct {
+	// Container Apps Job configuration properties.
+	Configuration *JobConfiguration
+
+	// Resource ID of environment.
+	EnvironmentID *string
+
+	// The endpoint of the eventstream of the container apps job.
+	EventStreamEndpoint *string
+
+	// Outbound IP Addresses of a container apps job.
+	OutboundIPAddresses []*string
+
+	// Container Apps job definition.
+	Template *JobTemplate
+}
+
+// JobProperties - Container Apps Job resource specific properties.
+type JobProperties struct {
+	// Container Apps Job configuration properties.
+	Configuration *JobConfiguration
+
+	// Resource ID of environment.
+	EnvironmentID *string
+
+	// Container Apps job definition.
+	Template *JobTemplate
+
+	// Workload profile name to pin for container apps job execution.
+	WorkloadProfileName *string
+
+	// READ-ONLY; The endpoint of the eventstream of the container apps job.
+	EventStreamEndpoint *string
+
+	// READ-ONLY; Outbound IP Addresses of a container apps job.
+	OutboundIPAddresses []*string
+
+	// READ-ONLY; Provisioning state of the Container Apps Job.
+	ProvisioningState *JobProvisioningState
+}
+
+// JobSecretsCollection - Container Apps Job Secrets Collection ARM resource.
+type JobSecretsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*Secret
+}
+
+// JobTemplate - Container Apps Job versioned application definition. Defines the desired state of an immutable revision.
+// Any changes to this section Will result in a new revision being created
+type JobTemplate struct {
+	// List of container definitions for the Container App.
+	Containers []*Container
+
+	// List of specialized containers that run before app containers.
+	InitContainers []*InitContainer
+
+	// List of volume definitions for the Container App.
+	Volumes []*Volume
+}
+
+// JobsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobsClient.BeginCreateOrUpdate method.
+type JobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
+type JobsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientBeginStartOptions contains the optional parameters for the JobsClient.BeginStart method.
+type JobsClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientBeginStopExecutionOptions contains the optional parameters for the JobsClient.BeginStopExecution method.
+type JobsClientBeginStopExecutionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientBeginStopMultipleExecutionsOptions contains the optional parameters for the JobsClient.BeginStopMultipleExecutions
+// method.
+type JobsClientBeginStopMultipleExecutionsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientBeginUpdateOptions contains the optional parameters for the JobsClient.BeginUpdate method.
+type JobsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.NewListByResourceGroupPager method.
+type JobsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.NewListBySubscriptionPager method.
+type JobsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientListSecretsOptions contains the optional parameters for the JobsClient.ListSecrets method.
+type JobsClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsCollection - Container Apps Jobs collection ARM resource.
+type JobsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*Job
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// JobsExecutionsClientListOptions contains the optional parameters for the JobsExecutionsClient.NewListPager method.
+type JobsExecutionsClientListOptions struct {
+	// The filter to apply on the operation.
+	Filter *string
 }
 
 // JwtClaimChecks - The configuration settings of the checks that should be made while validating the JWT Claims.
 type JwtClaimChecks struct {
 	// The list of the allowed client applications.
-	AllowedClientApplications []*string `json:"allowedClientApplications,omitempty"`
+	AllowedClientApplications []*string
 
 	// The list of the allowed groups.
-	AllowedGroups []*string `json:"allowedGroups,omitempty"`
+	AllowedGroups []*string
+}
+
+// KedaConfiguration - Configuration properties Keda component
+type KedaConfiguration struct {
+	// READ-ONLY; The version of Keda
+	Version *string
 }
 
 // LogAnalyticsConfiguration - Log analytics configuration
 type LogAnalyticsConfiguration struct {
 	// Log analytics customer id
-	CustomerID *string `json:"customerId,omitempty"`
+	CustomerID *string
 
 	// Log analytics customer key
-	SharedKey *string `json:"sharedKey,omitempty"`
+	SharedKey *string
 }
 
 // Login - The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
@@ -1195,116 +2318,237 @@ type Login struct {
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
 	// of the URL is ignored. This is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
-	AllowedExternalRedirectUrls []*string `json:"allowedExternalRedirectUrls,omitempty"`
+	AllowedExternalRedirectUrls []*string
 
 	// The configuration settings of the session cookie's expiration.
-	CookieExpiration *CookieExpiration `json:"cookieExpiration,omitempty"`
+	CookieExpiration *CookieExpiration
 
 	// The configuration settings of the nonce used in the login flow.
-	Nonce *Nonce `json:"nonce,omitempty"`
+	Nonce *Nonce
 
 	// true if the fragments from the request are preserved after the login request is made; otherwise, false.
-	PreserveURLFragmentsForLogins *bool `json:"preserveUrlFragmentsForLogins,omitempty"`
+	PreserveURLFragmentsForLogins *bool
 
 	// The routes that specify the endpoints used for login and logout requests.
-	Routes *LoginRoutes `json:"routes,omitempty"`
+	Routes *LoginRoutes
 }
 
 // LoginRoutes - The routes that specify the endpoints used for login and logout requests.
 type LoginRoutes struct {
 	// The endpoint at which a logout request should be made.
-	LogoutEndpoint *string `json:"logoutEndpoint,omitempty"`
+	LogoutEndpoint *string
 }
 
 // LoginScopes - The configuration settings of the login flow, including the scopes that should be requested.
 type LoginScopes struct {
 	// A list of the scopes that should be requested while authenticating.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
+}
+
+// ManagedCertificate - Managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment
+type ManagedCertificate struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Certificate resource specific properties
+	Properties *ManagedCertificateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedCertificateCollection - Collection of Managed Certificates.
+type ManagedCertificateCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*ManagedCertificate
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// ManagedCertificatePatch - A managed certificate to update
+type ManagedCertificatePatch struct {
+	// Application-specific metadata in the form of key-value pairs.
+	Tags map[string]*string
+}
+
+// ManagedCertificateProperties - Certificate resource specific properties
+type ManagedCertificateProperties struct {
+	// Selected type of domain control validation for managed certificates.
+	DomainControlValidation *ManagedCertificateDomainControlValidation
+
+	// Subject name of the certificate.
+	SubjectName *string
+
+	// READ-ONLY; Any error occurred during the certificate provision.
+	Error *string
+
+	// READ-ONLY; Provisioning state of the certificate.
+	ProvisioningState *CertificateProvisioningState
+
+	// READ-ONLY; A TXT token used for DNS TXT domain control validation when issuing this type of managed certificates.
+	ValidationToken *string
+}
+
+// ManagedCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedCertificatesClient.BeginCreateOrUpdate
+// method.
+type ManagedCertificatesClientBeginCreateOrUpdateOptions struct {
+	// Managed Certificate to be created or updated
+	ManagedCertificateEnvelope *ManagedCertificate
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedCertificatesClientDeleteOptions contains the optional parameters for the ManagedCertificatesClient.Delete method.
+type ManagedCertificatesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedCertificatesClientGetOptions contains the optional parameters for the ManagedCertificatesClient.Get method.
+type ManagedCertificatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedCertificatesClientListOptions contains the optional parameters for the ManagedCertificatesClient.NewListPager method.
+type ManagedCertificatesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedCertificatesClientUpdateOptions contains the optional parameters for the ManagedCertificatesClient.Update method.
+type ManagedCertificatesClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ManagedEnvironment - An environment for hosting container apps
 type ManagedEnvironment struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
+
+	// Kind of the Environment.
+	Kind *string
 
 	// Managed environment resource specific properties
-	Properties *ManagedEnvironmentProperties `json:"properties,omitempty"`
+	Properties *ManagedEnvironmentProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// ManagedEnvironmentDiagnosticsClientGetDetectorOptions contains the optional parameters for the ManagedEnvironmentDiagnosticsClient.GetDetector
+// method.
+type ManagedEnvironmentDiagnosticsClientGetDetectorOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedEnvironmentDiagnosticsClientListDetectorsOptions contains the optional parameters for the ManagedEnvironmentDiagnosticsClient.ListDetectors
+// method.
+type ManagedEnvironmentDiagnosticsClientListDetectorsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ManagedEnvironmentProperties - Managed environment resource specific properties
 type ManagedEnvironmentProperties struct {
 	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
 	// is supported
-	AppLogsConfiguration *AppLogsConfiguration `json:"appLogsConfiguration,omitempty"`
+	AppLogsConfiguration *AppLogsConfiguration
+
+	// Custom domain configuration for the environment
+	CustomDomainConfiguration *CustomDomainConfiguration
 
 	// Application Insights connection string used by Dapr to export Service to Service communication telemetry
-	DaprAIConnectionString *string `json:"daprAIConnectionString,omitempty"`
+	DaprAIConnectionString *string
 
 	// Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry
-	DaprAIInstrumentationKey *string `json:"daprAIInstrumentationKey,omitempty"`
+	DaprAIInstrumentationKey *string
+
+	// The configuration of Dapr component.
+	DaprConfiguration *DaprConfiguration
+
+	// Name of the platform-managed resource group created for the Managed Environment to host infrastructure resources. If a
+	// subnet ID is provided, this resource group will be created in the same
+	// subscription as the subnet.
+	InfrastructureResourceGroup *string
+
+	// The configuration of Keda component.
+	KedaConfiguration *KedaConfiguration
 
 	// Vnet configuration for the environment
-	VnetConfiguration *VnetConfiguration `json:"vnetConfiguration,omitempty"`
+	VnetConfiguration *VnetConfiguration
+
+	// Workload profiles configured for the Managed Environment.
+	WorkloadProfiles []*WorkloadProfile
 
 	// Whether or not this Managed Environment is zone-redundant.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *bool
 
 	// READ-ONLY; Default Domain Name for the cluster
-	DefaultDomain *string `json:"defaultDomain,omitempty" azure:"ro"`
+	DefaultDomain *string
 
 	// READ-ONLY; Any errors that occurred during deployment or deployment validation
-	DeploymentErrors *string `json:"deploymentErrors,omitempty" azure:"ro"`
+	DeploymentErrors *string
+
+	// READ-ONLY; The endpoint of the eventstream of the Environment.
+	EventStreamEndpoint *string
 
 	// READ-ONLY; Provisioning state of the Environment.
-	ProvisioningState *EnvironmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *EnvironmentProvisioningState
 
 	// READ-ONLY; Static IP of the Environment
-	StaticIP *string `json:"staticIp,omitempty" azure:"ro"`
+	StaticIP *string
 }
 
 // ManagedEnvironmentStorage - Storage resource for managedEnvironment.
 type ManagedEnvironmentStorage struct {
 	// Storage properties
-	Properties *ManagedEnvironmentStorageProperties `json:"properties,omitempty"`
+	Properties *ManagedEnvironmentStorageProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedEnvironmentStorageProperties - Storage properties
 type ManagedEnvironmentStorageProperties struct {
 	// Azure file properties
-	AzureFile *AzureFileProperties `json:"azureFile,omitempty"`
+	AzureFile *AzureFileProperties
 }
 
 // ManagedEnvironmentStoragesCollection - Collection of Storage for Environments
 type ManagedEnvironmentStoragesCollection struct {
 	// REQUIRED; Collection of storage resources.
-	Value []*ManagedEnvironmentStorage `json:"value,omitempty"`
+	Value []*ManagedEnvironmentStorage
 }
 
 // ManagedEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedEnvironmentsClient.BeginCreateOrUpdate
@@ -1328,6 +2572,12 @@ type ManagedEnvironmentsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// ManagedEnvironmentsClientGetAuthTokenOptions contains the optional parameters for the ManagedEnvironmentsClient.GetAuthToken
+// method.
+type ManagedEnvironmentsClientGetAuthTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagedEnvironmentsClientGetOptions contains the optional parameters for the ManagedEnvironmentsClient.Get method.
 type ManagedEnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1345,13 +2595,25 @@ type ManagedEnvironmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagedEnvironmentsClientListWorkloadProfileStatesOptions contains the optional parameters for the ManagedEnvironmentsClient.NewListWorkloadProfileStatesPager
+// method.
+type ManagedEnvironmentsClientListWorkloadProfileStatesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagedEnvironmentsCollection - Collection of Environments
 type ManagedEnvironmentsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ManagedEnvironment `json:"value,omitempty"`
+	Value []*ManagedEnvironment
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
+}
+
+// ManagedEnvironmentsDiagnosticsClientGetRootOptions contains the optional parameters for the ManagedEnvironmentsDiagnosticsClient.GetRoot
+// method.
+type ManagedEnvironmentsDiagnosticsClientGetRootOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ManagedEnvironmentsStoragesClientCreateOrUpdateOptions contains the optional parameters for the ManagedEnvironmentsStoragesClient.CreateOrUpdate
@@ -1381,21 +2643,21 @@ type ManagedEnvironmentsStoragesClientListOptions struct {
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
@@ -1407,88 +2669,88 @@ type NamespacesClientCheckNameAvailabilityOptions struct {
 // Nonce - The configuration settings of the nonce used in the login flow.
 type Nonce struct {
 	// The time after the request is made when the nonce should expire.
-	NonceExpirationInterval *string `json:"nonceExpirationInterval,omitempty"`
+	NonceExpirationInterval *string
 
 	// false if the nonce should not be validated while completing the login flow; otherwise, true.
-	ValidateNonce *bool `json:"validateNonce,omitempty"`
+	ValidateNonce *bool
 }
 
 // OpenIDConnectClientCredential - The authentication client credentials of the custom Open ID Connect provider.
 type OpenIDConnectClientCredential struct {
 	// The app setting that contains the client secret for the custom Open ID Connect provider.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 
 	// The method that should be used to authenticate the user.
-	Method *string `json:"method,omitempty"`
+	Method *string
 }
 
 // OpenIDConnectConfig - The configuration settings of the endpoints used for the custom Open ID Connect provider.
 type OpenIDConnectConfig struct {
 	// The endpoint to be used to make an authorization request.
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	AuthorizationEndpoint *string
 
 	// The endpoint that provides the keys necessary to validate the token.
-	CertificationURI *string `json:"certificationUri,omitempty"`
+	CertificationURI *string
 
 	// The endpoint that issues the token.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer *string
 
 	// The endpoint to be used to request a token.
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint *string
 
 	// The endpoint that contains all the configuration endpoints for the provider.
-	WellKnownOpenIDConfiguration *string `json:"wellKnownOpenIdConfiguration,omitempty"`
+	WellKnownOpenIDConfiguration *string
 }
 
 // OpenIDConnectLogin - The configuration settings of the login flow of the custom Open ID Connect provider.
 type OpenIDConnectLogin struct {
 	// The name of the claim that contains the users name.
-	NameClaimType *string `json:"nameClaimType,omitempty"`
+	NameClaimType *string
 
 	// A list of the scopes that should be requested while authenticating.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 }
 
 // OpenIDConnectRegistration - The configuration settings of the app registration for the custom Open ID Connect provider.
 type OpenIDConnectRegistration struct {
 	// The authentication credentials of the custom Open ID Connect provider.
-	ClientCredential *OpenIDConnectClientCredential `json:"clientCredential,omitempty"`
+	ClientCredential *OpenIDConnectClientCredential
 
 	// The client id of the custom Open ID Connect provider.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The configuration settings of the endpoints used for the custom Open ID Connect provider.
-	OpenIDConnectConfiguration *OpenIDConnectConfig `json:"openIdConnectConfiguration,omitempty"`
+	OpenIDConnectConfiguration *OpenIDConnectConfig
 }
 
 // OperationDetail - Operation detail payload
 type OperationDetail struct {
 	// Display of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationDisplay - Operation display payload
 type OperationDisplay struct {
 	// Localized friendly description for the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider of the operation
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource of the operation
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1500,422 +2762,511 @@ type OperationsClientListOptions struct {
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QueueScaleRule - Container App container Azure Queue based scaling rule.
 type QueueScaleRule struct {
 	// Authentication secrets for the queue scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Queue length.
-	QueueLength *int32 `json:"queueLength,omitempty"`
+	QueueLength *int32
 
 	// Queue name.
-	QueueName *string `json:"queueName,omitempty"`
+	QueueName *string
 }
 
 // RegistryCredentials - Container App Private Registry
 type RegistryCredentials struct {
 	// A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the full user-assigned
 	// identity Resource ID. For system-assigned identities, use 'system'
-	Identity *string `json:"identity,omitempty"`
+	Identity *string
 
 	// The name of the Secret that contains the registry login password
-	PasswordSecretRef *string `json:"passwordSecretRef,omitempty"`
+	PasswordSecretRef *string
 
 	// Container Registry Server
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// Container Registry Username
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // RegistryInfo - Container App registry information.
 type RegistryInfo struct {
 	// registry secret.
-	RegistryPassword *string `json:"registryPassword,omitempty"`
+	RegistryPassword *string
 
 	// registry server Url.
-	RegistryURL *string `json:"registryUrl,omitempty"`
+	RegistryURL *string
 
 	// registry username.
-	RegistryUserName *string `json:"registryUserName,omitempty"`
+	RegistryUserName *string
 }
 
 // Replica - Container App Revision Replica.
 type Replica struct {
 	// Replica resource specific properties
-	Properties *ReplicaProperties `json:"properties,omitempty"`
+	Properties *ReplicaProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicaCollection - Container App Revision Replicas collection ARM resource.
 type ReplicaCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Replica `json:"value,omitempty"`
+	Value []*Replica
 }
 
 // ReplicaContainer - Container object under Container App Revision Replica.
 type ReplicaContainer struct {
 	// The Id of the Container
-	ContainerID *string `json:"containerId,omitempty"`
+	ContainerID *string
 
 	// The Name of the Container
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The container ready status
-	Ready *bool `json:"ready,omitempty"`
+	Ready *bool
 
 	// The container restart count
-	RestartCount *int32 `json:"restartCount,omitempty"`
+	RestartCount *int32
 
 	// The container start status
-	Started *bool `json:"started,omitempty"`
+	Started *bool
+
+	// READ-ONLY; Container exec endpoint
+	ExecEndpoint *string
+
+	// READ-ONLY; Log Stream endpoint
+	LogStreamEndpoint *string
 }
 
 // ReplicaProperties - Replica resource specific properties
 type ReplicaProperties struct {
 	// The containers collection under a replica.
-	Containers []*ReplicaContainer `json:"containers,omitempty"`
+	Containers []*ReplicaContainer
 
 	// READ-ONLY; Timestamp describing when the pod was created by controller
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Revision - Container App Revision.
 type Revision struct {
 	// Revision resource specific properties
-	Properties *RevisionProperties `json:"properties,omitempty"`
+	Properties *RevisionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RevisionCollection - Container App Revisions collection ARM resource.
 type RevisionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Revision `json:"value,omitempty"`
+	Value []*Revision
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // RevisionProperties - Revision resource specific properties
 type RevisionProperties struct {
 	// READ-ONLY; Boolean describing if the Revision is Active
-	Active *bool `json:"active,omitempty" azure:"ro"`
+	Active *bool
 
 	// READ-ONLY; Timestamp describing when the revision was created by controller
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Fully qualified domain name of the revision
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; Current health State of the revision
-	HealthState *RevisionHealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *RevisionHealthState
+
+	// READ-ONLY; Timestamp describing when the revision was last active. Only meaningful when revision is inactive
+	LastActiveTime *time.Time
 
 	// READ-ONLY; Optional Field - Platform Error Message
-	ProvisioningError *string `json:"provisioningError,omitempty" azure:"ro"`
+	ProvisioningError *string
 
 	// READ-ONLY; Current provisioning State of the revision
-	ProvisioningState *RevisionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *RevisionProvisioningState
 
 	// READ-ONLY; Number of pods currently running for this revision
-	Replicas *int32 `json:"replicas,omitempty" azure:"ro"`
+	Replicas *int32
 
 	// READ-ONLY; Container App Revision Template with all possible settings and the defaults if user did not provide them. The
 	// defaults are populated as they were at the creation time
-	Template *Template `json:"template,omitempty" azure:"ro"`
+	Template *Template
 
 	// READ-ONLY; Traffic weight assigned to this revision
-	TrafficWeight *int32 `json:"trafficWeight,omitempty" azure:"ro"`
+	TrafficWeight *int32
 }
 
 // Scale - Container App scaling configurations.
 type Scale struct {
 	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
-	MaxReplicas *int32 `json:"maxReplicas,omitempty"`
+	MaxReplicas *int32
 
 	// Optional. Minimum number of container replicas.
-	MinReplicas *int32 `json:"minReplicas,omitempty"`
+	MinReplicas *int32
 
 	// Scaling rules.
-	Rules []*ScaleRule `json:"rules,omitempty"`
+	Rules []*ScaleRule
 }
 
 // ScaleRule - Container App container scaling rule.
 type ScaleRule struct {
 	// Azure Queue based scaling.
-	AzureQueue *QueueScaleRule `json:"azureQueue,omitempty"`
+	AzureQueue *QueueScaleRule
 
 	// Custom scale rule.
-	Custom *CustomScaleRule `json:"custom,omitempty"`
+	Custom *CustomScaleRule
 
 	// HTTP requests based scaling.
-	HTTP *HTTPScaleRule `json:"http,omitempty"`
+	HTTP *HTTPScaleRule
 
 	// Scale Rule Name
-	Name *string `json:"name,omitempty"`
+	Name *string
+
+	// Tcp requests based scaling.
+	TCP *TCPScaleRule
 }
 
 // ScaleRuleAuth - Auth Secrets for Container App Scale Rule
 type ScaleRuleAuth struct {
 	// Name of the Container App secret from which to pull the auth params.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Trigger Parameter that uses the secret
-	TriggerParameter *string `json:"triggerParameter,omitempty"`
+	TriggerParameter *string
 }
 
 // Secret definition.
 type Secret struct {
+	// Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
+	Identity *string
+
+	// Azure Key Vault URL pointing to the secret referenced by the container app.
+	KeyVaultURL *string
+
 	// Secret Name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Secret Value.
-	Value *string `json:"value,omitempty"`
+	Value *string
+}
+
+// SecretVolumeItem - Secret to be added to volume.
+type SecretVolumeItem struct {
+	// Path to project secret to. If no path is provided, path defaults to name of secret listed in secretRef.
+	Path *string
+
+	// Name of the Container App secret from which to pull the secret value.
+	SecretRef *string
 }
 
 // SecretsCollection - Container App Secrets Collection ARM resource.
 type SecretsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ContainerAppSecret `json:"value,omitempty"`
+	Value []*ContainerAppSecret
 }
 
 // SourceControl - Container App SourceControl.
 type SourceControl struct {
 	// SourceControl resource specific properties
-	Properties *SourceControlProperties `json:"properties,omitempty"`
+	Properties *SourceControlProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SourceControlCollection - SourceControl collection ARM resource.
 type SourceControlCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SourceControl `json:"value,omitempty"`
+	Value []*SourceControl
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SourceControlProperties - SourceControl resource specific properties
 type SourceControlProperties struct {
 	// The branch which will trigger the auto deployment
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// Container App Revision Template with all possible settings and the defaults if user did not provide them. The defaults
 	// are populated as they were at the creation time
-	GithubActionConfiguration *GithubActionConfiguration `json:"githubActionConfiguration,omitempty"`
+	GithubActionConfiguration *GithubActionConfiguration
 
 	// The repo url which will be integrated to ContainerApp.
-	RepoURL *string `json:"repoUrl,omitempty"`
+	RepoURL *string
 
 	// READ-ONLY; Current provisioning State of the operation
-	OperationState *SourceControlOperationState `json:"operationState,omitempty" azure:"ro"`
+	OperationState *SourceControlOperationState
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
+}
+
+// TCPScaleRule - Container App container Tcp scaling rule.
+type TCPScaleRule struct {
+	// Authentication secrets for the tcp scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe tcp scale rule.
+	Metadata map[string]*string
 }
 
 // Template - Container App versioned application definition. Defines the desired state of an immutable revision. Any changes
 // to this section Will result in a new revision being created
 type Template struct {
 	// List of container definitions for the Container App.
-	Containers []*Container `json:"containers,omitempty"`
+	Containers []*Container
+
+	// List of specialized containers that run before app containers.
+	InitContainers []*InitContainer
 
 	// User friendly suffix that is appended to the revision name
-	RevisionSuffix *string `json:"revisionSuffix,omitempty"`
+	RevisionSuffix *string
 
 	// Scaling properties for the Container App.
-	Scale *Scale `json:"scale,omitempty"`
+	Scale *Scale
 
 	// List of volume definitions for the Container App.
-	Volumes []*Volume `json:"volumes,omitempty"`
+	Volumes []*Volume
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TrafficWeight - Traffic weight assigned to a revision
 type TrafficWeight struct {
 	// Associates a traffic label with a revision
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Indicates that the traffic weight belongs to a latest stable revision
-	LatestRevision *bool `json:"latestRevision,omitempty"`
+	LatestRevision *bool
 
 	// Name of a revision
-	RevisionName *string `json:"revisionName,omitempty"`
+	RevisionName *string
 
 	// Traffic weight assigned to a revision
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 }
 
 // Twitter - The configuration settings of the Twitter provider.
 type Twitter struct {
 	// false if the Twitter provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the app registration for the Twitter provider.
-	Registration *TwitterRegistration `json:"registration,omitempty"`
+	Registration *TwitterRegistration
 }
 
 // TwitterRegistration - The configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
 	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
 	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-	ConsumerKey *string `json:"consumerKey,omitempty"`
+	ConsumerKey *string
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
-	ConsumerSecretSettingName *string `json:"consumerSecretSettingName,omitempty"`
+	ConsumerSecretSettingName *string
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // VnetConfiguration - Configuration properties for apps environment to join a Virtual Network
 type VnetConfiguration struct {
 	// CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges.
-	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+	DockerBridgeCidr *string
 
-	// Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId.
-	// Must not overlap with any other provided IP ranges.
-	InfrastructureSubnetID *string `json:"infrastructureSubnetId,omitempty"`
+	// Resource ID of a subnet for infrastructure components. Must not overlap with any other provided IP ranges.
+	InfrastructureSubnetID *string
 
 	// Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP
-	// resource, must provide ControlPlaneSubnetResourceId and AppSubnetResourceId if
-	// enabling this property
-	Internal *bool `json:"internal,omitempty"`
+	// resource. They must provide infrastructureSubnetId if enabling this property
+	Internal *bool
 
 	// IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other
 	// provided IP ranges.
-	PlatformReservedCidr *string `json:"platformReservedCidr,omitempty"`
+	PlatformReservedCidr *string
 
 	// An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server.
-	PlatformReservedDNSIP *string `json:"platformReservedDnsIP,omitempty"`
-
-	// Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet
-	// defined in infrastructureSubnetId. Must not overlap with any other provided
-	// IP ranges.
-	RuntimeSubnetID *string `json:"runtimeSubnetId,omitempty"`
+	PlatformReservedDNSIP *string
 }
 
 // Volume definitions for the Container App.
 type Volume struct {
 	// Volume name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
-	// Name of storage resource. No need to provide for EmptyDir.
-	StorageName *string `json:"storageName,omitempty"`
+	// List of secrets to be added in volume. If no secrets are provided, all secrets in collection will be added to volume.
+	Secrets []*SecretVolumeItem
+
+	// Name of storage resource. No need to provide for EmptyDir and Secret.
+	StorageName *string
 
 	// Storage type for the volume. If not provided, use EmptyDir.
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 }
 
 // VolumeMount - Volume mount for the Container App.
 type VolumeMount struct {
 	// Path within the container at which the volume should be mounted.Must not contain ':'.
-	MountPath *string `json:"mountPath,omitempty"`
+	MountPath *string
 
 	// This must match the Name of a Volume.
-	VolumeName *string `json:"volumeName,omitempty"`
+	VolumeName *string
+}
+
+// WorkloadProfile - Workload profile to scope container app execution.
+type WorkloadProfile struct {
+	// REQUIRED; Workload profile type for the workloads to run on.
+	Name *string
+
+	// REQUIRED; Workload profile type for the workloads to run on.
+	WorkloadProfileType *string
+
+	// The maximum capacity.
+	MaximumCount *int32
+
+	// The minimum capacity.
+	MinimumCount *int32
+}
+
+// WorkloadProfileStates - Collection of all the workload Profile States for a Managed Environment..
+type WorkloadProfileStates struct {
+	// Workload Profile resource specific properties.
+	Properties *WorkloadProfileStatesProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkloadProfileStatesCollection - Collection of workloadProfileStates
+type WorkloadProfileStatesCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*WorkloadProfileStates
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// WorkloadProfileStatesProperties - Workload Profile resource specific properties.
+type WorkloadProfileStatesProperties struct {
+	// Current count of nodes.
+	CurrentCount *int32
+
+	// Maximum count of nodes.
+	MaximumCount *int32
+
+	// Minimum count of instances.
+	MinimumCount *int32
 }

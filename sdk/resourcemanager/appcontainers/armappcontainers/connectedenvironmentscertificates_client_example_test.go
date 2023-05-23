@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificates_ListByManagedEnvironment.json
-func ExampleCertificatesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificates_ListByConnectedEnvironment.json
+func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCertificatesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCertificatesClient().NewListPager("examplerg", "testcontainerenv", nil)
+	pager := clientFactory.NewConnectedEnvironmentsCertificatesClient().NewListPager("examplerg", "testcontainerenv", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,8 +44,8 @@ func ExampleCertificatesClient_NewListPager() {
 		// 	Value: []*armappcontainers.Certificate{
 		// 		{
 		// 			Name: to.Ptr("certificate-firendly-name"),
-		// 			Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+		// 			Type: to.Ptr("Microsoft.App/ConnectedEnvironments/Certificates"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.CertificateProperties{
 		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
@@ -61,8 +61,8 @@ func ExampleCertificatesClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("certificate-firendly-name"),
-		// 				Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+		// 				Type: to.Ptr("Microsoft.App/ConnectedEnvironments/Certificates"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
@@ -80,8 +80,8 @@ func ExampleCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificate_Get.json
-func ExampleCertificatesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificate_Get.json
+func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -91,7 +91,7 @@ func ExampleCertificatesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCertificatesClient().Get(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", nil)
+	res, err := clientFactory.NewConnectedEnvironmentsCertificatesClient().Get(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,8 +100,8 @@ func ExampleCertificatesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Name: to.Ptr("certificate-firendly-name"),
-	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	Type: to.Ptr("Microsoft.App/ConnectedEnvironments/Certificates"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
@@ -117,8 +117,8 @@ func ExampleCertificatesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificate_CreateOrUpdate.json
-func ExampleCertificatesClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
+func ExampleConnectedEnvironmentsCertificatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCertificatesClient().CreateOrUpdate(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", &armappcontainers.CertificatesClientCreateOrUpdateOptions{CertificateEnvelope: &armappcontainers.Certificate{
+	res, err := clientFactory.NewConnectedEnvironmentsCertificatesClient().CreateOrUpdate(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", &armappcontainers.ConnectedEnvironmentsCertificatesClientCreateOrUpdateOptions{CertificateEnvelope: &armappcontainers.Certificate{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.CertificateProperties{
 			Password: to.Ptr("private key password"),
@@ -143,8 +143,8 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
-	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	Type: to.Ptr("Microsoft.App/ConnectedEnvironments/Certificates"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
@@ -160,8 +160,8 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificate_Delete.json
-func ExampleCertificatesClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificate_Delete.json
+func ExampleConnectedEnvironmentsCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,14 +171,14 @@ func ExampleCertificatesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewCertificatesClient().Delete(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", nil)
+	_, err = clientFactory.NewConnectedEnvironmentsCertificatesClient().Delete(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificates_Patch.json
-func ExampleCertificatesClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a7af0df86022e5e6cc6e8f40ca1981c4557a4bc/specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificates_Patch.json
+func ExampleConnectedEnvironmentsCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -188,7 +188,7 @@ func ExampleCertificatesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCertificatesClient().Update(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", armappcontainers.CertificatePatch{
+	res, err := clientFactory.NewConnectedEnvironmentsCertificatesClient().Update(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", armappcontainers.CertificatePatch{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -201,8 +201,8 @@ func ExampleCertificatesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
-	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	Type: to.Ptr("Microsoft.App/ConnectedEnvironments/Certificates"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),

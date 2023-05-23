@@ -203,8 +203,18 @@ func (l *rpcLink) responseRouter() {
 	}
 }
 
-// RPC sends a request and waits on a response for that request
 func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
+	resp, err := l.internalRPC(ctx, msg)
+
+	if err != nil {
+		return nil, amqpwrap.WrapError(err, l.ConnID(), l.LinkName(), "")
+	}
+
+	return resp, nil
+}
+
+// RPC sends a request and waits on a response for that request
+func (l *rpcLink) internalRPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 	copiedMessage, messageID, err := addMessageID(msg, l.uuidNewV4)
 
 	if err != nil {

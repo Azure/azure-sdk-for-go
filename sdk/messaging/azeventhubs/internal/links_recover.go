@@ -15,26 +15,21 @@ import (
 )
 
 type LinkRetrier[LinkT AMQPLink] struct {
-	GetLink      func(ctx context.Context, partitionID string) (LinkWithID[LinkT], error)
-	CloseLink    func(ctx context.Context, partitionID string, linkName string) error
-	NSRecover    func(ctx context.Context, connID uint64) error
-	RetryOptions *exported.RetryOptions
-}
-
-func (l LinkRetrier[LinkT]) Validate() error {
-	if l.GetLink == nil || l.CloseLink == nil || l.NSRecover == nil || l.RetryOptions == nil {
-		return errors.New("missing required fields in LinkRetrier")
-	}
-
-	return nil
+	GetLink   func(ctx context.Context, partitionID string) (LinkWithID[LinkT], error)
+	CloseLink func(ctx context.Context, partitionID string, linkName string) error
+	NSRecover func(ctx context.Context, connID uint64) error
 }
 
 type RetryCallback[LinkT AMQPLink] func(ctx context.Context, lwid LinkWithID[LinkT]) error
 
+// Retry runs the fn argument in a loop, respecting retry counts.
+// If connection/link failures occur it also takes care of running recovery logic
+// to bring them back, or return an appropriate error if retries are exhausted.
 func (l LinkRetrier[LinkT]) Retry(ctx context.Context,
 	eventName azlog.Event,
 	operation string,
 	partitionID string,
+	retryOptions exported.RetryOptions,
 	fn RetryCallback[LinkT]) error {
 	didQuickRetry := false
 
@@ -48,7 +43,7 @@ func (l LinkRetrier[LinkT]) Retry(ctx context.Context,
 		return currentPrefix
 	}
 
-	return utils.Retry(ctx, eventName, prefix, *l.RetryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
+	return utils.Retry(ctx, eventName, prefix, retryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, args.LastErr); err != nil {
 			return err
 		}

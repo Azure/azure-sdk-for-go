@@ -183,30 +183,6 @@ func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation
 	}, isFatalErrorFunc)
 }
 
-func (l *Links[LinkT]) CloseLink(ctx context.Context, partitionID string) error {
-	l.linksMu.RLock()
-	current := l.links[partitionID]
-	l.linksMu.RUnlock()
-
-	if current == nil {
-		return nil
-	}
-
-	l.linksMu.Lock()
-	defer l.linksMu.Unlock()
-
-	current = l.links[partitionID]
-
-	if current == nil {
-		return nil
-	}
-
-	_ = current.Close(ctx)
-	delete(l.links, partitionID)
-
-	return nil
-}
-
 func (l *Links[LinkT]) GetLink(ctx context.Context, partitionID string) (LinkWithID[LinkT], error) {
 	if err := l.checkOpen(); err != nil {
 		return nil, err

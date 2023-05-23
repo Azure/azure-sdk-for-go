@@ -14,7 +14,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/utils"
 )
 
-func Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error {
+type LinkRetrier[LinkT AMQPLink] struct {
+	GetLink      func(ctx context.Context, partitionID string) (LinkWithID[LinkT], error)
+	CloseLink    func(ctx context.Context, partitionID string, linkName string) error
+	NSRecover    func(ctx context.Context, connID uint64) error
+	RetryOptions *exported.RetryOptions
+}
+
+func (l LinkRetrier[LinkT]) Validate() error {
+	if l.GetLink == nil || l.CloseLink == nil || l.NSRecover == nil || l.RetryOptions == nil {
+		return errors.New("missing required fields in LinkRetrier")
+	}
+
+	return nil
+}
+
+type RetryCallback[LinkT AMQPLink] func(ctx context.Context, lwid LinkWithID[LinkT]) error
+
+func (l LinkRetrier[LinkT]) Retry(ctx context.Context,
+	eventName azlog.Event,
+	operation string,
+	partitionID string,
+	fn RetryCallback[LinkT]) error {
 	didQuickRetry := false
 
 	isFatalErrorFunc := func(err error) bool {
@@ -27,7 +48,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, partition
 		return currentPrefix
 	}
 
-	return utils.Retry(ctx, eventName, prefix, retryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
+	return utils.Retry(ctx, eventName, prefix, *l.RetryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, args.LastErr); err != nil {
 			return err
 		}
@@ -72,7 +93,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, partition
 	}, isFatalErrorFunc)
 }
 
-func RecoverIfNeeded(ctx context.Context, err error) error {
+func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error) error {
 	rk := GetRecoveryKind(err)
 
 	switch rk {
@@ -86,7 +107,7 @@ func RecoverIfNeeded(ctx context.Context, err error) error {
 			return nil
 		}
 
-		if err := l.closePartitionLinkIfMatch(ctx, awErr.PartitionID, awErr.LinkName); err != nil {
+		if err := l.CloseLink(ctx, awErr.PartitionID, awErr.LinkName); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", formatLogPrefix(awErr.ConnID, awErr.LinkName, awErr.PartitionID), err)
 			return err
 		}
@@ -104,7 +125,7 @@ func RecoverIfNeeded(ctx context.Context, err error) error {
 		// We used to close _all_ the links, but no longer do that since it's possible (when we do receiver
 		// redirect) to have more than one active connection at a time which means not all links would be
 		// affected when a single connection goes down.
-		if err := l.closePartitionLinkIfMatch(ctx, awErr.PartitionID, awErr.LinkName); err != nil {
+		if err := l.CloseLink(ctx, awErr.PartitionID, awErr.LinkName); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link: %s", formatLogPrefix(awErr.ConnID, awErr.LinkName, awErr.PartitionID), err)
 
 			// NOTE: this is best effort - it's probable the connection is dead anyways so we'll log
@@ -126,7 +147,7 @@ func RecoverIfNeeded(ctx context.Context, err error) error {
 		//
 		// For #2, we may recreate the connection. It's possible we won't if the connection itself
 		// has already been recovered by another goroutine.
-		err := l.ns.Recover(ctx, awErr.ConnID)
+		err := l.NSRecover(ctx, awErr.ConnID)
 
 		if err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Failure recovering connection for link: %s", formatLogPrefix(awErr.ConnID, awErr.LinkName, awErr.PartitionID), err)

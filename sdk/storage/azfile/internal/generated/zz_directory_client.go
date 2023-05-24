@@ -23,30 +23,13 @@ import (
 )
 
 // DirectoryClient contains the methods for the Directory group.
-// Don't use this type directly, use NewDirectoryClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type DirectoryClient struct {
+	internal               *azcore.Client
 	endpoint               string
 	allowTrailingDot       *bool
 	fileRequestIntent      *ShareTokenIntent
 	allowSourceTrailingDot *bool
-	pl                     runtime.Pipeline
-}
-
-// NewDirectoryClient creates a new instance of DirectoryClient with the specified values.
-//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//   - allowTrailingDot - If true, the trailing dot will not be trimmed from the target URI.
-//   - fileRequestIntent - Valid value is backup
-//   - allowSourceTrailingDot - If true, the trailing dot will not be trimmed from the source URI.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewDirectoryClient(endpoint string, allowTrailingDot *bool, fileRequestIntent *ShareTokenIntent, allowSourceTrailingDot *bool, pl runtime.Pipeline) *DirectoryClient {
-	client := &DirectoryClient{
-		endpoint:               endpoint,
-		allowTrailingDot:       allowTrailingDot,
-		fileRequestIntent:      fileRequestIntent,
-		allowSourceTrailingDot: allowSourceTrailingDot,
-		pl:                     pl,
-	}
-	return client
 }
 
 // Create - Creates a new directory under the specified share or parent directory.
@@ -61,7 +44,7 @@ func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
 	}
@@ -196,7 +179,7 @@ func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryCli
 	if err != nil {
 		return DirectoryClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientDeleteResponse{}, err
 	}
@@ -261,7 +244,7 @@ func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, handleID s
 	if err != nil {
 		return DirectoryClientForceCloseHandlesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientForceCloseHandlesResponse{}, err
 	}
@@ -354,7 +337,7 @@ func (client *DirectoryClient) GetProperties(ctx context.Context, options *Direc
 	if err != nil {
 		return DirectoryClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientGetPropertiesResponse{}, err
 	}
@@ -551,7 +534,7 @@ func (client *DirectoryClient) ListHandles(ctx context.Context, options *Directo
 	if err != nil {
 		return DirectoryClientListHandlesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientListHandlesResponse{}, err
 	}
@@ -637,7 +620,7 @@ func (client *DirectoryClient) Rename(ctx context.Context, renameSource string, 
 	if err != nil {
 		return DirectoryClientRenameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientRenameResponse{}, err
 	}
@@ -791,7 +774,7 @@ func (client *DirectoryClient) SetMetadata(ctx context.Context, options *Directo
 	if err != nil {
 		return DirectoryClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientSetMetadataResponse{}, err
 	}
@@ -873,7 +856,7 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
 	}

@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -20,21 +21,10 @@ import (
 )
 
 // ServiceClient contains the methods for the Service group.
-// Don't use this type directly, use NewServiceClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ServiceClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewServiceClient creates a new instance of ServiceClient with the specified values.
-//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
-	client := &ServiceClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // GetProperties - Gets the properties of a storage account's File service, including properties for Storage Analytics metrics
@@ -48,7 +38,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
@@ -154,7 +144,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, storageServicePr
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
@@ -179,7 +169,10 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-version"] = []string{"2022-11-02"}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsXML(req, storageServiceProperties)
+	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.

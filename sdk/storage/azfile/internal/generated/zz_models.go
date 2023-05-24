@@ -96,10 +96,10 @@ type DestinationLeaseAccessConditions struct {
 // Directory - A listed directory item.
 type Directory struct {
 	// REQUIRED
-	Name          *string `xml:"Name"`
-	Attributes    *string `xml:"Attributes"`
-	ID            *string `xml:"FileId"`
-	PermissionKey *string `xml:"PermissionKey"`
+	Name          *StringEncoded `xml:"Name"`
+	Attributes    *string        `xml:"Attributes"`
+	ID            *string        `xml:"FileId"`
+	PermissionKey *string        `xml:"PermissionKey"`
 
 	// File properties.
 	Properties *FileProperty `xml:"Properties"`
@@ -263,7 +263,7 @@ type DirectoryClientSetPropertiesOptions struct {
 // File - A listed file item.
 type File struct {
 	// REQUIRED
-	Name *string `xml:"Name"`
+	Name *StringEncoded `xml:"Name"`
 
 	// REQUIRED; File properties.
 	Properties    *FileProperty `xml:"Properties"`
@@ -575,7 +575,7 @@ type Handle struct {
 	OpenTime *time.Time `xml:"OpenTime"`
 
 	// REQUIRED
-	Path *string `xml:"Path"`
+	Path *StringEncoded `xml:"Path"`
 
 	// REQUIRED; SMB session ID in context of which the file handle was opened
 	SessionID *string `xml:"SessionId"`
@@ -602,7 +602,7 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 	NextMarker *string `xml:"NextMarker"`
 
 	// REQUIRED
-	Prefix *string `xml:"Prefix"`
+	Prefix *StringEncoded `xml:"Prefix"`
 
 	// REQUIRED; Abstract for entries that can be listed from Directory.
 	Segment *FilesAndDirectoriesListSegment `xml:"Entries"`
@@ -943,7 +943,7 @@ type ShareFileRangeList struct {
 // SharePermission - A permission (a security descriptor) at the share level.
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
-	Permission *string `json:"permission,omitempty"`
+	Permission *string
 }
 
 // ShareProperties - Properties of a share.
@@ -1016,7 +1016,7 @@ type SourceModifiedAccessConditions struct {
 }
 
 type StorageError struct {
-	Message *string `json:"Message,omitempty"`
+	Message *string
 }
 
 // StorageServiceProperties - Storage service properties.
@@ -1035,6 +1035,6 @@ type StorageServiceProperties struct {
 }
 
 type StringEncoded struct {
-	Content *string `xml:"content"`
+	Content *string `xml:",chardata"`
 	Encoded *bool   `xml:"Encoded,attr"`
 }

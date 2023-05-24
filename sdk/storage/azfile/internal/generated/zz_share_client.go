@@ -23,24 +23,11 @@ import (
 )
 
 // ShareClient contains the methods for the Share group.
-// Don't use this type directly, use NewShareClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ShareClient struct {
+	internal          *azcore.Client
 	endpoint          string
 	fileRequestIntent *ShareTokenIntent
-	pl                runtime.Pipeline
-}
-
-// NewShareClient creates a new instance of ShareClient with the specified values.
-//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//   - fileRequestIntent - Valid value is backup
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewShareClient(endpoint string, fileRequestIntent *ShareTokenIntent, pl runtime.Pipeline) *ShareClient {
-	client := &ShareClient{
-		endpoint:          endpoint,
-		fileRequestIntent: fileRequestIntent,
-		pl:                pl,
-	}
-	return client
 }
 
 // AcquireLease - The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and
@@ -57,7 +44,7 @@ func (client *ShareClient) AcquireLease(ctx context.Context, duration int32, opt
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
@@ -143,7 +130,7 @@ func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientB
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
@@ -239,7 +226,7 @@ func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, opti
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
@@ -324,7 +311,7 @@ func (client *ShareClient) Create(ctx context.Context, options *ShareClientCreat
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
@@ -410,7 +397,7 @@ func (client *ShareClient) CreatePermission(ctx context.Context, sharePermission
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
@@ -438,7 +425,10 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sh
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsJSON(req, sharePermission)
+	if err := runtime.MarshalAsJSON(req, sharePermission); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // createPermissionHandleResponse handles the CreatePermission response.
@@ -473,7 +463,7 @@ func (client *ShareClient) CreateSnapshot(ctx context.Context, options *ShareCli
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
@@ -552,7 +542,7 @@ func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDelet
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
@@ -618,7 +608,7 @@ func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareCl
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
@@ -692,7 +682,7 @@ func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey 
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
@@ -758,7 +748,7 @@ func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
@@ -914,7 +904,7 @@ func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
@@ -989,7 +979,7 @@ func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, opt
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
@@ -1069,7 +1059,7 @@ func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, optio
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
@@ -1150,7 +1140,7 @@ func (client *ShareClient) Restore(ctx context.Context, options *ShareClientRest
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
@@ -1231,7 +1221,7 @@ func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*Sign
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
@@ -1263,7 +1253,10 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
-	return req, runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL})
+	if err := runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL}); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
@@ -1306,7 +1299,7 @@ func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClient
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
@@ -1384,7 +1377,7 @@ func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}

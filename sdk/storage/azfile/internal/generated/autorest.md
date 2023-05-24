@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.45"
+use: "@autorest/go@4.0.0-preview.49"
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs
@@ -313,13 +313,4 @@ directive:
         replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
 ```
 
-### Convert StringEncoded to string type
 
-``` yaml
-directive:
-  - from: zz_models.go
-    where: $
-    transform: >-
-      return $.
-        replace(/\*StringEncoded/g, `*string`);
-```

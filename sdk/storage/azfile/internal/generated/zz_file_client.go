@@ -24,30 +24,13 @@ import (
 )
 
 // FileClient contains the methods for the File group.
-// Don't use this type directly, use NewFileClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type FileClient struct {
+	internal               *azcore.Client
 	endpoint               string
 	allowTrailingDot       *bool
 	fileRequestIntent      *ShareTokenIntent
 	allowSourceTrailingDot *bool
-	pl                     runtime.Pipeline
-}
-
-// NewFileClient creates a new instance of FileClient with the specified values.
-//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//   - allowTrailingDot - If true, the trailing dot will not be trimmed from the target URI.
-//   - fileRequestIntent - Valid value is backup
-//   - allowSourceTrailingDot - If true, the trailing dot will not be trimmed from the source URI.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewFileClient(endpoint string, allowTrailingDot *bool, fileRequestIntent *ShareTokenIntent, allowSourceTrailingDot *bool, pl runtime.Pipeline) *FileClient {
-	client := &FileClient{
-		endpoint:               endpoint,
-		allowTrailingDot:       allowTrailingDot,
-		fileRequestIntent:      fileRequestIntent,
-		allowSourceTrailingDot: allowSourceTrailingDot,
-		pl:                     pl,
-	}
-	return client
 }
 
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
@@ -62,7 +45,7 @@ func (client *FileClient) AbortCopy(ctx context.Context, copyID string, options 
 	if err != nil {
 		return FileClientAbortCopyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientAbortCopyResponse{}, err
 	}
@@ -132,7 +115,7 @@ func (client *FileClient) AcquireLease(ctx context.Context, duration int32, opti
 	if err != nil {
 		return FileClientAcquireLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientAcquireLeaseResponse{}, err
 	}
@@ -219,7 +202,7 @@ func (client *FileClient) BreakLease(ctx context.Context, options *FileClientBre
 	if err != nil {
 		return FileClientBreakLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientBreakLeaseResponse{}, err
 	}
@@ -305,7 +288,7 @@ func (client *FileClient) ChangeLease(ctx context.Context, leaseID string, optio
 	if err != nil {
 		return FileClientChangeLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientChangeLeaseResponse{}, err
 	}
@@ -396,7 +379,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, f
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
@@ -554,7 +537,7 @@ func (client *FileClient) Delete(ctx context.Context, options *FileClientDeleteO
 	if err != nil {
 		return FileClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientDeleteResponse{}, err
 	}
@@ -619,7 +602,7 @@ func (client *FileClient) Download(ctx context.Context, options *FileClientDownl
 	if err != nil {
 		return FileClientDownloadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientDownloadResponse{}, err
 	}
@@ -823,7 +806,7 @@ func (client *FileClient) ForceCloseHandles(ctx context.Context, handleID string
 	if err != nil {
 		return FileClientForceCloseHandlesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientForceCloseHandlesResponse{}, err
 	}
@@ -913,7 +896,7 @@ func (client *FileClient) GetProperties(ctx context.Context, options *FileClient
 	if err != nil {
 		return FileClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientGetPropertiesResponse{}, err
 	}
@@ -1102,7 +1085,7 @@ func (client *FileClient) GetRangeList(ctx context.Context, options *FileClientG
 	if err != nil {
 		return FileClientGetRangeListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientGetRangeListResponse{}, err
 	}
@@ -1196,7 +1179,7 @@ func (client *FileClient) ListHandles(ctx context.Context, options *FileClientLi
 	if err != nil {
 		return FileClientListHandlesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientListHandlesResponse{}, err
 	}
@@ -1274,7 +1257,7 @@ func (client *FileClient) ReleaseLease(ctx context.Context, leaseID string, opti
 	if err != nil {
 		return FileClientReleaseLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientReleaseLeaseResponse{}, err
 	}
@@ -1361,7 +1344,7 @@ func (client *FileClient) Rename(ctx context.Context, renameSource string, optio
 	if err != nil {
 		return FileClientRenameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientRenameResponse{}, err
 	}
@@ -1521,7 +1504,7 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
 	}
@@ -1674,7 +1657,7 @@ func (client *FileClient) SetMetadata(ctx context.Context, options *FileClientSe
 	if err != nil {
 		return FileClientSetMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientSetMetadataResponse{}, err
 	}
@@ -1771,7 +1754,7 @@ func (client *FileClient) StartCopy(ctx context.Context, copySource string, opti
 	if err != nil {
 		return FileClientStartCopyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientStartCopyResponse{}, err
 	}
@@ -1903,7 +1886,7 @@ func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fi
 	if err != nil {
 		return FileClientUploadRangeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientUploadRangeResponse{}, err
 	}
@@ -1945,7 +1928,10 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(optionalbody, "application/octet-stream")
+	if err := req.SetBody(optionalbody, "application/octet-stream"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // uploadRangeHandleResponse handles the UploadRange response.
@@ -2020,7 +2006,7 @@ func (client *FileClient) UploadRangeFromURL(ctx context.Context, rangeParam str
 	if err != nil {
 		return FileClientUploadRangeFromURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileClientUploadRangeFromURLResponse{}, err
 	}

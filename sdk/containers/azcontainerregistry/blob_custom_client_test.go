@@ -79,15 +79,26 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
 	oriReader := bytes.NewReader(blob)
-	firstPart := io.NewSectionReader(oriReader, int64(0), int64(len(blob)/2))
-	secondPart := io.NewSectionReader(oriReader, int64(len(blob)/2), int64(len(blob)-len(blob)/2))
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, firstPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(0)), RangeEnd: to.Ptr(int32(len(blob)/2 - 1))})
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadResp.Location)
-	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, secondPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(len(blob) / 2)), RangeEnd: to.Ptr(int32(len(blob) - 1))})
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadResp.Location)
-	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)
+	size := int64(len(blob))
+	chunkSize := int64(736)
+	current := int64(0)
+	location := *startRes.Location
+	for {
+		end := current + chunkSize
+		if end > size {
+			end = size
+		}
+		chunkReader := io.NewSectionReader(oriReader, current, end-current)
+		uploadResp, err := client.UploadChunk(ctx, location, chunkReader, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(current)), RangeEnd: to.Ptr(int32(end - 1))})
+		require.NoError(t, err)
+		require.NotEmpty(t, *uploadResp.Location)
+		location = *uploadResp.Location
+		current = end
+		if current >= size {
+			break
+		}
+	}
+	completeResp, err := client.CompleteUpload(ctx, location, calculator, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *completeResp.DockerContentDigest)
 }

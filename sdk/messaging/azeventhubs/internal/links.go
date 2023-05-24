@@ -76,8 +76,8 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 	return l
 }
 
-func (l *Links[LinkT]) RetryManagement(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error) error {
-	return l.mr.Retry(ctx, eventName, operation, partitionID, retryOptions, fn)
+func (l *Links[LinkT]) RetryManagement(ctx context.Context, eventName log.Event, operation string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error) error {
+	return l.mr.Retry(ctx, eventName, operation, "", retryOptions, fn)
 }
 
 func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error {

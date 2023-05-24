@@ -261,7 +261,7 @@ func TestLinksManagementRetry(t *testing.T) {
 		return nil
 	}
 
-	err := links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{}, getEventHubProps)
+	err := links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{}, getEventHubProps)
 	require.NoError(t, err)
 	require.Equal(t, 1, called, "nothing broken, should work on the first time")
 
@@ -283,7 +283,7 @@ func TestLinksManagementRetry(t *testing.T) {
 
 	called = 0
 
-	err = links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{
+	err = links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{
 		MaxRetries:    1,
 		RetryDelay:    time.Nanosecond,
 		MaxRetryDelay: time.Nanosecond,
@@ -299,7 +299,7 @@ func TestLinksManagementRetry(t *testing.T) {
 	require.NoError(t, err)
 	origMgmtLWID.Close(context.Background())
 
-	err = links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{
+	err = links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{
 		MaxRetries:    1,
 		RetryDelay:    time.Nanosecond,
 		MaxRetryDelay: time.Nanosecond,

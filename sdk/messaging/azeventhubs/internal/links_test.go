@@ -217,6 +217,103 @@ func TestLinkFailure(t *testing.T) {
 	requireNewLinkSameConn(t, oldLWID, newLWID)
 }
 
+func TestLinksManagementRetry(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	ns, links := newLinksForTest(t)
+	defer ns.Close(context.Background(), true)
+	defer test.RequireClose(t, links)
+
+	var prevLWID LinkWithID[amqpwrap.RPCLink]
+	called := 0
+
+	getEventHubProps := func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error {
+		called++
+		// mostly lifted from mgmt.go/getEventHubProperties
+		token, err := ns.GetTokenForEntity(testParams.EventHubName)
+
+		if err != nil {
+			return err
+		}
+
+		amqpMsg := &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":      "READ",
+				"name":           testParams.EventHubName,
+				"type":           "com.microsoft:eventhub",
+				"security_token": token.Token,
+			},
+		}
+
+		resp, err := lwid.Link().RPC(context.Background(), amqpMsg)
+
+		if err != nil {
+			return err
+		}
+
+		if resp.Code >= 300 {
+			return fmt.Errorf("failed getting partition properties: %v", resp.Description)
+		}
+
+		partitionIDs := resp.Message.Value.(map[string]any)["partition_ids"]
+		require.NotEmpty(t, partitionIDs)
+
+		prevLWID = lwid
+		return nil
+	}
+
+	err := links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{}, getEventHubProps)
+	require.NoError(t, err)
+	require.Equal(t, 1, called, "nothing broken, should work on the first time")
+
+	// we can do a quick check of another bit - that we don't just arbitrarily reset a management link
+	// if the link _name_ doesn't match.
+	err = links.closeManagementLinkIfMatch(context.Background(), "not the management link name")
+	require.NoError(t, err)
+	require.NotNil(t, links.managementLink)
+	origMgmtLink := links.managementLink
+
+	// let's trigger connection recovery by closing the amqp.Conn
+	// behind `Links`'s back.
+	client, connID, err := ns.GetAMQPClientImpl(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, prevLWID.ConnID(), connID, "connection is stable")
+
+	err = client.Close()
+	require.NoError(t, err)
+
+	called = 0
+
+	err = links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Nanosecond,
+		MaxRetryDelay: time.Nanosecond,
+	}, getEventHubProps)
+	require.NoError(t, err)
+
+	require.Equal(t, connID+1, prevLWID.ConnID(), "new connection was created")
+	require.Equal(t, 2, called, "first usage failed due to dead connection, second call worked after recovery")
+	require.NotEqual(t, origMgmtLink.Link().LinkName(), links.managementLink.Link().LinkName(), "management link also recreated")
+
+	// and now let's try it with the mgmt link dead.
+	origMgmtLWID, err := links.GetManagementLink(context.Background())
+	require.NoError(t, err)
+	origMgmtLWID.Close(context.Background())
+
+	err = links.RetryManagement(context.Background(), "test", "op", "0", exported.RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Nanosecond,
+		MaxRetryDelay: time.Nanosecond,
+	}, getEventHubProps)
+	require.NoError(t, err)
+
+	require.Equal(t, origMgmtLWID.ConnID(), prevLWID.ConnID(), "connection wasn't touched")
+	require.NotEqual(t, origMgmtLWID.Link().LinkName(), prevLWID.Link().LinkName(), "management link recreated")
+
+	test.RequireClose(t, links)
+
+	require.Nil(t, links.managementLink)
+}
+
 func requireNewLinkSameConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], newLWID LinkWithID[AMQPSenderCloser]) {
 	t.Helper()
 	require.NotEqual(t, oldLWID.Link().LinkName(), newLWID.Link().LinkName(), "Link should have a new ID because it was recreated")

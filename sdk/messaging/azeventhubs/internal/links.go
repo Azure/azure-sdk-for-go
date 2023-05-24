@@ -68,12 +68,16 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 			return l.GetManagementLink(ctx)
 		},
 		CloseLink: func(ctx context.Context, _, linkName string) error {
-			return l.closeManagementLink(ctx, linkName)
+			return l.closeManagementLinkIfMatch(ctx, linkName)
 		},
 		NSRecover: l.ns.Recover,
 	}
 
 	return l
+}
+
+func (l *Links[LinkT]) RetryManagement(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error) error {
+	return l.mr.Retry(ctx, eventName, operation, partitionID, retryOptions, fn)
 }
 
 func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error {
@@ -299,7 +303,7 @@ func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionI
 	return current.Close(ctx)
 }
 
-func (l *Links[LinkT]) closeManagementLink(ctx context.Context, linkName string) error {
+func (l *Links[LinkT]) closeManagementLinkIfMatch(ctx context.Context, linkName string) error {
 	l.managementLinkMu.Lock()
 	defer l.managementLinkMu.Unlock()
 

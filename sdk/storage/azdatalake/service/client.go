@@ -106,6 +106,6 @@ func (s *Client) GetServiceProperties(ctx context.Context, options *GetPropertie
 
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
-func (fs *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
+func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
 	return nil
 }

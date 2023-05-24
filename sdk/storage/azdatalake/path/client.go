@@ -31,32 +31,37 @@ func (p *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
 
-// dfs
+// dfs - 1
 func (p *Client) SetAccessControl(options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	return SetAccessControlResponse{}, nil
 }
 
-// dfs
+// dfs - 1
 func (p *Client) SetAccessControlRecursive(options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// dfs
+// dfs - 1
 func (p *Client) UpdateAccessControlRecursive(options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// dfs
+// dfs - 1
+func (p *Client) GetAccessControl(options *GetAccessControlOptions) (GetAccessControlResponse, error) {
+	return GetAccessControlResponse{}, nil
+}
+
+// dfs - 1
 func (p *Client) RemoveAccessControlRecursive(options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// blob
+// blob - 3
 func (p *Client) SetMetadata(options *SetMetadataOptions) (SetMetadataResponse, error) {
 	return SetMetadataResponse{}, nil
 }
 
-// blob
+// blob - 3
 func (p *Client) SetHTTPHeaders(options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	return SetHTTPHeadersResponse{}, nil
 }

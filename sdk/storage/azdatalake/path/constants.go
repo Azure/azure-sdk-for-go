@@ -18,15 +18,6 @@ const (
 	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
 )
 
-type ExpiryOptions = generated.PathExpiryOptions
-
-const (
-	ExpiryOptionsAbsolute           ExpiryOptions = generated.PathExpiryOptionsAbsolute
-	ExpiryOptionsNeverExpire        ExpiryOptions = generated.PathExpiryOptionsNeverExpire
-	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.PathExpiryOptionsRelativeToCreation
-	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.PathExpiryOptionsRelativeToNow
-)
-
 type RenameMode = generated.PathRenameMode
 
 const (

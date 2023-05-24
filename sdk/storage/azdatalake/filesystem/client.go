@@ -89,8 +89,8 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 	return GetAccessPolicyResponse{}, nil
 }
 
-func (fs *Client) UndeletePath(ctx context.Context, options *UndeletePathOptions) error {
-	return nil
+func (fs *Client) UndeletePath(ctx context.Context, options *UndeletePathOptions) (UndeletePathResponse, error) {
+	return UndeletePathResponse{}, nil
 }
 
 // NewListPathsPager operation returns a pager of the shares under the specified account.

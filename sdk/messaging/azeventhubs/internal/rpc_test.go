@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net"
+	"sync"
 	"testing"
 	"time"
 
@@ -91,7 +92,7 @@ func TestRPCLink(t *testing.T) {
 // will cause the RPCLink to properly broadcast the failure so the caller can initiate
 // a link recreation/connection recovery (or potentially just fail out)
 func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
-	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
+	tester := NewRPCTester(t)
 	messages := make(chan string, 10000)
 	_ = test.CaptureLogsForTestWithChannel(messages)
 
@@ -140,7 +141,7 @@ LogLoop:
 }
 
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
-	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
+	tester := NewRPCTester(t)
 
 	getLogs := test.CaptureLogsForTest()
 
@@ -192,7 +193,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 }
 
 func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
-	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
+	tester := NewRPCTester(t)
 
 	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
@@ -316,7 +317,7 @@ func TestRPCLinkClosingClean_CreationFailsButSessionCloseFailsToo(t *testing.T) 
 }
 
 func TestRPCLinkClosingQuickly(t *testing.T) {
-	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
+	tester := NewRPCTester(t)
 
 	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
@@ -328,6 +329,87 @@ func TestRPCLinkClosingQuickly(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, link)
 	require.NoError(t, link.Close(context.Background()))
+}
+
+func TestRPCLinkBroadcastErrorWhenClosed(t *testing.T) {
+	tester := NewRPCTester(t)
+
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client: &rpcTesterClient{
+			session: tester,
+		},
+		Address:  "some-address",
+		LogEvent: "rpctesting",
+	})
+	require.NoError(t, err)
+	require.NotNil(t, link)
+
+	ch := make(chan struct{}, 1)
+
+	go func() {
+		defer close(ch)
+		_, err := link.RPC(context.Background(), &amqp.Message{
+			ApplicationProperties: map[string]any{
+				rpcTesterProperty: []*rpcTestResp{},
+			},
+		})
+		require.ErrorIs(t, err, RPCLinkClosedErr)
+	}()
+
+	<-tester.RPCLoopStarted
+
+	require.NoError(t, link.Close(context.Background()))
+	<-ch
+
+	// and the error is cached so further calls also get RPCLinkClosedErr
+	// similar to what we do in go-amqp.
+	_, err = link.RPC(context.Background(), &amqp.Message{
+		ApplicationProperties: map[string]any{
+			rpcTesterProperty: []*rpcTestResp{},
+		},
+	})
+	require.ErrorIs(t, err, RPCLinkClosedErr)
+}
+
+func TestRPCLinkCancelClientSideWait(t *testing.T) {
+	tester := NewRPCTester(t)
+
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client: &rpcTesterClient{
+			session: tester,
+		},
+		Address:  "some-address",
+		LogEvent: "rpctesting",
+	})
+	require.NoError(t, err)
+	require.NotNil(t, link)
+
+	ch := make(chan struct{}, 1)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go func() {
+		defer close(ch)
+		_, err := link.RPC(ctx, &amqp.Message{
+			ApplicationProperties: map[string]any{
+				rpcTesterProperty: []*rpcTestResp{},
+			},
+		})
+		require.ErrorIs(t, err, context.Canceled)
+	}()
+
+	<-tester.RPCLoopStarted
+	cancel()
+	<-ch
+
+}
+
+func NewRPCTester(t *testing.T) *rpcTester {
+	return &rpcTester{t: t,
+		ResponsesCh:    make(chan *rpcTestResp, 1000),
+		Accepted:       make(chan *amqp.Message, 1),
+		RPCLoopStarted: make(chan struct{}, 1),
+	}
 }
 
 // rpcTester has all the functions needed (for our RPC tests) to be:
@@ -347,6 +429,11 @@ type rpcTester struct {
 	t           *testing.T
 
 	connID uint64
+
+	// RPCLoopStarted is closed when the first Receive() call starts,
+	// which indicates that the RPC receiver loop has started.
+	RPCLoopStarted      chan struct{}
+	closeRPCLoopStarted sync.Once
 }
 
 func (c *rpcTester) ConnID() uint64 {
@@ -402,6 +489,10 @@ func (tester *rpcTester) AcceptMessage(ctx context.Context, msg *amqp.Message) e
 }
 
 func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+	tester.closeRPCLoopStarted.Do(func() {
+		close(tester.RPCLoopStarted)
+	})
+
 	select {
 	case resp := <-tester.ResponsesCh:
 		return resp.M, resp.E

@@ -151,7 +151,7 @@ func GetRecoveryKind(err error) RecoveryKind {
 	}
 
 	if errors.Is(err, RPCLinkClosedErr) {
-		return RecoveryKindLink
+		return RecoveryKindFatal
 	}
 
 	if IsCancelError(err) {

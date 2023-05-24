@@ -297,7 +297,9 @@ func TestLinksManagementRetry(t *testing.T) {
 	// and now let's try it with the mgmt link dead.
 	origMgmtLWID, err := links.GetManagementLink(context.Background())
 	require.NoError(t, err)
-	origMgmtLWID.Close(context.Background())
+
+	err = origMgmtLWID.Link().(*rpcLink).receiver.Close(context.Background())
+	require.NoError(t, err)
 
 	err = links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{
 		MaxRetries:    1,

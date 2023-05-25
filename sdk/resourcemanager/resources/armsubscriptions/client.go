@@ -11,6 +11,7 @@ package armsubscriptions
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -24,22 +25,19 @@ import (
 // Client contains the methods for the Subscriptions group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	internal       *arm.Client
-	subscriptionID string
+	internal *arm.Client
 }
 
 // NewClient creates a new instance of Client with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
-		subscriptionID: subscriptionID,
-		internal:       cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -48,10 +46,11 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
+//   - subscriptionID - The ID of the target subscription.
 //   - parameters - Parameters for checking zone peers.
 //   - options - ClientCheckZonePeersOptions contains the optional parameters for the Client.CheckZonePeers method.
-func (client *Client) CheckZonePeers(ctx context.Context, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (ClientCheckZonePeersResponse, error) {
-	req, err := client.checkZonePeersCreateRequest(ctx, parameters, options)
+func (client *Client) CheckZonePeers(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (ClientCheckZonePeersResponse, error) {
+	req, err := client.checkZonePeersCreateRequest(ctx, subscriptionID, parameters, options)
 	if err != nil {
 		return ClientCheckZonePeersResponse{}, err
 	}
@@ -66,9 +65,12 @@ func (client *Client) CheckZonePeers(ctx context.Context, parameters CheckZonePe
 }
 
 // checkZonePeersCreateRequest creates the CheckZonePeers request.
-func (client *Client) checkZonePeersCreateRequest(ctx context.Context, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (*policy.Request, error) {
+func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest, options *ClientCheckZonePeersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/checkZonePeers/"
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -93,9 +95,10 @@ func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientC
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-12-01
+//   - subscriptionID - The ID of the target subscription.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
-func (client *Client) Get(ctx context.Context, options *ClientGetOptions) (ClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, options)
+func (client *Client) Get(ctx context.Context, subscriptionID string, options *ClientGetOptions) (ClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -110,9 +113,12 @@ func (client *Client) Get(ctx context.Context, options *ClientGetOptions) (Clien
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, options *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, subscriptionID string, options *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}"
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -192,14 +198,15 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // resource provider may support a subset of this list.
 //
 // Generated from API version 2022-12-01
+//   - subscriptionID - The ID of the target subscription.
 //   - options - ClientListLocationsOptions contains the optional parameters for the Client.NewListLocationsPager method.
-func (client *Client) NewListLocationsPager(options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
+func (client *Client) NewListLocationsPager(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListLocationsResponse]{
 		More: func(page ClientListLocationsResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ClientListLocationsResponse) (ClientListLocationsResponse, error) {
-			req, err := client.listLocationsCreateRequest(ctx, options)
+			req, err := client.listLocationsCreateRequest(ctx, subscriptionID, options)
 			if err != nil {
 				return ClientListLocationsResponse{}, err
 			}
@@ -216,9 +223,12 @@ func (client *Client) NewListLocationsPager(options *ClientListLocationsOptions)
 }
 
 // listLocationsCreateRequest creates the ListLocations request.
-func (client *Client) listLocationsCreateRequest(ctx context.Context, options *ClientListLocationsOptions) (*policy.Request, error) {
+func (client *Client) listLocationsCreateRequest(ctx context.Context, subscriptionID string, options *ClientListLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/locations"
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

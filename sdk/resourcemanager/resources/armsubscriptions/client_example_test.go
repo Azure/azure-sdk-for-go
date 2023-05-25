@@ -15,21 +15,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4f4073bdb028bc84bc3e6405c1cbaf8e89b83caf/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
 func ExampleClient_NewListLocationsPager_getLocationsWithASubscriptionId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClient().NewListLocationsPager(&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
+	pager := clientFactory.NewClient().NewListLocationsPager("a1ffc958-d2c7-493e-9f1e-125a0477f536", &armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -114,18 +114,18 @@ func ExampleClient_NewListLocationsPager_getLocationsWithASubscriptionId() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4f4073bdb028bc84bc3e6405c1cbaf8e89b83caf/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
 func ExampleClient_NewListLocationsPager_getLocationsWithExtendedLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClient().NewListLocationsPager(&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: to.Ptr(true)})
+	pager := clientFactory.NewClient().NewListLocationsPager("a1ffc958-d2c7-493e-9f1e-125a0477f536", &armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: to.Ptr(true)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -240,18 +240,18 @@ func ExampleClient_NewListLocationsPager_getLocationsWithExtendedLocations() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4f4073bdb028bc84bc3e6405c1cbaf8e89b83caf/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscription.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().Get(ctx, nil)
+	res, err := clientFactory.NewClient().Get(ctx, "291bba3f-e0a5-47bc-a099-3bdcb2a50a05", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -281,14 +281,14 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscriptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4f4073bdb028bc84bc3e6405c1cbaf8e89b83caf/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscriptions.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -354,18 +354,18 @@ func ExampleClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4f4073bdb028bc84bc3e6405c1cbaf8e89b83caf/specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
 func ExampleClient_CheckZonePeers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armsubscriptions.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armsubscriptions.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().CheckZonePeers(ctx, armsubscriptions.CheckZonePeersRequest{
+	res, err := clientFactory.NewClient().CheckZonePeers(ctx, "8d65815f-a5b6-402f-9298-045155da7d74", armsubscriptions.CheckZonePeersRequest{
 		Location: to.Ptr("eastus"),
 		SubscriptionIDs: []*string{
 			to.Ptr("subscriptions/11111111-1111-1111-1111-111111111111")},

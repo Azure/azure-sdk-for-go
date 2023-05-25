@@ -1,14 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-05-08)
-### Breaking Changes
-
-- Function `NewClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
-- Function `*Client.CheckZonePeers` parameter(s) have been changed from `(context.Context, string, CheckZonePeersRequest, *ClientCheckZonePeersOptions)` to `(context.Context, CheckZonePeersRequest, *ClientCheckZonePeersOptions)`
-- Function `*Client.Get` parameter(s) have been changed from `(context.Context, string, *ClientGetOptions)` to `(context.Context, *ClientGetOptions)`
-- Function `*Client.NewListLocationsPager` parameter(s) have been changed from `(string, *ClientListLocationsOptions)` to `(*ClientListLocationsOptions)`
-- Function `NewClientFactory` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
-
+## 1.2.0 (2023-05-26)
 ### Features Added
 
 - New enum type `ActionType` with values `ActionTypeInternal`

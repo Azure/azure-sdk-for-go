@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -67,11 +68,15 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	client := mock.NewMockAMQPClient(ctrl)
 
 	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
+
+	sender.EXPECT().LinkName().Return("sender-link-name")
+
 	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
 	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
-	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
-
 	session.EXPECT().Close(test.NotCancelled)
+	session.EXPECT().ConnID().Return(uint64(101))
+
+	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		// this is the kind of error you get if your connection string is inconsistent
@@ -87,6 +92,12 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 
 	require.EqualError(t, err, "rpc: failed, status code 401 and description: InvalidSignature: The token has an invalid signature.")
 	require.Equal(t, GetRecoveryKind(err), RecoveryKindFatal)
+
+	var amqpwrapErr amqpwrap.Error
+	require.ErrorAs(t, err, &amqpwrapErr)
+	require.Equal(t, uint64(101), amqpwrapErr.ConnID)
+	require.Equal(t, "sender-link-name", amqpwrapErr.LinkName)
+	require.Empty(t, amqpwrapErr.PartitionID)
 }
 
 func TestNegotiateClaimSuccess(t *testing.T) {

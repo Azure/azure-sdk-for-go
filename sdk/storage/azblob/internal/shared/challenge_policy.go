@@ -40,8 +40,7 @@ func (s *storageAuthorizer) onChallenge(req *policy.Request, resp *http.Response
 	if err != nil {
 		return err
 	}
-	// TODO: Set tenantID when policy.TokenRequestOptions supports it. https://github.com/Azure/azure-sdk-for-go/issues/19841
-	return authNZ(policy.TokenRequestOptions{Scopes: s.scopes})
+	return authNZ(policy.TokenRequestOptions{Scopes: s.scopes, TenantID: s.tenantID})
 }
 
 type challengePolicyError struct {

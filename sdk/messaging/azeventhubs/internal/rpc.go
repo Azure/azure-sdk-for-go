@@ -24,6 +24,8 @@ const (
 	defaultReceiverCredits = 1000
 )
 
+var RPCLinkClosedErr = errors.New("rpc link closed")
+
 type (
 	// rpcLink is the bidirectional communication structure used for CBS negotiation
 	rpcLink struct {
@@ -166,9 +168,12 @@ func (l *rpcLink) responseRouter() {
 			// if the link or connection has a malfunction that would require it to restart then
 			// we need to bail out, broadcasting to all affected callers/consumers.
 			if GetRecoveryKind(err) != RecoveryKindNone {
-				if !IsCancelError(err) {
+				if IsCancelError(err) {
+					err = RPCLinkClosedErr
+				} else {
 					azlog.Writef(l.logEvent, "Error in RPCLink, stopping response router: %s", err.Error())
 				}
+
 				l.broadcastError(err)
 				break
 			}
@@ -203,8 +208,18 @@ func (l *rpcLink) responseRouter() {
 	}
 }
 
-// RPC sends a request and waits on a response for that request
 func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
+	resp, err := l.internalRPC(ctx, msg)
+
+	if err != nil {
+		return nil, amqpwrap.WrapError(err, l.ConnID(), l.LinkName(), "")
+	}
+
+	return resp, nil
+}
+
+// RPC sends a request and waits on a response for that request
+func (l *rpcLink) internalRPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 	copiedMessage, messageID, err := addMessageID(msg, l.uuidNewV4)
 
 	if err != nil {

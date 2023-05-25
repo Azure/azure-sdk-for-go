@@ -180,24 +180,12 @@ func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDa
 // GetPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
 func (pc *ProducerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	rpcLink, err := pc.links.GetManagementLink(ctx)
-
-	if err != nil {
-		return PartitionProperties{}, err
-	}
-
-	return getPartitionProperties(ctx, pc.namespace, rpcLink.Link(), pc.eventHub, partitionID, options)
+	return getPartitionProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, partitionID, pc.retryOptions, options)
 }
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func (pc *ProducerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	rpcLink, err := pc.links.GetManagementLink(ctx)
-
-	if err != nil {
-		return EventHubProperties{}, err
-	}
-
-	return getEventHubProperties(ctx, pc.namespace, rpcLink.Link(), pc.eventHub, options)
+	return getEventHubProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, pc.retryOptions, options)
 }
 
 // Close releases resources for this client.

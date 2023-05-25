@@ -33,10 +33,6 @@ func WrapError(err error, connID uint64, linkName string, partitionID string) er
 		return nil
 	}
 
-	if _, ok := err.(Error); ok {
-		return err
-	}
-
 	return Error{
 		ConnID:      connID,
 		LinkName:    linkName,

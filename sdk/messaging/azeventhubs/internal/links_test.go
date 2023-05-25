@@ -88,7 +88,7 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 
 	// now recover like normal
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -130,12 +130,12 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	var netErr net.Error
 	require.ErrorAs(t, err, &netErr)
 
 	// now recover like normal
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -168,13 +168,13 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	err = links.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -208,13 +208,112 @@ func TestLinkFailure(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
+	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
 
 	requireNewLinkSameConn(t, oldLWID, newLWID)
+}
+
+func TestLinksManagementRetry(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	ns, links := newLinksForTest(t)
+	defer ns.Close(context.Background(), true)
+	defer test.RequireClose(t, links)
+
+	var prevLWID LinkWithID[amqpwrap.RPCLink]
+	called := 0
+
+	getEventHubProps := func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error {
+		called++
+		// mostly lifted from mgmt.go/getEventHubProperties
+		token, err := ns.GetTokenForEntity(testParams.EventHubName)
+
+		if err != nil {
+			return err
+		}
+
+		amqpMsg := &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":      "READ",
+				"name":           testParams.EventHubName,
+				"type":           "com.microsoft:eventhub",
+				"security_token": token.Token,
+			},
+		}
+
+		resp, err := lwid.Link().RPC(context.Background(), amqpMsg)
+
+		if err != nil {
+			return err
+		}
+
+		if resp.Code >= 300 {
+			return fmt.Errorf("failed getting partition properties: %v", resp.Description)
+		}
+
+		partitionIDs := resp.Message.Value.(map[string]any)["partition_ids"]
+		require.NotEmpty(t, partitionIDs)
+
+		prevLWID = lwid
+		return nil
+	}
+
+	err := links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{}, getEventHubProps)
+	require.NoError(t, err)
+	require.Equal(t, 1, called, "nothing broken, should work on the first time")
+
+	// we can do a quick check of another bit - that we don't just arbitrarily reset a management link
+	// if the link _name_ doesn't match.
+	err = links.closeManagementLinkIfMatch(context.Background(), "not the management link name")
+	require.NoError(t, err)
+	require.NotNil(t, links.managementLink)
+	origMgmtLink := links.managementLink
+
+	// let's trigger connection recovery by closing the amqp.Conn
+	// behind `Links`'s back.
+	client, connID, err := ns.GetAMQPClientImpl(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, prevLWID.ConnID(), connID, "connection is stable")
+
+	err = client.Close()
+	require.NoError(t, err)
+
+	called = 0
+
+	err = links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Nanosecond,
+		MaxRetryDelay: time.Nanosecond,
+	}, getEventHubProps)
+	require.NoError(t, err)
+
+	require.Equal(t, connID+1, prevLWID.ConnID(), "new connection was created")
+	require.Equal(t, 2, called, "first usage failed due to dead connection, second call worked after recovery")
+	require.NotEqual(t, origMgmtLink.Link().LinkName(), links.managementLink.Link().LinkName(), "management link also recreated")
+
+	// and now let's try it with the mgmt link dead.
+	origMgmtLWID, err := links.GetManagementLink(context.Background())
+	require.NoError(t, err)
+
+	err = origMgmtLWID.Link().(*rpcLink).receiver.Close(context.Background())
+	require.NoError(t, err)
+
+	err = links.RetryManagement(context.Background(), "test", "op", exported.RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Nanosecond,
+		MaxRetryDelay: time.Nanosecond,
+	}, getEventHubProps)
+	require.NoError(t, err)
+
+	require.Equal(t, origMgmtLWID.ConnID(), prevLWID.ConnID(), "connection wasn't touched")
+	require.NotEqual(t, origMgmtLWID.Link().LinkName(), prevLWID.Link().LinkName(), "management link recreated")
+
+	test.RequireClose(t, links)
+
+	require.Nil(t, links.managementLink)
 }
 
 func requireNewLinkSameConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], newLWID LinkWithID[AMQPSenderCloser]) {

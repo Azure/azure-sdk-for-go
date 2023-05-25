@@ -82,8 +82,8 @@ func TestBackupRestore(t *testing.T) {
 			keyName := createRandomName(t, "testbackuprestore")
 			createResp, err := client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
 			require.NoError(t, err)
-			require.Equal(t, keyName, createResp.Key.KID.Name())
-			require.NotEmpty(t, createResp.Key.KID.Version())
+			require.Equal(t, keyName, createResp.Key.Key.KID.Name())
+			require.NotEmpty(t, createResp.Key.Key.KID.Version())
 			require.NotNil(t, createResp.Attributes)
 			require.NotNil(t, createResp.Key)
 
@@ -93,8 +93,8 @@ func TestBackupRestore(t *testing.T) {
 
 			deleteResp, err := client.DeleteKey(context.Background(), keyName, nil)
 			require.NoError(t, err)
-			require.Equal(t, createResp.Key.KID.Name(), deleteResp.Key.KID.Name())
-			require.Equal(t, createResp.Key.KID.Version(), deleteResp.Key.KID.Version())
+			require.Equal(t, createResp.Key.Key.KID.Name(), deleteResp.Key.KID.Name())
+			require.Equal(t, createResp.Key.Key.KID.Version(), deleteResp.Key.KID.Version())
 			requireEqualAttributes(t, createResp.Attributes, deleteResp.Attributes)
 			require.NotNil(t, deleteResp.Key)
 			require.NotEmpty(t, deleteResp.RecoveryID)
@@ -114,15 +114,15 @@ func TestBackupRestore(t *testing.T) {
 				return err
 			})
 			require.NoError(t, err)
-			defer cleanUpKey(t, client, restoreResp.Key.KID)
+			defer cleanUpKey(t, client, restoreResp.Key.Key.KID)
 			require.NotNil(t, restoreResp.Key)
 			testSerde(t, &restoreParams)
 
 			getResp, err := client.GetKey(context.Background(), keyName, "", nil)
 			require.NoError(t, err)
 			require.Equal(t, restoreResp.Attributes, getResp.Attributes)
-			require.Equal(t, createResp.Key.KID.Name(), getResp.Key.KID.Name())
-			require.Equal(t, createResp.Key.KID.Version(), getResp.Key.KID.Version())
+			require.Equal(t, createResp.Key.Key.KID.Name(), getResp.Key.Key.KID.Name())
+			require.Equal(t, createResp.Key.Key.KID.Version(), getResp.Key.Key.KID.Version())
 		})
 	}
 }
@@ -137,7 +137,7 @@ func TestCRUD(t *testing.T) {
 		for _, params := range []azkeys.CreateKeyParameters{
 			{
 				Kty:           to.Ptr(azkeys.KeyTypeEC),
-				Curve:         to.Ptr(azkeys.KeyCurveNameP256K),
+				Curve:         to.Ptr(azkeys.CurveNameP256K),
 				KeyAttributes: attributes,
 				Tags:          tags,
 			},
@@ -160,8 +160,8 @@ func TestCRUD(t *testing.T) {
 				keyName := createRandomName(t, "testcrud")
 				createResp, err := client.CreateKey(context.Background(), keyName, params, nil)
 				require.NoError(t, err)
-				require.Equal(t, keyName, createResp.Key.KID.Name())
-				require.NotEmpty(t, createResp.Key.KID.Version())
+				require.Equal(t, keyName, createResp.Key.Key.KID.Name())
+				require.NotEmpty(t, createResp.Key.Key.KID.Version())
 				require.NotNil(t, createResp.Attributes)
 				require.NotNil(t, createResp.Key)
 				require.True(t, *createResp.Attributes.Enabled)
@@ -169,9 +169,9 @@ func TestCRUD(t *testing.T) {
 				getResp, err := client.GetKey(context.Background(), keyName, "", nil)
 				require.NoError(t, err)
 				requireEqualAttributes(t, createResp.Attributes, getResp.Attributes)
-				require.Equal(t, createResp.Key.KID.Name(), getResp.Key.KID.Name())
-				require.Equal(t, createResp.Key.KID.Version(), getResp.Key.KID.Version())
-				testSerde(t, &getResp.KeyVaultKey)
+				require.Equal(t, createResp.Key.Key.KID.Name(), getResp.Key.Key.KID.Name())
+				require.Equal(t, createResp.Key.Key.KID.Version(), getResp.Key.Key.KID.Version())
+				testSerde(t, &getResp.Key)
 
 				updateParams := azkeys.UpdateKeyParameters{
 					KeyAttributes: &azkeys.KeyAttributes{
@@ -179,16 +179,16 @@ func TestCRUD(t *testing.T) {
 					},
 				}
 				testSerde(t, &updateParams)
-				updateResp, err := client.UpdateKey(context.Background(), keyName, createResp.Key.KID.Version(), updateParams, nil)
+				updateResp, err := client.UpdateKey(context.Background(), keyName, createResp.Key.Key.KID.Version(), updateParams, nil)
 				require.NoError(t, err)
-				require.Equal(t, createResp.Key.KID.Name(), updateResp.Key.KID.Name())
-				require.Equal(t, createResp.Key.KID.Version(), updateResp.Key.KID.Version())
+				require.Equal(t, createResp.Key.Key.KID.Name(), updateResp.Key.Key.KID.Name())
+				require.Equal(t, createResp.Key.Key.KID.Version(), updateResp.Key.Key.KID.Version())
 				require.False(t, *updateResp.Attributes.Enabled)
 
 				deleteResp, err := client.DeleteKey(context.Background(), keyName, nil)
 				require.NoError(t, err)
-				require.Equal(t, createResp.Key.KID.Name(), deleteResp.Key.KID.Name())
-				require.Equal(t, createResp.Key.KID.Version(), deleteResp.Key.KID.Version())
+				require.Equal(t, createResp.Key.Key.KID.Name(), deleteResp.Key.KID.Name())
+				require.Equal(t, createResp.Key.Key.KID.Version(), deleteResp.Key.KID.Version())
 				requireEqualAttributes(t, updateResp.Attributes, deleteResp.Attributes)
 				testSerde(t, &deleteResp.DeletedKey)
 				pollStatus(t, 404, func() error {
@@ -276,7 +276,7 @@ func TestEncryptDecrypt(t *testing.T) {
 				Value:     []byte("plaintext"),
 			}
 			testSerde(t, &encryptParams)
-			encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.KID.Version(), encryptParams, nil)
+			encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.Key.KID.Version(), encryptParams, nil)
 			require.NoError(t, err)
 			require.NotEmpty(t, encryptResponse.Result)
 			testSerde(t, &encryptResponse.KeyOperationResult)
@@ -313,7 +313,7 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 		Value: []byte("plaintext"),
 	}
 	testSerde(t, &encryptParams)
-	encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.KID.Version(), encryptParams, nil)
+	encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.Key.KID.Version(), encryptParams, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, encryptResponse.Result)
 
@@ -375,10 +375,10 @@ func TestImportKey(t *testing.T) {
 			testSerde(t, &params)
 			resp, err := client.ImportKey(context.Background(), createRandomName(t, "testimport"), params, nil)
 			require.NoError(t, err)
-			defer cleanUpKey(t, client, resp.Key.KID)
-			require.Equal(t, jwk.KeyOperations, resp.Key.KeyOperations)
-			require.Equal(t, jwk.N, resp.Key.N)
-			require.Equal(t, jwk.E, resp.Key.E)
+			defer cleanUpKey(t, client, resp.Key.Key.KID)
+			require.Equal(t, jwk.KeyOperations, resp.Key.Key.KeyOperations)
+			require.Equal(t, jwk.N, resp.Key.Key.N)
+			require.Equal(t, jwk.E, resp.Key.Key.E)
 		})
 	}
 }
@@ -402,7 +402,7 @@ func TestListDeletedKeys(t *testing.T) {
 				keyNames[i] = n
 				createResp, err := client.CreateKey(context.Background(), n, createParams, nil)
 				require.NoError(t, err)
-				cleanUpKey(t, client, createResp.Key.KID)
+				cleanUpKey(t, client, createResp.Key.Key.KID)
 			}
 			for i := 0; i < len(keyNames); i++ {
 				pollStatus(t, 404, func() error {
@@ -449,7 +449,7 @@ func TestListKeys(t *testing.T) {
 				n := createRandomName(t, fmt.Sprintf("%s-%d", keyNamePrefix, i))
 				resp, err := client.CreateKey(context.Background(), n, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
 				require.NoError(t, err)
-				defer cleanUpKey(t, client, resp.Key.KID)
+				defer cleanUpKey(t, client, resp.Key.Key.KID)
 				count++
 			}
 
@@ -488,10 +488,10 @@ func TestListKeyVersions(t *testing.T) {
 			expectedVersions := make(map[string]struct{}, 4)
 			for i := 0; i < 4; i++ {
 				createResp, err = client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
-				expectedVersions[createResp.Key.KID.Version()] = struct{}{}
+				expectedVersions[createResp.Key.Key.KID.Version()] = struct{}{}
 				require.NoError(t, err)
 			}
-			defer cleanUpKey(t, client, createResp.Key.KID)
+			defer cleanUpKey(t, client, createResp.Key.Key.KID)
 
 			pager := client.NewListKeyPropertiesVersionsPager(keyName, &azkeys.ListKeyPropertiesVersionsOptions{MaxResults: to.Ptr(int32(1))})
 			for pager.More() {
@@ -538,11 +538,11 @@ func TestRecoverDeletedKey(t *testing.T) {
 			recoverResp, err := client.RecoverDeletedKey(context.Background(), key, nil)
 			require.NoError(t, err)
 			pollStatus(t, 404, func() error {
-				_, err := client.GetKey(context.Background(), key, createResp.Key.KID.Version(), nil)
+				_, err := client.GetKey(context.Background(), key, createResp.Key.Key.KID.Version(), nil)
 				return err
 			})
-			cleanUpKey(t, client, createResp.Key.KID)
-			require.Equal(t, createResp.Key.KID, recoverResp.Key.KID)
+			cleanUpKey(t, client, createResp.Key.Key.KID)
+			require.Equal(t, createResp.Key.Key.KID, recoverResp.Key.Key.KID)
 			require.NotNil(t, recoverResp.Attributes)
 		})
 	}
@@ -564,7 +564,7 @@ func TestReleaseKey(t *testing.T) {
 			var err error
 			for i := 0; i < 5; i++ {
 				params := azkeys.CreateKeyParameters{
-					Curve: to.Ptr(azkeys.KeyCurveNameP256K),
+					Curve: to.Ptr(azkeys.CurveNameP256K),
 					KeyAttributes: &azkeys.KeyAttributes{
 						Exportable: to.Ptr(true),
 					},
@@ -583,8 +583,8 @@ func TestReleaseKey(t *testing.T) {
 				}
 			}
 			require.NoError(t, err)
-			require.NotNil(t, createResp.Key.KID)
-			defer cleanUpKey(t, client, createResp.Key.KID)
+			require.NotNil(t, createResp.Key.Key.KID)
+			defer cleanUpKey(t, client, createResp.Key.Key.KID)
 
 			attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
 			require.NoError(t, err)
@@ -625,7 +625,7 @@ func TestRotateKey(t *testing.T) {
 			key := createRandomName(t, "testrotatekey")
 			createResp, err := client.CreateKey(context.Background(), key, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeECHSM)}, nil)
 			require.NoError(t, err)
-			defer cleanUpKey(t, client, createResp.Key.KID)
+			defer cleanUpKey(t, client, createResp.Key.Key.KID)
 
 			timeAfterCreate := to.Ptr("P30D")
 			policy := azkeys.KeyRotationPolicy{
@@ -662,7 +662,7 @@ func TestRotateKey(t *testing.T) {
 
 			rotateResp, err := client.RotateKey(context.Background(), key, nil)
 			require.NoError(t, err)
-			require.NotNil(t, rotateResp.Key.KID)
+			require.NotNil(t, rotateResp.Key.Key.KID)
 
 			invalid, err := client.RotateKey(context.Background(), "keynonexistent", nil)
 			require.Error(t, err)
@@ -683,7 +683,7 @@ func TestSignVerify(t *testing.T) {
 			keyName := createRandomName(t, "key")
 
 			createParams := azkeys.CreateKeyParameters{
-				Curve:         to.Ptr(azkeys.KeyCurveNameP256K),
+				Curve:         to.Ptr(azkeys.CurveNameP256K),
 				KeyOperations: to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify),
 				Kty:           to.Ptr(azkeys.KeyTypeEC),
 			}

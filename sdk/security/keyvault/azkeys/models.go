@@ -148,7 +148,7 @@ type CreateKeyParameters struct {
 	Kty *KeyType `json:"kty,omitempty"`
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *KeyCurveName `json:"crv,omitempty"`
+	Curve *CurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
@@ -257,7 +257,7 @@ type ImportKeyParameters struct {
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *KeyCurveName `json:"crv,omitempty"`
+	Crv *CurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC private key.
 	D []byte `json:"d,omitempty"`
@@ -301,6 +301,25 @@ type JSONWebKey struct {
 
 	// Y component of an EC public key.
 	Y []byte `json:"y,omitempty"`
+}
+
+// Key - A KeyBundle consisting of a WebKey plus its attributes.
+type Key struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The Json web key.
+	Key *JSONWebKey `json:"key,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
@@ -465,25 +484,6 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// KeyVaultKey - A KeyBundle consisting of a WebKey plus its attributes.
-type KeyVaultKey struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
-
-	// The Json web key.
-	Key *JSONWebKey `json:"key,omitempty"`
-
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
-}
-
 // KeyVerifyResult - The key verify result.
 type KeyVerifyResult struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
@@ -502,7 +502,7 @@ type ReleaseParameters struct {
 	TargetAttestationToken *string `json:"target,omitempty"`
 
 	// The encryption algorithm to use to protected the exported key material
-	Algorithm *KeyExportEncryptionAlgorithm `json:"enc,omitempty"`
+	Algorithm *KeyEncryptionAlgorithm `json:"enc,omitempty"`
 
 	// A client provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`

@@ -82,7 +82,7 @@ directive:
       to: DeletedKey
   - rename-model:
       from: KeyBundle
-      to: KeyVaultKey
+      to: Key
   - rename-model:
       from: KeyItem
       to: KeyProperties
@@ -134,9 +134,6 @@ directive:
   
   # KeyEncryptionAlgorithm renames
   - from: swagger-document
-    where: $.definitions.ReleaseParameters.properties.enc.x-ms-enum
-    transform: $["name"] = "KeyExportEncryptionAlgorithm"
-  - from: swagger-document
     where: $.definitions.ReleaseParameters.properties.enc
     transform: $["x-ms-client-name"] = "algorithm"
 
@@ -158,7 +155,7 @@ directive:
       - models.go
       - constants.go
     where: $
-    transform: return $.replace(/JSONWebKeyCurveName/g, "KeyCurveName");
+    transform: return $.replace(/JSONWebKeyCurveName/g, "CurveName");
   - from: 
       - models.go
       - constants.go

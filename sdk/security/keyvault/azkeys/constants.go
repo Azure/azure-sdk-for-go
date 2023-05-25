@@ -9,27 +9,27 @@
 
 package azkeys
 
-// KeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type KeyCurveName string
+// CurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+type CurveName string
 
 const (
-	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	KeyCurveNameP256 KeyCurveName = "P-256"
-	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	KeyCurveNameP256K KeyCurveName = "P-256K"
-	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	KeyCurveNameP384 KeyCurveName = "P-384"
-	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	KeyCurveNameP521 KeyCurveName = "P-521"
+	// CurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	CurveNameP256 CurveName = "P-256"
+	// CurveNameP256K - The SECG SECP256K1 elliptic curve.
+	CurveNameP256K CurveName = "P-256K"
+	// CurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	CurveNameP384 CurveName = "P-384"
+	// CurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	CurveNameP521 CurveName = "P-521"
 )
 
-// PossibleKeyCurveNameValues returns the possible values for the KeyCurveName const type.
-func PossibleKeyCurveNameValues() []KeyCurveName {
-	return []KeyCurveName{
-		KeyCurveNameP256,
-		KeyCurveNameP256K,
-		KeyCurveNameP384,
-		KeyCurveNameP521,
+// PossibleCurveNameValues returns the possible values for the CurveName const type.
+func PossibleCurveNameValues() []CurveName {
+	return []CurveName{
+		CurveNameP256,
+		CurveNameP256K,
+		CurveNameP384,
+		CurveNameP521,
 	}
 }
 
@@ -179,21 +179,21 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// KeyExportEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type KeyExportEncryptionAlgorithm string
+// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type KeyEncryptionAlgorithm string
 
 const (
-	KeyExportEncryptionAlgorithmCKMRSAAESKEYWRAP KeyExportEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyExportEncryptionAlgorithmRSAAESKEYWRAP256 KeyExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyExportEncryptionAlgorithmRSAAESKEYWRAP384 KeyExportEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
 )
 
-// PossibleKeyExportEncryptionAlgorithmValues returns the possible values for the KeyExportEncryptionAlgorithm const type.
-func PossibleKeyExportEncryptionAlgorithmValues() []KeyExportEncryptionAlgorithm {
-	return []KeyExportEncryptionAlgorithm{
-		KeyExportEncryptionAlgorithmCKMRSAAESKEYWRAP,
-		KeyExportEncryptionAlgorithmRSAAESKEYWRAP256,
-		KeyExportEncryptionAlgorithmRSAAESKEYWRAP384,
+// PossibleKeyEncryptionAlgorithmValues returns the possible values for the KeyEncryptionAlgorithm const type.
+func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
+	return []KeyEncryptionAlgorithm{
+		KeyEncryptionAlgorithmCKMRSAAESKEYWRAP,
+		KeyEncryptionAlgorithmRSAAESKEYWRAP256,
+		KeyEncryptionAlgorithmRSAAESKEYWRAP384,
 	}
 }
 

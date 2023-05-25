@@ -132,7 +132,7 @@ func (client *Client) createKeyCreateRequest(ctx context.Context, name string, p
 // createKeyHandleResponse handles the CreateKey response.
 func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyResponse, error) {
 	result := CreateKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return CreateKeyResponse{}, err
 	}
 	return result, nil
@@ -399,7 +399,7 @@ func (client *Client) getKeyCreateRequest(ctx context.Context, name string, vers
 // getKeyHandleResponse handles the GetKey response.
 func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse, error) {
 	result := GetKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return GetKeyResponse{}, err
 	}
 	return result, nil
@@ -544,7 +544,7 @@ func (client *Client) importKeyCreateRequest(ctx context.Context, name string, p
 // importKeyHandleResponse handles the ImportKey response.
 func (client *Client) importKeyHandleResponse(resp *http.Response) (ImportKeyResponse, error) {
 	result := ImportKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return ImportKeyResponse{}, err
 	}
 	return result, nil
@@ -825,7 +825,7 @@ func (client *Client) recoverDeletedKeyCreateRequest(ctx context.Context, name s
 // recoverDeletedKeyHandleResponse handles the RecoverDeletedKey response.
 func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response) (RecoverDeletedKeyResponse, error) {
 	result := RecoverDeletedKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
 	return result, nil
@@ -929,7 +929,7 @@ func (client *Client) restoreKeyCreateRequest(ctx context.Context, parameters Re
 // restoreKeyHandleResponse handles the RestoreKey response.
 func (client *Client) restoreKeyHandleResponse(resp *http.Response) (RestoreKeyResponse, error) {
 	result := RestoreKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return RestoreKeyResponse{}, err
 	}
 	return result, nil
@@ -977,7 +977,7 @@ func (client *Client) rotateKeyCreateRequest(ctx context.Context, name string, o
 // rotateKeyHandleResponse handles the RotateKey response.
 func (client *Client) rotateKeyHandleResponse(resp *http.Response) (RotateKeyResponse, error) {
 	result := RotateKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return RotateKeyResponse{}, err
 	}
 	return result, nil
@@ -1135,7 +1135,7 @@ func (client *Client) updateKeyCreateRequest(ctx context.Context, name string, v
 // updateKeyHandleResponse handles the UpdateKey response.
 func (client *Client) updateKeyHandleResponse(resp *http.Response) (UpdateKeyResponse, error) {
 	result := UpdateKeyResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVaultKey); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return UpdateKeyResponse{}, err
 	}
 	return result, nil

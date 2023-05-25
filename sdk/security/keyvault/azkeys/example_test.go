@@ -43,12 +43,12 @@ func ExampleClient_CreateKey_rsa() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.KID)
+	fmt.Println(*resp.Key.Key.KID)
 }
 
 func ExampleClient_CreateKey_ec() {
 	params := azkeys.CreateKeyParameters{
-		Curve: to.Ptr(azkeys.KeyCurveNameP256K),
+		Curve: to.Ptr(azkeys.CurveNameP256K),
 		Kty:   to.Ptr(azkeys.KeyTypeEC),
 	}
 	// if a key with the same name already exists, a new version of that key is created
@@ -56,7 +56,7 @@ func ExampleClient_CreateKey_ec() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.KID)
+	fmt.Println(*resp.Key.Key.KID)
 }
 
 func ExampleClient_DeleteKey() {
@@ -95,7 +95,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.KID)
+	fmt.Println(*resp.Key.Key.KID)
 }
 
 // UpdateKey updates the properties of a key previously stored in the key vault
@@ -112,7 +112,7 @@ func ExampleClient_UpdateKey() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Printf("Enabled key %s", *updateResp.Key.KID)
+	fmt.Printf("Enabled key %s", *updateResp.Key.Key.KID)
 }
 
 // UpdateKeyRotationPolicy allows you to configure automatic key rotation for a key by specifying a rotation policy, and

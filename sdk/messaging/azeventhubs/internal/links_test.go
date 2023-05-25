@@ -31,11 +31,11 @@ func TestLinksCBSLinkStillOpen(t *testing.T) {
 
 	// opening a Sender to the $cbs endpoint. This endpoint can only be opened by a single
 	// sender/receiver pair in a connection.
-	_, err = session.NewSender(context.Background(), "$cbs", nil)
+	_, err = session.NewSender(context.Background(), "$cbs", "", nil)
 	require.NoError(t, err)
 
-	newLinkFn := func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (AMQPSenderCloser, error) {
-		return session.NewSender(ctx, entityPath, &amqp.SenderOptions{
+	newLinkFn := func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (AMQPSenderCloser, error) {
+		return session.NewSender(ctx, entityPath, "", &amqp.SenderOptions{
 			SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
 			RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 		})
@@ -64,7 +64,7 @@ func TestLinksCBSLinkStillOpen(t *testing.T) {
 	}()
 
 	require.NoError(t, err)
-	require.Equal(t, oldConnID+1, lwid.ConnID, "Connection gets incremented since it had to be reset")
+	require.Equal(t, oldConnID+1, lwid.ConnID(), "Connection gets incremented since it had to be reset")
 }
 
 func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
@@ -82,12 +82,13 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	err = origConn.Close()
 	require.NoError(t, err)
 
-	err = oldLWID.Link.Send(context.Background(), &amqp.Message{}, nil)
+	err = oldLWID.Link().Send(context.Background(), &amqp.Message{}, nil)
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
 	// now recover like normal
-	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, err)
+
+	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -95,7 +96,7 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
-	err = newLWID.Link.Send(context.Background(), &amqp.Message{
+	err = newLWID.Link().Send(context.Background(), &amqp.Message{
 		Data: [][]byte{[]byte("TestLinksRecoverLinkWithConnectionFailure")},
 	}, nil)
 	require.NoError(t, err)
@@ -120,7 +121,7 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	err = origConn.Close()
 	require.NoError(t, err)
 
-	err = oldLWID.Link.Send(context.Background(), &amqp.Message{}, nil)
+	err = oldLWID.Link().Send(context.Background(), &amqp.Message{}, nil)
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
@@ -129,12 +130,12 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, "0", oldLWID, err)
+	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	var netErr net.Error
 	require.ErrorAs(t, err, &netErr)
 
 	// now recover like normal
-	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, err)
+	err = links.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -142,7 +143,7 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
-	err = newLWID.Link.Send(context.Background(), &amqp.Message{
+	err = newLWID.Link().Send(context.Background(), &amqp.Message{
 		Data: [][]byte{[]byte("hello world")},
 	}, nil)
 	require.NoError(t, err)
@@ -163,17 +164,17 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	err = origConn.Close()
 	require.NoError(t, err)
 
-	err = oldLWID.Link.Send(context.Background(), &amqp.Message{}, nil)
+	err = oldLWID.Link().Send(context.Background(), &amqp.Message{}, nil)
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, &amqp.LinkError{})
+	err = links.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, connErr)
+	err = links.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -181,7 +182,7 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
-	err = newLWID.Link.Send(context.Background(), &amqp.Message{
+	err = newLWID.Link().Send(context.Background(), &amqp.Message{
 		Data: [][]byte{[]byte("TestLinkFailureWhenConnectionIsDead")},
 	}, nil)
 	require.NoError(t, err)
@@ -196,10 +197,10 @@ func TestLinkFailure(t *testing.T) {
 	require.NoError(t, err)
 
 	// close the Receiver out from under the Links
-	err = oldLWID.Link.Close(context.Background())
+	err = oldLWID.Link().Close(context.Background())
 	require.NoError(t, err)
 
-	err = oldLWID.Link.Send(context.Background(), &amqp.Message{Value: "hello"}, nil)
+	err = oldLWID.Link().Send(context.Background(), &amqp.Message{Value: "hello"}, nil)
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindLink, GetRecoveryKind(err))
 
@@ -207,7 +208,7 @@ func TestLinkFailure(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.RecoverIfNeeded(cancelledCtx, "0", oldLWID, err)
+	err = links.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -216,16 +217,16 @@ func TestLinkFailure(t *testing.T) {
 	requireNewLinkSameConn(t, oldLWID, newLWID)
 }
 
-func requireNewLinkSameConn(t *testing.T, oldLWID *LinkWithID[AMQPSenderCloser], newLWID *LinkWithID[AMQPSenderCloser]) {
+func requireNewLinkSameConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], newLWID LinkWithID[AMQPSenderCloser]) {
 	t.Helper()
-	require.NotEqual(t, oldLWID.Link.LinkName(), newLWID.Link.LinkName(), "Link should have a new ID because it was recreated")
-	require.Equal(t, oldLWID.ConnID, newLWID.ConnID, "Connection ID should be the same since recreation wasn't needed")
+	require.NotEqual(t, oldLWID.Link().LinkName(), newLWID.Link().LinkName(), "Link should have a new ID because it was recreated")
+	require.Equal(t, oldLWID.ConnID(), newLWID.ConnID(), "Connection ID should be the same since recreation wasn't needed")
 }
 
-func requireNewLinkNewConn(t *testing.T, oldLWID *LinkWithID[AMQPSenderCloser], newLWID *LinkWithID[AMQPSenderCloser]) {
+func requireNewLinkNewConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], newLWID LinkWithID[AMQPSenderCloser]) {
 	t.Helper()
-	require.NotEqual(t, oldLWID.Link.LinkName(), newLWID.Link.LinkName(), "Link should have a new ID because it was recreated")
-	require.Equal(t, oldLWID.ConnID+1, newLWID.ConnID, "Connection ID should be recreated")
+	require.NotEqual(t, oldLWID.Link().LinkName(), newLWID.Link().LinkName(), "Link should have a new ID because it was recreated")
+	require.Equal(t, oldLWID.ConnID()+1, newLWID.ConnID(), "Connection ID should be recreated")
 }
 
 func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser]) {
@@ -235,12 +236,12 @@ func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser
 
 	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubLinksOnlyName), func(partitionID string) string {
 		return fmt.Sprintf("%s/Partitions/%s", testParams.EventHubLinksOnlyName, partitionID)
-	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (AMQPSenderCloser, error) {
+	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (AMQPSenderCloser, error) {
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		default:
-			return session.NewSender(ctx, entityPath, &amqp.SenderOptions{
+			return session.NewSender(ctx, entityPath, "0", &amqp.SenderOptions{
 				SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
 				RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 			})
@@ -256,4 +257,8 @@ func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser
 	require.NoError(t, err)
 
 	return ns, links
+}
+
+func lwidToError[LinkT AMQPLink](err error, lwid LinkWithID[LinkT]) error {
+	return amqpwrap.WrapError(err, lwid.ConnID(), lwid.Link().LinkName(), lwid.PartitionID())
 }

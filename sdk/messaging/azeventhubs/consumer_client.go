@@ -148,7 +148,7 @@ func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *Ge
 		return EventHubProperties{}, err
 	}
 
-	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, options)
+	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link(), cc.eventHub, options)
 }
 
 // GetPartitionProperties gets properties for a specific partition. This includes data like the
@@ -161,7 +161,7 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 		return PartitionProperties{}, err
 	}
 
-	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link(), cc.eventHub, partitionID, options)
 }
 
 // InstanceID is the identifier for this ConsumerClient.

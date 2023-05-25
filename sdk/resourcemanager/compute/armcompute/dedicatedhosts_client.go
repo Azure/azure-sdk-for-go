@@ -48,7 +48,7 @@ func NewDedicatedHostsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create or update a dedicated host .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - hostName - The name of the dedicated host .
@@ -70,7 +70,7 @@ func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update a dedicated host .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 func (client *DedicatedHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
@@ -110,7 +110,7 @@ func (client *DedicatedHostsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -119,7 +119,7 @@ func (client *DedicatedHostsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Delete a dedicated host.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - hostName - The name of the dedicated host.
@@ -140,7 +140,7 @@ func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete a dedicated host.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 func (client *DedicatedHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (client *DedicatedHostsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *DedicatedHostsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Retrieves information about a dedicated host.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - hostName - The name of the dedicated host.
@@ -236,7 +236,7 @@ func (client *DedicatedHostsClient) getCreateRequest(ctx context.Context, resour
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -251,10 +251,80 @@ func (client *DedicatedHostsClient) getHandleResponse(resp *http.Response) (Dedi
 	return result, nil
 }
 
+// NewListAvailableSizesPager - Lists all available dedicated host sizes to which the specified dedicated host can be resized.
+// NOTE: The dedicated host sizes provided can be used to only scale up the existing dedicated host.
+//
+// Generated from API version 2023-03-01
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - hostName - The name of the dedicated host.
+//   - options - DedicatedHostsClientListAvailableSizesOptions contains the optional parameters for the DedicatedHostsClient.NewListAvailableSizesPager
+//     method.
+func (client *DedicatedHostsClient) NewListAvailableSizesPager(resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsClientListAvailableSizesOptions) *runtime.Pager[DedicatedHostsClientListAvailableSizesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DedicatedHostsClientListAvailableSizesResponse]{
+		More: func(page DedicatedHostsClientListAvailableSizesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DedicatedHostsClientListAvailableSizesResponse) (DedicatedHostsClientListAvailableSizesResponse, error) {
+			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
+			if err != nil {
+				return DedicatedHostsClientListAvailableSizesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DedicatedHostsClientListAvailableSizesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DedicatedHostsClientListAvailableSizesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAvailableSizesHandleResponse(resp)
+		},
+	})
+}
+
+// listAvailableSizesCreateRequest creates the ListAvailableSizes request.
+func (client *DedicatedHostsClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsClientListAvailableSizesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/hostSizes"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if hostGroupName == "" {
+		return nil, errors.New("parameter hostGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
+	if hostName == "" {
+		return nil, errors.New("parameter hostName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hostName}", url.PathEscape(hostName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAvailableSizesHandleResponse handles the ListAvailableSizes response.
+func (client *DedicatedHostsClient) listAvailableSizesHandleResponse(resp *http.Response) (DedicatedHostsClientListAvailableSizesResponse, error) {
+	result := DedicatedHostsClientListAvailableSizesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostSizeListResult); err != nil {
+		return DedicatedHostsClientListAvailableSizesResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByHostGroupPager - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property
 // in the response to get the next page of dedicated hosts.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - options - DedicatedHostsClientListByHostGroupOptions contains the optional parameters for the DedicatedHostsClient.NewListByHostGroupPager
@@ -307,7 +377,7 @@ func (client *DedicatedHostsClient) listByHostGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +398,7 @@ func (client *DedicatedHostsClient) listByHostGroupHandleResponse(resp *http.Res
 // for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - hostName - The name of the dedicated host.
@@ -352,7 +422,7 @@ func (client *DedicatedHostsClient) BeginRestart(ctx context.Context, resourceGr
 // for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 func (client *DedicatedHostsClient) restart(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
@@ -392,16 +462,16 @@ func (client *DedicatedHostsClient) restartCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginUpdate - Update an dedicated host .
+// BeginUpdate - Update a dedicated host .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - hostGroupName - The name of the dedicated host group.
 //   - hostName - The name of the dedicated host .
@@ -420,10 +490,10 @@ func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGro
 	}
 }
 
-// Update - Update an dedicated host .
+// Update - Update a dedicated host .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 func (client *DedicatedHostsClient) update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
@@ -463,7 +533,7 @@ func (client *DedicatedHostsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

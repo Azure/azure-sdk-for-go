@@ -3998,7 +3998,6 @@ func (m *ManagedServiceIdentityUserAssignedIdentitiesValue) UnmarshalJSON(data [
 func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dnsServiceIP", n.DNSServiceIP)
-	populate(objectMap, "dockerBridgeCidr", n.DockerBridgeCidr)
 	populate(objectMap, "ipFamilies", n.IPFamilies)
 	populate(objectMap, "kubeProxyConfig", n.KubeProxyConfig)
 	populate(objectMap, "loadBalancerProfile", n.LoadBalancerProfile)
@@ -4028,9 +4027,6 @@ func (n *NetworkProfile) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "dnsServiceIP":
 			err = unpopulate(val, "DNSServiceIP", &n.DNSServiceIP)
-			delete(rawMsg, key)
-		case "dockerBridgeCidr":
-			err = unpopulate(val, "DockerBridgeCidr", &n.DockerBridgeCidr)
 			delete(rawMsg, key)
 		case "ipFamilies":
 			err = unpopulate(val, "IPFamilies", &n.IPFamilies)

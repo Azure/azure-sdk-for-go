@@ -48,7 +48,7 @@ func NewFirewallPolicyRuleCollectionGroupsClient(subscriptionID string, credenti
 // BeginCreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -72,7 +72,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, parameters, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -121,7 +121,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 // BeginDelete - Deletes the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -144,7 +144,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 // Delete - Deletes the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *FirewallPolicyRuleCollectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleCollectionGroupName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 // Get - Gets the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -238,7 +238,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 
 // NewListPager - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - options - FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.NewListPager
@@ -308,7 +308,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

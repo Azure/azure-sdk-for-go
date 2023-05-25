@@ -28,8 +28,8 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			client := mock.NewMockAMQPClient(ctrl)
 
 			client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
-			session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-			session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
+			session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+			session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
 			tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 			mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
@@ -67,8 +67,8 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	client := mock.NewMockAMQPClient(ctrl)
 
 	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
-	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
+	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
 	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 	session.EXPECT().Close(test.NotCancelled)
@@ -99,8 +99,8 @@ func TestNegotiateClaimSuccess(t *testing.T) {
 	client := mock.NewMockAMQPClient(ctrl)
 
 	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
-	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any()).Return(receiver, nil)
-	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any()).Return(sender, nil)
+	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
+	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
 	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
 
 	session.EXPECT().Close(test.NotCancelled)

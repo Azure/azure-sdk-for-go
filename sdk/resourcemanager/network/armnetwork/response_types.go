@@ -294,6 +294,11 @@ type AzureFirewallsClientListResponse struct {
 	AzureFirewallListResult
 }
 
+// AzureFirewallsClientPacketCaptureResponse contains the response from method AzureFirewallsClient.BeginPacketCapture.
+type AzureFirewallsClientPacketCaptureResponse struct {
+	// placeholder for future response values
+}
+
 // AzureFirewallsClientUpdateTagsResponse contains the response from method AzureFirewallsClient.BeginUpdateTags.
 type AzureFirewallsClientUpdateTagsResponse struct {
 	AzureFirewall
@@ -2466,6 +2471,26 @@ type VipSwapClientListResponse struct {
 	SwapResourceListResult
 }
 
+// VirtualApplianceConnectionsClientCreateOrUpdateResponse contains the response from method VirtualApplianceConnectionsClient.BeginCreateOrUpdate.
+type VirtualApplianceConnectionsClientCreateOrUpdateResponse struct {
+	VirtualApplianceConnection
+}
+
+// VirtualApplianceConnectionsClientDeleteResponse contains the response from method VirtualApplianceConnectionsClient.BeginDelete.
+type VirtualApplianceConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualApplianceConnectionsClientGetResponse contains the response from method VirtualApplianceConnectionsClient.Get.
+type VirtualApplianceConnectionsClientGetResponse struct {
+	VirtualApplianceConnection
+}
+
+// VirtualApplianceConnectionsClientListResponse contains the response from method VirtualApplianceConnectionsClient.NewListPager.
+type VirtualApplianceConnectionsClientListResponse struct {
+	VirtualApplianceConnectionList
+}
+
 // VirtualApplianceSKUsClientGetResponse contains the response from method VirtualApplianceSKUsClient.Get.
 type VirtualApplianceSKUsClientGetResponse struct {
 	VirtualApplianceSKU
@@ -2543,12 +2568,24 @@ type VirtualHubBgpConnectionClientGetResponse struct {
 
 // VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse contains the response from method VirtualHubBgpConnectionsClient.BeginListAdvertisedRoutes.
 type VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse struct {
-	PeerRouteList
+	// Map from virtual router instance to list of peer routes.
+	Value map[string][]*PeerRoute
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse.
+func (v *VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.Value)
 }
 
 // VirtualHubBgpConnectionsClientListLearnedRoutesResponse contains the response from method VirtualHubBgpConnectionsClient.BeginListLearnedRoutes.
 type VirtualHubBgpConnectionsClientListLearnedRoutesResponse struct {
-	PeerRouteList
+	// Map from virtual router instance to list of peer routes.
+	Value map[string][]*PeerRoute
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualHubBgpConnectionsClientListLearnedRoutesResponse.
+func (v *VirtualHubBgpConnectionsClientListLearnedRoutesResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.Value)
 }
 
 // VirtualHubBgpConnectionsClientListResponse contains the response from method VirtualHubBgpConnectionsClient.NewListPager.
@@ -2608,17 +2645,17 @@ type VirtualHubsClientDeleteResponse struct {
 
 // VirtualHubsClientGetEffectiveVirtualHubRoutesResponse contains the response from method VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes.
 type VirtualHubsClientGetEffectiveVirtualHubRoutesResponse struct {
-	// placeholder for future response values
+	VirtualHubEffectiveRouteList
 }
 
 // VirtualHubsClientGetInboundRoutesResponse contains the response from method VirtualHubsClient.BeginGetInboundRoutes.
 type VirtualHubsClientGetInboundRoutesResponse struct {
-	// placeholder for future response values
+	EffectiveRouteMapRouteList
 }
 
 // VirtualHubsClientGetOutboundRoutesResponse contains the response from method VirtualHubsClient.BeginGetOutboundRoutes.
 type VirtualHubsClientGetOutboundRoutesResponse struct {
-	// placeholder for future response values
+	EffectiveRouteMapRouteList
 }
 
 // VirtualHubsClientGetResponse contains the response from method VirtualHubsClient.Get.

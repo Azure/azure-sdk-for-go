@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v3.1.0-beta.1"
+	moduleVersion = "v4.1.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -663,16 +663,27 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 type OSSKU string
 
 const (
-	OSSKUCBLMariner  OSSKU = "CBLMariner"
-	OSSKUMariner     OSSKU = "Mariner"
-	OSSKUUbuntu      OSSKU = "Ubuntu"
+	// OSSKUAzureLinux - Use AzureLinux as the OS for node images. Azure Linux is a container-optimized Linux distro built by
+	// Microsoft, visit https://aka.ms/azurelinux for more information.
+	OSSKUAzureLinux OSSKU = "AzureLinux"
+	// OSSKUCBLMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
+	OSSKUCBLMariner OSSKU = "CBLMariner"
+	// OSSKUMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
+	OSSKUMariner OSSKU = "Mariner"
+	// OSSKUUbuntu - Use Ubuntu as the OS for node images.
+	OSSKUUbuntu OSSKU = "Ubuntu"
+	// OSSKUWindows2019 - Use Windows2019 as the OS for node images. Unsupported for system node pools. Windows2019 only supports
+	// Windows2019 containers; it cannot run Windows2022 containers and vice versa.
 	OSSKUWindows2019 OSSKU = "Windows2019"
+	// OSSKUWindows2022 - Use Windows2022 as the OS for node images. Unsupported for system node pools. Windows2022 only supports
+	// Windows2022 containers; it cannot run Windows2019 containers and vice versa.
 	OSSKUWindows2022 OSSKU = "Windows2022"
 )
 
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
+		OSSKUAzureLinux,
 		OSSKUCBLMariner,
 		OSSKUMariner,
 		OSSKUUbuntu,

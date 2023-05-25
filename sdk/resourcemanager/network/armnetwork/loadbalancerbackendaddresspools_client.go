@@ -48,7 +48,7 @@ func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string, credential 
 // BeginCreateOrUpdate - Creates or updates a load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - backendAddressPoolName - The name of the backend address pool.
@@ -72,7 +72,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 // CreateOrUpdate - Creates or updates a load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, parameters BackendAddressPool, options *LoadBalancerBackendAddressPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, parameters, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -121,7 +121,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateCreateRequest
 // BeginDelete - Deletes the specified load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - backendAddressPoolName - The name of the backend address pool.
@@ -144,7 +144,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 // Delete - Deletes the specified load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 func (client *LoadBalancerBackendAddressPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, backendAddressPoolName string, options *LoadBalancerBackendAddressPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadBalancerName, backendAddressPoolName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 // Get - Gets load balancer backend address pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - backendAddressPoolName - The name of the backend address pool.
@@ -238,7 +238,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *htt
 
 // NewListPager - Gets all the load balancer backed address pools.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerBackendAddressPoolsClientListOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.NewListPager
@@ -308,7 +308,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

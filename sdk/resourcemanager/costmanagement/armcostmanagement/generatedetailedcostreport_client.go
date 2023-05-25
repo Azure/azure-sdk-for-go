@@ -39,25 +39,16 @@ func NewGenerateDetailedCostReportClient(credential azcore.TokenCredential, opti
 	return client, nil
 }
 
-// BeginCreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers)
-// or Invoice Id asynchronously at a certain scope. Call returns a 202 with header
+// BeginCreateOperation - Generates the detailed cost report for provided date range, billing period(only enterprise customers)
+// or Invoice ID asynchronously at a certain scope. Call returns a 202 with header
 // Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status
 // and if the operation is completed the blob file where generated detailed
 // cost report is being stored.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
-//   - scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
-//     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
-//     Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
-//     for EnrollmentAccount
-//     scope. Also, Modern Commerce Account scopes are '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount
-//     scope,
-//     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
-//     scope,
-//     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-//     for invoiceSection scope, and
-//     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// Generated from API version 2022-10-01
+//   - scope - The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For details, see
+//     https://aka.ms/costmgmt/scopes.
 //   - parameters - Parameters supplied to the Create detailed cost report operation.
 //   - options - GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
 //     method.
@@ -75,14 +66,14 @@ func (client *GenerateDetailedCostReportClient) BeginCreateOperation(ctx context
 	}
 }
 
-// CreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers)
-// or Invoice Id asynchronously at a certain scope. Call returns a 202 with header
+// CreateOperation - Generates the detailed cost report for provided date range, billing period(only enterprise customers)
+// or Invoice ID asynchronously at a certain scope. Call returns a 202 with header
 // Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status
 // and if the operation is completed the blob file where generated detailed
 // cost report is being stored.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2022-10-01
 func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*http.Response, error) {
 	req, err := client.createOperationCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
@@ -107,7 +98,7 @@ func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

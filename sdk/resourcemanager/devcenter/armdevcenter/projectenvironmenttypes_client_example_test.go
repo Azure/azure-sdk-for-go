@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_List.json
 func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleProjectEnvironmentTypesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-		// 				Status: to.Ptr(armdevcenter.EnableStatusEnabled),
+		// 				Status: to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 		// 				UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 		// 					"e45e3m7c-176e-416a-b466-0c5ec8298f8a": &armdevcenter.UserRoleAssignmentValue{
 		// 						Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -95,7 +95,7 @@ func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Get.json
 func ExampleProjectEnvironmentTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleProjectEnvironmentTypesClient_Get() {
 	// 			},
 	// 		},
 	// 		DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-	// 		Status: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		Status: to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 	// 		UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 	// 			"e45e3m7c-176e-416a-b466-0c5ec8298f8a": &armdevcenter.UserRoleAssignmentValue{
 	// 				Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -164,7 +164,7 @@ func ExampleProjectEnvironmentTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Put.json
 func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 				},
 			},
 			DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-			Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
+			Status:             to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 			UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 				"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
 					Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -240,7 +240,7 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-	// 		Status: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		Status: to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 	// 		UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 	// 			"e45e3m7c-176e-416a-b466-0c5ec8298f8a": &armdevcenter.UserRoleAssignmentValue{
 	// 				Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -259,7 +259,7 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Patch.json
 func ExampleProjectEnvironmentTypesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 		},
 		Properties: &armdevcenter.ProjectEnvironmentTypeUpdateProperties{
 			DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-			Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
+			Status:             to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 			UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 				"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
 					Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -330,7 +330,7 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 	// 			},
 	// 		},
 	// 		DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-	// 		Status: to.Ptr(armdevcenter.EnableStatusEnabled),
+	// 		Status: to.Ptr(armdevcenter.EnvironmentTypeEnableStatusEnabled),
 	// 		UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
 	// 			"e45e3m7c-176e-416a-b466-0c5ec8298f8a": &armdevcenter.UserRoleAssignmentValue{
 	// 				Roles: map[string]*armdevcenter.EnvironmentRole{
@@ -349,7 +349,7 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Delete.json
 func ExampleProjectEnvironmentTypesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -322,6 +322,11 @@ type DedicatedHostsClientGetResponse struct {
 	DedicatedHost
 }
 
+// DedicatedHostsClientListAvailableSizesResponse contains the response from method DedicatedHostsClient.NewListAvailableSizesPager.
+type DedicatedHostsClientListAvailableSizesResponse struct {
+	DedicatedHostSizeListResult
+}
+
 // DedicatedHostsClientListByHostGroupResponse contains the response from method DedicatedHostsClient.NewListByHostGroupPager.
 type DedicatedHostsClientListByHostGroupResponse struct {
 	DedicatedHostListResult
@@ -1245,6 +1250,11 @@ type VirtualMachineScaleSetsClientPerformMaintenanceResponse struct {
 
 // VirtualMachineScaleSetsClientPowerOffResponse contains the response from method VirtualMachineScaleSetsClient.BeginPowerOff.
 type VirtualMachineScaleSetsClientPowerOffResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineScaleSetsClientReapplyResponse contains the response from method VirtualMachineScaleSetsClient.BeginReapply.
+type VirtualMachineScaleSetsClientReapplyResponse struct {
 	// placeholder for future response values
 }
 

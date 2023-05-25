@@ -138,7 +138,7 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventD
 	}
 
 	err := pc.links.Retry(ctx, exported.EventProducer, "NewEventDataBatch", partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
-		tmpBatch, err := newEventDataBatch(lwid.Link, options)
+		tmpBatch, err := newEventDataBatch(lwid.Link(), options)
 
 		if err != nil {
 			return err
@@ -172,7 +172,7 @@ func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDa
 
 	err = pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", partID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		log.Writef(EventProducer, "[%s] Sending message with ID %v to partition %q", lwid.String(), amqpMessage.Properties.MessageID, partID)
-		return lwid.Link.Send(ctx, amqpMessage, nil)
+		return lwid.Link().Send(ctx, amqpMessage, nil)
 	})
 	return internal.TransformError(err)
 }
@@ -186,7 +186,7 @@ func (pc *ProducerClient) GetPartitionProperties(ctx context.Context, partitionI
 		return PartitionProperties{}, err
 	}
 
-	return getPartitionProperties(ctx, pc.namespace, rpcLink.Link, pc.eventHub, partitionID, options)
+	return getPartitionProperties(ctx, pc.namespace, rpcLink.Link(), pc.eventHub, partitionID, options)
 }
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
@@ -197,7 +197,7 @@ func (pc *ProducerClient) GetEventHubProperties(ctx context.Context, options *Ge
 		return EventHubProperties{}, err
 	}
 
-	return getEventHubProperties(ctx, pc.namespace, rpcLink.Link, pc.eventHub, options)
+	return getEventHubProperties(ctx, pc.namespace, rpcLink.Link(), pc.eventHub, options)
 }
 
 // Close releases resources for this client.
@@ -219,8 +219,8 @@ func (pc *ProducerClient) getEntityPath(partitionID string) string {
 	}
 }
 
-func (pc *ProducerClient) newEventHubProducerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPSenderCloser, error) {
-	sender, err := session.NewSender(ctx, entityPath, &amqp.SenderOptions{
+func (pc *ProducerClient) newEventHubProducerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (amqpwrap.AMQPSenderCloser, error) {
+	sender, err := session.NewSender(ctx, entityPath, partitionID, &amqp.SenderOptions{
 		SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
 		RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 	})

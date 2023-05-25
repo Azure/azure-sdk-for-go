@@ -96,10 +96,10 @@ type DestinationLeaseAccessConditions struct {
 // Directory - A listed directory item.
 type Directory struct {
 	// REQUIRED
-	Name          *StringEncoded `xml:"Name"`
-	Attributes    *string        `xml:"Attributes"`
-	ID            *string        `xml:"FileId"`
-	PermissionKey *string        `xml:"PermissionKey"`
+	Name          *string `xml:"Name"`
+	Attributes    *string `xml:"Attributes"`
+	ID            *string `xml:"FileId"`
+	PermissionKey *string `xml:"PermissionKey"`
 
 	// File properties.
 	Properties *FileProperty `xml:"Properties"`
@@ -263,7 +263,7 @@ type DirectoryClientSetPropertiesOptions struct {
 // File - A listed file item.
 type File struct {
 	// REQUIRED
-	Name *StringEncoded `xml:"Name"`
+	Name *string `xml:"Name"`
 
 	// REQUIRED; File properties.
 	Properties    *FileProperty `xml:"Properties"`
@@ -575,7 +575,7 @@ type Handle struct {
 	OpenTime *time.Time `xml:"OpenTime"`
 
 	// REQUIRED
-	Path *StringEncoded `xml:"Path"`
+	Path *string `xml:"Path"`
 
 	// REQUIRED; SMB session ID in context of which the file handle was opened
 	SessionID *string `xml:"SessionId"`
@@ -602,7 +602,7 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 	NextMarker *string `xml:"NextMarker"`
 
 	// REQUIRED
-	Prefix *StringEncoded `xml:"Prefix"`
+	Prefix *string `xml:"Prefix"`
 
 	// REQUIRED; Abstract for entries that can be listed from Directory.
 	Segment *FilesAndDirectoriesListSegment `xml:"Entries"`

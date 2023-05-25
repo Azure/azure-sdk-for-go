@@ -313,4 +313,23 @@ directive:
         replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
 ```
 
+### Convert StringEncoded to string type
 
+``` yaml
+directive:
+  - from: zz_models.go
+    where: $
+    transform: >-
+      return $.
+        replace(/\*StringEncoded/g, `*string`);
+```
+
+### Removing UnmarshalXML for Handle to create custom UnmarshalXML function
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Handle["x-ms-go-omit-serde-methods"] = true;
+```

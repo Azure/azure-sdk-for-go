@@ -8,6 +8,7 @@ package directory
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -32,9 +33,12 @@ type Client base.Client[generated.DirectoryClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("directory.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*Client)(base.NewDirectoryClient(directoryURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
+	return (*Client)(base.NewDirectoryClient(directoryURL, azClient, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -45,9 +49,12 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("directory.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*Client)(base.NewDirectoryClient(directoryURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
+	return (*Client)(base.NewDirectoryClient(directoryURL, azClient, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -97,7 +104,7 @@ func (d *Client) URL() string {
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
-	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey(), d.getClientOptions()))
+	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
@@ -105,7 +112,7 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey(), d.getClientOptions()))
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.
@@ -199,7 +206,7 @@ func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectorie
 			if err != nil {
 				return ListFilesAndDirectoriesResponse{}, err
 			}
-			resp, err := d.generated().Pipeline().Do(req)
+			resp, err := d.generated().InternalClient().Pipeline().Do(req)
 			if err != nil {
 				return ListFilesAndDirectoriesResponse{}, err
 			}

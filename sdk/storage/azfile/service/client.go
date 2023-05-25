@@ -8,6 +8,7 @@ package service
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
@@ -34,9 +35,12 @@ type Client base.Client[generated.ServiceClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil, (*base.ClientOptions)(conOptions))), nil
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -47,9 +51,12 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, cred, (*base.ClientOptions)(conOptions))), nil
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -93,7 +100,7 @@ func (s *Client) URL() string {
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewShareClient(shareName string) *share.Client {
 	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
-	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey(), s.getClientOptions()))
+	return (*share.Client)(base.NewShareClient(shareURL, s.generated().InternalClient(), s.sharedKey(), s.getClientOptions()))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.
@@ -176,7 +183,7 @@ func (s *Client) NewListSharesPager(options *ListSharesOptions) *runtime.Pager[L
 			if err != nil {
 				return ListSharesSegmentResponse{}, err
 			}
-			resp, err := s.generated().Pipeline().Do(req)
+			resp, err := s.generated().InternalClient().Pipeline().Do(req)
 			if err != nil {
 				return ListSharesSegmentResponse{}, err
 			}

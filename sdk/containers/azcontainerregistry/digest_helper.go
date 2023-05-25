@@ -16,10 +16,6 @@ import (
 	"strings"
 )
 
-func extractNextLink(value string) string {
-	return value[1:strings.Index(value, ">")]
-}
-
 var (
 	validatorCtors           = map[string]func() digestValidator{"sha256": newSha256Validator}
 	ErrMismatchedHash        = errors.New("mismatched hash")

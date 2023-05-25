@@ -28,8 +28,7 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -49,8 +48,7 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -70,8 +68,7 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -120,8 +117,7 @@ func TestBlobClient_CompleteUpload_uploadByChunkFailOver(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)

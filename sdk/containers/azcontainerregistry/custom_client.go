@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters for the NewClient method.
@@ -51,4 +52,8 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		endpoint,
 		pl,
 	}, nil
+}
+
+func extractNextLink(value string) string {
+	return value[1:strings.Index(value, ">")]
 }

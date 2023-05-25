@@ -21,6 +21,8 @@ import (
 	"testing"
 )
 
+const alpineManifestDigest = "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
+
 func TestClient_DeleteManifest(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -184,16 +186,14 @@ func TestClient_GetManifestProperties(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
-	tag := "3.17.1"
-	digestRes, err := client.GetManifestProperties(ctx, "alpine", digest, nil)
+	digestRes, err := client.GetManifestProperties(ctx, "alpine", alpineManifestDigest, nil)
 	require.NoError(t, err)
-	require.Equal(t, *digestRes.Manifest.Digest, digest)
-	resp, err := client.GetTagProperties(ctx, "alpine", tag, nil)
+	require.Equal(t, *digestRes.Manifest.Digest, alpineManifestDigest)
+	resp, err := client.GetTagProperties(ctx, "alpine", "3.17.1", nil)
 	require.NoError(t, err)
 	tagRes, err := client.GetManifestProperties(ctx, "alpine", *resp.Tag.Digest, nil)
 	require.NoError(t, err)
-	require.Equal(t, digest, *tagRes.Manifest.Digest)
+	require.Equal(t, alpineManifestDigest, *tagRes.Manifest.Digest)
 }
 
 func TestClient_GetManifestProperties_empty(t *testing.T) {
@@ -497,9 +497,7 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a"
-	tag := "3.17.1"
-	resp, err := client.GetTagProperties(ctx, "alpine", tag, nil)
+	resp, err := client.GetTagProperties(ctx, "alpine", "3.17.1", nil)
 	require.NoError(t, err)
 	res, err := client.UpdateManifestProperties(ctx, "alpine", *resp.Tag.Digest, &ClientUpdateManifestPropertiesOptions{Value: &ManifestWriteableProperties{
 		CanWrite: to.Ptr(false),
@@ -507,7 +505,7 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.False(t, *res.Manifest.ChangeableAttributes.CanWrite)
-	res, err = client.UpdateManifestProperties(ctx, "alpine", digest, &ClientUpdateManifestPropertiesOptions{Value: &ManifestWriteableProperties{
+	res, err = client.UpdateManifestProperties(ctx, "alpine", alpineManifestDigest, &ClientUpdateManifestPropertiesOptions{Value: &ManifestWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})

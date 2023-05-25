@@ -51,7 +51,7 @@ func ExampleBlobClient_DeleteBlob() {
 }
 
 func ExampleBlobClient_GetBlob() {
-	digest := "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
+	const digest = "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
 	res, err := blobClient.GetBlob(context.TODO(), "prod/bash", digest, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,29 +65,15 @@ func ExampleBlobClient_GetBlob() {
 		log.Fatalf("failed to create blob file: %v", err)
 	}
 	defer f.Close()
-	buf := make([]byte, 1024*1024)
-	for {
-		_, err := reader.Read(buf)
-		if err == io.EOF {
-			_, err = f.Write(buf)
-			if err != nil {
-				log.Fatalf("failed to write to the file: %v", err)
-			}
-			break
-		}
-		if err != nil {
-			log.Fatalf("failed to read blob: %v", err)
-		}
-		_, err = f.Write(buf)
-		if err != nil {
-			log.Fatalf("failed to write to the file: %v", err)
-		}
+	_, err = io.Copy(f, reader)
+	if err != nil {
+		log.Fatalf("failed to write to the file: %v", err)
 	}
 }
 
 func ExampleBlobClient_GetChunk() {
 	chunkSize := 1024 * 1024
-	digest := "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
+	const digest = "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
 	current := 0
 	f, err := os.Create("blob_file")
 	if err != nil {

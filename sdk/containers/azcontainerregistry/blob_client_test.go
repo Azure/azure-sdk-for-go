@@ -22,6 +22,8 @@ import (
 	"testing"
 )
 
+const alpineBlobDigest = "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
+
 func TestBlobClient_CancelUpload(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -50,10 +52,9 @@ func TestBlobClient_CheckBlobExists(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	res, err := client.CheckBlobExists(ctx, "alpine", digest, nil)
+	res, err := client.CheckBlobExists(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
-	require.Equal(t, digest, *res.DockerContentDigest)
+	require.Equal(t, alpineBlobDigest, *res.DockerContentDigest)
 }
 
 func TestBlobClient_CheckBlobExists_fail(t *testing.T) {
@@ -82,8 +83,7 @@ func TestBlobClient_CheckChunkExists(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	res, err := client.CheckChunkExists(ctx, "alpine", digest, "bytes=0-299", nil)
+	res, err := client.CheckChunkExists(ctx, "alpine", alpineBlobDigest, "bytes=0-299", nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *res.ContentLength)
 }
@@ -114,8 +114,7 @@ func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -133,8 +132,7 @@ func TestBlobClient_DeleteBlob(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	_, err = client.DeleteBlob(ctx, "alpine", digest, nil)
+	_, err = client.DeleteBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 }
 
@@ -164,11 +162,10 @@ func TestBlobClient_GetBlob(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	res, err := client.GetBlob(ctx, "alpine", digest, nil)
+	res, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *res.ContentLength)
-	reader, err := NewDigestValidationReader(digest, res.BlobData)
+	reader, err := NewDigestValidationReader(alpineBlobDigest, res.BlobData)
 	require.NoError(t, err)
 	_, err = io.ReadAll(reader)
 	require.NoError(t, err)
@@ -219,13 +216,11 @@ func TestBlobClient_GetChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	name := "alpine"
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
 	chunkSize := 1000
 	current := 0
 	blob := bytes.NewBuffer(nil)
 	for {
-		res, err := client.GetChunk(ctx, name, digest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
+		res, err := client.GetChunk(ctx, "alpine", alpineBlobDigest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
 		require.NoError(t, err)
 		chunk, err := io.ReadAll(res.ChunkData)
 		require.NoError(t, err)
@@ -238,7 +233,7 @@ func TestBlobClient_GetChunk(t *testing.T) {
 		}
 		current += chunkSize
 	}
-	reader, err := NewDigestValidationReader(digest, blob)
+	reader, err := NewDigestValidationReader(alpineBlobDigest, blob)
 	require.NoError(t, err)
 	_, err = io.ReadAll(reader)
 	require.NoError(t, err)
@@ -295,8 +290,7 @@ func TestBlobClient_MountBlob(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	res, err := client.MountBlob(ctx, "hello-world", "alpine", digest, nil)
+	res, err := client.MountBlob(ctx, "hello-world", "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, res.Location)
 }

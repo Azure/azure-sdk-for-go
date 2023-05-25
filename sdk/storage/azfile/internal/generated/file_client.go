@@ -23,7 +23,7 @@ func (client *FileClient) InternalClient() *azcore.Client {
 //   - allowTrailingDot - If true, the trailing dot will not be trimmed from the target URI.
 //   - fileRequestIntent - Valid value is backup
 //   - allowSourceTrailingDot - If true, the trailing dot will not be trimmed from the source URI.
-//	 - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
+//   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
 func NewFileClient(endpoint string, allowTrailingDot *bool, fileRequestIntent *ShareTokenIntent, allowSourceTrailingDot *bool, azClient *azcore.Client) *FileClient {
 	client := &FileClient{
 		internal:               azClient,

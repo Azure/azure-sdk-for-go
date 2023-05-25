@@ -20,7 +20,7 @@ func (client *ServiceClient) InternalClient() *azcore.Client {
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
 //   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-//	 - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
+//   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
 func NewServiceClient(endpoint string, azClient *azcore.Client) *ServiceClient {
 	client := &ServiceClient{
 		internal: azClient,

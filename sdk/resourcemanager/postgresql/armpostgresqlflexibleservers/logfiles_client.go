@@ -21,52 +21,58 @@ import (
 	"strings"
 )
 
-// ReplicasClient contains the methods for the Replicas group.
-// Don't use this type directly, use NewReplicasClient() instead.
-type ReplicasClient struct {
+// LogFilesClient contains the methods for the LogFiles group.
+// Don't use this type directly, use NewLogFilesClient() instead.
+type LogFilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewReplicasClient creates a new instance of ReplicasClient with the specified values.
+// NewLogFilesClient creates a new instance of LogFilesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicasClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicasClient", moduleVersion, credential, options)
+func NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogFilesClient, error) {
+	cl, err := arm.NewClient(moduleName+".LogFilesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ReplicasClient{
+	client := &LogFilesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListByServerPager - List all the replicas for a given server.
+// NewListByServerPager - List all the server log files in a given server.
 //
 // Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - options - ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager
+//   - options - LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager
 //     method.
-func (client *ReplicasClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReplicasClientListByServerResponse]{
-		More: func(page ReplicasClientListByServerResponse) bool {
-			return false
+func (client *LogFilesClient) NewListByServerPager(resourceGroupName string, serverName string, options *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LogFilesClientListByServerResponse]{
+		More: func(page LogFilesClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ReplicasClientListByServerResponse) (ReplicasClientListByServerResponse, error) {
-			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+		Fetcher: func(ctx context.Context, page *LogFilesClientListByServerResponse) (LogFilesClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
-				return ReplicasClientListByServerResponse{}, err
+				return LogFilesClientListByServerResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ReplicasClientListByServerResponse{}, err
+				return LogFilesClientListByServerResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicasClientListByServerResponse{}, runtime.NewResponseError(resp)
+				return LogFilesClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -74,8 +80,8 @@ func (client *ReplicasClient) NewListByServerPager(resourceGroupName string, ser
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ReplicasClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/replicas"
+func (client *LogFilesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *LogFilesClientListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/logFiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -100,10 +106,10 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ReplicasClient) listByServerHandleResponse(resp *http.Response) (ReplicasClientListByServerResponse, error) {
-	result := ReplicasClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerListResult); err != nil {
-		return ReplicasClientListByServerResponse{}, err
+func (client *LogFilesClient) listByServerHandleResponse(resp *http.Response) (LogFilesClientListByServerResponse, error) {
+	result := LogFilesClientListByServerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogFileListResult); err != nil {
+		return LogFilesClientListByServerResponse{}, err
 	}
 	return result, nil
 }

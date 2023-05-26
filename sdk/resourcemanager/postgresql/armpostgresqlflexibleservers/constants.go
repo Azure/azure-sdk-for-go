@@ -11,7 +11,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "armpostgresqlflexibleservers"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v4.0.0-beta.1"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
@@ -43,6 +43,82 @@ func PossibleArmServerKeyTypeValues() []ArmServerKeyType {
 	return []ArmServerKeyType{
 		ArmServerKeyTypeAzureKeyVault,
 		ArmServerKeyTypeSystemManaged,
+	}
+}
+
+// AzureManagedDiskPerformanceTiers - Name of storage tier for IOPS.
+type AzureManagedDiskPerformanceTiers string
+
+const (
+	AzureManagedDiskPerformanceTiersP1  AzureManagedDiskPerformanceTiers = "P1"
+	AzureManagedDiskPerformanceTiersP10 AzureManagedDiskPerformanceTiers = "P10"
+	AzureManagedDiskPerformanceTiersP15 AzureManagedDiskPerformanceTiers = "P15"
+	AzureManagedDiskPerformanceTiersP2  AzureManagedDiskPerformanceTiers = "P2"
+	AzureManagedDiskPerformanceTiersP20 AzureManagedDiskPerformanceTiers = "P20"
+	AzureManagedDiskPerformanceTiersP3  AzureManagedDiskPerformanceTiers = "P3"
+	AzureManagedDiskPerformanceTiersP30 AzureManagedDiskPerformanceTiers = "P30"
+	AzureManagedDiskPerformanceTiersP4  AzureManagedDiskPerformanceTiers = "P4"
+	AzureManagedDiskPerformanceTiersP40 AzureManagedDiskPerformanceTiers = "P40"
+	AzureManagedDiskPerformanceTiersP50 AzureManagedDiskPerformanceTiers = "P50"
+	AzureManagedDiskPerformanceTiersP6  AzureManagedDiskPerformanceTiers = "P6"
+	AzureManagedDiskPerformanceTiersP60 AzureManagedDiskPerformanceTiers = "P60"
+	AzureManagedDiskPerformanceTiersP70 AzureManagedDiskPerformanceTiers = "P70"
+	AzureManagedDiskPerformanceTiersP80 AzureManagedDiskPerformanceTiers = "P80"
+)
+
+// PossibleAzureManagedDiskPerformanceTiersValues returns the possible values for the AzureManagedDiskPerformanceTiers const type.
+func PossibleAzureManagedDiskPerformanceTiersValues() []AzureManagedDiskPerformanceTiers {
+	return []AzureManagedDiskPerformanceTiers{
+		AzureManagedDiskPerformanceTiersP1,
+		AzureManagedDiskPerformanceTiersP10,
+		AzureManagedDiskPerformanceTiersP15,
+		AzureManagedDiskPerformanceTiersP2,
+		AzureManagedDiskPerformanceTiersP20,
+		AzureManagedDiskPerformanceTiersP3,
+		AzureManagedDiskPerformanceTiersP30,
+		AzureManagedDiskPerformanceTiersP4,
+		AzureManagedDiskPerformanceTiersP40,
+		AzureManagedDiskPerformanceTiersP50,
+		AzureManagedDiskPerformanceTiersP6,
+		AzureManagedDiskPerformanceTiersP60,
+		AzureManagedDiskPerformanceTiersP70,
+		AzureManagedDiskPerformanceTiersP80,
+	}
+}
+
+// CancelEnum - To trigger cancel for entire migration we need to send this flag as True
+type CancelEnum string
+
+const (
+	CancelEnumFalse CancelEnum = "False"
+	CancelEnumTrue  CancelEnum = "True"
+)
+
+// PossibleCancelEnumValues returns the possible values for the CancelEnum const type.
+func PossibleCancelEnumValues() []CancelEnum {
+	return []CancelEnum{
+		CancelEnumFalse,
+		CancelEnumTrue,
+	}
+}
+
+// CapabilityStatus - The status of the capability.
+type CapabilityStatus string
+
+const (
+	CapabilityStatusVisible   CapabilityStatus = "Visible"
+	CapabilityStatusAvailable CapabilityStatus = "Available"
+	CapabilityStatusDefault   CapabilityStatus = "Default"
+	CapabilityStatusDisabled  CapabilityStatus = "Disabled"
+)
+
+// PossibleCapabilityStatusValues returns the possible values for the CapabilityStatus const type.
+func PossibleCapabilityStatusValues() []CapabilityStatus {
+	return []CapabilityStatus{
+		CapabilityStatusVisible,
+		CapabilityStatusAvailable,
+		CapabilityStatusDefault,
+		CapabilityStatusDisabled,
 	}
 }
 
@@ -91,6 +167,7 @@ const (
 	CreateModeGeoRestore         CreateMode = "GeoRestore"
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
 	CreateModeReplica            CreateMode = "Replica"
+	CreateModeReviveDropped      CreateMode = "ReviveDropped"
 	CreateModeUpdate             CreateMode = "Update"
 )
 
@@ -102,6 +179,7 @@ func PossibleCreateModeValues() []CreateMode {
 		CreateModeGeoRestore,
 		CreateModePointInTimeRestore,
 		CreateModeReplica,
+		CreateModeReviveDropped,
 		CreateModeUpdate,
 	}
 }
@@ -142,6 +220,26 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// ExecutionStatus - Service-set extensible enum indicating the status of operation
+type ExecutionStatus string
+
+const (
+	ExecutionStatusCancelled ExecutionStatus = "Cancelled"
+	ExecutionStatusFailed    ExecutionStatus = "Failed"
+	ExecutionStatusRunning   ExecutionStatus = "Running"
+	ExecutionStatusSucceeded ExecutionStatus = "Succeeded"
+)
+
+// PossibleExecutionStatusValues returns the possible values for the ExecutionStatus const type.
+func PossibleExecutionStatusValues() []ExecutionStatus {
+	return []ExecutionStatus{
+		ExecutionStatusCancelled,
+		ExecutionStatusFailed,
+		ExecutionStatusRunning,
+		ExecutionStatusSucceeded,
+	}
+}
+
 // FailoverMode - Failover mode.
 type FailoverMode string
 
@@ -162,6 +260,40 @@ func PossibleFailoverModeValues() []FailoverMode {
 	}
 }
 
+// FastProvisioningSupportedEnum - Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning
+// is supported. "Disabled" stands for fast provisioning is not supported.
+type FastProvisioningSupportedEnum string
+
+const (
+	FastProvisioningSupportedEnumDisabled FastProvisioningSupportedEnum = "Disabled"
+	FastProvisioningSupportedEnumEnabled  FastProvisioningSupportedEnum = "Enabled"
+)
+
+// PossibleFastProvisioningSupportedEnumValues returns the possible values for the FastProvisioningSupportedEnum const type.
+func PossibleFastProvisioningSupportedEnumValues() []FastProvisioningSupportedEnum {
+	return []FastProvisioningSupportedEnum{
+		FastProvisioningSupportedEnumDisabled,
+		FastProvisioningSupportedEnumEnabled,
+	}
+}
+
+// GeoBackupSupportedEnum - Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported.
+// "Disabled" stands for geo-back is not supported.
+type GeoBackupSupportedEnum string
+
+const (
+	GeoBackupSupportedEnumDisabled GeoBackupSupportedEnum = "Disabled"
+	GeoBackupSupportedEnumEnabled  GeoBackupSupportedEnum = "Enabled"
+)
+
+// PossibleGeoBackupSupportedEnumValues returns the possible values for the GeoBackupSupportedEnum const type.
+func PossibleGeoBackupSupportedEnumValues() []GeoBackupSupportedEnum {
+	return []GeoBackupSupportedEnum{
+		GeoBackupSupportedEnumDisabled,
+		GeoBackupSupportedEnumEnabled,
+	}
+}
+
 // GeoRedundantBackupEnum - A value indicating whether Geo-Redundant backup is enabled on the server.
 type GeoRedundantBackupEnum string
 
@@ -175,6 +307,22 @@ func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
 	return []GeoRedundantBackupEnum{
 		GeoRedundantBackupEnumDisabled,
 		GeoRedundantBackupEnumEnabled,
+	}
+}
+
+// HaMode - HA mode supported for a server.
+type HaMode string
+
+const (
+	HaModeSameZone      HaMode = "SameZone"
+	HaModeZoneRedundant HaMode = "ZoneRedundant"
+)
+
+// PossibleHaModeValues returns the possible values for the HaMode const type.
+func PossibleHaModeValues() []HaMode {
+	return []HaMode{
+		HaModeSameZone,
+		HaModeZoneRedundant,
 	}
 }
 
@@ -196,21 +344,170 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 	}
 }
 
-// IdentityType - the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+// IdentityType - the types of identities associated with this resource; currently restricted to 'None and UserAssigned'
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+	IdentityTypeNone         IdentityType = "None"
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
 		IdentityTypeNone,
-		IdentityTypeSystemAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// KeyStatusEnum - Primary encryption key status for Data encryption enabled server.
+type KeyStatusEnum string
+
+const (
+	KeyStatusEnumInvalid KeyStatusEnum = "Invalid"
+	KeyStatusEnumValid   KeyStatusEnum = "Valid"
+)
+
+// PossibleKeyStatusEnumValues returns the possible values for the KeyStatusEnum const type.
+func PossibleKeyStatusEnumValues() []KeyStatusEnum {
+	return []KeyStatusEnum{
+		KeyStatusEnumInvalid,
+		KeyStatusEnumValid,
+	}
+}
+
+// LogicalReplicationOnSourceDbEnum - Indicates whether to setup LogicalReplicationOnSourceDb, if needed
+type LogicalReplicationOnSourceDbEnum string
+
+const (
+	LogicalReplicationOnSourceDbEnumFalse LogicalReplicationOnSourceDbEnum = "False"
+	LogicalReplicationOnSourceDbEnumTrue  LogicalReplicationOnSourceDbEnum = "True"
+)
+
+// PossibleLogicalReplicationOnSourceDbEnumValues returns the possible values for the LogicalReplicationOnSourceDbEnum const type.
+func PossibleLogicalReplicationOnSourceDbEnumValues() []LogicalReplicationOnSourceDbEnum {
+	return []LogicalReplicationOnSourceDbEnum{
+		LogicalReplicationOnSourceDbEnumFalse,
+		LogicalReplicationOnSourceDbEnumTrue,
+	}
+}
+
+type MigrationListFilter string
+
+const (
+	MigrationListFilterActive MigrationListFilter = "Active"
+	MigrationListFilterAll    MigrationListFilter = "All"
+)
+
+// PossibleMigrationListFilterValues returns the possible values for the MigrationListFilter const type.
+func PossibleMigrationListFilterValues() []MigrationListFilter {
+	return []MigrationListFilter{
+		MigrationListFilterActive,
+		MigrationListFilterAll,
+	}
+}
+
+// MigrationMode - There are two types of migration modes Online and Offline
+type MigrationMode string
+
+const (
+	MigrationModeOffline MigrationMode = "Offline"
+	MigrationModeOnline  MigrationMode = "Online"
+)
+
+// PossibleMigrationModeValues returns the possible values for the MigrationMode const type.
+func PossibleMigrationModeValues() []MigrationMode {
+	return []MigrationMode{
+		MigrationModeOffline,
+		MigrationModeOnline,
+	}
+}
+
+// MigrationNameAvailabilityReason - Migration name availability reason.
+type MigrationNameAvailabilityReason string
+
+const (
+	MigrationNameAvailabilityReasonAlreadyExists MigrationNameAvailabilityReason = "AlreadyExists"
+	MigrationNameAvailabilityReasonInvalid       MigrationNameAvailabilityReason = "Invalid"
+)
+
+// PossibleMigrationNameAvailabilityReasonValues returns the possible values for the MigrationNameAvailabilityReason const type.
+func PossibleMigrationNameAvailabilityReasonValues() []MigrationNameAvailabilityReason {
+	return []MigrationNameAvailabilityReason{
+		MigrationNameAvailabilityReasonAlreadyExists,
+		MigrationNameAvailabilityReasonInvalid,
+	}
+}
+
+// MigrationState - Migration state.
+type MigrationState string
+
+const (
+	MigrationStateCanceled             MigrationState = "Canceled"
+	MigrationStateFailed               MigrationState = "Failed"
+	MigrationStateInProgress           MigrationState = "InProgress"
+	MigrationStateSucceeded            MigrationState = "Succeeded"
+	MigrationStateWaitingForUserAction MigrationState = "WaitingForUserAction"
+)
+
+// PossibleMigrationStateValues returns the possible values for the MigrationState const type.
+func PossibleMigrationStateValues() []MigrationState {
+	return []MigrationState{
+		MigrationStateCanceled,
+		MigrationStateFailed,
+		MigrationStateInProgress,
+		MigrationStateSucceeded,
+		MigrationStateWaitingForUserAction,
+	}
+}
+
+// MigrationSubState - Migration sub state.
+type MigrationSubState string
+
+const (
+	MigrationSubStateCompleted                                          MigrationSubState = "Completed"
+	MigrationSubStateCompletingMigration                                MigrationSubState = "CompletingMigration"
+	MigrationSubStateMigratingData                                      MigrationSubState = "MigratingData"
+	MigrationSubStatePerformingPreRequisiteSteps                        MigrationSubState = "PerformingPreRequisiteSteps"
+	MigrationSubStateWaitingForCutoverTrigger                           MigrationSubState = "WaitingForCutoverTrigger"
+	MigrationSubStateWaitingForDBsToMigrateSpecification                MigrationSubState = "WaitingForDBsToMigrateSpecification"
+	MigrationSubStateWaitingForDataMigrationScheduling                  MigrationSubState = "WaitingForDataMigrationScheduling"
+	MigrationSubStateWaitingForDataMigrationWindow                      MigrationSubState = "WaitingForDataMigrationWindow"
+	MigrationSubStateWaitingForLogicalReplicationSetupRequestOnSourceDB MigrationSubState = "WaitingForLogicalReplicationSetupRequestOnSourceDB"
+	MigrationSubStateWaitingForTargetDBOverwriteConfirmation            MigrationSubState = "WaitingForTargetDBOverwriteConfirmation"
+)
+
+// PossibleMigrationSubStateValues returns the possible values for the MigrationSubState const type.
+func PossibleMigrationSubStateValues() []MigrationSubState {
+	return []MigrationSubState{
+		MigrationSubStateCompleted,
+		MigrationSubStateCompletingMigration,
+		MigrationSubStateMigratingData,
+		MigrationSubStatePerformingPreRequisiteSteps,
+		MigrationSubStateWaitingForCutoverTrigger,
+		MigrationSubStateWaitingForDBsToMigrateSpecification,
+		MigrationSubStateWaitingForDataMigrationScheduling,
+		MigrationSubStateWaitingForDataMigrationWindow,
+		MigrationSubStateWaitingForLogicalReplicationSetupRequestOnSourceDB,
+		MigrationSubStateWaitingForTargetDBOverwriteConfirmation,
+	}
+}
+
+// OnlineResizeSupportedEnum - A value indicating whether online resize is supported in this region for the given subscription.
+// "Enabled" means storage online resize is supported. "Disabled" means storage online resize is not
+// supported.
+type OnlineResizeSupportedEnum string
+
+const (
+	OnlineResizeSupportedEnumDisabled OnlineResizeSupportedEnum = "Disabled"
+	OnlineResizeSupportedEnumEnabled  OnlineResizeSupportedEnum = "Enabled"
+)
+
+// PossibleOnlineResizeSupportedEnumValues returns the possible values for the OnlineResizeSupportedEnum const type.
+func PossibleOnlineResizeSupportedEnumValues() []OnlineResizeSupportedEnum {
+	return []OnlineResizeSupportedEnum{
+		OnlineResizeSupportedEnumDisabled,
+		OnlineResizeSupportedEnumEnabled,
 	}
 }
 
@@ -243,6 +540,24 @@ const (
 func PossibleOriginValues() []Origin {
 	return []Origin{
 		OriginFull,
+	}
+}
+
+// OverwriteDbsInTargetEnum - Indicates whether the databases on the target server can be overwritten, if already present.
+// If set to False, the migration workflow will wait for a confirmation, if it detects that the database
+// already exists.
+type OverwriteDbsInTargetEnum string
+
+const (
+	OverwriteDbsInTargetEnumFalse OverwriteDbsInTargetEnum = "False"
+	OverwriteDbsInTargetEnumTrue  OverwriteDbsInTargetEnum = "True"
+)
+
+// PossibleOverwriteDbsInTargetEnumValues returns the possible values for the OverwriteDbsInTargetEnum const type.
+func PossibleOverwriteDbsInTargetEnumValues() []OverwriteDbsInTargetEnum {
+	return []OverwriteDbsInTargetEnum{
+		OverwriteDbsInTargetEnumFalse,
+		OverwriteDbsInTargetEnumTrue,
 	}
 }
 
@@ -299,6 +614,23 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 		ReplicationRoleGeoAsyncReplica,
 		ReplicationRoleNone,
 		ReplicationRolePrimary,
+	}
+}
+
+// RestrictedEnum - A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled"
+// stands for region is not restricted.
+type RestrictedEnum string
+
+const (
+	RestrictedEnumDisabled RestrictedEnum = "Disabled"
+	RestrictedEnumEnabled  RestrictedEnum = "Enabled"
+)
+
+// PossibleRestrictedEnumValues returns the possible values for the RestrictedEnum const type.
+func PossibleRestrictedEnumValues() []RestrictedEnum {
+	return []RestrictedEnum{
+		RestrictedEnumDisabled,
+		RestrictedEnumEnabled,
 	}
 }
 
@@ -391,6 +723,7 @@ type ServerVersion string
 
 const (
 	ServerVersionEleven   ServerVersion = "11"
+	ServerVersionFifteen  ServerVersion = "15"
 	ServerVersionFourteen ServerVersion = "14"
 	ServerVersionThirteen ServerVersion = "13"
 	ServerVersionTwelve   ServerVersion = "12"
@@ -400,8 +733,109 @@ const (
 func PossibleServerVersionValues() []ServerVersion {
 	return []ServerVersion{
 		ServerVersionEleven,
+		ServerVersionFifteen,
 		ServerVersionFourteen,
 		ServerVersionThirteen,
 		ServerVersionTwelve,
+	}
+}
+
+// StartDataMigrationEnum - Indicates whether the data migration should start right away
+type StartDataMigrationEnum string
+
+const (
+	StartDataMigrationEnumFalse StartDataMigrationEnum = "False"
+	StartDataMigrationEnumTrue  StartDataMigrationEnum = "True"
+)
+
+// PossibleStartDataMigrationEnumValues returns the possible values for the StartDataMigrationEnum const type.
+func PossibleStartDataMigrationEnumValues() []StartDataMigrationEnum {
+	return []StartDataMigrationEnum{
+		StartDataMigrationEnumFalse,
+		StartDataMigrationEnumTrue,
+	}
+}
+
+// StorageAutoGrow - Flag to enable / disable Storage Auto grow for flexible server.
+type StorageAutoGrow string
+
+const (
+	StorageAutoGrowDisabled StorageAutoGrow = "Disabled"
+	StorageAutoGrowEnabled  StorageAutoGrow = "Enabled"
+)
+
+// PossibleStorageAutoGrowValues returns the possible values for the StorageAutoGrow const type.
+func PossibleStorageAutoGrowValues() []StorageAutoGrow {
+	return []StorageAutoGrow{
+		StorageAutoGrowDisabled,
+		StorageAutoGrowEnabled,
+	}
+}
+
+// StorageAutoGrowthSupportedEnum - A value indicating whether storage auto-grow is supported in this region. "Enabled" means
+// storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
+type StorageAutoGrowthSupportedEnum string
+
+const (
+	StorageAutoGrowthSupportedEnumDisabled StorageAutoGrowthSupportedEnum = "Disabled"
+	StorageAutoGrowthSupportedEnumEnabled  StorageAutoGrowthSupportedEnum = "Enabled"
+)
+
+// PossibleStorageAutoGrowthSupportedEnumValues returns the possible values for the StorageAutoGrowthSupportedEnum const type.
+func PossibleStorageAutoGrowthSupportedEnumValues() []StorageAutoGrowthSupportedEnum {
+	return []StorageAutoGrowthSupportedEnum{
+		StorageAutoGrowthSupportedEnumDisabled,
+		StorageAutoGrowthSupportedEnumEnabled,
+	}
+}
+
+// TriggerCutoverEnum - To trigger cutover for entire migration we need to send this flag as True
+type TriggerCutoverEnum string
+
+const (
+	TriggerCutoverEnumFalse TriggerCutoverEnum = "False"
+	TriggerCutoverEnumTrue  TriggerCutoverEnum = "True"
+)
+
+// PossibleTriggerCutoverEnumValues returns the possible values for the TriggerCutoverEnum const type.
+func PossibleTriggerCutoverEnumValues() []TriggerCutoverEnum {
+	return []TriggerCutoverEnum{
+		TriggerCutoverEnumFalse,
+		TriggerCutoverEnumTrue,
+	}
+}
+
+// ZoneRedundantHaAndGeoBackupSupportedEnum - A value indicating whether Zone Redundant HA and Geo-backup is supported in
+// this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and
+// geo-backup is not supported.
+type ZoneRedundantHaAndGeoBackupSupportedEnum string
+
+const (
+	ZoneRedundantHaAndGeoBackupSupportedEnumDisabled ZoneRedundantHaAndGeoBackupSupportedEnum = "Disabled"
+	ZoneRedundantHaAndGeoBackupSupportedEnumEnabled  ZoneRedundantHaAndGeoBackupSupportedEnum = "Enabled"
+)
+
+// PossibleZoneRedundantHaAndGeoBackupSupportedEnumValues returns the possible values for the ZoneRedundantHaAndGeoBackupSupportedEnum const type.
+func PossibleZoneRedundantHaAndGeoBackupSupportedEnumValues() []ZoneRedundantHaAndGeoBackupSupportedEnum {
+	return []ZoneRedundantHaAndGeoBackupSupportedEnum{
+		ZoneRedundantHaAndGeoBackupSupportedEnumDisabled,
+		ZoneRedundantHaAndGeoBackupSupportedEnumEnabled,
+	}
+}
+
+// ZoneRedundantHaSupportedEnum - A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means
+// zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
+type ZoneRedundantHaSupportedEnum string
+
+const (
+	ZoneRedundantHaSupportedEnumDisabled ZoneRedundantHaSupportedEnum = "Disabled"
+	ZoneRedundantHaSupportedEnumEnabled  ZoneRedundantHaSupportedEnum = "Enabled"
+)
+
+// PossibleZoneRedundantHaSupportedEnumValues returns the possible values for the ZoneRedundantHaSupportedEnum const type.
+func PossibleZoneRedundantHaSupportedEnumValues() []ZoneRedundantHaSupportedEnum {
+	return []ZoneRedundantHaSupportedEnum{
+		ZoneRedundantHaSupportedEnumDisabled,
+		ZoneRedundantHaSupportedEnumEnabled,
 	}
 }

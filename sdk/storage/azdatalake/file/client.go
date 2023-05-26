@@ -51,7 +51,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // Create creates a new file (dfs1).
 func (f *Client) Create(options *CreateOptions) (CreateResponse, error) {
-	// TODO: call getPathHTTPHeaders()
+	// TODO: format for options should be able to handle the access conditions parameter correctly
 	return CreateResponse{}, nil
 }
 
@@ -72,22 +72,22 @@ func (f *Client) Rename(newName string, options *RenameOptions) error {
 }
 
 // SetExpiry sets the expiry time of a file (dfs/blob2).
-func (f *Client) SetExpiry(expiryOptions *ExpiryOptions, options *SetExpiryOptions) (SetExpiryResponse, error) {
+func (f *Client) SetExpiry(expiryOptions ExpiryOptions, options *SetExpiryOptions) (SetExpiryResponse, error) {
 	return SetExpiryResponse{}, nil
 }
 
-//func (f *Client) Upload() {
-//
-//}
-//
-//func (f *Client) Append() {
-//
-//}
-//
-//func (f *Client) Flush() {
-//
-//}
-//
-//func (f *Client) Download() {
-//
-//}
+func (f *Client) Upload() {
+
+}
+
+func (f *Client) Append() {
+
+}
+
+func (f *Client) Flush() {
+
+}
+
+func (f *Client) Download() {
+
+}

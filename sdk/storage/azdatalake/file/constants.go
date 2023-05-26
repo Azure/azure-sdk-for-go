@@ -6,7 +6,10 @@
 
 package file
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
+)
 
 type ExpiryOptions = generated.PathExpiryOptions
 
@@ -15,4 +18,33 @@ const (
 	NeverExpire        ExpiryOptions = generated.PathExpiryOptionsNeverExpire
 	RelativeToCreation ExpiryOptions = generated.PathExpiryOptionsRelativeToCreation
 	RelativeToNow      ExpiryOptions = generated.PathExpiryOptionsRelativeToNow
+)
+
+type ResourceType = path.ResourceType
+
+const (
+	ResourceTypeFile      ResourceType = path.ResourceTypeFile
+	ResourceTypeDirectory ResourceType = path.ResourceTypeDirectory
+)
+
+type RenameMode = path.RenameMode
+
+const (
+	RenameModeLegacy RenameMode = path.RenameModeLegacy
+	RenameModePosix  RenameMode = path.RenameModePosix
+)
+
+type SetAccessControlRecursiveMode = path.SetAccessControlRecursiveMode
+
+const (
+	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeSet
+	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeModify
+	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeRemove
+)
+
+type EncryptionAlgorithmType = path.EncryptionAlgorithmType
+
+const (
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
 )

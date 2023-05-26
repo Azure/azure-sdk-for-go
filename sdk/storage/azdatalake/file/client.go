@@ -49,28 +49,45 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return nil, nil
 }
 
-// dfs
+// Create creates a new file (dfs1).
 func (f *Client) Create(options *CreateOptions) (CreateResponse, error) {
 	// TODO: call getPathHTTPHeaders()
 	return CreateResponse{}, nil
 }
 
-// dfs
+// Delete deletes a file (dfs1).
 func (f *Client) Delete(options *DeleteOptions) (DeleteResponse, error) {
+	// TODO: recursive set to false when calling generated code
 	return DeleteResponse{}, nil
 }
 
-// blob
+// GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
-// dfs
+// Rename renames a file (dfs1).
 func (f *Client) Rename(newName string, options *RenameOptions) error {
 	return nil
 }
 
-// dfs + blob endpoint - 2
+// SetExpiry sets the expiry time of a file (dfs/blob2).
 func (f *Client) SetExpiry(expiryOptions *ExpiryOptions, options *SetExpiryOptions) (SetExpiryResponse, error) {
 	return SetExpiryResponse{}, nil
 }
+
+//func (f *Client) Upload() {
+//
+//}
+//
+//func (f *Client) Append() {
+//
+//}
+//
+//func (f *Client) Flush() {
+//
+//}
+//
+//func (f *Client) Download() {
+//
+//}

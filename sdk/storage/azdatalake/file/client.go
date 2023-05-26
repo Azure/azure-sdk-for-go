@@ -76,18 +76,22 @@ func (f *Client) SetExpiry(expiryOptions ExpiryOptions, options *SetExpiryOption
 	return SetExpiryResponse{}, nil
 }
 
+// Upload uploads data to a file.
 func (f *Client) Upload() {
 
 }
 
+// Append appends data to a file.
 func (f *Client) Append() {
 
 }
 
+// Flush flushes previous uploaded data to a file.
 func (f *Client) Flush() {
 
 }
 
+// Download downloads data from a file.
 func (f *Client) Download() {
 
 }

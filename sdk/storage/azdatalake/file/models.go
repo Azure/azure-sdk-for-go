@@ -103,6 +103,12 @@ type HTTPHeaders = path.HTTPHeaders
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
+type SetAccessControlOptions = path.SetAccessControlOptions
+
+// GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
+type GetAccessControlOptions = path.GetAccessControlOptions
+
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveOptions = path.SetAccessControlRecursiveOptions
 
@@ -117,9 +123,6 @@ type RemoveAccessControlRecursiveOptions = path.RemoveAccessControlRecursiveOpti
 
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions = path.UpdateAccessControlRecursiveOptions
-
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
-type SetAccessControlOptions = path.SetAccessControlOptions
 
 // ModifiedAccessConditions identifies path-specific access conditions which you optionally set.
 type ModifiedAccessConditions = path.ModifiedAccessConditions

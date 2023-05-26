@@ -51,6 +51,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // dfs
 func (f *Client) Create(options *CreateOptions) (CreateResponse, error) {
+	// TODO: call getPathHTTPHeaders()
 	return CreateResponse{}, nil
 }
 

@@ -17,18 +17,15 @@ const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 // FilesystemAccessConditions identifies container-specific access conditions which you optionally set.
 type FilesystemAccessConditions = container.AccessConditions
 
+// PathAccessConditions identifies blob-specific access conditions which you optionally set.
+type PathAccessConditions = blob.AccessConditions
+
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatContainerAccessConditions(b *FilesystemAccessConditions) (*LeaseAccessConditions, *ModifiedAccessConditions) {
 	if b == nil {
 		return nil, nil
 	}
 	return b.LeaseAccessConditions, b.ModifiedAccessConditions
-}
-
-// PathAccessConditions identifies blob-specific access conditions which you optionally set.
-type PathAccessConditions struct {
-	LeaseAccessConditions    *LeaseAccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 // FormatPathAccessConditions formats PathAccessConditions into path's LeaseAccessConditions and ModifiedAccessConditions.
@@ -44,14 +41,6 @@ func FormatPathAccessConditions(p *PathAccessConditions) (*generated.LeaseAccess
 			IfModifiedSince:   p.ModifiedAccessConditions.IfModifiedSince,
 			IfUnmodifiedSince: p.ModifiedAccessConditions.IfUnmodifiedSince,
 		}
-}
-
-// FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatBlobAccessConditions(b *PathAccessConditions) (*blob.LeaseAccessConditions, *blob.ModifiedAccessConditions) {
-	if b == nil {
-		return nil, nil
-	}
-	return b.LeaseAccessConditions, b.ModifiedAccessConditions
 }
 
 // LeaseAccessConditions contains optional parameters to access leased entity.

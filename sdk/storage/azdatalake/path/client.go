@@ -31,37 +31,43 @@ func (p *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
 
-// dfs - 1
+// SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (p *Client) SetAccessControl(options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	return SetAccessControlResponse{}, nil
 }
 
-// dfs - 1
+// SetAccessControlRecursive sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (p *Client) SetAccessControlRecursive(options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// dfs - 1
+// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a file or directory (dfs1).
 func (p *Client) UpdateAccessControlRecursive(options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// dfs - 1
+// GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
 func (p *Client) GetAccessControl(options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	return GetAccessControlResponse{}, nil
 }
 
-// dfs - 1
+// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a file or directory (dfs1).
 func (p *Client) RemoveAccessControlRecursive(options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
-// blob - 3
+// SetMetadata sets the metadata for a file or directory (blob3).
 func (p *Client) SetMetadata(options *SetMetadataOptions) (SetMetadataResponse, error) {
+	// TODO: call directly into blob
 	return SetMetadataResponse{}, nil
 }
 
-// blob - 3
-func (p *Client) SetHTTPHeaders(options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+// SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
+func (p *Client) SetHTTPHeaders(httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+	// TODO: call formatBlobHTTPHeaders() since we want to add the blob prefix to our options before calling into blob
+	// TODO: call into blob
 	return SetHTTPHeadersResponse{}, nil
 }

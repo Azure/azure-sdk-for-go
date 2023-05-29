@@ -98,12 +98,6 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 	}
 }
 
-// SetExpiryOptions contains the optional parameters when calling the SetExpiry operation.
-type SetExpiryOptions struct {
-	// ExpiresOn specifies the time that the file will expire.
-	ExpiresOn *time.Time
-}
-
 // ===================================== PATH IMPORTS ===========================================
 
 // CPKInfo contains a group of parameters for client provided encryption key.
@@ -147,3 +141,21 @@ type ModifiedAccessConditions = path.ModifiedAccessConditions
 
 // LeaseAccessConditions identifies path-specific access conditions associated with a lease.
 type LeaseAccessConditions = path.LeaseAccessConditions
+
+// ExpiryType defines values for ExpiryType.
+type ExpiryType = exported.ExpiryType
+
+// ExpiryTypeAbsolute defines the absolute time for the blob expiry.
+type ExpiryTypeAbsolute = exported.ExpiryTypeAbsolute
+
+// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry.
+type ExpiryTypeRelativeToNow = exported.ExpiryTypeRelativeToNow
+
+// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry.
+type ExpiryTypeRelativeToCreation = exported.ExpiryTypeRelativeToCreation
+
+// ExpiryTypeNever defines that the blob will be set to never expire.
+type ExpiryTypeNever = exported.ExpiryTypeNever
+
+// SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
+type SetExpiryOptions = exported.SetExpiryOptions

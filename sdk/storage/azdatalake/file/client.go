@@ -7,6 +7,7 @@
 package file
 
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
@@ -50,48 +51,48 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 }
 
 // Create creates a new file (dfs1).
-func (f *Client) Create(options *CreateOptions) (CreateResponse, error) {
+func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	// TODO: format for options should be able to handle the access conditions parameter correctly
 	return CreateResponse{}, nil
 }
 
 // Delete deletes a file (dfs1).
-func (f *Client) Delete(options *DeleteOptions) (DeleteResponse, error) {
+func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	// TODO: recursive set to false when calling generated code
 	return DeleteResponse{}, nil
 }
 
 // GetProperties gets the properties of a file (blob3)
-func (f *Client) GetProperties(options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
 // Rename renames a file (dfs1).
-func (f *Client) Rename(newName string, options *RenameOptions) error {
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
 	return nil
 }
 
-// SetExpiry sets the expiry time of a file (dfs/blob2).
-func (f *Client) SetExpiry(expiryOptions ExpiryOptions, options *SetExpiryOptions) (SetExpiryResponse, error) {
+// SetExpiry operation sets an expiry time on an existing file.
+func (f *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	return SetExpiryResponse{}, nil
 }
 
 // Upload uploads data to a file.
-func (f *Client) Upload() {
+func (f *Client) Upload(ctx context.Context) {
 
 }
 
 // Append appends data to a file.
-func (f *Client) Append() {
+func (f *Client) Append(ctx context.Context) {
 
 }
 
 // Flush flushes previous uploaded data to a file.
-func (f *Client) Flush() {
+func (f *Client) Flush(ctx context.Context) {
 
 }
 
 // Download downloads data from a file.
-func (f *Client) Download() {
+func (f *Client) Download(ctx context.Context) {
 
 }

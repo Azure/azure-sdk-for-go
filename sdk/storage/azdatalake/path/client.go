@@ -7,6 +7,7 @@
 package path
 
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -32,41 +33,41 @@ func (p *Client) URL() string {
 }
 
 // SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
-func (p *Client) SetAccessControl(options *SetAccessControlOptions) (SetAccessControlResponse, error) {
+func (p *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	return SetAccessControlResponse{}, nil
 }
 
 // SetAccessControlRecursive sets the owner, owning group, and permissions for a file or directory (dfs1).
-func (p *Client) SetAccessControlRecursive(options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+func (p *Client) SetAccessControlRecursive(ctx context.Context, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
 // UpdateAccessControlRecursive updates the owner, owning group, and permissions for a file or directory (dfs1).
-func (p *Client) UpdateAccessControlRecursive(options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
+func (p *Client) UpdateAccessControlRecursive(ctx context.Context, options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
 	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
-func (p *Client) GetAccessControl(options *GetAccessControlOptions) (GetAccessControlResponse, error) {
+func (p *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	return GetAccessControlResponse{}, nil
 }
 
 // RemoveAccessControlRecursive removes the owner, owning group, and permissions for a file or directory (dfs1).
-func (p *Client) RemoveAccessControlRecursive(options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
+func (p *Client) RemoveAccessControlRecursive(ctx context.Context, options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
 	// TODO explicitly pass SetAccessControlRecursiveMode
 	return SetAccessControlRecursiveResponse{}, nil
 }
 
 // SetMetadata sets the metadata for a file or directory (blob3).
-func (p *Client) SetMetadata(options *SetMetadataOptions) (SetMetadataResponse, error) {
+func (p *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	// TODO: call directly into blob
 	return SetMetadataResponse{}, nil
 }
 
 // SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
-func (p *Client) SetHTTPHeaders(httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+func (p *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	// TODO: call formatBlobHTTPHeaders() since we want to add the blob prefix to our options before calling into blob
 	// TODO: call into blob
 	return SetHTTPHeadersResponse{}, nil

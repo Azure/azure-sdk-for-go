@@ -7,6 +7,7 @@
 package directory
 
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
@@ -49,23 +50,23 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return nil, nil
 }
 
-// Create creates a new directory (dfs).
-func (d *Client) Create(options *CreateOptions) (CreateResponse, error) {
+// Create creates a new directory (dfs1).
+func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
 }
 
-// Delete removes the directory (dfs).
-func (d *Client) Delete(options *DeleteOptions) (DeleteResponse, error) {
+// Delete removes the directory (dfs1).
+func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	//TODO: pass recursive = true
 	return DeleteResponse{}, nil
 }
 
-// GetProperties returns the properties of the directory (blob). #TODO: we may just move this method to path client
-func (d *Client) GetProperties(options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+// GetProperties returns the properties of the directory (blob3). #TODO: we may just move this method to path client
+func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
-// Rename renames the directory (dfs).
-func (d *Client) Rename(newName string, options *RenameOptions) error {
+// Rename renames the directory (dfs1).
+func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
 	return nil
 }

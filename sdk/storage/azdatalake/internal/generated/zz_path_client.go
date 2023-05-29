@@ -22,25 +22,11 @@ import (
 )
 
 // PathClient contains the methods for the Path group.
-// Don't use this type directly, use NewPathClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type PathClient struct {
+	internal         *azcore.Client
 	endpoint         string
 	xmsLeaseDuration int32
-	pl               runtime.Pipeline
-}
-
-// NewPathClient creates a new instance of PathClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - xmsLeaseDuration - The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds.
-//     The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewPathClient(endpoint string, xmsLeaseDuration int32, pl runtime.Pipeline) *PathClient {
-	client := &PathClient{
-		endpoint:         endpoint,
-		xmsLeaseDuration: xmsLeaseDuration,
-		pl:               pl,
-	}
-	return client
 }
 
 // AppendData - Append data to the file.
@@ -57,7 +43,7 @@ func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser
 	if err != nil {
 		return PathClientAppendDataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientAppendDataResponse{}, err
 	}
@@ -108,7 +94,10 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(body, "application/json")
+	if err := req.SetBody(body, "application/json"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // appendDataHandleResponse handles the AppendData response.
@@ -182,7 +171,7 @@ func (client *PathClient) Create(ctx context.Context, options *PathClientCreateO
 	if err != nil {
 		return PathClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientCreateResponse{}, err
 	}
@@ -371,7 +360,7 @@ func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteO
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
@@ -461,7 +450,7 @@ func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlus
 	if err != nil {
 		return PathClientFlushDataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientFlushDataResponse{}, err
 	}
@@ -611,7 +600,7 @@ func (client *PathClient) GetProperties(ctx context.Context, options *PathClient
 	if err != nil {
 		return PathClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientGetPropertiesResponse{}, err
 	}
@@ -772,7 +761,7 @@ func (client *PathClient) Lease(ctx context.Context, xmsLeaseAction PathLeaseAct
 	if err != nil {
 		return PathClientLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientLeaseResponse{}, err
 	}
@@ -875,7 +864,7 @@ func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptio
 	if err != nil {
 		return PathClientReadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientReadResponse{}, err
 	}
@@ -1036,7 +1025,7 @@ func (client *PathClient) SetAccessControl(ctx context.Context, options *PathCli
 	if err != nil {
 		return PathClientSetAccessControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetAccessControlResponse{}, err
 	}
@@ -1139,7 +1128,7 @@ func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode Pa
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
@@ -1221,7 +1210,7 @@ func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOpt
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
 	}
@@ -1297,7 +1286,7 @@ func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndel
 	if err != nil {
 		return PathClientUndeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientUndeleteResponse{}, err
 	}
@@ -1384,7 +1373,7 @@ func (client *PathClient) Update(ctx context.Context, action PathUpdateAction, m
 	if err != nil {
 		return PathClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientUpdateResponse{}, err
 	}
@@ -1481,7 +1470,10 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(body, "application/octet-stream")
+	if err := req.SetBody(body, "application/octet-stream"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // updateHandleResponse handles the Update response.

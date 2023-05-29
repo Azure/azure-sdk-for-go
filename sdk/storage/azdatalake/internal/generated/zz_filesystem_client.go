@@ -22,21 +22,10 @@ import (
 )
 
 // FileSystemClient contains the methods for the FileSystem group.
-// Don't use this type directly, use NewFileSystemClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type FileSystemClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewFileSystemClient creates a new instance of FileSystemClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewFileSystemClient(endpoint string, pl runtime.Pipeline) *FileSystemClient {
-	client := &FileSystemClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // Create - Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails. This
@@ -50,7 +39,7 @@ func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemC
 	if err != nil {
 		return FileSystemClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientCreateResponse{}, err
 	}
@@ -134,7 +123,7 @@ func (client *FileSystemClient) Delete(ctx context.Context, options *FileSystemC
 	if err != nil {
 		return FileSystemClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientDeleteResponse{}, err
 	}
@@ -200,7 +189,7 @@ func (client *FileSystemClient) GetProperties(ctx context.Context, options *File
 	if err != nil {
 		return FileSystemClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientGetPropertiesResponse{}, err
 	}
@@ -428,7 +417,7 @@ func (client *FileSystemClient) SetProperties(ctx context.Context, options *File
 	if err != nil {
 		return FileSystemClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientSetPropertiesResponse{}, err
 	}

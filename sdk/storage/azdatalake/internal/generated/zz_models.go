@@ -15,9 +15,9 @@ import (
 )
 
 type ACLFailedEntry struct {
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-	Name         *string `json:"name,omitempty"`
-	Type         *string `json:"type,omitempty"`
+	ErrorMessage *string
+	Name         *string
+	Type         *string
 }
 
 type BlobHierarchyListSegment struct {
@@ -104,9 +104,9 @@ type CPKInfo struct {
 }
 
 type FileSystem struct {
-	ETag         *string `json:"eTag,omitempty"`
-	LastModified *string `json:"lastModified,omitempty"`
-	Name         *string `json:"name,omitempty"`
+	ETag         *string
+	LastModified *string
+	Name         *string
 }
 
 // FileSystemClientCreateOptions contains the optional parameters for the FileSystemClient.Create method.
@@ -221,7 +221,7 @@ type FileSystemClientSetPropertiesOptions struct {
 }
 
 type FileSystemList struct {
-	Filesystems []*FileSystem `json:"filesystems,omitempty"`
+	Filesystems []*FileSystem
 }
 
 // LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -260,19 +260,19 @@ type ModifiedAccessConditions struct {
 }
 
 type Path struct {
-	ContentLength *int64  `json:"contentLength,omitempty"`
-	CreationTime  *string `json:"creationTime,omitempty"`
-	ETag          *string `json:"eTag,omitempty"`
+	ContentLength *int64
+	CreationTime  *string
+	ETag          *string
 
 	// The name of the encryption scope under which the blob is encrypted.
-	EncryptionScope *string `json:"EncryptionScope,omitempty"`
-	ExpiryTime      *string `json:"expiryTime,omitempty"`
-	Group           *string `json:"group,omitempty"`
-	IsDirectory     *bool   `json:"isDirectory,omitempty"`
-	LastModified    *string `json:"lastModified,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Owner           *string `json:"owner,omitempty"`
-	Permissions     *string `json:"permissions,omitempty"`
+	EncryptionScope *string
+	ExpiryTime      *string
+	Group           *string
+	IsDirectory     *bool
+	LastModified    *string
+	Name            *string
+	Owner           *string
+	Permissions     *string
 }
 
 // PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
@@ -641,7 +641,7 @@ type PathHTTPHeaders struct {
 }
 
 type PathList struct {
-	Paths []*Path `json:"paths,omitempty"`
+	Paths []*Path
 }
 
 // ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager method.
@@ -665,10 +665,10 @@ type ServiceClientListFileSystemsOptions struct {
 }
 
 type SetAccessControlRecursiveResponse struct {
-	DirectoriesSuccessful *int32            `json:"directoriesSuccessful,omitempty"`
-	FailedEntries         []*ACLFailedEntry `json:"failedEntries,omitempty"`
-	FailureCount          *int32            `json:"failureCount,omitempty"`
-	FilesSuccessful       *int32            `json:"filesSuccessful,omitempty"`
+	DirectoriesSuccessful *int32
+	FailedEntries         []*ACLFailedEntry
+	FailureCount          *int32
+	FilesSuccessful       *int32
 }
 
 // SourceModifiedAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -685,14 +685,14 @@ type SourceModifiedAccessConditions struct {
 
 type StorageError struct {
 	// The service error response object.
-	Error *StorageErrorError `json:"error,omitempty"`
+	Error *StorageErrorError
 }
 
 // StorageErrorError - The service error response object.
 type StorageErrorError struct {
 	// The service error code.
-	Code *string `json:"Code,omitempty"`
+	Code *string
 
 	// The service error message.
-	Message *string `json:"Message,omitempty"`
+	Message *string
 }

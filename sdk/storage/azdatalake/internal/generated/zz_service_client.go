@@ -11,29 +11,20 @@ package generated
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
 // ServiceClient contains the methods for the Service group.
-// Don't use this type directly, use NewServiceClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type ServiceClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewServiceClient creates a new instance of ServiceClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
-	client := &ServiceClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // NewListFileSystemsPager - List filesystems and their properties in given account.

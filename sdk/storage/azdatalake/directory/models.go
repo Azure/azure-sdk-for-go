@@ -84,9 +84,14 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.GetPropertiesOptions{
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
+		AccessConditions: accessConditions,
+		CPKInfo: &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		},
 	}
 }
 

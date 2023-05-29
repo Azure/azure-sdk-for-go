@@ -83,10 +83,18 @@ type GetPropertiesOptions struct {
 	CPKInfo          *CPKInfo
 }
 
-func (o *GetPropertiesOptions) format() blob.GetPropertiesOptions {
-	return blob.GetPropertiesOptions{
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
+func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return &blob.GetPropertiesOptions{
+		AccessConditions: accessConditions,
+		CPKInfo: &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		},
 	}
 }
 

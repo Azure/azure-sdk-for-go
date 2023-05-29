@@ -77,6 +77,8 @@ type SetAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
+// TODO: formatter SetAccessControlRecursiveOptions
+
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions struct {
 	// ACL is the access control list for the path.
@@ -90,6 +92,8 @@ type UpdateAccessControlRecursiveOptions struct {
 	// Marker is the continuation token to use when continuing the operation.
 	Marker *string
 }
+
+// TODO: formatter UpdateAccessControlRecursiveOptions
 
 // RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
 type RemoveAccessControlRecursiveOptions struct {
@@ -105,14 +109,22 @@ type RemoveAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
-// LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = exported.LeaseAccessConditions
+// TODO: formatter RemoveAccessControlRecursiveOptions
 
-// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
+type SetHTTPHeadersOptions struct {
+	AccessConditions *AccessConditions
+}
 
-// SetHTTPHeadersOptions contains the optional parameters when calling the SetHTTPHeaders operation.
-type SetHTTPHeadersOptions = blob.SetHTTPHeadersOptions
+func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
+	if o == nil {
+		return nil
+	}
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return &blob.SetHTTPHeadersOptions{
+		AccessConditions: accessConditions,
+	}
+}
 
 // HTTPHeaders contains the HTTP headers for path operations.
 type HTTPHeaders struct {
@@ -174,21 +186,40 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 	if o == nil {
 		return nil
 	}
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetMetadataOptions{
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-		CPKScopeInfo:     o.CPKScopeInfo,
+		AccessConditions: accessConditions,
+		CPKInfo: &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		},
+		CPKScopeInfo: &blob.CPKScopeInfo{
+			EncryptionScope: o.CPKScopeInfo.EncryptionScope,
+		},
 	}
 }
 
-// AccessConditions identifies container-specific access conditions which you optionally set.
-type AccessConditions = exported.PathAccessConditions
+// CPKInfo contains a group of parameters for the BlobClient.Download method.
+type CPKInfo struct {
+	EncryptionAlgorithm *EncryptionAlgorithmType
+	EncryptionKey       *string
+	EncryptionKeySHA256 *string
+}
+
+// CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+type CPKScopeInfo struct {
+	EncryptionScope *string
+}
 
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// CPKInfo contains a group of parameters for client provided encryption key.
-type CPKInfo = blob.CPKInfo
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = exported.LeaseAccessConditions
 
-// CPKScopeInfo contains a group of parameters for client provided encryption scope.
-type CPKScopeInfo = blob.CPKScopeInfo
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = exported.ModifiedAccessConditions
+
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions = exported.PathAccessConditions

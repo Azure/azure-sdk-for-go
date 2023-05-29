@@ -21,18 +21,21 @@ type FilesystemAccessConditions struct {
 }
 
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatContainerAccessConditions(b *FilesystemAccessConditions) (*container.LeaseAccessConditions, *container.ModifiedAccessConditions) {
+func FormatContainerAccessConditions(b *FilesystemAccessConditions) *container.AccessConditions {
 	if b == nil {
-		return nil, nil
+		return nil
 	}
-	return &container.LeaseAccessConditions{
+	return &container.AccessConditions{
+		LeaseAccessConditions: &container.LeaseAccessConditions{
 			LeaseID: b.LeaseAccessConditions.LeaseID,
-		}, &container.ModifiedAccessConditions{
+		},
+		ModifiedAccessConditions: &container.ModifiedAccessConditions{
 			IfMatch:           b.ModifiedAccessConditions.IfMatch,
 			IfNoneMatch:       b.ModifiedAccessConditions.IfNoneMatch,
 			IfModifiedSince:   b.ModifiedAccessConditions.IfModifiedSince,
 			IfUnmodifiedSince: b.ModifiedAccessConditions.IfUnmodifiedSince,
-		}
+		},
+	}
 }
 
 // PathAccessConditions identifies blob-specific access conditions which you optionally set.

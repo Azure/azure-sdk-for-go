@@ -23,7 +23,7 @@ type SetAccessPolicyOptions struct {
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 	return &container.SetAccessPolicyOptions{
 		Access:           o.Access,
-		AccessConditions: o.AccessConditions,
+		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
 		ContainerACL:     o.FilesystemACL,
 	}
 }
@@ -55,7 +55,7 @@ type DeleteOptions struct {
 
 func (o *DeleteOptions) format() *container.DeleteOptions {
 	return &container.DeleteOptions{
-		AccessConditions: o.AccessConditions,
+		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
 	}
 }
 
@@ -66,7 +66,9 @@ type GetPropertiesOptions struct {
 
 func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
 	return &container.GetPropertiesOptions{
-		LeaseAccessConditions: o.LeaseAccessConditions,
+		LeaseAccessConditions: &container.LeaseAccessConditions{
+			LeaseID: o.LeaseAccessConditions.LeaseID,
+		},
 	}
 }
 
@@ -79,9 +81,16 @@ type SetMetadataOptions struct {
 
 func (o *SetMetadataOptions) format() *container.SetMetadataOptions {
 	return &container.SetMetadataOptions{
-		Metadata:                 o.Metadata,
-		LeaseAccessConditions:    o.LeaseAccessConditions,
-		ModifiedAccessConditions: o.ModifiedAccessConditions,
+		Metadata: o.Metadata,
+		LeaseAccessConditions: &container.LeaseAccessConditions{
+			LeaseID: o.LeaseAccessConditions.LeaseID,
+		},
+		ModifiedAccessConditions: &container.ModifiedAccessConditions{
+			IfMatch:           o.ModifiedAccessConditions.IfMatch,
+			IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
+			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
+			IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+		},
 	}
 }
 
@@ -92,7 +101,9 @@ type GetAccessPolicyOptions struct {
 
 func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	return &container.GetAccessPolicyOptions{
-		LeaseAccessConditions: o.LeaseAccessConditions,
+		LeaseAccessConditions: &container.LeaseAccessConditions{
+			LeaseID: o.LeaseAccessConditions.LeaseID,
+		},
 	}
 }
 

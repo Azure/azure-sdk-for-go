@@ -12,6 +12,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 type PublicAccessType = azblob.PublicAccessType
 
 const (
-	PublicAccessTypeFile       PublicAccessType = azblob.PublicAccessTypeBlob
-	PublicAccessTypeFilesystem PublicAccessType = azblob.PublicAccessTypeContainer
+	AccessTypeFile PublicAccessType = azblob.PublicAccessTypeBlob
+	TypeFilesystem PublicAccessType = azblob.PublicAccessTypeContainer
 )

@@ -10,6 +10,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
 
+type RenameMode = path.RenameMode
+
+const (
+	RenameModeLegacy RenameMode = path.RenameModeLegacy
+	RenameModePosix  RenameMode = path.RenameModePosix
+)
+
+type SetAccessControlRecursiveMode = path.SetAccessControlRecursiveMode
+
+const (
+	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeSet
+	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeModify
+	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeRemove
+)
+
 type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (

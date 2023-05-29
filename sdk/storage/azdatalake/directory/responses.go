@@ -38,3 +38,9 @@ type SetMetadataResponse = path.SetMetadataResponse
 
 // SetHTTPHeadersResponse contains the response fields for the SetHTTPHeaders operation.
 type SetHTTPHeadersResponse = path.SetHTTPHeadersResponse
+
+// RenameResponse contains the response fields for the Rename operation.
+type RenameResponse = path.CreateResponse
+
+// GetAccessControlResponse contains the response fields for the GetAccessControl operation.
+type GetAccessControlResponse = path.GetAccessControlResponse

@@ -7,40 +7,64 @@
 package directory
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 	"time"
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
 type CreateOptions struct {
-	// AccessConditions specifies parameters for accessing the directory
+	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	// Metadata defines user passed key-value pairs that are associated with the directory.
+	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
 	HTTPHeaders *HTTPHeaders
-	// LeaseDuration defines the duration of the lease.
+	//PathExpiryOptions *ExpiryOptions
+	// LeaseDuration specifies the duration of the lease.
 	LeaseDuration *time.Duration
-	// ProposedLeaseID defines the proposed lease ID for the directory.
+	// ProposedLeaseID specifies the proposed lease ID for the file.
 	ProposedLeaseID *string
-	// Permissions defines the file permission for the directory.
+	// Permissions is the octal representation of the permissions for user, group and mask.
 	Permissions *string
-	// Umask defines the umask permission of the directory.
+	// Umask is the umask for the file.
 	Umask *string
-	// Owner defines the owner of the directory.
+	// Owner is the owner of the file.
 	Owner *string
-	// Group defines the group of the directory.
+	// Group is the owning group of the file.
 	Group *string
-	// ACL defines the ACL of the directory.
+	// ACL is the access control list for the file.
 	ACL *string
+}
+
+func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
+	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	httpHeaders := &generated.PathHTTPHeaders{
+		CacheControl:             o.HTTPHeaders.CacheControl,
+		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
+		ContentEncoding:          o.HTTPHeaders.ContentEncoding,
+		ContentLanguage:          o.HTTPHeaders.ContentLanguage,
+		ContentMD5:               o.HTTPHeaders.ContentMD5,
+		ContentType:              o.HTTPHeaders.ContentType,
+		TransactionalContentHash: o.HTTPHeaders.ContentMD5,
+	}
+	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, nil
 }
 
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
 	// AccessConditions specifies parameters for accessing the directory
 	AccessConditions *AccessConditions
+}
+
+func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	return leaseAccessConditions, modifiedAccessConditions, nil
 }
 
 type RenameOptions struct {
@@ -50,20 +74,23 @@ type RenameOptions struct {
 	AccessConditions *AccessConditions
 }
 
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
-	// AccessConditions specifies parameters for accessing the directory
 	AccessConditions *AccessConditions
-	// CPKInfo contains a group of parameters for client provided encryption key.
-	CPKInfo *CPKInfo
+	CPKInfo          *CPKInfo
+}
+
+func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
+	return &blob.GetPropertiesOptions{
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+	}
 }
 
 // ===================================== PATH IMPORTS ===========================================
-
-// LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = path.LeaseAccessConditions
-
-// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = path.ModifiedAccessConditions
 
 // CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = path.CPKInfo
@@ -80,6 +107,12 @@ type HTTPHeaders = path.HTTPHeaders
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
+type SetAccessControlOptions = path.SetAccessControlOptions
+
+// GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
+type GetAccessControlOptions = path.GetAccessControlOptions
+
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveOptions = path.SetAccessControlRecursiveOptions
 
@@ -95,5 +128,8 @@ type RemoveAccessControlRecursiveOptions = path.RemoveAccessControlRecursiveOpti
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions = path.UpdateAccessControlRecursiveOptions
 
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
-type SetAccessControlOptions = path.SetAccessControlOptions
+// ModifiedAccessConditions identifies path-specific access conditions which you optionally set.
+type ModifiedAccessConditions = path.ModifiedAccessConditions
+
+// LeaseAccessConditions identifies path-specific access conditions associated with a lease.
+type LeaseAccessConditions = path.LeaseAccessConditions

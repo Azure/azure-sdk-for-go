@@ -77,8 +77,18 @@ type RenameOptions struct {
 	AccessConditions *AccessConditions
 }
 
-// GetPropertiesOptions contains the optional parameters when calling the GetProperties operation.
-type GetPropertiesOptions blob.GetPropertiesOptions
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
+type GetPropertiesOptions struct {
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+}
+
+func (o *GetPropertiesOptions) format() blob.GetPropertiesOptions {
+	return blob.GetPropertiesOptions{
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+	}
+}
 
 // SetExpiryOptions contains the optional parameters when calling the SetExpiry operation.
 type SetExpiryOptions struct {

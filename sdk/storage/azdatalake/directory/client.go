@@ -60,7 +60,7 @@ func (d *Client) Delete(options *DeleteOptions) (DeleteResponse, error) {
 	return DeleteResponse{}, nil
 }
 
-// GetProperties returns the properties of the directory (blob).
+// GetProperties returns the properties of the directory (blob). #TODO: we may just move this method to path client
 func (d *Client) GetProperties(options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }

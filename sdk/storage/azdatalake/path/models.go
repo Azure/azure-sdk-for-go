@@ -73,8 +73,8 @@ type SetAccessControlRecursiveOptions struct {
 	MaxBatches *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
-	// ContinuationToken is the continuation token to use when continuing the operation.
-	ContinuationToken *string
+	// Marker is the continuation token to use when continuing the operation.
+	Marker *string
 }
 
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
@@ -87,8 +87,8 @@ type UpdateAccessControlRecursiveOptions struct {
 	MaxBatches *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
-	// ContinuationToken is the continuation token to use when continuing the operation.
-	ContinuationToken *string
+	// Marker is the continuation token to use when continuing the operation.
+	Marker *string
 }
 
 // RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
@@ -101,8 +101,8 @@ type RemoveAccessControlRecursiveOptions struct {
 	MaxBatches *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
-	// ContinuationToken is the continuation token to use when continuing the operation.
-	ContinuationToken *string
+	// Marker is the continuation token to use when continuing the operation.
+	Marker *string
 }
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
@@ -163,14 +163,29 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error
 	return &opts, nil
 }
 
+// SetMetadataOptions provides set of configurations for Set Metadata on blob operation
+type SetMetadataOptions struct {
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+	CPKScopeInfo     *CPKScopeInfo
+}
+
+func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
+	if o == nil {
+		return nil
+	}
+	return &blob.SetMetadataOptions{
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+		CPKScopeInfo:     o.CPKScopeInfo,
+	}
+}
+
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.PathAccessConditions
 
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
-
-// SetMetadataOptions contains the optional parameters when calling the SetMetadata operation. #TODO: call directly into blob package it will handle everything
-type SetMetadataOptions = blob.SetMetadataOptions
 
 // CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = blob.CPKInfo

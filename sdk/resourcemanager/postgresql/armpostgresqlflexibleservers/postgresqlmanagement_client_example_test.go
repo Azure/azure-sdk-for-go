@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/66a59c94238bf973680355fb179fade4c9405710/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/CheckNameAvailability.json
-func ExampleCheckNameAvailabilityClient_Execute() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/66a59c94238bf973680355fb179fade4c9405710/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/CheckMigrationNameAvailability.json
+func ExamplePostgreSQLManagementClient_CheckMigrationNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,9 +29,9 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Execute(ctx, armpostgresqlflexibleservers.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewPostgreSQLManagementClient().CheckMigrationNameAvailability(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", armpostgresqlflexibleservers.MigrationNameAvailabilityResource{
 		Name: to.Ptr("name1"),
-		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -39,10 +39,9 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.NameAvailability = armpostgresqlflexibleservers.NameAvailability{
-	// 	Message: to.Ptr(""),
-	// 	NameAvailable: to.Ptr(true),
+	// res.MigrationNameAvailabilityResource = armpostgresqlflexibleservers.MigrationNameAvailabilityResource{
 	// 	Name: to.Ptr("name1"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
+	// 	NameAvailable: to.Ptr(true),
 	// }
 }

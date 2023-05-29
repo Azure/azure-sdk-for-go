@@ -5,10 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/75ece9197dbac70ac0ba651c53a79c1841944be2/specification/postgresql/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/75ece9197dbac70ac0ba651c53a79c1841944be2/specification/postgresql/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/66a59c94238bf973680355fb179fade4c9405710/specification/postgresql/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/66a59c94238bf973680355fb179fade4c9405710/specification/postgresql/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 3.0.0
+module-version: 4.0.0-beta.1
 package-flexibleservers: true
-tag: package-flexibleserver-2022-12-01
+tag: package-flexibleserver-2023-03-01-preview
 ```

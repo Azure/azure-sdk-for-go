@@ -21,55 +21,55 @@ import (
 	"strings"
 )
 
-// BackupsClient contains the methods for the Backups group.
-// Don't use this type directly, use NewBackupsClient() instead.
-type BackupsClient struct {
+// LtrBackupOperationsClient contains the methods for the LtrBackupOperations group.
+// Don't use this type directly, use NewLtrBackupOperationsClient() instead.
+type LtrBackupOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewBackupsClient creates a new instance of BackupsClient with the specified values.
+// NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupsClient", moduleVersion, credential, options)
+func NewLtrBackupOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LtrBackupOperationsClient, error) {
+	cl, err := arm.NewClient(moduleName+".LtrBackupOperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &BackupsClient{
+	client := &LtrBackupOperationsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get specific backup for a given server.
+// Get - Gets the result of the give long term retention backup operation for the flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
-//   - options - BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
-func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientGetOptions) (BackupsClientGetResponse, error) {
+//   - options - LtrBackupOperationsClientGetOptions contains the optional parameters for the LtrBackupOperationsClient.Get method.
+func (client *LtrBackupOperationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LtrBackupOperationsClientGetOptions) (LtrBackupOperationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, backupName, options)
 	if err != nil {
-		return BackupsClientGetResponse{}, err
+		return LtrBackupOperationsClientGetResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BackupsClientGetResponse{}, err
+		return LtrBackupOperationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsClientGetResponse{}, runtime.NewResponseError(resp)
+		return LtrBackupOperationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}"
+func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LtrBackupOperationsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrBackupOperations/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -98,27 +98,27 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClientGetResponse, error) {
-	result := BackupsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
-		return BackupsClientGetResponse{}, err
+func (client *LtrBackupOperationsClient) getHandleResponse(resp *http.Response) (LtrBackupOperationsClientGetResponse, error) {
+	result := LtrBackupOperationsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LtrServerBackupOperation); err != nil {
+		return LtrBackupOperationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByServerPager - List all the backups for a given server.
+// NewListByServerPager - Gets the result of the give long term retention backup operations for the flexible server.
 //
 // Generated from API version 2023-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - options - BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager
+//   - options - LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
 //     method.
-func (client *BackupsClient) NewListByServerPager(resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) *runtime.Pager[BackupsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BackupsClientListByServerResponse]{
-		More: func(page BackupsClientListByServerResponse) bool {
+func (client *LtrBackupOperationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *LtrBackupOperationsClientListByServerOptions) *runtime.Pager[LtrBackupOperationsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LtrBackupOperationsClientListByServerResponse]{
+		More: func(page LtrBackupOperationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *BackupsClientListByServerResponse) (BackupsClientListByServerResponse, error) {
+		Fetcher: func(ctx context.Context, page *LtrBackupOperationsClientListByServerResponse) (LtrBackupOperationsClientListByServerResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -127,14 +127,14 @@ func (client *BackupsClient) NewListByServerPager(resourceGroupName string, serv
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return BackupsClientListByServerResponse{}, err
+				return LtrBackupOperationsClientListByServerResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return BackupsClientListByServerResponse{}, err
+				return LtrBackupOperationsClientListByServerResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BackupsClientListByServerResponse{}, runtime.NewResponseError(resp)
+				return LtrBackupOperationsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -142,8 +142,8 @@ func (client *BackupsClient) NewListByServerPager(resourceGroupName string, serv
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups"
+func (client *LtrBackupOperationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *LtrBackupOperationsClientListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrBackupOperations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -168,10 +168,10 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (BackupsClientListByServerResponse, error) {
-	result := BackupsClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackupListResult); err != nil {
-		return BackupsClientListByServerResponse{}, err
+func (client *LtrBackupOperationsClient) listByServerHandleResponse(resp *http.Response) (LtrBackupOperationsClientListByServerResponse, error) {
+	result := LtrBackupOperationsClientListByServerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LtrServerBackupOperationList); err != nil {
+		return LtrBackupOperationsClientListByServerResponse{}, err
 	}
 	return result, nil
 }

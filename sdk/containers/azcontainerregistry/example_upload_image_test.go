@@ -16,7 +16,7 @@ import (
 	"log"
 )
 
-func Example_uploadManifest() {
+func Example_uploadImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

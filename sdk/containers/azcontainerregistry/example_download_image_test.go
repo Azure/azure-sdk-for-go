@@ -57,6 +57,9 @@ func Example_downloadImage() {
 	}
 	configDigest := manifestJSON["config"].(map[string]interface{})["digest"].(string)
 	configRes, err := blobClient.GetBlob(ctx, "library/hello-world", configDigest, nil)
+	if err != nil {
+		log.Fatalf("failed to get config: %v", err)
+	}
 	reader, err = azcontainerregistry.NewDigestValidationReader(configDigest, configRes.BlobData)
 	if err != nil {
 		log.Fatalf("failed to create validation reader: %v", err)
@@ -72,6 +75,9 @@ func Example_downloadImage() {
 	for _, layer := range layers {
 		layerDigest := layer.(map[string]interface{})["digest"].(string)
 		layerRes, err := blobClient.GetBlob(ctx, "library/hello-world", layerDigest, nil)
+		if err != nil {
+			log.Fatalf("failed to get layer: %v", err)
+		}
 		reader, err = azcontainerregistry.NewDigestValidationReader(layerDigest, layerRes.BlobData)
 		if err != nil {
 			log.Fatalf("failed to create validation reader: %v", err)

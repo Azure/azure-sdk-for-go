@@ -65,24 +65,13 @@ directive:
       from: GetKeyVersions
       to: ListKeyPropertiesVersions
 
-  # add in KeyRotation prefix
-  - rename-model:
-      from: LifetimeActions
-      to: KeyRotationLifetimeActions
-  - rename-model:
-      from: LifetimeActionsTrigger
-      to: KeyRotationLifetimeActionsTrigger
-  - rename-model:
-      from: LifetimeActionsType
-      to: KeyRotationLifetimeActionsType
-
   # rename KeyItem and KeyBundle
   - rename-model:
       from: DeletedKeyBundle
       to: DeletedKey
   - rename-model:
       from: KeyBundle
-      to: Key
+      to: KeyVaultKey
   - rename-model:
       from: KeyItem
       to: KeyProperties
@@ -99,16 +88,13 @@ directive:
     where: $.definitions.RestoreKeyParameters.properties.value
     transform: $["x-ms-client-name"] = "KeyBackup"
 
-  # Rename KeyOps to KeyOperations and update type
+  # KeyOps updates
   - rename-model:
       from: KeyOperationsParameters
       to: KeyOperationParameters
-  - from: swagger-document
-    where: $.definitions..properties.key_ops
-    transform: $["x-ms-client-name"] = "KeyOperations"
   - from: models.go
     where: $
-    transform: return $.replace(/KeyOperations \[\]\*string/, "KeyOperations []*KeyOperation");
+    transform: return $.replace(/KeyOps \[\]\*string/, "KeyOps []*KeyOperation");
 
   # fix capitalization
   - from: swagger-document

@@ -16,7 +16,7 @@ type BackupKeyResponse struct {
 
 // CreateKeyResponse contains the response from method Client.CreateKey.
 type CreateKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // DecryptResponse contains the response from method Client.Decrypt.
@@ -41,7 +41,7 @@ type GetDeletedKeyResponse struct {
 
 // GetKeyResponse contains the response from method Client.GetKey.
 type GetKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // GetKeyRotationPolicyResponse contains the response from method Client.GetKeyRotationPolicy.
@@ -56,7 +56,7 @@ type GetRandomBytesResponse struct {
 
 // ImportKeyResponse contains the response from method Client.ImportKey.
 type ImportKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // ListDeletedKeyPropertiesResponse contains the response from method Client.NewListDeletedKeyPropertiesPager.
@@ -81,7 +81,7 @@ type PurgeDeletedKeyResponse struct {
 
 // RecoverDeletedKeyResponse contains the response from method Client.RecoverDeletedKey.
 type RecoverDeletedKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // ReleaseResponse contains the response from method Client.Release.
@@ -91,12 +91,12 @@ type ReleaseResponse struct {
 
 // RestoreKeyResponse contains the response from method Client.RestoreKey.
 type RestoreKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // RotateKeyResponse contains the response from method Client.RotateKey.
 type RotateKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // SignResponse contains the response from method Client.Sign.
@@ -111,7 +111,7 @@ type UnwrapKeyResponse struct {
 
 // UpdateKeyResponse contains the response from method Client.UpdateKey.
 type UpdateKeyResponse struct {
-	Key
+	KeyVaultKey
 }
 
 // UpdateKeyRotationPolicyResponse contains the response from method Client.UpdateKeyRotationPolicy.

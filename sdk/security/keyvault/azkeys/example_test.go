@@ -43,7 +43,7 @@ func ExampleClient_CreateKey_rsa() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.Key.KID)
+	fmt.Println(*resp.Key.KID)
 }
 
 func ExampleClient_CreateKey_ec() {
@@ -56,7 +56,7 @@ func ExampleClient_CreateKey_ec() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.Key.KID)
+	fmt.Println(*resp.Key.KID)
 }
 
 func ExampleClient_DeleteKey() {
@@ -95,7 +95,7 @@ func ExampleClient_GetKey() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.Key.KID)
+	fmt.Println(*resp.Key.KID)
 }
 
 // UpdateKey updates the properties of a key previously stored in the key vault
@@ -112,7 +112,7 @@ func ExampleClient_UpdateKey() {
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Printf("Enabled key %s", *updateResp.Key.Key.KID)
+	fmt.Printf("Enabled key %s", *updateResp.Key.KID)
 }
 
 // UpdateKeyRotationPolicy allows you to configure automatic key rotation for a key by specifying a rotation policy, and
@@ -123,12 +123,12 @@ func ExampleClient_UpdateKey() {
 func ExampleClient_UpdateKeyRotationPolicy() {
 	// this policy rotates the key every 18 months
 	policy := azkeys.KeyRotationPolicy{
-		LifetimeActions: []*azkeys.KeyRotationLifetimeActions{
+		LifetimeActions: []*azkeys.LifetimeActions{
 			{
-				Action: &azkeys.KeyRotationLifetimeActionsType{
+				Action: &azkeys.LifetimeActionsType{
 					Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 				},
-				Trigger: &azkeys.KeyRotationLifetimeActionsTrigger{
+				Trigger: &azkeys.LifetimeActionsTrigger{
 					TimeAfterCreate: to.Ptr("P18M"),
 				},
 			},

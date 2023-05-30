@@ -3,6 +3,9 @@
 ## 1.0.0 (unreleased)
 
 ### Breaking Changes
+
+*Breaking Changes from last preview. Going forward, the module is now stable and will not have breaking api changes.*
+
 * Renamed `GetRandomBytesRequest` to `GetRandomBytesParameters`
 * `ListDeletedKey` to `ListDeletedKeyProperties`
 * `ListKeys` to `ListKeyProperties`
@@ -14,11 +17,9 @@
 * `DeletedKeyListResult` to `DeletedKeyPropertiesListResult`
 * `KeyListResult` `KeyPropertiesListResult`
 * `KeyOperationsParameters` to `KeyOperationParameters`
-* `KeyOps` field to `KeyOperations`
 * Changed `JSONWebKey.KeyOperations` from type []*string to []*KeyOperation
-* `KeyEncryptionAlgorithm` to `KeyExportEncryptionAlgorithm`
 * `ReleaseParameters.Enc` to `ReleaseParameters.Algorithm`
-* `KeyOperationParameters.AAD` to `KeyOperationParameters.AdditionalAuthenticationData`
+* `KeyOperationParameters.AAD` to `KeyOperationParameters.AdditionalAuthenticatedData`
 * `KeyOperationParameters.Tag` to `KeyOperationParameters.AuthenticationTag`
 * `JSONWebKeyOperation` to `KeyOperation`
 * `JSONWebKeyCurveName` to `KeyCurveName`

@@ -152,7 +152,7 @@ type CreateKeyParameters struct {
 
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes  `json:"attributes,omitempty"`
-	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
+	KeyOps        []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -275,8 +275,8 @@ type JSONWebKey struct {
 	K []byte `json:"k,omitempty"`
 
 	// Key identifier.
-	KID           *ID             `json:"kid,omitempty"`
-	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
+	KID    *ID             `json:"kid,omitempty"`
+	KeyOps []*KeyOperation `json:"key_ops,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 	Kty *KeyType `json:"kty,omitempty"`
@@ -301,25 +301,6 @@ type JSONWebKey struct {
 
 	// Y component of an EC public key.
 	Y []byte `json:"y,omitempty"`
-}
-
-// Key - A KeyBundle consisting of a WebKey plus its attributes.
-type Key struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
-
-	// The Json web key.
-	Key *JSONWebKey `json:"key,omitempty"`
-
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
@@ -432,31 +413,6 @@ type KeyReleaseResult struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// KeyRotationLifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
-type KeyRotationLifetimeActions struct {
-	// The action that will be executed.
-	Action *KeyRotationLifetimeActionsType `json:"action,omitempty"`
-
-	// The condition that will execute the action.
-	Trigger *KeyRotationLifetimeActionsTrigger `json:"trigger,omitempty"`
-}
-
-// KeyRotationLifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
-type KeyRotationLifetimeActionsTrigger struct {
-	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
-	// days : "P90D"
-	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
-
-	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
-	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
-}
-
-// KeyRotationLifetimeActionsType - The action that will be executed.
-type KeyRotationLifetimeActionsType struct {
-	// The type of the action.
-	Type *KeyRotationPolicyAction `json:"type,omitempty"`
-}
-
 // KeyRotationPolicy - Management policy for a key.
 type KeyRotationPolicy struct {
 	// The key rotation policy attributes.
@@ -465,7 +421,7 @@ type KeyRotationPolicy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two
 	// items at maximum: one for rotate, one for notify. Notification time would be
 	// default to 30 days before expiry and it is not configurable.
-	LifetimeActions []*KeyRotationLifetimeActions `json:"lifetimeActions,omitempty"`
+	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
 
 	// READ-ONLY; The key policy id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -484,10 +440,54 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
+// KeyVaultKey - A KeyBundle consisting of a WebKey plus its attributes.
+type KeyVaultKey struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The Json web key.
+	Key *JSONWebKey `json:"key,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
 // KeyVerifyResult - The key verify result.
 type KeyVerifyResult struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
 	Value *bool `json:"value,omitempty" azure:"ro"`
+}
+
+// LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+type LifetimeActions struct {
+	// The action that will be executed.
+	Action *LifetimeActionsType `json:"action,omitempty"`
+
+	// The condition that will execute the action.
+	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
+}
+
+// LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionsTrigger struct {
+	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
+	// days : "P90D"
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
+// LifetimeActionsType - The action that will be executed.
+type LifetimeActionsType struct {
+	// The type of the action.
+	Type *KeyRotationPolicyAction `json:"type,omitempty"`
 }
 
 // RandomBytes - The get random bytes response object containing the bytes.
@@ -529,7 +529,7 @@ type UpdateKeyParameters struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOperations []*KeyOperation `json:"key_ops,omitempty"`
+	KeyOps []*KeyOperation `json:"key_ops,omitempty"`
 
 	// The policy rules under which the key can be exported.
 	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`

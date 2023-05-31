@@ -70,9 +70,6 @@ func convertSpan(traceSpan trace.Span) tracing.Span {
 }
 
 func convertAttributes(attrs []tracing.Attribute) []attribute.KeyValue {
-	if len(attrs) == 0 {
-		return nil
-	}
 	keyvals := []attribute.KeyValue{}
 	for _, kv := range attrs {
 		switch vv := kv.Value.(type) {

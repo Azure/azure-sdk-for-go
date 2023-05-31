@@ -24,7 +24,7 @@ type CORSRule = service.CORSRule
 // RetentionPolicy - the retention policy which determines how long the associated data should persist.
 type RetentionPolicy = service.RetentionPolicy
 
-// Metrics - a summary of request statistics grouped by API in hour or minute aggregates for blobs.
+// Metrics - a summary of request statistics grouped by API in hour or minute aggregates
 type Metrics = service.Metrics
 
 // Logging - Azure Analytics Logging settings.
@@ -47,14 +47,14 @@ type SetPropertiesOptions struct {
 	// The set of CORS rules.
 	CORS []*CORSRule
 
-	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
+	// The default version to use for requests to the Datalake service if an incoming request's version is not specified. Possible
 	// values include version 2008-10-27 and all more recent versions.
 	DefaultServiceVersion *string
 
 	// the retention policy which determines how long the associated data should persist.
 	DeleteRetentionPolicy *RetentionPolicy
 
-	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	// a summary of request statistics grouped by API in hour or minute aggregates
 	// If version is not set - we default to "1.0"
 	HourMetrics *Metrics
 
@@ -62,7 +62,7 @@ type SetPropertiesOptions struct {
 	// If version is not set - we default to "1.0"
 	Logging *Logging
 
-	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	// a summary of request statistics grouped by API in hour or minute aggregates
 	// If version is not set - we default to "1.0"
 	MinuteMetrics *Metrics
 

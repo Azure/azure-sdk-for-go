@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
 
+// RenameMode defines the rename mode for RenameDirectory
 type RenameMode = path.RenameMode
 
 const (
@@ -17,6 +18,7 @@ const (
 	RenameModePosix  RenameMode = path.RenameModePosix
 )
 
+// SetAccessControlRecursiveMode defines the set access control recursive mode for SetAccessControlRecursive
 type SetAccessControlRecursiveMode = path.SetAccessControlRecursiveMode
 
 const (

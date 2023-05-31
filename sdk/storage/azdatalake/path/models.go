@@ -122,19 +122,19 @@ func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
 
 // HTTPHeaders contains the HTTP headers for path operations.
 type HTTPHeaders struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+	// Optional. Sets the path's cache control. If specified, this property is stored with the path and returned with a read request.
 	CacheControl *string
-	// Optional. Sets the blob's Content-Disposition header.
+	// Optional. Sets the path's Content-Disposition header.
 	ContentDisposition *string
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
+	// Optional. Sets the path's content encoding. If specified, this property is stored with the blobpath and returned with a read
 	// request.
 	ContentEncoding *string
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
+	// Optional. Set the path's content language. If specified, this property is stored with the path and returned with a read
 	// request.
 	ContentLanguage *string
 	// Specify the transactional md5 for the body, to be validated by the service.
 	ContentMD5 []byte
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+	// Optional. Sets the path's content type. If specified, this property is stored with the path and returned with a read request.
 	ContentType *string
 }
 
@@ -169,7 +169,7 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error
 	return &opts, nil
 }
 
-// SetMetadataOptions provides set of configurations for Set Metadata on blob operation
+// SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
@@ -194,14 +194,14 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 	}
 }
 
-// CPKInfo contains a group of parameters for the BlobClient.Download method.
+// CPKInfo contains a group of parameters for the PathClient.Download method.
 type CPKInfo struct {
 	EncryptionAlgorithm *EncryptionAlgorithmType
 	EncryptionKey       *string
 	EncryptionKeySHA256 *string
 }
 
-// CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+// CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
 type CPKScopeInfo struct {
 	EncryptionScope *string
 }
@@ -215,5 +215,5 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// AccessConditions identifies container-specific access conditions which you optionally set.
+// AccessConditions identifies access conditions which you optionally set.
 type AccessConditions = exported.PathAccessConditions

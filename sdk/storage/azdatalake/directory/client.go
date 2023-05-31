@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
 
-// Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
+// Client represents a URL to the Azure Datalake Storage service allowing you to manipulate datalake directories.
 type Client struct {
 	path.Client
 }

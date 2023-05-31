@@ -18,7 +18,7 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
-// Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
+// Client represents a URL to the Azure Datalake Storage service allowing you to manipulate filesystems.
 type Client base.Client[generated.FileSystemClient]
 
 // NewClient creates an instance of Client with the specified values.

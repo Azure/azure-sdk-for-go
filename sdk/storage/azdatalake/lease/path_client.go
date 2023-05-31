@@ -10,21 +10,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
 
-// PathClient provides lease functionality for the underlying blob client.
+// PathClient provides lease functionality for the underlying path client.
 type PathClient struct {
 	blobClient *lease.BlobClient
 	pathClient *path.Client
 	leaseID    *string
 }
 
-// PathClientOptions contains the optional values when creating a BlobClient.
+// PathClientOptions contains the optional values when creating a PathClient.
 type PathClientOptions struct {
 	// LeaseID contains a caller-provided lease ID.
 	LeaseID *string
 }
 
-// NewPathClient creates a blob lease client for the provided blob client.
-//   - client - an instance of a blob client
+// NewPathClient creates a path lease client for the provided path client.
+//   - client - an instance of a path client
 //   - options - client options; pass nil to accept the default values
 func NewPathClient[T directory.Client | file.Client](client *T, options *PathClientOptions) (*PathClient, error) {
 	// TODO: set up blob lease client
@@ -40,7 +40,7 @@ func (c *PathClient) LeaseID() *string {
 	return c.leaseID
 }
 
-// AcquireLease acquires a lease on the blob for write and delete operations.
+// AcquireLease acquires a lease on the path for write and delete operations.
 // The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) AcquireLease(ctx context.Context, duration int32, o *PathAcquireOptions) (PathAcquireResponse, error) {
@@ -48,26 +48,27 @@ func (c *PathClient) AcquireLease(ctx context.Context, duration int32, o *PathAc
 	return c.blobClient.AcquireLease(ctx, duration, opts)
 }
 
+// BreakLease breaks the path's previously-acquired lease.
 func (c *PathClient) BreakLease(ctx context.Context, o *PathBreakOptions) (PathBreakResponse, error) {
 	opts := o.format()
 	return c.blobClient.BreakLease(ctx, opts)
 }
 
-// ChangeLease changes the blob's lease ID.
+// ChangeLease changes the path's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) ChangeLease(ctx context.Context, proposedID string, o *PathChangeOptions) (PathChangeResponse, error) {
 	opts := o.format()
 	return c.blobClient.ChangeLease(ctx, proposedID, opts)
 }
 
-// RenewLease renews the blob's previously-acquired lease.
+// RenewLease renews the path's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) RenewLease(ctx context.Context, o *PathRenewOptions) (PathRenewResponse, error) {
 	opts := o.format()
 	return c.blobClient.RenewLease(ctx, opts)
 }
 
-// ReleaseLease releases the blob's previously-acquired lease.
+// ReleaseLease releases the path's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) ReleaseLease(ctx context.Context, o *PathReleaseOptions) (PathReleaseResponse, error) {
 	opts := o.format()

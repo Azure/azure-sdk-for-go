@@ -11,7 +11,7 @@ package armmixedreality
 
 const (
 	moduleName    = "armmixedreality"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v0.6.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

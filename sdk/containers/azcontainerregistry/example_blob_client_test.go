@@ -10,7 +10,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
+	"io"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 )
 
 var blobClient *azcontainerregistry.BlobClient
@@ -47,21 +51,68 @@ func ExampleBlobClient_DeleteBlob() {
 }
 
 func ExampleBlobClient_GetBlob() {
-	res, err := blobClient.GetBlob(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", nil)
+	const digest = "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
+	res, err := blobClient.GetBlob(context.TODO(), "prod/bash", digest, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// deal with the blob io
-	_ = res.BlobData
+	reader, err := azcontainerregistry.NewDigestValidationReader(digest, res.BlobData)
+	if err != nil {
+		log.Fatalf("failed to create validation reader: %v", err)
+	}
+	f, err := os.Create("blob_file")
+	if err != nil {
+		log.Fatalf("failed to create blob file: %v", err)
+	}
+	defer f.Close()
+	_, err = io.Copy(f, reader)
+	if err != nil {
+		log.Fatalf("failed to write to the file: %v", err)
+	}
 }
 
 func ExampleBlobClient_GetChunk() {
-	res, err := blobClient.GetChunk(context.TODO(), "prod/bash", "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39", "bytes=0-299", nil)
+	chunkSize := 1024 * 1024
+	const digest = "sha256:16463e0c481e161aabb735437d30b3c9c7391c2747cc564bb927e843b73dcb39"
+	current := 0
+	f, err := os.Create("blob_file")
 	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+		log.Fatalf("failed to create blob file: %v", err)
 	}
-	// deal with the chunk io
-	_ = res.ChunkData
+	defer f.Close()
+	for {
+		res, err := blobClient.GetChunk(context.TODO(), "prod/bash", digest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
+		if err != nil {
+			log.Fatalf("failed to finish the request: %v", err)
+		}
+		chunk, err := io.ReadAll(res.ChunkData)
+		if err != nil {
+			log.Fatalf("failed to read the chunk: %v", err)
+		}
+		_, err = f.Write(chunk)
+		if err != nil {
+			log.Fatalf("failed to write to the file: %v", err)
+		}
+
+		totalSize, _ := strconv.Atoi(strings.Split(*res.ContentRange, "/")[1])
+		currentRangeEnd, _ := strconv.Atoi(strings.Split(strings.Split(*res.ContentRange, "/")[0], "-")[1])
+		if totalSize == currentRangeEnd+1 {
+			break
+		}
+		current += chunkSize
+	}
+	_, err = f.Seek(0, io.SeekStart)
+	if err != nil {
+		log.Fatalf("failed to set to the start of the file: %v", err)
+	}
+	reader, err := azcontainerregistry.NewDigestValidationReader(digest, f)
+	if err != nil {
+		log.Fatalf("failed to create digest validation reader: %v", err)
+	}
+	_, err = io.ReadAll(reader)
+	if err != nil {
+		log.Fatalf("failed to validate digest: %v", err)
+	}
 }
 
 func ExampleBlobClient_GetUploadStatus() {

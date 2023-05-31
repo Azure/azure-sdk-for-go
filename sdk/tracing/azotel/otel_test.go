@@ -29,12 +29,11 @@ func TestNewTracingProvider(t *testing.T) {
 
 	otelTP := tracesdk.NewTracerProvider(tracesdk.WithBatcher(exporter))
 
-	options := azcore.ClientOptions{}
-	options.TracingProvider = NewTracingProvider(otelTP, nil)
-
 	client, err := azcore.NewClient("azotel.TestClient", internal.Version, azruntime.PipelineOptions{
 		TracingNamespace: "TestNewTracingProvider",
-	}, &options)
+	}, &azcore.ClientOptions{
+		TracingProvider: NewTracingProvider(otelTP, nil),
+	})
 	require.NoError(t, err)
 
 	// returns a no-op span as there is no span yet

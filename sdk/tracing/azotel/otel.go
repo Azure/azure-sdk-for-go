@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	otelsdk "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -26,7 +26,7 @@ type TracingProviderOptions struct {
 // NewTracingProvider creates a new tracing.Provider that wraps the specified OpenTelemetry TracerProvider.
 //   - tracerProvider - the TracerProvider to wrap
 //   - opts - optional configuration. pass nil to accept the default values
-func NewTracingProvider(tracerProvider *tracesdk.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
+func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
 	return tracing.NewProvider(func(namespace, version string) tracing.Tracer {
 		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version))
 

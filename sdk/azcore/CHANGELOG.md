@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.1 (2023-05-17)
+## 1.7.0-beta.1 (2023-05-24)
 
 ### Features Added
 * Restored CAE support for ARM clients.

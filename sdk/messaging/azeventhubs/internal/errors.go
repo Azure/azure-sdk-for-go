@@ -9,7 +9,6 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -115,11 +114,6 @@ func IsCancelError(err error) bool {
 	return false
 }
 
-func IsDrainingError(err error) bool {
-	// TODO: we should be able to identify these errors programatically
-	return strings.Contains(err.Error(), "link is currently draining")
-}
-
 const errorConditionLockLost = amqp.ErrCond("com.microsoft:message-lock-lost")
 
 var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
@@ -154,6 +148,10 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 func GetRecoveryKind(err error) RecoveryKind {
 	if err == nil {
 		return RecoveryKindNone
+	}
+
+	if errors.Is(err, RPCLinkClosedErr) {
+		return RecoveryKindFatal
 	}
 
 	if IsCancelError(err) {

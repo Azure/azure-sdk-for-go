@@ -279,7 +279,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 		links := pc.links.(*internal.Links[amqpwrap.AMQPReceiverCloser])
 		lwid, err := links.GetLink(context.Background(), sendResults[i].PartitionID)
 		require.NoError(t, err)
-		require.NoError(t, lwid.Link.Close(context.Background()))
+		require.NoError(t, lwid.Link().Close(context.Background()))
 	}
 
 	log.Printf("== 4. try to read the second event, which force clients to recover ==")

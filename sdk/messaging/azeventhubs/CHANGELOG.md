@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.1 (2023-06-06)
+
+### Bugs Fixed
+
+- GetPartitionProperties and GetEventHubProperties now retry properly on failures. (PR#20893)
+- Connection recovery could artifically fail, prolonging recovery. (PR#20883)
+
 ## 1.0.0 (2023-05-09)
 
 ### Features Added

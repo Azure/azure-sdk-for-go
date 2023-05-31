@@ -611,33 +611,33 @@ func (mr *MockAMQPSessionMockRecorder) ConnID() *gomock.Call {
 }
 
 // NewReceiver mocks base method.
-func (m *MockAMQPSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
+func (m *MockAMQPSession) NewReceiver(ctx context.Context, source, partitionID string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewReceiver", ctx, source, opts)
+	ret := m.ctrl.Call(m, "NewReceiver", ctx, source, partitionID, opts)
 	ret0, _ := ret[0].(amqpwrap.AMQPReceiverCloser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // NewReceiver indicates an expected call of NewReceiver.
-func (mr *MockAMQPSessionMockRecorder) NewReceiver(ctx, source, opts interface{}) *gomock.Call {
+func (mr *MockAMQPSessionMockRecorder) NewReceiver(ctx, source, partitionID, opts interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewReceiver", reflect.TypeOf((*MockAMQPSession)(nil).NewReceiver), ctx, source, opts)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewReceiver", reflect.TypeOf((*MockAMQPSession)(nil).NewReceiver), ctx, source, partitionID, opts)
 }
 
 // NewSender mocks base method.
-func (m *MockAMQPSession) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
+func (m *MockAMQPSession) NewSender(ctx context.Context, target, partitionID string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewSender", ctx, target, opts)
+	ret := m.ctrl.Call(m, "NewSender", ctx, target, partitionID, opts)
 	ret0, _ := ret[0].(amqpwrap.AMQPSenderCloser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // NewSender indicates an expected call of NewSender.
-func (mr *MockAMQPSessionMockRecorder) NewSender(ctx, target, opts interface{}) *gomock.Call {
+func (mr *MockAMQPSessionMockRecorder) NewSender(ctx, target, partitionID, opts interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSender", reflect.TypeOf((*MockAMQPSession)(nil).NewSender), ctx, target, opts)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSender", reflect.TypeOf((*MockAMQPSession)(nil).NewSender), ctx, target, partitionID, opts)
 }
 
 // MockAMQPClient is a mock of AMQPClient interface.

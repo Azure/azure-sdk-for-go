@@ -28,8 +28,7 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -49,8 +48,7 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -70,8 +68,7 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)
@@ -79,15 +76,26 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
 	oriReader := bytes.NewReader(blob)
-	firstPart := io.NewSectionReader(oriReader, int64(0), int64(len(blob)/2))
-	secondPart := io.NewSectionReader(oriReader, int64(len(blob)/2), int64(len(blob)-len(blob)/2))
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, firstPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(0)), RangeEnd: to.Ptr(int32(len(blob)/2 - 1))})
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadResp.Location)
-	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, secondPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(len(blob) / 2)), RangeEnd: to.Ptr(int32(len(blob) - 1))})
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadResp.Location)
-	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)
+	size := int64(len(blob))
+	chunkSize := int64(736)
+	current := int64(0)
+	location := *startRes.Location
+	for {
+		end := current + chunkSize
+		if end > size {
+			end = size
+		}
+		chunkReader := io.NewSectionReader(oriReader, current, end-current)
+		uploadResp, err := client.UploadChunk(ctx, location, chunkReader, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(current)), RangeEnd: to.Ptr(int32(end - 1))})
+		require.NoError(t, err)
+		require.NotEmpty(t, *uploadResp.Location)
+		location = *uploadResp.Location
+		current = end
+		if current >= size {
+			break
+		}
+	}
+	completeResp, err := client.CompleteUpload(ctx, location, calculator, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *completeResp.DockerContentDigest)
 }
@@ -103,28 +111,13 @@ func TestNewBlobClient(t *testing.T) {
 	require.Errorf(t, err, "provided Cloud field is missing Azure Container Registry configuration")
 }
 
-func TestBlobDigestCalculator_saveAndRestoreState(t *testing.T) {
-	calculator := NewBlobDigestCalculator()
-	calculator.restoreState()
-	calculator.saveState()
-	calculator.restoreState()
-	calculator.h.Write([]byte("test1"))
-	sum := calculator.h.Sum(nil)
-	calculator.saveState()
-	calculator.h.Write([]byte("test2"))
-	require.NotEqual(t, sum, calculator.h.Sum(nil))
-	calculator.restoreState()
-	require.Equal(t, sum, calculator.h.Sum(nil))
-}
-
 func TestBlobClient_CompleteUpload_uploadByChunkFailOver(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
 	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
-	getRes, err := client.GetBlob(ctx, "alpine", digest, nil)
+	getRes, err := client.GetBlob(ctx, "alpine", alpineBlobDigest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
 	require.NoError(t, err)

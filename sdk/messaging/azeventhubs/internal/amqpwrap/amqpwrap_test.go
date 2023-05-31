@@ -181,11 +181,11 @@ func TestAMQPSessionWrapper(t *testing.T) {
 
 		require.Equal(t, uint64(101), sessWrapper.ConnID())
 
-		rc, err := sessWrapper.NewReceiver(context.Background(), "source", nil)
+		rc, err := sessWrapper.NewReceiver(context.Background(), "source", "1", nil)
 		require.NoError(t, err)
 		require.Equal(t, sessWrapper.ConnID(), rc.ConnID())
 
-		sc, err := sessWrapper.NewSender(context.Background(), "target", nil)
+		sc, err := sessWrapper.NewSender(context.Background(), "target", "1", nil)
 		require.NoError(t, err)
 		require.Equal(t, sessWrapper.ConnID(), sc.ConnID())
 	})
@@ -198,28 +198,35 @@ func TestAMQPSessionWrapper(t *testing.T) {
 		sess.EXPECT().NewSender(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, errors.New("new sender failed"))
 		sess.EXPECT().Close(test.CancelledAndHasTimeout).Return(context.Canceled)
 
-		sw := &AMQPSessionWrapper{connID: uint64(101), Inner: sess, ContextWithTimeoutFn: test.NewContextWithTimeoutForTests}
+		sw := &AMQPSessionWrapper{
+			connID:               uint64(101),
+			Inner:                sess,
+			ContextWithTimeoutFn: test.NewContextWithTimeoutForTests}
 
-		assertErr := func(err error, msg string) {
+		assertErr := func(expectedPartitionID string, err error, msg string) {
 			t.Helper()
 			var wrapErr Error
 
 			require.ErrorAs(t, err, &wrapErr)
+
 			require.EqualError(t, wrapErr, msg)
 			require.Equal(t, uint64(101), wrapErr.ConnID)
 			require.Empty(t, wrapErr.LinkName)
+			require.Equal(t, expectedPartitionID, wrapErr.PartitionID)
 		}
 
-		_, err := sw.NewReceiver(context.Background(), "source", nil)
-		assertErr(err, "new receiver failed")
+		partitionID := "1"
 
-		_, err = sw.NewSender(context.Background(), "target", nil)
-		assertErr(err, "new sender failed")
+		_, err := sw.NewReceiver(context.Background(), "source", partitionID, nil)
+		assertErr(partitionID, err, "new receiver failed")
+
+		_, err = sw.NewSender(context.Background(), "target", partitionID, nil)
+		assertErr(partitionID, err, "new sender failed")
 
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
 		err = sw.Close(ctx)
-		assertErr(err, "context canceled")
+		assertErr("", err, "context canceled")
 		require.ErrorIs(t, err, context.Canceled)
 	})
 }

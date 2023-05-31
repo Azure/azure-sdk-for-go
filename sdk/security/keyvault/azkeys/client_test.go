@@ -410,7 +410,7 @@ func TestListDeletedKeys(t *testing.T) {
 					return err
 				})
 			}
-			pager := client.NewListDeletedKeyPropertiesPager(&azkeys.ListDeletedKeyPropertiesOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListDeletedKeyPropertiesPager(nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
@@ -453,7 +453,7 @@ func TestListKeys(t *testing.T) {
 				count++
 			}
 
-			pager := client.NewListKeyPropertiesPager(&azkeys.ListKeyPropertiesOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListKeyPropertiesPager(nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
@@ -493,7 +493,7 @@ func TestListKeyVersions(t *testing.T) {
 			}
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
-			pager := client.NewListKeyPropertiesVersionsPager(keyName, &azkeys.ListKeyPropertiesVersionsOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListKeyPropertiesVersionsPager(keyName, nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)

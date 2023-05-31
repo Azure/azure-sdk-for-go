@@ -88,6 +88,12 @@ directive:
     where: $.definitions.RestoreKeyParameters.properties.value
     transform: $["x-ms-client-name"] = "KeyBackup"
 
+  # Remove MaxResults parameter
+  - where: "$.paths..*"
+    remove-parameter:
+      in: query
+      name: maxresults
+
   # KeyOps updates
   - rename-model:
       from: KeyOperationsParameters
@@ -106,9 +112,6 @@ directive:
   - from: swagger-document
     where: $.definitions..properties..kid
     transform: $["x-ms-client-name"] = "KID"
-  - from: swagger-document
-    where: $.paths..parameters..[?(@.name=='maxresults')]
-    transform: $["x-ms-client-name"] = "MaxResults"
 
   # keyName, keyVersion -> name, version
   - from: swagger-document
@@ -171,6 +174,11 @@ directive:
   - from: constants.go
     where: $
     transform: return $.replace(/const \(\n\s\/\/ DeletionRecoveryLevel(?:.+\s)+\)/, "");
+
+  # delete SignatureAlgorithmRSNULL
+  - from: constants.go
+    where: $
+    transform: return $.replace(/.*(\bSignatureAlgorithmRSNULL\b).*/g, "");
 
   # delete unused error models
   - from: models.go

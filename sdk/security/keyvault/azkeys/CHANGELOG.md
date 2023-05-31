@@ -1,10 +1,8 @@
 # Release History
 
-## 1.0.0 (unreleased)
+## 0.12.0 (unreleased)
 
 ### Breaking Changes
-
-*Breaking Changes from last preview. Going forward, the module is now stable and will not have breaking api changes.*
 
 * Renamed `GetRandomBytesRequest` to `GetRandomBytesParameters`
 * `ListDeletedKey` to `ListDeletedKeyProperties`
@@ -27,6 +25,8 @@
 * `JSONWebKeySignatureAlgorithm` to `SignatureAlgorithm`
 * `JSONWebKeyType` to `KeyType`
 * Removed `DeletionRecoveryLevel` type
+* Deleted `SignatureAlgorithmRSNULL` constant
+* Removed `MaxResults` option
 
 ### Other Changes
 * Updated dependencies

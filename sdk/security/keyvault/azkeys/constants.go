@@ -128,8 +128,6 @@ const (
 	SignatureAlgorithmRS384 SignatureAlgorithm = "RS384"
 	// SignatureAlgorithmRS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmRS512 SignatureAlgorithm = "RS512"
-	// SignatureAlgorithmRSNULL - Reserved
-	SignatureAlgorithmRSNULL SignatureAlgorithm = "RSNULL"
 )
 
 // PossibleSignatureAlgorithmValues returns the possible values for the SignatureAlgorithm const type.
@@ -145,7 +143,6 @@ func PossibleSignatureAlgorithmValues() []SignatureAlgorithm {
 		SignatureAlgorithmRS256,
 		SignatureAlgorithmRS384,
 		SignatureAlgorithmRS512,
-		SignatureAlgorithmRSNULL,
 	}
 }
 

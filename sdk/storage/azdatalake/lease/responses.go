@@ -6,34 +6,34 @@
 
 package lease
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 
-// BlobAcquireResponse contains the response from method BlobClient.AcquireLease.
-type BlobAcquireResponse = generated.BlobClientAcquireLeaseResponse
+// FilesystemAcquireResponse contains the response from method BlobClient.AcquireLease.
+type FilesystemAcquireResponse = lease.ContainerAcquireResponse
 
-// BlobBreakResponse contains the response from method BlobClient.BreakLease.
-type BlobBreakResponse = generated.BlobClientBreakLeaseResponse
+// FilesystemBreakResponse contains the response from method BlobClient.BreakLease.
+type FilesystemBreakResponse = lease.ContainerBreakResponse
 
-// BlobChangeResponse contains the response from method BlobClient.ChangeLease.
-type BlobChangeResponse = generated.BlobClientChangeLeaseResponse
+// FilesystemChangeResponse contains the response from method BlobClient.ChangeLease.
+type FilesystemChangeResponse = lease.ContainerChangeResponse
 
-// BlobReleaseResponse contains the response from method BlobClient.ReleaseLease.
-type BlobReleaseResponse = generated.BlobClientReleaseLeaseResponse
+// FilesystemReleaseResponse contains the response from method BlobClient.ReleaseLease.
+type FilesystemReleaseResponse = lease.ContainerReleaseResponse
 
-// BlobRenewResponse contains the response from method BlobClient.RenewLease.
-type BlobRenewResponse = generated.BlobClientRenewLeaseResponse
+// FilesystemRenewResponse contains the response from method BlobClient.RenewLease.
+type FilesystemRenewResponse = lease.ContainerRenewResponse
 
-// ContainerAcquireResponse contains the response from method BlobClient.AcquireLease.
-type ContainerAcquireResponse = generated.ContainerClientAcquireLeaseResponse
+// PathAcquireResponse contains the response from method PathClient.AcquireLease.
+type PathAcquireResponse = lease.BlobAcquireResponse
 
-// ContainerBreakResponse contains the response from method BlobClient.BreakLease.
-type ContainerBreakResponse = generated.ContainerClientBreakLeaseResponse
+// PathBreakResponse contains the response from method PathClient.BreakLease.
+type PathBreakResponse = lease.BlobBreakResponse
 
-// ContainerChangeResponse contains the response from method BlobClient.ChangeLease.
-type ContainerChangeResponse = generated.ContainerClientChangeLeaseResponse
+// PathChangeResponse contains the response from method PathClient.ChangeLease.
+type PathChangeResponse = lease.BlobChangeResponse
 
-// ContainerReleaseResponse contains the response from method BlobClient.ReleaseLease.
-type ContainerReleaseResponse = generated.ContainerClientReleaseLeaseResponse
+// PathReleaseResponse contains the response from method PathClient.ReleaseLease.
+type PathReleaseResponse = lease.BlobReleaseResponse
 
-// ContainerRenewResponse contains the response from method BlobClient.RenewLease.
-type ContainerRenewResponse = generated.ContainerClientRenewLeaseResponse
+// PathRenewResponse contains the response from method PathClient.RenewLease.
+type PathRenewResponse = lease.BlobRenewResponse

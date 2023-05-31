@@ -130,8 +130,12 @@ type ListPathsOptions struct {
 	Upn        *bool
 }
 
-// ListDeletedPathsOptions contains the optional parameters for the Filesystem.ListDeletedPaths operation.
+// ListDeletedPathsOptions contains the optional parameters for the Filesystem.ListDeletedPaths operation. PLACEHOLDER
 type ListDeletedPathsOptions struct {
+	Marker     *string
+	MaxResults *int32
+	Prefix     *string
+	Upn        *bool
 }
 
 // UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.

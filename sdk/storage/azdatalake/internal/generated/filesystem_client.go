@@ -16,7 +16,7 @@ func (client *FileSystemClient) Endpoint() string {
 }
 
 func (client *FileSystemClient) Pipeline() runtime.Pipeline {
-	return client.pl
+	return client.internal.Pipeline()
 }
 
 // used to convert times from UTC to GMT before sending across the wire

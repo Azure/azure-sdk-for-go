@@ -6,46 +6,46 @@
 
 package lease
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 
 // StatusType defines values for StatusType
-type StatusType = generated.LeaseStatusType
+type StatusType = lease.StatusType
 
 const (
-	StatusTypeLocked   StatusType = generated.LeaseStatusTypeLocked
-	StatusTypeUnlocked StatusType = generated.LeaseStatusTypeUnlocked
+	StatusTypeLocked   StatusType = lease.StatusTypeLocked
+	StatusTypeUnlocked StatusType = lease.StatusTypeUnlocked
 )
 
 // PossibleStatusTypeValues returns the possible values for the StatusType const type.
 func PossibleStatusTypeValues() []StatusType {
-	return generated.PossibleLeaseStatusTypeValues()
+	return lease.PossibleStatusTypeValues()
 }
 
 // DurationType defines values for DurationType
-type DurationType = generated.LeaseDurationType
+type DurationType = lease.DurationType
 
 const (
-	DurationTypeInfinite DurationType = generated.LeaseDurationTypeInfinite
-	DurationTypeFixed    DurationType = generated.LeaseDurationTypeFixed
+	DurationTypeInfinite DurationType = lease.DurationTypeInfinite
+	DurationTypeFixed    DurationType = lease.DurationTypeFixed
 )
 
 // PossibleDurationTypeValues returns the possible values for the DurationType const type.
 func PossibleDurationTypeValues() []DurationType {
-	return generated.PossibleLeaseDurationTypeValues()
+	return lease.PossibleDurationTypeValues()
 }
 
 // StateType defines values for StateType
-type StateType = generated.LeaseStateType
+type StateType = lease.StateType
 
 const (
-	StateTypeAvailable StateType = generated.LeaseStateTypeAvailable
-	StateTypeLeased    StateType = generated.LeaseStateTypeLeased
-	StateTypeExpired   StateType = generated.LeaseStateTypeExpired
-	StateTypeBreaking  StateType = generated.LeaseStateTypeBreaking
-	StateTypeBroken    StateType = generated.LeaseStateTypeBroken
+	StateTypeAvailable StateType = lease.StateTypeAvailable
+	StateTypeLeased    StateType = lease.StateTypeLeased
+	StateTypeExpired   StateType = lease.StateTypeExpired
+	StateTypeBreaking  StateType = lease.StateTypeBreaking
+	StateTypeBroken    StateType = lease.StateTypeBroken
 )
 
 // PossibleStateTypeValues returns the possible values for the StateType const type.
 func PossibleStateTypeValues() []StateType {
-	return generated.PossibleLeaseStateTypeValues()
+	return lease.PossibleStateTypeValues()
 }

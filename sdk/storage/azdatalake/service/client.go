@@ -84,27 +84,31 @@ func (s *Client) URL() string {
 	return "s.generated().Endpoint()"
 }
 
+// CreateFilesystem creates a new filesystem under the specified account. (blob3)
 func (s *Client) CreateFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
 	resp, err := filesystemClient.Create(ctx, options)
 	return resp, err
 }
 
+// DeleteFilesystem deletes the specified filesystem. (blob3)
 func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, options *DeleteFilesystemOptions) (DeleteFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
 	resp, err := filesystemClient.Delete(ctx, options)
 	return resp, err
 }
 
+// SetServiceProperties sets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) SetServiceProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	return SetPropertiesResponse{}, nil
 }
 
-func (s *Client) GetServiceProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+// GetProperties gets properties for a storage account's File service endpoint. (blob3)
+func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	return GetPropertiesResponse{}, nil
 }
 
-// NewListFilesystemsPager operation returns a pager of the shares under the specified account.
+// NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
 	return nil

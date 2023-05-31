@@ -34,21 +34,61 @@ type Logging = service.Logging
 type StaticWebsite = service.StaticWebsite
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
-type GetPropertiesOptions = service.GetPropertiesOptions
+type GetPropertiesOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetPropertiesOptions) format() *service.GetPropertiesOptions {
+	return nil
+}
 
 // SetPropertiesOptions provides set of options for Client.SetProperties
-type SetPropertiesOptions = service.SetPropertiesOptions
+type SetPropertiesOptions struct {
+	// The set of CORS rules.
+	CORS []*CORSRule
+
+	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
+	// values include version 2008-10-27 and all more recent versions.
+	DefaultServiceVersion *string
+
+	// the retention policy which determines how long the associated data should persist.
+	DeleteRetentionPolicy *RetentionPolicy
+
+	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	// If version is not set - we default to "1.0"
+	HourMetrics *Metrics
+
+	// Azure Analytics Logging settings.
+	// If version is not set - we default to "1.0"
+	Logging *Logging
+
+	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
+	// If version is not set - we default to "1.0"
+	MinuteMetrics *Metrics
+
+	// The properties that enable an account to host a static website.
+	StaticWebsite *StaticWebsite
+}
+
+func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
+	return nil
+}
+
+// ListFilesystemsInclude indicates what additional information the service should return with each container.
+type ListFilesystemsInclude struct {
+	// Tells the service whether to return metadata for each filesystem.
+	Metadata bool
+
+	// Tells the service whether to return soft-deleted filesystems.
+	Deleted bool
+}
 
 // ListFilesystemsOptions contains the optional parameters for the Client.List method.
 type ListFilesystemsOptions struct {
-	// The number of filesystem names to retrieve. If the request does not specify the
-	//  maximum number of filesystem names to retrieve, or specifies a value greater than 5,000, the server will return up to
-	//  5,000 items.
+	Include    ListFilesystemsInclude
+	Marker     *string
 	MaxResults *int32
-
-	// A string value that identifies the portion of the list of filesystems to be
-	//  returned with the next listing operation. The operation returns a marker value within the response body if the listing
-	//  operation did not return all filesystem names and the value can be used with a subsequent recursive call to request
-	//  the next set of filesystem names.
-	Marker *string
+	Prefix     *string
 }
+
+// TODO: Design formatter to convert to  blob

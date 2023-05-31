@@ -8,10 +8,10 @@ package generated
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func (client *PathClient) Endpoint() string {
+func (client *ServiceClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *PathClient) Pipeline() runtime.Pipeline {
+func (client *ServiceClient) Pipeline() runtime.Pipeline {
 	return client.internal.Pipeline()
 }

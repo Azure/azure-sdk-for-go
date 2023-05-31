@@ -12,15 +12,19 @@ package service
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
+// CreateFilesystemResponse contains the response fields for the CreateFilesystem operation.
 type CreateFilesystemResponse = filesystem.CreateResponse
 
+// DeleteFilesystemResponse contains the response fields for the DeleteFilesystem operation.
 type DeleteFilesystemResponse = filesystem.DeleteResponse
 
+// SetPropertiesResponse contains the response fields for the SetProperties operation.
 type SetPropertiesResponse = service.SetPropertiesResponse
 
+// GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = service.GetPropertiesResponse
 
-type ListFilesystemsResponse = generated.ListBlobsHierarchySegmentResponse
+// ListFilesystemsResponse contains the response fields for the ListFilesystems operation.
+type ListFilesystemsResponse = service.ListContainersResponse

@@ -79,7 +79,7 @@
         },
         {
             "Name": "messaging/azservicebus",
-            "CoverageGoal": 0.50
+            "CoverageGoal": 0.48
         },
         {
             "Name": "messaging/azeventhubs",

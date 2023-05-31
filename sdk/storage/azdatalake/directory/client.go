@@ -67,6 +67,6 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // Rename renames the directory (dfs1).
-func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
-	return nil
+func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+	return RenameResponse{}, nil
 }

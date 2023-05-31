@@ -68,8 +68,8 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // Rename renames a file (dfs1).
-func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
-	return nil
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+	return RenameResponse{}, nil
 }
 
 // SetExpiry operation sets an expiry time on an existing file.

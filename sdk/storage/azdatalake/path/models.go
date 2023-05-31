@@ -63,7 +63,7 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 	}, leaseAccessConditions, modifiedAccessConditions, nil
 }
 
-// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
+// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation. TODO: Design formatter
 type SetAccessControlRecursiveOptions struct {
 	// ACL is the access control list for the path.
 	ACL *string
@@ -77,9 +77,7 @@ type SetAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
-// TODO: formatter SetAccessControlRecursiveOptions
-
-// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
+// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
 type UpdateAccessControlRecursiveOptions struct {
 	// ACL is the access control list for the path.
 	ACL *string
@@ -93,9 +91,7 @@ type UpdateAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
-// TODO: formatter UpdateAccessControlRecursiveOptions
-
-// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
+// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
 type RemoveAccessControlRecursiveOptions struct {
 	// ACL is the access control list for the path.
 	ACL *string
@@ -108,8 +104,6 @@ type RemoveAccessControlRecursiveOptions struct {
 	// Marker is the continuation token to use when continuing the operation.
 	Marker *string
 }
-
-// TODO: formatter RemoveAccessControlRecursiveOptions
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {

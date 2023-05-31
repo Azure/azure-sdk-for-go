@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
+// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint. TODO: Design formatter
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
@@ -69,7 +69,7 @@ func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	return leaseAccessConditions, modifiedAccessConditions, nil
 }
 
-// RenameOptions contains the optional parameters when calling the Rename operation.
+// RenameOptions contains the optional parameters when calling the Rename operation. TODO: Design formatter
 type RenameOptions struct {
 	// SourceModifiedAccessConditions identifies the source path access conditions.
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions

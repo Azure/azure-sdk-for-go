@@ -5,7 +5,7 @@
 ### Features Added
 
 - `admin.SubscriptionProperties` now allow for a `DefaultRule` to be set. This allows Subscriptions to be created with an immediate filter/action. 
-  Contributed by @StrawberryFlurry. (PR#20888)
+  Contributed by @StrawbrryFlurry. (PR#20888)
 
 ## 1.3.0 (2023-05-09)
 

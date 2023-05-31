@@ -50,12 +50,12 @@ func Example_downloadImage() {
 	fmt.Printf("manifest: %s\n", manifest)
 
 	// Get config
-	var manifestJSON map[string]interface{}
+	var manifestJSON map[string]any
 	err = json.Unmarshal(manifest, &manifestJSON)
 	if err != nil {
 		log.Fatalf("failed to unmarshal manifest: %v", err)
 	}
-	configDigest := manifestJSON["config"].(map[string]interface{})["digest"].(string)
+	configDigest := manifestJSON["config"].(map[string]any)["digest"].(string)
 	configRes, err := blobClient.GetBlob(ctx, "library/hello-world", configDigest, nil)
 	if err != nil {
 		log.Fatalf("failed to get config: %v", err)
@@ -71,9 +71,9 @@ func Example_downloadImage() {
 	fmt.Printf("config: %s\n", config)
 
 	// Get layers
-	layers := manifestJSON["layers"].([]interface{})
+	layers := manifestJSON["layers"].([]any)
 	for _, layer := range layers {
-		layerDigest := layer.(map[string]interface{})["digest"].(string)
+		layerDigest := layer.(map[string]any)["digest"].(string)
 		layerRes, err := blobClient.GetBlob(ctx, "library/hello-world", layerDigest, nil)
 		if err != nil {
 			log.Fatalf("failed to get layer: %v", err)

@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
-// SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation. Can't use container given the container prefix.
+// SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
 type SetAccessPolicyOptions struct {
-	// Specifies whether data in the container may be accessed publicly and the level of access.
-	// If this header is not included in the request, container data is private to the account owner.
+	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
+	// If this header is not included in the request, filesystem data is private to the account owner.
 	Access           *PublicAccessType
 	AccessConditions *AccessConditions
 	FilesystemACL    []*SignedIdentifier
@@ -30,13 +30,13 @@ func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
-	// Specifies whether data in the container may be accessed publicly and the level of access.
+	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
 	Access *PublicAccessType
 
-	// Optional. Specifies a user-defined name-value pair associated with the blob.
+	// Optional. Specifies a user-defined name-value pair associated with the filesystem.
 	Metadata map[string]*string
 
-	// Optional. Specifies the encryption scope settings to set on the container.
+	// Optional. Specifies the encryption scope settings to set on the filesystem.
 	CPKScopeInfo *CPKScopeInfo
 }
 
@@ -59,7 +59,7 @@ func (o *DeleteOptions) format() *container.DeleteOptions {
 	}
 }
 
-// GetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
+// GetPropertiesOptions contains the optional parameters for the FilesystemClient.GetProperties method.
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }

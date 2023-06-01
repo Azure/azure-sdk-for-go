@@ -8,7 +8,7 @@ package filesystem
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
-// PublicAccessType defines values for AccessType - private (default) or blob or container.
+// PublicAccessType defines values for AccessType - private (default) or file or filesystem.
 type PublicAccessType = azblob.PublicAccessType
 
 const (

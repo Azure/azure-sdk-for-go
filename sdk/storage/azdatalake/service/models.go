@@ -74,7 +74,7 @@ func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
 	return nil
 }
 
-// ListFilesystemsInclude indicates what additional information the service should return with each container.
+// ListFilesystemsInclude indicates what additional information the service should return with each filesystem.
 type ListFilesystemsInclude struct {
 	// Tells the service whether to return metadata for each filesystem.
 	Metadata bool

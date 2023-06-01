@@ -106,7 +106,7 @@ type CPKInfo = path.CPKInfo
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo = path.CPKScopeInfo
 
-// AccessConditions identifies container-specific access conditions which you optionally set.
+// AccessConditions identifies access conditions which you optionally set.
 type AccessConditions = path.AccessConditions
 
 // HTTPHeaders contains the HTTP headers for path operations.
@@ -145,16 +145,16 @@ type LeaseAccessConditions = path.LeaseAccessConditions
 // ExpiryType defines values for ExpiryType.
 type ExpiryType = exported.ExpiryType
 
-// ExpiryTypeAbsolute defines the absolute time for the blob expiry.
+// ExpiryTypeAbsolute defines the absolute time for the expiry.
 type ExpiryTypeAbsolute = exported.ExpiryTypeAbsolute
 
-// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry.
+// ExpiryTypeRelativeToNow defines the duration relative to now for the expiry.
 type ExpiryTypeRelativeToNow = exported.ExpiryTypeRelativeToNow
 
-// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry.
+// ExpiryTypeRelativeToCreation defines the duration relative to creation for the expiry.
 type ExpiryTypeRelativeToCreation = exported.ExpiryTypeRelativeToCreation
 
-// ExpiryTypeNever defines that the blob will be set to never expire.
+// ExpiryTypeNever defines that the will be set to never expire.
 type ExpiryTypeNever = exported.ExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.

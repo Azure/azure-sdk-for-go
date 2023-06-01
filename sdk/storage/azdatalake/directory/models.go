@@ -103,7 +103,7 @@ type CPKInfo = path.CPKInfo
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo = path.CPKScopeInfo
 
-// AccessConditions identifies container-specific access conditions which you optionally set.
+// AccessConditions identifies access conditions which you optionally set.
 type AccessConditions = path.AccessConditions
 
 // HTTPHeaders contains the HTTP headers for path operations.

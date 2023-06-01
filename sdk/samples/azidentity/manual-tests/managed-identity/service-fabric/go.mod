@@ -19,3 +19,6 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 )
+
+// intent is to test main:HEAD
+replace github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../../../../azidentity

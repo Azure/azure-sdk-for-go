@@ -137,7 +137,7 @@ func (testsuite *VnetpeeringTestSuite) Prepare() {
 func (testsuite *VnetpeeringTestSuite) TestVNetPeering() {
 	var err error
 	// From step vNetPeering_CreateOrUpdate
-	fmt.Println("Call operation: VNetPeering_CreateOrUpdate")
+	fmt.Println("Call operation: vNetPeering_CreateOrUpdate")
 	vNetPeeringClient, err := armdatabricks.NewVNetPeeringClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vNetPeeringClientCreateOrUpdateResponsePoller, err := vNetPeeringClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.peeringName, armdatabricks.VirtualNetworkPeering{
@@ -156,7 +156,7 @@ func (testsuite *VnetpeeringTestSuite) TestVNetPeering() {
 	testsuite.Require().NoError(err)
 
 	// From step vNetPeering_ListByWorkspace
-	fmt.Println("Call operation: VNetPeering_ListByWorkspace")
+	fmt.Println("Call operation: vNetPeering_ListByWorkspace")
 	vNetPeeringClientNewListByWorkspacePager := vNetPeeringClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	for vNetPeeringClientNewListByWorkspacePager.More() {
 		_, err := vNetPeeringClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -165,12 +165,12 @@ func (testsuite *VnetpeeringTestSuite) TestVNetPeering() {
 	}
 
 	// From step vNetPeering_Get
-	fmt.Println("Call operation: VNetPeering_Get")
+	fmt.Println("Call operation: vNetPeering_Get")
 	_, err = vNetPeeringClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.peeringName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step vNetPeering_Delete
-	fmt.Println("Call operation: VNetPeering_Delete")
+	fmt.Println("Call operation: vNetPeering_Delete")
 	vNetPeeringClientDeleteResponsePoller, err := vNetPeeringClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.peeringName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, vNetPeeringClientDeleteResponsePoller)

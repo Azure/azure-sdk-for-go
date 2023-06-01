@@ -56,7 +56,7 @@ func TestNewTracingProvider(t *testing.T) {
 	endSpan(nil)
 
 	// shut down the tracing provider to flush all spans
-	otelTP.Shutdown(context.Background())
+	require.NoError(t, otelTP.Shutdown(context.Background()))
 
 	require.Len(t, exporter.spans, 2)
 }

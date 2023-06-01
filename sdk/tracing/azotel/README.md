@@ -7,6 +7,8 @@ The `azotel` module is used to connect an OpenTelemetry's `TracerAdapter` to an 
 
 ## Getting started
 
+**NOTE: this module requires Go 1.19 or later**
+
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
 To add the latest version to your `go.mod` file, execute the following command.

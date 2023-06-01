@@ -68,5 +68,8 @@ func Example_jaegerExporter() {
 	}
 
 	// shut down the tracing provider to flush all spans to Jaeger
-	otelTP.Shutdown(context.TODO())
+	if err = otelTP.Shutdown(context.TODO()); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

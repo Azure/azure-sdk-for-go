@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel
 
-go 1.18
+go 1.19
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.1

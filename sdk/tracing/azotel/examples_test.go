@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
+	otelsdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 )
 
 func Example_jaegerExporter() {
@@ -34,9 +34,9 @@ func Example_jaegerExporter() {
 	}
 
 	// create an OTel TracerProvider that uses the Jaeger exporter
-	otelTP := tracesdk.NewTracerProvider(
-		tracesdk.WithBatcher(exp),
-		tracesdk.WithResource(resource.NewWithAttributes(
+	otelTP := otelsdk.NewTracerProvider(
+		otelsdk.WithBatcher(exp),
+		otelsdk.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
 			semconv.ServiceNameKey.String("Example_jaegerExporter"),
 		)),

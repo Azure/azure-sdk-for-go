@@ -92,7 +92,10 @@ func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRe
 }
 
 func (o *OnBehalfOfCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes,
+		confidential.WithClaims(opts.Claims),
+		confidential.WithTenantID(opts.TenantID),
+	)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

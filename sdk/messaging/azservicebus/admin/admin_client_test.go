@@ -561,6 +561,8 @@ func testTopicCreation(t *testing.T, isPremium bool) {
 func TestAdminClient_TopicAndSubscription_WithFalseFilterDefaultSubscriptionRule(t *testing.T) {
 	adminClient, topicName := createAdminClientWithTestTopic(t)
 
+	defer deleteTopic(t, adminClient, topicName)
+
 	subscriptionName := createTestSubscriptionWithDefaultRule(
 		t,
 		adminClient,
@@ -577,12 +579,12 @@ func TestAdminClient_TopicAndSubscription_WithFalseFilterDefaultSubscriptionRule
 	require.Equal(t, "$Default", defaultRule.Name)
 	require.IsType(t, &FalseFilter{}, defaultRule.Filter)
 	require.Nil(t, defaultRule.Action)
-
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 }
 
 func TestAdminClient_TopicAndSubscription_WithCustomFilterDefaultSubscriptionRule(t *testing.T) {
 	adminClient, topicName := createAdminClientWithTestTopic(t)
+
+	defer deleteTopic(t, adminClient, topicName)
 
 	customSqlFilter := &SQLFilter{
 		Expression: "SomeProperty LIKE 'O%'",
@@ -604,12 +606,12 @@ func TestAdminClient_TopicAndSubscription_WithCustomFilterDefaultSubscriptionRul
 	require.Equal(t, "TestRule", defaultRule.Name)
 	require.Equal(t, customSqlFilter, defaultRule.Filter)
 	require.Nil(t, defaultRule.Action)
-
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 }
 
 func TestAdminClient_TopicAndSubscription_WithActionDefaultSubscriptionRule(t *testing.T) {
 	adminClient, topicName := createAdminClientWithTestTopic(t)
+
+	defer deleteTopic(t, adminClient, topicName)
 
 	ruleAction := &SQLAction{
 		Expression: "SET MessageID=@stringVar",
@@ -633,12 +635,12 @@ func TestAdminClient_TopicAndSubscription_WithActionDefaultSubscriptionRule(t *t
 	require.Equal(t, "$Default", defaultRule.Name)
 	require.Equal(t, ruleAction, defaultRule.Action)
 	require.Equal(t, defaultRule.Filter, &TrueFilter{})
-
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 }
 
 func TestAdminClient_TopicAndSubscription_WithActionAndFilterDefaultSubscriptionRule(t *testing.T) {
 	adminClient, topicName := createAdminClientWithTestTopic(t)
+
+	defer deleteTopic(t, adminClient, topicName)
 
 	ruleAction := &SQLAction{
 		Expression: "SET MessageID=@stringVar",
@@ -667,8 +669,6 @@ func TestAdminClient_TopicAndSubscription_WithActionAndFilterDefaultSubscription
 	require.Equal(t, "$Default", defaultRule.Name)
 	require.EqualValues(t, ruleAction, defaultRule.Action)
 	require.EqualValues(t, ruleFilter, defaultRule.Filter)
-
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 }
 
 func createAdminClientWithTestTopic(t *testing.T) (*Client, string) {

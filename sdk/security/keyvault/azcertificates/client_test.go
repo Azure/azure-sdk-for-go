@@ -120,7 +120,7 @@ func TestBackupRestore(t *testing.T) {
 	require.NoError(t, err)
 
 	var restoreResp azcertificates.RestoreCertificateResponse
-	restoreParams := azcertificates.RestoreCertificateParameters{CertificateBundleBackup: backup.Value}
+	restoreParams := azcertificates.RestoreCertificateParameters{CertificateBackup: backup.Value}
 	pollStatus(t, http.StatusConflict, func() error {
 		restoreResp, err = client.RestoreCertificate(ctx, restoreParams, nil)
 		return err
@@ -144,15 +144,15 @@ func TestContactsCRUD(t *testing.T) {
 		{EmailAddress: to.Ptr("one@localhost"), Name: to.Ptr("One"), Phone: to.Ptr("1111111111")},
 		{EmailAddress: to.Ptr("two@localhost"), Name: to.Ptr("Two"), Phone: to.Ptr("2222222222")},
 	}}
-	setResp, err := client.SetCertificateContacts(ctx, contacts, nil)
+	setResp, err := client.SetContacts(ctx, contacts, nil)
 	require.NoError(t, err)
 	require.Equal(t, contacts.ContactList, setResp.ContactList)
 
-	getResp, err := client.GetCertificateContacts(ctx, nil)
+	getResp, err := client.GetContacts(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, contacts.ContactList, getResp.ContactList)
 
-	_, err = client.DeleteCertificateContacts(ctx, nil)
+	_, err = client.DeleteContacts(ctx, nil)
 	require.NoError(t, err)
 }
 
@@ -180,7 +180,7 @@ func TestCRUD(t *testing.T) {
 	require.NotEmpty(t, getResp.ID)
 	require.NotEmpty(t, getResp.KID)
 	require.NotEmpty(t, getResp.SID)
-	testSerde(t, &getResp.CertificateBundle)
+	testSerde(t, &getResp.Certificate)
 
 	updateParams := azcertificates.UpdateCertificateParameters{
 		CertificateAttributes: &azcertificates.CertificateAttributes{
@@ -201,7 +201,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, getResp.ID.Version(), deleteResp.ID.Version())
 	require.Equal(t, getResp.KID, deleteResp.KID)
 	require.Equal(t, getResp.SID, deleteResp.SID)
-	testSerde(t, &deleteResp.DeletedCertificateBundle)
+	testSerde(t, &deleteResp.DeletedCertificate)
 
 	var getDeletedResp azcertificates.GetDeletedCertificateResponse
 	pollStatus(t, http.StatusNotFound, func() error {
@@ -212,7 +212,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, deleteResp.ID, getDeletedResp.ID)
 	require.Equal(t, deleteResp.ID.Name(), getDeletedResp.ID.Name())
 	require.Equal(t, deleteResp.ID.Version(), getDeletedResp.ID.Version())
-	require.Equal(t, deleteResp.DeletedCertificateBundle, getDeletedResp.DeletedCertificateBundle)
+	require.Equal(t, deleteResp.DeletedCertificate, getDeletedResp.DeletedCertificate)
 
 	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
 	require.NoError(t, err)
@@ -287,7 +287,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 			}
 			client, err := azcertificates.NewClient(vaultURL, &FakeCredential{}, options)
 			require.NoError(t, err)
-			pager := client.NewListCertificatesPager(nil)
+			pager := client.NewListCertificatePropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
@@ -334,7 +334,7 @@ func TestIssuerCRUD(t *testing.T) {
 	client := startTest(t)
 
 	issuerName := getName(t, "issuer")
-	setParams := azcertificates.SetCertificateIssuerParameters{
+	setParams := azcertificates.SetIssuerParameters{
 		Attributes: &azcertificates.IssuerAttributes{
 			Enabled: to.Ptr(true),
 		},
@@ -354,23 +354,23 @@ func TestIssuerCRUD(t *testing.T) {
 		Provider: to.Ptr("Test"),
 	}
 	testSerde(t, &setParams)
-	setResp, err := client.SetCertificateIssuer(ctx, issuerName, setParams, &azcertificates.SetCertificateIssuerOptions{})
+	setResp, err := client.SetIssuer(ctx, issuerName, setParams, &azcertificates.SetIssuerOptions{})
 	require.NoError(t, err)
 	require.NotEmpty(t, setResp.ID)
 	require.Equal(t, setParams.Credentials, setResp.Credentials)
 	require.Equal(t, setParams.OrganizationDetails.AdminDetails[0], setResp.OrganizationDetails.AdminDetails[0])
 	require.Equal(t, setParams.Provider, setResp.Provider)
-	testSerde(t, &setResp.IssuerBundle)
+	testSerde(t, &setResp.Issuer)
 
-	getResp, err := client.GetCertificateIssuer(ctx, issuerName, nil)
+	getResp, err := client.GetIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)
-	require.Equal(t, setResp.IssuerBundle, getResp.IssuerBundle)
+	require.Equal(t, setResp.Issuer, getResp.Issuer)
 
-	pager := client.NewListCertificateIssuersPager(&azcertificates.ListCertificateIssuersOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListIssuerPropertiesPager(nil)
 	found := false
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
-		testSerde(t, &page.CertificateIssuerListResult)
+		testSerde(t, &page.IssuerPropertiesListResult)
 		require.NoError(t, err)
 		for _, issuer := range page.Value {
 			testSerde(t, issuer)
@@ -383,19 +383,19 @@ func TestIssuerCRUD(t *testing.T) {
 	}
 	require.True(t, found)
 
-	updateParams := azcertificates.UpdateCertificateIssuerParameters{
+	updateParams := azcertificates.UpdateIssuerParameters{
 		Attributes: &azcertificates.IssuerAttributes{
 			Enabled: to.Ptr(false),
 		},
 	}
 	testSerde(t, &updateParams)
-	updateResp, err := client.UpdateCertificateIssuer(ctx, issuerName, updateParams, nil)
+	updateResp, err := client.UpdateIssuer(ctx, issuerName, updateParams, nil)
 	require.NoError(t, err)
-	require.NotEqual(t, setResp.IssuerBundle, updateResp.IssuerBundle)
+	require.NotEqual(t, setResp.Issuer, updateResp.Issuer)
 
-	deleteResp, err := client.DeleteCertificateIssuer(ctx, issuerName, nil)
+	deleteResp, err := client.DeleteIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)
-	require.Equal(t, updateResp.IssuerBundle, deleteResp.IssuerBundle)
+	require.Equal(t, updateResp.Issuer, deleteResp.Issuer)
 }
 
 func TestListCertificates(t *testing.T) {
@@ -417,13 +417,13 @@ func TestListCertificates(t *testing.T) {
 		pollCertOperation(t, client, name)
 	}
 
-	listCertsPager := client.NewListCertificatesPager(&azcertificates.ListCertificatesOptions{
-		MaxResults: to.Ptr(int32(1)), IncludePending: to.Ptr(true),
+	listCertsPager := client.NewListCertificatePropertiesPager(&azcertificates.ListCertificatePropertiesOptions{
+		IncludePending: to.Ptr(true),
 	})
 	for listCertsPager.More() {
 		page, err := listCertsPager.NextPage(ctx)
 		require.NoError(t, err)
-		testSerde(t, &page.CertificateListResult)
+		testSerde(t, &page.CertificatePropertiesListResult)
 		for _, cert := range page.Value {
 			testSerde(t, cert)
 			if value, ok := cert.Tags[tag]; ok && *value == "yes" {
@@ -444,13 +444,13 @@ func TestListCertificates(t *testing.T) {
 	}
 
 	count = len(certNames)
-	listDeletedCertsPager := client.NewListDeletedCertificatesPager(&azcertificates.ListDeletedCertificatesOptions{
-		MaxResults: to.Ptr(int32(1)), IncludePending: to.Ptr(true),
+	listDeletedCertsPager := client.NewListDeletedCertificatePropertiesPager(&azcertificates.ListDeletedCertificatePropertiesOptions{
+		IncludePending: to.Ptr(true),
 	})
 	for listDeletedCertsPager.More() {
 		page, err := listDeletedCertsPager.NextPage(ctx)
 		require.NoError(t, err)
-		testSerde(t, &page.DeletedCertificateListResult)
+		testSerde(t, &page.DeletedCertificatePropertiesListResult)
 		for _, cert := range page.Value {
 			testSerde(t, cert)
 			if value, ok := cert.Tags[tag]; ok && *value == "yes" {
@@ -475,11 +475,11 @@ func TestListCertificateVersions(t *testing.T) {
 	}
 	defer cleanUpCert(t, client, name)
 
-	pager := client.NewListCertificateVersionsPager(name, nil)
+	pager := client.NewListCertificatePropertiesVersionsPager(name, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		testSerde(t, &page.CertificateListResult)
+		testSerde(t, &page.CertificatePropertiesListResult)
 		count -= len(page.Value)
 		for _, v := range page.Value {
 			testSerde(t, v)
@@ -615,7 +615,7 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 		KeyProperties: &azcertificates.KeyProperties{
 			Exportable: to.Ptr(true),
 			KeySize:    to.Ptr(int32(2048)),
-			KeyType:    to.Ptr(azcertificates.JSONWebKeyTypeRSA),
+			KeyType:    to.Ptr(azcertificates.KeyTypeRSA),
 			ReuseKey:   to.Ptr(true),
 		},
 		LifetimeActions: []*azcertificates.LifetimeAction{
@@ -653,10 +653,10 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 
 	updatedPolicy := azcertificates.CertificatePolicy{
 		KeyProperties: &azcertificates.KeyProperties{
-			Curve:      to.Ptr(azcertificates.JSONWebKeyCurveNameP256K),
+			Curve:      to.Ptr(azcertificates.CurveNameP256K),
 			Exportable: to.Ptr(true),
 			KeySize:    to.Ptr(int32(256)),
-			KeyType:    to.Ptr(azcertificates.JSONWebKeyTypeEC),
+			KeyType:    to.Ptr(azcertificates.KeyTypeEC),
 			ReuseKey:   to.Ptr(false),
 		},
 	}

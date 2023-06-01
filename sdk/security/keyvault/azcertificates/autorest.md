@@ -53,28 +53,83 @@ directive:
   # rename paged operations from Get* to List*
   - rename-operation:
       from: GetCertificates
-      to: ListCertificates
+      to: ListCertificateProperties
   - rename-operation:
       from: GetCertificateIssuers
-      to: ListCertificateIssuers
+      to: ListIssuerProperties
   - rename-operation:
       from: GetCertificateVersions
-      to: ListCertificateVersions
+      to: ListCertificatePropertiesVersions
   - rename-operation:
       from: GetDeletedCertificates
-      to: ListDeletedCertificates
+      to: ListDeletedCertificateProperties
+  - rename-model:
+      from: CertificateListResult
+      to: CertificatePropertiesListResult
+  - rename-model:
+      from: DeletedCertificateListResult
+      to: DeletedCertificatePropertiesListResult
 
-  # Maxresults -> MaxResults
-  - from: swagger-document
-    where: $.paths..parameters..[?(@.name=='maxresults')]
-    transform: $["x-ms-client-name"] = "MaxResults"
+  # remove redunant "certificate" from operation name
+  - rename-operation:
+      from: SetCertificateContacts
+      to: SetContacts
+  - rename-operation:
+      from: GetCertificateContacts
+      to: GetContacts
+  - rename-operation:
+      from: DeleteCertificateContacts
+      to: DeleteContacts
+  - rename-operation:
+      from: SetCertificateIssuer
+      to: SetIssuer
+  - rename-operation:
+      from: UpdateCertificateIssuer
+      to: UpdateIssuer
+  - rename-operation:
+      from: GetCertificateIssuer
+      to: GetIssuer
+  - rename-operation:
+      from: DeleteCertificateIssuer
+      to: DeleteIssuer
+  - rename-model:
+      from: CertificateIssuerListResult
+      to: IssuerPropertiesListResult
+  - rename-model:
+      from: UpdateCertificateIssuerParameters
+      to: UpdateIssuerParameters
+  - rename-model:
+      from: SetCertificateIssuerParameters
+      to: SetIssuerParameters
+
+  # rename CertificateBundle, CertificateItem, IssuerBundle
+  - rename-model:
+      from: CertificateBundle
+      to: Certificate
+  - rename-model:
+      from: CertificateItem
+      to: CertificateProperties
+  - rename-model:
+      from: DeletedCertificateBundle
+      to: DeletedCertificate
+  - rename-model:
+      from: DeletedCertificateItem
+      to: DeletedCertificateProperties
+  - rename-model:
+      from: IssuerBundle
+      to: Issuer
+  - rename-model:
+      from: CertificateIssuerItem
+      to: IssuerProperties
+  - where-model: RestoreCertificateParameters
+    transform: $.properties.value["x-ms-client-name"] = "CertificateBackup"
 
   # capitalize acronyms
-  - where-model: CertificateBundle
+  - where-model: Certificate
     transform: $.properties.cer["x-ms-client-name"] = "CER"
-  - where-model: CertificateBundle
+  - where-model: Certificate
     transform: $.properties.kid["x-ms-client-name"] = "KID"
-  - where-model: CertificateBundle
+  - where-model: Certificate
     transform: $.properties.sid["x-ms-client-name"] = "SID"
   - where-model: CertificateOperation
     transform: $.properties.csr["x-ms-client-name"] = "CSR"
@@ -82,6 +137,38 @@ directive:
     transform: $.properties.upns["x-ms-client-name"] = "UPNs"
   - where-model: X509CertificateProperties
     transform: $.properties.ekus["x-ms-client-name"] = "EKUs"
+
+  # Remove MaxResults parameter
+  - where: "$.paths..*"
+    remove-parameter:
+      in: query
+      name: maxresults
+
+  # remove JSONWeb prefix
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyCurveName/g, "CurveName");
+  - from: 
+      - models.go
+      - constants.go
+    where: $
+    transform: return $.replace(/JSONWebKeyType/g, "KeyType");
+
+  # remove DeletionRecoveryLevel type
+  - from: models.go
+    where: $
+    transform: return $.replace(/RecoveryLevel \*DeletionRecoveryLevel/g, "RecoveryLevel *string");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type DeletionRecoveryLevel string/, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}/, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const \(\n\s\/\/ DeletionRecoveryLevel(?:.+\s)+\)/, "");
 
   # delete unused error models
   - from: models.go
@@ -119,7 +206,7 @@ directive:
   # (specifying models because others have "ID" fields whose values aren't cert IDs)
   - from: models.go
     where: $
-    transform: return $.replace(/(type (?:Deleted)?Certificate(?:Bundle|Item) struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
+    transform: return $.replace(/(type (?:Deleted)?Certificate(?:\s|Properties\s)struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
 
   # remove "certificate" prefix from some method parameter names
   - from: client.go

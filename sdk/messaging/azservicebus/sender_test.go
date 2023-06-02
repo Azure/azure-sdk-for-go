@@ -333,6 +333,8 @@ func testScheduleMessages(t *testing.T, rawAMQP bool) {
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
 	var peekedMsgs []*ReceivedMessage
 
 	for len(peekedMsgs) < 3 {

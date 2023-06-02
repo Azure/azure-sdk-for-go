@@ -140,4 +140,5 @@ type ListDeletedPathsOptions struct {
 
 // UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
 type UndeletePathOptions struct {
+	// placeholder
 }

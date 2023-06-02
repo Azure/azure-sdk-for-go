@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2023-06-02)
+## 0.2.0 (2023-06-06)
 
 ### Features Added
 * Add `DigestValidationReader` to help to do digest validation when read manifest or blob

@@ -127,7 +127,6 @@ func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")
 	}
-	//Redirect URL is necessary
 	url := adfsLiveSP.redirectURL
 
 	cloudConfig := cloud.Configuration{ActiveDirectoryAuthorityHost: adfsAuthority}

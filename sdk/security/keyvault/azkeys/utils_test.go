@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -244,4 +245,29 @@ func getMarshalledReleasePolicy(attestationURL string) []byte {
 		"version": "1.0.0",
 	})
 	return data
+}
+
+type serdeModel interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func testSerde[T serdeModel](t *testing.T, model T) {
+	data, err := model.MarshalJSON()
+	require.NoError(t, err)
+	err = model.UnmarshalJSON(data)
+	require.NoError(t, err)
+
+	// testing unmarshal error scenarios
+	var data2 []byte
+	err = model.UnmarshalJSON(data2)
+	require.Error(t, err)
+
+	m := regexp.MustCompile(":.*$")
+	modifiedData := m.ReplaceAllString(string(data), ":false}")
+	if modifiedData != "{}" {
+		data3 := []byte(modifiedData)
+		err = model.UnmarshalJSON(data3)
+		require.Error(t, err)
+	}
 }

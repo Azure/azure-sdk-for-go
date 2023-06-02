@@ -58,18 +58,6 @@ func requireEqualAttributes(t *testing.T, a, b *azkeys.KeyAttributes) {
 	require.Equal(t, a.Updated, b.Updated)
 }
 
-type serdeModel interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func testSerde[T serdeModel](t *testing.T, model T) {
-	data, err := model.MarshalJSON()
-	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
-	require.NoError(t, err)
-}
-
 func TestBackupRestore(t *testing.T) {
 	name := "KV"
 	for _, mhsm := range []bool{false, true} {

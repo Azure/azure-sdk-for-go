@@ -180,6 +180,11 @@ directive:
     where: $
     transform: return $.replace(/.*(\bSignatureAlgorithmRSNULL\b).*/g, "");
 
+   # delete KeyOperationExport
+  - from: constants.go
+    where: $
+    transform: return $.replace(/.*(\bKeyOperationExport\b).*/g, "");
+
   # delete unused error models
   - from: models.go
     where: $

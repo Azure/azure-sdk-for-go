@@ -79,9 +79,9 @@ func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 type KeyOperation string
 
 const (
-	KeyOperationDecrypt   KeyOperation = "decrypt"
-	KeyOperationEncrypt   KeyOperation = "encrypt"
-	KeyOperationExport    KeyOperation = "export"
+	KeyOperationDecrypt KeyOperation = "decrypt"
+	KeyOperationEncrypt KeyOperation = "encrypt"
+
 	KeyOperationImport    KeyOperation = "import"
 	KeyOperationSign      KeyOperation = "sign"
 	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
@@ -94,7 +94,7 @@ func PossibleKeyOperationValues() []KeyOperation {
 	return []KeyOperation{
 		KeyOperationDecrypt,
 		KeyOperationEncrypt,
-		KeyOperationExport,
+
 		KeyOperationImport,
 		KeyOperationSign,
 		KeyOperationUnwrapKey,

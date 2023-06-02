@@ -25,7 +25,8 @@
 * `JSONWebKeySignatureAlgorithm` to `SignatureAlgorithm`
 * `JSONWebKeyType` to `KeyType`
 * Removed `DeletionRecoveryLevel` type
-* Deleted `SignatureAlgorithmRSNULL` constant
+* Removed `SignatureAlgorithmRSNULL` constant
+* Removed `KeyOperationExport` constant
 * Removed `MaxResults` option
 
 ### Other Changes

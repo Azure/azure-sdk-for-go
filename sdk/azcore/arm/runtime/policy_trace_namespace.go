@@ -22,9 +22,8 @@ func httpTraceNamespacePolicy(req *policy.Request) (resp *http.Response, err err
 		rt, err := resource.ParseResourceType(req.Raw().URL.Path)
 		if err == nil {
 			// add the namespace attribute to the current span
-			if span, ok := tracer.SpanFromContext(req.Raw().Context()); ok {
-				span.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: rt.Namespace})
-			}
+			span := tracer.SpanFromContext(req.Raw().Context())
+			span.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: rt.Namespace})
 		}
 	}
 	return req.Next()

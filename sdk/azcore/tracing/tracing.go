@@ -46,7 +46,7 @@ func (p Provider) NewTracer(name, version string) (tracer Tracer) {
 // TracerOptions contains the optional values when creating a Tracer.
 type TracerOptions struct {
 	// SpanFromContext contains the implementation for the Tracer.SpanFromContext method.
-	SpanFromContext func(context.Context) (Span, bool)
+	SpanFromContext func(context.Context) Span
 }
 
 // NewTracer creates a Tracer with the specified values.
@@ -66,7 +66,7 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 type Tracer struct {
 	attrs             []Attribute
 	newSpanFn         func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
-	spanFromContextFn func(ctx context.Context) (Span, bool)
+	spanFromContextFn func(ctx context.Context) Span
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -99,11 +99,11 @@ func (t Tracer) Enabled() bool {
 
 // SpanFromContext returns the Span associated with the current context.
 // If the provided context has no Span, false is returned.
-func (t Tracer) SpanFromContext(ctx context.Context) (Span, bool) {
+func (t Tracer) SpanFromContext(ctx context.Context) Span {
 	if t.spanFromContextFn != nil {
 		return t.spanFromContextFn(ctx)
 	}
-	return Span{}, false
+	return Span{}
 }
 
 // SpanOptions contains optional settings for creating a span.
@@ -130,9 +130,6 @@ type SpanImpl struct {
 	// AddEvent contains the implementation for the Span.AddEvent method.
 	AddEvent func(string, ...Attribute)
 
-	// AddError contains the implementation for the Span.AddError method.
-	AddError func(err error)
-
 	// SetStatus contains the implementation for the Span.SetStatus method.
 	SetStatus func(SpanStatus, string)
 }
@@ -152,7 +149,7 @@ type Span struct {
 
 // End terminates the span and MUST be called before the span leaves scope.
 // Any further updates to the span will be ignored after End is called.
-func (s Span) End() {
+func (s Span) End(opts *SpanEndOptions) {
 	if s.impl.End != nil {
 		s.impl.End()
 	}
@@ -173,18 +170,16 @@ func (s Span) AddEvent(name string, attrs ...Attribute) {
 	}
 }
 
-// AddError adds the specified error event to the span.
-func (s Span) AddError(err error) {
-	if s.impl.AddError != nil {
-		s.impl.AddError(err)
-	}
-}
-
 // SetStatus sets the status on the span along with a description.
 func (s Span) SetStatus(code SpanStatus, desc string) {
 	if s.impl.SetStatus != nil {
 		s.impl.SetStatus(code, desc)
 	}
+}
+
+// SpanEndOptions contains the optional values for the Span.End() method.
+type SpanEndOptions struct {
+	// for future expansion
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

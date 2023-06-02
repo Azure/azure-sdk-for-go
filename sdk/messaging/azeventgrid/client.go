@@ -137,11 +137,9 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, endpo
 // publishCloudEventsHandleResponse handles the PublishCloudEvents response.
 func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (ClientPublishCloudEventsResponse, error) {
 	result := ClientPublishCloudEventsResponse{}
-	body, err := runtime.Payload(resp)
-	if err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return ClientPublishCloudEventsResponse{}, err
 	}
-	result.RawJSON = body
 	return result, nil
 }
 

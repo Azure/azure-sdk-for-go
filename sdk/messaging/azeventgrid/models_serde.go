@@ -210,7 +210,7 @@ func (b *BrokerProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CloudEvent.
 func (c CloudEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "data", json.RawMessage(c.Data))
+	populate(objectMap, "data", &c.Data)
 	populateByteArray(objectMap, "data_base64", c.DataBase64, runtime.Base64StdFormat)
 	populate(objectMap, "datacontenttype", c.DataContentType)
 	populate(objectMap, "dataschema", c.DataSchema)
@@ -233,7 +233,7 @@ func (c *CloudEvent) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "data":
-			c.Data = val
+				err = unpopulate(val, "Data", &c.Data)
 				delete(rawMsg, key)
 		case "data_base64":
 			err = runtime.DecodeByteArray(string(val), &c.DataBase64, runtime.Base64StdFormat)

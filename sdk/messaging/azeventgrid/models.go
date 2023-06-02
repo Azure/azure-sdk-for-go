@@ -120,7 +120,7 @@ type CloudEvent struct {
 	Type *string `json:"type,omitempty"`
 
 	// Event data specific to the event type.
-	Data []byte `json:"data,omitempty"`
+	Data any `json:"data,omitempty"`
 
 	// Event data specific to the event type, encoded as a base64 string.
 	DataBase64 []byte `json:"data_base64,omitempty"`

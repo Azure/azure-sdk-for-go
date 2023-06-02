@@ -94,28 +94,26 @@ var (
 	_, runManualTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_TESTS")
 )
 
-func init() {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		liveManagedIdentity.clientID = fakeClientID
-		liveManagedIdentity.resourceID = fakeResourceID
-		liveSP.secret = "fake-secret"
-		liveSP.clientID = fakeClientID
-		liveSP.tenantID = fakeTenantID
-		liveSP.pemPath = "testdata/certificate.pem"
-		liveSP.pfxPath = "testdata/certificate.pfx"
-		liveSP.sniPath = "testdata/certificate-with-chain.pem"
-		liveUser.tenantID = fakeTenantID
-		liveUser.username = fakeUsername
-		liveUser.password = "fake-password"
-		adfsLiveSP.secret = "fake-secret"
-		adfsLiveSP.clientID = fakeClientID
-		adfsLiveSP.certPath = "testdata/certificate.pem"
-		adfsLiveUser.username = fakeUsername
-		adfsLiveUser.password = "fake-password"
-		adfsLiveUser.clientID = fakeClientID
-		adfsScope = "https://" + fakeAdfsScope
-		adfsAuthority = "https://" + fakeAdfsAuthority
-	}
+func setFakeValues() {
+	liveManagedIdentity.clientID = fakeClientID
+	liveManagedIdentity.resourceID = fakeResourceID
+	liveSP.secret = "fake-secret"
+	liveSP.clientID = fakeClientID
+	liveSP.tenantID = fakeTenantID
+	liveSP.pemPath = "testdata/certificate.pem"
+	liveSP.pfxPath = "testdata/certificate.pfx"
+	liveSP.sniPath = "testdata/certificate-with-chain.pem"
+	liveUser.tenantID = fakeTenantID
+	liveUser.username = fakeUsername
+	liveUser.password = "fake-password"
+	adfsLiveSP.secret = "fake-secret"
+	adfsLiveSP.clientID = fakeClientID
+	adfsLiveSP.certPath = "testdata/certificate.pem"
+	adfsLiveUser.username = fakeUsername
+	adfsLiveUser.password = "fake-password"
+	adfsLiveUser.clientID = fakeClientID
+	adfsScope = "https://" + fakeAdfsScope
+	adfsAuthority = "https://" + fakeAdfsAuthority
 }
 
 func TestMain(m *testing.M) {
@@ -142,6 +140,7 @@ func run(m *testing.M) int {
 
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
+		setFakeValues()
 		err := recording.SetBodilessMatcher(nil, nil)
 		if err != nil {
 			panic(err)

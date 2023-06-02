@@ -106,7 +106,7 @@ export-clients: true
 go: true
 input-file: <URI to OpenAPI spec file>
 license-header: MICROSOFT_MIT_NO_VERSION
-module: <full module name> (e.g. github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)
+module: <full module name> (e.g. github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys)
 openapi-type: "data-plane"
 output-folder: <output directory>
 use: "@autorest/go@4.0.0-preview.44"
@@ -370,7 +370,7 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
 [module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [type_declarations]: https://go.dev/ref/spec#Type_declarations
-[azkeys_directory]: https://github.com/Azure/azure-sdk-for-go/tree/sdk/keyvault/azkeys/v0.9.0/sdk/keyvault/azkeys
+[azkeys_directory]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azkeys
 [aztables_directory]: https://github.com/Azure/azure-sdk-for-go/tree/sdk/data/aztables/v1.0.1/sdk/data/aztables
 [aztemplate]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/template/aztemplate
 [api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design

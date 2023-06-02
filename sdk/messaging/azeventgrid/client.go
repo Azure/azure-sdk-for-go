@@ -99,7 +99,7 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) PublishCloudEvents(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+func (client *Client) internalPublishCloudEvents(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
 	req, err := client.publishCloudEventsCreateRequest(ctx, endpoint, topicName, events, options)
 	if err != nil {
 		return ClientPublishCloudEventsResponse{}, err
@@ -137,9 +137,11 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, endpo
 // publishCloudEventsHandleResponse handles the PublishCloudEvents response.
 func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (ClientPublishCloudEventsResponse, error) {
 	result := ClientPublishCloudEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
+	body, err := runtime.Payload(resp)
+	if err != nil {
 		return ClientPublishCloudEventsResponse{}, err
 	}
+	result.RawJSON = body
 	return result, nil
 }
 
@@ -320,3 +322,4 @@ func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (Cli
 	}
 	return result, nil
 }
+

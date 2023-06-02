@@ -34,8 +34,8 @@ func (a *AcknowledgeOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &a.LockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "LockTokens", &a.LockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -62,11 +62,11 @@ func (a *AcknowledgeResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &a.FailedLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "FailedLockTokens", &a.FailedLockTokens)
+				delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &a.SucceededLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SucceededLockTokens", &a.SucceededLockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -96,20 +96,20 @@ func (a *AzureCoreFoundationsError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Code", &a.Code)
+				delete(rawMsg, key)
 		case "details":
-			err = unpopulate(val, "Details", &a.Details)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Details", &a.Details)
+				delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Innererror", &a.Innererror)
+				delete(rawMsg, key)
 		case "message":
-			err = unpopulate(val, "Message", &a.Message)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Message", &a.Message)
+				delete(rawMsg, key)
 		case "target":
-			err = unpopulate(val, "Target", &a.Target)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Target", &a.Target)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -135,8 +135,8 @@ func (a *AzureCoreFoundationsErrorResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "error":
-			err = unpopulate(val, "Error", &a.Error)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Error", &a.Error)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -163,11 +163,11 @@ func (a *AzureCoreFoundationsInnerError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Code", &a.Code)
+				delete(rawMsg, key)
 		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Innererror", &a.Innererror)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -194,11 +194,11 @@ func (b *BrokerProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deliveryCount":
-			err = unpopulate(val, "DeliveryCount", &b.DeliveryCount)
-			delete(rawMsg, key)
+				err = unpopulate(val, "DeliveryCount", &b.DeliveryCount)
+				delete(rawMsg, key)
 		case "lockToken":
-			err = unpopulate(val, "LockToken", &b.LockToken)
-			delete(rawMsg, key)
+				err = unpopulate(val, "LockToken", &b.LockToken)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", b, err)
@@ -210,13 +210,13 @@ func (b *BrokerProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CloudEvent.
 func (c CloudEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "data", &c.Data)
+	populate(objectMap, "data", json.RawMessage(c.Data))
 	populateByteArray(objectMap, "data_base64", c.DataBase64, runtime.Base64StdFormat)
-	populate(objectMap, "datacontenttype", c.Datacontenttype)
-	populate(objectMap, "dataschema", c.Dataschema)
+	populate(objectMap, "datacontenttype", c.DataContentType)
+	populate(objectMap, "dataschema", c.DataSchema)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "source", c.Source)
-	populate(objectMap, "specversion", c.Specversion)
+	populate(objectMap, "specversion", c.SpecVersion)
 	populate(objectMap, "subject", c.Subject)
 	populateTimeRFC3339(objectMap, "time", c.Time)
 	populate(objectMap, "type", c.Type)
@@ -233,35 +233,35 @@ func (c *CloudEvent) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "data":
-			err = unpopulate(val, "Data", &c.Data)
-			delete(rawMsg, key)
+			c.Data = val
+				delete(rawMsg, key)
 		case "data_base64":
 			err = runtime.DecodeByteArray(string(val), &c.DataBase64, runtime.Base64StdFormat)
-			delete(rawMsg, key)
+				delete(rawMsg, key)
 		case "datacontenttype":
-			err = unpopulate(val, "Datacontenttype", &c.Datacontenttype)
-			delete(rawMsg, key)
+				err = unpopulate(val, "DataContentType", &c.DataContentType)
+				delete(rawMsg, key)
 		case "dataschema":
-			err = unpopulate(val, "Dataschema", &c.Dataschema)
-			delete(rawMsg, key)
+				err = unpopulate(val, "DataSchema", &c.DataSchema)
+				delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &c.ID)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ID", &c.ID)
+				delete(rawMsg, key)
 		case "source":
-			err = unpopulate(val, "Source", &c.Source)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Source", &c.Source)
+				delete(rawMsg, key)
 		case "specversion":
-			err = unpopulate(val, "Specversion", &c.Specversion)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SpecVersion", &c.SpecVersion)
+				delete(rawMsg, key)
 		case "subject":
-			err = unpopulate(val, "Subject", &c.Subject)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Subject", &c.Subject)
+				delete(rawMsg, key)
 		case "time":
-			err = unpopulateTimeRFC3339(val, "Time", &c.Time)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "Time", &c.Time)
+				delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &c.Type)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Type", &c.Type)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -289,14 +289,14 @@ func (f *FailedLockToken) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "errorCode":
-			err = unpopulate(val, "ErrorCode", &f.ErrorCode)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ErrorCode", &f.ErrorCode)
+				delete(rawMsg, key)
 		case "errorDescription":
-			err = unpopulate(val, "ErrorDescription", &f.ErrorDescription)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ErrorDescription", &f.ErrorDescription)
+				delete(rawMsg, key)
 		case "lockToken":
-			err = unpopulate(val, "LockToken", &f.LockToken)
-			delete(rawMsg, key)
+				err = unpopulate(val, "LockToken", &f.LockToken)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
@@ -323,11 +323,11 @@ func (r *ReceiveDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "brokerProperties":
-			err = unpopulate(val, "BrokerProperties", &r.BrokerProperties)
-			delete(rawMsg, key)
+				err = unpopulate(val, "BrokerProperties", &r.BrokerProperties)
+				delete(rawMsg, key)
 		case "event":
-			err = unpopulate(val, "Event", &r.Event)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Event", &r.Event)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -353,8 +353,8 @@ func (r *ReceiveResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			err = unpopulate(val, "Value", &r.Value)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Value", &r.Value)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -380,8 +380,8 @@ func (r *RejectOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &r.LockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "LockTokens", &r.LockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -408,11 +408,11 @@ func (r *RejectResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
+				delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -438,8 +438,8 @@ func (r *ReleaseOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lockTokens":
-			err = unpopulate(val, "LockTokens", &r.LockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "LockTokens", &r.LockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -466,11 +466,11 @@ func (r *ReleaseResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "failedLockTokens":
-			err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "FailedLockTokens", &r.FailedLockTokens)
+				delete(rawMsg, key)
 		case "succeededLockTokens":
-			err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SucceededLockTokens", &r.SucceededLockTokens)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -508,3 +508,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

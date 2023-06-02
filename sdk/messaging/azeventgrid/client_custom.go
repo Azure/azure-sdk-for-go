@@ -7,11 +7,14 @@
 package azeventgrid
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // ClientOptions contains optional settings for [Client]
@@ -41,6 +44,42 @@ func NewClientFromSharedKey(key string, options *ClientOptions) (*Client, error)
 	}, nil
 }
 
+// PublishCloudEvents - Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP
+// 200 status code with an empty JSON object in response. Otherwise, the server can return various error
+// codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large,
+// 410: which indicates that specific topic is not found, 400: for bad
+// request, and 500: for internal server error.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01-preview
+//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
+//   - topicName - Topic Name.
+//   - events - Array of Cloud Events being published.
+//   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
+func (client *Client) PublishCloudEvents(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+	ctx = runtime.WithHTTPHeader(ctx, http.Header{
+		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
+	})
+
+	for _, evt := range events {
+		if evt.ID == nil {
+			id, err := uuid.New()
+
+			if err != nil {
+				return ClientPublishCloudEventsResponse{}, err
+			}
+
+			evt.ID = to.Ptr(id.String())
+		}
+
+		if evt.SpecVersion == nil || *evt.SpecVersion == "" {
+			evt.SpecVersion = &defaultSpecVersion
+		}
+	}
+
+	return client.internalPublishCloudEvents(ctx, endpoint, topicName, events, options)
+}
+
 // TODO: remove in favor of a common policy instead?
 type skpolicy struct {
 	Key string
@@ -50,3 +89,5 @@ func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
 	req.Raw().Header.Add("Authorization", "SharedAccessKey "+p.Key)
 	return req.Next()
 }
+
+var defaultSpecVersion = "1.0"

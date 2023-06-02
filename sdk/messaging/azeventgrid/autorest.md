@@ -20,4 +20,20 @@ override-client-name: Client
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
+directive:
+  # we have to write a little wrapper code for this so we'll hide the public function
+  # for now.
+  - from: client.go
+    where: $
+    transform: return $.replace(/PublishCloudEvents\(/g, "internalPublishCloudEvents(");
+  # make sure the casing of the properties is what compliant.
+  - from: swagger-document
+    where: $.definitions.CloudEvent.properties.specversion
+    transform: $["x-ms-client-name"] = "SpecVersion"
+  - from: swagger-document
+    where: $.definitions.CloudEvent.properties.datacontenttype
+    transform: $["x-ms-client-name"] = "DataContentType"
+  - from: swagger-document
+    where: $.definitions.CloudEvent.properties.dataschema
+    transform: $["x-ms-client-name"] = "DataSchema"
 ```

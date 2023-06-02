@@ -32,7 +32,6 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 	})
 
 	_, err = c.PublishCloudEvents(newCTX, env.Endpoint, topicName, []*CloudEvent{
-
 		{
 			Data:   "Hello World",
 			Source: to.Ptr("hello-source"),

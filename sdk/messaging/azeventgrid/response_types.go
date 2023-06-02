@@ -17,7 +17,7 @@ type ClientAcknowledgeCloudEventsResponse struct {
 // ClientPublishCloudEventsResponse contains the response from method Client.PublishCloudEvents.
 type ClientPublishCloudEventsResponse struct {
 	// Anything
-	Interface any
+	RawJSON []byte
 }
 
 // ClientReceiveCloudEventsResponse contains the response from method Client.ReceiveCloudEvents.
@@ -34,3 +34,4 @@ type ClientRejectCloudEventsResponse struct {
 type ClientReleaseCloudEventsResponse struct {
 	ReleaseResult
 }
+

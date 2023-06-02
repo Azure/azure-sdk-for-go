@@ -173,7 +173,7 @@ func (testsuite *NotificationhubsTestSuite) TestNamespacesAuthorizationRule() {
 	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")
 	namespacesClient, err := armnotificationhubs.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_,err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, "namespace" + testsuite.authorizationRuleName, armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
+	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, "namespace"+testsuite.authorizationRuleName, armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
 		Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
 			Rights: []*armnotificationhubs.AccessRights{
 				to.Ptr(armnotificationhubs.AccessRightsListen),
@@ -187,32 +187,31 @@ func (testsuite *NotificationhubsTestSuite) TestNamespacesAuthorizationRule() {
 	fmt.Println("Call operation: Namespaces_ListAuthorizationRules")
 	namespacesClientNewListAuthorizationRulesPager := namespacesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	for namespacesClientNewListAuthorizationRulesPager.More() {
-		_,err = namespacesClientNewListAuthorizationRulesPager.NextPage(context.Background())
+		_, err = namespacesClientNewListAuthorizationRulesPager.NextPage(context.Background())
 		testsuite.Require().NoError(err)
 		break
 	}
 
 	// From step Namespaces_GetAuthorizationRule
 	fmt.Println("Call operation: Namespaces_GetAuthorizationRule")
-	_, err = namespacesClient.GetAuthorizationRule(context.Background(),testsuite.resourceGroupName, testsuite.namespaceName, "namespace" + testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientGetAuthorizationRuleOptions{})
+	_, err = namespacesClient.GetAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace"+testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientGetAuthorizationRuleOptions{})
 	testsuite.Require().NoError(err)
-
 
 	// From step Namespaces_ListKeys
 	fmt.Println("Call operation: Namespaces_ListKeys")
-	_, err = namespacesClient.ListKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace" + testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientListKeysOptions{})
+	_, err = namespacesClient.ListKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace"+testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientListKeysOptions{})
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_RegenerateKeys
 	fmt.Println("Call operation: Namespaces_RegenerateKeys")
-	_, err = namespacesClient.RegenerateKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace" + testsuite.authorizationRuleName, armnotificationhubs.PolicykeyResource{
+	_, err = namespacesClient.RegenerateKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace"+testsuite.authorizationRuleName, armnotificationhubs.PolicykeyResource{
 		PolicyKey: to.Ptr("PrimaryKey"),
-	},nil)
+	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_DeleteAuthorizationRule
 	fmt.Println("Call operation: Namespaces_DeleteAuthorizationRule")
-	_, err = namespacesClient.DeleteAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace" + testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientDeleteAuthorizationRuleOptions{})
+	_, err = namespacesClient.DeleteAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, "namespace"+testsuite.authorizationRuleName, &armnotificationhubs.NamespacesClientDeleteAuthorizationRuleOptions{})
 	testsuite.Require().NoError(err)
 }
 
@@ -260,7 +259,7 @@ func (testsuite *NotificationhubsTestSuite) TestNotificationHubsAuthorizationRul
 	fmt.Println("Call operation: NotificationHubs_CreateOrUpdateAuthorizationRule")
 	client, err := armnotificationhubs.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = client.CreateOrUpdateAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification" + testsuite.authorizationRuleName, armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
+	_, err = client.CreateOrUpdateAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification"+testsuite.authorizationRuleName, armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
 		Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
 			Rights: []*armnotificationhubs.AccessRights{
 				to.Ptr(armnotificationhubs.AccessRightsListen),
@@ -281,24 +280,25 @@ func (testsuite *NotificationhubsTestSuite) TestNotificationHubsAuthorizationRul
 
 	// From step NotificationHubs_GetAuthorizationRule
 	fmt.Println("Call operation: NotificationHubs_GetAuthorizationRule")
-	_, err = client.GetAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification" + testsuite.authorizationRuleName,&armnotificationhubs.ClientGetAuthorizationRuleOptions{})
+	_, err = client.GetAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification"+testsuite.authorizationRuleName, &armnotificationhubs.ClientGetAuthorizationRuleOptions{})
 	testsuite.Require().NoError(err)
 
 	// From step NotificationHubs_ListKeys
 	fmt.Println("Call operation: NotificationHubs_ListKeys")
-	_, err = client.ListKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification" + testsuite.authorizationRuleName, &armnotificationhubs.ClientListKeysOptions{})
+	_, err = client.ListKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification"+testsuite.authorizationRuleName, &armnotificationhubs.ClientListKeysOptions{})
 	testsuite.Require().NoError(err)
 
 	// From step NotificationHubs_RegenerateKeys
 	fmt.Println("Call operation: NotificationHubs_RegenerateKeys")
-	_, err = client.RegenerateKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification" + testsuite.authorizationRuleName, armnotificationhubs.PolicykeyResource{
+	_, err = client.RegenerateKeys(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification"+testsuite.authorizationRuleName, armnotificationhubs.PolicykeyResource{
 		PolicyKey: to.Ptr("PrimaryKey"),
-	},nil)
+	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NotificationHubs_DeleteAuthorizationRule
 	fmt.Println("Call operation: NotificationHubs_DeleteAuthorizationRule")
-	_, err = client.DeleteAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.authorizationRuleName, testsuite.notificationHubName, "notification" + testsuite.authorizationRuleName, nil)
+	_, err = client.DeleteAuthorizationRule(context.Background(), testsuite.resourceGroupName, testsuite.namespaceName, testsuite.notificationHubName, "notification"+testsuite.authorizationRuleName, &armnotificationhubs.ClientDeleteAuthorizationRuleOptions{})
+	testsuite.Require().NoError(err)
 }
 
 func (testsuite *NotificationhubsTestSuite) Cleanup() {

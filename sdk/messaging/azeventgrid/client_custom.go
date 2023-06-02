@@ -23,7 +23,7 @@ type ClientOptions struct {
 }
 
 // NewClientFromSharedKey creates a [Client] using a shared key.
-func NewClientFromSharedKey(key string, options *ClientOptions) (*Client, error) {
+func NewClientFromSharedKey(endpoint string, key string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -41,6 +41,7 @@ func NewClientFromSharedKey(key string, options *ClientOptions) (*Client, error)
 
 	return &Client{
 		internal: azc,
+		endpoint: endpoint,
 	}, nil
 }
 
@@ -56,7 +57,7 @@ func NewClientFromSharedKey(key string, options *ClientOptions) (*Client, error)
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) PublishCloudEvents(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
 	ctx = runtime.WithHTTPHeader(ctx, http.Header{
 		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
 	})
@@ -77,7 +78,7 @@ func (client *Client) PublishCloudEvents(ctx context.Context, endpoint string, t
 		}
 	}
 
-	return client.internalPublishCloudEvents(ctx, endpoint, topicName, events, options)
+	return client.internalPublishCloudEvents(ctx, topicName, events, options)
 }
 
 // TODO: remove in favor of a common policy instead?

@@ -24,27 +24,23 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 		fmt.Printf("[%s]: %s\n", e, s)
 	})
 
-	c, err := NewClientFromSharedKey(env.Key, nil)
+	c, err := NewClientFromSharedKey(env.Endpoint, env.Key, nil)
 	require.NoError(t, err)
 	require.NotNil(t, c)
 
 	topicName := env.Topic
 	subscriptionName := env.Subscription
 
-	_, err = c.PublishCloudEvents(context.Background(), env.Endpoint, topicName, []*CloudEvent{
+	_, err = c.PublishCloudEvents(context.Background(), topicName, []*CloudEvent{
 		{
 			Data:   []byte("hello World"),
 			Source: to.Ptr("hello-source"),
 			Type:   to.Ptr("world"),
-
-			// TODO: ID should be auto-assigned?
-			// ID:          to.Ptr("hello"),
-			// SpecVersion: to.Ptr("1.0")
 		},
 	}, nil)
 	require.NoError(t, err)
 
-	resp, err := c.ReceiveCloudEvents(context.Background(), env.Endpoint, topicName, subscriptionName, nil)
+	resp, err := c.ReceiveCloudEvents(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Value)
 
@@ -56,7 +52,7 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 	}
 
 	// TODO: it's weird that these are marked optional.
-	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), env.Endpoint, topicName, subscriptionName, ackArgs, nil)
+	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), topicName, subscriptionName, ackArgs, nil)
 	require.NoError(t, err)
 
 	for _, flt := range ackResp.FailedLockTokens {

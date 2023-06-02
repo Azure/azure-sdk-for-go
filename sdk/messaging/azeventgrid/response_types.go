@@ -34,4 +34,3 @@ type ClientRejectCloudEventsResponse struct {
 type ClientReleaseCloudEventsResponse struct {
 	ReleaseResult
 }
-

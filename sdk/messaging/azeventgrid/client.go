@@ -25,6 +25,7 @@ import (
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal *azcore.Client
+	endpoint string
 }
 
 // AcknowledgeCloudEvents - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if at least
@@ -34,13 +35,12 @@ type Client struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - AcknowledgeOptions.
 //   - options - ClientAcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
-func (client *Client) AcknowledgeCloudEvents(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (ClientAcknowledgeCloudEventsResponse, error) {
-	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, endpoint, topicName, eventSubscriptionName, lockTokens, options)
+func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (ClientAcknowledgeCloudEventsResponse, error) {
+	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
 		return ClientAcknowledgeCloudEventsResponse{}, err
 	}
@@ -55,9 +55,7 @@ func (client *Client) AcknowledgeCloudEvents(ctx context.Context, endpoint strin
 }
 
 // acknowledgeCloudEventsCreateRequest creates the AcknowledgeCloudEvents request.
-func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", endpoint)
+func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -67,7 +65,7 @@ func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, e
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,12 +93,11 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) internalPublishCloudEvents(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
-	req, err := client.publishCloudEventsCreateRequest(ctx, endpoint, topicName, events, options)
+func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+	req, err := client.publishCloudEventsCreateRequest(ctx, topicName, events, options)
 	if err != nil {
 		return ClientPublishCloudEventsResponse{}, err
 	}
@@ -115,15 +112,13 @@ func (client *Client) internalPublishCloudEvents(ctx context.Context, endpoint s
 }
 
 // publishCloudEventsCreateRequest creates the PublishCloudEvents request.
-func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, endpoint string, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", endpoint)
+func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}:publish"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,12 +142,11 @@ func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (Cli
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - options - ClientReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
-func (client *Client) ReceiveCloudEvents(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (ClientReceiveCloudEventsResponse, error) {
-	req, err := client.receiveCloudEventsCreateRequest(ctx, endpoint, topicName, eventSubscriptionName, options)
+func (client *Client) ReceiveCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (ClientReceiveCloudEventsResponse, error) {
+	req, err := client.receiveCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, options)
 	if err != nil {
 		return ClientReceiveCloudEventsResponse{}, err
 	}
@@ -167,9 +161,7 @@ func (client *Client) ReceiveCloudEvents(ctx context.Context, endpoint string, t
 }
 
 // receiveCloudEventsCreateRequest creates the ReceiveCloudEvents request.
-func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", endpoint)
+func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -179,7 +171,7 @@ func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, endpo
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,13 +201,12 @@ func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (Cli
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - RejectOptions
 //   - options - ClientRejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
-func (client *Client) RejectCloudEvents(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (ClientRejectCloudEventsResponse, error) {
-	req, err := client.rejectCloudEventsCreateRequest(ctx, endpoint, topicName, eventSubscriptionName, lockTokens, options)
+func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (ClientRejectCloudEventsResponse, error) {
+	req, err := client.rejectCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
 		return ClientRejectCloudEventsResponse{}, err
 	}
@@ -230,9 +221,7 @@ func (client *Client) RejectCloudEvents(ctx context.Context, endpoint string, to
 }
 
 // rejectCloudEventsCreateRequest creates the RejectCloudEvents request.
-func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", endpoint)
+func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -242,7 +231,7 @@ func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, endpoi
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,13 +257,12 @@ func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (Clie
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - ReleaseOptions
 //   - options - ClientReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
-func (client *Client) ReleaseCloudEvents(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (ClientReleaseCloudEventsResponse, error) {
-	req, err := client.releaseCloudEventsCreateRequest(ctx, endpoint, topicName, eventSubscriptionName, lockTokens, options)
+func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (ClientReleaseCloudEventsResponse, error) {
+	req, err := client.releaseCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
 		return ClientReleaseCloudEventsResponse{}, err
 	}
@@ -289,9 +277,7 @@ func (client *Client) ReleaseCloudEvents(ctx context.Context, endpoint string, t
 }
 
 // releaseCloudEventsCreateRequest creates the ReleaseCloudEvents request.
-func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, endpoint string, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (*policy.Request, error) {
-	host := "{endpoint}"
-	host = strings.ReplaceAll(host, "{endpoint}", endpoint)
+func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -301,7 +287,7 @@ func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, endpo
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,4 +306,3 @@ func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (Cli
 	}
 	return result, nil
 }
-

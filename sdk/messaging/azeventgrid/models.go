@@ -20,7 +20,7 @@ type AcknowledgeOptions struct {
 // AcknowledgeResult - The result of the Acknowledge operation.
 type AcknowledgeResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-// related error information (namely, the error code and description).
+	// related error information (namely, the error code and description).
 	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
 
 	// REQUIRED; Array of lock tokens values for the successfully acknowledged cloud events.
@@ -84,12 +84,12 @@ type ClientPublishCloudEventsOptions struct {
 // ClientReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
 type ClientReceiveCloudEventsOptions struct {
 	// Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the default value
-// is 1.
+	// is 1.
 	MaxEvents *int32
 	// Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately waits for
-// the availability of an event and responds to the request. If an event is
-// available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds.
-// If not specified, the default value is 60 seconds.
+	// the availability of an event and responds to the request. If an event is
+	// available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds.
+	// If not specified, the default value is 60 seconds.
 	MaxWaitTime *int32
 }
 
@@ -110,7 +110,7 @@ type CloudEvent struct {
 	ID *string `json:"id,omitempty"`
 
 	// REQUIRED; Identifies the context in which an event happened. The combination of id and source must be unique for each distinct
-// event.
+	// event.
 	Source *string `json:"source,omitempty"`
 
 	// REQUIRED; The version of the CloudEvents specification which the event uses.
@@ -141,8 +141,8 @@ type CloudEvent struct {
 // FailedLockToken - Failed LockToken information.
 type FailedLockToken struct {
 	// REQUIRED; Error code related to the token. Example of such error codes are BadToken: which indicates the Token is not formatted
-// correctly, TokenLost: which indicates that token is not found, and
-// InternalServerError: For any internal server errors.
+	// correctly, TokenLost: which indicates that token is not found, and
+	// InternalServerError: For any internal server errors.
 	ErrorCode *string `json:"errorCode,omitempty"`
 
 	// REQUIRED; Description of the token error.
@@ -176,7 +176,7 @@ type RejectOptions struct {
 // RejectResult - The result of the Reject operation.
 type RejectResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-// related error information (namely, the error code and description).
+	// related error information (namely, the error code and description).
 	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
 
 	// REQUIRED; Array of lock tokens values for the successfully rejected cloud events.
@@ -192,10 +192,9 @@ type ReleaseOptions struct {
 // ReleaseResult - The result of the Release operation.
 type ReleaseResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
-// related error information (namely, the error code and description).
+	// related error information (namely, the error code and description).
 	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
 
 	// REQUIRED; Array of lock tokens values for the successfully released cloud events.
 	SucceededLockTokens []*string `json:"succeededLockTokens,omitempty"`
 }
-

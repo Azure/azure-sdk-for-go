@@ -36,4 +36,8 @@ directive:
   - from: swagger-document
     where: $.definitions.CloudEvent.properties.dataschema
     transform: $["x-ms-client-name"] = "DataSchema"
+  # make the endpoint a parameter of the client constructor
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.parameters[0]["x-ms-parameter-location"] = "client"
 ```

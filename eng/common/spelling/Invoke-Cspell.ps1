@@ -36,7 +36,7 @@ Run test functions against the script logic
 This will run spell check with the given globs
 
 .EXAMPLE
-./eng/common/scripts/Invoke-Cspell.ps1 -ScanGlobs @('sdk/storage/**', 'sdk/security/keyvault/**')
+./eng/common/scripts/Invoke-Cspell.ps1 -ScanGlobs @('sdk/storage/**', 'sdk/keyvault/**')
 
 This will run spell check against multiple globs
 

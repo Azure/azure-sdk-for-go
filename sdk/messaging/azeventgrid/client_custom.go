@@ -21,8 +21,12 @@ type ClientOptions struct {
 
 // NewClientFromSharedKey creates a [Client] using a shared key.
 func NewClientFromSharedKey(key string, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
 	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
-	azc, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
 			&skpolicy{Key: key},
 		},

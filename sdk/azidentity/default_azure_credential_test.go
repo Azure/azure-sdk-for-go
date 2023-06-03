@@ -77,10 +77,13 @@ func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
+	// ensure NewEnvironmentCredential returns an error
+	t.Setenv(azureTenantID, "")
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
+	// make GetToken return an error in any runtime environment
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	_, err = cred.GetToken(ctx, testTRO)

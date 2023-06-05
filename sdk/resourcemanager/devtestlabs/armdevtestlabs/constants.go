@@ -11,7 +11,7 @@ package armdevtestlabs
 
 const (
 	moduleName    = "armdevtestlabs"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v1.1.2"
 )
 
 // CostThresholdStatus - Indicates whether this threshold will be displayed on cost charts.

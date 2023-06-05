@@ -87,7 +87,7 @@ func TestSyncer(t *testing.T) {
 	for i := 0; i < goroutines; i++ {
 		wg.Add(1)
 		go func() {
-			_, err := s.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err := s.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Error(err)
 			}

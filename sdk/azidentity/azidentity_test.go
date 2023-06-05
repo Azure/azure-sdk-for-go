@@ -38,6 +38,7 @@ var (
 	accessTokenRespSuccess    = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
 	instanceDiscoveryResponse = getInstanceDiscoveryResponse(fakeTenantID)
 	tenantDiscoveryResponse   = getTenantDiscoveryResponse(fakeTenantID)
+	testTRO                   = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 
 // constants for this file

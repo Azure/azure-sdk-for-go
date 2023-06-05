@@ -39,6 +39,11 @@ type HeatMapClientGetResponse struct {
 	HeatMapModel
 }
 
+// ProfilesClientCheckTrafficManagerNameAvailabilityV2Response contains the response from method ProfilesClient.CheckTrafficManagerNameAvailabilityV2.
+type ProfilesClientCheckTrafficManagerNameAvailabilityV2Response struct {
+	NameAvailability
+}
+
 // ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse contains the response from method ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability.
 type ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse struct {
 	NameAvailability

@@ -161,36 +161,11 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate
 }
 
 // Set environment variables for the duration of a test. Restore their prior values
-// after the test completes. Obviated by 1.17's T.Setenv
+// after the test completes. uses t.Setenv on the key/value pairs in vars.
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
-	unsetSentinel := "variables having no initial value must be unset after the test"
-	priorValues := make(map[string]string, len(vars))
 	for k, v := range vars {
-		priorValue, ok := os.LookupEnv(k)
-		if ok {
-			priorValues[k] = priorValue
-		} else {
-			priorValues[k] = unsetSentinel
-		}
-		err := os.Setenv(k, v)
-		if err != nil {
-			t.Fatalf("Unexpected error setting %s: %v", k, err)
-		}
+		t.Setenv(k, v)
 	}
-
-	t.Cleanup(func() {
-		for k, v := range priorValues {
-			var err error
-			if v == unsetSentinel {
-				err = os.Unsetenv(k)
-			} else {
-				err = os.Setenv(k, v)
-			}
-			if err != nil {
-				t.Fatalf("Unexpected error resetting %s: %v", k, err)
-			}
-		}
-	})
 }
 
 func Test_WellKnownHosts(t *testing.T) {

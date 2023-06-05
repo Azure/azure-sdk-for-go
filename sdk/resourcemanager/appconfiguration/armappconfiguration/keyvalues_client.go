@@ -47,7 +47,7 @@ func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Creates a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
@@ -92,7 +92,7 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.KeyValueParameters != nil {
@@ -113,7 +113,7 @@ func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response)
 // BeginDelete - Deletes a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
@@ -133,7 +133,7 @@ func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes a key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-03-01
 func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
@@ -173,7 +173,7 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets the properties of the specified key-value.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-05-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
@@ -226,7 +226,7 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,79 +237,6 @@ func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValues
 	result := KeyValuesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return KeyValuesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByConfigurationStorePager - Lists the key-values for a given configuration store.
-//
-// Generated from API version 2022-05-01
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - configStoreName - The name of the configuration store.
-//   - options - KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.NewListByConfigurationStorePager
-//     method.
-func (client *KeyValuesClient) NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) *runtime.Pager[KeyValuesClientListByConfigurationStoreResponse] {
-	return runtime.NewPager(runtime.PagingHandler[KeyValuesClientListByConfigurationStoreResponse]{
-		More: func(page KeyValuesClientListByConfigurationStoreResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *KeyValuesClientListByConfigurationStoreResponse) (KeyValuesClientListByConfigurationStoreResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByConfigurationStoreCreateRequest(ctx, resourceGroupName, configStoreName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return KeyValuesClientListByConfigurationStoreResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return KeyValuesClientListByConfigurationStoreResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KeyValuesClientListByConfigurationStoreResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listByConfigurationStoreHandleResponse(resp)
-		},
-	})
-}
-
-// listByConfigurationStoreCreateRequest creates the ListByConfigurationStore request.
-func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configStoreName == "" {
-		return nil, errors.New("parameter configStoreName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByConfigurationStoreHandleResponse handles the ListByConfigurationStore response.
-func (client *KeyValuesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (KeyValuesClientListByConfigurationStoreResponse, error) {
-	result := KeyValuesClientListByConfigurationStoreResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
-		return KeyValuesClientListByConfigurationStoreResponse{}, err
 	}
 	return result, nil
 }

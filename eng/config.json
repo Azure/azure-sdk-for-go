@@ -1,6 +1,10 @@
 {
     "Packages": [
         {
+            "Name": "resourcemanager",
+            "CoverageGoal": 0.0
+        },
+        {
             "Name": "azappconfig",
             "CoverageGoal": 0.19
         },
@@ -29,6 +33,10 @@
             "CoverageGoal": 0.60
         },
         {
+            "Name": "azfile",
+            "CoverageGoal": 0.75
+        },
+        {
             "Name": "aztemplate",
             "CoverageGoal": 0.50
         },
@@ -42,7 +50,7 @@
         },
         {
             "Name": "keyvault/azsecrets",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.86
         },
         {
             "Name": "data",
@@ -71,7 +79,7 @@
         },
         {
             "Name": "messaging/azservicebus",
-            "CoverageGoal": 0.50
+            "CoverageGoal": 0.48
         },
         {
             "Name": "messaging/azeventhubs",
@@ -84,10 +92,6 @@
         {
             "Name": "monitor/azquery",
             "CoverageGoal": 0.85
-        },
-        {
-            "Name": "resourcemanager",
-            "CoverageGoal": 0.0
         },
         {
             "Name": "security/keyvault/azadmin",

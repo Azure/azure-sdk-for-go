@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsList.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,36 +54,44 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListLegacy() {
 		// 				Description: to.Ptr("Resource group"),
 		// 				Category: to.Ptr("ResourceGroup"),
 		// 				Data: []*string{
+		// 					to.Ptr("thoroetrg01"),
+		// 					to.Ptr("default-notificationhubs-westus"),
+		// 					to.Ptr("jedikeyvaultrg"),
+		// 					to.Ptr("contosocodeflow8d4a"),
+		// 					to.Ptr("noobaa")},
+		// 					FilterEnabled: to.Ptr(true),
+		// 					GroupingEnabled: to.Ptr(true),
+		// 					Total: to.Ptr[int32](377),
+		// 					UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
+		// 					UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
 		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](377),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("dimensions_ResourceType_2018-05-01_2018-05-31"),
-		// 			Type: to.Ptr("microsoft.CostManagement/dimensions"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.CostManagement/dimensions_ResourceType_2018-05-01_2018-05-31"),
-		// 			Properties: &armcostmanagement.DimensionProperties{
-		// 				Description: to.Ptr("Resource type"),
-		// 				Category: to.Ptr("ResourceType"),
-		// 				Data: []*string{
-		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](37),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("dimensions_ResourceType_2018-05-01_2018-05-31"),
+		// 				Type: to.Ptr("microsoft.CostManagement/dimensions"),
+		// 				ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.CostManagement/dimensions_ResourceType_2018-05-01_2018-05-31"),
+		// 				Properties: &armcostmanagement.DimensionProperties{
+		// 					Description: to.Ptr("Resource type"),
+		// 					Category: to.Ptr("ResourceType"),
+		// 					Data: []*string{
+		// 						to.Ptr("thoroetrg01"),
+		// 						to.Ptr("default-notificationhubs-westus"),
+		// 						to.Ptr("jedikeyvaultrg"),
+		// 						to.Ptr("contosocodeflow8d4a"),
+		// 						to.Ptr("noobaa")},
+		// 						FilterEnabled: to.Ptr(true),
+		// 						GroupingEnabled: to.Ptr(true),
+		// 						Total: to.Ptr[int32](37),
+		// 						UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
+		// 						UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingAccountDimensionsList.json
-func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsList.json
+func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -146,7 +154,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListModern() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountDimensionsListExpandAndTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,8 +226,8 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
-func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndTopModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
+func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -290,7 +298,7 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountDimensionsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,8 +350,8 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingAccountDimensionsListWithFilter.json
-func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilterModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListWithFilter.json
+func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -394,8 +402,8 @@ func ExampleDimensionsClient_NewListPager_billingAccountDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingProfileDimensionsList.json
-func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsList.json
+func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -458,8 +466,8 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListModern() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
-func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListExpandAndTopModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
+func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -530,8 +538,8 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCABillingProfileDimensionsListWithFilter.json
-func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListWithFilterModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListWithFilter.json
+func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -582,8 +590,8 @@ func ExampleDimensionsClient_NewListPager_billingProfileDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCACustomerDimensionsList.json
-func ExampleDimensionsClient_NewListPager_customerDimensionsListModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsList.json
+func ExampleDimensionsClient_NewListPager_customerDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -646,8 +654,8 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListModern() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCACustomerDimensionsListExpandAndTop.json
-func ExampleDimensionsClient_NewListPager_customerDimensionsListExpandAndTopModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListExpandAndTop.json
+func ExampleDimensionsClient_NewListPager_customerDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -718,8 +726,8 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListExpandAndTopMode
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCACustomerDimensionsListWithFilter.json
-func ExampleDimensionsClient_NewListPager_customerDimensionsListWithFilterModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListWithFilter.json
+func ExampleDimensionsClient_NewListPager_customerDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -770,7 +778,7 @@ func ExampleDimensionsClient_NewListPager_customerDimensionsListWithFilterModern
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/DepartmentDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsList.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,35 +814,43 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListLegacy() {
 		// 				Description: to.Ptr("Resource group"),
 		// 				Category: to.Ptr("ResourceGroup"),
 		// 				Data: []*string{
+		// 					to.Ptr("thoroetrg01"),
+		// 					to.Ptr("default-notificationhubs-westus"),
+		// 					to.Ptr("jedikeyvaultrg"),
+		// 					to.Ptr("contosocodeflow8d4a"),
+		// 					to.Ptr("noobaa")},
+		// 					FilterEnabled: to.Ptr(true),
+		// 					GroupingEnabled: to.Ptr(true),
+		// 					Total: to.Ptr[int32](377),
+		// 					UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
+		// 					UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
 		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](377),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("dimensions_ResourceType_2018-05-01_2018-05-31"),
-		// 			Type: to.Ptr("microsoft.CostManagement/dimensions"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.CostManagement/dimensions_ResourceType_2018-05-01_2018-05-31"),
-		// 			Properties: &armcostmanagement.DimensionProperties{
-		// 				Description: to.Ptr("Resource type"),
-		// 				Category: to.Ptr("ResourceType"),
-		// 				Data: []*string{
-		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](37),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("dimensions_ResourceType_2018-05-01_2018-05-31"),
+		// 				Type: to.Ptr("microsoft.CostManagement/dimensions"),
+		// 				ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.CostManagement/dimensions_ResourceType_2018-05-01_2018-05-31"),
+		// 				Properties: &armcostmanagement.DimensionProperties{
+		// 					Description: to.Ptr("Resource type"),
+		// 					Category: to.Ptr("ResourceType"),
+		// 					Data: []*string{
+		// 						to.Ptr("thoroetrg01"),
+		// 						to.Ptr("default-notificationhubs-westus"),
+		// 						to.Ptr("jedikeyvaultrg"),
+		// 						to.Ptr("contosocodeflow8d4a"),
+		// 						to.Ptr("noobaa")},
+		// 						FilterEnabled: to.Ptr(true),
+		// 						GroupingEnabled: to.Ptr(true),
+		// 						Total: to.Ptr[int32](37),
+		// 						UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-31T00:00:00-07:00"); return t}()),
+		// 						UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00-07:00"); return t}()),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/DepartmentDimensionsListExpandAndTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +922,7 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListExpandAndTopLe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/DepartmentDimensionsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_departmentDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +974,7 @@ func ExampleDimensionsClient_NewListPager_departmentDimensionsListWithFilterLega
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/EnrollmentAccountDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsList.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1022,7 +1038,7 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListLegacy(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1094,7 +1110,7 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListExpandA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/EnrollmentAccountDimensionsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1146,8 +1162,8 @@ func ExampleDimensionsClient_NewListPager_enrollmentAccountDimensionsListWithFil
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCAInvoiceSectionDimensionsList.json
-func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsList.json
+func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1210,8 +1226,8 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListModern() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
-func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListExpandAndTopModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
+func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListExpandAndTopMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1282,8 +1298,8 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListExpandAndT
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
-func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListWithFilterModern() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
+func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListWithFilterMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1334,7 +1350,7 @@ func ExampleDimensionsClient_NewListPager_invoiceSectionDimensionsListWithFilter
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ManagementGroupDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsList.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1398,7 +1414,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListLegacy() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ManagementGroupDimensionsListExpandAndTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListExpandAndTop.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListExpandAndTopLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1470,7 +1486,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListExpandAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ManagementGroupDimensionsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListWithFilter.json
 func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListWithFilterLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1522,7 +1538,7 @@ func ExampleDimensionsClient_NewListPager_managementGroupDimensionsListWithFilte
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ResourceGroupDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupDimensionsList.json
 func ExampleDimensionsClient_NewListPager_resourceGroupDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1590,7 +1606,7 @@ func ExampleDimensionsClient_NewListPager_resourceGroupDimensionsListLegacy() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/SubscriptionDimensionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionDimensionsList.json
 func ExampleDimensionsClient_NewListPager_subscriptionDimensionsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1661,7 +1677,7 @@ func ExampleDimensionsClient_NewListPager_subscriptionDimensionsListLegacy() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountsDimensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountsDimensions.json
 func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalBillingAccountDimensionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1697,35 +1713,43 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalBilling
 		// 				Description: to.Ptr("Resource type"),
 		// 				Category: to.Ptr("ResourceType"),
 		// 				Data: []*string{
+		// 					to.Ptr("thoroetrg01"),
+		// 					to.Ptr("default-notificationhubs-westus"),
+		// 					to.Ptr("jedikeyvaultrg"),
+		// 					to.Ptr("contosocodeflow8d4a"),
+		// 					to.Ptr("noobaa")},
+		// 					FilterEnabled: to.Ptr(true),
+		// 					GroupingEnabled: to.Ptr(true),
+		// 					Total: to.Ptr[int32](0),
+		// 					UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 					UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
 		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](0),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("dimensions_ResourceId_2019-12-01_2019-12-31"),
-		// 			Type: to.Ptr("microsoft.consumption/dimensions"),
-		// 			ID: to.Ptr("providers/Microsoft.CostManagement/externalBillingAccounts/100/dimensions_ResourceId_2019-12-01_2019-12-31"),
-		// 			Properties: &armcostmanagement.DimensionProperties{
-		// 				Description: to.Ptr("Resource ID"),
-		// 				Category: to.Ptr("ResourceId"),
-		// 				Data: []*string{
-		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](0),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("dimensions_ResourceId_2019-12-01_2019-12-31"),
+		// 				Type: to.Ptr("microsoft.consumption/dimensions"),
+		// 				ID: to.Ptr("providers/Microsoft.CostManagement/externalBillingAccounts/100/dimensions_ResourceId_2019-12-01_2019-12-31"),
+		// 				Properties: &armcostmanagement.DimensionProperties{
+		// 					Description: to.Ptr("Resource ID"),
+		// 					Category: to.Ptr("ResourceId"),
+		// 					Data: []*string{
+		// 						to.Ptr("thoroetrg01"),
+		// 						to.Ptr("default-notificationhubs-westus"),
+		// 						to.Ptr("jedikeyvaultrg"),
+		// 						to.Ptr("contosocodeflow8d4a"),
+		// 						to.Ptr("noobaa")},
+		// 						FilterEnabled: to.Ptr(true),
+		// 						GroupingEnabled: to.Ptr(true),
+		// 						Total: to.Ptr[int32](0),
+		// 						UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 						UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalSubscriptionsDimensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionsDimensions.json
 func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalSubscriptionDimensionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1761,30 +1785,38 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager_externalSubscri
 		// 				Description: to.Ptr("Resource type"),
 		// 				Category: to.Ptr("ResourceType"),
 		// 				Data: []*string{
+		// 					to.Ptr("thoroetrg01"),
+		// 					to.Ptr("default-notificationhubs-westus"),
+		// 					to.Ptr("jedikeyvaultrg"),
+		// 					to.Ptr("contosocodeflow8d4a"),
+		// 					to.Ptr("noobaa")},
+		// 					FilterEnabled: to.Ptr(true),
+		// 					GroupingEnabled: to.Ptr(true),
+		// 					Total: to.Ptr[int32](0),
+		// 					UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 					UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
 		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](0),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("dimensions_ResourceId_2019-12-01_2019-12-31"),
-		// 			Type: to.Ptr("microsoft.consumption/dimensions"),
-		// 			ID: to.Ptr("providers/Microsoft.CostManagement/externalSubscriptions/123/dimensions_ResourceId_2019-12-01_2019-12-31"),
-		// 			Properties: &armcostmanagement.DimensionProperties{
-		// 				Description: to.Ptr("Resource ID"),
-		// 				Category: to.Ptr("ResourceId"),
-		// 				Data: []*string{
-		// 				},
-		// 				FilterEnabled: to.Ptr(true),
-		// 				GroupingEnabled: to.Ptr(true),
-		// 				Total: to.Ptr[int32](0),
-		// 				UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
-		// 				UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("dimensions_ResourceId_2019-12-01_2019-12-31"),
+		// 				Type: to.Ptr("microsoft.consumption/dimensions"),
+		// 				ID: to.Ptr("providers/Microsoft.CostManagement/externalSubscriptions/123/dimensions_ResourceId_2019-12-01_2019-12-31"),
+		// 				Properties: &armcostmanagement.DimensionProperties{
+		// 					Description: to.Ptr("Resource ID"),
+		// 					Category: to.Ptr("ResourceId"),
+		// 					Data: []*string{
+		// 						to.Ptr("thoroetrg01"),
+		// 						to.Ptr("default-notificationhubs-westus"),
+		// 						to.Ptr("jedikeyvaultrg"),
+		// 						to.Ptr("contosocodeflow8d4a"),
+		// 						to.Ptr("noobaa")},
+		// 						FilterEnabled: to.Ptr(true),
+		// 						GroupingEnabled: to.Ptr(true),
+		// 						Total: to.Ptr[int32](0),
+		// 						UsageEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 						UsageStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }

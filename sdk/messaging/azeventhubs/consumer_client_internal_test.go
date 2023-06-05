@@ -126,7 +126,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 			require.NoError(t, err)
 			require.EqualValues(t, 1, len(events))
 
-			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, *events[0].Offset)
+			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, events[0].Offset)
 
 			require.Equal(t, fmt.Sprintf("event 1 for partition %s", sr.PartitionID), string(events[0].Body))
 		}(i, sr)
@@ -279,7 +279,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 		links := pc.links.(*internal.Links[amqpwrap.AMQPReceiverCloser])
 		lwid, err := links.GetLink(context.Background(), sendResults[i].PartitionID)
 		require.NoError(t, err)
-		require.NoError(t, lwid.Link.Close(context.Background()))
+		require.NoError(t, lwid.Link().Close(context.Background()))
 	}
 
 	log.Printf("== 4. try to read the second event, which force clients to recover ==")

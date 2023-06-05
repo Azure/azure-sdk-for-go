@@ -29,7 +29,107 @@ type AvailabilityStatusesClientListResponse struct {
 	AvailabilityStatusListResult
 }
 
+// ChildAvailabilityStatusesClientGetByResourceResponse contains the response from method ChildAvailabilityStatusesClient.GetByResource.
+type ChildAvailabilityStatusesClientGetByResourceResponse struct {
+	AvailabilityStatus
+}
+
+// ChildAvailabilityStatusesClientListResponse contains the response from method ChildAvailabilityStatusesClient.NewListPager.
+type ChildAvailabilityStatusesClientListResponse struct {
+	AvailabilityStatusListResult
+}
+
+// ChildResourcesClientListResponse contains the response from method ChildResourcesClient.NewListPager.
+type ChildResourcesClientListResponse struct {
+	AvailabilityStatusListResult
+}
+
+// EmergingIssuesClientGetResponse contains the response from method EmergingIssuesClient.Get.
+type EmergingIssuesClientGetResponse struct {
+	EmergingIssuesGetResult
+}
+
+// EmergingIssuesClientListResponse contains the response from method EmergingIssuesClient.NewListPager.
+type EmergingIssuesClientListResponse struct {
+	EmergingIssueListResult
+}
+
+// EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.FetchDetailsBySubscriptionIDAndTrackingID.
+type EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse struct {
+	Event
+}
+
+// EventClientFetchDetailsByTenantIDAndTrackingIDResponse contains the response from method EventClient.FetchDetailsByTenantIDAndTrackingID.
+type EventClientFetchDetailsByTenantIDAndTrackingIDResponse struct {
+	Event
+}
+
+// EventClientGetBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.GetBySubscriptionIDAndTrackingID.
+type EventClientGetBySubscriptionIDAndTrackingIDResponse struct {
+	Event
+}
+
+// EventClientGetByTenantIDAndTrackingIDResponse contains the response from method EventClient.GetByTenantIDAndTrackingID.
+type EventClientGetByTenantIDAndTrackingIDResponse struct {
+	Event
+}
+
+// EventsClientListBySingleResourceResponse contains the response from method EventsClient.NewListBySingleResourcePager.
+type EventsClientListBySingleResourceResponse struct {
+	Events
+}
+
+// EventsClientListBySubscriptionIDResponse contains the response from method EventsClient.NewListBySubscriptionIDPager.
+type EventsClientListBySubscriptionIDResponse struct {
+	Events
+}
+
+// EventsClientListByTenantIDResponse contains the response from method EventsClient.NewListByTenantIDPager.
+type EventsClientListByTenantIDResponse struct {
+	Events
+}
+
+// ImpactedResourcesClientGetByTenantIDResponse contains the response from method ImpactedResourcesClient.GetByTenantID.
+type ImpactedResourcesClientGetByTenantIDResponse struct {
+	EventImpactedResource
+}
+
+// ImpactedResourcesClientGetResponse contains the response from method ImpactedResourcesClient.Get.
+type ImpactedResourcesClientGetResponse struct {
+	EventImpactedResource
+}
+
+// ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse contains the response from method ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager.
+type ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse struct {
+	EventImpactedResourceListResult
+}
+
+// ImpactedResourcesClientListByTenantIDAndEventIDResponse contains the response from method ImpactedResourcesClient.NewListByTenantIDAndEventIDPager.
+type ImpactedResourcesClientListByTenantIDAndEventIDResponse struct {
+	EventImpactedResourceListResult
+}
+
+// MetadataClientGetEntityResponse contains the response from method MetadataClient.GetEntity.
+type MetadataClientGetEntityResponse struct {
+	MetadataEntity
+}
+
+// MetadataClientListResponse contains the response from method MetadataClient.NewListPager.
+type MetadataClientListResponse struct {
+	MetadataEntityListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse contains the response from method SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager.
+type SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse struct {
+	EventImpactedResourceListResult
+}
+
+// SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse contains the response from method SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager.
+type SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse struct {
+	EventImpactedResourceListResult
 }

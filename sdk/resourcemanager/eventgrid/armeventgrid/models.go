@@ -39,6 +39,32 @@ type AdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
 func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 
+// AzureADPartnerClientAuthentication - Azure Active Directory Partner Client Authentication
+type AzureADPartnerClientAuthentication struct {
+	// REQUIRED; Type of client authentication
+	ClientAuthenticationType *PartnerClientAuthenticationType
+
+	// AzureAD ClientAuthentication Properties
+	Properties *AzureADPartnerClientAuthenticationProperties
+}
+
+// GetPartnerClientAuthentication implements the PartnerClientAuthenticationClassification interface for type AzureADPartnerClientAuthentication.
+func (a *AzureADPartnerClientAuthentication) GetPartnerClientAuthentication() *PartnerClientAuthentication {
+	return &PartnerClientAuthentication{
+		ClientAuthenticationType: a.ClientAuthenticationType,
+	}
+}
+
+// AzureADPartnerClientAuthenticationProperties - Properties of an Azure Active Directory Partner Client Authentication.
+type AzureADPartnerClientAuthenticationProperties struct {
+	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
+	// requests.
+	AzureActiveDirectoryApplicationIDOrURI *string
+
+	// The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+	AzureActiveDirectoryTenantID *string
+}
+
 // AzureFunctionEventSubscriptionDestination - Information about the azure function destination for an event subscription.
 type AzureFunctionEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
@@ -91,6 +117,104 @@ func (b *BoolEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// BoolEqualsFilter - BoolEquals Filter.
+type BoolEqualsFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The boolean filter value.
+	Value *bool
+}
+
+// GetFilter implements the FilterClassification interface for type BoolEqualsFilter.
+func (b *BoolEqualsFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: b.OperatorType,
+		Key:          b.Key,
+	}
+}
+
+// CaCertificate - The CA Certificate resource.
+type CaCertificate struct {
+	// The properties of CA certificate.
+	Properties *CaCertificateProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the CaCertificate resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// CaCertificateProperties - The properties of CA certificate.
+type CaCertificateProperties struct {
+	// Description for the CA Certificate resource.
+	Description *string
+
+	// Base64 encoded PEM (Privacy Enhanced Mail) format certificate data.
+	EncodedCertificate *string
+
+	// READ-ONLY; Certificate expiry time in UTC. This is a read-only field.
+	ExpiryTimeInUTC *time.Time
+
+	// READ-ONLY; Certificate issue time in UTC. This is a read-only field.
+	IssueTimeInUTC *time.Time
+
+	// READ-ONLY; Provisioning state of the CA Certificate resource.
+	ProvisioningState *CaCertificateProvisioningState
+}
+
+// CaCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CaCertificatesClient.BeginCreateOrUpdate
+// method.
+type CaCertificatesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CaCertificatesClientBeginDeleteOptions contains the optional parameters for the CaCertificatesClient.BeginDelete method.
+type CaCertificatesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CaCertificatesClientGetOptions contains the optional parameters for the CaCertificatesClient.Get method.
+type CaCertificatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CaCertificatesClientListByNamespaceOptions contains the optional parameters for the CaCertificatesClient.NewListByNamespacePager
+// method.
+type CaCertificatesClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// CaCertificatesListResult - Result of the List CA Certificate operation.
+type CaCertificatesListResult struct {
+	// A link for the next page of CA Certificate.
+	NextLink *string
+
+	// A collection of CA Certificate.
+	Value []*CaCertificate
+}
+
 // Channel info.
 type Channel struct {
 	// Properties of the Channel.
@@ -121,6 +245,10 @@ type ChannelProperties struct {
 	// Context or helpful message that can be used during the approval process by the subscriber.
 	MessageForActivation *string
 
+	// This property should be populated when channelType is PartnerDestination and represents information about the partner destination
+	// resource corresponding to the channel.
+	PartnerDestinationInfo PartnerDestinationInfoClassification
+
 	// This property should be populated when channelType is PartnerTopic and represents information about the partner topic resource
 	// corresponding to the channel.
 	PartnerTopicInfo *PartnerTopicInfo
@@ -144,6 +272,9 @@ type ChannelUpdateParametersProperties struct {
 	// activated, the channel and corresponding partner topic or partner
 	// destination are deleted.
 	ExpirationTimeIfNotActivatedUTC *time.Time
+
+	// Partner destination properties which can be updated if the channel is of type PartnerDestination.
+	PartnerDestinationInfo PartnerUpdateDestinationInfoClassification
 
 	// Partner topic properties which can be updated if the channel is of type PartnerTopic.
 	PartnerTopicInfo *PartnerUpdateTopicInfo
@@ -197,6 +328,214 @@ type ChannelsListResult struct {
 
 	// A collection of Channels.
 	Value []*Channel
+}
+
+// Client - The Client resource.
+type Client struct {
+	// The properties of client.
+	Properties *ClientProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the Client resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// ClientAuthentication - The Authentication properties for the client.
+type ClientAuthentication struct {
+	// The CA certificate subject name used for authentication.
+	CertificateSubject *ClientCertificateSubjectDistinguishedName
+
+	// The self signed certificate's thumbprints data used for authentication.
+	CertificateThumbprint *ClientCertificateThumbprint
+}
+
+// ClientAuthenticationSettings - Client authentication settings for namespace resource.
+type ClientAuthenticationSettings struct {
+	// Alternative authentication name sources related to client authentication settings for namespace resource.
+	AlternativeAuthenticationNameSources []*AlternativeAuthenticationNameSource
+}
+
+// ClientCertificateAuthentication - The certificate authentication properties for the client.
+type ClientCertificateAuthentication struct {
+	// The list of thumbprints that are allowed during client authentication. This property is required only if the validationScheme
+	// is 'ThumbprintMatch'.
+	AllowedThumbprints []*string
+
+	// The validation scheme used to authenticate the client. Default value is SubjectMatchesAuthenticationName.
+	ValidationScheme *ClientCertificateValidationScheme
+}
+
+// ClientCertificateSubjectDistinguishedName - CA certificate subject distinguished name information used by service to authenticate
+// clients. For more information, see
+// https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x500distinguishedname?view=net-6.0#remarks
+type ClientCertificateSubjectDistinguishedName struct {
+	// The common name field in the subject name. The allowed limit is 64 characters and it should be specified.
+	CommonName *string
+
+	// The country code field in the subject name. If present, the country code should be represented by two-letter code defined
+	// in ISO 2166-1 (alpha-2). For example: 'US'.
+	CountryCode *string
+
+	// The organization field in the subject name. If present, the allowed limit is 64 characters.
+	Organization *string
+
+	// The organization unit field in the subject name. If present, the allowed limit is 32 characters.
+	OrganizationUnit *string
+}
+
+// ClientCertificateThumbprint - Thumbprints are used by the service to validate the device permission when authentication
+// is done using self signed certificate.
+type ClientCertificateThumbprint struct {
+	// The primary thumbprint used for validation.
+	Primary *string
+
+	// The secondary thumbprint used for validation.
+	Secondary *string
+}
+
+// ClientGroup - The Client group resource.
+type ClientGroup struct {
+	// The properties of client group.
+	Properties *ClientGroupProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the ClientGroup resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// ClientGroupProperties - The properties of client group.
+type ClientGroupProperties struct {
+	// Description for the Client Group resource.
+	Description *string
+
+	// The grouping query for the clients. Example : attributes.keyName IN ['a', 'b', 'c'].
+	Query *string
+
+	// READ-ONLY; Provisioning state of the ClientGroup resource.
+	ProvisioningState *ClientGroupProvisioningState
+}
+
+// ClientGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClientGroupsClient.BeginCreateOrUpdate
+// method.
+type ClientGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientGroupsClientBeginDeleteOptions contains the optional parameters for the ClientGroupsClient.BeginDelete method.
+type ClientGroupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientGroupsClientGetOptions contains the optional parameters for the ClientGroupsClient.Get method.
+type ClientGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGroupsClientListByNamespaceOptions contains the optional parameters for the ClientGroupsClient.NewListByNamespacePager
+// method.
+type ClientGroupsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// ClientGroupsListResult - Result of the List Client Group operation.
+type ClientGroupsListResult struct {
+	// A link for the next page of Client Group.
+	NextLink *string
+
+	// A collection of Client Group.
+	Value []*ClientGroup
+}
+
+// ClientProperties - The properties of client.
+type ClientProperties struct {
+	// Attributes for the client. Supported values are int, bool, string, string[]. Example: "attributes": { "room": "345", "floor":
+	// 12, "deviceTypes": ["Fan", "Light"] }
+	Attributes map[string]any
+
+	// Authentication information for the client.
+	Authentication *ClientAuthentication
+
+	// The name presented by the client for authentication. The default value is the name of the resource.
+	AuthenticationName *string
+
+	// The client certificate authentication information.
+	ClientCertificateAuthentication *ClientCertificateAuthentication
+
+	// Description for the Client resource.
+	Description *string
+
+	// Indicates if the client is enabled or not. Default value is Enabled.
+	State *ClientState
+
+	// READ-ONLY; Provisioning state of the Client resource.
+	ProvisioningState *ClientProvisioningState
+}
+
+// ClientsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClientsClient.BeginCreateOrUpdate method.
+type ClientsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientsClientBeginDeleteOptions contains the optional parameters for the ClientsClient.BeginDelete method.
+type ClientsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientsClientGetOptions contains the optional parameters for the ClientsClient.Get method.
+type ClientsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientsClientListByNamespaceOptions contains the optional parameters for the ClientsClient.NewListByNamespacePager method.
+type ClientsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// ClientsListResult - Result of the List Client operation.
+type ClientsListResult struct {
+	// A link for the next page of Client.
+	NextLink *string
+
+	// A collection of Client.
+	Value []*Client
 }
 
 // ConnectionState information.
@@ -269,6 +608,15 @@ type DeliveryAttributeMapping struct {
 // GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DeliveryAttributeMapping.
 func (d *DeliveryAttributeMapping) GetDeliveryAttributeMapping() *DeliveryAttributeMapping { return d }
 
+// DeliveryConfiguration - Properties of the delivery configuration information of the event subscription.
+type DeliveryConfiguration struct {
+	// Delivery mode of the event subscription.
+	DeliveryMode *DeliveryMode
+
+	// This property should be populated when deliveryMode is queue and represents information about the queue subscription.
+	Queue *QueueInfo
+}
+
 // DeliveryWithResourceIdentity - Information about the delivery for an event subscription with resource identity.
 type DeliveryWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
@@ -290,6 +638,9 @@ type Domain struct {
 
 	// Properties of the Event Grid Domain resource.
 	Properties *DomainProperties
+
+	// The Sku pricing tier for the Event Grid Domain resource.
+	SKU *ResourceSKU
 
 	// Tags of the resource.
 	Tags map[string]*string
@@ -393,6 +744,10 @@ type DomainProperties struct {
 	// token will be used to authenticate if user is allowed to publish to the domain.
 	DisableLocalAuth *bool
 
+	// Event Type Information for the domain. This information is provided by the publisher and can be used by the subscriber
+	// to view different types of events that are published.
+	EventTypeInfo *EventTypeInfo
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
@@ -402,6 +757,9 @@ type DomainProperties struct {
 
 	// Information about the InputSchemaMapping which specified the info about mapping event payload.
 	InputSchemaMapping InputSchemaMappingClassification
+
+	// Minimum TLS version of the publisher allowed to publish to this domain
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
@@ -413,7 +771,7 @@ type DomainProperties struct {
 	// READ-ONLY; Metric resource id for the Event Grid Domain Resource.
 	MetricResourceID *string
 
-	// READ-ONLY; List of private endpoint connections.
+	// READ-ONLY
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Event Grid Domain Resource.
@@ -588,9 +946,15 @@ type DomainUpdateParameterProperties struct {
 	// token will be used to authenticate if user is allowed to publish to the domain.
 	DisableLocalAuth *bool
 
+	// The eventTypeInfo for the domain.
+	EventTypeInfo *EventTypeInfo
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
+
+	// Minimum TLS version of the publisher allowed to publish to this domain
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
@@ -604,6 +968,9 @@ type DomainUpdateParameters struct {
 
 	// Properties of the resource.
 	Properties *DomainUpdateParameterProperties
+
+	// The Sku pricing tier for the domain.
+	SKU *ResourceSKU
 
 	// Tags of the domains resource.
 	Tags map[string]*string
@@ -707,6 +1074,48 @@ type DynamicDeliveryAttributeMappingProperties struct {
 	SourceField *string
 }
 
+type DynamicRoutingEnrichment struct {
+	// Dynamic routing enrichment key.
+	Key *string
+
+	// Dynamic routing enrichment value.
+	Value *string
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // EventHubEventSubscriptionDestination - Information about the event hub destination for an event subscription.
 type EventHubEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
@@ -732,7 +1141,7 @@ type EventHubEventSubscriptionDestinationProperties struct {
 	ResourceID *string
 }
 
-// EventSubscription - Event Subscription
+// EventSubscription - Event Subscription.
 type EventSubscription struct {
 	// Properties of the event subscription.
 	Properties *EventSubscriptionProperties
@@ -754,8 +1163,8 @@ type EventSubscription struct {
 // Call the interface's GetEventSubscriptionDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFunctionEventSubscriptionDestination, *EventHubEventSubscriptionDestination, *EventSubscriptionDestination, *HybridConnectionEventSubscriptionDestination,
-// - *ServiceBusQueueEventSubscriptionDestination, *ServiceBusTopicEventSubscriptionDestination, *StorageQueueEventSubscriptionDestination,
-// - *WebHookEventSubscriptionDestination
+// - *PartnerEventSubscriptionDestination, *ServiceBusQueueEventSubscriptionDestination, *ServiceBusTopicEventSubscriptionDestination,
+// - *StorageQueueEventSubscriptionDestination, *WebHookEventSubscriptionDestination
 type EventSubscriptionDestinationClassification interface {
 	// GetEventSubscriptionDestination returns the EventSubscriptionDestination content of the underlying type.
 	GetEventSubscriptionDestination() *EventSubscriptionDestination
@@ -1141,9 +1550,18 @@ type EventTypesListResult struct {
 	Value []*EventType
 }
 
+// ExtendedLocation - Definition of an Extended Location
+type ExtendedLocation struct {
+	// Fully qualified name of the extended location.
+	Name *string
+
+	// Type of the extended location.
+	Type *string
+}
+
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
-	// Properties of the extension topic
+	// Properties of the extension topic.
 	Properties *ExtensionTopicProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
@@ -1171,6 +1589,42 @@ type ExtensionTopicProperties struct {
 // ExtensionTopicsClientGetOptions contains the optional parameters for the ExtensionTopicsClient.Get method.
 type ExtensionTopicsClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// FilterClassification provides polymorphic access to related types.
+// Call the interface's GetFilter() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BoolEqualsFilter, *Filter, *IsNotNullFilter, *IsNullOrUndefinedFilter, *NumberGreaterThanFilter, *NumberGreaterThanOrEqualsFilter,
+// - *NumberInFilter, *NumberInRangeFilter, *NumberLessThanFilter, *NumberLessThanOrEqualsFilter, *NumberNotInFilter, *NumberNotInRangeFilter,
+// - *StringBeginsWithFilter, *StringContainsFilter, *StringEndsWithFilter, *StringInFilter, *StringNotBeginsWithFilter, *StringNotContainsFilter,
+// - *StringNotEndsWithFilter, *StringNotInFilter
+type FilterClassification interface {
+	// GetFilter returns the Filter content of the underlying type.
+	GetFilter() *Filter
+}
+
+// Filter - This is the base type that represents a filter. To configure a filter, do not directly instantiate an object of
+// this class. Instead, instantiate an object of a derived class such as BoolEqualsFilter,
+// NumberInFilter, StringEqualsFilter etc depending on the type of the key based on which you want to filter.
+type Filter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+}
+
+// GetFilter implements the FilterClassification interface for type Filter.
+func (f *Filter) GetFilter() *Filter { return f }
+
+// FiltersConfiguration - Filters configuration for the Event Subscription.
+type FiltersConfiguration struct {
+	// An array of filters that are used for filtering event subscriptions.
+	Filters []FilterClassification
+
+	// A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to all default
+	// event types, set the IncludedEventTypes to null.
+	IncludedEventTypes []*string
 }
 
 // HybridConnectionEventSubscriptionDestination - Information about the HybridConnection destination for an event subscription.
@@ -1278,6 +1732,23 @@ func (i *IsNotNullAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// IsNotNullFilter - IsNotNull Filter.
+type IsNotNullFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+}
+
+// GetFilter implements the FilterClassification interface for type IsNotNullFilter.
+func (i *IsNotNullFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
+}
+
 // IsNullOrUndefinedAdvancedFilter - IsNullOrUndefined Advanced Filter.
 type IsNullOrUndefinedAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1290,6 +1761,23 @@ type IsNullOrUndefinedAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNullOrUndefinedAdvancedFilter.
 func (i *IsNullOrUndefinedAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: i.OperatorType,
+		Key:          i.Key,
+	}
+}
+
+// IsNullOrUndefinedFilter - IsNullOrUndefined Filter.
+type IsNullOrUndefinedFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+}
+
+// GetFilter implements the FilterClassification interface for type IsNullOrUndefinedFilter.
+func (i *IsNullOrUndefinedFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: i.OperatorType,
 		Key:          i.Key,
 	}
@@ -1355,6 +1843,345 @@ type JSONInputSchemaMappingProperties struct {
 	Topic *JSONField
 }
 
+// Namespace resource.
+type Namespace struct {
+	// REQUIRED; Location of the resource.
+	Location *string
+
+	// Identity information for the Namespace resource.
+	Identity *IdentityInfo
+
+	// Properties of the Namespace resource.
+	Properties *NamespaceProperties
+
+	// Represents available Sku pricing tiers.
+	SKU *NamespaceSKU
+
+	// Tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the namespace resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// NamespaceProperties - Properties of the namespace resource.
+type NamespaceProperties struct {
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
+	InboundIPRules []*InboundIPRule
+
+	// Allows the user to specify if the service is zone-redundant. This is a required property and user needs to specify this
+	// value explicitly. Once specified, this property cannot be updated.
+	IsZoneRedundant *bool
+
+	// Minimum TLS version of the publisher allowed to publish to this namespace. Only TLS version 1.2 is supported.
+	MinimumTLSVersionAllowed   *TLSVersion
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// Topic spaces configuration information for the namespace resource
+	TopicSpacesConfiguration *TopicSpacesConfiguration
+
+	// Topics configuration information for the namespace resource
+	TopicsConfiguration *TopicsConfiguration
+
+	// READ-ONLY; Provisioning state of the namespace resource.
+	ProvisioningState *NamespaceProvisioningState
+}
+
+// NamespaceRegenerateKeyRequest - Namespace regenerate share access key request.
+type NamespaceRegenerateKeyRequest struct {
+	// REQUIRED; Key name to regenerate key1 or key2.
+	KeyName *string
+}
+
+// NamespaceSKU - Represents available Sku pricing tiers.
+type NamespaceSKU struct {
+	// Specifies the number of Throughput Units that defines the capacity for the namespace. The property default value is 1 which
+	// signifies 1 Throughput Unit = 1MB/s ingress and 2MB/s egress per namespace.
+	// Min capacity is 1 and max allowed capacity is 20.
+	Capacity *int32
+
+	// The name of the SKU.
+	Name *SKUName
+}
+
+// NamespaceSharedAccessKeys - Shared access keys of the Namespace.
+type NamespaceSharedAccessKeys struct {
+	// Shared access key1 for the namespace.
+	Key1 *string
+
+	// Shared access key2 for the namespace.
+	Key2 *string
+}
+
+// NamespaceTopic - Namespace topic details.
+type NamespaceTopic struct {
+	// Properties of the namespace topic.
+	Properties *NamespaceTopicProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to namespace topic resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginDelete
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginUpdate
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientGetOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.Get
+// method.
+type NamespaceTopicEventSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager
+// method.
+type NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespaceTopicProperties - Properties of the namespace topic.
+type NamespaceTopicProperties struct {
+	// Event retention for the namespace topic expressed in days. The property default value is 1 day. Min event retention duration
+	// value is 1 day and max event retention duration value is 1 day.
+	EventRetentionInDays *int32
+
+	// This determines the format that is expected for incoming events published to the topic.
+	InputSchema *EventInputSchema
+
+	// Publisher type of the namespace topic.
+	PublisherType *PublisherType
+
+	// READ-ONLY; Provisioning state of the namespace topic.
+	ProvisioningState *NamespaceTopicProvisioningState
+}
+
+// NamespaceTopicUpdateParameterProperties - Information of namespace topic update parameter properties.
+type NamespaceTopicUpdateParameterProperties struct {
+	// Event retention for the namespace topic expressed in days. The property default value is 1 day. Min event retention duration
+	// value is 1 day and max event retention duration value is 1 day.
+	EventRetentionInDays *int32
+}
+
+// NamespaceTopicUpdateParameters - Properties of the namespace topic update.
+type NamespaceTopicUpdateParameters struct {
+	// Properties of the namespace topic resource.
+	Properties *NamespaceTopicUpdateParameterProperties
+}
+
+// NamespaceTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespaceTopicsClient.BeginCreateOrUpdate
+// method.
+type NamespaceTopicsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginDeleteOptions contains the optional parameters for the NamespaceTopicsClient.BeginDelete method.
+type NamespaceTopicsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginRegenerateKeyOptions contains the optional parameters for the NamespaceTopicsClient.BeginRegenerateKey
+// method.
+type NamespaceTopicsClientBeginRegenerateKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginUpdateOptions contains the optional parameters for the NamespaceTopicsClient.BeginUpdate method.
+type NamespaceTopicsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientGetOptions contains the optional parameters for the NamespaceTopicsClient.Get method.
+type NamespaceTopicsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicsClientListByNamespaceOptions contains the optional parameters for the NamespaceTopicsClient.NewListByNamespacePager
+// method.
+type NamespaceTopicsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespaceTopicsClientListSharedAccessKeysOptions contains the optional parameters for the NamespaceTopicsClient.ListSharedAccessKeys
+// method.
+type NamespaceTopicsClientListSharedAccessKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicsListResult - Result of the List namespace topics operation.
+type NamespaceTopicsListResult struct {
+	// A link for the next page of namespace topics.
+	NextLink *string
+
+	// A collection of namespace topics.
+	Value []*NamespaceTopic
+}
+
+// NamespaceUpdateParameterProperties - Information of namespace update parameter properties.
+type NamespaceUpdateParameterProperties struct {
+	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
+	// is enabled.
+	InboundIPRules []*InboundIPRule
+
+	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
+	// IPs by configuring
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// Topic spaces configuration properties that can be updated.
+	TopicSpacesConfiguration *UpdateTopicSpacesConfigurationInfo
+}
+
+// NamespaceUpdateParameters - Properties to update namespace.
+type NamespaceUpdateParameters struct {
+	// Namespace resource identity information.
+	Identity *IdentityInfo
+
+	// Properties of the namespace resource.
+	Properties *NamespaceUpdateParameterProperties
+
+	// Represents available Sku pricing tiers.
+	SKU *NamespaceSKU
+
+	// Tags of the namespace resource.
+	Tags map[string]*string
+}
+
+// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+type NamespacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginRegenerateKeyOptions contains the optional parameters for the NamespacesClient.BeginRegenerateKey
+// method.
+type NamespacesClientBeginRegenerateKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginUpdateOptions contains the optional parameters for the NamespacesClient.BeginUpdate method.
+type NamespacesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
+// method.
+type NamespacesClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespacesClientListBySubscriptionOptions contains the optional parameters for the NamespacesClient.NewListBySubscriptionPager
+// method.
+type NamespacesClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespacesClientListSharedAccessKeysOptions contains the optional parameters for the NamespacesClient.ListSharedAccessKeys
+// method.
+type NamespacesClientListSharedAccessKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListResult - Result of the List Namespaces operation.
+type NamespacesListResult struct {
+	// A link for the next page of namespaces.
+	NextLink *string
+
+	// A collection of namespaces.
+	Value []*Namespace
+}
+
 // NumberGreaterThanAdvancedFilter - NumberGreaterThan Advanced Filter.
 type NumberGreaterThanAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1370,6 +2197,26 @@ type NumberGreaterThanAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanAdvancedFilter.
 func (n *NumberGreaterThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
+// NumberGreaterThanFilter - NumberGreaterThan Filter.
+type NumberGreaterThanFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The filter value.
+	Value *float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberGreaterThanFilter.
+func (n *NumberGreaterThanFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: n.OperatorType,
 		Key:          n.Key,
 	}
@@ -1395,6 +2242,26 @@ func (n *NumberGreaterThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedF
 	}
 }
 
+// NumberGreaterThanOrEqualsFilter - NumberGreaterThanOrEquals Filter.
+type NumberGreaterThanOrEqualsFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The filter value.
+	Value *float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberGreaterThanOrEqualsFilter.
+func (n *NumberGreaterThanOrEqualsFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberInAdvancedFilter - NumberIn Advanced Filter.
 type NumberInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1410,6 +2277,26 @@ type NumberInAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInAdvancedFilter.
 func (n *NumberInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
+// NumberInFilter - NumberIn Filter.
+type NumberInFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberInFilter.
+func (n *NumberInFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: n.OperatorType,
 		Key:          n.Key,
 	}
@@ -1435,6 +2322,26 @@ func (n *NumberInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// NumberInRangeFilter - NumberInRange Filter.
+type NumberInRangeFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values [][]*float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberInRangeFilter.
+func (n *NumberInRangeFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberLessThanAdvancedFilter - NumberLessThan Advanced Filter.
 type NumberLessThanAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1450,6 +2357,26 @@ type NumberLessThanAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanAdvancedFilter.
 func (n *NumberLessThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
+// NumberLessThanFilter - NumberLessThan Filter.
+type NumberLessThanFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The filter value.
+	Value *float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberLessThanFilter.
+func (n *NumberLessThanFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: n.OperatorType,
 		Key:          n.Key,
 	}
@@ -1475,6 +2402,26 @@ func (n *NumberLessThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilt
 	}
 }
 
+// NumberLessThanOrEqualsFilter - NumberLessThanOrEquals Filter.
+type NumberLessThanOrEqualsFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The filter value.
+	Value *float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberLessThanOrEqualsFilter.
+func (n *NumberLessThanOrEqualsFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberNotInAdvancedFilter - NumberNotIn Advanced Filter.
 type NumberNotInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1495,6 +2442,26 @@ func (n *NumberNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// NumberNotInFilter - NumberNotIn Filter.
+type NumberNotInFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberNotInFilter.
+func (n *NumberNotInFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
 // NumberNotInRangeAdvancedFilter - NumberNotInRange Advanced Filter.
 type NumberNotInRangeAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -1510,6 +2477,26 @@ type NumberNotInRangeAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInRangeAdvancedFilter.
 func (n *NumberNotInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: n.OperatorType,
+		Key:          n.Key,
+	}
+}
+
+// NumberNotInRangeFilter - NumberNotInRange Filter.
+type NumberNotInRangeFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values [][]*float64
+}
+
+// GetFilter implements the FilterClassification interface for type NumberNotInRangeFilter.
+func (n *NumberNotInRangeFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: n.OperatorType,
 		Key:          n.Key,
 	}
@@ -1584,6 +2571,26 @@ type PartnerAuthorization struct {
 	// is not specified, the default is 7 days. Otherwise, allowed values are
 	// between 1 and 365 days.
 	DefaultMaximumExpirationTimeInDays *int32
+}
+
+// PartnerClientAuthenticationClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerClientAuthentication() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureADPartnerClientAuthentication, *PartnerClientAuthentication
+type PartnerClientAuthenticationClassification interface {
+	// GetPartnerClientAuthentication returns the PartnerClientAuthentication content of the underlying type.
+	GetPartnerClientAuthentication() *PartnerClientAuthentication
+}
+
+// PartnerClientAuthentication - Partner client authentication
+type PartnerClientAuthentication struct {
+	// REQUIRED; Type of client authentication
+	ClientAuthenticationType *PartnerClientAuthenticationType
+}
+
+// GetPartnerClientAuthentication implements the PartnerClientAuthenticationClassification interface for type PartnerClientAuthentication.
+func (p *PartnerClientAuthentication) GetPartnerClientAuthentication() *PartnerClientAuthentication {
+	return p
 }
 
 // PartnerConfiguration - Partner configuration information
@@ -1703,6 +2710,166 @@ type PartnerConfigurationsListResult struct {
 	Value []*PartnerConfiguration
 }
 
+// PartnerDestination - Event Grid Partner Destination.
+type PartnerDestination struct {
+	// REQUIRED; Location of the resource.
+	Location *string
+
+	// Properties of the Partner Destination.
+	Properties *PartnerDestinationProperties
+
+	// Tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to Partner Destination resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// PartnerDestinationInfoClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerDestinationInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartnerDestinationInfo, *WebhookPartnerDestinationInfo
+type PartnerDestinationInfoClassification interface {
+	// GetPartnerDestinationInfo returns the PartnerDestinationInfo content of the underlying type.
+	GetPartnerDestinationInfo() *PartnerDestinationInfo
+}
+
+// PartnerDestinationInfo - Properties of the corresponding partner destination of a Channel.
+type PartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
+	// Azure subscription.
+	AzureSubscriptionID *string
+
+	// Additional context of the partner destination endpoint.
+	EndpointServiceContext *string
+
+	// Name of the partner destination associated with the channel.
+	Name *string
+
+	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
+	// resource group.
+	ResourceGroupName *string
+
+	// Change history of the resource move.
+	ResourceMoveChangeHistory []*ResourceMoveChangeHistory
+}
+
+// GetPartnerDestinationInfo implements the PartnerDestinationInfoClassification interface for type PartnerDestinationInfo.
+func (p *PartnerDestinationInfo) GetPartnerDestinationInfo() *PartnerDestinationInfo { return p }
+
+// PartnerDestinationProperties - Properties of the Partner Destination.
+type PartnerDestinationProperties struct {
+	// Activation state of the partner destination.
+	ActivationState *PartnerDestinationActivationState
+
+	// Endpoint Base URL of the partner destination
+	EndpointBaseURL *string
+
+	// Endpoint context associated with this partner destination.
+	EndpointServiceContext *string
+
+	// Expiration time of the partner destination. If this timer expires and the partner destination was never activated, the
+	// partner destination and corresponding channel are deleted.
+	ExpirationTimeIfNotActivatedUTC *time.Time
+
+	// Context or helpful message that can be used during the approval process.
+	MessageForActivation *string
+
+	// The immutable Id of the corresponding partner registration.
+	PartnerRegistrationImmutableID *string
+
+	// READ-ONLY; Provisioning state of the partner destination.
+	ProvisioningState *PartnerDestinationProvisioningState
+}
+
+// PartnerDestinationUpdateParameters - Properties of the Partner Destination that can be updated.
+type PartnerDestinationUpdateParameters struct {
+	// Tags of the Partner Destination resource.
+	Tags map[string]*string
+}
+
+// PartnerDestinationsClientActivateOptions contains the optional parameters for the PartnerDestinationsClient.Activate method.
+type PartnerDestinationsClientActivateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerDestinationsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginCreateOrUpdate
+// method.
+type PartnerDestinationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientBeginDeleteOptions contains the optional parameters for the PartnerDestinationsClient.BeginDelete
+// method.
+type PartnerDestinationsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientBeginUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginUpdate
+// method.
+type PartnerDestinationsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientGetOptions contains the optional parameters for the PartnerDestinationsClient.Get method.
+type PartnerDestinationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerDestinationsClientListByResourceGroupOptions contains the optional parameters for the PartnerDestinationsClient.NewListByResourceGroupPager
+// method.
+type PartnerDestinationsClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// PartnerDestinationsClientListBySubscriptionOptions contains the optional parameters for the PartnerDestinationsClient.NewListBySubscriptionPager
+// method.
+type PartnerDestinationsClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// PartnerDestinationsListResult - Result of the List Partner Destinations operation.
+type PartnerDestinationsListResult struct {
+	// A link for the next page of partner destinations.
+	NextLink *string
+
+	// A collection of partner destinations.
+	Value []*PartnerDestination
+}
+
 // PartnerDetails - Information about the partner.
 type PartnerDetails struct {
 	// This is short description about the partner. The length of this description should not exceed 256 characters.
@@ -1713,6 +2880,26 @@ type PartnerDetails struct {
 
 	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
 	SetupURI *string
+}
+
+type PartnerEventSubscriptionDestination struct {
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType
+
+	// Partner Destination Properties of the event subscription destination.
+	Properties *PartnerEventSubscriptionDestinationProperties
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type PartnerEventSubscriptionDestination.
+func (p *PartnerEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: p.EndpointType,
+	}
+}
+
+type PartnerEventSubscriptionDestinationProperties struct {
+	// The Azure Resource Id that represents the endpoint of a Partner Destination of an event subscription.
+	ResourceID *string
 }
 
 // PartnerNamespace - EventGrid Partner Namespace.
@@ -1749,6 +2936,9 @@ type PartnerNamespaceProperties struct {
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
+
+	// Minimum TLS version of the publisher allowed to publish to this partner namespace
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// The fully qualified ARM Id of the partner registration that should be associated with this partner namespace. This takes
 	// the following format:
@@ -1799,6 +2989,9 @@ type PartnerNamespaceUpdateParameterProperties struct {
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
+
+	// Minimum TLS version of the publisher allowed to publish to this domain
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
@@ -2209,10 +3402,111 @@ type PartnerTopicsListResult struct {
 	Value []*PartnerTopic
 }
 
+// PartnerUpdateDestinationInfoClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerUpdateDestinationInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartnerUpdateDestinationInfo, *WebhookUpdatePartnerDestinationInfo
+type PartnerUpdateDestinationInfoClassification interface {
+	// GetPartnerUpdateDestinationInfo returns the PartnerUpdateDestinationInfo content of the underlying type.
+	GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo
+}
+
+// PartnerUpdateDestinationInfo - Properties of the corresponding partner destination of a Channel.
+type PartnerUpdateDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+}
+
+// GetPartnerUpdateDestinationInfo implements the PartnerUpdateDestinationInfoClassification interface for type PartnerUpdateDestinationInfo.
+func (p *PartnerUpdateDestinationInfo) GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo {
+	return p
+}
+
 // PartnerUpdateTopicInfo - Update properties for the corresponding partner topic of a channel.
 type PartnerUpdateTopicInfo struct {
 	// Event type info for the partner topic
 	EventTypeInfo *EventTypeInfo
+}
+
+// PermissionBinding - The Permission binding resource.
+type PermissionBinding struct {
+	// The properties of permission binding.
+	Properties *PermissionBindingProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the PermissionBinding resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// PermissionBindingProperties - The properties of permission binding.
+type PermissionBindingProperties struct {
+	// The name of the client group resource that the permission is bound to. The client group needs to be a resource under the
+	// same namespace the permission binding is a part of.
+	ClientGroupName *string
+
+	// Description for the Permission Binding resource.
+	Description *string
+
+	// The allowed permission.
+	Permission *PermissionType
+
+	// The name of the Topic Space resource that the permission is bound to. The Topic space needs to be a resource under the
+	// same namespace the permission binding is a part of.
+	TopicSpaceName *string
+
+	// READ-ONLY; Provisioning state of the PermissionBinding resource.
+	ProvisioningState *PermissionBindingProvisioningState
+}
+
+// PermissionBindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the PermissionBindingsClient.BeginCreateOrUpdate
+// method.
+type PermissionBindingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PermissionBindingsClientBeginDeleteOptions contains the optional parameters for the PermissionBindingsClient.BeginDelete
+// method.
+type PermissionBindingsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PermissionBindingsClientGetOptions contains the optional parameters for the PermissionBindingsClient.Get method.
+type PermissionBindingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionBindingsClientListByNamespaceOptions contains the optional parameters for the PermissionBindingsClient.NewListByNamespacePager
+// method.
+type PermissionBindingsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// PermissionBindingsListResult - Result of the List Permission Binding operation.
+type PermissionBindingsListResult struct {
+	// A link for the next page of Permission Binding.
+	NextLink *string
+
+	// A collection of Permission Binding.
+	Value []*PermissionBinding
 }
 
 // PrivateEndpoint information.
@@ -2345,6 +3639,41 @@ type PrivateLinkResourcesListResult struct {
 	Value []*PrivateLinkResource
 }
 
+// QueueInfo - Properties of the Queue info for event subscription.
+type QueueInfo struct {
+	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
+	// the dead letter destination. Uses the managed identity setup on the parent
+	// resource (namely, topic) to acquire the authentication tokens being used during delivery / dead-lettering.
+	DeadLetterDestinationWithResourceIdentity *DeadLetterWithResourceIdentity
+
+	// Time span duration in ISO 8601 format that determines how long messages are available to the subscription from the time
+	// the message was published. This duration value is expressed using the following
+	// format: \'P(n)Y(n)M(n)DT(n)H(n)M(n)S\', where: - (n) is replaced by the value of each time element that follows the (n).
+	// - P is the duration (or Period) designator and is always placed at the
+	// beginning of the duration. - Y is the year designator, and it follows the value for the number of years. - M is the month
+	// designator, and it follows the value for the number of months. - W is the week
+	// designator, and it follows the value for the number of weeks. - D is the day designator, and it follows the value for the
+	// number of days. - T is the time designator, and it precedes the time
+	// components. - H is the hour designator, and it follows the value for the number of hours. - M is the minute designator,
+	// and it follows the value for the number of minutes. - S is the second
+	// designator, and it follows the value for the number of seconds. This duration value cannot be set greater than the topic’s
+	// EventRetentionInDays. It is is an optional field where its minimum value is 1
+	// minute, and its maximum is determined by topic’s EventRetentionInDays value. The followings are examples of valid values:
+	// - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes. -
+	// \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
+	EventTimeToLive *string
+
+	// The maximum delivery count of the events.
+	MaxDeliveryCount *int32
+
+	// Maximum period in seconds in which once the message is in received (by the client) state and waiting to be accepted, released
+	// or rejected. If this time elapsed after a message has been received by the
+	// client and not transitioned into accepted (not processed), released or rejected, the message is available for redelivery.
+	// This is an optional field, where default is 60 seconds, minimum is 60 seconds
+	// and maximum is 300 seconds.
+	ReceiveLockDurationInSeconds *int32
+}
+
 // Resource - Definition of a Resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
@@ -2357,6 +3686,24 @@ type Resource struct {
 	Type *string
 }
 
+// ResourceMoveChangeHistory - The change history of the resource move.
+type ResourceMoveChangeHistory struct {
+	// Azure subscription ID of the resource.
+	AzureSubscriptionID *string
+
+	// UTC timestamp of when the resource was changed.
+	ChangedTimeUTC *time.Time
+
+	// Azure Resource Group of the resource.
+	ResourceGroupName *string
+}
+
+// ResourceSKU - Describes an EventGrid Resource Sku.
+type ResourceSKU struct {
+	// The Sku name of the resource. The possible values are: Basic or Premium.
+	Name *SKU
+}
+
 // RetryPolicy - Information about the retry policy for an event subscription.
 type RetryPolicy struct {
 	// Time To Live (in minutes) for events.
@@ -2364,6 +3711,17 @@ type RetryPolicy struct {
 
 	// Maximum number of delivery retry attempts for events.
 	MaxDeliveryAttempts *int32
+}
+
+type RoutingEnrichments struct {
+	Dynamic []*DynamicRoutingEnrichment
+	Static  []*StaticRoutingEnrichment
+}
+
+// RoutingIdentityInfo - Routing identity info for topic spaces configuration.
+type RoutingIdentityInfo struct {
+	Type                 *RoutingIdentityType
+	UserAssignedIdentity *string
 }
 
 // ServiceBusQueueEventSubscriptionDestination - Information about the service bus destination for an event subscription.
@@ -2447,6 +3805,14 @@ type StaticDeliveryAttributeMappingProperties struct {
 	Value *string
 }
 
+type StaticRoutingEnrichment struct {
+	// Static routing enrichment key.
+	Key *string
+
+	// Static routing enrichment value type. For e.g. this property value can be 'String'.
+	ValueType *StaticRoutingEnrichmentType
+}
+
 // StorageBlobDeadLetterDestination - Information about the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestination struct {
 	// REQUIRED; Type of the endpoint for the dead letter destination
@@ -2490,7 +3856,8 @@ func (s *StorageQueueEventSubscriptionDestination) GetEventSubscriptionDestinati
 
 // StorageQueueEventSubscriptionDestinationProperties - The properties for a storage queue destination.
 type StorageQueueEventSubscriptionDestinationProperties struct {
-	// Storage queue message time to live in seconds.
+	// Storage queue message time to live in seconds. This value cannot be zero or negative with the exception of using -1 to
+	// indicate that the Time To Live of the message is Infinite.
 	QueueMessageTimeToLiveInSeconds *int64
 
 	// The name of the Storage queue under a storage account that is the destination of an event subscription.
@@ -2520,6 +3887,26 @@ func (s *StringBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// StringBeginsWithFilter - StringBeginsWith Filter.
+type StringBeginsWithFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringBeginsWithFilter.
+func (s *StringBeginsWithFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringContainsAdvancedFilter - StringContains Advanced Filter.
 type StringContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2535,6 +3922,26 @@ type StringContainsAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringContainsAdvancedFilter.
 func (s *StringContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
+// StringContainsFilter - StringContains Filter.
+type StringContainsFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringContainsFilter.
+func (s *StringContainsFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: s.OperatorType,
 		Key:          s.Key,
 	}
@@ -2560,6 +3967,26 @@ func (s *StringEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// StringEndsWithFilter - StringEndsWith Filter.
+type StringEndsWithFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringEndsWithFilter.
+func (s *StringEndsWithFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringInAdvancedFilter - StringIn Advanced Filter.
 type StringInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2575,6 +4002,26 @@ type StringInAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringInAdvancedFilter.
 func (s *StringInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
+// StringInFilter - StringIn Filter.
+type StringInFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringInFilter.
+func (s *StringInFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: s.OperatorType,
 		Key:          s.Key,
 	}
@@ -2600,6 +4047,26 @@ func (s *StringNotBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter 
 	}
 }
 
+// StringNotBeginsWithFilter - StringNotBeginsWith Filter.
+type StringNotBeginsWithFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringNotBeginsWithFilter.
+func (s *StringNotBeginsWithFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringNotContainsAdvancedFilter - StringNotContains Advanced Filter.
 type StringNotContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2615,6 +4082,26 @@ type StringNotContainsAdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotContainsAdvancedFilter.
 func (s *StringNotContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	return &AdvancedFilter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
+// StringNotContainsFilter - StringNotContains Filter.
+type StringNotContainsFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringNotContainsFilter.
+func (s *StringNotContainsFilter) GetFilter() *Filter {
+	return &Filter{
 		OperatorType: s.OperatorType,
 		Key:          s.Key,
 	}
@@ -2640,6 +4127,26 @@ func (s *StringNotEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 	}
 }
 
+// StringNotEndsWithFilter - StringNotEndsWith Filter.
+type StringNotEndsWithFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringNotEndsWithFilter.
+func (s *StringNotEndsWithFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
 // StringNotInAdvancedFilter - StringNotIn Advanced Filter.
 type StringNotInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -2658,6 +4165,86 @@ func (s *StringNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 		OperatorType: s.OperatorType,
 		Key:          s.Key,
 	}
+}
+
+// StringNotInFilter - StringNotIn Filter.
+type StringNotInFilter struct {
+	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+	OperatorType *FilterOperatorType
+
+	// The field/property in the event based on which you want to filter.
+	Key *string
+
+	// The set of filter values.
+	Values []*string
+}
+
+// GetFilter implements the FilterClassification interface for type StringNotInFilter.
+func (s *StringNotInFilter) GetFilter() *Filter {
+	return &Filter{
+		OperatorType: s.OperatorType,
+		Key:          s.Key,
+	}
+}
+
+// Subscription - Event Subscription.
+type Subscription struct {
+	// Properties of the event subscription.
+	Properties *SubscriptionProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to Event Subscription resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// SubscriptionProperties - Properties of the event subscription.
+type SubscriptionProperties struct {
+	// Information about the delivery configuration of the event subscription.
+	DeliveryConfiguration *DeliveryConfiguration
+
+	// The event delivery schema for the event subscription.
+	EventDeliverySchema *DeliverySchema
+
+	// Information about the filter for the event subscription.
+	FiltersConfiguration *FiltersConfiguration
+
+	// READ-ONLY; Provisioning state of the event subscription.
+	ProvisioningState *SubscriptionProvisioningState
+}
+
+// SubscriptionUpdateParameters - Properties of the Event Subscription update.
+type SubscriptionUpdateParameters struct {
+	// Properties of the Event Subscription update parameters.
+	Properties *SubscriptionUpdateParametersProperties
+}
+
+// SubscriptionUpdateParametersProperties - Properties of the Event Subscription update parameters.
+type SubscriptionUpdateParametersProperties struct {
+	// Information about the delivery configuration of the event subscription.
+	DeliveryConfiguration *DeliveryConfiguration
+
+	// The event delivery schema for the event subscription.
+	EventDeliverySchema *DeliverySchema
+
+	// Information about the filter for the event subscription.
+	FiltersConfiguration *FiltersConfiguration
+}
+
+// SubscriptionsListResult - Result of the List event subscriptions operation.
+type SubscriptionsListResult struct {
+	// A link for the next page of event subscriptions
+	NextLink *string
+
+	// A collection of Subscriptions.
+	Value []*Subscription
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -2854,11 +4441,20 @@ type Topic struct {
 	// REQUIRED; Location of the resource.
 	Location *string
 
+	// Extended location of the resource.
+	ExtendedLocation *ExtendedLocation
+
 	// Identity information for the resource.
 	Identity *IdentityInfo
 
+	// Kind of the resource.
+	Kind *ResourceKind
+
 	// Properties of the topic.
 	Properties *TopicProperties
+
+	// The Sku pricing tier for the topic.
+	SKU *ResourceSKU
 
 	// Tags of the resource.
 	Tags map[string]*string
@@ -2938,6 +4534,10 @@ type TopicProperties struct {
 	// token will be used to authenticate if user is allowed to publish to the topic.
 	DisableLocalAuth *bool
 
+	// Event Type Information for the user topic. This information is provided by the publisher and can be used by the subscriber
+	// to view different types of events that are published.
+	EventTypeInfo *EventTypeInfo
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
@@ -2948,6 +4548,9 @@ type TopicProperties struct {
 	// This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of
 	// a source schema to various required properties of the EventGridEvent schema.
 	InputSchemaMapping InputSchemaMappingClassification
+
+	// Minimum TLS version of the publisher allowed to publish to this topic
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
@@ -2981,6 +4584,111 @@ type TopicSharedAccessKeys struct {
 	Key2 *string
 }
 
+// TopicSpace - The Topic space resource.
+type TopicSpace struct {
+	// The properties of topic space.
+	Properties *TopicSpaceProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the TopicSpace resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// TopicSpaceProperties - The properties of topic space.
+type TopicSpaceProperties struct {
+	// Description for the Topic Space resource.
+	Description *string
+
+	// The topic filters in the topic space. Example: "topicTemplates": [ "devices/foo/bar", "devices/topic1/+", "devices/${principal.name}/${principal.attributes.keyName}"
+	// ].
+	TopicTemplates []*string
+
+	// READ-ONLY; Provisioning state of the TopicSpace resource.
+	ProvisioningState *TopicSpaceProvisioningState
+}
+
+// TopicSpacesClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicSpacesClient.BeginCreateOrUpdate
+// method.
+type TopicSpacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TopicSpacesClientBeginDeleteOptions contains the optional parameters for the TopicSpacesClient.BeginDelete method.
+type TopicSpacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TopicSpacesClientGetOptions contains the optional parameters for the TopicSpacesClient.Get method.
+type TopicSpacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TopicSpacesClientListByNamespaceOptions contains the optional parameters for the TopicSpacesClient.NewListByNamespacePager
+// method.
+type TopicSpacesClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// TopicSpacesConfiguration - Properties of the Topic Spaces Configuration.
+type TopicSpacesConfiguration struct {
+	// Client authentication settings for topic spaces configuration.
+	ClientAuthentication *ClientAuthenticationSettings
+
+	// The maximum number of sessions per authentication name. The property default value is 1. Min allowed value is 1 and max
+	// allowed value is 100.
+	MaximumClientSessionsPerAuthenticationName *int32
+
+	// The maximum session expiry in hours. The property default value is 1 hour. Min allowed value is 1 hour and max allowed
+	// value is 8 hours.
+	MaximumSessionExpiryInHours *int32
+
+	// Fully qualified Azure Resource Id for the Event Grid Topic to which events will be routed to from TopicSpaces under a namespace.
+	// This property should be in the following format
+	// '/subscriptions/{subId}/resourcegroups/{resourceGroupName}/providers/microsoft.EventGrid/topics/{topicName}'. This topic
+	// should reside in the same region where namespace is located.
+	RouteTopicResourceID *string
+
+	// Routing enrichments for topic spaces configuration
+	RoutingEnrichments *RoutingEnrichments
+
+	// Routing identity info for topic spaces configuration.
+	RoutingIdentityInfo *RoutingIdentityInfo
+
+	// Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
+	State *TopicSpacesConfigurationState
+
+	// READ-ONLY; The endpoint for the topic spaces configuration. This is a read-only property.
+	Hostname *string
+}
+
+// TopicSpacesListResult - Result of the List Topic Space operation.
+type TopicSpacesListResult struct {
+	// A link for the next page of Topic Space.
+	NextLink *string
+
+	// A collection of Topic Space.
+	Value []*TopicSpace
+}
+
 // TopicTypeInfo - Properties of a topic type info.
 type TopicTypeInfo struct {
 	// Properties of the topic type info
@@ -2998,6 +4706,9 @@ type TopicTypeInfo struct {
 
 // TopicTypeProperties - Properties of a topic type.
 type TopicTypeProperties struct {
+	// Flag to indicate that a topic type can support both regional or global system topics
+	AreRegionalAndGlobalSourcesSupported *bool
+
 	// Description of the topic type.
 	Description *string
 
@@ -3054,9 +4765,15 @@ type TopicUpdateParameterProperties struct {
 	// token will be used to authenticate if user is allowed to publish to the topic.
 	DisableLocalAuth *bool
 
+	// The eventTypeInfo for the topic.
+	EventTypeInfo *EventTypeInfo
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
+
+	// Minimum TLS version of the publisher allowed to publish to this domain
+	MinimumTLSVersionAllowed *TLSVersion
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
@@ -3070,6 +4787,9 @@ type TopicUpdateParameters struct {
 
 	// Properties of the Topic resource.
 	Properties *TopicUpdateParameterProperties
+
+	// The Sku pricing tier for the topic.
+	SKU *ResourceSKU
 
 	// Tags of the Topic resource.
 	Tags map[string]*string
@@ -3144,6 +4864,12 @@ type TopicsClientListSharedAccessKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TopicsConfiguration - Properties of the Topics Configuration.
+type TopicsConfiguration struct {
+	// READ-ONLY; The hostname for the topics configuration. This is a read-only property.
+	Hostname *string
+}
+
 // TopicsListResult - Result of the List Topics operation
 type TopicsListResult struct {
 	// A link for the next page of topics
@@ -3169,6 +4895,32 @@ type TrackedResource struct {
 
 	// READ-ONLY; Type of the resource.
 	Type *string
+}
+
+// UpdateTopicSpacesConfigurationInfo - Properties of the topic spaces configuration info of a namespace.
+type UpdateTopicSpacesConfigurationInfo struct {
+	// Client authentication settings for topic spaces configuration.
+	ClientAuthentication *ClientAuthenticationSettings
+
+	// The maximum number of sessions per authentication name. The property default value is 1. Min allowed value is 1 and max
+	// allowed value is 100.
+	MaximumClientSessionsPerAuthenticationName *int32
+
+	// The maximum session expiry in hours. The property default value is 1 hour. Min allowed value is 1 hour and max allowed
+	// value is 8 hours.
+	MaximumSessionExpiryInHours *int32
+
+	// This property is used to specify custom topic to which events will be routed to from topic spaces configuration under namespace.
+	RouteTopicResourceID *string
+
+	// Routing enrichments for topic spaces configuration.
+	RoutingEnrichments *RoutingEnrichments
+
+	// Routing identity info for topic spaces configuration.
+	RoutingIdentityInfo *RoutingIdentityInfo
+
+	// Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
+	State *TopicSpacesConfigurationState
 }
 
 // UserIdentityProperties - The information about the user identity.
@@ -3202,6 +4954,9 @@ type VerifiedPartner struct {
 type VerifiedPartnerProperties struct {
 	// Official name of the Partner.
 	OrganizationName *string
+
+	// Details of the partner destination scenario.
+	PartnerDestinationDetails *PartnerDetails
 
 	// Display name of the verified partner.
 	PartnerDisplayName *string
@@ -3278,9 +5033,78 @@ type WebHookEventSubscriptionDestinationProperties struct {
 	// Maximum number of events per batch.
 	MaxEventsPerBatch *int32
 
+	// Minimum TLS version that should be supported by webhook endpoint
+	MinimumTLSVersionAllowed *TLSVersion
+
 	// Preferred batch size in Kilobytes.
 	PreferredBatchSizeInKilobytes *int32
 
 	// READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
 	EndpointBaseURL *string
+}
+
+// WebhookPartnerDestinationInfo - Information about the WebHook of the partner destination.
+type WebhookPartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
+	// Azure subscription.
+	AzureSubscriptionID *string
+
+	// Additional context of the partner destination endpoint.
+	EndpointServiceContext *string
+
+	// Name of the partner destination associated with the channel.
+	Name *string
+
+	// WebHook Properties of the partner destination.
+	Properties *WebhookPartnerDestinationProperties
+
+	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
+	// resource group.
+	ResourceGroupName *string
+
+	// Change history of the resource move.
+	ResourceMoveChangeHistory []*ResourceMoveChangeHistory
+}
+
+// GetPartnerDestinationInfo implements the PartnerDestinationInfoClassification interface for type WebhookPartnerDestinationInfo.
+func (w *WebhookPartnerDestinationInfo) GetPartnerDestinationInfo() *PartnerDestinationInfo {
+	return &PartnerDestinationInfo{
+		AzureSubscriptionID:       w.AzureSubscriptionID,
+		ResourceGroupName:         w.ResourceGroupName,
+		Name:                      w.Name,
+		EndpointType:              w.EndpointType,
+		EndpointServiceContext:    w.EndpointServiceContext,
+		ResourceMoveChangeHistory: w.ResourceMoveChangeHistory,
+	}
+}
+
+// WebhookPartnerDestinationProperties - Properties of a partner destination webhook.
+type WebhookPartnerDestinationProperties struct {
+	// Partner client authentication
+	ClientAuthentication PartnerClientAuthenticationClassification
+
+	// The base URL that represents the endpoint of the partner destination.
+	EndpointBaseURL *string
+
+	// The URL that represents the endpoint of the partner destination.
+	EndpointURL *string
+}
+
+// WebhookUpdatePartnerDestinationInfo - Information about the update of the WebHook of the partner destination.
+type WebhookUpdatePartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// WebHook Properties of the partner destination.
+	Properties *WebhookPartnerDestinationProperties
+}
+
+// GetPartnerUpdateDestinationInfo implements the PartnerUpdateDestinationInfoClassification interface for type WebhookUpdatePartnerDestinationInfo.
+func (w *WebhookUpdatePartnerDestinationInfo) GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo {
+	return &PartnerUpdateDestinationInfo{
+		EndpointType: w.EndpointType,
+	}
 }

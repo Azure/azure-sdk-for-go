@@ -31,9 +31,6 @@
 /sdk/data/aztables/           @jhendrixMSFT
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                @chlowell @jhendrixMSFT
-
-# PRLabel: %KeyVault
 /sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox
 
 # PRLabel: %Service Bus

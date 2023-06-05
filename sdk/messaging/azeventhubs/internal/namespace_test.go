@@ -16,9 +16,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -74,7 +74,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	newAMQPClientCalled := 0
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		newAMQPClientCalled++
 		return &amqpwrap.AMQPClientWrapper{}, nil
 	}
@@ -119,7 +119,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	var errorsLogged []error
 	nextRefreshDurationChecks := 0
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
@@ -153,7 +153,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return nil, errors.New("Getting *amqp.Client failed")
 	}
 
@@ -187,7 +187,7 @@ func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
 		return nil
 	}
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
@@ -215,7 +215,7 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return &fakeAMQPClient{}, nil
 	}
 
@@ -254,7 +254,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 	endCapture := test.CaptureLogsForTest()
 	defer endCapture()
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Conn{}}, nil
 	}
 
@@ -313,7 +313,7 @@ func TestNamespaceStaleConnection(t *testing.T) {
 	require.Equal(t, 1, fakeClient.closeCalled)
 	require.Nil(t, ns.client)
 
-	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+	ns.newClientFn = func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 		return &fakeAMQPClient{}, nil
 	}
 
@@ -330,7 +330,7 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 	var err error
 
 	ns := &Namespace{
-		newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		newClientFn: func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 			newClient++
 			return clientToReturn, err
 		},
@@ -374,7 +374,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 		td := &testData{}
 		td.NS = &Namespace{
 			connID: 2,
-			newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+			newClientFn: func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 				td.NewClientCount++
 				return nil, td.FakeClientError
 			},
@@ -437,7 +437,7 @@ func TestNamespaceCantStopRecoverFromClosingConn(t *testing.T) {
 	numClients := 0
 
 	ns := &Namespace{
-		newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		newClientFn: func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 			select {
 			case <-ctx.Done():
 				numCancels++

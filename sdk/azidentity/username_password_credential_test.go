@@ -12,7 +12,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -32,7 +31,7 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.client = fakePublicClient{}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -47,7 +46,7 @@ func TestUsernamePasswordCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			o, stop := initRecording(t)
 			defer stop()
-			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: disabledID}
+			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disabledID}
 			cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
 			if err != nil {
 				t.Fatalf("Unable to create credential. Received: %v", err)
@@ -66,7 +65,7 @@ func TestUsernamePasswordCredentialADFS_Live(t *testing.T) {
 	o, stop := initRecording(t)
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	defer stop()
-	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true}
+	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
 	cred, err := NewUsernamePasswordCredential("adfs", adfsLiveUser.clientID, adfsLiveUser.username, adfsLiveUser.password, &opts)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -82,7 +81,7 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

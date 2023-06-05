@@ -18,111 +18,111 @@ import "time"
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request and error information
 // regarding the failure.
 type AzureAsyncOperationResult struct {
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// Status of the Azure async operation.
-	Status *NetworkOperationStatus `json:"status,omitempty"`
+	Status *NetworkOperationStatus
 }
 
 // Backend address of a frontDoor load balancer.
 type Backend struct {
 	// Location of the backend (IP address or FQDN)
-	Address *string `json:"address,omitempty"`
+	Address *string
 
 	// The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming host.
-	BackendHostHeader *string `json:"backendHostHeader,omitempty"`
+	BackendHostHeader *string
 
 	// Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *BackendEnabledState `json:"enabledState,omitempty"`
+	EnabledState *BackendEnabledState
 
 	// The HTTP TCP port number. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The HTTPS TCP port number. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend
 	// is healthy.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The Alias of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkAlias *string `json:"privateLinkAlias,omitempty"`
+	PrivateLinkAlias *string
 
 	// A custom message to be included in the approval request to connect to the Private Link
-	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
+	PrivateLinkApprovalMessage *string
 
 	// The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
-	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	PrivateLinkLocation *string
 
 	// The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// Weight of this endpoint for load balancing purposes.
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 
 	// READ-ONLY; The Approval status for the connection to the Private Link
-	PrivateEndpointStatus *PrivateEndpointStatus `json:"privateEndpointStatus,omitempty" azure:"ro"`
+	PrivateEndpointStatus *PrivateEndpointStatus
 }
 
 // BackendPool - A backend pool is a collection of backends that can be routed to.
 type BackendPool struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the Front Door Backend Pool
-	Properties *BackendPoolProperties `json:"properties,omitempty"`
+	Properties *BackendPoolProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackendPoolListResult - Result of the request to list Backend Pools. It contains a list of Backend Pools objects and a
 // URL link to get the next set of results.
 type BackendPoolListResult struct {
 	// URL to get the next set of BackendPool objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Backend Pools within a Front Door.
-	Value []*BackendPool `json:"value,omitempty" azure:"ro"`
+	Value []*BackendPool
 }
 
 // BackendPoolProperties - The JSON object that contains the properties required to create a Backend Pool.
 type BackendPoolProperties struct {
 	// The set of backends for this pool
-	Backends []*Backend `json:"backends,omitempty"`
+	Backends []*Backend
 
 	// L7 health probe settings for a backend pool
-	HealthProbeSettings *SubResource `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *SubResource
 
 	// Load balancing settings for a backend pool
-	LoadBalancingSettings *SubResource `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings *SubResource
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // BackendPoolUpdateParameters - A collection of backends that can be routed to.
 type BackendPoolUpdateParameters struct {
 	// The set of backends for this pool
-	Backends []*Backend `json:"backends,omitempty"`
+	Backends []*Backend
 
 	// L7 health probe settings for a backend pool
-	HealthProbeSettings *SubResource `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *SubResource
 
 	// Load balancing settings for a backend pool
-	LoadBalancingSettings *SubResource `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings *SubResource
 }
 
 // BackendPoolsSettings - Settings that apply to all backend pools.
 type BackendPoolsSettings struct {
 	// Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests.
-	EnforceCertificateNameCheck *EnforceCertificateNameCheckEnabledState `json:"enforceCertificateNameCheck,omitempty"`
+	EnforceCertificateNameCheck *EnforceCertificateNameCheckEnabledState
 
 	// Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and returns.
-	SendRecvTimeoutSeconds *int32 `json:"sendRecvTimeoutSeconds,omitempty"`
+	SendRecvTimeoutSeconds *int32
 }
 
 // CacheConfiguration - Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration
@@ -130,103 +130,119 @@ type BackendPoolsSettings struct {
 type CacheConfiguration struct {
 	// The duration for which the content needs to be cached. Allowed format is in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
 	// HTTP requires the value to be no more than a year
-	CacheDuration *string `json:"cacheDuration,omitempty"`
+	CacheDuration *string
 
 	// Whether to use dynamic compression for cached content
-	DynamicCompression *DynamicCompressionEnabled `json:"dynamicCompression,omitempty"`
+	DynamicCompression *DynamicCompressionEnabled
 
 	// Treatment of URL query terms when forming the cache key.
-	QueryParameterStripDirective *FrontDoorQuery `json:"queryParameterStripDirective,omitempty"`
+	QueryParameterStripDirective *FrontDoorQuery
 
 	// query parameters to include or exclude (comma separated).
-	QueryParameters *string `json:"queryParameters,omitempty"`
+	QueryParameters *string
 }
 
 // CertificateSourceParameters - Parameters required for enabling SSL with Front Door-managed certificates
 type CertificateSourceParameters struct {
 	// Defines the type of the certificate used for secure connections to a frontendEndpoint
-	CertificateType *FrontDoorCertificateType `json:"certificateType,omitempty"`
+	CertificateType *FrontDoorCertificateType
 }
 
 // CheckNameAvailabilityInput - Input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The resource name to validate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of the resource whose name is to be validated.
-	Type *ResourceType `json:"type,omitempty"`
+	Type *ResourceType
 }
 
 // CheckNameAvailabilityOutput - Output of check name availability API.
 type CheckNameAvailabilityOutput struct {
 	// READ-ONLY; The detailed error message describing why the name is not available.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Indicates whether the name is available.
-	NameAvailability *Availability `json:"nameAvailability,omitempty" azure:"ro"`
+	NameAvailability *Availability
 
 	// READ-ONLY; The reason why the name is not available.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // CustomHTTPSConfiguration - Https settings for a domain
 type CustomHTTPSConfiguration struct {
 	// REQUIRED; Defines the source of the SSL certificate
-	CertificateSource *FrontDoorCertificateSource `json:"certificateSource,omitempty"`
+	CertificateSource *FrontDoorCertificateSource
 
 	// REQUIRED; The minimum TLS version required from the clients to establish an SSL handshake with Front Door.
-	MinimumTLSVersion *MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *MinimumTLSVersion
 
 	// REQUIRED; Defines the TLS extension protocol that is used for secure delivery
-	ProtocolType *FrontDoorTLSProtocolType `json:"protocolType,omitempty"`
+	ProtocolType *FrontDoorTLSProtocolType
 
 	// Parameters required for enabling SSL with Front Door-managed certificates (if certificateSource=FrontDoor)
-	FrontDoorCertificateSourceParameters *CertificateSourceParameters `json:"frontDoorCertificateSourceParameters,omitempty"`
+	FrontDoorCertificateSourceParameters *CertificateSourceParameters
 
 	// KeyVault certificate source parameters (if certificateSource=AzureKeyVault)
-	KeyVaultCertificateSourceParameters *KeyVaultCertificateSourceParameters `json:"keyVaultCertificateSourceParameters,omitempty"`
+	KeyVaultCertificateSourceParameters *KeyVaultCertificateSourceParameters
 }
 
 // CustomRule - Defines contents of a web application rule
 type CustomRule struct {
 	// REQUIRED; Describes what action to be applied when rule matches.
-	Action *ActionType `json:"action,omitempty"`
+	Action *ActionType
 
 	// REQUIRED; List of match conditions.
-	MatchConditions []*MatchCondition `json:"matchConditions,omitempty"`
+	MatchConditions []*MatchCondition
 
 	// REQUIRED; Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// REQUIRED; Describes type of rule.
-	RuleType *RuleType `json:"ruleType,omitempty"`
+	RuleType *RuleType
 
 	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *CustomRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *CustomRuleEnabledState
 
 	// Describes the name of the rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Time window for resetting the rate limit count. Default is 1 minute.
-	RateLimitDurationInMinutes *int32 `json:"rateLimitDurationInMinutes,omitempty"`
+	RateLimitDurationInMinutes *int32
 
 	// Number of allowed requests per client within the time window.
-	RateLimitThreshold *int32 `json:"rateLimitThreshold,omitempty"`
+	RateLimitThreshold *int32
 }
 
 // CustomRuleList - Defines contents of custom rules
 type CustomRuleList struct {
 	// List of rules
-	Rules []*CustomRule `json:"rules,omitempty"`
+	Rules []*CustomRule
+}
+
+// DefaultErrorResponse - Error response indicates Front Door service is not able to process the incoming request. The reason
+// is provided in the error message.
+type DefaultErrorResponse struct {
+	// Error model.
+	Error *DefaultErrorResponseError
+}
+
+// DefaultErrorResponseError - Error model.
+type DefaultErrorResponseError struct {
+	// READ-ONLY; Error code.
+	Code *string
+
+	// READ-ONLY; Error message indicating why the operation failed.
+	Message *string
 }
 
 // Endpoint - Defines the endpoint properties
 type Endpoint struct {
 	// The endpoint URL
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// The name of the endpoint
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent method.
@@ -236,100 +252,100 @@ type EndpointsClientBeginPurgeContentOptions struct {
 }
 
 type Error struct {
-	Code       *string         `json:"code,omitempty"`
-	Details    []*ErrorDetails `json:"details,omitempty"`
-	InnerError *string         `json:"innerError,omitempty"`
-	Message    *string         `json:"message,omitempty"`
-	Target     *string         `json:"target,omitempty"`
+	Code       *string
+	Details    []*ErrorDetails
+	InnerError *string
+	Message    *string
+	Target     *string
 }
 
 type ErrorDetails struct {
-	Code    *string `json:"code,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Target  *string `json:"target,omitempty"`
+	Code    *string
+	Message *string
+	Target  *string
 }
 
 // ErrorResponse - Error response indicates Front Door service is not able to process the incoming request. The reason is
 // provided in the error message.
 type ErrorResponse struct {
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // Experiment - Defines the properties of an Experiment
 type Experiment struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of an Experiment
-	Properties *ExperimentProperties `json:"properties,omitempty"`
+	Properties *ExperimentProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExperimentList - Defines a list of Experiments. It contains a list of Experiment objects and a URL link to get the next
 // set of results.
 type ExperimentList struct {
 	// URL to get the next set of Experiment objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Experiments within a resource group.
-	Value []*Experiment `json:"value,omitempty" azure:"ro"`
+	Value []*Experiment
 }
 
 // ExperimentProperties - Defines the properties of an experiment
 type ExperimentProperties struct {
 	// The description of the details or intents of the Experiment
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The state of the Experiment
-	EnabledState *State `json:"enabledState,omitempty"`
+	EnabledState *State
 
 	// The endpoint A of an experiment
-	EndpointA *Endpoint `json:"endpointA,omitempty"`
+	EndpointA *Endpoint
 
 	// The endpoint B of an experiment
-	EndpointB *Endpoint `json:"endpointB,omitempty"`
+	EndpointB *Endpoint
 
 	// READ-ONLY; Resource status.
-	ResourceState *NetworkExperimentResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *NetworkExperimentResourceState
 
 	// READ-ONLY; The uri to the Script used in the Experiment
-	ScriptFileURI *string `json:"scriptFileUri,omitempty" azure:"ro"`
+	ScriptFileURI *string
 
 	// READ-ONLY; The description of Experiment status from the server side
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ExperimentUpdateModel - Defines modifiable attributes of an Experiment
 type ExperimentUpdateModel struct {
 	// The properties of a Profile
-	Properties *ExperimentUpdateProperties `json:"properties,omitempty"`
+	Properties *ExperimentUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ExperimentUpdateProperties - Defines the properties of an experiment
 type ExperimentUpdateProperties struct {
 	// The description of the intent or details of the Experiment
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The state of the Experiment
-	EnabledState *State `json:"enabledState,omitempty"`
+	EnabledState *State
 }
 
 // ExperimentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExperimentsClient.BeginCreateOrUpdate
@@ -365,19 +381,19 @@ type ExperimentsClientListByProfileOptions struct {
 // ForwardingConfiguration - Describes Forwarding Route.
 type ForwardingConfiguration struct {
 	// REQUIRED
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// A reference to the BackendPool which this rule routes to.
-	BackendPool *SubResource `json:"backendPool,omitempty"`
+	BackendPool *SubResource
 
 	// The caching configuration associated with this rule.
-	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
+	CacheConfiguration *CacheConfiguration
 
 	// A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
-	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
+	CustomForwardingPath *string
 
 	// Protocol this rule will use when forwarding traffic to backends.
-	ForwardingProtocol *FrontDoorForwardingProtocol `json:"forwardingProtocol,omitempty"`
+	ForwardingProtocol *FrontDoorForwardingProtocol
 }
 
 // GetRouteConfiguration implements the RouteConfigurationClassification interface for type ForwardingConfiguration.
@@ -391,22 +407,22 @@ func (f *ForwardingConfiguration) GetRouteConfiguration() *RouteConfiguration {
 // traffic is sent there.
 type FrontDoor struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Front Door Load Balancer
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FrontDoorsClientBeginCreateOrUpdateOptions contains the optional parameters for the FrontDoorsClient.BeginCreateOrUpdate
@@ -447,71 +463,71 @@ type FrontDoorsClientValidateCustomDomainOptions struct {
 // FrontendEndpoint - A frontend endpoint used for routing.
 type FrontendEndpoint struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the Frontend endpoint
-	Properties *FrontendEndpointProperties `json:"properties,omitempty"`
+	Properties *FrontendEndpointProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FrontendEndpointLink - Defines the Resource ID for a Frontend Endpoint.
 type FrontendEndpointLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // FrontendEndpointProperties - The JSON object that contains the properties required to create a frontend endpoint.
 type FrontendEndpointProperties struct {
 	// The host name of the frontendEndpoint. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
-	SessionAffinityEnabledState *SessionAffinityEnabledState `json:"sessionAffinityEnabledState,omitempty"`
+	SessionAffinityEnabledState *SessionAffinityEnabledState
 
 	// UNUSED. This field will be ignored. The TTL to use in seconds for session affinity, if applicable.
-	SessionAffinityTTLSeconds *int32 `json:"sessionAffinityTtlSeconds,omitempty"`
+	SessionAffinityTTLSeconds *int32
 
 	// Defines the Web Application Firewall policy for each host (if applicable)
-	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink
 
 	// READ-ONLY; The configuration specifying how to enable HTTPS
-	CustomHTTPSConfiguration *CustomHTTPSConfiguration `json:"customHttpsConfiguration,omitempty" azure:"ro"`
+	CustomHTTPSConfiguration *CustomHTTPSConfiguration
 
 	// READ-ONLY; Provisioning status of Custom Https of the frontendEndpoint.
-	CustomHTTPSProvisioningState *CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty" azure:"ro"`
+	CustomHTTPSProvisioningState *CustomHTTPSProvisioningState
 
 	// READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
-	CustomHTTPSProvisioningSubstate *CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty" azure:"ro"`
+	CustomHTTPSProvisioningSubstate *CustomHTTPSProvisioningSubstate
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // FrontendEndpointUpdateParameters - Frontend endpoint used in routing rule
 type FrontendEndpointUpdateParameters struct {
 	// The host name of the frontendEndpoint. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
-	SessionAffinityEnabledState *SessionAffinityEnabledState `json:"sessionAffinityEnabledState,omitempty"`
+	SessionAffinityEnabledState *SessionAffinityEnabledState
 
 	// UNUSED. This field will be ignored. The TTL to use in seconds for session affinity, if applicable.
-	SessionAffinityTTLSeconds *int32 `json:"sessionAffinityTtlSeconds,omitempty"`
+	SessionAffinityTTLSeconds *int32
 
 	// Defines the Web Application Firewall policy for each host (if applicable)
-	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink
 }
 
 // FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for each
 // host (if applicable)
 type FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // FrontendEndpointsClientBeginDisableHTTPSOptions contains the optional parameters for the FrontendEndpointsClient.BeginDisableHTTPS
@@ -543,391 +559,391 @@ type FrontendEndpointsClientListByFrontDoorOptions struct {
 // objects and a URL link to get the next set of results.
 type FrontendEndpointsListResult struct {
 	// URL to get the next set of frontend endpoints if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Frontend endpoints within a Front Door.
-	Value []*FrontendEndpoint `json:"value,omitempty" azure:"ro"`
+	Value []*FrontendEndpoint
 }
 
 // HeaderAction - An action that can manipulate an http header.
 type HeaderAction struct {
 	// REQUIRED; Which type of manipulation to apply to the header.
-	HeaderActionType *HeaderActionType `json:"headerActionType,omitempty"`
+	HeaderActionType *HeaderActionType
 
 	// REQUIRED; The name of the header this action will apply to.
-	HeaderName *string `json:"headerName,omitempty"`
+	HeaderName *string
 
 	// The value to update the given header name with. This value is not used if the actionType is Delete.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // HealthProbeSettingsListResult - Result of the request to list HealthProbeSettings. It contains a list of HealthProbeSettings
 // objects and a URL link to get the next set of results.
 type HealthProbeSettingsListResult struct {
 	// URL to get the next set of HealthProbeSettings objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of HealthProbeSettings within a Front Door.
-	Value []*HealthProbeSettingsModel `json:"value,omitempty" azure:"ro"`
+	Value []*HealthProbeSettingsModel
 }
 
 // HealthProbeSettingsModel - Load balancing settings for a backend pool
 type HealthProbeSettingsModel struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the health probe settings
-	Properties *HealthProbeSettingsProperties `json:"properties,omitempty"`
+	Properties *HealthProbeSettingsProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HealthProbeSettingsProperties - The JSON object that contains the properties required to create a health probe settings.
 type HealthProbeSettingsProperties struct {
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
-	EnabledState *HealthProbeEnabled `json:"enabledState,omitempty"`
+	EnabledState *HealthProbeEnabled
 
 	// Configures which HTTP method to use to probe the backends defined under backendPools.
-	HealthProbeMethod *FrontDoorHealthProbeMethod `json:"healthProbeMethod,omitempty"`
+	HealthProbeMethod *FrontDoorHealthProbeMethod
 
 	// The number of seconds between health probes.
-	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
+	IntervalInSeconds *int32
 
 	// The path to use for the health probe. Default is /
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Protocol scheme to use for this probe
-	Protocol *FrontDoorProtocol `json:"protocol,omitempty"`
+	Protocol *FrontDoorProtocol
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // HealthProbeSettingsUpdateParameters - L7 health probe settings for a backend pool
 type HealthProbeSettingsUpdateParameters struct {
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
-	EnabledState *HealthProbeEnabled `json:"enabledState,omitempty"`
+	EnabledState *HealthProbeEnabled
 
 	// Configures which HTTP method to use to probe the backends defined under backendPools.
-	HealthProbeMethod *FrontDoorHealthProbeMethod `json:"healthProbeMethod,omitempty"`
+	HealthProbeMethod *FrontDoorHealthProbeMethod
 
 	// The number of seconds between health probes.
-	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
+	IntervalInSeconds *int32
 
 	// The path to use for the health probe. Default is /
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Protocol scheme to use for this probe
-	Protocol *FrontDoorProtocol `json:"protocol,omitempty"`
+	Protocol *FrontDoorProtocol
 }
 
 // KeyVaultCertificateSourceParameters - Parameters required for bring-your-own-certification via Key Vault
 type KeyVaultCertificateSourceParameters struct {
 	// The name of the Key Vault secret representing the full certificate PFX
-	SecretName *string `json:"secretName,omitempty"`
+	SecretName *string
 
 	// The version of the Key Vault secret representing the full certificate PFX
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 
 	// The Key Vault containing the SSL certificate
-	Vault *KeyVaultCertificateSourceParametersVault `json:"vault,omitempty"`
+	Vault *KeyVaultCertificateSourceParametersVault
 }
 
 // KeyVaultCertificateSourceParametersVault - The Key Vault containing the SSL certificate
 type KeyVaultCertificateSourceParametersVault struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // LatencyMetric - Defines the properties of a latency metric used in the latency scorecard
 type LatencyMetric struct {
 	// READ-ONLY; The lower end of the 95% confidence interval for endpoint A
-	ACLower95CI *float32 `json:"aCLower95CI,omitempty" azure:"ro"`
+	ACLower95CI *float32
 
 	// READ-ONLY; The upper end of the 95% confidence interval for endpoint A
-	AHUpper95CI *float32 `json:"aHUpper95CI,omitempty" azure:"ro"`
+	AHUpper95CI *float32
 
 	// READ-ONLY; The metric value of the A endpoint
-	AValue *float32 `json:"aValue,omitempty" azure:"ro"`
+	AValue *float32
 
 	// READ-ONLY; The lower end of the 95% confidence interval for endpoint B
-	BCLower95CI *float32 `json:"bCLower95CI,omitempty" azure:"ro"`
+	BCLower95CI *float32
 
 	// READ-ONLY; The upper end of the 95% confidence interval for endpoint B
-	BUpper95CI *float32 `json:"bUpper95CI,omitempty" azure:"ro"`
+	BUpper95CI *float32
 
 	// READ-ONLY; The metric value of the B endpoint
-	BValue *float32 `json:"bValue,omitempty" azure:"ro"`
+	BValue *float32
 
 	// READ-ONLY; The difference in value between endpoint A and B
-	Delta *float32 `json:"delta,omitempty" azure:"ro"`
+	Delta *float32
 
 	// READ-ONLY; The percent difference between endpoint A and B
-	DeltaPercent *float32 `json:"deltaPercent,omitempty" azure:"ro"`
+	DeltaPercent *float32
 
 	// READ-ONLY; The end time of the Latency Scorecard in UTC
-	EndDateTimeUTC *string `json:"endDateTimeUTC,omitempty" azure:"ro"`
+	EndDateTimeUTC *string
 
 	// READ-ONLY; The name of the Latency Metric
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // LatencyScorecard - Defines the LatencyScorecard
 type LatencyScorecard struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of a latency scorecard
-	Properties *LatencyScorecardProperties `json:"properties,omitempty"`
+	Properties *LatencyScorecardProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LatencyScorecardProperties - Defines a the properties of a Latency Scorecard
 type LatencyScorecardProperties struct {
 	// The latency metrics of the Latency Scorecard
-	LatencyMetrics []*LatencyMetric `json:"latencyMetrics,omitempty"`
+	LatencyMetrics []*LatencyMetric
 
 	// READ-ONLY; The country associated with the Latency Scorecard. Values are country ISO codes as specified here- https://www.iso.org/iso-3166-country-codes.html
-	Country *string `json:"country,omitempty" azure:"ro"`
+	Country *string
 
 	// READ-ONLY; The description of the Latency Scorecard
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The end time of the Latency Scorecard in UTC
-	EndDateTimeUTC *time.Time `json:"endDateTimeUTC,omitempty" azure:"ro"`
+	EndDateTimeUTC *time.Time
 
 	// READ-ONLY; The A endpoint in the scorecard
-	EndpointA *string `json:"endpointA,omitempty" azure:"ro"`
+	EndpointA *string
 
 	// READ-ONLY; The B endpoint in the scorecard
-	EndpointB *string `json:"endpointB,omitempty" azure:"ro"`
+	EndpointB *string
 
 	// READ-ONLY; The unique identifier of the Latency Scorecard
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the Latency Scorecard
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The start time of the Latency Scorecard in UTC
-	StartDateTimeUTC *time.Time `json:"startDateTimeUTC,omitempty" azure:"ro"`
+	StartDateTimeUTC *time.Time
 }
 
 // ListResult - Result of the request to list Front Doors. It contains a list of Front Door objects and a URL link to get
 // the next set of results.
 type ListResult struct {
 	// URL to get the next set of Front Door objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Front Doors within a resource group.
-	Value []*FrontDoor `json:"value,omitempty" azure:"ro"`
+	Value []*FrontDoor
 }
 
 // LoadBalancingSettingsListResult - Result of the request to list load balancing settings. It contains a list of load balancing
 // settings objects and a URL link to get the next set of results.
 type LoadBalancingSettingsListResult struct {
 	// URL to get the next set of LoadBalancingSettings objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Backend Pools within a Front Door.
-	Value []*LoadBalancingSettingsModel `json:"value,omitempty" azure:"ro"`
+	Value []*LoadBalancingSettingsModel
 }
 
 // LoadBalancingSettingsModel - Load balancing settings for a backend pool
 type LoadBalancingSettingsModel struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the load balancing settings
-	Properties *LoadBalancingSettingsProperties `json:"properties,omitempty"`
+	Properties *LoadBalancingSettingsProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LoadBalancingSettingsProperties - The JSON object that contains the properties required to create load balancing settings
 type LoadBalancingSettingsProperties struct {
 	// The additional latency in milliseconds for probes to fall into the lowest latency bucket
-	AdditionalLatencyMilliseconds *int32 `json:"additionalLatencyMilliseconds,omitempty"`
+	AdditionalLatencyMilliseconds *int32
 
 	// The number of samples to consider for load balancing decisions
-	SampleSize *int32 `json:"sampleSize,omitempty"`
+	SampleSize *int32
 
 	// The number of samples within the sample period that must succeed
-	SuccessfulSamplesRequired *int32 `json:"successfulSamplesRequired,omitempty"`
+	SuccessfulSamplesRequired *int32
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // LoadBalancingSettingsUpdateParameters - Round-Robin load balancing settings for a backend pool
 type LoadBalancingSettingsUpdateParameters struct {
 	// The additional latency in milliseconds for probes to fall into the lowest latency bucket
-	AdditionalLatencyMilliseconds *int32 `json:"additionalLatencyMilliseconds,omitempty"`
+	AdditionalLatencyMilliseconds *int32
 
 	// The number of samples to consider for load balancing decisions
-	SampleSize *int32 `json:"sampleSize,omitempty"`
+	SampleSize *int32
 
 	// The number of samples within the sample period that must succeed
-	SuccessfulSamplesRequired *int32 `json:"successfulSamplesRequired,omitempty"`
+	SuccessfulSamplesRequired *int32
 }
 
 // ManagedRuleDefinition - Describes a managed rule definition.
 type ManagedRuleDefinition struct {
 	// READ-ONLY; Describes the default action to be applied when the managed rule matches.
-	DefaultAction *ActionType `json:"defaultAction,omitempty" azure:"ro"`
+	DefaultAction *ActionType
 
 	// READ-ONLY; Describes the default state for the managed rule.
-	DefaultState *ManagedRuleEnabledState `json:"defaultState,omitempty" azure:"ro"`
+	DefaultState *ManagedRuleEnabledState
 
 	// READ-ONLY; Describes the functionality of the managed rule.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Identifier for the managed rule.
-	RuleID *string `json:"ruleId,omitempty" azure:"ro"`
+	RuleID *string
 }
 
 // ManagedRuleExclusion - Exclude variables from managed rule evaluation.
 type ManagedRuleExclusion struct {
 	// REQUIRED; The variable type to be excluded.
-	MatchVariable *ManagedRuleExclusionMatchVariable `json:"matchVariable,omitempty"`
+	MatchVariable *ManagedRuleExclusionMatchVariable
 
 	// REQUIRED; Selector value for which elements in the collection this exclusion applies to.
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// REQUIRED; Comparison operator to apply to the selector when specifying which elements in the collection this exclusion
 	// applies to.
-	SelectorMatchOperator *ManagedRuleExclusionSelectorMatchOperator `json:"selectorMatchOperator,omitempty"`
+	SelectorMatchOperator *ManagedRuleExclusionSelectorMatchOperator
 }
 
 // ManagedRuleGroupDefinition - Describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
 	// READ-ONLY; Description of the managed rule group.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Name of the managed rule group.
-	RuleGroupName *string `json:"ruleGroupName,omitempty" azure:"ro"`
+	RuleGroupName *string
 
 	// READ-ONLY; List of rules within the managed rule group.
-	Rules []*ManagedRuleDefinition `json:"rules,omitempty" azure:"ro"`
+	Rules []*ManagedRuleDefinition
 }
 
 // ManagedRuleGroupOverride - Defines a managed rule group override setting.
 type ManagedRuleGroupOverride struct {
 	// REQUIRED; Describes the managed rule group to override.
-	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	RuleGroupName *string
 
 	// Describes the exclusions that are applied to all rules in the group.
-	Exclusions []*ManagedRuleExclusion `json:"exclusions,omitempty"`
+	Exclusions []*ManagedRuleExclusion
 
 	// List of rules that will be disabled. If none specified, all rules in the group will be disabled.
-	Rules []*ManagedRuleOverride `json:"rules,omitempty"`
+	Rules []*ManagedRuleOverride
 }
 
 // ManagedRuleOverride - Defines a managed rule group override setting.
 type ManagedRuleOverride struct {
 	// REQUIRED; Identifier for the managed rule.
-	RuleID *string `json:"ruleId,omitempty"`
+	RuleID *string
 
 	// Describes the override action to be applied when rule matches.
-	Action *ActionType `json:"action,omitempty"`
+	Action *ActionType
 
 	// Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
-	EnabledState *ManagedRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *ManagedRuleEnabledState
 
 	// Describes the exclusions that are applied to this specific rule.
-	Exclusions []*ManagedRuleExclusion `json:"exclusions,omitempty"`
+	Exclusions []*ManagedRuleExclusion
 }
 
 // ManagedRuleSet - Defines a managed rule set.
 type ManagedRuleSet struct {
 	// REQUIRED; Defines the rule set type to use.
-	RuleSetType *string `json:"ruleSetType,omitempty"`
+	RuleSetType *string
 
 	// REQUIRED; Defines the version of the rule set to use.
-	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	RuleSetVersion *string
 
 	// Describes the exclusions that are applied to all rules in the set.
-	Exclusions []*ManagedRuleExclusion `json:"exclusions,omitempty"`
+	Exclusions []*ManagedRuleExclusion
 
 	// Defines the rule group overrides to apply to the rule set.
-	RuleGroupOverrides []*ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
+	RuleGroupOverrides []*ManagedRuleGroupOverride
 
-	// Defines the action to take when a managed rule set score threshold is met.
-	RuleSetAction *ManagedRuleSetActionType `json:"ruleSetAction,omitempty"`
+	// Defines the rule set action.
+	RuleSetAction *ManagedRuleSetActionType
 }
 
 // ManagedRuleSetDefinition - Describes the a managed rule set definition.
 type ManagedRuleSetDefinition struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties for a managed rule set definition.
-	Properties *ManagedRuleSetDefinitionProperties `json:"properties,omitempty"`
+	Properties *ManagedRuleSetDefinitionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedRuleSetDefinitionList - List of managed rule set definitions available for use in a policy.
 type ManagedRuleSetDefinitionList struct {
 	// URL to retrieve next set of managed rule set definitions.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of managed rule set definitions.
-	Value []*ManagedRuleSetDefinition `json:"value,omitempty" azure:"ro"`
+	Value []*ManagedRuleSetDefinition
 }
 
 // ManagedRuleSetDefinitionProperties - Properties for a managed rule set definition.
 type ManagedRuleSetDefinitionProperties struct {
 	// READ-ONLY; Provisioning state of the managed rule set.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Rule groups of the managed rule set.
-	RuleGroups []*ManagedRuleGroupDefinition `json:"ruleGroups,omitempty" azure:"ro"`
+	RuleGroups []*ManagedRuleGroupDefinition
 
 	// READ-ONLY; Id of the managed rule set.
-	RuleSetID *string `json:"ruleSetId,omitempty" azure:"ro"`
+	RuleSetID *string
 
 	// READ-ONLY; Type of the managed rule set.
-	RuleSetType *string `json:"ruleSetType,omitempty" azure:"ro"`
+	RuleSetType *string
 
 	// READ-ONLY; Version of the managed rule set type.
-	RuleSetVersion *string `json:"ruleSetVersion,omitempty" azure:"ro"`
+	RuleSetVersion *string
 }
 
 // ManagedRuleSetList - Defines the list of managed rule sets for the policy.
 type ManagedRuleSetList struct {
 	// List of rule sets.
-	ManagedRuleSets []*ManagedRuleSet `json:"managedRuleSets,omitempty"`
+	ManagedRuleSets []*ManagedRuleSet
 }
 
 // ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager method.
@@ -938,22 +954,22 @@ type ManagedRuleSetsClientListOptions struct {
 // MatchCondition - Define a match condition.
 type MatchCondition struct {
 	// REQUIRED; List of possible match values.
-	MatchValue []*string `json:"matchValue,omitempty"`
+	MatchValue []*string
 
 	// REQUIRED; Request variable to compare with.
-	MatchVariable *MatchVariable `json:"matchVariable,omitempty"`
+	MatchVariable *MatchVariable
 
 	// REQUIRED; Comparison type to use for matching with the variable value.
-	Operator *Operator `json:"operator,omitempty"`
+	Operator *Operator
 
 	// Describes if the result of this condition should be negated.
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Match against a specific key from the QueryString, PostArgs, RequestHeader or Cookies variables. Default is null.
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms.
-	Transforms []*TransformType `json:"transforms,omitempty"`
+	Transforms []*TransformType
 }
 
 // NameAvailabilityClientCheckOptions contains the optional parameters for the NameAvailabilityClient.Check method.
@@ -1018,8 +1034,20 @@ type PoliciesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
+type PoliciesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
 type PoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoliciesClientListBySubscriptionOptions contains the optional parameters for the PoliciesClient.NewListBySubscriptionPager
+// method.
+type PoliciesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1031,67 +1059,67 @@ type PoliciesClientListOptions struct {
 // PolicySettings - Defines top-level WebApplicationFirewallPolicy configuration settings.
 type PolicySettings struct {
 	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
-	CustomBlockResponseBody *string `json:"customBlockResponseBody,omitempty"`
+	CustomBlockResponseBody *string
 
 	// If the action type is block, customer can override the response status code.
-	CustomBlockResponseStatusCode *int32 `json:"customBlockResponseStatusCode,omitempty"`
+	CustomBlockResponseStatusCode *int32
 
 	// Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *PolicyEnabledState `json:"enabledState,omitempty"`
+	EnabledState *PolicyEnabledState
 
 	// Describes if it is in detection mode or prevention mode at policy level.
-	Mode *PolicyMode `json:"mode,omitempty"`
+	Mode *PolicyMode
 
 	// If action type is redirect, this field represents redirect URL for the client.
-	RedirectURL *string `json:"redirectUrl,omitempty"`
+	RedirectURL *string
 
 	// Describes if policy managed rules will inspect the request body content.
-	RequestBodyCheck *PolicyRequestBodyCheck `json:"requestBodyCheck,omitempty"`
+	RequestBodyCheck *PolicyRequestBodyCheck
 }
 
 // PreconfiguredEndpoint - Defines the properties of a preconfigured endpoint
 type PreconfiguredEndpoint struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of a preconfiguredEndpoint
-	Properties *PreconfiguredEndpointProperties `json:"properties,omitempty"`
+	Properties *PreconfiguredEndpointProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PreconfiguredEndpointList - Defines a list of preconfigured endpoints.
 type PreconfiguredEndpointList struct {
 	// URL to get the next set of PreconfiguredEndpoints if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of PreconfiguredEndpoints supported by NetworkExperiment.
-	Value []*PreconfiguredEndpoint `json:"value,omitempty" azure:"ro"`
+	Value []*PreconfiguredEndpoint
 }
 
 // PreconfiguredEndpointProperties - Defines the properties of a preconfigured endpoint
 type PreconfiguredEndpointProperties struct {
 	// The preconfigured endpoint backend
-	Backend *string `json:"backend,omitempty"`
+	Backend *string
 
 	// The description of the endpoint
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The endpoint that is preconfigured
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// The type of endpoint
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 }
 
 // PreconfiguredEndpointsClientListOptions contains the optional parameters for the PreconfiguredEndpointsClient.NewListPager
@@ -1103,134 +1131,137 @@ type PreconfiguredEndpointsClientListOptions struct {
 // Profile - Defines an Network Experiment Profile and lists of Experiments
 type Profile struct {
 	// Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of a Profile
-	Properties *ProfileProperties `json:"properties,omitempty"`
+	Properties *ProfileProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProfileList - Defines a list of Profiles. It contains a list of Profile objects and a URL link to get the next set of results.
 type ProfileList struct {
 	// URL to get the next set of Profile objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Profiles within a resource group.
-	Value []*Profile `json:"value,omitempty" azure:"ro"`
+	Value []*Profile
 }
 
 // ProfileProperties - Defines the properties of an experiment
 type ProfileProperties struct {
 	// The state of the Experiment
-	EnabledState *State `json:"enabledState,omitempty"`
+	EnabledState *State
 
 	// READ-ONLY; Resource status.
-	ResourceState *NetworkExperimentResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *NetworkExperimentResourceState
 }
 
 // ProfileUpdateModel - Defines modifiable attributes of a Profile
 type ProfileUpdateModel struct {
 	// The properties of a Profile
-	Properties *ProfileUpdateProperties `json:"properties,omitempty"`
+	Properties *ProfileUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ProfileUpdateProperties - Defines the properties of an experiment
 type ProfileUpdateProperties struct {
 	// The enabled state of the Profile
-	EnabledState *State `json:"enabledState,omitempty"`
+	EnabledState *State
 }
 
 // Properties - The JSON object that contains the properties required to create an endpoint.
 type Properties struct {
 	// Backend pools available to routing rules.
-	BackendPools []*BackendPool `json:"backendPools,omitempty"`
+	BackendPools []*BackendPool
 
 	// Settings for all backendPools
-	BackendPoolsSettings *BackendPoolsSettings `json:"backendPoolsSettings,omitempty"`
+	BackendPoolsSettings *BackendPoolsSettings
 
 	// Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *FrontDoorEnabledState `json:"enabledState,omitempty"`
+	EnabledState *FrontDoorEnabledState
 
 	// A friendly name for the frontDoor
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Frontend endpoints available to routing rules.
-	FrontendEndpoints []*FrontendEndpoint `json:"frontendEndpoints,omitempty"`
+	FrontendEndpoints []*FrontendEndpoint
 
 	// Health probe settings associated with this Front Door instance.
-	HealthProbeSettings []*HealthProbeSettingsModel `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings []*HealthProbeSettingsModel
 
 	// Load balancing settings associated with this Front Door instance.
-	LoadBalancingSettings []*LoadBalancingSettingsModel `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings []*LoadBalancingSettingsModel
 
 	// Routing rules associated with this Front Door.
-	RoutingRules []*RoutingRule `json:"routingRules,omitempty"`
+	RoutingRules []*RoutingRule
 
 	// READ-ONLY; The host that each frontendEndpoint must CNAME to.
-	Cname *string `json:"cname,omitempty" azure:"ro"`
+	Cname *string
+
+	// READ-ONLY; Key-Value pair representing additional properties for frontdoor.
+	ExtendedProperties map[string]*string
 
 	// READ-ONLY; The Id of the frontdoor.
-	FrontdoorID *string `json:"frontdoorId,omitempty" azure:"ro"`
+	FrontdoorID *string
 
 	// READ-ONLY; Provisioning state of the Front Door.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Resource status of the Front Door.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 
 	// READ-ONLY; Rules Engine Configurations available to routing rules.
-	RulesEngines []*RulesEngine `json:"rulesEngines,omitempty" azure:"ro"`
+	RulesEngines []*RulesEngine
 }
 
 // PurgeParameters - Parameters required for content purge.
 type PurgeParameters struct {
 	// REQUIRED; The path to the content to be purged. Can describe a file path or a wild card directory.
-	ContentPaths []*string `json:"contentPaths,omitempty"`
+	ContentPaths []*string
 }
 
 // RedirectConfiguration - Describes Redirect Route.
 type RedirectConfiguration struct {
 	// REQUIRED
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 
 	// Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
-	CustomFragment *string `json:"customFragment,omitempty"`
+	CustomFragment *string
 
 	// Host to redirect. Leave empty to use the incoming host as the destination host.
-	CustomHost *string `json:"customHost,omitempty"`
+	CustomHost *string
 
 	// The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination
 	// path.
-	CustomPath *string `json:"customPath,omitempty"`
+	CustomPath *string
 
 	// The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string;
 	// leave empty to preserve the incoming query string. Query string must be in =
 	// format. The first ? and & will be added automatically so do not include them in the front, but do separate multiple query
 	// strings with &.
-	CustomQueryString *string `json:"customQueryString,omitempty"`
+	CustomQueryString *string
 
 	// The protocol of the destination to where the traffic is redirected
-	RedirectProtocol *FrontDoorRedirectProtocol `json:"redirectProtocol,omitempty"`
+	RedirectProtocol *FrontDoorRedirectProtocol
 
 	// The redirect type the rule will use when redirecting traffic.
-	RedirectType *FrontDoorRedirectType `json:"redirectType,omitempty"`
+	RedirectType *FrontDoorRedirectType
 }
 
 // GetRouteConfiguration implements the RouteConfigurationClassification interface for type RedirectConfiguration.
@@ -1259,19 +1290,19 @@ type ReportsClientGetTimeseriesOptions struct {
 // Resource - Common resource representation.
 type Resource struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RouteConfigurationClassification provides polymorphic access to related types.
@@ -1286,7 +1317,7 @@ type RouteConfigurationClassification interface {
 // RouteConfiguration - Base class for all types of Route.
 type RouteConfiguration struct {
 	// REQUIRED
-	ODataType *string `json:"@odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetRouteConfiguration implements the RouteConfigurationClassification interface for type RouteConfiguration.
@@ -1296,159 +1327,159 @@ func (r *RouteConfiguration) GetRouteConfiguration() *RouteConfiguration { retur
 // information.
 type RoutingRule struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the Front Door Routing Rule
-	Properties *RoutingRuleProperties `json:"properties,omitempty"`
+	Properties *RoutingRuleProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RoutingRuleLink - Defines the Resource ID for a Routing Rule.
 type RoutingRuleLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // RoutingRuleListResult - Result of the request to list Routing Rules. It contains a list of Routing Rule objects and a URL
 // link to get the next set of results.
 type RoutingRuleListResult struct {
 	// URL to get the next set of RoutingRule objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Routing Rules within a Front Door.
-	Value []*RoutingRule `json:"value,omitempty" azure:"ro"`
+	Value []*RoutingRule
 }
 
 // RoutingRuleProperties - The JSON object that contains the properties required to create a routing rule.
 type RoutingRuleProperties struct {
 	// Protocol schemes to match for this rule
-	AcceptedProtocols []*FrontDoorProtocol `json:"acceptedProtocols,omitempty"`
+	AcceptedProtocols []*FrontDoorProtocol
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *RoutingRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *RoutingRuleEnabledState
 
 	// Frontend endpoints associated with this rule
-	FrontendEndpoints []*SubResource `json:"frontendEndpoints,omitempty"`
+	FrontendEndpoints []*SubResource
 
 	// The route patterns of the rule.
-	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
+	PatternsToMatch []*string
 
 	// A reference to the routing configuration.
-	RouteConfiguration RouteConfigurationClassification `json:"routeConfiguration,omitempty"`
+	RouteConfiguration RouteConfigurationClassification
 
 	// A reference to a specific Rules Engine Configuration to apply to this route.
-	RulesEngine *SubResource `json:"rulesEngine,omitempty"`
+	RulesEngine *SubResource
 
 	// Defines the Web Application Firewall policy for each routing rule (if applicable)
-	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // RoutingRuleUpdateParameters - Routing rules to apply to an endpoint
 type RoutingRuleUpdateParameters struct {
 	// Protocol schemes to match for this rule
-	AcceptedProtocols []*FrontDoorProtocol `json:"acceptedProtocols,omitempty"`
+	AcceptedProtocols []*FrontDoorProtocol
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *RoutingRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *RoutingRuleEnabledState
 
 	// Frontend endpoints associated with this rule
-	FrontendEndpoints []*SubResource `json:"frontendEndpoints,omitempty"`
+	FrontendEndpoints []*SubResource
 
 	// The route patterns of the rule.
-	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
+	PatternsToMatch []*string
 
 	// A reference to the routing configuration.
-	RouteConfiguration RouteConfigurationClassification `json:"routeConfiguration,omitempty"`
+	RouteConfiguration RouteConfigurationClassification
 
 	// A reference to a specific Rules Engine Configuration to apply to this route.
-	RulesEngine *SubResource `json:"rulesEngine,omitempty"`
+	RulesEngine *SubResource
 
 	// Defines the Web Application Firewall policy for each routing rule (if applicable)
-	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink
 }
 
 // RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for each routing
 // rule (if applicable)
 type RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // RulesEngine - A rules engine configuration containing a list of rules that will run to modify the runtime behavior of the
 // request and response.
 type RulesEngine struct {
 	// Properties of the Rules Engine Configuration.
-	Properties *RulesEngineProperties `json:"properties,omitempty"`
+	Properties *RulesEngineProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RulesEngineAction - One or more actions that will execute, modifying the request and/or response.
 type RulesEngineAction struct {
 	// A list of header actions to apply from the request from AFD to the origin.
-	RequestHeaderActions []*HeaderAction `json:"requestHeaderActions,omitempty"`
+	RequestHeaderActions []*HeaderAction
 
 	// A list of header actions to apply from the response from AFD to the client.
-	ResponseHeaderActions []*HeaderAction `json:"responseHeaderActions,omitempty"`
+	ResponseHeaderActions []*HeaderAction
 
 	// Override the route configuration.
-	RouteConfigurationOverride RouteConfigurationClassification `json:"routeConfigurationOverride,omitempty"`
+	RouteConfigurationOverride RouteConfigurationClassification
 }
 
 // RulesEngineListResult - Result of the request to list Rules Engine Configurations. It contains a list of RulesEngine objects
 // and a URL link to get the next set of results.
 type RulesEngineListResult struct {
 	// URL to get the next set of RulesEngine objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of rulesEngines within a Front Door.
-	Value []*RulesEngine `json:"value,omitempty" azure:"ro"`
+	Value []*RulesEngine
 }
 
 // RulesEngineMatchCondition - Define a match condition
 type RulesEngineMatchCondition struct {
 	// REQUIRED; Match values to match against. The operator will apply to each value in here with OR semantics. If any of them
 	// match the variable with the given operator this match condition is considered a match.
-	RulesEngineMatchValue []*string `json:"rulesEngineMatchValue,omitempty"`
+	RulesEngineMatchValue []*string
 
 	// REQUIRED; Match Variable
-	RulesEngineMatchVariable *RulesEngineMatchVariable `json:"rulesEngineMatchVariable,omitempty"`
+	RulesEngineMatchVariable *RulesEngineMatchVariable
 
 	// REQUIRED; Describes operator to apply to the match condition.
-	RulesEngineOperator *RulesEngineOperator `json:"rulesEngineOperator,omitempty"`
+	RulesEngineOperator *RulesEngineOperator
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Name of selector in RequestHeader or RequestBody to be matched
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RulesEngineProperties - The JSON object that contains the properties required to create a Rules Engine Configuration.
 type RulesEngineProperties struct {
 	// A list of rules that define a particular Rules Engine Configuration.
-	Rules []*RulesEngineRule `json:"rules,omitempty"`
+	Rules []*RulesEngineRule
 
 	// READ-ONLY; Resource status.
-	ResourceState *FrontDoorResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *FrontDoorResourceState
 }
 
 // RulesEngineRule - Contains a list of match conditions, and an action on how to modify the request/response. If multiple
@@ -1456,27 +1487,27 @@ type RulesEngineProperties struct {
 // action, or append in the case of headers manipulation.
 type RulesEngineRule struct {
 	// REQUIRED; Actions to perform on the request and response if all of the match conditions are met.
-	Action *RulesEngineAction `json:"action,omitempty"`
+	Action *RulesEngineAction
 
 	// REQUIRED; A name to refer to this specific rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; A priority assigned to this rule.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// A list of match conditions that must meet in order for the actions of this rule to run. Having no match conditions means
 	// the actions will always run.
-	MatchConditions []*RulesEngineMatchCondition `json:"matchConditions,omitempty"`
+	MatchConditions []*RulesEngineMatchCondition
 
 	// If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults
 	// to Continue.
-	MatchProcessingBehavior *MatchProcessingBehavior `json:"matchProcessingBehavior,omitempty"`
+	MatchProcessingBehavior *MatchProcessingBehavior
 }
 
 // RulesEngineUpdateParameters - Rules Engine Configuration to apply to a Routing Rule.
 type RulesEngineUpdateParameters struct {
 	// A list of rules that define a particular Rules Engine Configuration.
-	Rules []*RulesEngineRule `json:"rules,omitempty"`
+	Rules []*RulesEngineRule
 }
 
 // RulesEnginesClientBeginCreateOrUpdateOptions contains the optional parameters for the RulesEnginesClient.BeginCreateOrUpdate
@@ -1506,186 +1537,186 @@ type RulesEnginesClientListByFrontDoorOptions struct {
 // SKU - The pricing tier of the web application firewall policy.
 type SKU struct {
 	// Name of the pricing tier.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 }
 
 // SecurityPolicyLink - Defines the Resource ID for a Security Policy.
 type SecurityPolicyLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SubResource - Reference to another subresource.
 type SubResource struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // TagsObject - Tags object for patch operations.
 type TagsObject struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Timeseries - Defines the Timeseries
 type Timeseries struct {
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of a Timeseries
-	Properties *TimeseriesProperties `json:"properties,omitempty"`
+	Properties *TimeseriesProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TimeseriesDataPoint - Defines a timeseries datapoint used in a timeseries
 type TimeseriesDataPoint struct {
 	// The DateTime of the Timeseries data point in UTC
-	DateTimeUTC *string `json:"dateTimeUTC,omitempty"`
+	DateTimeUTC *string
 
 	// The Value of the Timeseries data point
-	Value *float32 `json:"value,omitempty"`
+	Value *float32
 }
 
 // TimeseriesProperties - Defines the properties of a timeseries
 type TimeseriesProperties struct {
 	// The aggregation interval of the Timeseries
-	AggregationInterval *AggregationInterval `json:"aggregationInterval,omitempty"`
+	AggregationInterval *AggregationInterval
 
 	// The country associated with the Timeseries. Values are country ISO codes as specified here- https://www.iso.org/iso-3166-country-codes.html
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// The end DateTime of the Timeseries in UTC
-	EndDateTimeUTC *string `json:"endDateTimeUTC,omitempty"`
+	EndDateTimeUTC *string
 
 	// The endpoint associated with the Timeseries data point
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// The start DateTime of the Timeseries in UTC
-	StartDateTimeUTC *string `json:"startDateTimeUTC,omitempty"`
+	StartDateTimeUTC *string
 
 	// The set of data points for the timeseries
-	TimeseriesData []*TimeseriesDataPoint `json:"timeseriesData,omitempty"`
+	TimeseriesData []*TimeseriesDataPoint
 
 	// The type of Timeseries
-	TimeseriesType *TimeseriesType `json:"timeseriesType,omitempty"`
+	TimeseriesType *TimeseriesType
 }
 
 // UpdateParameters - The properties needed to update a Front Door
 type UpdateParameters struct {
 	// Backend pools available to routing rules.
-	BackendPools []*BackendPool `json:"backendPools,omitempty"`
+	BackendPools []*BackendPool
 
 	// Settings for all backendPools
-	BackendPoolsSettings *BackendPoolsSettings `json:"backendPoolsSettings,omitempty"`
+	BackendPoolsSettings *BackendPoolsSettings
 
 	// Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *FrontDoorEnabledState `json:"enabledState,omitempty"`
+	EnabledState *FrontDoorEnabledState
 
 	// A friendly name for the frontDoor
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Frontend endpoints available to routing rules.
-	FrontendEndpoints []*FrontendEndpoint `json:"frontendEndpoints,omitempty"`
+	FrontendEndpoints []*FrontendEndpoint
 
 	// Health probe settings associated with this Front Door instance.
-	HealthProbeSettings []*HealthProbeSettingsModel `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings []*HealthProbeSettingsModel
 
 	// Load balancing settings associated with this Front Door instance.
-	LoadBalancingSettings []*LoadBalancingSettingsModel `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings []*LoadBalancingSettingsModel
 
 	// Routing rules associated with this Front Door.
-	RoutingRules []*RoutingRule `json:"routingRules,omitempty"`
+	RoutingRules []*RoutingRule
 }
 
 // ValidateCustomDomainInput - Input of the custom domain to be validated for DNS mapping.
 type ValidateCustomDomainInput struct {
 	// REQUIRED; The host name of the custom domain. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 }
 
 // ValidateCustomDomainOutput - Output of custom domain validation.
 type ValidateCustomDomainOutput struct {
 	// READ-ONLY; Indicates whether the custom domain is valid or not.
-	CustomDomainValidated *bool `json:"customDomainValidated,omitempty" azure:"ro"`
+	CustomDomainValidated *bool
 
 	// READ-ONLY; Error message describing why the custom domain is not valid.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The reason why the custom domain is not valid.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // WebApplicationFirewallPolicy - Defines web application firewall policy.
 type WebApplicationFirewallPolicy struct {
 	// Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the web application firewall policy.
-	Properties *WebApplicationFirewallPolicyProperties `json:"properties,omitempty"`
+	Properties *WebApplicationFirewallPolicyProperties
 
 	// The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebApplicationFirewallPolicyList - Defines a list of WebApplicationFirewallPolicies. It contains a list of WebApplicationFirewallPolicy
 // objects and a URL link to get the next set of results.
 type WebApplicationFirewallPolicyList struct {
 	// URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of WebApplicationFirewallPolicies within a resource group.
-	Value []*WebApplicationFirewallPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*WebApplicationFirewallPolicy
 }
 
 // WebApplicationFirewallPolicyProperties - Defines web application firewall policy properties.
 type WebApplicationFirewallPolicyProperties struct {
 	// Describes custom rules inside the policy.
-	CustomRules *CustomRuleList `json:"customRules,omitempty"`
+	CustomRules *CustomRuleList
 
 	// Describes managed rules inside the policy.
-	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
+	ManagedRules *ManagedRuleSetList
 
 	// Describes settings for the policy.
-	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	PolicySettings *PolicySettings
 
 	// READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
-	FrontendEndpointLinks []*FrontendEndpointLink `json:"frontendEndpointLinks,omitempty" azure:"ro"`
+	FrontendEndpointLinks []*FrontendEndpointLink
 
 	// READ-ONLY; Provisioning state of the policy.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Resource status of the policy.
-	ResourceState *PolicyResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *PolicyResourceState
 
 	// READ-ONLY; Describes Routing Rules associated with this Web Application Firewall policy.
-	RoutingRuleLinks []*RoutingRuleLink `json:"routingRuleLinks,omitempty" azure:"ro"`
+	RoutingRuleLinks []*RoutingRuleLink
 
 	// READ-ONLY; Describes Security Policy associated with this Web Application Firewall policy.
-	SecurityPolicyLinks []*SecurityPolicyLink `json:"securityPolicyLinks,omitempty" azure:"ro"`
+	SecurityPolicyLinks []*SecurityPolicyLink
 }

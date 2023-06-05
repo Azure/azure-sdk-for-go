@@ -45,7 +45,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 // CheckZonePeers - Compares a subscriptions logical zone mapping
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - subscriptionID - The ID of the target subscription.
 //   - parameters - Parameters for checking zone peers.
 //   - options - ClientCheckZonePeersOptions contains the optional parameters for the Client.CheckZonePeers method.
@@ -76,7 +76,7 @@ func (client *Client) checkZonePeersCreateRequest(ctx context.Context, subscript
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -94,7 +94,7 @@ func (client *Client) checkZonePeersHandleResponse(resp *http.Response) (ClientC
 // Get - Gets details about a specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - subscriptionID - The ID of the target subscription.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, subscriptionID string, options *ClientGetOptions) (ClientGetResponse, error) {
@@ -124,7 +124,7 @@ func (client *Client) getCreateRequest(ctx context.Context, subscriptionID strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +141,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Gets all subscriptions for a tenant.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
@@ -179,7 +179,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - subscriptionID - The ID of the target subscription.
 //   - options - ClientListLocationsOptions contains the optional parameters for the Client.NewListLocationsPager method.
 func (client *Client) NewListLocationsPager(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
@@ -234,7 +234,7 @@ func (client *Client) listLocationsCreateRequest(ctx context.Context, subscripti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	if options != nil && options.IncludeExtendedLocations != nil {
 		reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 	}

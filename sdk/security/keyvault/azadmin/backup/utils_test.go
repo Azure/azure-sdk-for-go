@@ -107,14 +107,14 @@ func startRecording(t *testing.T) {
 	})
 }
 
-func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameter) {
+func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameters) {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &backup.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	client, err := backup.NewClient(hsmURL, credential, opts)
 	require.NoError(t, err)
-	sasToken := backup.SASTokenParameter{
+	sasToken := backup.SASTokenParameters{
 		StorageResourceURI: &blobURL,
 		Token:              &token,
 	}

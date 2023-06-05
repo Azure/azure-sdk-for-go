@@ -2212,6 +2212,9 @@ type ApplicationRule struct {
 	// List of FQDN Tags for this rule.
 	FqdnTags []*string
 
+	// List of HTTP/S headers to insert.
+	HTTPHeadersToInsert []*FirewallPolicyHTTPHeaderToInsert
+
 	// Name of the rule.
 	Name *string
 
@@ -2884,6 +2887,24 @@ type AzureFirewallNetworkRuleCollectionPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 }
 
+// AzureFirewallPacketCaptureFlags - Properties of the AzureFirewallRCAction.
+type AzureFirewallPacketCaptureFlags struct {
+	// Flags to capture
+	Type *AzureFirewallPacketCaptureFlagsType
+}
+
+// AzureFirewallPacketCaptureRule - Group of src/dest ips and ports to be captured.
+type AzureFirewallPacketCaptureRule struct {
+	// List of ports to be captured.
+	DestinationPorts []*string
+
+	// List of destination IP addresses/subnets to be captured.
+	Destinations []*string
+
+	// List of source IP addresses/subnets to be captured.
+	Sources []*string
+}
+
 // AzureFirewallPropertiesFormat - Properties of the Azure Firewall.
 type AzureFirewallPropertiesFormat struct {
 	// The additional properties used to further config this azure firewall.
@@ -2963,6 +2984,13 @@ type AzureFirewallsClientBeginDeleteOptions struct {
 // AzureFirewallsClientBeginListLearnedPrefixesOptions contains the optional parameters for the AzureFirewallsClient.BeginListLearnedPrefixes
 // method.
 type AzureFirewallsClientBeginListLearnedPrefixesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureFirewallsClientBeginPacketCaptureOptions contains the optional parameters for the AzureFirewallsClient.BeginPacketCapture
+// method.
+type AzureFirewallsClientBeginPacketCaptureOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -3327,6 +3355,9 @@ type BastionHostPropertiesFormat struct {
 
 	// Enable/Disable IP Connect feature of the Bastion Host resource.
 	EnableIPConnect *bool
+
+	// Enable/Disable Kerberos feature of the Bastion Host resource.
+	EnableKerberos *bool
 
 	// Enable/Disable Shareable Link of the Bastion Host resource.
 	EnableShareableLink *bool
@@ -5183,7 +5214,13 @@ type EffectiveRouteMapRoute struct {
 	BgpCommunities *string
 
 	// The address prefix of the route.
-	Prefix []*string
+	Prefix *string
+}
+
+// EffectiveRouteMapRouteList - EffectiveRouteMapRoute List.
+type EffectiveRouteMapRouteList struct {
+	// The list of Effective RouteMap Routes configured on the connection resource.
+	Value []*EffectiveRouteMapRoute
 }
 
 // EffectiveRoutesParameters - The parameters specifying the resource whose effective routes are being requested.
@@ -6791,6 +6828,39 @@ type FilterItems struct {
 	Values []*string
 }
 
+// FirewallPacketCaptureParameters - Azure Firewall Packet Capture Parameters resource.
+type FirewallPacketCaptureParameters struct {
+	// Resource ID.
+	ID *string
+
+	// Properties of the azure firewall.
+	Properties *FirewallPacketCaptureParametersFormat
+}
+
+// FirewallPacketCaptureParametersFormat - Packet capture parameters on azure firewall.
+type FirewallPacketCaptureParametersFormat struct {
+	// Duration of packet capture in seconds.
+	DurationInSeconds *int32
+
+	// Name of file to be uploaded to sasURL
+	FileName *string
+
+	// Rules to filter packet captures.
+	Filters []*AzureFirewallPacketCaptureRule
+
+	// The tcp-flag type to be captured. Used with protocol TCP
+	Flags []*AzureFirewallPacketCaptureFlags
+
+	// Number of packets to be captured.
+	NumberOfPacketsToCapture *int32
+
+	// The protocol of packets to capture
+	Protocol *AzureFirewallNetworkRuleProtocol
+
+	// Upload capture location
+	SasURL *string
+}
+
 // FirewallPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallPoliciesClient.BeginCreateOrUpdate
 // method.
 type FirewallPoliciesClientBeginCreateOrUpdateOptions struct {
@@ -6892,6 +6962,15 @@ func (f *FirewallPolicyFilterRuleCollection) GetFirewallPolicyRuleCollection() *
 type FirewallPolicyFilterRuleCollectionAction struct {
 	// The type of action.
 	Type *FirewallPolicyFilterRuleCollectionActionType
+}
+
+// FirewallPolicyHTTPHeaderToInsert - name and value of HTTP/S header to insert
+type FirewallPolicyHTTPHeaderToInsert struct {
+	// Contains the name of the header
+	HeaderName *string
+
+	// Contains the value of the header
+	HeaderValue *string
 }
 
 // FirewallPolicyIdpsSignaturesClientListOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesClient.List
@@ -7573,6 +7652,18 @@ type Group struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// GroupByUserSession - Define user session identifier group by clauses.
+type GroupByUserSession struct {
+	// REQUIRED; List of group by clause variables.
+	GroupByVariables []*GroupByVariable
+}
+
+// GroupByVariable - Define user session group by clause variables.
+type GroupByVariable struct {
+	// REQUIRED; User Session clause variable.
+	VariableName *ApplicationGatewayFirewallUserSessionVariable
 }
 
 // GroupListResult - Result of the request to list NetworkGroup. It contains a list of groups and a URL link to get the next
@@ -8665,6 +8756,9 @@ type InterfaceLoadBalancersClientListOptions struct {
 type InterfacePropertiesFormat struct {
 	// Auxiliary mode of Network Interface resource.
 	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
+
+	// Auxiliary sku of Network Interface resource.
+	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
 
 	// The DNS settings in network interface.
 	DNSSettings *InterfaceDNSSettings
@@ -10954,12 +11048,6 @@ type PeerRoute struct {
 	Weight *int32
 }
 
-// PeerRouteList - List of virtual router peer routes.
-type PeerRouteList struct {
-	// List of peer routes.
-	Value []*PeerRoute
-}
-
 // PolicySettings - Defines contents of a web application firewall global configuration.
 type PolicySettings struct {
 	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
@@ -10968,8 +11056,14 @@ type PolicySettings struct {
 	// If the action type is block, customer can override the response status code.
 	CustomBlockResponseStatusCode *int32
 
+	// Whether allow WAF to enforce file upload limits.
+	FileUploadEnforcement *bool
+
 	// Maximum file upload size in Mb for WAF.
 	FileUploadLimitInMb *int32
+
+	// To scrub sensitive log fields
+	LogScrubbing *PolicySettingsLogScrubbing
 
 	// Maximum request body size in Kb for WAF.
 	MaxRequestBodySizeInKb *int32
@@ -10980,8 +11074,23 @@ type PolicySettings struct {
 	// Whether to allow WAF to check request Body.
 	RequestBodyCheck *bool
 
+	// Whether allow WAF to enforce request body limits.
+	RequestBodyEnforcement *bool
+
+	// Max inspection limit in KB for request body inspection for WAF.
+	RequestBodyInspectLimitInKB *int32
+
 	// The state of the policy.
 	State *WebApplicationFirewallEnabledState
+}
+
+// PolicySettingsLogScrubbing - To scrub sensitive log fields
+type PolicySettingsLogScrubbing struct {
+	// The rules that are applied to the logs for scrubbing.
+	ScrubbingRules []*WebApplicationFirewallScrubbingRules
+
+	// State of the log scrubbing config. Default value is Enabled.
+	State *WebApplicationFirewallScrubbingState
 }
 
 // PrepareNetworkPoliciesRequest - Details of PrepareNetworkPolicies for Subnet.
@@ -11133,6 +11242,9 @@ type PrivateEndpointConnectionProperties struct {
 
 	// READ-ONLY; The resource of private end point.
 	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The location of the private endpoint.
+	PrivateEndpointLocation *string
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *ProvisioningState
@@ -11638,6 +11750,15 @@ type PropagatedRouteTable struct {
 	Labels []*string
 }
 
+// PropagatedRouteTableNfv - Nfv version of the list of RouteTables to advertise the routes to.
+type PropagatedRouteTableNfv struct {
+	// The list of resource ids of all the RouteTables.
+	IDs []*RoutingConfigurationNfvSubResource
+
+	// The list of labels.
+	Labels []*string
+}
+
 // ProtocolConfiguration - Configuration of the protocol.
 type ProtocolConfiguration struct {
 	// HTTP configuration of the connectivity check.
@@ -11683,6 +11804,11 @@ type PublicIPAddressDNSSettings struct {
 	// domain name associated with the public IP address. If a domain name label is
 	// specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
 	DomainNameLabel *string
+
+	// The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created
+	// for the public IP in the Microsoft Azure DNS system with a hashed value
+	// includes in FQDN.
+	DomainNameLabelScope *PublicIPAddressDNSSettingsDomainNameLabelScope
 
 	// The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel
 	// and the regionalized DNS zone.
@@ -12554,6 +12680,28 @@ type RoutingConfiguration struct {
 	VnetRoutes *VnetRoute
 }
 
+// RoutingConfigurationNfv - NFV version of Routing Configuration indicating the associated and propagated route tables for
+// this connection.
+type RoutingConfigurationNfv struct {
+	// The resource id RouteTable associated with this RoutingConfiguration.
+	AssociatedRouteTable *RoutingConfigurationNfvSubResource
+
+	// The resource id of the RouteMap associated with this RoutingConfiguration for inbound learned routes.
+	InboundRouteMap *RoutingConfigurationNfvSubResource
+
+	// The resource id of the RouteMap associated with this RoutingConfiguration for outbound advertised routes.
+	OutboundRouteMap *RoutingConfigurationNfvSubResource
+
+	// The list of RouteTables to advertise the routes to.
+	PropagatedRouteTables *PropagatedRouteTableNfv
+}
+
+// RoutingConfigurationNfvSubResource - Reference to RouteTableV3 associated with the connection.
+type RoutingConfigurationNfvSubResource struct {
+	// Resource ID.
+	ResourceURI *string
+}
+
 // RoutingIntent - The routing intent child resource of a Virtual hub.
 type RoutingIntent struct {
 	// Resource ID.
@@ -13071,6 +13219,10 @@ type SecurityRulePropertiesFormat struct {
 	// REQUIRED; The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
 	Direction *SecurityRuleDirection
 
+	// REQUIRED; The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
+	// rule in the collection. The lower the priority number, the higher the priority of the rule.
+	Priority *int32
+
 	// REQUIRED; Network protocol this rule applies to.
 	Protocol *SecurityRuleProtocol
 
@@ -13093,10 +13245,6 @@ type SecurityRulePropertiesFormat struct {
 
 	// The destination port ranges.
 	DestinationPortRanges []*string
-
-	// The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the
-	// collection. The lower the priority number, the higher the priority of the rule.
-	Priority *int32
 
 	// The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
 	// 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress
@@ -15225,6 +15373,86 @@ type VirtualAppliance struct {
 	Type *string
 }
 
+// VirtualApplianceAdditionalNicProperties - Network Virtual Appliance Additional NIC properties.
+type VirtualApplianceAdditionalNicProperties struct {
+	// Customer Intent for Public Ip on additional nic
+	HasPublicIP *bool
+
+	// Customer Name for additional nic
+	Name *string
+}
+
+// VirtualApplianceConnection - NetworkVirtualApplianceConnection resource.
+type VirtualApplianceConnection struct {
+	// Resource ID.
+	ID *string
+
+	// The name of the resource.
+	Name *string
+
+	// Properties of the express route connection.
+	Properties *VirtualApplianceConnectionProperties
+}
+
+// VirtualApplianceConnectionList - NetworkVirtualApplianceConnection list.
+type VirtualApplianceConnectionList struct {
+	// URL to get the next set of results.
+	NextLink *string
+
+	// The list of NetworkVirtualAppliance connections.
+	Value []*VirtualApplianceConnection
+}
+
+// VirtualApplianceConnectionProperties - Properties of the NetworkVirtualApplianceConnection subresource.
+type VirtualApplianceConnectionProperties struct {
+	// Network Virtual Appliance ASN.
+	Asn *int64
+
+	// List of bgpPeerAddresses for the NVA instances
+	BgpPeerAddress []*string
+
+	// Enable internet security.
+	EnableInternetSecurity *bool
+
+	// The name of the resource.
+	Name *string
+
+	// The Routing Configuration indicating the associated and propagated route tables on this connection.
+	RoutingConfiguration *RoutingConfigurationNfv
+
+	// Unique identifier for the connection.
+	TunnelIdentifier *int64
+
+	// READ-ONLY; The provisioning state of the NetworkVirtualApplianceConnection resource.
+	ProvisioningState *ProvisioningState
+}
+
+// VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualApplianceConnectionsClient.BeginCreateOrUpdate
+// method.
+type VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualApplianceConnectionsClientBeginDeleteOptions contains the optional parameters for the VirtualApplianceConnectionsClient.BeginDelete
+// method.
+type VirtualApplianceConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualApplianceConnectionsClientGetOptions contains the optional parameters for the VirtualApplianceConnectionsClient.Get
+// method.
+type VirtualApplianceConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualApplianceConnectionsClientListOptions contains the optional parameters for the VirtualApplianceConnectionsClient.NewListPager
+// method.
+type VirtualApplianceConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualApplianceListResult - Response for ListNetworkVirtualAppliances API service call.
 type VirtualApplianceListResult struct {
 	// URL to get the next set of results.
@@ -15236,6 +15464,9 @@ type VirtualApplianceListResult struct {
 
 // VirtualApplianceNicProperties - Network Virtual Appliance NIC properties.
 type VirtualApplianceNicProperties struct {
+	// READ-ONLY; Instance on which nic is attached.
+	InstanceName *string
+
 	// READ-ONLY; NIC name.
 	Name *string
 
@@ -15248,6 +15479,9 @@ type VirtualApplianceNicProperties struct {
 
 // VirtualAppliancePropertiesFormat - Network Virtual Appliance definition.
 type VirtualAppliancePropertiesFormat struct {
+	// Details required for Additional Network Interface.
+	AdditionalNics []*VirtualApplianceAdditionalNicProperties
+
 	// BootStrapConfigurationBlobs storage URLs.
 	BootStrapConfigurationBlobs []*string
 
@@ -15286,6 +15520,9 @@ type VirtualAppliancePropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; List of references to VirtualApplianceConnections.
+	VirtualApplianceConnections []*SubResource
 
 	// READ-ONLY; List of Virtual Appliance Network Interfaces.
 	VirtualApplianceNics []*VirtualApplianceNicProperties
@@ -17402,8 +17639,17 @@ type WebApplicationFirewallCustomRule struct {
 	// REQUIRED; The rule type.
 	RuleType *WebApplicationFirewallRuleType
 
+	// List of user session identifier group by clauses.
+	GroupByUserSession []*GroupByUserSession
+
 	// The name of the resource that is unique within a policy. This name can be used to access the resource.
 	Name *string
+
+	// Duration over which Rate Limit policy will be applied. Applies only when ruleType is RateLimitRule.
+	RateLimitDuration *ApplicationGatewayFirewallRateLimitDuration
+
+	// Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be greater than or equal to 1
+	RateLimitThreshold *int32
 
 	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
 	State *WebApplicationFirewallState
@@ -17502,6 +17748,22 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 
 	// READ-ONLY; Resource status of the policy.
 	ResourceState *WebApplicationFirewallPolicyResourceState
+}
+
+// WebApplicationFirewallScrubbingRules - Allow certain variables to be scrubbed on WAF logs
+type WebApplicationFirewallScrubbingRules struct {
+	// REQUIRED; The variable to be scrubbed from the logs.
+	MatchVariable *ScrubbingRuleEntryMatchVariable
+
+	// REQUIRED; When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+	// rule applies to.
+	SelectorMatchOperator *ScrubbingRuleEntryMatchOperator
+
+	// When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
+	Selector *string
+
+	// Defines the state of log scrubbing rule. Default value is Enabled.
+	State *ScrubbingRuleEntryState
 }
 
 // WebCategoriesClientGetOptions contains the optional parameters for the WebCategoriesClient.Get method.

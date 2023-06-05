@@ -29,6 +29,11 @@ type ClientListResponse struct {
 	SubscriptionListResult
 }
 
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
+	OperationListResult
+}
+
 // SubscriptionClientCheckResourceNameResponse contains the response from method SubscriptionClient.CheckResourceName.
 type SubscriptionClientCheckResourceNameResponse struct {
 	CheckResourceNameResult

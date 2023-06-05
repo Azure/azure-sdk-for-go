@@ -12,7 +12,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -34,7 +33,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.client = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -49,7 +48,7 @@ func TestClientSecretCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
-			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: disabledID}
+			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID}
 			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
@@ -68,7 +67,7 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
 	opts.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
-	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: true}
+	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
 	cred, err := NewClientSecretCredential("adfs", adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
@@ -84,7 +83,7 @@ func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

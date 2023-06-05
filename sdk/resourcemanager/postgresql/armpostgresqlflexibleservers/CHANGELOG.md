@@ -1,5 +1,128 @@
 # Release History
 
+## 4.0.0-beta.1 (2023-05-26)
+### Breaking Changes
+
+- Type of `CapabilitiesListResult.Value` has been changed from `[]*CapabilityProperties` to `[]*FlexibleServerCapability`
+- Type of `FastProvisioningEditionCapability.SupportedStorageGb` has been changed from `*int64` to `*int32`
+- Type of `FlexibleServerEditionCapability.Status` has been changed from `*string` to `*CapabilityStatus`
+- Type of `ServerVersionCapability.Status` has been changed from `*string` to `*CapabilityStatus`
+- Type of `StorageEditionCapability.Status` has been changed from `*string` to `*CapabilityStatus`
+- Type of `StorageTierCapability.Iops` has been changed from `*int64` to `*int32`
+- Type of `StorageTierCapability.Status` has been changed from `*string` to `*CapabilityStatus`
+- `IdentityTypeSystemAssigned` from enum `IdentityType` has been removed
+- Struct `CapabilityProperties` has been removed
+- Struct `HyperscaleNodeEditionCapability` has been removed
+- Struct `NodeTypeCapability` has been removed
+- Struct `StorageMBCapability` has been removed
+- Struct `VcoreCapability` has been removed
+- Field `SupportedServerVersions` of struct `FlexibleServerEditionCapability` has been removed
+- Field `SupportedVcores` of struct `ServerVersionCapability` has been removed
+- Field `SupportedStorageMB` of struct `StorageEditionCapability` has been removed
+- Field `IsBaseline`, `TierName` of struct `StorageTierCapability` has been removed
+
+### Features Added
+
+- New value `CreateModeReviveDropped` added to enum type `CreateMode`
+- New value `ServerVersionFifteen` added to enum type `ServerVersion`
+- New enum type `AzureManagedDiskPerformanceTiers` with values `AzureManagedDiskPerformanceTiersP1`, `AzureManagedDiskPerformanceTiersP10`, `AzureManagedDiskPerformanceTiersP15`, `AzureManagedDiskPerformanceTiersP2`, `AzureManagedDiskPerformanceTiersP20`, `AzureManagedDiskPerformanceTiersP3`, `AzureManagedDiskPerformanceTiersP30`, `AzureManagedDiskPerformanceTiersP4`, `AzureManagedDiskPerformanceTiersP40`, `AzureManagedDiskPerformanceTiersP50`, `AzureManagedDiskPerformanceTiersP6`, `AzureManagedDiskPerformanceTiersP60`, `AzureManagedDiskPerformanceTiersP70`, `AzureManagedDiskPerformanceTiersP80`
+- New enum type `CancelEnum` with values `CancelEnumFalse`, `CancelEnumTrue`
+- New enum type `CapabilityStatus` with values `CapabilityStatusAvailable`, `CapabilityStatusDefault`, `CapabilityStatusDisabled`, `CapabilityStatusVisible`
+- New enum type `ExecutionStatus` with values `ExecutionStatusCancelled`, `ExecutionStatusFailed`, `ExecutionStatusRunning`, `ExecutionStatusSucceeded`
+- New enum type `FastProvisioningSupportedEnum` with values `FastProvisioningSupportedEnumDisabled`, `FastProvisioningSupportedEnumEnabled`
+- New enum type `GeoBackupSupportedEnum` with values `GeoBackupSupportedEnumDisabled`, `GeoBackupSupportedEnumEnabled`
+- New enum type `HaMode` with values `HaModeSameZone`, `HaModeZoneRedundant`
+- New enum type `KeyStatusEnum` with values `KeyStatusEnumInvalid`, `KeyStatusEnumValid`
+- New enum type `LogicalReplicationOnSourceDbEnum` with values `LogicalReplicationOnSourceDbEnumFalse`, `LogicalReplicationOnSourceDbEnumTrue`
+- New enum type `MigrationListFilter` with values `MigrationListFilterActive`, `MigrationListFilterAll`
+- New enum type `MigrationMode` with values `MigrationModeOffline`, `MigrationModeOnline`
+- New enum type `MigrationNameAvailabilityReason` with values `MigrationNameAvailabilityReasonAlreadyExists`, `MigrationNameAvailabilityReasonInvalid`
+- New enum type `MigrationState` with values `MigrationStateCanceled`, `MigrationStateFailed`, `MigrationStateInProgress`, `MigrationStateSucceeded`, `MigrationStateWaitingForUserAction`
+- New enum type `MigrationSubState` with values `MigrationSubStateCompleted`, `MigrationSubStateCompletingMigration`, `MigrationSubStateMigratingData`, `MigrationSubStatePerformingPreRequisiteSteps`, `MigrationSubStateWaitingForCutoverTrigger`, `MigrationSubStateWaitingForDBsToMigrateSpecification`, `MigrationSubStateWaitingForDataMigrationScheduling`, `MigrationSubStateWaitingForDataMigrationWindow`, `MigrationSubStateWaitingForLogicalReplicationSetupRequestOnSourceDB`, `MigrationSubStateWaitingForTargetDBOverwriteConfirmation`
+- New enum type `OnlineResizeSupportedEnum` with values `OnlineResizeSupportedEnumDisabled`, `OnlineResizeSupportedEnumEnabled`
+- New enum type `OverwriteDbsInTargetEnum` with values `OverwriteDbsInTargetEnumFalse`, `OverwriteDbsInTargetEnumTrue`
+- New enum type `RestrictedEnum` with values `RestrictedEnumDisabled`, `RestrictedEnumEnabled`
+- New enum type `StartDataMigrationEnum` with values `StartDataMigrationEnumFalse`, `StartDataMigrationEnumTrue`
+- New enum type `StorageAutoGrow` with values `StorageAutoGrowDisabled`, `StorageAutoGrowEnabled`
+- New enum type `StorageAutoGrowthSupportedEnum` with values `StorageAutoGrowthSupportedEnumDisabled`, `StorageAutoGrowthSupportedEnumEnabled`
+- New enum type `TriggerCutoverEnum` with values `TriggerCutoverEnumFalse`, `TriggerCutoverEnumTrue`
+- New enum type `ZoneRedundantHaAndGeoBackupSupportedEnum` with values `ZoneRedundantHaAndGeoBackupSupportedEnumDisabled`, `ZoneRedundantHaAndGeoBackupSupportedEnumEnabled`
+- New enum type `ZoneRedundantHaSupportedEnum` with values `ZoneRedundantHaSupportedEnumDisabled`, `ZoneRedundantHaSupportedEnumEnabled`
+- New function `*ClientFactory.NewFlexibleServerClient() *FlexibleServerClient`
+- New function `*ClientFactory.NewLogFilesClient() *LogFilesClient`
+- New function `*ClientFactory.NewLtrBackupOperationsClient() *LtrBackupOperationsClient`
+- New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
+- New function `*ClientFactory.NewPostgreSQLManagementClient() *PostgreSQLManagementClient`
+- New function `*ClientFactory.NewServerCapabilitiesClient() *ServerCapabilitiesClient`
+- New function `NewFlexibleServerClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FlexibleServerClient, error)`
+- New function `*FlexibleServerClient.BeginStartLtrBackup(context.Context, string, string, LtrBackupRequest, *FlexibleServerClientBeginStartLtrBackupOptions) (*runtime.Poller[FlexibleServerClientStartLtrBackupResponse], error)`
+- New function `*FlexibleServerClient.TriggerLtrPreBackup(context.Context, string, string, LtrPreBackupRequest, *FlexibleServerClientTriggerLtrPreBackupOptions) (FlexibleServerClientTriggerLtrPreBackupResponse, error)`
+- New function `NewLogFilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LogFilesClient, error)`
+- New function `*LogFilesClient.NewListByServerPager(string, string, *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse]`
+- New function `NewLtrBackupOperationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LtrBackupOperationsClient, error)`
+- New function `*LtrBackupOperationsClient.Get(context.Context, string, string, string, *LtrBackupOperationsClientGetOptions) (LtrBackupOperationsClientGetResponse, error)`
+- New function `*LtrBackupOperationsClient.NewListByServerPager(string, string, *LtrBackupOperationsClientListByServerOptions) *runtime.Pager[LtrBackupOperationsClientListByServerResponse]`
+- New function `NewMigrationsClient(azcore.TokenCredential, *arm.ClientOptions) (*MigrationsClient, error)`
+- New function `*MigrationsClient.Create(context.Context, string, string, string, string, MigrationResource, *MigrationsClientCreateOptions) (MigrationsClientCreateResponse, error)`
+- New function `*MigrationsClient.Delete(context.Context, string, string, string, string, *MigrationsClientDeleteOptions) (MigrationsClientDeleteResponse, error)`
+- New function `*MigrationsClient.Get(context.Context, string, string, string, string, *MigrationsClientGetOptions) (MigrationsClientGetResponse, error)`
+- New function `*MigrationsClient.NewListByTargetServerPager(string, string, string, *MigrationsClientListByTargetServerOptions) *runtime.Pager[MigrationsClientListByTargetServerResponse]`
+- New function `*MigrationsClient.Update(context.Context, string, string, string, string, MigrationResourceForPatch, *MigrationsClientUpdateOptions) (MigrationsClientUpdateResponse, error)`
+- New function `PossibleStorageAutoGrowValues() []StorageAutoGrow`
+- New function `NewPostgreSQLManagementClient(azcore.TokenCredential, *arm.ClientOptions) (*PostgreSQLManagementClient, error)`
+- New function `*PostgreSQLManagementClient.CheckMigrationNameAvailability(context.Context, string, string, string, MigrationNameAvailabilityResource, *PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse, error)`
+- New function `NewServerCapabilitiesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServerCapabilitiesClient, error)`
+- New function `*ServerCapabilitiesClient.NewListPager(string, string, *ServerCapabilitiesClientListOptions) *runtime.Pager[ServerCapabilitiesClientListResponse]`
+- New struct `AdminCredentials`
+- New struct `BackupSettings`
+- New struct `BackupStoreDetails`
+- New struct `DbServerMetadata`
+- New struct `FlexibleServerCapability`
+- New struct `LogFile`
+- New struct `LogFileListResult`
+- New struct `LogFileProperties`
+- New struct `LtrBackupOperationResponseProperties`
+- New struct `LtrBackupRequest`
+- New struct `LtrBackupResponse`
+- New struct `LtrPreBackupRequest`
+- New struct `LtrPreBackupResponse`
+- New struct `LtrPreBackupResponseProperties`
+- New struct `LtrServerBackupOperation`
+- New struct `LtrServerBackupOperationList`
+- New struct `MigrationNameAvailabilityResource`
+- New struct `MigrationResource`
+- New struct `MigrationResourceForPatch`
+- New struct `MigrationResourceListResult`
+- New struct `MigrationResourceProperties`
+- New struct `MigrationResourcePropertiesForPatch`
+- New struct `MigrationSecretParameters`
+- New struct `MigrationStatus`
+- New struct `MigrationSubStateDetails`
+- New struct `ServerSKU`
+- New struct `ServerSKUCapability`
+- New struct `StorageMbCapability`
+- New field `GeoBackupEncryptionKeyStatus`, `GeoBackupKeyURI`, `GeoBackupUserAssignedIdentityID`, `PrimaryEncryptionKeyStatus` in struct `DataEncryption`
+- New field `Reason`, `ServerCount`, `Status`, `SupportedTier` in struct `FastProvisioningEditionCapability`
+- New field `DefaultSKUName`, `Reason`, `SupportedServerSKUs` in struct `FlexibleServerEditionCapability`
+- New field `Network` in struct `ServerPropertiesForUpdate`
+- New field `Reason` in struct `ServerVersionCapability`
+- New field `AutoGrow`, `Iops`, `IopsTier` in struct `Storage`
+- New field `DefaultStorageSizeMb`, `Reason`, `SupportedStorageMb` in struct `StorageEditionCapability`
+- New field `Reason` in struct `StorageTierCapability`
+- New field `TenantID` in struct `UserAssignedIdentity`
+
+
+## 3.0.0 (2023-04-28)
+### Breaking Changes
+
+- `ArmServerKeyTypeSystemAssigned` from enum `ArmServerKeyType` has been removed
+- `ReplicationRoleGeoSyncReplica`, `ReplicationRoleSecondary`, `ReplicationRoleSyncReplica`, `ReplicationRoleWalReplica` from enum `ReplicationRole` has been removed
+
+### Features Added
+
+- New value `ArmServerKeyTypeSystemManaged` added to enum type `ArmServerKeyType`
+
+
 ## 2.1.1 (2023-04-14)
 ### Bug Fixes
 

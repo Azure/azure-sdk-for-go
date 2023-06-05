@@ -6,7 +6,7 @@ package amqpwrap
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // RPCResponse is the simplified response structure from an RPC like call
@@ -21,6 +21,7 @@ type RPCResponse struct {
 // RPCLink is implemented by *rpc.Link
 type RPCLink interface {
 	Close(ctx context.Context) error
+	ConnID() uint64
 	RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error)
 	LinkName() string
 }

@@ -1,6 +1,6 @@
 ## Release History
 
-### 0.1.1 (Unreleased)
+### 1.0.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,13 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0 (2023-05-09)
+
+### Features Added
+
+* This is the initial GA release of the `azqueue` library
+
 
 ### 0.1.0 (2023-02-15)
 

@@ -10,10 +10,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 // EventHubProperties represents properties of the Event Hub, like the number of partitions.
@@ -29,7 +30,25 @@ type GetEventHubPropertiesOptions struct {
 }
 
 // getEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
-func getEventHubProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+func getEventHubProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, retryOptions RetryOptions, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+	var props EventHubProperties
+
+	err := links.RetryManagement(ctx, eventName, "getEventHubProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
+		tmpProps, err := getEventHubPropertiesInternal(ctx, ns, lwid.Link(), eventHub, options)
+
+		if err != nil {
+			return err
+		}
+
+		props = tmpProps
+		return nil
+	})
+
+	return props, err
+
+}
+
+func getEventHubPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {
@@ -88,7 +107,24 @@ type GetPartitionPropertiesOptions struct {
 
 // getPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
-func getPartitionProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, partitionID string, retryOptions RetryOptions, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	var props PartitionProperties
+
+	err := links.RetryManagement(ctx, eventName, "getPartitionProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
+		tmpProps, err := getPartitionPropertiesInternal(ctx, ns, lwid.Link(), eventHub, partitionID, options)
+
+		if err != nil {
+			return err
+		}
+
+		props = tmpProps
+		return nil
+	})
+
+	return props, err
+}
+
+func getPartitionPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {

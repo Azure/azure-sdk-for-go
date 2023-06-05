@@ -11,6 +11,26 @@ package armvirtualmachineimagebuilder
 
 import "encoding/json"
 
+func unmarshalDistributeVersionerClassification(rawMsg json.RawMessage) (DistributeVersionerClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DistributeVersionerClassification
+	switch m["scheme"] {
+	case "Latest":
+		b = &DistributeVersionerLatest{}
+	case "Source":
+		b = &DistributeVersionerSource{}
+	default:
+		b = &DistributeVersioner{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalImageTemplateCustomizerClassification(rawMsg json.RawMessage) (ImageTemplateCustomizerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -107,6 +127,8 @@ func unmarshalImageTemplateInVMValidatorClassification(rawMsg json.RawMessage) (
 	}
 	var b ImageTemplateInVMValidatorClassification
 	switch m["type"] {
+	case "File":
+		b = &ImageTemplateFileValidator{}
 	case "PowerShell":
 		b = &ImageTemplatePowerShellValidator{}
 	case "Shell":
@@ -154,6 +176,24 @@ func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTe
 		b = &ImageTemplateSharedImageVersionSource{}
 	default:
 		b = &ImageTemplateSource{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalTriggerPropertiesClassification(rawMsg json.RawMessage) (TriggerPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TriggerPropertiesClassification
+	switch m["kind"] {
+	case "SourceImage":
+		b = &SourceImageTriggerProperties{}
+	default:
+		b = &TriggerProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

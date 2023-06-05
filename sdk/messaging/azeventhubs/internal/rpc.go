@@ -14,7 +14,7 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 const (
@@ -23,6 +23,8 @@ const (
 	descriptionKey         = "status-description"
 	defaultReceiverCredits = 1000
 )
+
+var RPCLinkClosedErr = errors.New("rpc link closed")
 
 type (
 	// rpcLink is the bidirectional communication structure used for CBS negotiation
@@ -97,6 +99,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	}
 
 	id := linkID.String()
+
 	link := &rpcLink{
 		session:       session,
 		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
@@ -111,6 +114,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	sender, err := session.NewSender(
 		ctx,
 		args.Address,
+		"",
 		nil,
 	)
 	if err != nil {
@@ -133,7 +137,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		}
 	}
 
-	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
+	receiver, err := session.NewReceiver(ctx, args.Address, "", receiverOpts)
 	if err != nil {
 		_ = session.Close(ctx)
 		return nil, err
@@ -164,9 +168,12 @@ func (l *rpcLink) responseRouter() {
 			// if the link or connection has a malfunction that would require it to restart then
 			// we need to bail out, broadcasting to all affected callers/consumers.
 			if GetRecoveryKind(err) != RecoveryKindNone {
-				if !IsCancelError(err) {
+				if IsCancelError(err) {
+					err = RPCLinkClosedErr
+				} else {
 					azlog.Writef(l.logEvent, "Error in RPCLink, stopping response router: %s", err.Error())
 				}
+
 				l.broadcastError(err)
 				break
 			}
@@ -201,8 +208,18 @@ func (l *rpcLink) responseRouter() {
 	}
 }
 
-// RPC sends a request and waits on a response for that request
 func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
+	resp, err := l.internalRPC(ctx, msg)
+
+	if err != nil {
+		return nil, amqpwrap.WrapError(err, l.ConnID(), l.LinkName(), "")
+	}
+
+	return resp, nil
+}
+
+// RPC sends a request and waits on a response for that request
+func (l *rpcLink) internalRPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 	copiedMessage, messageID, err := addMessageID(msg, l.uuidNewV4)
 
 	if err != nil {
@@ -300,6 +317,10 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 	}
 
 	return response, err
+}
+
+func (l *rpcLink) ConnID() uint64 {
+	return l.session.ConnID()
 }
 
 // Close the link receiver, sender and session

@@ -36,55 +36,55 @@ type AssociateTrafficFilterClientBeginAssociateOptions struct {
 // CloudDeployment - Details of the user's elastic deployment associated with the monitor resource.
 type CloudDeployment struct {
 	// READ-ONLY; Associated Azure subscription Id for the elastic deployment.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty" azure:"ro"`
+	AzureSubscriptionID *string
 
 	// READ-ONLY; Elastic deployment Id
-	DeploymentID *string `json:"deploymentId,omitempty" azure:"ro"`
+	DeploymentID *string
 
 	// READ-ONLY; Region where Deployment at Elastic side took place.
-	ElasticsearchRegion *string `json:"elasticsearchRegion,omitempty" azure:"ro"`
+	ElasticsearchRegion *string
 
 	// READ-ONLY; Elasticsearch ingestion endpoint of the Elastic deployment.
-	ElasticsearchServiceURL *string `json:"elasticsearchServiceUrl,omitempty" azure:"ro"`
+	ElasticsearchServiceURL *string
 
 	// READ-ONLY; Kibana endpoint of the Elastic deployment.
-	KibanaServiceURL *string `json:"kibanaServiceUrl,omitempty" azure:"ro"`
+	KibanaServiceURL *string
 
 	// READ-ONLY; Kibana dashboard sso URL of the Elastic deployment.
-	KibanaSsoURL *string `json:"kibanaSsoUrl,omitempty" azure:"ro"`
+	KibanaSsoURL *string
 
 	// READ-ONLY; Elastic deployment name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // CloudUser - Details of the user's elastic account.
 type CloudUser struct {
 	// READ-ONLY; Elastic cloud default dashboard sso URL of the Elastic user account.
-	ElasticCloudSsoDefaultURL *string `json:"elasticCloudSsoDefaultUrl,omitempty" azure:"ro"`
+	ElasticCloudSsoDefaultURL *string
 
 	// READ-ONLY; Email of the Elastic User Account.
-	EmailAddress *string `json:"emailAddress,omitempty" azure:"ro"`
+	EmailAddress *string
 
 	// READ-ONLY; User Id of the elastic account of the User.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // CompanyInfo - Company information of the user to be passed to partners.
 type CompanyInfo struct {
 	// Business of the company
-	Business *string `json:"business,omitempty"`
+	Business *string
 
 	// Country of the company location.
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// Domain of the company
-	Domain *string `json:"domain,omitempty"`
+	Domain *string
 
 	// Number of employees in the company
-	EmployeesNumber *string `json:"employeesNumber,omitempty"`
+	EmployeesNumber *string
 
 	// State of the company location.
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // CreateAndAssociateIPFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociateIPFilterClient.BeginCreate
@@ -119,22 +119,22 @@ type DeploymentInfoClientListOptions struct {
 // DeploymentInfoResponse - The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
 type DeploymentInfoResponse struct {
 	// READ-ONLY; Deployment URL of the elasticsearch in Elastic cloud deployment.
-	DeploymentURL *string `json:"deploymentUrl,omitempty" azure:"ro"`
+	DeploymentURL *string
 
 	// READ-ONLY; Disk capacity of the elasticsearch in Elastic cloud deployment.
-	DiskCapacity *string `json:"diskCapacity,omitempty" azure:"ro"`
+	DiskCapacity *string
 
 	// READ-ONLY; Marketplace SaaS Info of the resource.
-	MarketplaceSaasInfo *MarketplaceSaaSInfo `json:"marketplaceSaasInfo,omitempty" azure:"ro"`
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
 
 	// READ-ONLY; RAM capacity of the elasticsearch in Elastic cloud deployment.
-	MemoryCapacity *string `json:"memoryCapacity,omitempty" azure:"ro"`
+	MemoryCapacity *string
 
 	// READ-ONLY; The Elastic deployment status.
-	Status *ElasticDeploymentStatus `json:"status,omitempty" azure:"ro"`
+	Status *ElasticDeploymentStatus
 
 	// READ-ONLY; Version of the elasticsearch in Elastic cloud deployment.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // DetachAndDeleteTrafficFilterClientDeleteOptions contains the optional parameters for the DetachAndDeleteTrafficFilterClient.Delete
@@ -162,50 +162,50 @@ type ExternalUserClientCreateOrUpdateOptions struct {
 // ExternalUserCreationResponse - The properties of the response we got from elastic while creating external user
 type ExternalUserCreationResponse struct {
 	// READ-ONLY; Shows if user is created or updated
-	Created *bool `json:"created,omitempty" azure:"ro"`
+	Created *bool
 }
 
 // ExternalUserInfo - The properties of the request required for creating user on elastic side
 type ExternalUserInfo struct {
 	// Email id of the user to be created or updated
-	EmailID *string `json:"emailId,omitempty"`
+	EmailID *string
 
 	// Full name of the user to be created or updated
-	FullName *string `json:"fullName,omitempty"`
+	FullName *string
 
 	// Password of the user to be created or updated
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Roles to be assigned for created or updated user
-	Roles []*string `json:"roles,omitempty"`
+	Roles []*string
 
 	// Username of the user to be created or updated
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag.
-	Action *TagAction `json:"action,omitempty"`
+	Action *TagAction
 
 	// The name (also known as the key) of the tag.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the tag.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // IdentityProperties - Identity properties.
 type IdentityProperties struct {
 	// Managed identity type.
-	Type *ManagedIdentityTypes `json:"type,omitempty"`
+	Type *ManagedIdentityTypes
 
 	// READ-ONLY; The identity ID.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ListAssociatedTrafficFiltersClientListOptions contains the optional parameters for the ListAssociatedTrafficFiltersClient.List
@@ -220,34 +220,34 @@ type LogRules struct {
 	// all resources will be captured. If only Exclude action is specified, the
 	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
 	// resources with the associated tags.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
-	SendAADLogs *bool `json:"sendAadLogs,omitempty"`
+	SendAADLogs *bool
 
 	// Flag specifying if activity logs from Azure resources should be sent for the Monitor resource.
-	SendActivityLogs *bool `json:"sendActivityLogs,omitempty"`
+	SendActivityLogs *bool
 
 	// Flag specifying if subscription logs should be sent for the Monitor resource.
-	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
+	SendSubscriptionLogs *bool
 }
 
 // MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
 type MarketplaceSaaSInfo struct {
-	// Subscription Details: Marketplace SAAS Name
-	MarketplaceName *string `json:"marketplaceName,omitempty"`
+	// Marketplace Subscription Details: SAAS Name
+	MarketplaceName *string
 
-	// Subscription Details: Marketplace Resource URI
-	MarketplaceResourceID *string `json:"marketplaceResourceId,omitempty"`
+	// Marketplace Subscription Details: Resource URI
+	MarketplaceResourceID *string
 
-	// Marketplace Subscription Id
-	MarketplaceSubscription *MarketplaceSaaSInfoMarketplaceSubscription `json:"marketplaceSubscription,omitempty"`
+	// Marketplace Subscription
+	MarketplaceSubscription *MarketplaceSaaSInfoMarketplaceSubscription
 }
 
-// MarketplaceSaaSInfoMarketplaceSubscription - Marketplace Subscription Id
+// MarketplaceSaaSInfoMarketplaceSubscription - Marketplace Subscription
 type MarketplaceSaaSInfoMarketplaceSubscription struct {
 	// Marketplace Subscription Id. This is a GUID-formatted string.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // MonitorClientBeginUpgradeOptions contains the optional parameters for the MonitorClient.BeginUpgrade method.
@@ -261,100 +261,100 @@ type MonitorClientBeginUpgradeOptions struct {
 // MonitorProperties - Properties specific to the monitor resource.
 type MonitorProperties struct {
 	// Elastic cloud properties.
-	ElasticProperties *Properties `json:"elasticProperties,omitempty"`
+	ElasticProperties *Properties
+
+	// Flag to determine if User API Key has to be generated and shared.
+	GenerateAPIKey *bool
 
 	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 
 	// Provisioning state of the monitor resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 
 	// User information.
-	UserInfo *UserInfo `json:"userInfo,omitempty"`
+	UserInfo *UserInfo
 
 	// Version of elastic of the monitor resource
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY
-	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
+	LiftrResourceCategory *LiftrResourceCategories
 
 	// READ-ONLY; The priority of the resource.
-	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
+	LiftrResourcePreference *int32
 }
 
 // MonitorResource - Monitor resource.
 type MonitorResource struct {
 	// REQUIRED; The location of the monitor resource
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity properties of the monitor resource.
-	Identity *IdentityProperties `json:"identity,omitempty"`
+	Identity *IdentityProperties
 
 	// Properties of the monitor resource.
-	Properties *MonitorProperties `json:"properties,omitempty"`
+	Properties *MonitorProperties
 
 	// SKU of the monitor resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// The tags of the monitor resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Flag to determine if User API Key has to be generated and shared.
-	GenerateAPIKey *bool `json:"generateApiKey,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; ARM id of the monitor resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the monitor resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the monitor resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitorResource `json:"value,omitempty"`
+	Value []*MonitorResource
 }
 
 // MonitorResourceUpdateParameters - Monitor resource update parameters.
 type MonitorResourceUpdateParameters struct {
 	// elastic monitor resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MonitorUpgrade - Upgrade elastic monitor version
 type MonitorUpgrade struct {
 	// Version to which the elastic monitor should be upgraded to
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Elastic monitor resource.
 type MonitoredResource struct {
 	// The ARM id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Reason for why the resource is sending logs (or why it is not sending).
-	ReasonForLogsStatus *string `json:"reasonForLogsStatus,omitempty"`
+	ReasonForLogsStatus *string
 
 	// Flag indicating the status of the resource for sending logs operation to Elastic.
-	SendingLogs *SendingLogs `json:"sendingLogs,omitempty"`
+	SendingLogs *SendingLogs
 }
 
 // MonitoredResourceListResponse - Response of a list operation.
 type MonitoredResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoredResource `json:"value,omitempty"`
+	Value []*MonitoredResource
 }
 
 // MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.NewListPager method.
@@ -365,37 +365,37 @@ type MonitoredResourcesClientListOptions struct {
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
 type MonitoringTagRules struct {
 	// Properties of the monitoring tag rules.
-	Properties *MonitoringTagRulesProperties `json:"properties,omitempty"`
+	Properties *MonitoringTagRulesProperties
 
 	// READ-ONLY; The id of the rule set.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the rule set.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the rule set.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitoringTagRulesListResponse - Response of a list operation.
 type MonitoringTagRulesListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoringTagRules `json:"value,omitempty"`
+	Value []*MonitoringTagRules
 }
 
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
 	// Rules for sending logs.
-	LogRules *LogRules `json:"logRules,omitempty"`
+	LogRules *LogRules
 
 	// Provisioning state of the monitoring tag rules.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 }
 
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -437,40 +437,40 @@ type MonitorsClientUpdateOptions struct {
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write monitors'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type, e.g., read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider, i.e., Microsoft.Elastic.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Type on which the operation is performed, e.g., 'monitors'.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of GET request to list the Microsoft.Elastic operations.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the Microsoft.Elastic provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 }
 
 // OperationResult - A Microsoft.Elastic REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name, i.e., {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -487,37 +487,37 @@ type OrganizationsClientGetAPIKeyOptions struct {
 // Properties - Elastic Resource Properties.
 type Properties struct {
 	// Details of the elastic cloud deployment.
-	ElasticCloudDeployment *CloudDeployment `json:"elasticCloudDeployment,omitempty"`
+	ElasticCloudDeployment *CloudDeployment
 
 	// Details of the user's elastic account.
-	ElasticCloudUser *CloudUser `json:"elasticCloudUser,omitempty"`
+	ElasticCloudUser *CloudUser
 }
 
 // ResourceSKU - Microsoft.Elastic SKU.
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
@@ -545,49 +545,49 @@ type TagRulesClientListOptions struct {
 // TrafficFilter - Elastic traffic filter object
 type TrafficFilter struct {
 	// Description of the elastic filter
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Id of the elastic filter
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// IncludeByDefault for the elastic filter
-	IncludeByDefault *bool `json:"includeByDefault,omitempty"`
+	IncludeByDefault *bool
 
 	// Name of the elastic filter
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Region of the elastic filter
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// Rules in the elastic filter
-	Rules []*TrafficFilterRule `json:"rules,omitempty"`
+	Rules []*TrafficFilterRule
 
 	// Type of the elastic filter
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 }
 
 // TrafficFilterResponse - List of elastic traffic filters in the account
 type TrafficFilterResponse struct {
 	// List of elastic traffic filters in the account
-	Rulesets []*TrafficFilter `json:"rulesets,omitempty"`
+	Rulesets []*TrafficFilter
 }
 
 // TrafficFilterRule - Elastic traffic filter rule object
 type TrafficFilterRule struct {
 	// Guid of Private Endpoint in the elastic filter rule
-	AzureEndpointGUID *string `json:"azureEndpointGuid,omitempty"`
+	AzureEndpointGUID *string
 
 	// Name of the Private Endpoint in the elastic filter rule
-	AzureEndpointName *string `json:"azureEndpointName,omitempty"`
+	AzureEndpointName *string
 
 	// Description of the elastic filter rule
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Id of the elastic filter rule
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// IP of the elastic filter rule
-	Source *string `json:"source,omitempty"`
+	Source *string
 }
 
 // TrafficFiltersClientDeleteOptions contains the optional parameters for the TrafficFiltersClient.Delete method.
@@ -604,41 +604,45 @@ type UpgradableVersionsClientDetailsOptions struct {
 // UpgradableVersionsList - Stack Versions that this version can upgrade to
 type UpgradableVersionsList struct {
 	// Current version of the elastic monitor
-	CurrentVersion *string `json:"currentVersion,omitempty"`
+	CurrentVersion *string
 
 	// Stack Versions that this version can upgrade to
-	UpgradableVersions []*string `json:"upgradableVersions,omitempty"`
+	UpgradableVersions []*string
 }
 
 // UserAPIKeyResponse - The User Api Key created for the Organization associated with the User Email Id that was passed in
 // the request
 type UserAPIKeyResponse struct {
-	// The User Api Key Generated based on ReturnApiKey flag. This is applicable for non-Portal clients only.
-	APIKey *string `json:"apiKey,omitempty"`
+	Properties *UserAPIKeyResponseProperties
+}
+
+type UserAPIKeyResponseProperties struct {
+	// The User Api Key Generated based on GenerateApiKey flag. This is applicable for non-Portal clients only.
+	APIKey *string
 }
 
 // UserEmailID - Email Id of the User Organization, of which the API Key must be returned
 type UserEmailID struct {
 	// The User email Id
-	EmailID *string `json:"emailId,omitempty"`
+	EmailID *string
 }
 
 // UserInfo - User Information to be passed to partners.
 type UserInfo struct {
 	// Company information of the user to be passed to partners.
-	CompanyInfo *CompanyInfo `json:"companyInfo,omitempty"`
+	CompanyInfo *CompanyInfo
 
 	// Company name of the user
-	CompanyName *string `json:"companyName,omitempty"`
+	CompanyName *string
 
 	// Email of the user used by Elastic for contacting them if needed
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// First name of the user
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Last name of the user
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 }
 
 // VMCollectionClientUpdateOptions contains the optional parameters for the VMCollectionClient.Update method.
@@ -650,10 +654,10 @@ type VMCollectionClientUpdateOptions struct {
 // VMCollectionUpdate - Update VM resource collection.
 type VMCollectionUpdate struct {
 	// Operation to be performed for given VM.
-	OperationName *OperationName `json:"operationName,omitempty"`
+	OperationName *OperationName
 
 	// ARM id of the VM resource.
-	VMResourceID *string `json:"vmResourceId,omitempty"`
+	VMResourceID *string
 }
 
 // VMHostClientListOptions contains the optional parameters for the VMHostClient.NewListPager method.
@@ -664,10 +668,10 @@ type VMHostClientListOptions struct {
 // VMHostListResponse - Response of a list operation.
 type VMHostListResponse struct {
 	// Link to the next Vm resource Id, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*VMResources `json:"value,omitempty"`
+	Value []*VMResources
 }
 
 // VMIngestionClientDetailsOptions contains the optional parameters for the VMIngestionClient.Details method.
@@ -678,14 +682,40 @@ type VMIngestionClientDetailsOptions struct {
 // VMIngestionDetailsResponse - The vm ingestion details to install an agent.
 type VMIngestionDetailsResponse struct {
 	// The cloudId of given Elastic monitor resource.
-	CloudID *string `json:"cloudId,omitempty"`
+	CloudID *string
 
 	// Ingestion details to install agent on given VM.
-	IngestionKey *string `json:"ingestionKey,omitempty"`
+	IngestionKey *string
 }
 
 // VMResources - The vm resource properties that is currently being monitored by the Elastic monitor resource.
 type VMResources struct {
 	// The ARM id of the VM resource.
-	VMResourceID *string `json:"vmResourceId,omitempty"`
+	VMResourceID *string
+}
+
+// VersionListFormat - Elastic Version List Format
+type VersionListFormat struct {
+	// Elastic Version Properties
+	Properties *VersionListProperties
+}
+
+// VersionListProperties - Elastic Version Properties
+type VersionListProperties struct {
+	// Available elastic version of the given region
+	Version *string
+}
+
+// VersionsClientListOptions contains the optional parameters for the VersionsClient.NewListPager method.
+type VersionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VersionsListResponse - List of elastic versions available in a region.
+type VersionsListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*VersionListFormat
 }

@@ -40,12 +40,11 @@ type WorkloadIdentityCredentialOptions struct {
 	AdditionallyAllowedTenants []string
 	// ClientID of the service principal. Defaults to the value of the environment variable AZURE_CLIENT_ID.
 	ClientID string
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
 	// TokenFilePath is the path a file containing the workload identity token. Defaults to the value of the
@@ -82,7 +81,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	caco := ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		ClientOptions:              options.ClientOptions,
-		DisableAuthorityValidationAndInstanceDiscovery: options.DisableAuthorityValidationAndInstanceDiscovery,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {

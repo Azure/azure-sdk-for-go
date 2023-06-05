@@ -23,7 +23,7 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 	require.Empty(t, checkpoints)
 
 	for i := int64(0); i < 5; i++ {
-		err = store.UpdateCheckpoint(context.Background(), Checkpoint{
+		err = store.SetCheckpoint(context.Background(), Checkpoint{
 			FullyQualifiedNamespace: "ns",
 			EventHubName:            "eh",
 			ConsumerGroup:           "cg",
@@ -206,13 +206,18 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 
 			current, exists := cps.ownerships[key]
 
-			if exists && po.ETag != nil && *current.ETag != *po.ETag {
-				// can't own it, didn't have the expected etag
-				return nil, nil
+			if exists {
+				if po.ETag == nil {
+					panic("Ownership blob exists, we should have claimed it using an etag")
+				}
+
+				if *po.ETag != *current.ETag {
+					// can't own it, didn't have the expected etag
+					return nil, nil
+				}
 			}
 
 			newOwnership := po
-
 			uuid, err := uuid.New()
 
 			if err != nil {
@@ -264,7 +269,7 @@ func (cps *testCheckpointStore) ListOwnership(ctx context.Context, fullyQualifie
 	return ownerships, nil
 }
 
-func (cps *testCheckpointStore) UpdateCheckpoint(ctx context.Context, checkpoint Checkpoint, options *UpdateCheckpointOptions) error {
+func (cps *testCheckpointStore) SetCheckpoint(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error {
 	cps.checkpointsMu.Lock()
 	defer cps.checkpointsMu.Unlock()
 

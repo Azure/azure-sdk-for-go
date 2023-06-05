@@ -27,12 +27,11 @@ type InteractiveBrowserCredentialOptions struct {
 	// Defaults to the ID of an Azure development application.
 	ClientID string
 
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 
 	// LoginHint pre-populates the account prompt with a username. Users may choose to authenticate a different account.
 	LoginHint string
@@ -70,7 +69,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		cp = *options
 	}
 	cp.init()
-	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableAuthorityValidationAndInstanceDiscovery))
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}
@@ -86,6 +85,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 
 func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenInteractive(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithLoginHint(c.options.LoginHint),
 		public.WithRedirectURI(c.options.RedirectURL),
 		public.WithTenantID(opts.TenantID),
@@ -98,6 +98,7 @@ func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts po
 
 func (c *InteractiveBrowserCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithSilentAccount(c.account),
 		public.WithTenantID(opts.TenantID),
 	)

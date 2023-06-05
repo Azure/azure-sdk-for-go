@@ -70,8 +70,8 @@ func ExampleClient_DeleteSecret() {
 }
 
 // List pages don't include secret values. Use [Client.GetSecret] to retrieve secret values.
-func ExampleClient_NewListSecretsPager() {
-	pager := client.NewListSecretsPager(nil)
+func ExampleClient_NewListSecretPropertiesPager() {
+	pager := client.NewListSecretPropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -89,7 +89,7 @@ func ExampleClient_BackupSecret() {
 		// TODO: handle error
 	}
 
-	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBundleBackup: backup.Value}, nil)
+	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBackup: backup.Value}, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -103,7 +103,7 @@ func ExampleClient_RestoreSecret() {
 		// TODO: handle error
 	}
 
-	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBundleBackup: backup.Value}, nil)
+	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBackup: backup.Value}, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -113,7 +113,7 @@ func ExampleClient_RestoreSecret() {
 
 func ExampleClient_PurgeDeletedSecret() {
 	// this loop purges all the deleted secrets in the vault
-	pager := client.NewListDeletedSecretsPager(nil)
+	pager := client.NewListDeletedSecretPropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -137,8 +137,8 @@ func ExampleClient_RecoverDeletedSecret() {
 }
 
 // UpdateSecret updates a secret's metadata. It can't change the secret's value; use [Client.SetSecret] to set a secret's value.
-func ExampleClient_UpdateSecret() {
-	updateParams := azsecrets.UpdateSecretParameters{
+func ExampleClient_UpdateSecretProperties() {
+	updateParams := azsecrets.UpdateSecretPropertiesParameters{
 		SecretAttributes: &azsecrets.SecretAttributes{
 			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
 		},
@@ -147,7 +147,7 @@ func ExampleClient_UpdateSecret() {
 	}
 	// an empty version updates the latest version of the secret
 	version := ""
-	resp, err := client.UpdateSecret(context.Background(), "mySecretName", version, updateParams, nil)
+	resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", version, updateParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}

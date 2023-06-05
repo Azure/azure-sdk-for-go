@@ -15,7 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 )
 
 type errNonRetriable struct {
@@ -160,6 +160,9 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 	amqp.ErrCondInternalError:    RecoveryKindConn, // "amqp:internal-error"
 
 	// No recovery possible - this operation is non retriable.
+
+	// ErrCondResourceLimitExceeded comes back if the entity is actually full.
+	amqp.ErrCondResourceLimitExceeded:                      RecoveryKindFatal, // "amqp:resource-limit-exceeded"
 	amqp.ErrCondMessageSizeExceeded:                        RecoveryKindFatal, // "amqp:link:message-size-exceeded"
 	amqp.ErrCondUnauthorizedAccess:                         RecoveryKindFatal, // creds are bad
 	amqp.ErrCondNotFound:                                   RecoveryKindFatal, // "amqp:not-found"

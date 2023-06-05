@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByBillingAccount.json
 func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByDepartment.json
 func ExampleExportsClient_List_exportsGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleExportsClient_List_exportsGetByDepartment() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByEnrollmentAccount.json
 func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,7 +305,7 @@ func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByManagementGroup.json
 func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByResourceGroup.json
 func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +495,7 @@ func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetBySubscription.json
 func ExampleExportsClient_List_exportsGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +590,7 @@ func ExampleExportsClient_List_exportsGetBySubscription() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByBillingAccount.json
 func ExampleExportsClient_Get_exportGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExampleExportsClient_Get_exportGetByBillingAccount() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByDepartment.json
 func ExampleExportsClient_Get_exportGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -698,7 +698,7 @@ func ExampleExportsClient_Get_exportGetByDepartment() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByEnrollmentAccount.json
 func ExampleExportsClient_Get_exportGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,7 +752,7 @@ func ExampleExportsClient_Get_exportGetByEnrollmentAccount() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByManagementGroup.json
 func ExampleExportsClient_Get_exportGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +806,7 @@ func ExampleExportsClient_Get_exportGetByManagementGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByResourceGroup.json
 func ExampleExportsClient_Get_exportGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -860,7 +860,7 @@ func ExampleExportsClient_Get_exportGetByResourceGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetBySubscription.json
 func ExampleExportsClient_Get_exportGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,7 +914,7 @@ func ExampleExportsClient_Get_exportGetBySubscription() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1006,7 +1006,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() 
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByDepartment.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1098,7 +1098,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1190,7 +1190,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByManagementGroup.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1282,7 +1282,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup()
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByResourceGroup.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1374,7 +1374,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateBySubscription.json
 func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1466,7 +1466,7 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByBillingAccount.json
 func ExampleExportsClient_Delete_exportDeleteByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1483,7 +1483,7 @@ func ExampleExportsClient_Delete_exportDeleteByBillingAccount() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByDepartment.json
 func ExampleExportsClient_Delete_exportDeleteByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1500,7 +1500,7 @@ func ExampleExportsClient_Delete_exportDeleteByDepartment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByEnrollmentAccount.json
 func ExampleExportsClient_Delete_exportDeleteByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1517,7 +1517,7 @@ func ExampleExportsClient_Delete_exportDeleteByEnrollmentAccount() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByManagementGroup.json
 func ExampleExportsClient_Delete_exportDeleteByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1534,7 +1534,7 @@ func ExampleExportsClient_Delete_exportDeleteByManagementGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByResourceGroup.json
 func ExampleExportsClient_Delete_exportDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1551,7 +1551,7 @@ func ExampleExportsClient_Delete_exportDeleteByResourceGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteBySubscription.json
 func ExampleExportsClient_Delete_exportDeleteBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1568,7 +1568,7 @@ func ExampleExportsClient_Delete_exportDeleteBySubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByBillingAccount.json
 func ExampleExportsClient_Execute_exportRunByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1585,7 +1585,7 @@ func ExampleExportsClient_Execute_exportRunByBillingAccount() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByDepartment.json
 func ExampleExportsClient_Execute_exportRunByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1602,7 +1602,7 @@ func ExampleExportsClient_Execute_exportRunByDepartment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByEnrollmentAccount.json
 func ExampleExportsClient_Execute_exportRunByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1619,7 +1619,7 @@ func ExampleExportsClient_Execute_exportRunByEnrollmentAccount() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByManagementGroup.json
 func ExampleExportsClient_Execute_exportRunByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1636,7 +1636,7 @@ func ExampleExportsClient_Execute_exportRunByManagementGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByResourceGroup.json
 func ExampleExportsClient_Execute_exportRunByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1653,7 +1653,7 @@ func ExampleExportsClient_Execute_exportRunByResourceGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunBySubscription.json
 func ExampleExportsClient_Execute_exportRunBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1670,7 +1670,7 @@ func ExampleExportsClient_Execute_exportRunBySubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByBillingAccount.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1689,10 +1689,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccount-id}/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -1733,7 +1733,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccount-id}/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
@@ -1775,7 +1775,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByDepartment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByDepartment.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1794,10 +1794,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12/departments/1234/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -1838,7 +1838,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12/departments/1234/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
@@ -1880,7 +1880,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1899,10 +1899,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -1943,7 +1943,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
@@ -1985,7 +1985,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByManagementGroup.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2004,10 +2004,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("providers/Microsoft.Management/managementGroups/TestMG/providers/Microsoft.CostManagement/exports/TestExport/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledForTestExport/TestExportSchedule/20180729-20180804/TestExportSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -2048,7 +2048,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("providers/Microsoft.Management/managementGroups/TestMG/providers/Microsoft.CostManagement/exports/TestExport/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledForTestExport/TestExportSchedule/20180729-20180804/TestExportSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
@@ -2090,7 +2090,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByResourceGroup.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2109,10 +2109,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -2153,7 +2153,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
@@ -2195,7 +2195,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetBySubscription.json
 func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2214,10 +2214,10 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ExportExecutionListResult = armcostmanagement.ExportExecutionListResult{
-	// 	Value: []*armcostmanagement.ExportExecution{
+	// 	Value: []*armcostmanagement.ExportRun{
 	// 		{
 	// 			ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/1e25d58a-a3b0-4916-9542-6e04a89bc100"),
-	// 			Properties: &armcostmanagement.ExportExecutionProperties{
+	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
 	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
@@ -2258,7 +2258,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 			},
 	// 			{
 	// 				ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/exports/JohnDoeSchedule/Run/11ac6811-dca3-46ad-b326-4704cf0c58ef"),
-	// 				Properties: &armcostmanagement.ExportExecutionProperties{
+	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
 	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -20,7 +20,7 @@ func TestEventData_Annotations(t *testing.T) {
 		require.Empty(t, re.Body)
 		require.Nil(t, re.EnqueuedTime)
 		require.Equal(t, int64(0), re.SequenceNumber)
-		require.Nil(t, re.Offset)
+		require.Zero(t, re.Offset)
 		require.Nil(t, re.PartitionKey)
 	})
 
@@ -99,7 +99,7 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		SystemProperties: map[string]any{
 			"hello": "world",
 		},
-		Offset:       to.Ptr[int64](102),
+		Offset:       int64(102),
 		PartitionKey: to.Ptr("partition key"),
 		RawAMQPMessage: &AMQPAnnotatedMessage{
 			Properties: &AMQPAnnotatedMessageProperties{

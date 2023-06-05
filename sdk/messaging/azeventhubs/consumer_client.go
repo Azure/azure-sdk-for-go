@@ -48,7 +48,7 @@ type ConsumerClient struct {
 	// troubleshooting.
 	instanceID string
 
-	links        *internal.Links[amqpwrap.AMQPReceiverCloser]
+	links        *internal.Links[amqpwrap.RPCLink]
 	namespace    *internal.Namespace
 	retryOptions RetryOptions
 }
@@ -142,26 +142,14 @@ func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *Partit
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	rpcLink, err := cc.links.GetManagementLink(ctx)
-
-	if err != nil {
-		return EventHubProperties{}, err
-	}
-
-	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, options)
+	return getEventHubProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, cc.retryOptions, options)
 }
 
 // GetPartitionProperties gets properties for a specific partition. This includes data like the
 // last enqueued sequence number, the first sequence number and when an event was last enqueued
 // to the partition.
 func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	rpcLink, err := cc.links.GetManagementLink(ctx)
-
-	if err != nil {
-		return PartitionProperties{}, err
-	}
-
-	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+	return getPartitionProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, partitionID, cc.retryOptions, options)
 }
 
 // InstanceID is the identifier for this ConsumerClient.
@@ -253,7 +241,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	}
 
 	client.namespace = tempNS
-	client.links = internal.NewLinks[amqpwrap.AMQPReceiverCloser](tempNS, fmt.Sprintf("%s/$management", client.eventHub), nil, nil)
+	client.links = internal.NewLinks[amqpwrap.RPCLink](tempNS, fmt.Sprintf("%s/$management", client.eventHub), nil, nil)
 
 	return client, nil
 }

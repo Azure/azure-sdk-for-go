@@ -378,15 +378,6 @@ type KeyValuesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.NewListByConfigurationStorePager
-// method.
-type KeyValuesClientListByConfigurationStoreOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
-	// a nextLink element, the value of the nextLink element will include a
-	// skipToken parameter that specifies a starting point to use for subsequent calls.
-	SkipToken *string
-}
-
 // KeyVaultProperties - Settings concerning key vault encryption for a configuration store.
 type KeyVaultProperties struct {
 	// The client id of the identity which will be used to access key vault.
@@ -673,6 +664,71 @@ type PrivateLinkServiceConnectionState struct {
 type RegenerateKeyParameters struct {
 	// The id of the key to regenerate.
 	ID *string
+}
+
+// Replica - The replica resource.
+type Replica struct {
+	// The location of the replica.
+	Location *string
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the replica.
+	Name *string
+
+	// READ-ONLY; All replica properties.
+	Properties *ReplicaProperties
+
+	// READ-ONLY; Resource system metadata.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ReplicaListResult - The result of a request to list replicas.
+type ReplicaListResult struct {
+	// The URI that can be used to request the next set of paged results.
+	NextLink *string
+
+	// The collection value.
+	Value []*Replica
+}
+
+// ReplicaProperties - All replica properties.
+type ReplicaProperties struct {
+	// READ-ONLY; The URI of the replica where the replica API will be available.
+	Endpoint *string
+
+	// READ-ONLY; The provisioning state of the replica.
+	ProvisioningState *ReplicaProvisioningState
+}
+
+// ReplicasClientBeginCreateOptions contains the optional parameters for the ReplicasClient.BeginCreate method.
+type ReplicasClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientBeginDeleteOptions contains the optional parameters for the ReplicasClient.BeginDelete method.
+type ReplicasClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientGetOptions contains the optional parameters for the ReplicasClient.Get method.
+type ReplicasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientListByConfigurationStoreOptions contains the optional parameters for the ReplicasClient.NewListByConfigurationStorePager
+// method.
+type ReplicasClientListByConfigurationStoreOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
+	SkipToken *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources

@@ -113,7 +113,7 @@ func newClientForTest() clientWrapper {
 		}
 	}
 
-	c, err := azeventgrid.NewClientFromSharedKey(vars.Endpoint, vars.Key, opts)
+	c, err := azeventgrid.NewClientWithSharedKeyCredential(vars.Endpoint, vars.Key, opts)
 
 	if err != nil {
 		panic(err)

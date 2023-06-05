@@ -22,8 +22,8 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewClientFromSharedKey creates a [Client] using a shared key.
-func NewClientFromSharedKey(endpoint string, key string, options *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates a [Client] using a shared key.
+func NewClientWithSharedKeyCredential(endpoint string, key string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}

@@ -49,7 +49,7 @@ func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azc
 // Get - Gets a virtual machine image in an edge zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - location - The name of a supported Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - publisherName - A valid image publisher.
@@ -109,7 +109,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -127,7 +127,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.R
 // List - Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - location - The name of a supported Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - publisherName - A valid image publisher.
@@ -191,7 +191,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listCreateRequest(ctx context.
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.
 // ListOffers - Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - location - The name of a supported Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - publisherName - A valid image publisher.
@@ -254,7 +254,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -272,7 +272,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - location - The name of a supported Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - options - VirtualMachineImagesEdgeZoneClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListPublishers
@@ -312,7 +312,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +330,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(r
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - location - The name of a supported Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - publisherName - A valid image publisher.
@@ -380,7 +380,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

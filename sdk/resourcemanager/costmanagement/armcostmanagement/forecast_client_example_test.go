@@ -13,12 +13,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingAccountForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountForecast.json
 func ExampleForecastClient_Usage_billingAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,23 +34,29 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "providers/Microsoft.Billing/billingAccounts/12345:6789", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -56,9 +64,9 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -68,7 +76,11 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,12 +88,12 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12345:6789/providers/Microsoft.CostManagement/query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -123,7 +135,7 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/BillingProfileForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingProfileForecast.json
 func ExampleForecastClient_Usage_billingProfileForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,23 +149,29 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -161,9 +179,9 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -173,7 +191,11 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -181,12 +203,12 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/providers/Microsoft.CostManagement/query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -228,7 +250,7 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/DepartmentForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentForecast.json
 func ExampleForecastClient_Usage_departmentForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,23 +264,29 @@ func ExampleForecastClient_Usage_departmentForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "providers/Microsoft.Billing/billingAccounts/12345:6789/departments/123", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -266,9 +294,9 @@ func ExampleForecastClient_Usage_departmentForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -278,7 +306,11 @@ func ExampleForecastClient_Usage_departmentForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -286,12 +318,12 @@ func ExampleForecastClient_Usage_departmentForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12345:6789/departments/123/providers/Microsoft.CostManagement/query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -333,7 +365,7 @@ func ExampleForecastClient_Usage_departmentForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/EnrollmentAccountForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountForecast.json
 func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,23 +379,29 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "providers/Microsoft.Billing/billingAccounts/12345:6789/enrollmentAccounts/456", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -371,9 +409,9 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -383,7 +421,11 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -391,12 +433,12 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12345:6789/enrollmentAccounts/456/providers/Microsoft.CostManagement/query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -438,7 +480,7 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/InvoiceSectionForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/InvoiceSectionForecast.json
 func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,23 +494,29 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -476,9 +524,9 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -488,7 +536,11 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -496,12 +548,12 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876/providers/Microsoft.CostManagement/query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -543,7 +595,7 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ResourceGroupForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupForecast.json
 func ExampleForecastClient_Usage_resourceGroupForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,23 +609,29 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -581,9 +639,9 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -593,7 +651,11 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -601,12 +663,12 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("55312978-ba1b-415c-9304-cfd9c43c0481"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer/providers/Microsoft.CostManagement/query/00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -633,7 +695,7 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/SubscriptionForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionForecast.json
 func ExampleForecastClient_Usage_subscriptionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,23 +709,29 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 	res, err := clientFactory.NewForecastClient().Usage(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -671,9 +739,9 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -683,7 +751,11 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 		},
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
-		Timeframe:               to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -691,12 +763,12 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("55312978-ba1b-415c-9304-cfd9c43c0481"),
-	// 	Type: to.Ptr("microsoft.costmanagement/Query"),
+	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/query/00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -738,7 +810,7 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountForecast.json
 func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,23 +824,29 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 	res, err := clientFactory.NewForecastClient().ExternalCloudProviderUsage(ctx, armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts, "100", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -776,9 +854,9 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -786,7 +864,11 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 			},
 			Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 		},
-		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientExternalCloudProviderUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -794,12 +876,12 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("6dc7b06a-d90a-4df5-b655-ce6cf1c0814d"),
 	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.CostManagement/externalBillingAccounts/100/query/6dc7b06a-d90a-4df5-b655-ce6cf1c0814d"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),
@@ -833,7 +915,7 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalSubscriptionForecast.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionForecast.json
 func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,23 +929,29 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 	res, err := clientFactory.NewForecastClient().ExternalCloudProviderUsage(ctx, armcostmanagement.ExternalCloudProviderTypeExternalSubscriptions, "100", armcostmanagement.ForecastDefinition{
 		Type: to.Ptr(armcostmanagement.ForecastTypeUsage),
 		Dataset: &armcostmanagement.ForecastDataset{
-			Filter: &armcostmanagement.QueryFilter{
-				And: []*armcostmanagement.QueryFilter{
+			Aggregation: map[string]*armcostmanagement.ForecastAggregation{
+				"totalCost": {
+					Name:     to.Ptr(armcostmanagement.FunctionNameCost),
+					Function: to.Ptr(armcostmanagement.FunctionTypeSum),
+				},
+			},
+			Filter: &armcostmanagement.ForecastFilter{
+				And: []*armcostmanagement.ForecastFilter{
 					{
-						Or: []*armcostmanagement.QueryFilter{
+						Or: []*armcostmanagement.ForecastFilter{
 							{
-								Dimensions: &armcostmanagement.QueryComparisonExpression{
+								Dimensions: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("ResourceLocation"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("East US"),
 										to.Ptr("West Europe")},
 								},
 							},
 							{
-								Tags: &armcostmanagement.QueryComparisonExpression{
+								Tags: &armcostmanagement.ForecastComparisonExpression{
 									Name:     to.Ptr("Environment"),
-									Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+									Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 									Values: []*string{
 										to.Ptr("UAT"),
 										to.Ptr("Prod")},
@@ -871,9 +959,9 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 							}},
 					},
 					{
-						Dimensions: &armcostmanagement.QueryComparisonExpression{
+						Dimensions: &armcostmanagement.ForecastComparisonExpression{
 							Name:     to.Ptr("ResourceGroup"),
-							Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
+							Operator: to.Ptr(armcostmanagement.ForecastOperatorTypeIn),
 							Values: []*string{
 								to.Ptr("API")},
 						},
@@ -881,7 +969,11 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 			},
 			Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 		},
-		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeTypeMonthToDate),
+		TimePeriod: &armcostmanagement.ForecastTimePeriod{
+			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
+			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+		},
+		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, &armcostmanagement.ForecastClientExternalCloudProviderUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -889,12 +981,12 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QueryResult = armcostmanagement.QueryResult{
+	// res.ForecastResult = armcostmanagement.ForecastResult{
 	// 	Name: to.Ptr("d99477af-7510-40ee-aca2-e59bdca0d10d"),
 	// 	Type: to.Ptr("Microsoft.CostManagement/query"),
 	// 	ID: to.Ptr("providers/Microsoft.CostManagement/externalSubscriptions/100/query/d99477af-7510-40ee-aca2-e59bdca0d10d"),
-	// 	Properties: &armcostmanagement.QueryProperties{
-	// 		Columns: []*armcostmanagement.QueryColumn{
+	// 	Properties: &armcostmanagement.ForecastProperties{
+	// 		Columns: []*armcostmanagement.ForecastColumn{
 	// 			{
 	// 				Name: to.Ptr("PreTaxCost"),
 	// 				Type: to.Ptr("Number"),

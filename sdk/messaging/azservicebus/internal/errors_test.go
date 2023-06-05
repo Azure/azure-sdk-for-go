@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -227,6 +227,7 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 func Test_ServiceBusError_Fatal(t *testing.T) {
 	var fatalConditions = []amqp.ErrCond{
 		amqp.ErrCondMessageSizeExceeded,
+		amqp.ErrCondResourceLimitExceeded,
 		amqp.ErrCondUnauthorizedAccess,
 		amqp.ErrCondNotFound,
 		amqp.ErrCondNotAllowed,

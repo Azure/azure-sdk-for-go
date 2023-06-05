@@ -40,7 +40,7 @@ func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // NewListPager - Gets the tenants for your account.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - options - TenantsClientListOptions contains the optional parameters for the TenantsClient.NewListPager method.
 func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TenantsClientListResponse]{
@@ -78,7 +78,7 @@ func (client *TenantsClient) listCreateRequest(ctx context.Context, options *Ten
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

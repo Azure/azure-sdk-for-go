@@ -1082,6 +1082,9 @@ type ContinuousModeBackupPolicy struct {
 	// REQUIRED; Describes the mode of backups.
 	Type *BackupPolicyType
 
+	// Configuration values for continuous mode backup
+	ContinuousModeProperties *ContinuousModeProperties
+
 	// The object representing the state of the migration between the backup policies.
 	MigrationState *BackupPolicyMigrationState
 }
@@ -1092,6 +1095,12 @@ func (c *ContinuousModeBackupPolicy) GetBackupPolicy() *BackupPolicy {
 		Type:           c.Type,
 		MigrationState: c.MigrationState,
 	}
+}
+
+// ContinuousModeProperties - Configuration values for periodic mode backup
+type ContinuousModeProperties struct {
+	// Enum to indicate type of Continuous backup mode
+	Tier *ContinuousTier
 }
 
 // CorsPolicy - The CORS policy for the Cosmos DB database account.
@@ -3765,6 +3774,9 @@ type RestorableDatabaseAccountProperties struct {
 	// The time at which the restorable database account has been deleted (ISO-8601 format).
 	DeletionTime *time.Time
 
+	// The least recent time at which the database account can be restored to (ISO-8601 format).
+	OldestRestorableTime *time.Time
+
 	// READ-ONLY; The API type of the restorable database account.
 	APIType *APIType
 
@@ -5686,6 +5698,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string
 
+	// READ-ONLY; The offer throughput value to instantly scale up without triggering splits
+	InstantMaximumThroughput *string
+
 	// READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string
 
@@ -5694,6 +5709,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 
 	// READ-ONLY; A system generated property. A unique identifier.
 	Rid *string
+
+	// READ-ONLY; The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+	SoftAllowedMaximumThroughput *string
 
 	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
 	Ts *float32
@@ -5733,11 +5751,17 @@ type ThroughputSettingsResource struct {
 	// Value of the Cosmos DB resource throughput. Either throughput is required or autoscaleSettings is required, but not both.
 	Throughput *int32
 
+	// READ-ONLY; The offer throughput value to instantly scale up without triggering splits
+	InstantMaximumThroughput *string
+
 	// READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string
 
 	// READ-ONLY; The throughput replace is pending
 	OfferReplacePending *string
+
+	// READ-ONLY; The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+	SoftAllowedMaximumThroughput *string
 }
 
 // ThroughputSettingsUpdateParameters - Parameters to update Cosmos DB resource throughput.

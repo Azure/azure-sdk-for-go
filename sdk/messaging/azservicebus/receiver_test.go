@@ -6,7 +6,7 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"os"
+	"regexp"
 	"sort"
 	"strings"
 	"testing"
@@ -15,9 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -569,8 +569,11 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 	logMessages := endCaptureFn()
 
 	failedOnFirstTry := false
+
+	re := regexp.MustCompile(`^\[azsb.Receiver\] \[c:1, l:1, r:name:[^\]]+\] \(renewMessageLock\) Retry attempt 0 returned non-retryable error`)
+
 	for _, msg := range logMessages {
-		if strings.HasPrefix(msg, "[azsb.Receiver] (renewMessageLock) Retry attempt 0 returned non-retryable error") {
+		if re.MatchString(msg) {
 			failedOnFirstTry = true
 		}
 	}
@@ -607,7 +610,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 			// - TypeCodeDecimal64
 			// - TypeCodeDecimal128
 			// - TypeCodeChar  (although note below that a 'character' does work, although it's not a TypecodeChar value)
-			// https://github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
+			// https://github.com/Azure/go-amqp/blob/e0c6c63fb01e6642686ee4f8e7412da042bf35dd/internal/encoding/decode.go#L568
 			"timestamp": expectedTime,
 
 			"byte":   byte(128),
@@ -866,14 +869,15 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("invalid identity creds", func(t *testing.T) {
-		tenantID := os.Getenv("AZURE_TENANT_ID")
-		clientID := os.Getenv("AZURE_CLIENT_ID")
-		endpoint := os.Getenv("SERVICEBUS_ENDPOINT")
+		identityVars := test.GetIdentityVars(t)
+		if identityVars == nil {
+			return
+		}
 
-		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		cliCred, err := azidentity.NewClientSecretCredential(identityVars.TenantID, identityVars.ClientID, "bogus-client-secret", nil)
 		require.NoError(t, err)
 
-		client, err := NewClient(endpoint, cliCred, nil)
+		client, err := NewClient(identityVars.Endpoint, cliCred, nil)
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)

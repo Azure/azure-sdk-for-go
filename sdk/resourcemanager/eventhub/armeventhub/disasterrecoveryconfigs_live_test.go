@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -39,10 +40,10 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/eventhub/armeventhub/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.alias = testutil.GenerateAlphaNumericID(testsuite.T(), "alias2", 6)
-	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "authorizat2", 6)
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespacen2", 6)
-	testsuite.namespaceNameSecond = testutil.GenerateAlphaNumericID(testsuite.T(), "namespacensecond", 6)
+	testsuite.alias, _ = recording.GenerateAlphaNumericID(testsuite.T(), "alias", 11, false)
+	testsuite.authorizationRuleName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "authorizat", 16, false)
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespacen", 16, false)
+	testsuite.namespaceNameSecond, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespacensecond", 22, false)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

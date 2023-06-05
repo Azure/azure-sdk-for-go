@@ -22,8 +22,8 @@ type CheckpointStore interface {
 	// ListOwnership lists all ownerships.
 	ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *ListOwnershipOptions) ([]Ownership, error)
 
-	// UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
-	UpdateCheckpoint(ctx context.Context, checkpoint Checkpoint, options *UpdateCheckpointOptions) error
+	// SetCheckpoint updates a specific checkpoint with a sequence and offset.
+	SetCheckpoint(ctx context.Context, checkpoint Checkpoint, options *SetCheckpointOptions) error
 }
 
 // Ownership tracks which consumer owns a particular partition.
@@ -59,8 +59,8 @@ type ListOwnershipOptions struct {
 	// For future expansion
 }
 
-// UpdateCheckpointOptions contains optional parameters for the UpdateCheckpoint function
-type UpdateCheckpointOptions struct {
+// SetCheckpointOptions contains optional parameters for the UpdateCheckpoint function
+type SetCheckpointOptions struct {
 	// For future expansion
 }
 

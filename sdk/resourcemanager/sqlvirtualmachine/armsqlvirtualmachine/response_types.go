@@ -108,3 +108,8 @@ type SQLVirtualMachinesClientStartAssessmentResponse struct {
 type SQLVirtualMachinesClientUpdateResponse struct {
 	SQLVirtualMachine
 }
+
+// TroubleshootClientTroubleshootResponse contains the response from method TroubleshootClient.BeginTroubleshoot.
+type TroubleshootClientTroubleshootResponse struct {
+	SQLVMTroubleshooting
+}

@@ -9,7 +9,7 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/605407bc0c1a133018285f550d01175469cb3c3a/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/72427ef3ff5875bd8409ef112ef5e6f3cf2b8795/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
@@ -152,47 +152,9 @@ directive:
     transform: $["name"] = "BatchQueryRequestMethod"
 
   # add descriptions for models and constants that don't have them
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.path
-    transform: $["description"] = "The query path of a single request in a batch, defaults to /query"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.method
-    transform: $["description"] = "The method of a single request in a batch, defaults to POST"
-  - from: swagger-document
-    where: $.definitions.batchQueryResponse
-    transform: $["description"] = "Contains the batch query response and the headers, id, and status of the request"
   - from: constants.go
     where: $
     transform: return $.replace(/type ResultType string/, "//ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.\ntype ResultType string");
-
-  # update doc comments
-  - from: swagger-document
-    where: $.paths["/workspaces/{workspaceId}/query"].post
-    transform: $["description"] = "Executes an Analytics query for data."
-  - from: swagger-document
-    where: $.paths["/$batch"].post
-    transform: $["description"] = "Executes a batch of Analytics queries for data."
-  - from: swagger-document
-    where: $.definitions.queryResults.properties.tables
-    transform: $["description"] = "The results of the query in tabular format."
-  - from: swagger-document
-    where: $.definitions.batchQueryResults.properties.tables
-    transform: $["description"] = "The results of the query in tabular format."
-  - from: swagger-document
-    where: $.definitions.queryBody.properties.workspaces
-    transform: $["description"] = "A list of workspaces to query in addition to the primary workspace."
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.headers
-    transform: $["description"] = "Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information. For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.workspace
-    transform: $["description"] = "Primary Workspace ID of the query"
-  - from: swagger-document
-    where: $.definitions.batchQueryRequest.properties.id
-    transform: $["description"] = "Unique ID corresponding to each request in the batch"
-  - from: swagger-document
-    where: $.parameters.workspaceId
-    transform: $["description"] = "Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal"
 
   # delete unused error models
   - from: models.go
@@ -222,29 +184,7 @@ directive:
   # change Table.Rows from type [][]interface{} to type []Row
   - from: models.go
     where: $
-    transform: return $.replace(/Rows \[\]\[\]any/, "Rows []Row");
-
-  # change render and statistics type to []byte
-  - from: models.go
-    where: $
-    transform: return $.replace(/Statistics any/g, "Statistics []byte");
-  - from: models.go
-    where: $
-    transform: return $.replace(/Visualization any/g, "Visualization []byte");
-  - from: models_serde.go
-    where: $
-    transform: return 
-      $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/err(.*)r\.Visualization\)/, "r.Visualization = val");
-  - from: models_serde.go
-    where: $
-    transform: return 
-      $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");
+    transform: return $.replace(/Rows \[\]\[\]byte/, "Rows []Row");
 
   # change type of timespan from *string to *TimeInterval
   - from: models.go

@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
@@ -35,7 +34,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.client = fakePublicClient{err: errors.New("invalid credentials")}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -77,7 +76,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 			},
 		},
 	}
-	_, err = cred.GetToken(expectedCtx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(expectedCtx, testTRO)
 	if err == nil {
 		t.Fatal("expected an error")
 	}
@@ -99,7 +98,7 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 		},
 		{
 			desc: "instance discovery disabled",
-			opts: DeviceCodeCredentialOptions{DisableAuthorityValidationAndInstanceDiscovery: true, TenantID: liveSP.tenantID},
+			opts: DeviceCodeCredentialOptions{DisableInstanceDiscovery: true, TenantID: liveSP.tenantID},
 		},
 		{
 			desc: "optional tenant",
@@ -133,9 +132,10 @@ func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
 	defer stop()
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	opts := DeviceCodeCredentialOptions{
-		ClientID:      adfsLiveUser.clientID,
-		ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true,
-		TenantID: "adfs",
+		ClientID:                 adfsLiveUser.clientID,
+		ClientOptions:            o,
+		DisableInstanceDiscovery: true,
+		TenantID:                 "adfs",
 	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }

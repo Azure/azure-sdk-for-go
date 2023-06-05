@@ -11,7 +11,7 @@ package armcostmanagement
 
 const (
 	moduleName    = "armcostmanagement"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v2.0.0"
 )
 
 // AccumulatedType - Show costs accumulated over time.
@@ -27,6 +27,20 @@ func PossibleAccumulatedTypeValues() []AccumulatedType {
 	return []AccumulatedType{
 		AccumulatedTypeFalse,
 		AccumulatedTypeTrue,
+	}
+}
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
 	}
 }
 
@@ -204,6 +218,27 @@ func PossibleAlertTypeValues() []AlertType {
 	}
 }
 
+// BenefitKind - Kind/type of the benefit.
+type BenefitKind string
+
+const (
+	// BenefitKindIncludedQuantity - Benefit is IncludedQuantity.
+	BenefitKindIncludedQuantity BenefitKind = "IncludedQuantity"
+	// BenefitKindReservation - Benefit is Reservation.
+	BenefitKindReservation BenefitKind = "Reservation"
+	// BenefitKindSavingsPlan - Benefit is SavingsPlan.
+	BenefitKindSavingsPlan BenefitKind = "SavingsPlan"
+)
+
+// PossibleBenefitKindValues returns the possible values for the BenefitKind const type.
+func PossibleBenefitKindValues() []BenefitKind {
+	return []BenefitKind{
+		BenefitKindIncludedQuantity,
+		BenefitKindReservation,
+		BenefitKindSavingsPlan,
+	}
+}
+
 // ChartType - Chart type of the main view in Cost Analysis. Required.
 type ChartType string
 
@@ -226,7 +261,123 @@ func PossibleChartTypeValues() []ChartType {
 	}
 }
 
-// ExecutionStatus - The last known status of the export execution.
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// CostDetailsDataFormat - The data format of the report
+type CostDetailsDataFormat string
+
+const (
+	// CostDetailsDataFormatCSVCostDetailsDataFormat - Csv data format.
+	CostDetailsDataFormatCSVCostDetailsDataFormat CostDetailsDataFormat = "Csv"
+)
+
+// PossibleCostDetailsDataFormatValues returns the possible values for the CostDetailsDataFormat const type.
+func PossibleCostDetailsDataFormatValues() []CostDetailsDataFormat {
+	return []CostDetailsDataFormat{
+		CostDetailsDataFormatCSVCostDetailsDataFormat,
+	}
+}
+
+// CostDetailsMetricType - The type of the detailed report. By default ActualCost is provided
+type CostDetailsMetricType string
+
+const (
+	// CostDetailsMetricTypeActualCostCostDetailsMetricType - Actual cost data.
+	CostDetailsMetricTypeActualCostCostDetailsMetricType CostDetailsMetricType = "ActualCost"
+	// CostDetailsMetricTypeAmortizedCostCostDetailsMetricType - Amortized cost data.
+	CostDetailsMetricTypeAmortizedCostCostDetailsMetricType CostDetailsMetricType = "AmortizedCost"
+)
+
+// PossibleCostDetailsMetricTypeValues returns the possible values for the CostDetailsMetricType const type.
+func PossibleCostDetailsMetricTypeValues() []CostDetailsMetricType {
+	return []CostDetailsMetricType{
+		CostDetailsMetricTypeActualCostCostDetailsMetricType,
+		CostDetailsMetricTypeAmortizedCostCostDetailsMetricType,
+	}
+}
+
+// CostDetailsStatusType - The status of the cost details operation
+type CostDetailsStatusType string
+
+const (
+	// CostDetailsStatusTypeCompletedCostDetailsStatusType - Operation is Completed.
+	CostDetailsStatusTypeCompletedCostDetailsStatusType CostDetailsStatusType = "Completed"
+	// CostDetailsStatusTypeFailedCostDetailsStatusType - Operation Failed.
+	CostDetailsStatusTypeFailedCostDetailsStatusType CostDetailsStatusType = "Failed"
+	// CostDetailsStatusTypeNoDataFoundCostDetailsStatusType - Operation is Completed and no cost data found.
+	CostDetailsStatusTypeNoDataFoundCostDetailsStatusType CostDetailsStatusType = "NoDataFound"
+)
+
+// PossibleCostDetailsStatusTypeValues returns the possible values for the CostDetailsStatusType const type.
+func PossibleCostDetailsStatusTypeValues() []CostDetailsStatusType {
+	return []CostDetailsStatusType{
+		CostDetailsStatusTypeCompletedCostDetailsStatusType,
+		CostDetailsStatusTypeFailedCostDetailsStatusType,
+		CostDetailsStatusTypeNoDataFoundCostDetailsStatusType,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// DaysOfWeek - Days of Week.
+type DaysOfWeek string
+
+const (
+	DaysOfWeekFriday    DaysOfWeek = "Friday"
+	DaysOfWeekMonday    DaysOfWeek = "Monday"
+	DaysOfWeekSaturday  DaysOfWeek = "Saturday"
+	DaysOfWeekSunday    DaysOfWeek = "Sunday"
+	DaysOfWeekThursday  DaysOfWeek = "Thursday"
+	DaysOfWeekTuesday   DaysOfWeek = "Tuesday"
+	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
+)
+
+// PossibleDaysOfWeekValues returns the possible values for the DaysOfWeek const type.
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return []DaysOfWeek{
+		DaysOfWeekFriday,
+		DaysOfWeekMonday,
+		DaysOfWeekSaturday,
+		DaysOfWeekSunday,
+		DaysOfWeekThursday,
+		DaysOfWeekTuesday,
+		DaysOfWeekWednesday,
+	}
+}
+
+// ExecutionStatus - The last known status of the export run.
 type ExecutionStatus string
 
 const (
@@ -252,7 +403,7 @@ func PossibleExecutionStatusValues() []ExecutionStatus {
 	}
 }
 
-// ExecutionType - The type of the export execution.
+// ExecutionType - The type of the export run.
 type ExecutionType string
 
 const (
@@ -268,8 +419,7 @@ func PossibleExecutionTypeValues() []ExecutionType {
 	}
 }
 
-// ExportType - The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that
-// do not yet provide data for charges or amortization for service reservations.
+// ExportType - The type of the query.
 type ExportType string
 
 const (
@@ -302,28 +452,45 @@ func PossibleExternalCloudProviderTypeValues() []ExternalCloudProviderType {
 	}
 }
 
-// ForecastTimeframeType - The time frame for pulling data for the forecast. If custom, then a specific time period must be
-// provided.
-type ForecastTimeframeType string
+// FileFormat - Destination of the view data. Currently only CSV format is supported.
+type FileFormat string
 
 const (
-	ForecastTimeframeTypeBillingMonthToDate  ForecastTimeframeType = "BillingMonthToDate"
-	ForecastTimeframeTypeCustom              ForecastTimeframeType = "Custom"
-	ForecastTimeframeTypeMonthToDate         ForecastTimeframeType = "MonthToDate"
-	ForecastTimeframeTypeTheLastBillingMonth ForecastTimeframeType = "TheLastBillingMonth"
-	ForecastTimeframeTypeTheLastMonth        ForecastTimeframeType = "TheLastMonth"
-	ForecastTimeframeTypeWeekToDate          ForecastTimeframeType = "WeekToDate"
+	FileFormatCSV FileFormat = "Csv"
 )
 
-// PossibleForecastTimeframeTypeValues returns the possible values for the ForecastTimeframeType const type.
-func PossibleForecastTimeframeTypeValues() []ForecastTimeframeType {
-	return []ForecastTimeframeType{
-		ForecastTimeframeTypeBillingMonthToDate,
-		ForecastTimeframeTypeCustom,
-		ForecastTimeframeTypeMonthToDate,
-		ForecastTimeframeTypeTheLastBillingMonth,
-		ForecastTimeframeTypeTheLastMonth,
-		ForecastTimeframeTypeWeekToDate,
+// PossibleFileFormatValues returns the possible values for the FileFormat const type.
+func PossibleFileFormatValues() []FileFormat {
+	return []FileFormat{
+		FileFormatCSV,
+	}
+}
+
+// ForecastOperatorType - The operator to use for comparison.
+type ForecastOperatorType string
+
+const (
+	ForecastOperatorTypeIn ForecastOperatorType = "In"
+)
+
+// PossibleForecastOperatorTypeValues returns the possible values for the ForecastOperatorType const type.
+func PossibleForecastOperatorTypeValues() []ForecastOperatorType {
+	return []ForecastOperatorType{
+		ForecastOperatorTypeIn,
+	}
+}
+
+// ForecastTimeframe - The time frame for pulling data for the forecast.
+type ForecastTimeframe string
+
+const (
+	ForecastTimeframeCustom ForecastTimeframe = "Custom"
+)
+
+// PossibleForecastTimeframeValues returns the possible values for the ForecastTimeframe const type.
+func PossibleForecastTimeframeValues() []ForecastTimeframe {
+	return []ForecastTimeframe{
+		ForecastTimeframeCustom,
 	}
 }
 
@@ -359,6 +526,26 @@ func PossibleFormatTypeValues() []FormatType {
 	}
 }
 
+// FunctionName - The name of the column to aggregate.
+type FunctionName string
+
+const (
+	FunctionNameCost          FunctionName = "Cost"
+	FunctionNameCostUSD       FunctionName = "CostUSD"
+	FunctionNamePreTaxCost    FunctionName = "PreTaxCost"
+	FunctionNamePreTaxCostUSD FunctionName = "PreTaxCostUSD"
+)
+
+// PossibleFunctionNameValues returns the possible values for the FunctionName const type.
+func PossibleFunctionNameValues() []FunctionName {
+	return []FunctionName{
+		FunctionNameCost,
+		FunctionNameCostUSD,
+		FunctionNamePreTaxCost,
+		FunctionNamePreTaxCostUSD,
+	}
+}
+
 // FunctionType - The name of the aggregation function to use.
 type FunctionType string
 
@@ -389,7 +576,48 @@ func PossibleGenerateDetailedCostReportMetricTypeValues() []GenerateDetailedCost
 	}
 }
 
-// GranularityType - The granularity of rows in the export. Currently only 'Daily' is supported.
+// Grain - Grain which corresponds to value.
+type Grain string
+
+const (
+	// GrainDaily - Hourly grain corresponds to value per day.
+	GrainDaily Grain = "Daily"
+	// GrainHourly - Hourly grain corresponds to value per hour.
+	GrainHourly Grain = "Hourly"
+	// GrainMonthly - Hourly grain corresponds to value per month.
+	GrainMonthly Grain = "Monthly"
+)
+
+// PossibleGrainValues returns the possible values for the Grain const type.
+func PossibleGrainValues() []Grain {
+	return []Grain{
+		GrainDaily,
+		GrainHourly,
+		GrainMonthly,
+	}
+}
+
+type GrainParameter string
+
+const (
+	// GrainParameterDaily - Hourly grain corresponds to value per day.
+	GrainParameterDaily GrainParameter = "Daily"
+	// GrainParameterHourly - Hourly grain corresponds to value per hour.
+	GrainParameterHourly GrainParameter = "Hourly"
+	// GrainParameterMonthly - Hourly grain corresponds to value per month.
+	GrainParameterMonthly GrainParameter = "Monthly"
+)
+
+// PossibleGrainParameterValues returns the possible values for the GrainParameter const type.
+func PossibleGrainParameterValues() []GrainParameter {
+	return []GrainParameter{
+		GrainParameterDaily,
+		GrainParameterHourly,
+		GrainParameterMonthly,
+	}
+}
+
+// GranularityType - The granularity of rows in the forecast.
 type GranularityType string
 
 const (
@@ -416,6 +644,27 @@ func PossibleKpiTypeValues() []KpiType {
 	return []KpiType{
 		KpiTypeBudget,
 		KpiTypeForecast,
+	}
+}
+
+// LookBackPeriod - The number of days used to look back.
+type LookBackPeriod string
+
+const (
+	// LookBackPeriodLast30Days - 30 days used to look back.
+	LookBackPeriodLast30Days LookBackPeriod = "Last30Days"
+	// LookBackPeriodLast60Days - 60 days used to look back.
+	LookBackPeriodLast60Days LookBackPeriod = "Last60Days"
+	// LookBackPeriodLast7Days - 7 days used to look back.
+	LookBackPeriodLast7Days LookBackPeriod = "Last7Days"
+)
+
+// PossibleLookBackPeriodValues returns the possible values for the LookBackPeriod const type.
+func PossibleLookBackPeriodValues() []LookBackPeriod {
+	return []LookBackPeriod{
+		LookBackPeriodLast30Days,
+		LookBackPeriodLast60Days,
+		LookBackPeriodLast7Days,
 	}
 }
 
@@ -471,6 +720,25 @@ func PossibleOperatorTypeValues() []OperatorType {
 	}
 }
 
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
+	}
+}
+
 // PivotType - Data type to show in view.
 type PivotType string
 
@@ -487,19 +755,21 @@ func PossiblePivotTypeValues() []PivotType {
 	}
 }
 
-// QueryColumnType - The type of the column in the export.
+// QueryColumnType - The type of the column in the report.
 type QueryColumnType string
 
 const (
+	// QueryColumnTypeDimension - The dimension of cost data.
 	QueryColumnTypeDimension QueryColumnType = "Dimension"
-	QueryColumnTypeTag       QueryColumnType = "Tag"
+	// QueryColumnTypeTagKey - The tag associated with the cost data.
+	QueryColumnTypeTagKey QueryColumnType = "TagKey"
 )
 
 // PossibleQueryColumnTypeValues returns the possible values for the QueryColumnType const type.
 func PossibleQueryColumnTypeValues() []QueryColumnType {
 	return []QueryColumnType{
 		QueryColumnTypeDimension,
-		QueryColumnTypeTag,
+		QueryColumnTypeTagKey,
 	}
 }
 
@@ -534,22 +804,6 @@ func PossibleRecurrenceTypeValues() []RecurrenceType {
 		RecurrenceTypeDaily,
 		RecurrenceTypeMonthly,
 		RecurrenceTypeWeekly,
-	}
-}
-
-// ReportConfigColumnType - The type of the column in the report.
-type ReportConfigColumnType string
-
-const (
-	ReportConfigColumnTypeDimension ReportConfigColumnType = "Dimension"
-	ReportConfigColumnTypeTag       ReportConfigColumnType = "Tag"
-)
-
-// PossibleReportConfigColumnTypeValues returns the possible values for the ReportConfigColumnType const type.
-func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
-	return []ReportConfigColumnType{
-		ReportConfigColumnTypeDimension,
-		ReportConfigColumnTypeTag,
 	}
 }
 
@@ -682,6 +936,85 @@ func PossibleReservationReportSchemaValues() []ReservationReportSchema {
 	}
 }
 
+// ScheduleFrequency - Frequency of the schedule.
+type ScheduleFrequency string
+
+const (
+	// ScheduleFrequencyDaily - Cost analysis data will be emailed every day.
+	ScheduleFrequencyDaily ScheduleFrequency = "Daily"
+	// ScheduleFrequencyMonthly - Cost analysis data will be emailed every month.
+	ScheduleFrequencyMonthly ScheduleFrequency = "Monthly"
+	// ScheduleFrequencyWeekly - Cost analysis data will be emailed every week.
+	ScheduleFrequencyWeekly ScheduleFrequency = "Weekly"
+)
+
+// PossibleScheduleFrequencyValues returns the possible values for the ScheduleFrequency const type.
+func PossibleScheduleFrequencyValues() []ScheduleFrequency {
+	return []ScheduleFrequency{
+		ScheduleFrequencyDaily,
+		ScheduleFrequencyMonthly,
+		ScheduleFrequencyWeekly,
+	}
+}
+
+// ScheduledActionKind - Kind of the scheduled action.
+type ScheduledActionKind string
+
+const (
+	// ScheduledActionKindEmail - Cost analysis data will be emailed.
+	ScheduledActionKindEmail ScheduledActionKind = "Email"
+	// ScheduledActionKindInsightAlert - Cost anomaly information will be emailed. Available only on subscription scope at daily
+	// frequency. If no anomaly is detected on the resource, an email won't be sent.
+	ScheduledActionKindInsightAlert ScheduledActionKind = "InsightAlert"
+)
+
+// PossibleScheduledActionKindValues returns the possible values for the ScheduledActionKind const type.
+func PossibleScheduledActionKindValues() []ScheduledActionKind {
+	return []ScheduledActionKind{
+		ScheduledActionKindEmail,
+		ScheduledActionKindInsightAlert,
+	}
+}
+
+// ScheduledActionStatus - Status of the scheduled action.
+type ScheduledActionStatus string
+
+const (
+	// ScheduledActionStatusDisabled - Scheduled action is saved but will not be run.
+	ScheduledActionStatusDisabled ScheduledActionStatus = "Disabled"
+	// ScheduledActionStatusEnabled - Scheduled action is saved and will be run.
+	ScheduledActionStatusEnabled ScheduledActionStatus = "Enabled"
+	// ScheduledActionStatusExpired - Scheduled action is expired.
+	ScheduledActionStatusExpired ScheduledActionStatus = "Expired"
+)
+
+// PossibleScheduledActionStatusValues returns the possible values for the ScheduledActionStatus const type.
+func PossibleScheduledActionStatusValues() []ScheduledActionStatus {
+	return []ScheduledActionStatus{
+		ScheduledActionStatusDisabled,
+		ScheduledActionStatusEnabled,
+		ScheduledActionStatusExpired,
+	}
+}
+
+// Scope - Kind of the recommendation scope.
+type Scope string
+
+const (
+	// ScopeShared - Shared scope recommendation.
+	ScopeShared Scope = "Shared"
+	// ScopeSingle - Single scope recommendation.
+	ScopeSingle Scope = "Single"
+)
+
+// PossibleScopeValues returns the possible values for the Scope const type.
+func PossibleScopeValues() []Scope {
+	return []Scope{
+		ScopeShared,
+		ScopeSingle,
+	}
+}
+
 // StatusType - The status of the export's schedule. If 'Inactive', the export's schedule is paused.
 type StatusType string
 
@@ -698,7 +1031,25 @@ func PossibleStatusTypeValues() []StatusType {
 	}
 }
 
-// TimeframeType - The time frame for pulling data for the export. If custom, then a specific time period must be provided.
+// Term - Grain which corresponds to value.
+type Term string
+
+const (
+	// TermP1Y - Benefit term is 1 year.
+	TermP1Y Term = "P1Y"
+	// TermP3Y - Benefit term is 3 years.
+	TermP3Y Term = "P3Y"
+)
+
+// PossibleTermValues returns the possible values for the Term const type.
+func PossibleTermValues() []Term {
+	return []Term{
+		TermP1Y,
+		TermP3Y,
+	}
+}
+
+// TimeframeType - The time frame for pulling data for the query. If custom, then a specific time period must be provided.
 type TimeframeType string
 
 const (
@@ -719,5 +1070,27 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 		TimeframeTypeTheLastBillingMonth,
 		TimeframeTypeTheLastMonth,
 		TimeframeTypeWeekToDate,
+	}
+}
+
+// WeeksOfMonth - Weeks of month.
+type WeeksOfMonth string
+
+const (
+	WeeksOfMonthFirst  WeeksOfMonth = "First"
+	WeeksOfMonthFourth WeeksOfMonth = "Fourth"
+	WeeksOfMonthLast   WeeksOfMonth = "Last"
+	WeeksOfMonthSecond WeeksOfMonth = "Second"
+	WeeksOfMonthThird  WeeksOfMonth = "Third"
+)
+
+// PossibleWeeksOfMonthValues returns the possible values for the WeeksOfMonth const type.
+func PossibleWeeksOfMonthValues() []WeeksOfMonth {
+	return []WeeksOfMonth{
+		WeeksOfMonthFirst,
+		WeeksOfMonthFourth,
+		WeeksOfMonthLast,
+		WeeksOfMonthSecond,
+		WeeksOfMonthThird,
 	}
 }

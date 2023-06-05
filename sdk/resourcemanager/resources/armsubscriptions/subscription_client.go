@@ -42,7 +42,7 @@ func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.Clien
 // start with a reserved word
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-01-01
+// Generated from API version 2022-12-01
 //   - options - SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
 //     method.
 func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (SubscriptionClientCheckResourceNameResponse, error) {
@@ -68,7 +68,7 @@ func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-01-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ResourceNameDefinition != nil {

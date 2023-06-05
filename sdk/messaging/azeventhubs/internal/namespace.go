@@ -18,9 +18,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/utils"
+	"github.com/Azure/go-amqp"
 )
 
 var rootUserAgent = telemetry.Format("azeventhubs", Version)
@@ -54,7 +54,7 @@ type (
 		closedPermanently bool
 
 		// newClientFn exists so we can stub out newClient for unit tests.
-		newClientFn func(ctx context.Context) (amqpwrap.AMQPClient, error)
+		newClientFn func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error)
 	}
 
 	// NamespaceOption provides structure for configuring a new Event Hub namespace
@@ -159,7 +159,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, error) {
+func (ns *Namespace) newClientImpl(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 	connOptions := amqp.ConnOptions{
 		SASLType:    amqp.SASLTypeAnonymous(),
 		MaxSessions: 65535,
@@ -187,11 +187,11 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 
 		connOptions.HostName = ns.FQDN
 		client, err := amqp.NewConn(ctx, nConn, &connOptions)
-		return &amqpwrap.AMQPClientWrapper{Inner: client}, err
+		return &amqpwrap.AMQPClientWrapper{Inner: client, ConnID: connID}, err
 	}
 
 	client, err := amqp.Dial(ctx, ns.getAMQPHostURI(), &connOptions)
-	return &amqpwrap.AMQPClientWrapper{Inner: client}, err
+	return &amqpwrap.AMQPClientWrapper{Inner: client, ConnID: connID}, err
 }
 
 // NewAMQPSession creates a new AMQP session with the internally cached *amqp.Client.
@@ -442,13 +442,15 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 
 	connStart := time.Now()
 	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
-	tempClient, err := ns.newClientFn(ctx)
+
+	newConnID := ns.connID + 1
+	tempClient, err := ns.newClientFn(ctx, newConnID)
 
 	if err != nil {
 		return nil, 0, err
 	}
 
-	ns.connID++
+	ns.connID = newConnID
 	ns.client = tempClient
 	log.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", ns.connID, time.Since(connStart)/time.Millisecond)
 

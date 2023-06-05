@@ -1,16 +1,16 @@
 # Release History
 
-## 1.3.0-beta.6 (Unreleased)
+## 1.4.0-beta.1 (2023-06-06)
 
-### Features Added
+### Other Changes
+* Re-enabled CAE support as in v1.3.0-beta.3
+
+## 1.3.0 (2023-05-09)
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.3.0-beta.5
-* Renamed `DisableInstanceDiscovery` to `DisableAuthorityValidationAndInstanceDiscovery`
 * Renamed `NewOnBehalfOfCredentialFromCertificate` to `NewOnBehalfOfCredentialWithCertificate`
 * Renamed `NewOnBehalfOfCredentialFromSecret` to `NewOnBehalfOfCredentialWithSecret`
-
-### Bugs Fixed
 
 ### Other Changes
 * Upgraded to MSAL v1.0.0

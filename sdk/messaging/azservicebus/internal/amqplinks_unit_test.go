@@ -13,10 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -88,7 +88,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			logMessages := endLogging()
 
 			if testData.ExpectReset {
-				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] (OverallOperation) Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] [c:100, l:1, s:name:sender] (OverallOperation) Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
 			} else {
 				for _, msg := range logMessages {
 					require.NotContains(t, msg, "Link was previously detached")
@@ -126,11 +126,11 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		actualLogs := endCapture()
 
 		expectedLogs := []string{
-			"[azsb.Conn] [] Recovering link for error amqp: link closed",
+			"[azsb.Conn] Recovering link for error amqp: link closed",
 			"[azsb.Conn] Recovering link only",
-			"[azsb.Conn] [] Links closing (permanent: false)",
-			"[azsb.Conn] [c:100, l:1, r:name:fakelink] Links created",
-			"[azsb.Conn] [c:100, l:1, r:name:fakelink] Recovered links"}
+			"[azsb.Conn] Links closing (permanent: false)",
+			"[azsb.Conn] [c:100, l:1, r:name:fakeli] Links created",
+			"[azsb.Conn] [c:100, l:1, r:name:fakeli] Recovered links (old: )"}
 
 		require.Equal(t, expectedLogs, actualLogs)
 	})
@@ -161,14 +161,14 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		actualLogs := endCapture()
 
 		expectedLogs := []string{
-			"[azsb.Conn] [] Recovering link for error amqp: connection closed",
+			"[azsb.Conn] Recovering link for error amqp: connection closed",
 			"[azsb.Conn] Recovering connection (and links)",
 			"[azsb.Conn] closing old link: current:{0 0}, old:{0 0}",
-			"[azsb.Conn] [] Links closing (permanent: false)",
+			"[azsb.Conn] Links closing (permanent: false)",
 			"[azsb.Conn] recreating link: c: true, current:{0 0}, old:{0 0}",
-			"[azsb.Conn] [] Links closing (permanent: false)",
-			"[azsb.Conn] [c:101, l:1, r:name:fakelink] Links created",
-			"[azsb.Conn] [c:101, l:1, r:name:fakelink] Recovered connection and links"}
+			"[azsb.Conn] Links closing (permanent: false)",
+			"[azsb.Conn] [c:101, l:1, r:name:fakeli] Links created",
+			"[azsb.Conn] [c:101, l:1, r:name:fakeli] Recovered connection and links (old: )"}
 
 		require.Equal(t, expectedLogs, actualLogs)
 	})

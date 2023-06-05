@@ -11,7 +11,7 @@ package armdatabox
 
 const (
 	moduleName    = "armdatabox"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v2.0.0"
 )
 
 type AccessProtocol string
@@ -163,7 +163,6 @@ func PossibleCopyStatusValues() []CopyStatus {
 	}
 }
 
-// CustomerResolutionCode - Resolution code provided by customer
 type CustomerResolutionCode string
 
 const (
@@ -392,6 +391,24 @@ func PossibleFilterFileTypeValues() []FilterFileType {
 	}
 }
 
+// HardwareEncryption - Defines Hardware level encryption (Only for disk)
+type HardwareEncryption string
+
+const (
+	// HardwareEncryptionEnabled - Hardware-based encryption is enabled.
+	HardwareEncryptionEnabled HardwareEncryption = "Enabled"
+	// HardwareEncryptionDisabled - Hardware-based encryption is enabled.
+	HardwareEncryptionDisabled HardwareEncryption = "Disabled"
+)
+
+// PossibleHardwareEncryptionValues returns the possible values for the HardwareEncryption const type.
+func PossibleHardwareEncryptionValues() []HardwareEncryption {
+	return []HardwareEncryption{
+		HardwareEncryptionEnabled,
+		HardwareEncryptionDisabled,
+	}
+}
+
 // JobDeliveryType - Delivery type of Job.
 type JobDeliveryType string
 
@@ -500,6 +517,50 @@ func PossibleOverallValidationStatusValues() []OverallValidationStatus {
 		OverallValidationStatusAllValidToProceed,
 		OverallValidationStatusInputsRevisitRequired,
 		OverallValidationStatusCertainInputValidationsSkipped,
+	}
+}
+
+// ReverseShippingDetailsEditStatus - The Editable status for Reverse Shipping Address and Contact Info
+type ReverseShippingDetailsEditStatus string
+
+const (
+	// ReverseShippingDetailsEditStatusEnabled - Reverse shipping details can be edited.
+	ReverseShippingDetailsEditStatusEnabled ReverseShippingDetailsEditStatus = "Enabled"
+	// ReverseShippingDetailsEditStatusDisabled - Edit is disabled for Reverse shipping details.
+	ReverseShippingDetailsEditStatusDisabled ReverseShippingDetailsEditStatus = "Disabled"
+	// ReverseShippingDetailsEditStatusNotSupported - Edit is not supported for Reverse shipping details. Either subscription
+	// feature is not available or SKU doesn't support this feature.
+	ReverseShippingDetailsEditStatusNotSupported ReverseShippingDetailsEditStatus = "NotSupported"
+)
+
+// PossibleReverseShippingDetailsEditStatusValues returns the possible values for the ReverseShippingDetailsEditStatus const type.
+func PossibleReverseShippingDetailsEditStatusValues() []ReverseShippingDetailsEditStatus {
+	return []ReverseShippingDetailsEditStatus{
+		ReverseShippingDetailsEditStatusEnabled,
+		ReverseShippingDetailsEditStatusDisabled,
+		ReverseShippingDetailsEditStatusNotSupported,
+	}
+}
+
+// ReverseTransportPreferenceEditStatus - The Editable status for Reverse Transport preferences
+type ReverseTransportPreferenceEditStatus string
+
+const (
+	// ReverseTransportPreferenceEditStatusEnabled - Reverse Transport Preferences can be edited.
+	ReverseTransportPreferenceEditStatusEnabled ReverseTransportPreferenceEditStatus = "Enabled"
+	// ReverseTransportPreferenceEditStatusDisabled - Edit is disabled for Reverse Transport Preferences.
+	ReverseTransportPreferenceEditStatusDisabled ReverseTransportPreferenceEditStatus = "Disabled"
+	// ReverseTransportPreferenceEditStatusNotSupported - Edit is not supported for Reverse Transport Preferences. Either subscription
+	// feature is not available or SKU doesn't support this feature.
+	ReverseTransportPreferenceEditStatusNotSupported ReverseTransportPreferenceEditStatus = "NotSupported"
+)
+
+// PossibleReverseTransportPreferenceEditStatusValues returns the possible values for the ReverseTransportPreferenceEditStatus const type.
+func PossibleReverseTransportPreferenceEditStatusValues() []ReverseTransportPreferenceEditStatus {
+	return []ReverseTransportPreferenceEditStatus{
+		ReverseTransportPreferenceEditStatusEnabled,
+		ReverseTransportPreferenceEditStatusDisabled,
+		ReverseTransportPreferenceEditStatusNotSupported,
 	}
 }
 

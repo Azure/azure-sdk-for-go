@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_List.json
 func ExamplePoolsClient_NewListByProjectPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,11 @@ func ExamplePoolsClient_NewListByProjectPager() {
 		// 				LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
 		// 				LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
 		// 				NetworkConnectionName: to.Ptr("Network1-westus2"),
+		// 				StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+		// 					GracePeriodMinutes: to.Ptr[int32](60),
+		// 					Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+		// 				},
+		// 				HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
 		// 				ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -67,8 +72,8 @@ func ExamplePoolsClient_NewListByProjectPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Get.json
-func ExamplePoolsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Get.json
+func ExamplePoolsClient_Get_poolsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -103,12 +108,76 @@ func ExamplePoolsClient_Get() {
 	// 		LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
 	// 		LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
 	// 		NetworkConnectionName: to.Ptr("Network1-westus2"),
+	// 		StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+	// 			GracePeriodMinutes: to.Ptr[int32](60),
+	// 			Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+	// 		},
+	// 		HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_GetUnhealthyStatus.json
+func ExamplePoolsClient_Get_poolsGetUnhealthyStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolsClient().Get(ctx, "rg1", "DevProject", "DevPool", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armdevcenter.Pool{
+	// 	Name: to.Ptr("DevPool"),
+	// 	Type: to.Ptr("Microsoft.DevCenter/pools"),
+	// 	ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/pools/DevPool"),
+	// 	SystemData: &armdevcenter.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:00:36.993Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-18T18:30:36.993Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user1"),
+	// 		LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("centralus"),
+	// 	Properties: &armdevcenter.PoolProperties{
+	// 		DevBoxDefinitionName: to.Ptr("WebDevBox"),
+	// 		LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
+	// 		LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
+	// 		NetworkConnectionName: to.Ptr("Network1-westus2"),
+	// 		StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+	// 			GracePeriodMinutes: to.Ptr[int32](60),
+	// 			Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+	// 		},
+	// 		HealthStatus: to.Ptr(armdevcenter.HealthStatusUnhealthy),
+	// 		HealthStatusDetails: []*armdevcenter.HealthStatusDetail{
+	// 			{
+	// 				Code: to.Ptr("NetworkConnectionUnhealthy"),
+	// 				Message: to.Ptr("The Pool's Network Connection is in an unhealthy state. Check the Network Connection's health status for more details."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("ImageValidationFailed"),
+	// 				Message: to.Ptr("Image validation has failed. Check the Dev Box Definition's image validation status for more details."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("IntuneValidationFailed"),
+	// 				Message: to.Ptr("Intune license validation has failed. The tenant does not have a valid Intune license."),
+	// 		}},
+	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Put.json
 func ExamplePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,6 +195,10 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 			LicenseType:           to.Ptr(armdevcenter.LicenseTypeWindowsClient),
 			LocalAdministrator:    to.Ptr(armdevcenter.LocalAdminStatusEnabled),
 			NetworkConnectionName: to.Ptr("Network1-westus2"),
+			StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+				GracePeriodMinutes: to.Ptr[int32](60),
+				Status:             to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -156,12 +229,17 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	// 		LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
 	// 		LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
 	// 		NetworkConnectionName: to.Ptr("Network1-westus2"),
+	// 		StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+	// 			GracePeriodMinutes: to.Ptr[int32](60),
+	// 			Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+	// 		},
+	// 		HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Patch.json
 func ExamplePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,12 +283,17 @@ func ExamplePoolsClient_BeginUpdate() {
 	// 		LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
 	// 		LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
 	// 		NetworkConnectionName: to.Ptr("Network1-westus2"),
+	// 		StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+	// 			GracePeriodMinutes: to.Ptr[int32](60),
+	// 			Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+	// 		},
+	// 		HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
 	// 		ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Delete.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,6 +305,27 @@ func ExamplePoolsClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewPoolsClient().BeginDelete(ctx, "rg1", "DevProject", "poolName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_RunHealthChecks.json
+func ExamplePoolsClient_BeginRunHealthChecks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoolsClient().BeginRunHealthChecks(ctx, "rg1", "DevProject", "DevPool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -16,13 +16,6 @@ import (
 	"reflect"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type acrAccessToken.
-func (a acrAccessToken) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "access_token", a.AccessToken)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type acrAccessToken.
 func (a *acrAccessToken) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -43,13 +36,6 @@ func (a *acrAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type acrRefreshToken.
-func (a acrRefreshToken) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "refresh_token", a.RefreshToken)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type acrRefreshToken.
 func (a *acrRefreshToken) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -68,15 +54,6 @@ func (a *acrRefreshToken) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ArtifactManifestPlatform.
-func (a ArtifactManifestPlatform) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "architecture", a.Architecture)
-	populate(objectMap, "digest", a.Digest)
-	populate(objectMap, "os", a.OperatingSystem)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactManifestPlatform.
@@ -105,15 +82,6 @@ func (a *ArtifactManifestPlatform) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArtifactManifestProperties.
-func (a ArtifactManifestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "manifest", a.Manifest)
-	populate(objectMap, "registry", a.RegistryLoginServer)
-	populate(objectMap, "imageName", a.RepositoryName)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactManifestProperties.
 func (a *ArtifactManifestProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -140,15 +108,6 @@ func (a *ArtifactManifestProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArtifactTagProperties.
-func (a ArtifactTagProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "registry", a.RegistryLoginServer)
-	populate(objectMap, "imageName", a.RepositoryName)
-	populate(objectMap, "tag", a.Tag)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactTagProperties.
 func (a *ArtifactTagProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -173,19 +132,6 @@ func (a *ArtifactTagProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerRepositoryProperties.
-func (c ContainerRepositoryProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "changeableAttributes", c.ChangeableAttributes)
-	populateTimeRFC3339(objectMap, "createdTime", c.CreatedOn)
-	populateTimeRFC3339(objectMap, "lastUpdateTime", c.LastUpdatedOn)
-	populate(objectMap, "manifestCount", c.ManifestCount)
-	populate(objectMap, "imageName", c.Name)
-	populate(objectMap, "registry", c.RegistryLoginServer)
-	populate(objectMap, "tagCount", c.TagCount)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ContainerRepositoryProperties.
@@ -224,21 +170,6 @@ func (c *ContainerRepositoryProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManifestAttributes.
-func (m ManifestAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "architecture", m.Architecture)
-	populate(objectMap, "changeableAttributes", m.ChangeableAttributes)
-	populateTimeRFC3339(objectMap, "createdTime", m.CreatedOn)
-	populate(objectMap, "digest", m.Digest)
-	populateTimeRFC3339(objectMap, "lastUpdateTime", m.LastUpdatedOn)
-	populate(objectMap, "os", m.OperatingSystem)
-	populate(objectMap, "references", m.RelatedArtifacts)
-	populate(objectMap, "imageSize", m.Size)
-	populate(objectMap, "tags", m.Tags)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ManifestAttributes.
@@ -324,16 +255,6 @@ func (m *ManifestWriteableProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Manifests.
-func (m Manifests) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "manifests", m.Attributes)
-	populate(objectMap, "link", m.Link)
-	populate(objectMap, "registry", m.RegistryLoginServer)
-	populate(objectMap, "imageName", m.Repository)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type Manifests.
 func (m *Manifests) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -361,14 +282,6 @@ func (m *Manifests) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Repositories.
-func (r Repositories) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "link", r.Link)
-	populate(objectMap, "repositories", r.Names)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Repositories.
@@ -433,17 +346,6 @@ func (r *RepositoryWriteableProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TagAttributes.
-func (t TagAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "changeableAttributes", t.ChangeableAttributes)
-	populateTimeRFC3339(objectMap, "createdTime", t.CreatedOn)
-	populate(objectMap, "digest", t.Digest)
-	populateTimeRFC3339(objectMap, "lastUpdateTime", t.LastUpdatedOn)
-	populate(objectMap, "name", t.Name)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type TagAttributes.
 func (t *TagAttributes) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
@@ -474,16 +376,6 @@ func (t *TagAttributes) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TagList.
-func (t TagList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "link", t.Link)
-	populate(objectMap, "registry", t.RegistryLoginServer)
-	populate(objectMap, "imageName", t.Repository)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type TagList.

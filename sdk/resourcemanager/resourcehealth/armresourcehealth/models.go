@@ -14,102 +14,113 @@ import "time"
 // AvailabilityStatus - availabilityStatus of a resource.
 type AvailabilityStatus struct {
 	// Azure Resource Manager Identity for the availabilityStatuses resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Azure Resource Manager geo location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// current.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of availability state.
-	Properties *AvailabilityStatusProperties `json:"properties,omitempty"`
+	Properties *AvailabilityStatusProperties
 
 	// Microsoft.ResourceHealth/AvailabilityStatuses.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // AvailabilityStatusListResult - The List availabilityStatus operation response.
 type AvailabilityStatusListResult struct {
 	// REQUIRED; The list of availabilityStatuses.
-	Value []*AvailabilityStatus `json:"value,omitempty"`
+	Value []*AvailabilityStatus
 
 	// The URI to fetch the next page of availabilityStatuses. Call ListNext() with this URI to fetch the next page of availabilityStatuses.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AvailabilityStatusProperties - Properties of availability state.
 type AvailabilityStatusProperties struct {
+	// The Article Id
+	ArticleID *string
+
 	// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting
 	// event
-	AvailabilityState *AvailabilityStateValues `json:"availabilityState,omitempty"`
+	AvailabilityState *AvailabilityStateValues
+
+	// When a context field is set to Platform, this field will reflect if the event was planned or unplanned. If the context
+	// field does not have a value of Platform, then this field will be ignored.
+	Category *string
+
+	// When an event is created, it can either be triggered by a customer or the platform of the resource and this field will
+	// illustrate that. This field is connected to the category field in this object.
+	Context *string
 
 	// Details of the availability status.
-	DetailedStatus *string `json:"detailedStatus,omitempty"`
+	DetailedStatus *string
 
 	// In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting event. Examples
 	// are Planned, Unplanned etc.
-	HealthEventCategory *string `json:"healthEventCategory,omitempty"`
+	HealthEventCategory *string
 
 	// In case of an availability impacting event, it describes where the health impacting event was originated. Examples are
 	// PlatformInitiated, UserInitiated etc.
-	HealthEventCause *string `json:"healthEventCause,omitempty"`
+	HealthEventCause *string
 
 	// It is a unique Id that identifies the event
-	HealthEventID *string `json:"healthEventId,omitempty"`
+	HealthEventID *string
 
 	// In case of an availability impacting event, it describes when the health impacting event was originated. Examples are Lifecycle,
 	// Downtime, Fault Analysis etc.
-	HealthEventType *string `json:"healthEventType,omitempty"`
+	HealthEventType *string
 
 	// Timestamp for when last change in health status occurred.
-	OccurredTime *time.Time `json:"occurredTime,omitempty"`
+	OccurredTime *time.Time
 
 	// Chronicity of the availability transition.
-	ReasonChronicity *ReasonChronicityTypes `json:"reasonChronicity,omitempty"`
+	ReasonChronicity *ReasonChronicityTypes
 
 	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated. Examples
 	// are planned, unplanned, user initiated or an outage etc.
-	ReasonType *string `json:"reasonType,omitempty"`
+	ReasonType *string
 
 	// An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type Unplanned
-	RecentlyResolved *AvailabilityStatusPropertiesRecentlyResolved `json:"recentlyResolved,omitempty"`
+	RecentlyResolved *AvailabilityStatusPropertiesRecentlyResolved
 
 	// Lists actions the user can take based on the current availabilityState of the resource.
-	RecommendedActions []*RecommendedAction `json:"recommendedActions,omitempty"`
+	RecommendedActions []*RecommendedAction
 
 	// Timestamp for when the health was last checked.
-	ReportedTime *time.Time `json:"reportedTime,omitempty"`
+	ReportedTime *time.Time
 
 	// When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the date and
 	// time for when the issue is expected to be resolved.
-	ResolutionETA *time.Time `json:"resolutionETA,omitempty"`
+	ResolutionETA *time.Time
 
 	// When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting event was
 	// received.
-	RootCauseAttributionTime *time.Time `json:"rootCauseAttributionTime,omitempty"`
+	RootCauseAttributionTime *time.Time
 
 	// Lists the service impacting events that may be affecting the health of the resource.
-	ServiceImpactingEvents []*ServiceImpactingEvent `json:"serviceImpactingEvents,omitempty"`
+	ServiceImpactingEvents []*ServiceImpactingEvent
 
 	// Summary description of the availability status.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// Title description of the availability status.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // AvailabilityStatusPropertiesRecentlyResolved - An annotation describing a change in the availabilityState to Available
 // from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolved struct {
 	// Timestamp when the availabilityState changes to Available.
-	ResolvedTime *time.Time `json:"resolvedTime,omitempty"`
+	ResolvedTime *time.Time
 
 	// Brief description of cause of the resource becoming unavailable.
-	UnavailabilitySummary *string `json:"unavailabilitySummary,omitempty"`
+	UnavailabilitySummary *string
 
 	// Timestamp for when the availabilityState changed to Unavailable
-	UnavailableOccurredTime *time.Time `json:"unavailableOccurredTime,omitempty"`
+	UnavailableOccurredTime *time.Time
 }
 
 // AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
@@ -148,94 +159,552 @@ type AvailabilityStatusesClientListOptions struct {
 	Filter *string
 }
 
-// ErrorResponse - Error details.
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorResponseError `json:"error,omitempty"`
+// ChildAvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatusesClient.GetByResource
+// method.
+type ChildAvailabilityStatusesClientGetByResourceOptions struct {
+	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+	Expand *string
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
 }
 
-// ErrorResponseError - The error object.
-type ErrorResponseError struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+// ChildAvailabilityStatusesClientListOptions contains the optional parameters for the ChildAvailabilityStatusesClient.NewListPager
+// method.
+type ChildAvailabilityStatusesClientListOptions struct {
+	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+	Expand *string
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
 
-	// READ-ONLY; The error details.
-	Details *string `json:"details,omitempty" azure:"ro"`
+// ChildResourcesClientListOptions contains the optional parameters for the ChildResourcesClient.NewListPager method.
+type ChildResourcesClientListOptions struct {
+	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+	Expand *string
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
 
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+// EmergingIssue - On-going emerging issue from azure status.
+type EmergingIssue struct {
+	// Timestamp for when last time refreshed for ongoing emerging issue.
+	RefreshTimestamp *time.Time
+
+	// The list of emerging issues of active event type.
+	StatusActiveEvents []*StatusActiveEvent
+
+	// The list of emerging issues of banner type.
+	StatusBanners []*StatusBanner
+}
+
+// EmergingIssueImpact - Object of the emerging issue impact on services and regions.
+type EmergingIssueImpact struct {
+	// The impacted service id.
+	ID *string
+
+	// The impacted service name.
+	Name *string
+
+	// The list of impacted regions for corresponding emerging issues.
+	Regions []*ImpactedRegion
+}
+
+// EmergingIssueListResult - The list of emerging issues.
+type EmergingIssueListResult struct {
+	// The link used to get the next page of emerging issues.
+	NextLink *string
+
+	// The list of emerging issues.
+	Value []*EmergingIssuesGetResult
+}
+
+// EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
+type EmergingIssuesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.NewListPager method.
+type EmergingIssuesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EmergingIssuesGetResult - The Get EmergingIssues operation response.
+type EmergingIssuesGetResult struct {
+	// The emerging issue entity properties.
+	Properties *EmergingIssue
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Event - Service health event
+type Event struct {
+	// Properties of event.
+	Properties *EventProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsBySubscriptionIDAndTrackingID
+// method.
+type EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventClientFetchDetailsByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsByTenantIDAndTrackingID
+// method.
+type EventClientFetchDetailsByTenantIDAndTrackingIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventClientGetBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetBySubscriptionIDAndTrackingID
+// method.
+type EventClientGetBySubscriptionIDAndTrackingIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
+	// queryStartTime=7%2F24%2F2020
+	QueryStartTime *string
+}
+
+// EventClientGetByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetByTenantIDAndTrackingID
+// method.
+type EventClientGetByTenantIDAndTrackingIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
+	// queryStartTime=7%2F24%2F2020
+	QueryStartTime *string
+}
+
+// EventImpactedResource - Impacted resource for an event.
+type EventImpactedResource struct {
+	// Properties of impacted resource.
+	Properties *EventImpactedResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EventImpactedResourceListResult - The List of eventImpactedResources operation response.
+type EventImpactedResourceListResult struct {
+	// REQUIRED; The list of eventImpactedResources.
+	Value []*EventImpactedResource
+
+	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource.
+	NextLink *string
+}
+
+// EventImpactedResourceProperties - Properties of impacted resource.
+type EventImpactedResourceProperties struct {
+	// Additional information.
+	Info []*KeyValueItem
+
+	// READ-ONLY; Impacted resource region name.
+	TargetRegion *string
+
+	// READ-ONLY; Identity for resource within Microsoft cloud.
+	TargetResourceID *string
+
+	// READ-ONLY; Resource type within Microsoft cloud.
+	TargetResourceType *string
+}
+
+// EventProperties - Properties of event.
+type EventProperties struct {
+	// Additional information
+	AdditionalInformation *EventPropertiesAdditionalInformation
+
+	// Article of event.
+	Article *EventPropertiesArticle
+
+	// Contains the communication message for the event, that could include summary, root cause and other details.
+	Description *string
+
+	// duration in seconds
+	Duration *int32
+
+	// Tells if we want to enable or disable Microsoft Support for this event.
+	EnableChatWithUs *bool
+
+	// Tells if we want to enable or disable Microsoft Support for this event.
+	EnableMicrosoftSupport *bool
+
+	// Level of event.
+	EventLevel *EventLevelValues
+
+	// Source of event.
+	EventSource *EventSourceValues
+
+	// Type of event.
+	EventType *EventTypeValues
+
+	// The id of the Incident
+	ExternalIncidentID *string
+
+	// Frequently asked questions for the service health event.
+	Faqs []*Faq
+
+	// Header text of event.
+	Header *string
+
+	// Stage for HIR Document
+	HirStage *string
+
+	// List services impacted by the service health event.
+	Impact []*Impact
+
+	// It provides the Timestamp for when the health impacting event resolved.
+	ImpactMitigationTime *time.Time
+
+	// It provides the Timestamp for when the health impacting event started.
+	ImpactStartTime *time.Time
+
+	// The type of the impact
+	ImpactType *string
+
+	// It provides information if the event is High incident rate event or not.
+	IsHIR *bool
+
+	// It provides the Timestamp for when the health impacting event was last updated.
+	LastUpdateTime *time.Time
+
+	// Level of insight.
+	Level *LevelValues
+
+	// Useful links of event.
+	Links []*Link
+
+	// Is true if the event is platform initiated.
+	PlatformInitiated *bool
+
+	// Priority level of the event. Has value from 0 to 23. 0 is the highest priority. Service issue events have higher priority
+	// followed by planned maintenance and health advisory. Critical events have
+	// higher priority followed by error, warning and informational. Furthermore, active events have higher priority than resolved.
+	Priority *int32
+
+	// The reason for the Incident
+	Reason *string
+
+	// Recommended actions of event.
+	RecommendedActions *EventPropertiesRecommendedActions
+
+	// Current status of event.
+	Status *EventStatusValues
+
+	// Summary text of event.
+	Summary *string
+
+	// Title text of event.
+	Title *string
+}
+
+// EventPropertiesAdditionalInformation - Additional information
+type EventPropertiesAdditionalInformation struct {
+	// Additional information Message
+	Message *string
+}
+
+// EventPropertiesArticle - Article of event.
+type EventPropertiesArticle struct {
+	// Article content of event.
+	ArticleContent *string
+
+	// Article Id
+	ArticleID *string
+
+	// It provides a map of parameter name and value
+	Parameters any
+}
+
+// EventPropertiesRecommendedActions - Recommended actions of event.
+type EventPropertiesRecommendedActions struct {
+	// Recommended actions for the service health event.
+	Actions []*EventPropertiesRecommendedActionsItem
+
+	// Recommended action locale for the service health event.
+	LocaleCode *string
+
+	// Recommended action title for the service health event.
+	Message *string
+}
+
+// EventPropertiesRecommendedActionsItem - Recommended action for the service health event.
+type EventPropertiesRecommendedActionsItem struct {
+	// Recommended action text
+	ActionText *string
+
+	// Recommended action group Id for the service health event.
+	GroupID *int32
+}
+
+// Events - The List events operation response.
+type Events struct {
+	// REQUIRED; The list of event.
+	Value []*Event
+
+	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of events.
+	NextLink *string
+}
+
+// EventsClientListBySingleResourceOptions contains the optional parameters for the EventsClient.NewListBySingleResourcePager
+// method.
+type EventsClientListBySingleResourceOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
+
+// EventsClientListBySubscriptionIDOptions contains the optional parameters for the EventsClient.NewListBySubscriptionIDPager
+// method.
+type EventsClientListBySubscriptionIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
+	// queryStartTime=7%2F24%2F2020
+	QueryStartTime *string
+}
+
+// EventsClientListByTenantIDOptions contains the optional parameters for the EventsClient.NewListByTenantIDPager method.
+type EventsClientListByTenantIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
+	// queryStartTime=7%2F24%2F2020
+	QueryStartTime *string
+}
+
+// Faq - Frequently asked question for the service health event
+type Faq struct {
+	// FAQ answer for the service health event.
+	Answer *string
+
+	// FAQ locale for the service health event.
+	LocaleCode *string
+
+	// FAQ question for the service health event.
+	Question *string
+}
+
+// Impact - Azure service impacted by the service health event.
+type Impact struct {
+	// List regions impacted by the service health event.
+	ImpactedRegions []*ImpactedServiceRegion
+
+	// Impacted service name.
+	ImpactedService *string
 }
 
 // ImpactedRegion - Object of impacted region.
 type ImpactedRegion struct {
 	// The impacted region id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The impacted region name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
-// ImpactedResourceStatus - impactedResource with health status
-type ImpactedResourceStatus struct {
-	// Properties of impacted resource status.
-	Properties *ImpactedResourceStatusProperties `json:"properties,omitempty"`
+// ImpactedResourcesClientGetByTenantIDOptions contains the optional parameters for the ImpactedResourcesClient.GetByTenantID
+// method.
+type ImpactedResourcesClientGetByTenantIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImpactedResourcesClientGetOptions contains the optional parameters for the ImpactedResourcesClient.Get method.
+type ImpactedResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
+// method.
+type ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
+
+// ImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListByTenantIDAndEventIDPager
+// method.
+type ImpactedResourcesClientListByTenantIDAndEventIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
+
+// ImpactedServiceRegion - Azure region impacted by the service health event.
+type ImpactedServiceRegion struct {
+	// Impacted region name.
+	ImpactedRegion *string
+
+	// List subscription impacted by the service health event.
+	ImpactedSubscriptions []*string
+
+	// List tenant impacted by the service health event.
+	ImpactedTenants []*string
+
+	// It provides the Timestamp for when the last update for the service health event.
+	LastUpdateTime *time.Time
+
+	// Current status of event in the region.
+	Status *EventStatusValues
+
+	// List of updates for given service health event.
+	Updates []*Update
+}
+
+// KeyValueItem - Key value tuple.
+type KeyValueItem struct {
+	// READ-ONLY; Key of tuple.
+	Key *string
+
+	// READ-ONLY; Value of tuple.
+	Value *string
+}
+
+// Link - Useful links for service health event.
+type Link struct {
+	// It provides the name of portal extension blade to produce link for given service health event.
+	BladeName *string
+
+	// Display text of link.
+	DisplayText *LinkDisplayText
+
+	// It provides the name of portal extension to produce link for given service health event.
+	ExtensionName *string
+
+	// It provides a map of parameter name and value for portal extension blade to produce lik for given service health event.
+	Parameters any
+
+	// Type of link.
+	Type *LinkTypeValues
+}
+
+// LinkDisplayText - Display text of link.
+type LinkDisplayText struct {
+	// Localized display text of link.
+	LocalizedValue *string
+
+	// Display text of link.
+	Value *string
+}
+
+// MetadataClientGetEntityOptions contains the optional parameters for the MetadataClient.GetEntity method.
+type MetadataClientGetEntityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
+type MetadataClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetadataEntity - The metadata entity contract.
+type MetadataEntity struct {
+	// The metadata entity properties.
+	Properties *MetadataEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
-// ImpactedResourceStatusProperties - Properties of impacted resource status.
-type ImpactedResourceStatusProperties struct {
-	// Impacted resource status of the resource.
-	AvailabilityState *AvailabilityStateValues `json:"availabilityState,omitempty"`
+// MetadataEntityListResult - The list of metadata entities
+type MetadataEntityListResult struct {
+	// The link used to get the next page of metadata.
+	NextLink *string
 
-	// Timestamp for when last change in health status occurred.
-	OccurredTime *time.Time `json:"occurredTime,omitempty"`
-
-	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated.
-	ReasonType *ReasonTypeValues `json:"reasonType,omitempty"`
-
-	// Summary description of the impacted resource status.
-	Summary *string `json:"summary,omitempty"`
-
-	// Title description of the impacted resource status.
-	Title *string `json:"title,omitempty"`
+	// The list of metadata entities.
+	Value []*MetadataEntity
 }
 
-// Operation available in the resourcehealth resource provider.
+// MetadataEntityProperties - The metadata entity properties
+type MetadataEntityProperties struct {
+	// The list of scenarios applicable to this metadata entity.
+	ApplicableScenarios []*Scenario
+
+	// The list of keys on which this entity depends on.
+	DependsOn []*string
+
+	// The display name.
+	DisplayName *string
+
+	// The list of supported values.
+	SupportedValues []*MetadataSupportedValueDetail
+}
+
+// MetadataSupportedValueDetail - The metadata supported value detail.
+type MetadataSupportedValueDetail struct {
+	// The display name.
+	DisplayName *string
+
+	// The id.
+	ID *string
+
+	// The list of associated resource types.
+	ResourceTypes []*string
+}
+
+// Operation available in the Microsoft.ResourceHealth resource provider.
 type Operation struct {
 	// Properties of the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Name of the operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Properties of the operation.
 type OperationDisplay struct {
 	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Lists the operations response.
 type OperationListResult struct {
-	// REQUIRED; List of operations available in the resourcehealth resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	// REQUIRED; List of operations available in the Microsoft.ResourceHealth resource provider.
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -246,77 +715,145 @@ type OperationsClientListOptions struct {
 // RecommendedAction - Lists actions the user can take based on the current availabilityState of the resource.
 type RecommendedAction struct {
 	// Recommended action.
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// Link to the action
-	ActionURL *string `json:"actionUrl,omitempty"`
+	ActionURL *string
 
-	// Substring of action, it describes which text should host the action url.
-	ActionURLText *string `json:"actionUrlText,omitempty"`
+	// the comment for the Action
+	ActionURLComment *string
+
+	// Substring of action, it describes which text should host the action URL.
+	ActionURLText *string
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+// SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
+// method.
+type SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
+}
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+// SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager
+// method.
+type SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDOptions struct {
+	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+	Filter *string
 }
 
 // ServiceImpactingEvent - Lists the service impacting events that may be affecting the health of the resource.
 type ServiceImpactingEvent struct {
 	// Correlation id for the event
-	CorrelationID *string `json:"correlationId,omitempty"`
+	CorrelationID *string
 
 	// Timestamp for when the event started.
-	EventStartTime *time.Time `json:"eventStartTime,omitempty"`
+	EventStartTime *time.Time
 
 	// Timestamp for when event was submitted/detected.
-	EventStatusLastModifiedTime *time.Time `json:"eventStatusLastModifiedTime,omitempty"`
+	EventStatusLastModifiedTime *time.Time
 
 	// Properties of the service impacting event.
-	IncidentProperties *ServiceImpactingEventIncidentProperties `json:"incidentProperties,omitempty"`
+	IncidentProperties *ServiceImpactingEventIncidentProperties
 
 	// Status of the service impacting event.
-	Status *ServiceImpactingEventStatus `json:"status,omitempty"`
+	Status *ServiceImpactingEventStatus
 }
 
 // ServiceImpactingEventIncidentProperties - Properties of the service impacting event.
 type ServiceImpactingEventIncidentProperties struct {
 	// Type of Event.
-	IncidentType *string `json:"incidentType,omitempty"`
+	IncidentType *string
 
 	// Region impacted by the event.
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// Service impacted by the event.
-	Service *string `json:"service,omitempty"`
+	Service *string
 
 	// Title of the incident.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // ServiceImpactingEventStatus - Status of the service impacting event.
 type ServiceImpactingEventStatus struct {
 	// Current status of the event
-	Value *string `json:"value,omitempty"`
+	Value *string
+}
+
+// StatusActiveEvent - Active event type of emerging issue.
+type StatusActiveEvent struct {
+	// The cloud type of this active event.
+	Cloud *string
+
+	// The details of active event.
+	Description *string
+
+	// The list of emerging issues impacts.
+	Impacts []*EmergingIssueImpact
+
+	// The last time modified on this banner.
+	LastModifiedTime *time.Time
+
+	// The boolean value of this active event if published or not.
+	Published *bool
+
+	// The severity level of this active event.
+	Severity *SeverityValues
+
+	// The stage of this active event.
+	Stage *StageValues
+
+	// The impact start time on this active event.
+	StartTime *time.Time
+
+	// The active event title.
+	Title *string
+
+	// The tracking id of this active event.
+	TrackingID *string
 }
 
 // StatusBanner - Banner type of emerging issue.
 type StatusBanner struct {
 	// The cloud type of this banner.
-	Cloud *string `json:"cloud,omitempty"`
+	Cloud *string
 
 	// The last time modified on this banner.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// The details of banner.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The banner title.
-	Title *string `json:"title,omitempty"`
+	Title *string
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// Update for service health event.
+type Update struct {
+	// Summary text for the given update for the service health event.
+	Summary *string
+
+	// It provides the Timestamp for the given update for the service health event.
+	UpdateDateTime *time.Time
 }

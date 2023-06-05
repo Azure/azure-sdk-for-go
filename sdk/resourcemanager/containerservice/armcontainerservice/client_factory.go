@@ -92,13 +92,3 @@ func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleB
 	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
-
-func (c *ClientFactory) NewFleetsClient() *FleetsClient {
-	subClient, _ := NewFleetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewFleetMembersClient() *FleetMembersClient {
-	subClient, _ := NewFleetMembersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}

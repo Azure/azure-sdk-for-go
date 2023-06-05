@@ -48,7 +48,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Create or update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Create Availability Set operation.
@@ -89,7 +89,7 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -107,7 +107,7 @@ func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Re
 // Delete - Delete an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
@@ -146,7 +146,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Retrieves information about an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
@@ -194,7 +194,7 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 
 // NewListPager - Lists all availability sets in a resource group.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
 //     method.
@@ -259,7 +259,7 @@ func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 // NewListAvailableSizesPager - Lists all available virtual machine sizes that can be used to create a new virtual machine
 // in an existing availability set.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.NewListAvailableSizesPager
@@ -324,7 +324,7 @@ func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Lists all availability sets in a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
 //     method.
 func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
@@ -384,7 +384,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -405,7 +405,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 // Update - Update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Update Availability Set operation.
@@ -445,7 +445,7 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

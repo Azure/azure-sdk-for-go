@@ -14,7 +14,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -41,7 +40,7 @@ func TestClientAssertionCredential(t *testing.T) {
 		t.Fatal(err)
 	}
 	ctx := context.WithValue(context.Background(), key, true)
-	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(ctx, testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +48,7 @@ func TestClientAssertionCredential(t *testing.T) {
 		t.Fatalf("expected 1 call, got %d", calls)
 	}
 	// silent authentication should now succeed
-	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(ctx, testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +72,7 @@ func TestClientAssertionCredentialCallbackError(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil || !strings.Contains(err.Error(), expectedError.Error()) {
 		t.Fatalf(`unexpected error: "%v"`, err)
 	}
@@ -100,10 +99,7 @@ func TestClientAssertionCredential_Live(t *testing.T) {
 				func(context.Context) (string, error) {
 					return getAssertion(certs[0], key)
 				},
-				&ClientAssertionCredentialOptions{
-					ClientOptions: o,
-					DisableAuthorityValidationAndInstanceDiscovery: d,
-				},
+				&ClientAssertionCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: d},
 			)
 			if err != nil {
 				t.Fatal(err)

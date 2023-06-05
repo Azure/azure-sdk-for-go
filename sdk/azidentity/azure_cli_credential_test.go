@@ -11,8 +11,6 @@ import (
 	"errors"
 	"testing"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 var (
@@ -38,7 +36,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	at, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	at, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +56,7 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -81,7 +79,7 @@ func TestAzureCLICredential_TenantID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

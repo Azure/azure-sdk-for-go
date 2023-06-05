@@ -3,8 +3,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/azidentity
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.5.0-beta.1
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.0.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0

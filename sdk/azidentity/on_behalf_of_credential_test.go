@@ -73,7 +73,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			tk, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			tk, err := cred.GetToken(ctx, testTRO)
 			if err != nil {
 				t.Fatal(err)
 			}

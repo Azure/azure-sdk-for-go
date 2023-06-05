@@ -38,6 +38,7 @@ var (
 	accessTokenRespSuccess    = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
 	instanceDiscoveryResponse = getInstanceDiscoveryResponse(fakeTenantID)
 	tenantDiscoveryResponse   = getTenantDiscoveryResponse(fakeTenantID)
+	testTRO                   = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 
 // constants for this file
@@ -161,36 +162,11 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate
 }
 
 // Set environment variables for the duration of a test. Restore their prior values
-// after the test completes. Obviated by 1.17's T.Setenv
+// after the test completes. uses t.Setenv on the key/value pairs in vars.
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
-	unsetSentinel := "variables having no initial value must be unset after the test"
-	priorValues := make(map[string]string, len(vars))
 	for k, v := range vars {
-		priorValue, ok := os.LookupEnv(k)
-		if ok {
-			priorValues[k] = priorValue
-		} else {
-			priorValues[k] = unsetSentinel
-		}
-		err := os.Setenv(k, v)
-		if err != nil {
-			t.Fatalf("Unexpected error setting %s: %v", k, err)
-		}
+		t.Setenv(k, v)
 	}
-
-	t.Cleanup(func() {
-		for k, v := range priorValues {
-			var err error
-			if v == unsetSentinel {
-				err = os.Unsetenv(k)
-			} else {
-				err = os.Setenv(k, v)
-			}
-			if err != nil {
-				t.Fatalf("Unexpected error resetting %s: %v", k, err)
-			}
-		}
-	})
 }
 
 func Test_WellKnownHosts(t *testing.T) {
@@ -560,7 +536,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
-	t.Skip("unskip this test after adding back CAE support")
 	realCP1 := disableCP1
 	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
@@ -650,10 +625,9 @@ func TestClaims(t *testing.T) {
 				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
 					t.Fatal(err)
 				}
-				// TODO: uncomment after restoring TokenRequestOptions.Claims
-				// if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
-				// 	t.Fatal(err)
-				// }
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+					t.Fatal(err)
+				}
 				if reqs != 2 {
 					t.Fatalf("expected %d token requests, got %d", 2, reqs)
 				}

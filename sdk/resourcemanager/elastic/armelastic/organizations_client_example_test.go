@@ -25,7 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/Organizations_GetApiKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dbd896bc9a795bcb3ec7db0a340b517fd3059620/specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/Organizations_GetApiKey.json
 func ExampleOrganizationsClient_GetAPIKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleOrganizationsClient_GetAPIKey() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOrganizationsClient().GetAPIKey(ctx, "myResourceGroup", &armelastic.OrganizationsClientGetAPIKeyOptions{Body: nil})
+	res, err := clientFactory.NewOrganizationsClient().GetAPIKey(ctx, &armelastic.OrganizationsClientGetAPIKeyOptions{Body: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -44,6 +44,8 @@ func ExampleOrganizationsClient_GetAPIKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.UserAPIKeyResponse = armelastic.UserAPIKeyResponse{
-	// 	APIKey: to.Ptr("AbCdEfGhIjKlMnOpQrStUvWxYz"),
+	// 	Properties: &armelastic.UserAPIKeyResponseProperties{
+	// 		APIKey: to.Ptr("AbCdEfGhIjKlMnOpQrStUvWxYz"),
+	// 	},
 	// }
 }

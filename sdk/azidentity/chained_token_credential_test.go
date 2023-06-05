@@ -93,7 +93,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,7 +118,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if _, ok := err.(*AuthenticationFailedError); !ok {
 		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
@@ -138,7 +138,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if _, ok := err.(*credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
@@ -163,7 +163,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if _, ok := err.(*AuthenticationFailedError); !ok {
 		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
@@ -185,7 +185,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 		t.Fatal(err)
 	}
 	cred.name = "CustomNameCredential"
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if _, ok := err.(*credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
@@ -208,9 +208,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 		t.Fatal(err)
 	}
 
-	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
-
-	tk, err := cred.GetToken(context.Background(), getTokenOptions)
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	testGoodGetTokenResponse(t, tk, err)
 	if failedCredential.getTokenCalls != 1 {
 		t.Fatal("The failed credential getToken should have been called once")
@@ -218,7 +216,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	if successfulCredential.getTokenCalls != 1 {
 		t.Fatalf("The successful credential getToken should have been called once")
 	}
-	tk2, err2 := cred.GetToken(context.Background(), getTokenOptions)
+	tk2, err2 := cred.GetToken(context.Background(), testTRO)
 	testGoodGetTokenResponse(t, tk2, err2)
 	if failedCredential.getTokenCalls != 1 {
 		t.Fatalf("The failed credential getToken should not have been called again")
@@ -239,9 +237,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 		t.Fatal(err)
 	}
 
-	getTokenOptions := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
-
-	tk, err := cred.GetToken(context.Background(), getTokenOptions)
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	testGoodGetTokenResponse(t, tk, err)
 	if failedCredential.getTokenCalls != 1 {
 		t.Fatalf("The failed credential getToken should have been called once")
@@ -249,7 +245,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 	if successfulCredential.getTokenCalls != 1 {
 		t.Fatalf("The successful credential getToken should have been called once")
 	}
-	tk2, err2 := cred.GetToken(context.Background(), getTokenOptions)
+	tk2, err2 := cred.GetToken(context.Background(), testTRO)
 	testGoodGetTokenResponse(t, tk2, err2)
 	if failedCredential.getTokenCalls != 2 {
 		t.Fatalf("The failed credential getToken should have been called twice")
@@ -266,7 +262,6 @@ func TestChainedTokenCredential_Race(t *testing.T) {
 	authFailFake.SetResponse(azcore.AccessToken{}, newAuthenticationFailedError("", "", nil, nil))
 	unavailableFake := NewFakeCredential()
 	unavailableFake.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("", ""))
-	tro := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 
 	for _, b := range []bool{true, false} {
 		t.Run(fmt.Sprintf("RetrySources_%v", b), func(t *testing.T) {
@@ -281,9 +276,9 @@ func TestChainedTokenCredential_Race(t *testing.T) {
 			)
 			for i := 0; i < 5; i++ {
 				go func() {
-					_, _ = success.GetToken(context.Background(), tro)
-					_, _ = failure.GetToken(context.Background(), tro)
-					_, _ = unavailable.GetToken(context.Background(), tro)
+					_, _ = success.GetToken(context.Background(), testTRO)
+					_, _ = failure.GetToken(context.Background(), testTRO)
+					_, _ = unavailable.GetToken(context.Background(), testTRO)
 				}()
 			}
 		})

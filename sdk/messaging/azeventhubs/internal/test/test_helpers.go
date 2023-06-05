@@ -44,21 +44,21 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 	})
 
 	return func() []string {
-		if messagesCh == nil {
-			// already been closed, probably manually.
-			return nil
-		}
-
-		setAzLogListener(nil)
-		close(messagesCh)
+		setAzLogListener(func(azlog.Event, string) {})
 
 		var messages []string
 
-		for msg := range messagesCh {
-			messages = append(messages, msg)
+	Loop:
+		for {
+			select {
+			case msg := <-messagesCh:
+				messages = append(messages, msg)
+				break
+			default:
+				break Loop
+			}
 		}
 
-		messagesCh = nil
 		return messages
 	}
 }

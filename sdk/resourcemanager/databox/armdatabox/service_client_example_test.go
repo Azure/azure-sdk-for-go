@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/AvailableSkusPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/AvailableSkusPost.json
 func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,8 +29,8 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServiceClient().NewListAvailableSKUsByResourceGroupPager("bvttoolrg6", "westus", armdatabox.AvailableSKURequest{
-		Country:      to.Ptr("US"),
+	pager := clientFactory.NewServiceClient().NewListAvailableSKUsByResourceGroupPager("YourResourceGroupName", "westus", armdatabox.AvailableSKURequest{
+		Country:      to.Ptr("XX"),
 		Location:     to.Ptr("westus"),
 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	}, nil)
@@ -76,83 +76,8 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 							MeterType: to.Ptr("DataBoxLostOrDamagedDeviceFee"),
 		// 							Multiplier: to.Ptr[float64](1),
 		// 					}},
-		// 					DataLocationToServiceLocationMap: []*armdatabox.DataLocationToServiceLocationMap{
-		// 						{
-		// 							DataLocation: to.Ptr("westus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("centralus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("eastus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("eastus2"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("northcentralus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("southcentralus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("westcentralus"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("westus2"),
-		// 							ServiceLocation: to.Ptr("westus"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("centraluseuap"),
-		// 							ServiceLocation: to.Ptr("centraluseuap"),
-		// 						},
-		// 						{
-		// 							DataLocation: to.Ptr("eastus2euap"),
-		// 							ServiceLocation: to.Ptr("eastus2euap"),
-		// 					}},
-		// 					DisabledReason: to.Ptr(armdatabox.SKUDisabledReasonNone),
-		// 				},
-		// 				SKU: &armdatabox.SKU{
-		// 					Name: to.Ptr(armdatabox.SKUNameDataBox),
-		// 				},
-		// 			},
-		// 			{
-		// 				Enabled: to.Ptr(true),
-		// 				Properties: &armdatabox.SKUProperties{
-		// 					APIVersions: []*string{
-		// 						to.Ptr("2018-01-01")},
-		// 						Capacity: &armdatabox.SKUCapacity{
-		// 							Maximum: to.Ptr("40"),
-		// 							Usable: to.Ptr("35"),
-		// 						},
-		// 						Costs: []*armdatabox.SKUCost{
-		// 							{
-		// 								MeterID: to.Ptr("d95cd8b5-b6f1-4cd9-ae86-a016d1945d6f"),
-		// 								MeterType: to.Ptr("DataBoxDiskServiceFee"),
-		// 								Multiplier: to.Ptr[float64](1),
-		// 							},
-		// 							{
-		// 								MeterID: to.Ptr("4b8cf572-cb04-4ef3-9528-2cda4e9b544e"),
-		// 								MeterType: to.Ptr("DataBoxDiskShippingFee"),
-		// 								Multiplier: to.Ptr[float64](1),
-		// 							},
-		// 							{
-		// 								MeterID: to.Ptr("b6ae9bbf-815d-49dd-bb2b-77c497b72ba4"),
-		// 								MeterType: to.Ptr("DataBoxDiskDailyUsageFee"),
-		// 								Multiplier: to.Ptr[float64](1),
-		// 							},
-		// 							{
-		// 								MeterID: to.Ptr("08bc0ea1-6c82-421b-b953-2a7a65810d2e"),
-		// 								MeterType: to.Ptr("DataBoxDiskLostDeviceFee"),
-		// 								Multiplier: to.Ptr[float64](1),
-		// 						}},
+		// 					CountriesWithinCommerceBoundary: []*string{
+		// 						to.Ptr("XX")},
 		// 						DataLocationToServiceLocationMap: []*armdatabox.DataLocationToServiceLocationMap{
 		// 							{
 		// 								DataLocation: to.Ptr("westus"),
@@ -197,7 +122,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 						DisabledReason: to.Ptr(armdatabox.SKUDisabledReasonNone),
 		// 					},
 		// 					SKU: &armdatabox.SKU{
-		// 						Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 						Name: to.Ptr(armdatabox.SKUNameDataBox),
 		// 					},
 		// 				},
 		// 				{
@@ -206,83 +131,164 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 						APIVersions: []*string{
 		// 							to.Ptr("2018-01-01")},
 		// 							Capacity: &armdatabox.SKUCapacity{
-		// 								Maximum: to.Ptr("1000"),
-		// 								Usable: to.Ptr("800"),
+		// 								Maximum: to.Ptr("40"),
+		// 								Usable: to.Ptr("35"),
 		// 							},
 		// 							Costs: []*armdatabox.SKUCost{
 		// 								{
-		// 									MeterID: to.Ptr("d0dccaaf-3de9-4c7a-ba97-f83551b90126"),
-		// 									MeterType: to.Ptr("DataBoxHeavyServiceFee"),
+		// 									MeterID: to.Ptr("d95cd8b5-b6f1-4cd9-ae86-a016d1945d6f"),
+		// 									MeterType: to.Ptr("DataBoxDiskServiceFee"),
 		// 									Multiplier: to.Ptr[float64](1),
 		// 								},
 		// 								{
-		// 									MeterID: to.Ptr("7b49d11f-d4f7-4029-a197-04998fd282f9"),
-		// 									MeterType: to.Ptr("DataBoxHeavyShippingFee"),
+		// 									MeterID: to.Ptr("4b8cf572-cb04-4ef3-9528-2cda4e9b544e"),
+		// 									MeterType: to.Ptr("DataBoxDiskShippingFee"),
 		// 									Multiplier: to.Ptr[float64](1),
 		// 								},
 		// 								{
-		// 									MeterID: to.Ptr("c2c66d53-11b4-4f11-9642-43c7c336f0b7"),
-		// 									MeterType: to.Ptr("DataBoxHeavyExtraDayFee"),
+		// 									MeterID: to.Ptr("b6ae9bbf-815d-49dd-bb2b-77c497b72ba4"),
+		// 									MeterType: to.Ptr("DataBoxDiskDailyUsageFee"),
 		// 									Multiplier: to.Ptr[float64](1),
 		// 								},
 		// 								{
-		// 									MeterID: to.Ptr("188dcd7e-fbd7-4a41-aa42-162b81b0510f"),
-		// 									MeterType: to.Ptr("DataBoxHeavyLostOrDamagedDeviceFee"),
+		// 									MeterID: to.Ptr("08bc0ea1-6c82-421b-b953-2a7a65810d2e"),
+		// 									MeterType: to.Ptr("DataBoxDiskLostDeviceFee"),
 		// 									Multiplier: to.Ptr[float64](1),
 		// 							}},
-		// 							DataLocationToServiceLocationMap: []*armdatabox.DataLocationToServiceLocationMap{
-		// 								{
-		// 									DataLocation: to.Ptr("westus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("centralus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("eastus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("eastus2"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("northcentralus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("southcentralus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("westcentralus"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("westus2"),
-		// 									ServiceLocation: to.Ptr("westus"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("centraluseuap"),
-		// 									ServiceLocation: to.Ptr("centraluseuap"),
-		// 								},
-		// 								{
-		// 									DataLocation: to.Ptr("eastus2euap"),
-		// 									ServiceLocation: to.Ptr("eastus2euap"),
+		// 							CountriesWithinCommerceBoundary: []*string{
+		// 								to.Ptr("XX")},
+		// 								DataLocationToServiceLocationMap: []*armdatabox.DataLocationToServiceLocationMap{
+		// 									{
+		// 										DataLocation: to.Ptr("westus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("centralus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("eastus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("eastus2"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("northcentralus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("southcentralus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("westcentralus"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("westus2"),
+		// 										ServiceLocation: to.Ptr("westus"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("centraluseuap"),
+		// 										ServiceLocation: to.Ptr("centraluseuap"),
+		// 									},
+		// 									{
+		// 										DataLocation: to.Ptr("eastus2euap"),
+		// 										ServiceLocation: to.Ptr("eastus2euap"),
+		// 								}},
+		// 								DisabledReason: to.Ptr(armdatabox.SKUDisabledReasonNone),
+		// 							},
+		// 							SKU: &armdatabox.SKU{
+		// 								Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 							},
+		// 						},
+		// 						{
+		// 							Enabled: to.Ptr(true),
+		// 							Properties: &armdatabox.SKUProperties{
+		// 								APIVersions: []*string{
+		// 									to.Ptr("2018-01-01")},
+		// 									Capacity: &armdatabox.SKUCapacity{
+		// 										Maximum: to.Ptr("1000"),
+		// 										Usable: to.Ptr("800"),
+		// 									},
+		// 									Costs: []*armdatabox.SKUCost{
+		// 										{
+		// 											MeterID: to.Ptr("d0dccaaf-3de9-4c7a-ba97-f83551b90126"),
+		// 											MeterType: to.Ptr("DataBoxHeavyServiceFee"),
+		// 											Multiplier: to.Ptr[float64](1),
+		// 										},
+		// 										{
+		// 											MeterID: to.Ptr("7b49d11f-d4f7-4029-a197-04998fd282f9"),
+		// 											MeterType: to.Ptr("DataBoxHeavyShippingFee"),
+		// 											Multiplier: to.Ptr[float64](1),
+		// 										},
+		// 										{
+		// 											MeterID: to.Ptr("c2c66d53-11b4-4f11-9642-43c7c336f0b7"),
+		// 											MeterType: to.Ptr("DataBoxHeavyExtraDayFee"),
+		// 											Multiplier: to.Ptr[float64](1),
+		// 										},
+		// 										{
+		// 											MeterID: to.Ptr("188dcd7e-fbd7-4a41-aa42-162b81b0510f"),
+		// 											MeterType: to.Ptr("DataBoxHeavyLostOrDamagedDeviceFee"),
+		// 											Multiplier: to.Ptr[float64](1),
+		// 									}},
+		// 									CountriesWithinCommerceBoundary: []*string{
+		// 										to.Ptr("XX")},
+		// 										DataLocationToServiceLocationMap: []*armdatabox.DataLocationToServiceLocationMap{
+		// 											{
+		// 												DataLocation: to.Ptr("westus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("centralus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("eastus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("eastus2"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("northcentralus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("southcentralus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("westcentralus"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("westus2"),
+		// 												ServiceLocation: to.Ptr("westus"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("centraluseuap"),
+		// 												ServiceLocation: to.Ptr("centraluseuap"),
+		// 											},
+		// 											{
+		// 												DataLocation: to.Ptr("eastus2euap"),
+		// 												ServiceLocation: to.Ptr("eastus2euap"),
+		// 										}},
+		// 										DisabledReason: to.Ptr(armdatabox.SKUDisabledReasonNone),
+		// 										RequiredFeature: to.Ptr("HeavyCreateAccess"),
+		// 									},
+		// 									SKU: &armdatabox.SKU{
+		// 										Name: to.Ptr(armdatabox.SKUNameDataBoxHeavy),
+		// 									},
 		// 							}},
-		// 							DisabledReason: to.Ptr(armdatabox.SKUDisabledReasonNone),
-		// 							RequiredFeature: to.Ptr("HeavyCreateAccess"),
-		// 						},
-		// 						SKU: &armdatabox.SKU{
-		// 							Name: to.Ptr(armdatabox.SKUNameDataBoxHeavy),
-		// 						},
-		// 				}},
-		// 			}
+		// 						}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateAddressPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateAddressPost.json
 func ExampleServiceClient_ValidateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,13 +304,13 @@ func ExampleServiceClient_ValidateAddress() {
 		DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 		ShippingAddress: &armdatabox.ShippingAddress{
 			AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-			City:            to.Ptr("San Francisco"),
-			CompanyName:     to.Ptr("Microsoft"),
-			Country:         to.Ptr("US"),
-			PostalCode:      to.Ptr("94107"),
-			StateOrProvince: to.Ptr("CA"),
-			StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-			StreetAddress2:  to.Ptr("Unit 1"),
+			City:            to.Ptr("XXXX XXXX"),
+			CompanyName:     to.Ptr("XXXX XXXX"),
+			Country:         to.Ptr("XX"),
+			PostalCode:      to.Ptr("00000"),
+			StateOrProvince: to.Ptr("XX"),
+			StreetAddress1:  to.Ptr("XXXX XXXX"),
+			StreetAddress2:  to.Ptr("XXXX XXXX"),
 		},
 	}, nil)
 	if err != nil {
@@ -319,12 +325,12 @@ func ExampleServiceClient_ValidateAddress() {
 	// 		AlternateAddresses: []*armdatabox.ShippingAddress{
 	// 			{
 	// 				AddressType: to.Ptr(armdatabox.AddressTypeNone),
-	// 				City: to.Ptr("SAN FRANCISCO"),
-	// 				Country: to.Ptr("US"),
-	// 				PostalCode: to.Ptr("94107"),
-	// 				StateOrProvince: to.Ptr("CA"),
-	// 				StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 				StreetAddress2: to.Ptr("Unit 1"),
+	// 				City: to.Ptr("XXXX XXXX"),
+	// 				Country: to.Ptr("XX"),
+	// 				PostalCode: to.Ptr("00000"),
+	// 				StateOrProvince: to.Ptr("XX"),
+	// 				StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 				StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 				StreetAddress3: to.Ptr(""),
 	// 		}},
 	// 		ValidationStatus: to.Ptr(armdatabox.AddressValidationStatusValid),
@@ -332,7 +338,7 @@ func ExampleServiceClient_ValidateAddress() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputsByResourceGroup.json
 func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +349,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceClient().ValidateInputsByResourceGroup(ctx, "SdkRg6861", "westus", &armdatabox.CreateJobValidations{
+	res, err := clientFactory.NewServiceClient().ValidateInputsByResourceGroup(ctx, "YourResourceGroupName", "westus", &armdatabox.CreateJobValidations{
 		IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
 			&armdatabox.DataTransferDetailsValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateDataTransferDetails),
@@ -351,7 +357,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
@@ -362,13 +368,13 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 				TransportPreferences: &armdatabox.TransportPreferences{
 					PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -379,7 +385,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 			},
 			&armdatabox.SKUAvailabilityValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
-				Country:        to.Ptr("US"),
+				Country:        to.Ptr("XX"),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				Location:       to.Ptr("westus"),
 				TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -433,12 +439,12 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	// 				AlternateAddresses: []*armdatabox.ShippingAddress{
 	// 					{
 	// 						AddressType: to.Ptr(armdatabox.AddressTypeNone),
-	// 						City: to.Ptr("SAN FRANCISCO"),
-	// 						Country: to.Ptr("US"),
-	// 						PostalCode: to.Ptr("94107"),
-	// 						StateOrProvince: to.Ptr("CA"),
-	// 						StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 						StreetAddress2: to.Ptr("Unit 1"),
+	// 						City: to.Ptr("XXXX XXXX"),
+	// 						Country: to.Ptr("XX"),
+	// 						PostalCode: to.Ptr("00000"),
+	// 						StateOrProvince: to.Ptr("XX"),
+	// 						StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 						StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 						StreetAddress3: to.Ptr(""),
 	// 				}},
 	// 				ValidationStatus: to.Ptr(armdatabox.AddressValidationStatusValid),
@@ -496,7 +502,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputs.json
 func ExampleServiceClient_ValidateInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -515,7 +521,7 @@ func ExampleServiceClient_ValidateInputs() {
 					{
 						AccountDetails: &armdatabox.StorageAccountDetails{
 							DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-							StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+							StorageAccountID: to.Ptr("/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"),
 						},
 					}},
 				DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
@@ -526,13 +532,13 @@ func ExampleServiceClient_ValidateInputs() {
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-					City:            to.Ptr("San Francisco"),
-					CompanyName:     to.Ptr("Microsoft"),
-					Country:         to.Ptr("US"),
-					PostalCode:      to.Ptr("94107"),
-					StateOrProvince: to.Ptr("CA"),
-					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
-					StreetAddress2:  to.Ptr("Unit 1"),
+					City:            to.Ptr("XXXX XXXX"),
+					CompanyName:     to.Ptr("XXXX XXXX"),
+					Country:         to.Ptr("XX"),
+					PostalCode:      to.Ptr("00000"),
+					StateOrProvince: to.Ptr("XX"),
+					StreetAddress1:  to.Ptr("XXXX XXXX"),
+					StreetAddress2:  to.Ptr("XXXX XXXX"),
 				},
 				TransportPreferences: &armdatabox.TransportPreferences{
 					PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -543,7 +549,7 @@ func ExampleServiceClient_ValidateInputs() {
 			},
 			&armdatabox.SKUAvailabilityValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
-				Country:        to.Ptr("US"),
+				Country:        to.Ptr("XX"),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				Location:       to.Ptr("westus"),
 				TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -597,12 +603,12 @@ func ExampleServiceClient_ValidateInputs() {
 	// 				AlternateAddresses: []*armdatabox.ShippingAddress{
 	// 					{
 	// 						AddressType: to.Ptr(armdatabox.AddressTypeNone),
-	// 						City: to.Ptr("SAN FRANCISCO"),
-	// 						Country: to.Ptr("US"),
-	// 						PostalCode: to.Ptr("94107"),
-	// 						StateOrProvince: to.Ptr("CA"),
-	// 						StreetAddress1: to.Ptr("16 TOWNSEND ST"),
-	// 						StreetAddress2: to.Ptr("Unit 1"),
+	// 						City: to.Ptr("XXXX XXXX"),
+	// 						Country: to.Ptr("XX"),
+	// 						PostalCode: to.Ptr("00000"),
+	// 						StateOrProvince: to.Ptr("XX"),
+	// 						StreetAddress1: to.Ptr("XXXX XXXX"),
+	// 						StreetAddress2: to.Ptr("XXXX XXXX"),
 	// 						StreetAddress3: to.Ptr(""),
 	// 				}},
 	// 				ValidationStatus: to.Ptr(armdatabox.AddressValidationStatusValid),
@@ -660,7 +666,7 @@ func ExampleServiceClient_ValidateInputs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfiguration.json
 func ExampleServiceClient_RegionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +717,7 @@ func ExampleServiceClient_RegionConfiguration() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfigurationByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfigurationByResourceGroup.json
 func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,7 +728,7 @@ func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceClient().RegionConfigurationByResourceGroup(ctx, "SdkRg4981", "westus", armdatabox.RegionConfigurationRequest{
+	res, err := clientFactory.NewServiceClient().RegionConfigurationByResourceGroup(ctx, "YourResourceGroupName", "westus", armdatabox.RegionConfigurationRequest{
 		ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
 			SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
 			StorageLocation: to.Ptr("westus"),

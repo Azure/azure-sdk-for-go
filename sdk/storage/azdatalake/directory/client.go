@@ -63,6 +63,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 
 // GetProperties returns the properties of the directory (blob3). #TODO: we may just move this method to path client
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	// TODO: format blob response to path response
 	return GetPropertiesResponse{}, nil
 }
 

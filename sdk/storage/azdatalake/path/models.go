@@ -8,7 +8,7 @@ package path
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
@@ -31,7 +31,7 @@ func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessContro
 		return nil, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientSetAccessControlOptions{
 		Owner:       o.Owner,
 		Group:       o.Group,
@@ -56,7 +56,7 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 		}, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{
 		Upn:    o.UPN,
 		Action: &action,
@@ -77,6 +77,11 @@ type SetAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
+func (o *SetAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
+	// TODO: design formatter
+	return nil, nil
+}
+
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
 type UpdateAccessControlRecursiveOptions struct {
 	// ACL is the access control list for the path.
@@ -89,6 +94,11 @@ type UpdateAccessControlRecursiveOptions struct {
 	ContinueOnFailure *bool
 	// Marker is the continuation token to use when continuing the operation.
 	Marker *string
+}
+
+func (o *UpdateAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
+	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
+	return nil, nil
 }
 
 // RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
@@ -105,6 +115,11 @@ type RemoveAccessControlRecursiveOptions struct {
 	Marker *string
 }
 
+func (o *RemoveAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
+	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
+	return nil, nil
+}
+
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {
 	AccessConditions *AccessConditions
@@ -114,7 +129,7 @@ func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetHTTPHeadersOptions{
 		AccessConditions: accessConditions,
 	}
@@ -154,6 +169,7 @@ func (o *HTTPHeaders) formatBlobHTTPHeaders() (*blob.HTTPHeaders, error) {
 }
 
 func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error) {
+	// TODO: will be used for file related ops, like append
 	if o == nil {
 		return nil, nil
 	}
@@ -180,7 +196,7 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetMetadataOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -210,10 +226,10 @@ type CPKScopeInfo struct {
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = exported.LeaseAccessConditions
+type LeaseAccessConditions = azdatalake.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
 
 // AccessConditions identifies access conditions which you optionally set.
-type AccessConditions = exported.PathAccessConditions
+type AccessConditions = azdatalake.PathAccessConditions

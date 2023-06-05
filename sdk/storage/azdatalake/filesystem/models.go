@@ -8,7 +8,7 @@ package filesystem
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 )
 
 // SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
@@ -23,7 +23,7 @@ type SetAccessPolicyOptions struct {
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 	return &container.SetAccessPolicyOptions{
 		Access:           o.Access,
-		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
+		AccessConditions: azdatalake.FormatContainerAccessConditions(o.AccessConditions),
 		ContainerACL:     o.FilesystemACL,
 	}
 }
@@ -55,7 +55,7 @@ type DeleteOptions struct {
 
 func (o *DeleteOptions) format() *container.DeleteOptions {
 	return &container.DeleteOptions{
-		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
+		AccessConditions: azdatalake.FormatContainerAccessConditions(o.AccessConditions),
 	}
 }
 
@@ -111,13 +111,13 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 type CPKScopeInfo = container.CPKScopeInfo
 
 // AccessConditions identifies filesystem-specific access conditions which you optionally set.
-type AccessConditions = exported.FilesystemAccessConditions
+type AccessConditions = azdatalake.FilesystemAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = exported.LeaseAccessConditions
+type LeaseAccessConditions = azdatalake.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
 
 // SignedIdentifier - signed identifier.
 type SignedIdentifier = container.SignedIdentifier

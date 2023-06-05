@@ -13,6 +13,7 @@ import (
 
 type ResourceType = generated.PathResourceType
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
 	ResourceTypeFile      ResourceType = generated.PathResourceTypeFile
 	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
@@ -20,6 +21,7 @@ const (
 
 type RenameMode = generated.PathRenameMode
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
 	RenameModeLegacy RenameMode = generated.PathRenameModeLegacy
 	RenameModePosix  RenameMode = generated.PathRenameModePosix

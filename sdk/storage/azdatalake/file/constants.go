@@ -22,6 +22,7 @@ const (
 
 type ResourceType = path.ResourceType
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
 	ResourceTypeFile      ResourceType = path.ResourceTypeFile
 	ResourceTypeDirectory ResourceType = path.ResourceTypeDirectory
@@ -29,6 +30,7 @@ const (
 
 type RenameMode = path.RenameMode
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
 	RenameModeLegacy RenameMode = path.RenameModeLegacy
 	RenameModePosix  RenameMode = path.RenameModePosix

@@ -8,6 +8,7 @@ package file
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
@@ -45,7 +46,7 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
 	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
 	httpHeaders := &generated.PathHTTPHeaders{
 		CacheControl:             o.HTTPHeaders.CacheControl,
 		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
@@ -65,7 +66,7 @@ type DeleteOptions struct {
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, nil
 }
 
@@ -87,7 +88,7 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.GetPropertiesOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -154,7 +155,7 @@ type ExpiryTypeRelativeToNow = exported.ExpiryTypeRelativeToNow
 // ExpiryTypeRelativeToCreation defines the duration relative to creation for the expiry.
 type ExpiryTypeRelativeToCreation = exported.ExpiryTypeRelativeToCreation
 
-// ExpiryTypeNever defines that the will be set to never expire.
+// ExpiryTypeNever defines that will be set to never expire.
 type ExpiryTypeNever = exported.ExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.

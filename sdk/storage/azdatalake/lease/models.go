@@ -9,11 +9,11 @@ package lease
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 )
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
 
 // FilesystemAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type FilesystemAcquireOptions struct {

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -15,6 +15,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	otelsdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -24,11 +25,13 @@ type TracingProviderOptions struct {
 }
 
 // NewTracingProvider creates a new tracing.Provider that wraps the specified OpenTelemetry TracerProvider.
+// The telemetry schema for trace.Tracers created from tracerProvider is set to v1.17.0. Therefore, any attributes
+// set on the tracerProvider must be compatible with the v1.17.0 telemetry schema.
 //   - tracerProvider - the TracerProvider to wrap
 //   - opts - optional configuration. pass nil to accept the default values
 func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
 	return tracing.NewProvider(func(namespace, version string) tracing.Tracer {
-		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version))
+		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version), trace.WithSchemaURL(semconv.SchemaURL))
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal

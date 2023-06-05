@@ -1,14 +1,10 @@
 # Release History
 
-## 1.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.1 (2023-06-06)
 
 ### Bugs Fixed
-
-### Other Changes
+* Retry policy always clones the underlying `*http.Request` before invoking the next policy.
+* Added some non-standard error codes to the list of error codes for unregistered resource providers.
 
 ## 1.6.0 (2023-05-04)
 

@@ -104,7 +104,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
 	opts := &armpolicy.ClientOptions{DisableRPRegistration: true, ClientOptions: policy.ClientOptions{Transport: srv}}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {

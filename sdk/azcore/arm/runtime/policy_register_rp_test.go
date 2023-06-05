@@ -24,12 +24,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const rpUnregisteredResp = `{
+const rpUnregisteredResp1 = `{
 	"error":{
 		"code":"MissingSubscriptionRegistration",
 		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
 		"details":[{
 				"code":"MissingSubscriptionRegistration",
+				"target":"Microsoft.Storage",
+				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
+			}
+		]
+	}
+}`
+
+const rpUnregisteredResp2 = `{
+	"error":{
+		"code":"MissingRegistrationForResourceProvider",
+		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
+		"details":[{
+				"code":"MissingRegistrationForResourceProvider",
 				"target":"Microsoft.Storage",
 				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
 			}
@@ -89,7 +102,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
 	// polling responses to Register() and Get(), in progress
 	srv.RepeatResponse(5, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
 	// polling response, successful registration
@@ -180,7 +193,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
 	// polling responses to Register() and Get(), in progress but slow
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
@@ -212,7 +225,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	// add a cycle of unregistered->registered so that we keep retrying and hit the cap
 	for i := 0; i < 4; i++ {
 		// initial response that RP is unregistered
-		srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+		srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp1)))
 		// polling responses to Register() and Get(), in progress
 		srv.RepeatResponse(2, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
 		// polling response, successful registration
@@ -246,7 +259,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp2)))
 	// polling responses to Register() and Get(), in progress but slow so we have time to cancel
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
 	// log only RP registration
@@ -287,7 +300,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp2)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
 	client := newFakeClient(t, srv, ops)
@@ -305,7 +318,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	require.Error(t, err)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
-	require.EqualValues(t, "MissingSubscriptionRegistration", respErr.ErrorCode)
+	require.EqualValues(t, "MissingRegistrationForResourceProvider", respErr.ErrorCode)
 	require.Zero(t, resp)
 	// shouldn't be any log entries
 	require.Zero(t, logEntries)
@@ -315,7 +328,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response that RP is unregistered
-	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp2)))
 	// polling responses to Register() and Get(), in progress
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
 	// polling response, successful registration
@@ -397,6 +410,11 @@ func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
 	require.EqualValues(t, "MaxNumberOfRegionalEnvironmentsInSubExceeded", respErr.ErrorCode)
 	require.Contains(t, err.Error(), "cannot have more than 1 environments")
 	require.EqualValues(t, 0, logEntries)
+}
+
+func TestIsUnregisteredRPCode(t *testing.T) {
+	require.True(t, isUnregisteredRPCode("Subscription Not Registered"))
+	require.False(t, isUnregisteredRPCode("Your subscription isn't registered"))
 }
 
 type fakeClient struct {

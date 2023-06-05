@@ -39,7 +39,12 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 
-	return (*Client)(base.NewAppendBlobClient(blobURL, runtime.PipelineOptions{}, &conOptions.ClientOptions, nil)), nil
+	azClient, err := azcore.NewClient("appendblob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewAppendBlobClient(blobURL, azClient, nil)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -49,7 +54,12 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	return (*Client)(base.NewAppendBlobClient(blobURL, runtime.PipelineOptions{}, &conOptions.ClientOptions, nil)), nil
+	azClient, err := azcore.NewClient("appendblob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewAppendBlobClient(blobURL, azClient, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -61,7 +71,12 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCreden
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 
-	return (*Client)(base.NewAppendBlobClient(blobURL, runtime.PipelineOptions{}, &conOptions.ClientOptions, cred)), nil
+	azClient, err := azcore.NewClient("appendblob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewAppendBlobClient(blobURL, azClient, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -121,7 +136,7 @@ func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewAppendBlobClient(p.String(), runtime.PipelineOptions{}, nil, ab.sharedKey())), nil
+	return (*Client)(base.NewAppendBlobClient(p.String(), ab.generated().InternalClient(), ab.sharedKey())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -133,7 +148,7 @@ func (ab *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewAppendBlobClient(p.String(), runtime.PipelineOptions{}, nil, ab.sharedKey())), nil
+	return (*Client)(base.NewAppendBlobClient(p.String(), ab.generated().InternalClient(), ab.sharedKey())), nil
 }
 
 // Create creates a 0-size append blob. Call AppendBlock to append data to an append blob.

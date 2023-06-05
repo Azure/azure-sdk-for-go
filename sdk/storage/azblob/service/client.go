@@ -45,9 +45,12 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, &cred)), nil
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -56,9 +59,13 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -69,9 +76,13 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -137,7 +148,7 @@ func (s *Client) URL() string {
 // this Client's URL. The new container.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.credential()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().InternalClient(), s.credential()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
@@ -206,7 +217,7 @@ func (s *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 			if err != nil {
 				return ListContainersResponse{}, err
 			}
-			resp, err := s.generated().Pipeline().Do(req)
+			resp, err := s.generated().InternalClient().Pipeline().Do(req)
 			if err != nil {
 				return ListContainersResponse{}, err
 			}

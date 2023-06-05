@@ -10,28 +10,23 @@ package generated
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
 
 func (client *AppendBlobClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *AppendBlobClient) Pipeline() runtime.Pipeline {
-	return client.internal.Pipeline()
+func (client *AppendBlobClient) InternalClient() *azcore.Client {
+	return client.internal
 }
 
 // NewAppendBlobClient creates a new instance of AppendBlobClient with the specified values.
 //   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-func NewAppendBlobClient(endpoint string, pl runtime.PipelineOptions, clientOptions *azcore.ClientOptions) (*AppendBlobClient, error) {
-	azClient, err := azcore.NewClient("appendblob.Client", exported.ModuleVersion, pl, clientOptions)
-	if err != nil {
-		return nil, err
-	}
+//   - azClient - azcore.Client is a basic HTTP client. It consists of a pipeline and tracing provider.
+func NewAppendBlobClient(endpoint string, azClient *azcore.Client) *AppendBlobClient {
 	client := &AppendBlobClient{
-		endpoint: endpoint,
 		internal: azClient,
+		endpoint: endpoint,
 	}
-	return client, nil
+	return client
 }

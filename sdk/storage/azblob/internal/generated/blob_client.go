@@ -10,8 +10,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"time"
 )
 
@@ -22,8 +20,8 @@ func (client *BlobClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *BlobClient) Pipeline() runtime.Pipeline {
-	return client.internal.Pipeline()
+func (client *BlobClient) InternalClient() *azcore.Client {
+	return client.internal
 }
 
 func (client *BlobClient) DeleteCreateRequest(ctx context.Context, options *BlobClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
@@ -36,14 +34,11 @@ func (client *BlobClient) SetTierCreateRequest(ctx context.Context, tier AccessT
 
 // NewBlobClient creates a new instance of BlobClient with the specified values.
 //   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-func NewBlobClient(endpoint string, pl runtime.PipelineOptions, clientOptions *azcore.ClientOptions) (*BlobClient, error) {
-	azClient, err := azcore.NewClient("blob.Client", exported.ModuleVersion, pl, clientOptions)
-	if err != nil {
-		return nil, err
-	}
+//   - azClient - azcore.Client is a basic HTTP client. It consists of a pipeline and tracing provider.
+func NewBlobClient(endpoint string, azClient *azcore.Client) *BlobClient {
 	client := &BlobClient{
-		endpoint: endpoint,
 		internal: azClient,
+		endpoint: endpoint,
 	}
-	return client, nil
+	return client
 }

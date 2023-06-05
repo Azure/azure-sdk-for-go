@@ -40,9 +40,12 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl, &cred)), nil
+	azClient, err := azcore.NewClient("blob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*Client)(base.NewBlobClient(blobURL, azClient, &cred)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -51,9 +54,12 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
+	azClient, err := azcore.NewClient("blob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*Client)(base.NewBlobClient(blobURL, azClient, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -64,9 +70,12 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential,
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl, cred)), nil
+	azClient, err := azcore.NewClient("blob.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return (*Client)(base.NewBlobClient(blobURL, azClient, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -118,7 +127,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.credential())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -130,7 +139,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.credential())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential())), nil
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.

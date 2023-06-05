@@ -5,6 +5,11 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against beta version v1.7.0-beta.1
+* Method `SpanFromContext()` on type `tracing.Tracer` had the `bool` return value removed.
+  * This includes the field `SpanFromContext` in supporting type `tracing.TracerOptions`.
+* Method `AddError()` has been removed from type `tracing.Span`.
+* Method `Span.End()` now requires an argument of type `*tracing.SpanEndOptions`.
 
 ### Bugs Fixed
 

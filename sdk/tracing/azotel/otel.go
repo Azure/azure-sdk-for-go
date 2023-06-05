@@ -40,8 +40,8 @@ func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingPro
 			ctx, span := tracer.Start(ctx, spanName, trace.WithSpanKind(convertSpanKind(kind)), trace.WithAttributes(attrs...))
 			return ctx, convertSpan(span)
 		}, &tracing.TracerOptions{
-			SpanFromContext: func(ctx context.Context) (tracing.Span, bool) {
-				return convertSpan(trace.SpanFromContext(ctx)), true
+			SpanFromContext: func(ctx context.Context) tracing.Span {
+				return convertSpan(trace.SpanFromContext(ctx))
 			},
 		})
 
@@ -58,9 +58,6 @@ func convertSpan(traceSpan trace.Span) tracing.Span {
 		},
 		AddEvent: func(name string, attrs ...tracing.Attribute) {
 			traceSpan.AddEvent(name, trace.WithAttributes(convertAttributes(attrs)...))
-		},
-		AddError: func(err error) {
-			traceSpan.RecordError(err)
 		},
 		SetStatus: func(code tracing.SpanStatus, desc string) {
 			traceSpan.SetStatus(convertStatus(code), desc)

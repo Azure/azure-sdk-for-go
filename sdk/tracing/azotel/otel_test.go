@@ -8,7 +8,6 @@ package azotel
 
 import (
 	"context"
-	"io"
 	"net/http"
 	"testing"
 
@@ -37,8 +36,7 @@ func TestNewTracingProvider(t *testing.T) {
 	require.NoError(t, err)
 
 	// returns a no-op span as there is no span yet
-	emptySpan, ok := client.Tracer().SpanFromContext(context.Background())
-	assert.True(t, ok)
+	emptySpan := client.Tracer().SpanFromContext(context.Background())
 	emptySpan.AddEvent("noop_event")
 
 	ctx, endSpan := azruntime.StartSpan(context.Background(), "test_span", client.Tracer(), nil)
@@ -46,8 +44,7 @@ func TestNewTracingProvider(t *testing.T) {
 	req, err := azruntime.NewRequest(ctx, http.MethodGet, "https://www.microsoft.com/")
 	require.NoError(t, err)
 
-	startedSpan, ok := client.Tracer().SpanFromContext(req.Raw().Context())
-	assert.True(t, ok)
+	startedSpan := client.Tracer().SpanFromContext(req.Raw().Context())
 	startedSpan.AddEvent("post_event")
 
 	_, err = client.Pipeline().Do(req)
@@ -65,9 +62,6 @@ func TestConvertSpan(t *testing.T) {
 	ts := testSpan{t: t}
 	span := convertSpan(&ts)
 
-	span.AddError(io.EOF)
-	assert.Equal(t, io.EOF, ts.recordedError)
-
 	const eventName = "event"
 	eventAttr := tracing.Attribute{
 		Key:   "key",
@@ -77,7 +71,7 @@ func TestConvertSpan(t *testing.T) {
 	assert.EqualValues(t, eventName, ts.eventName)
 	require.Len(t, ts.eventOptions, 1)
 
-	span.End()
+	span.End(nil)
 	assert.True(t, ts.endCalled)
 
 	attr := tracing.Attribute{
@@ -206,14 +200,13 @@ func (c *testExporter) Shutdown(ctx context.Context) error {
 }
 
 type testSpan struct {
-	t             *testing.T
-	attributes    []attribute.KeyValue
-	eventName     string
-	eventOptions  []trace.EventOption
-	endCalled     bool
-	recordedError error
-	statusCode    codes.Code
-	statusDesc    string
+	t            *testing.T
+	attributes   []attribute.KeyValue
+	eventName    string
+	eventOptions []trace.EventOption
+	endCalled    bool
+	statusCode   codes.Code
+	statusDesc   string
 }
 
 func (ts *testSpan) End(options ...trace.SpanEndOption) {
@@ -231,7 +224,7 @@ func (ts *testSpan) IsRecording() bool {
 }
 
 func (ts *testSpan) RecordError(err error, options ...trace.EventOption) {
-	ts.recordedError = err
+	ts.t.Fatal("RecordError not required")
 }
 
 func (ts *testSpan) SpanContext() trace.SpanContext {

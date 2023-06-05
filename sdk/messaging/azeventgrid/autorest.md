@@ -5,7 +5,6 @@ title: EventGridClient
 description: Azure Event Grid client
 generated-metadata: false
 clear-output-folder: false
-export-clients: true
 go: true
 input-file: 
     # This was the commit that everyone used to generate their first official betas.
@@ -18,7 +17,7 @@ openapi-type: "data-plane"
 output-folder: ../azeventgrid
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.49"
 version: "^3.0.0"
 directive:
   # we have to write a little wrapper code for this so we'll hide the public function

@@ -14,41 +14,41 @@ import "time"
 // AcknowledgeOptions - Array of lock token strings for the corresponding received Cloud Events to be acknowledged.
 type AcknowledgeOptions struct {
 	// REQUIRED; String array of lock tokens.
-	LockTokens []*string `json:"lockTokens,omitempty"`
+	LockTokens []*string
 }
 
 // AcknowledgeResult - The result of the Acknowledge operation.
 type AcknowledgeResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
 	// related error information (namely, the error code and description).
-	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
+	FailedLockTokens []*FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully acknowledged cloud events.
-	SucceededLockTokens []*string `json:"succeededLockTokens,omitempty"`
+	SucceededLockTokens []*string
 }
 
 // AzureCoreFoundationsError - The error object.
 type AzureCoreFoundationsError struct {
 	// REQUIRED; One of a server-defined set of error codes.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []*AzureCoreFoundationsError `json:"details,omitempty"`
+	Details []*AzureCoreFoundationsError
 
 	// REQUIRED; A human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *AzureCoreFoundationsInnerError `json:"innererror,omitempty"`
+	Innererror *AzureCoreFoundationsInnerError
 
 	// The target of the error.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // AzureCoreFoundationsErrorResponse - A response containing error details.
 type AzureCoreFoundationsErrorResponse struct {
 	// REQUIRED; The error object.
-	Error *AzureCoreFoundationsError `json:"error,omitempty"`
+	Error *AzureCoreFoundationsError
 }
 
 // AzureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
@@ -56,19 +56,19 @@ type AzureCoreFoundationsErrorResponse struct {
 // https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
 type AzureCoreFoundationsInnerError struct {
 	// REQUIRED; One of a server-defined set of error codes.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Inner error.
-	Innererror *AzureCoreFoundationsInnerError `json:"innererror,omitempty"`
+	Innererror *AzureCoreFoundationsInnerError
 }
 
 // BrokerProperties - Properties of the Event Broker operation.
 type BrokerProperties struct {
 	// REQUIRED; The attempt count for delivering the event.
-	DeliveryCount *int32 `json:"deliveryCount,omitempty"`
+	DeliveryCount *int32
 
 	// REQUIRED; The token used to lock the event.
-	LockToken *string `json:"lockToken,omitempty"`
+	LockToken *string
 }
 
 // AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
@@ -107,35 +107,35 @@ type ReleaseCloudEventsOptions struct {
 // Schema.
 type CloudEvent struct {
 	// REQUIRED; An identifier for the event. The combination of id and source must be unique for each distinct event.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; Identifies the context in which an event happened. The combination of id and source must be unique for each distinct
 	// event.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// REQUIRED; The version of the CloudEvents specification which the event uses.
-	SpecVersion *string `json:"specversion,omitempty"`
+	SpecVersion *string
 
 	// REQUIRED; Type of event related to the originating occurrence.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Event data specific to the event type.
-	Data any `json:"data,omitempty"`
+	Data any
 
 	// Event data specific to the event type, encoded as a base64 string.
-	DataBase64 []byte `json:"data_base64,omitempty"`
+	DataBase64 []byte
 
 	// Content type of data value.
-	DataContentType *string `json:"datacontenttype,omitempty"`
+	DataContentType *string
 
 	// Identifies the schema that data adheres to.
-	DataSchema *string `json:"dataschema,omitempty"`
+	DataSchema *string
 
 	// This describes the subject of the event in the context of the event producer (identified by source).
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// The time (in UTC) the event was generated, in RFC3339 format.
-	Time *time.Time `json:"time,omitempty"`
+	Time *time.Time
 }
 
 // FailedLockToken - Failed LockToken information.
@@ -143,58 +143,58 @@ type FailedLockToken struct {
 	// REQUIRED; Error code related to the token. Example of such error codes are BadToken: which indicates the Token is not formatted
 	// correctly, TokenLost: which indicates that token is not found, and
 	// InternalServerError: For any internal server errors.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// REQUIRED; Description of the token error.
-	ErrorDescription *string `json:"errorDescription,omitempty"`
+	ErrorDescription *string
 
 	// REQUIRED; LockToken value
-	LockToken *string `json:"lockToken,omitempty"`
+	LockToken *string
 }
 
 // ReceiveDetails - Receive operation details per Cloud Event.
 type ReceiveDetails struct {
 	// REQUIRED; The Event Broker details.
-	BrokerProperties *BrokerProperties `json:"brokerProperties,omitempty"`
+	BrokerProperties *BrokerProperties
 
 	// REQUIRED; Cloud Event details.
-	Event *CloudEvent `json:"event,omitempty"`
+	Event *CloudEvent
 }
 
 // ReceiveResult - Details of the Receive operation response.
 type ReceiveResult struct {
 	// REQUIRED; Array of receive responses, one per cloud event.
-	Value []*ReceiveDetails `json:"value,omitempty"`
+	Value []*ReceiveDetails
 }
 
 // RejectOptions - Array of lock token strings for the corresponding received Cloud Events to be rejected.
 type RejectOptions struct {
 	// REQUIRED; String array of lock tokens.
-	LockTokens []*string `json:"lockTokens,omitempty"`
+	LockTokens []*string
 }
 
 // RejectResult - The result of the Reject operation.
 type RejectResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
 	// related error information (namely, the error code and description).
-	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
+	FailedLockTokens []*FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully rejected cloud events.
-	SucceededLockTokens []*string `json:"succeededLockTokens,omitempty"`
+	SucceededLockTokens []*string
 }
 
 // ReleaseOptions - Array of lock token strings for the corresponding received Cloud Events to be released.
 type ReleaseOptions struct {
 	// REQUIRED; String array of lock tokens.
-	LockTokens []*string `json:"lockTokens,omitempty"`
+	LockTokens []*string
 }
 
 // ReleaseResult - The result of the Release operation.
 type ReleaseResult struct {
 	// REQUIRED; Array of LockToken values for failed cloud events. Each LockToken includes the lock token value along with the
 	// related error information (namely, the error code and description).
-	FailedLockTokens []*FailedLockToken `json:"failedLockTokens,omitempty"`
+	FailedLockTokens []*FailedLockToken
 
 	// REQUIRED; Array of lock tokens values for the successfully released cloud events.
-	SucceededLockTokens []*string `json:"succeededLockTokens,omitempty"`
+	SucceededLockTokens []*string
 }

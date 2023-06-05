@@ -73,7 +73,10 @@ func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, t
 	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, lockTokens)
+	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // acknowledgeCloudEventsHandleResponse handles the AcknowledgeCloudEvents response.
@@ -126,7 +129,10 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topic
 	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, events)
+	if err := runtime.MarshalAsJSON(req, events); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // publishCloudEventsHandleResponse handles the PublishCloudEvents response.
@@ -239,7 +245,10 @@ func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicN
 	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, lockTokens)
+	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // rejectCloudEventsHandleResponse handles the RejectCloudEvents response.
@@ -295,7 +304,10 @@ func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topic
 	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, lockTokens)
+	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // releaseCloudEventsHandleResponse handles the ReleaseCloudEvents response.

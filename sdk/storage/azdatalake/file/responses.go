@@ -7,7 +7,6 @@
 package file
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
@@ -34,7 +33,7 @@ type UpdateAccessControlRecursiveResponse = path.SetAccessControlRecursiveRespon
 type RemoveAccessControlRecursiveResponse = path.SetAccessControlRecursiveResponse
 
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
-type GetPropertiesResponse = blob.GetPropertiesResponse
+type GetPropertiesResponse = path.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse

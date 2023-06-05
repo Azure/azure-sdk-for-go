@@ -64,6 +64,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	// TODO: format blob response to path response
 	return GetPropertiesResponse{}, nil
 }
 

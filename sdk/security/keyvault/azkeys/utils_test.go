@@ -264,7 +264,7 @@ func testSerde[T serdeModel](t *testing.T, model T) {
 	require.Error(t, err)
 
 	m := regexp.MustCompile(":.*$")
-	modifiedData := m.ReplaceAllString(string(data), ":false}")
+	modifiedData := m.ReplaceAllString(string(data), ":[\"test\", \"test1\", \"test2\"]}")
 	if modifiedData != "{}" {
 		data3 := []byte(modifiedData)
 		err = model.UnmarshalJSON(data3)

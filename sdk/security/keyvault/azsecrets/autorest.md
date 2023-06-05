@@ -84,6 +84,12 @@ directive:
     where: $
     transform: return $.replace(/DeletionRecoveryLevel/g, "string");
 
+  # Remove MaxResults parameter
+  - where: "$.paths..*"
+    remove-parameter:
+      in: query
+      name: maxresults
+
   # delete unused error models
   - from: models.go
     where: $

@@ -31,7 +31,7 @@ func TestFailedAck(t *testing.T) {
 	// just documenting this, I don't think the return value is useful.
 	require.Equal(t, map[string]interface{}{}, pubResp.Interface)
 
-	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ClientReceiveCloudEventsOptions{
+	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})

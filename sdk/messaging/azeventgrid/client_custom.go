@@ -57,7 +57,7 @@ func NewClientFromSharedKey(endpoint string, key string, options *ClientOptions)
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	ctx = runtime.WithHTTPHeader(ctx, http.Header{
 		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
 	})
@@ -67,7 +67,7 @@ func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, 
 			id, err := uuid.New()
 
 			if err != nil {
-				return ClientPublishCloudEventsResponse{}, err
+				return PublishCloudEventsResponse{}, err
 			}
 
 			evt.ID = to.Ptr(id.String())

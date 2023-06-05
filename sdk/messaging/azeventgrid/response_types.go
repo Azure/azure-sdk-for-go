@@ -9,28 +9,28 @@
 
 package azeventgrid
 
-// ClientAcknowledgeCloudEventsResponse contains the response from method Client.AcknowledgeCloudEvents.
-type ClientAcknowledgeCloudEventsResponse struct {
+// AcknowledgeCloudEventsResponse contains the response from method Client.AcknowledgeCloudEvents.
+type AcknowledgeCloudEventsResponse struct {
 	AcknowledgeResult
 }
 
-// ClientPublishCloudEventsResponse contains the response from method Client.PublishCloudEvents.
-type ClientPublishCloudEventsResponse struct {
+// PublishCloudEventsResponse contains the response from method Client.PublishCloudEvents.
+type PublishCloudEventsResponse struct {
 	// Anything
 	Interface any
 }
 
-// ClientReceiveCloudEventsResponse contains the response from method Client.ReceiveCloudEvents.
-type ClientReceiveCloudEventsResponse struct {
+// ReceiveCloudEventsResponse contains the response from method Client.ReceiveCloudEvents.
+type ReceiveCloudEventsResponse struct {
 	ReceiveResult
 }
 
-// ClientRejectCloudEventsResponse contains the response from method Client.RejectCloudEvents.
-type ClientRejectCloudEventsResponse struct {
+// RejectCloudEventsResponse contains the response from method Client.RejectCloudEvents.
+type RejectCloudEventsResponse struct {
 	RejectResult
 }
 
-// ClientReleaseCloudEventsResponse contains the response from method Client.ReleaseCloudEvents.
-type ClientReleaseCloudEventsResponse struct {
+// ReleaseCloudEventsResponse contains the response from method Client.ReleaseCloudEvents.
+type ReleaseCloudEventsResponse struct {
 	ReleaseResult
 }

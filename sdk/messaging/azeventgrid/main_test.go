@@ -34,7 +34,7 @@ func TestMain(m *testing.M) {
 		defer cancel()
 
 		for {
-			resp, err := c.ReceiveCloudEvents(ctx, c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ClientReceiveCloudEventsOptions{
+			resp, err := c.ReceiveCloudEvents(ctx, c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
 				MaxEvents:   to.Ptr[int32](100),
 				MaxWaitTime: to.Ptr[int32](10),
 			})

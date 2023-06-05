@@ -71,18 +71,18 @@ type BrokerProperties struct {
 	LockToken *string `json:"lockToken,omitempty"`
 }
 
-// ClientAcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
-type ClientAcknowledgeCloudEventsOptions struct {
+// AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
+type AcknowledgeCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-type ClientPublishCloudEventsOptions struct {
+// PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
+type PublishCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
-type ClientReceiveCloudEventsOptions struct {
+// ReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
+type ReceiveCloudEventsOptions struct {
 	// Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the default value
 	// is 1.
 	MaxEvents *int32
@@ -93,13 +93,13 @@ type ClientReceiveCloudEventsOptions struct {
 	MaxWaitTime *int32
 }
 
-// ClientRejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
-type ClientRejectCloudEventsOptions struct {
+// RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
+type RejectCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
-type ClientReleaseCloudEventsOptions struct {
+// ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
+type ReleaseCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 

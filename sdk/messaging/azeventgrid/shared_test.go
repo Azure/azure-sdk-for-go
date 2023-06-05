@@ -67,7 +67,7 @@ func (c clientWrapper) receiveAllCloudEventsFull(ctx context.Context, numEvents 
 	for len(received) < numEvents {
 		remaining := int32(numEvents - len(received))
 
-		resp, err := c.ReceiveCloudEvents(ctx, c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ClientReceiveCloudEventsOptions{
+		resp, err := c.ReceiveCloudEvents(ctx, c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
 			MaxEvents:   to.Ptr(remaining),
 			MaxWaitTime: to.Ptr[int32](10),
 		})

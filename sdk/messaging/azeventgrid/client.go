@@ -38,24 +38,24 @@ type Client struct {
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - AcknowledgeOptions.
-//   - options - ClientAcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
-func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (ClientAcknowledgeCloudEventsResponse, error) {
+//   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
+func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
 	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return ClientAcknowledgeCloudEventsResponse{}, err
+		return AcknowledgeCloudEventsResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientAcknowledgeCloudEventsResponse{}, err
+		return AcknowledgeCloudEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientAcknowledgeCloudEventsResponse{}, runtime.NewResponseError(resp)
+		return AcknowledgeCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.acknowledgeCloudEventsHandleResponse(resp)
 }
 
 // acknowledgeCloudEventsCreateRequest creates the AcknowledgeCloudEvents request.
-func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *ClientAcknowledgeCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -77,10 +77,10 @@ func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, t
 }
 
 // acknowledgeCloudEventsHandleResponse handles the AcknowledgeCloudEvents response.
-func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) (ClientAcknowledgeCloudEventsResponse, error) {
-	result := ClientAcknowledgeCloudEventsResponse{}
+func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) (AcknowledgeCloudEventsResponse, error) {
+	result := AcknowledgeCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeResult); err != nil {
-		return ClientAcknowledgeCloudEventsResponse{}, err
+		return AcknowledgeCloudEventsResponse{}, err
 	}
 	return result, nil
 }
@@ -95,24 +95,24 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 // Generated from API version 2023-06-01-preview
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
-//   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (ClientPublishCloudEventsResponse, error) {
+//   - options - PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
+func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	req, err := client.publishCloudEventsCreateRequest(ctx, topicName, events, options)
 	if err != nil {
-		return ClientPublishCloudEventsResponse{}, err
+		return PublishCloudEventsResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientPublishCloudEventsResponse{}, err
+		return PublishCloudEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientPublishCloudEventsResponse{}, runtime.NewResponseError(resp)
+		return PublishCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.publishCloudEventsHandleResponse(resp)
 }
 
 // publishCloudEventsCreateRequest creates the PublishCloudEvents request.
-func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topicName string, events []*CloudEvent, options *ClientPublishCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}:publish"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -130,10 +130,10 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topic
 }
 
 // publishCloudEventsHandleResponse handles the PublishCloudEvents response.
-func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (ClientPublishCloudEventsResponse, error) {
-	result := ClientPublishCloudEventsResponse{}
+func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (PublishCloudEventsResponse, error) {
+	result := PublishCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return ClientPublishCloudEventsResponse{}, err
+		return PublishCloudEventsResponse{}, err
 	}
 	return result, nil
 }
@@ -144,24 +144,24 @@ func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (Cli
 // Generated from API version 2023-06-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - options - ClientReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
-func (client *Client) ReceiveCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (ClientReceiveCloudEventsResponse, error) {
+//   - options - ReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
+func (client *Client) ReceiveCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveCloudEventsOptions) (ReceiveCloudEventsResponse, error) {
 	req, err := client.receiveCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, options)
 	if err != nil {
-		return ClientReceiveCloudEventsResponse{}, err
+		return ReceiveCloudEventsResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientReceiveCloudEventsResponse{}, err
+		return ReceiveCloudEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientReceiveCloudEventsResponse{}, runtime.NewResponseError(resp)
+		return ReceiveCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.receiveCloudEventsHandleResponse(resp)
 }
 
 // receiveCloudEventsCreateRequest creates the ReceiveCloudEvents request.
-func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, options *ClientReceiveCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, options *ReceiveCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -189,10 +189,10 @@ func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, topic
 }
 
 // receiveCloudEventsHandleResponse handles the ReceiveCloudEvents response.
-func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (ClientReceiveCloudEventsResponse, error) {
-	result := ClientReceiveCloudEventsResponse{}
+func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (ReceiveCloudEventsResponse, error) {
+	result := ReceiveCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReceiveResult); err != nil {
-		return ClientReceiveCloudEventsResponse{}, err
+		return ReceiveCloudEventsResponse{}, err
 	}
 	return result, nil
 }
@@ -204,24 +204,24 @@ func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (Cli
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - RejectOptions
-//   - options - ClientRejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
-func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (ClientRejectCloudEventsResponse, error) {
+//   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
+func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
 	req, err := client.rejectCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return ClientRejectCloudEventsResponse{}, err
+		return RejectCloudEventsResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRejectCloudEventsResponse{}, err
+		return RejectCloudEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientRejectCloudEventsResponse{}, runtime.NewResponseError(resp)
+		return RejectCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.rejectCloudEventsHandleResponse(resp)
 }
 
 // rejectCloudEventsCreateRequest creates the RejectCloudEvents request.
-func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *ClientRejectCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *RejectCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -243,10 +243,10 @@ func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicN
 }
 
 // rejectCloudEventsHandleResponse handles the RejectCloudEvents response.
-func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (ClientRejectCloudEventsResponse, error) {
-	result := ClientRejectCloudEventsResponse{}
+func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (RejectCloudEventsResponse, error) {
+	result := RejectCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RejectResult); err != nil {
-		return ClientRejectCloudEventsResponse{}, err
+		return RejectCloudEventsResponse{}, err
 	}
 	return result, nil
 }
@@ -260,24 +260,24 @@ func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (Clie
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - lockTokens - ReleaseOptions
-//   - options - ClientReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
-func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (ClientReleaseCloudEventsResponse, error) {
+//   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
+func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
 	req, err := client.releaseCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
 	if err != nil {
-		return ClientReleaseCloudEventsResponse{}, err
+		return ReleaseCloudEventsResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientReleaseCloudEventsResponse{}, err
+		return ReleaseCloudEventsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientReleaseCloudEventsResponse{}, runtime.NewResponseError(resp)
+		return ReleaseCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.releaseCloudEventsHandleResponse(resp)
 }
 
 // releaseCloudEventsCreateRequest creates the ReleaseCloudEvents request.
-func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ClientReleaseCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ReleaseCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -299,10 +299,10 @@ func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topic
 }
 
 // releaseCloudEventsHandleResponse handles the ReleaseCloudEvents response.
-func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (ClientReleaseCloudEventsResponse, error) {
-	result := ClientReleaseCloudEventsResponse{}
+func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (ReleaseCloudEventsResponse, error) {
+	result := ReleaseCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReleaseResult); err != nil {
-		return ClientReleaseCloudEventsResponse{}, err
+		return ReleaseCloudEventsResponse{}, err
 	}
 	return result, nil
 }

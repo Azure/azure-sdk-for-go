@@ -40,4 +40,11 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

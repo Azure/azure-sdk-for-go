@@ -14,70 +14,70 @@ import "time"
 // AsyncOperationResult - Result of a long running operation.
 type AsyncOperationResult struct {
 	// Error message containing code, description and details
-	Error *ErrorMessage `json:"error,omitempty"`
+	Error *ErrorMessage
 
 	// current status of a long running operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // CertificateBodyDescription - The JSON-serialized X509 Certificate.
 type CertificateBodyDescription struct {
 	// Base-64 representation of the X509 leaf certificate .cer file or just .pem file content.
-	Certificate *string `json:"certificate,omitempty"`
+	Certificate *string
 
 	// True indicates that the certificate will be created in verified state and proof of possession will not be required.
-	IsVerified *bool `json:"isVerified,omitempty"`
+	IsVerified *bool
 }
 
 // CertificateListDescription - The JSON-serialized array of Certificate objects.
 type CertificateListDescription struct {
 	// The array of Certificate objects.
-	Value []*CertificateResponse `json:"value,omitempty"`
+	Value []*CertificateResponse
 }
 
 // CertificateProperties - The description of an X509 CA Certificate.
 type CertificateProperties struct {
 	// base-64 representation of X509 certificate .cer file or just .pem file content.
-	Certificate []byte `json:"certificate,omitempty"`
+	Certificate []byte
 
 	// Determines whether certificate has been verified.
-	IsVerified *bool `json:"isVerified,omitempty"`
+	IsVerified *bool
 
 	// READ-ONLY; The certificate's creation date and time.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; The certificate's expiration date and time.
-	Expiry *time.Time `json:"expiry,omitempty" azure:"ro"`
+	Expiry *time.Time
 
 	// READ-ONLY; The certificate's subject name.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; The certificate's thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; The certificate's last update date and time.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+	Updated *time.Time
 }
 
 // CertificateResponse - The X509 Certificate.
 type CertificateResponse struct {
 	// properties of a certificate
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	Properties *CertificateProperties
 
 	// READ-ONLY; The entity tag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the certificate.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DpsCertificateClientCreateOrUpdateOptions contains the optional parameters for the DpsCertificateClient.CreateOrUpdate
@@ -163,110 +163,113 @@ type DpsCertificateClientVerifyCertificateOptions struct {
 // ErrorDetails - Error details.
 type ErrorDetails struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *int32
 
 	// READ-ONLY; The error details.
-	Details *string `json:"details,omitempty" azure:"ro"`
+	Details *string
 
 	// READ-ONLY; The HTTP status code.
-	HTTPStatusCode *string `json:"httpStatusCode,omitempty" azure:"ro"`
+	HTTPStatusCode *string
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ErrorMessage - Error response containing message and code.
 type ErrorMessage struct {
 	// standard error code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// detailed summary of error
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// standard error description
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // GroupIDInformation - The group information for creating a private endpoint on a provisioning service
 type GroupIDInformation struct {
 	// REQUIRED; The properties for a group information object
-	Properties *GroupIDInformationProperties `json:"properties,omitempty"`
+	Properties *GroupIDInformationProperties
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GroupIDInformationProperties - The properties for a group information object
 type GroupIDInformationProperties struct {
 	// The group id
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The required members for a specific group id
-	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+	RequiredMembers []*string
 
 	// The required DNS zones for a specific group id
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 }
 
 // IPFilterRule - The IP filter rules for a provisioning Service.
 type IPFilterRule struct {
 	// REQUIRED; The desired action for requests captured by this rule.
-	Action *IPFilterActionType `json:"action,omitempty"`
+	Action *IPFilterActionType
 
 	// REQUIRED; The name of the IP filter rule.
-	FilterName *string `json:"filterName,omitempty"`
+	FilterName *string
 
 	// REQUIRED; A string that contains the IP address range in CIDR notation for the rule.
-	IPMask *string `json:"ipMask,omitempty"`
+	IPMask *string
 
 	// Target for requests captured by this rule.
-	Target *IPFilterTargetType `json:"target,omitempty"`
+	Target *IPFilterTargetType
 }
 
 // IotDpsPropertiesDescription - the service specific properties of a provisioning service, including keys, linked iot hubs,
 // current state, and system generated properties such as hostname and idScope
 type IotDpsPropertiesDescription struct {
 	// Allocation policy to be used by this provisioning service.
-	AllocationPolicy *AllocationPolicy `json:"allocationPolicy,omitempty"`
+	AllocationPolicy *AllocationPolicy
 
 	// List of authorization keys for a provisioning service.
-	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
+	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription
 
 	// Optional. Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
-	EnableDataResidency *bool `json:"enableDataResidency,omitempty"`
+	EnableDataResidency *bool
 
 	// The IP filter rules.
-	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
+	IPFilterRules []*IPFilterRule
 
 	// List of IoT hubs associated with this provisioning service.
-	IotHubs []*IotHubDefinitionDescription `json:"iotHubs,omitempty"`
+	IotHubs []*IotHubDefinitionDescription
+
+	// Portal endpoint to enable CORS for this provisioning service.
+	PortalOperationsHostName *string
 
 	// Private endpoint connections created on this IotHub
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// The ARM provisioning state of the provisioning service.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Whether requests from Public Network are allowed
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Current state of the provisioning service.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// READ-ONLY; Device endpoint for this provisioning service.
-	DeviceProvisioningHostName *string `json:"deviceProvisioningHostName,omitempty" azure:"ro"`
+	DeviceProvisioningHostName *string
 
 	// READ-ONLY; Unique identifier of this provisioning service.
-	IDScope *string `json:"idScope,omitempty" azure:"ro"`
+	IDScope *string
 
 	// READ-ONLY; Service endpoint for provisioning service.
-	ServiceOperationsHostName *string `json:"serviceOperationsHostName,omitempty" azure:"ro"`
+	ServiceOperationsHostName *string
 }
 
 // IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
@@ -375,95 +378,115 @@ type IotDpsResourceClientListValidSKUsOptions struct {
 // IotDpsSKUDefinition - Available SKUs of tier and units.
 type IotDpsSKUDefinition struct {
 	// Sku name.
-	Name *IotDpsSKU `json:"name,omitempty"`
+	Name *IotDpsSKU
 }
 
 // IotDpsSKUDefinitionListResult - List of available SKUs.
 type IotDpsSKUDefinitionListResult struct {
 	// The list of SKUs
-	Value []*IotDpsSKUDefinition `json:"value,omitempty"`
+	Value []*IotDpsSKUDefinition
 
 	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // IotDpsSKUInfo - List of possible provisioning service SKUs.
 type IotDpsSKUInfo struct {
 	// The number of units to provision
-	Capacity *int64 `json:"capacity,omitempty"`
+	Capacity *int64
 
 	// Sku name.
-	Name *IotDpsSKU `json:"name,omitempty"`
+	Name *IotDpsSKU
 
 	// READ-ONLY; Pricing tier name of the provisioning service.
-	Tier *string `json:"tier,omitempty" azure:"ro"`
+	Tier *string
 }
 
 // IotHubDefinitionDescription - Description of the IoT hub.
 type IotHubDefinitionDescription struct {
 	// REQUIRED; Connection string of the IoT hub.
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// REQUIRED; ARM region of the IoT hub.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// weight to apply for a given iot h.
-	AllocationWeight *int32 `json:"allocationWeight,omitempty"`
+	AllocationWeight *int32
 
 	// flag for applying allocationPolicy or not for a given iot hub.
-	ApplyAllocationPolicy *bool `json:"applyAllocationPolicy,omitempty"`
+	ApplyAllocationPolicy *bool
 
 	// READ-ONLY; Host name of the IoT hub.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // NameAvailabilityInfo - Description of name availability.
 type NameAvailabilityInfo struct {
 	// message containing a detailed reason name is unavailable
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// specifies if a name is available or not
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// specifies the reason a name is unavailable
-	Reason *NameUnavailabilityReason `json:"reason,omitempty"`
+	Reason *NameUnavailabilityReason
 }
 
 // Operation - Provisioning Service REST API operation.
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Name of the operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft Devices.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource Type: ProvisioningServices.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationInputs - Input values for operation results call.
 type OperationInputs struct {
 	// REQUIRED; The name of the Provisioning Service to check.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationListResult - Result of the request to list provisioning service operations. It contains a list of operations and
 // a URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Provisioning service operations supported by the Microsoft.Devices resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -474,209 +497,233 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint - The private endpoint property of a private endpoint connection
 type PrivateEndpoint struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The private endpoint connection of a provisioning service
 type PrivateEndpointConnection struct {
 	// REQUIRED; The properties of a private endpoint connection
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionProperties - The properties of a private endpoint connection
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; The current state of a private endpoint connection
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The private endpoint property of a private endpoint connection
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 }
 
 // PrivateLinkResources - The available private link resources for a provisioning service
 type PrivateLinkResources struct {
 	// The list of available private link resources for a provisioning service
-	Value []*GroupIDInformation `json:"value,omitempty"`
+	Value []*GroupIDInformation
 }
 
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The description for the current state of a private endpoint connection
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// REQUIRED; The status of a private endpoint connection
-	Status *PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkServiceConnectionStatus
 
 	// Actions required for a private endpoint connection
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 }
 
 // ProvisioningServiceDescription - The description of the provisioning service.
 type ProvisioningServiceDescription struct {
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Service specific properties for a provisioning service
-	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
+	Properties *IotDpsPropertiesDescription
 
 	// REQUIRED; Sku info for a provisioning Service.
-	SKU *IotDpsSKUInfo `json:"sku,omitempty"`
+	SKU *IotDpsSKUInfo
 
 	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
 	// ETag convention.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
+
+	// The managed identities for a provisioning service.
+	Identity *ManagedServiceIdentity
+
+	// The resource group of the resource.
+	Resourcegroup *string
+
+	// The subscription id of the resource.
+	Subscriptionid *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProvisioningServiceDescriptionListResult - List of provisioning service descriptions.
 type ProvisioningServiceDescriptionListResult struct {
 	// List of provisioning service descriptions.
-	Value []*ProvisioningServiceDescription `json:"value,omitempty"`
+	Value []*ProvisioningServiceDescription
 
 	// READ-ONLY; the next link
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Resource - The common properties of an Azure resource.
 type Resource struct {
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
+
+	// The resource group of the resource.
+	Resourcegroup *string
+
+	// The subscription id of the resource.
+	Subscriptionid *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription - Description of the shared access key.
 type SharedAccessSignatureAuthorizationRuleAccessRightsDescription struct {
 	// REQUIRED; Name of the key.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// REQUIRED; Rights that this key has.
-	Rights *AccessRightsDescription `json:"rights,omitempty"`
+	Rights *AccessRightsDescription
 
 	// Primary SAS key value.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Secondary SAS key value.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // SharedAccessSignatureAuthorizationRuleListResult - List of shared access keys.
 type SharedAccessSignatureAuthorizationRuleListResult struct {
 	// The list of shared access policies.
-	Value []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"value,omitempty"`
+	Value []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription
 
 	// READ-ONLY; The next link.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning
 // Service instance.
 type TagsResource struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // VerificationCodeRequest - The JSON-serialized leaf certificate
 type VerificationCodeRequest struct {
 	// base-64 representation of X509 certificate .cer file or just .pem file content.
-	Certificate *string `json:"certificate,omitempty"`
+	Certificate *string
 }
 
 // VerificationCodeResponse - Description of the response of the verification code.
 type VerificationCodeResponse struct {
-	Properties *VerificationCodeResponseProperties `json:"properties,omitempty"`
+	Properties *VerificationCodeResponseProperties
 
 	// READ-ONLY; Request etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of certificate.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type VerificationCodeResponseProperties struct {
 	// base-64 representation of X509 certificate .cer file or just .pem file content.
-	Certificate []byte `json:"certificate,omitempty"`
+	Certificate []byte
 
 	// Certificate created time.
-	Created *string `json:"created,omitempty"`
+	Created *string
 
 	// Code expiry.
-	Expiry *string `json:"expiry,omitempty"`
+	Expiry *string
 
 	// Indicate if the certificate is verified by owner of private key.
-	IsVerified *bool `json:"isVerified,omitempty"`
+	IsVerified *bool
 
 	// Certificate subject.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// Certificate updated time.
-	Updated *string `json:"updated,omitempty"`
+	Updated *string
 
 	// Verification code.
-	VerificationCode *string `json:"verificationCode,omitempty"`
+	VerificationCode *string
 }

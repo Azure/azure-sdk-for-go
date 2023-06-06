@@ -142,35 +142,6 @@ func TestPartialAckFailure(t *testing.T) {
 	require.Equal(t, []*string{events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
-// func TestPartialAbandon(t *testing.T) {
-// 	c := newClientForTest()
-// 	defer c.cleanup()
-
-// 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-// 		{
-// 			Data:   []byte("event one"),
-// 			Source: to.Ptr("hello-source"),
-// 			Type:   to.Ptr("world"),
-// 		},
-// 		{
-// 			Data:   []byte("abandon"),
-// 			Source: to.Ptr("hello-source"),
-// 			Type:   to.Ptr("world"),
-// 		},
-// 		{
-// 			Data:   []byte("release"),
-// 			Source: to.Ptr("hello-source"),
-// 			Type:   to.Ptr("world"),
-// 		},
-// 	}, nil)
-// 	require.NoError(t, err)
-
-// 	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
-// 		MaxEvents: to.Ptr[int32](2),
-// 	})
-// 	require.NoError(t, err)
-// }
-
 func TestReject(t *testing.T) {
 	c := newClientForTest()
 	defer c.cleanup()

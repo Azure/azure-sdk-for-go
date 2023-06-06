@@ -237,7 +237,7 @@ func TestListDeletedSecrets(t *testing.T) {
 	})
 
 	expected := map[string]struct{}{secret1: {}, secret2: {}}
-	pager := client.NewListDeletedSecretPropertiesPager(&azsecrets.ListDeletedSecretPropertiesOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListDeletedSecretPropertiesPager(nil)
 	for pager.More() && len(expected) > 0 {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -265,7 +265,7 @@ func TestListSecrets(t *testing.T) {
 		defer cleanUpSecret(t, client, name)
 	}
 
-	pager := client.NewListSecretPropertiesPager(&azsecrets.ListSecretPropertiesOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretPropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -302,7 +302,7 @@ func TestListSecretVersions(t *testing.T) {
 	}
 	defer cleanUpSecret(t, client, name)
 
-	pager := client.NewListSecretPropertiesVersionsPager(name, &azsecrets.ListSecretPropertiesVersionsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretPropertiesVersionsPager(name, nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)

@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -269,9 +268,6 @@ func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
 	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -330,9 +326,6 @@ func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
 	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -395,9 +388,6 @@ func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
 	reqQP.Set("api-version", "7.4")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

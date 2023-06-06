@@ -7,7 +7,7 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
 // RenameMode defines the rename mode for RenameDirectory

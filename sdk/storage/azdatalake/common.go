@@ -7,10 +7,16 @@
 package azdatalake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
+
+// ClientOptions contains the optional parameters when creating a Client.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
 
 const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 

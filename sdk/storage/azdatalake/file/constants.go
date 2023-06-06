@@ -8,7 +8,7 @@ package file
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
 type ExpiryOptions = generated.PathExpiryOptions

@@ -9,21 +9,21 @@ package directory
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
 // Client represents a URL to the Azure Datalake Storage service allowing you to manipulate datalake directories.
 type Client struct {
 	path.Client
 }
-type ClientOptions = path.ClientOptions
 
 // NewClient creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -31,7 +31,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(serviceURL string, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -39,14 +39,14 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 

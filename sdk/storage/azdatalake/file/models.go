@@ -11,20 +11,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"time"
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint. TODO: Design formatter
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
+	AccessConditions *path.AccessConditions
 	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
-	CPKInfo *CPKInfo
+	CPKInfo *path.CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
-	HTTPHeaders *HTTPHeaders
+	HTTPHeaders *path.HTTPHeaders
 	//PathExpiryOptions *ExpiryOptions
 	// ExpiresOn specifies the time that the file will expire.
 	ExpiresOn *time.Time
@@ -62,7 +62,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
+	AccessConditions *path.AccessConditions
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -73,15 +73,15 @@ func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.M
 // RenameOptions contains the optional parameters when calling the Rename operation. TODO: Design formatter
 type RenameOptions struct {
 	// SourceModifiedAccessConditions identifies the source path access conditions.
-	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	SourceModifiedAccessConditions *path.SourceModifiedAccessConditions
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
+	AccessConditions *path.AccessConditions
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
-	AccessConditions *AccessConditions
-	CPKInfo          *CPKInfo
+	AccessConditions *path.AccessConditions
+	CPKInfo          *path.CPKInfo
 }
 
 func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
@@ -100,48 +100,6 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 }
 
 // ===================================== PATH IMPORTS ===========================================
-
-// CPKInfo contains a group of parameters for client provided encryption key.
-type CPKInfo = path.CPKInfo
-
-// CPKScopeInfo contains a group of parameters for client provided encryption scope.
-type CPKScopeInfo = path.CPKScopeInfo
-
-// AccessConditions identifies access conditions which you optionally set.
-type AccessConditions = path.AccessConditions
-
-// HTTPHeaders contains the HTTP headers for path operations.
-type HTTPHeaders = path.HTTPHeaders
-
-// SourceModifiedAccessConditions identifies the source path access conditions.
-type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
-
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
-type SetAccessControlOptions = path.SetAccessControlOptions
-
-// GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
-type GetAccessControlOptions = path.GetAccessControlOptions
-
-// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
-type SetAccessControlRecursiveOptions = path.SetAccessControlRecursiveOptions
-
-// SetMetadataOptions contains the optional parameters when calling the SetMetadata operation.
-type SetMetadataOptions = path.SetMetadataOptions
-
-// SetHTTPHeadersOptions contains the optional parameters when calling the SetHTTPHeaders operation.
-type SetHTTPHeadersOptions = path.SetHTTPHeadersOptions
-
-// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
-type RemoveAccessControlRecursiveOptions = path.RemoveAccessControlRecursiveOptions
-
-// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
-type UpdateAccessControlRecursiveOptions = path.UpdateAccessControlRecursiveOptions
-
-// ModifiedAccessConditions identifies path-specific access conditions which you optionally set.
-type ModifiedAccessConditions = path.ModifiedAccessConditions
-
-// LeaseAccessConditions identifies path-specific access conditions associated with a lease.
-type LeaseAccessConditions = path.LeaseAccessConditions
 
 // ExpiryType defines values for ExpiryType.
 type ExpiryType = exported.ExpiryType

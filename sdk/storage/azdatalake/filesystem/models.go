@@ -119,6 +119,9 @@ type LeaseAccessConditions = azdatalake.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
 
+// AccessPolicy - An Access policy.
+type AccessPolicy = container.AccessPolicy
+
 // SignedIdentifier - signed identifier.
 type SignedIdentifier = container.SignedIdentifier
 

@@ -10,13 +10,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
-
-// ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service allowing you to manipulate filesystems.
 type Client base.Client[generated.FileSystemClient]
@@ -25,7 +23,7 @@ type Client base.Client[generated.FileSystemClient]
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -33,7 +31,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(serviceURL string, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -41,14 +39,14 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -77,6 +75,7 @@ func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteRes
 
 // GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem. (blob3).
 func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	// TODO: format blob response to fs response
 	return GetPropertiesResponse{}, nil
 }
 

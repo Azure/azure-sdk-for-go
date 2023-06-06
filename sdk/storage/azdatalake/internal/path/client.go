@@ -13,9 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
-// ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions base.ClientOptions
-
 // Client represents a URL to the Azure Datalake Storage service allowing you to manipulate paths.
 type Client base.Client[generated.PathClient]
 

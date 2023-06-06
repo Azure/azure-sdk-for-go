@@ -12,6 +12,7 @@
 * Method `Span.End()` now requires an argument of type `*tracing.SpanEndOptions`.
 
 ### Bugs Fixed
+* Fixed an issue in `azcore.NewClient()` and `arm.NewClient()` that could cause an incorrect module name to be used in telemetry.
 
 ### Other Changes
 

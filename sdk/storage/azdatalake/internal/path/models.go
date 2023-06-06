@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 )
 
 // SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
@@ -31,7 +32,7 @@ func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessContro
 		return nil, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientSetAccessControlOptions{
 		Owner:       o.Owner,
 		Group:       o.Group,
@@ -56,7 +57,7 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 		}, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{
 		Upn:    o.UPN,
 		Action: &action,
@@ -129,7 +130,7 @@ func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetHTTPHeadersOptions{
 		AccessConditions: accessConditions,
 	}
@@ -196,7 +197,7 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetMetadataOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -222,6 +223,12 @@ type CPKScopeInfo struct {
 	EncryptionScope *string
 }
 
+// AccessConditions identifies blob-specific access conditions which you optionally set.
+type AccessConditions struct {
+	LeaseAccessConditions    *LeaseAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
@@ -230,6 +237,3 @@ type LeaseAccessConditions = azdatalake.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
-
-// AccessConditions identifies access conditions which you optionally set.
-type AccessConditions = azdatalake.PathAccessConditions

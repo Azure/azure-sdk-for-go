@@ -8,9 +8,9 @@ package directory
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"time"
 )
 
@@ -43,7 +43,7 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
 	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
-	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
 	httpHeaders := &generated.PathHTTPHeaders{
 		CacheControl:             o.HTTPHeaders.CacheControl,
 		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
@@ -63,7 +63,7 @@ type DeleteOptions struct {
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
-	leaseAccessConditions, modifiedAccessConditions := azdatalake.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, nil
 }
 
@@ -84,7 +84,7 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := azdatalake.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.GetPropertiesOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{

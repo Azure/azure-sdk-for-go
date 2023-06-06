@@ -9,6 +9,7 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 )
 
 // SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
@@ -23,7 +24,7 @@ type SetAccessPolicyOptions struct {
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 	return &container.SetAccessPolicyOptions{
 		Access:           o.Access,
-		AccessConditions: azdatalake.FormatContainerAccessConditions(o.AccessConditions),
+		AccessConditions: shared.FormatContainerAccessConditions(o.AccessConditions),
 		ContainerACL:     o.FilesystemACL,
 	}
 }
@@ -55,7 +56,7 @@ type DeleteOptions struct {
 
 func (o *DeleteOptions) format() *container.DeleteOptions {
 	return &container.DeleteOptions{
-		AccessConditions: azdatalake.FormatContainerAccessConditions(o.AccessConditions),
+		AccessConditions: shared.FormatContainerAccessConditions(o.AccessConditions),
 	}
 }
 
@@ -107,11 +108,14 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	}
 }
 
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
+}
+
 // CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
 type CPKScopeInfo = container.CPKScopeInfo
-
-// AccessConditions identifies filesystem-specific access conditions which you optionally set.
-type AccessConditions = azdatalake.FilesystemAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = azdatalake.LeaseAccessConditions

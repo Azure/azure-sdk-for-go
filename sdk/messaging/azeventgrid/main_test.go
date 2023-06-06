@@ -21,14 +21,24 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	preSuite()
+	os.Exit(m.Run())
+}
+
+func preSuite() {
 	err := godotenv.Load()
 
 	if err != nil {
 		log.Printf("Failed to load .env file, no integration tests will run: %s", err)
 	} else {
 		fmt.Printf("BEGIN: Purging old events before starting tests...\n")
-		// purge the subscription before the test
-		c := newClientForTest()
+
+		c, err := newClientWrapper()
+
+		if err != nil {
+			log.Printf("Not a live test, will run unit tests only")
+			return
+		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
@@ -64,5 +74,4 @@ func TestMain(m *testing.M) {
 		fmt.Printf("END: Purging old events before starting tests...\n")
 	}
 
-	os.Exit(m.Run())
 }

@@ -16,7 +16,7 @@ import (
 )
 
 func TestFailedAck(t *testing.T) {
-	c := newClientForTest()
+	c := newClientWrapperForTest(t)
 	defer c.cleanup()
 
 	pubResp, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
@@ -95,7 +95,7 @@ func TestFailedAck(t *testing.T) {
 }
 
 func TestPartialAckFailure(t *testing.T) {
-	c := newClientForTest()
+	c := newClientWrapperForTest(t)
 	defer c.cleanup()
 
 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
@@ -143,7 +143,8 @@ func TestPartialAckFailure(t *testing.T) {
 }
 
 func TestReject(t *testing.T) {
-	c := newClientForTest()
+	c := newClientWrapperForTest(t)
+
 	defer c.cleanup()
 
 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
@@ -181,7 +182,7 @@ func TestReject(t *testing.T) {
 }
 
 func TestRelease(t *testing.T) {
-	c := newClientForTest()
+	c := newClientWrapperForTest(t)
 	defer c.cleanup()
 
 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
@@ -222,7 +223,7 @@ func TestRelease(t *testing.T) {
 }
 
 func TestPublishingAndReceivingCloudEvents(t *testing.T) {
-	c := newClientForTest()
+	c := newClientWrapperForTest(t)
 	defer c.cleanup()
 
 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{

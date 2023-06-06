@@ -8,8 +8,10 @@ package azeventgrid_test
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -26,26 +28,35 @@ type testVars struct {
 	KeyLogPath string
 }
 
-func loadEnv() testVars {
-	key := os.Getenv("EVENTGRID_KEY")
-	ep := os.Getenv("EVENTGRID_ENDPOINT")
-	topic := os.Getenv("EVENTGRID_TOPIC")
-	sub := os.Getenv("EVENTGRID_SUBSCRIPTION")
+func loadEnv() (testVars, error) {
+	var missing []string
+
+	get := func(n string) string {
+		if v := os.Getenv(n); v == "" {
+			missing = append(missing, n)
+		}
+
+		return os.Getenv(n)
+	}
+
+	tv := testVars{
+		Key:          get("EVENTGRID_KEY"),
+		Endpoint:     get("EVENTGRID_ENDPOINT"),
+		Topic:        get("EVENTGRID_TOPIC"),
+		Subscription: get("EVENTGRID_SUBSCRIPTION"),
+	}
+
+	if len(missing) > 0 {
+		return testVars{}, fmt.Errorf("Missing env variables: %s", strings.Join(missing, ","))
+	}
 
 	// Setting this variable will cause the test clients to dump out the pre-master-key
 	// for your HTTP connection. This allows you decrypt a packet capture from wireshark.
 	//
 	// If you want to do this just set SSLKEYLOGFILE_TEST env var to a path on disk and
 	// Go will write out the key.
-	keyLogFile := os.Getenv("SSLKEYLOGFILE_TEST")
-
-	return testVars{
-		Key:          key,
-		Endpoint:     ep,
-		Topic:        topic,
-		Subscription: sub,
-		KeyLogPath:   keyLogFile,
-	}
+	tv.KeyLogPath = os.Getenv("SSLKEYLOGFILE_TEST")
+	return tv, nil
 }
 
 type clientWrapper struct {
@@ -60,8 +71,23 @@ func (c clientWrapper) cleanup() {
 	}
 }
 
-func newClientForTest() clientWrapper {
-	vars := loadEnv()
+func newClientWrapperForTest(t *testing.T) clientWrapper {
+	cw, err := newClientWrapper()
+
+	if err != nil {
+		fmt.Printf("WARNING: Not running live test: %s\n", err)
+		t.SkipNow()
+	}
+
+	return cw
+}
+
+func newClientWrapper() (clientWrapper, error) {
+	vars, err := loadEnv()
+
+	if err != nil {
+		return clientWrapper{}, err
+	}
 
 	var opts *azeventgrid.ClientOptions
 	var keyLogWriter *os.File
@@ -97,7 +123,7 @@ func newClientForTest() clientWrapper {
 		Client:     c,
 		TestVars:   vars,
 		keyLogFile: keyLogWriter,
-	}
+	}, nil
 }
 
 func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actual *azeventgrid.CloudEvent) {

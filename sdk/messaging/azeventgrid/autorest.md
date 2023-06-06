@@ -26,6 +26,14 @@ directive:
     where: $
     transform: return $.replace(/PublishCloudEvents\(/g, "internalPublishCloudEvents(");
   # make sure the casing of the properties is what compliant.
+  # - from: swagger-document
+  #   where: $.definitions.CloudEvent.properties.data
+  #   transform: > 
+  #     $["type"] = "array"
+  # - from: swagger-document
+  #   where: $.definitions.CloudEvent.properties.data
+  #   transform: > 
+  #     $["items"] = {"type": "byte"}
   - from: swagger-document
     where: $.definitions.CloudEvent.properties.specversion
     transform: $["x-ms-client-name"] = "SpecVersion"

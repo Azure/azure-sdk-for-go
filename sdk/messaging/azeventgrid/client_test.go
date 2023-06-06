@@ -95,18 +95,6 @@ func TestFailedAck(t *testing.T) {
 }
 
 func TestPartialAckFailure(t *testing.T) {
-	// this API seems to have some sharp edges:
-	//
-	// 1. The return result lists the lock tokens that failed and succeeded in separate lists which means
-	//    (AFAICT) that I'd need to iterate through both lists and the original list of lock tokens multiple
-	//    times in order to whittle them down.
-	//
-	// 2. The doc comment makes it sound like we might end up returning both a response and an error, but we
-	//    don't want it to be that weird to use. Either we return a failure or we return a response but we
-	//    don't want to return both because nobody will check both values.
-	// ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{}, nil)
-	// require.NoError(t, err)
-
 	c := newClientForTest()
 	defer c.cleanup()
 
@@ -123,6 +111,143 @@ func TestPartialAckFailure(t *testing.T) {
 		},
 	}, nil)
 	require.NoError(t, err)
+
+	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+		MaxEvents: to.Ptr[int32](2),
+	})
+	require.NoError(t, err)
+
+	// we'll ack one now so we can force a failure to happen.
+	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
+		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+	}, nil)
+	require.NoError(t, err)
+	require.Empty(t, ackResp.FailedLockTokens)
+
+	// this will result in a partial failure.
+	ackResp, err = c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
+		LockTokens: []*string{
+			events.Value[0].BrokerProperties.LockToken,
+			events.Value[1].BrokerProperties.LockToken,
+		},
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, []*azeventgrid.FailedLockToken{
+		{
+			LockToken:        events.Value[0].BrokerProperties.LockToken,
+			ErrorCode:        to.Ptr("TokenLost"),
+			ErrorDescription: to.Ptr("Token has expired."),
+		},
+	}, ackResp.FailedLockTokens)
+	require.Equal(t, []*string{events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+}
+
+// func TestPartialAbandon(t *testing.T) {
+// 	c := newClientForTest()
+// 	defer c.cleanup()
+
+// 	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
+// 		{
+// 			Data:   []byte("event one"),
+// 			Source: to.Ptr("hello-source"),
+// 			Type:   to.Ptr("world"),
+// 		},
+// 		{
+// 			Data:   []byte("abandon"),
+// 			Source: to.Ptr("hello-source"),
+// 			Type:   to.Ptr("world"),
+// 		},
+// 		{
+// 			Data:   []byte("release"),
+// 			Source: to.Ptr("hello-source"),
+// 			Type:   to.Ptr("world"),
+// 		},
+// 	}, nil)
+// 	require.NoError(t, err)
+
+// 	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+// 		MaxEvents: to.Ptr[int32](2),
+// 	})
+// 	require.NoError(t, err)
+// }
+
+func TestReject(t *testing.T) {
+	c := newClientForTest()
+	defer c.cleanup()
+
+	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
+		{
+			Data:   "event one",
+			Source: to.Ptr("TestAbandon"),
+			Type:   to.Ptr("world"),
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	require.NoError(t, err)
+
+	requireEqualCloudEvent(t, &azeventgrid.CloudEvent{
+		Data:   "event one",
+		Source: to.Ptr("TestAbandon"),
+		Type:   to.Ptr("world"),
+	}, events.Value[0].Event)
+
+	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
+
+	rejectResp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.RejectOptions{
+		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+	}, nil)
+	require.NoError(t, err)
+	require.Empty(t, rejectResp.FailedLockTokens)
+
+	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+		MaxEvents:   to.Ptr[int32](1),
+		MaxWaitTime: to.Ptr[int32](10),
+	})
+	require.NoError(t, err)
+	require.Empty(t, events.Value)
+}
+
+func TestRelease(t *testing.T) {
+	c := newClientForTest()
+	defer c.cleanup()
+
+	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
+		{
+			Data:   "event one",
+			Source: to.Ptr("TestAbandon"),
+			Type:   to.Ptr("world"),
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	require.NoError(t, err)
+
+	requireEqualCloudEvent(t, &azeventgrid.CloudEvent{
+		Data:   "event one",
+		Source: to.Ptr("TestAbandon"),
+		Type:   to.Ptr("world"),
+	}, events.Value[0].Event)
+
+	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
+
+	rejectResp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.ReleaseOptions{
+		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+	}, nil)
+	require.NoError(t, err)
+	require.Empty(t, rejectResp.FailedLockTokens)
+
+	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, int32(2), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount is incremented")
+	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
+		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+	}, nil)
+	require.NoError(t, err)
+	require.Empty(t, ackResp.FailedLockTokens)
 }
 
 func TestPublishingAndReceivingCloudEvents(t *testing.T) {
@@ -160,3 +285,5 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 	require.Empty(t, ackResp.FailedLockTokens)
 	require.NotEmpty(t, ackResp.SucceededLockTokens)
 }
+
+// https://github.com/cloudevents/spec/blob/v1.0/json-format.md#31-handling-of-data

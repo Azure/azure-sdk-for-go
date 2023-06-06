@@ -7,15 +7,14 @@
 package azeventgrid_test
 
 import (
-	"context"
 	"crypto/tls"
-	"errors"
 	"net/http"
 	"os"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
+	"github.com/stretchr/testify/require"
 )
 
 type testVars struct {
@@ -61,31 +60,6 @@ func (c clientWrapper) cleanup() {
 	}
 }
 
-func (c clientWrapper) receiveAllCloudEventsFull(ctx context.Context, numEvents int) ([]*azeventgrid.ReceiveDetails, error) {
-	var received []*azeventgrid.ReceiveDetails
-
-	for len(received) < numEvents {
-		remaining := int32(numEvents - len(received))
-
-		resp, err := c.ReceiveCloudEvents(ctx, c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
-			MaxEvents:   to.Ptr(remaining),
-			MaxWaitTime: to.Ptr[int32](10),
-		})
-
-		if errors.Is(err, context.Canceled) {
-			break
-		}
-
-		if err != nil {
-			return nil, err
-		}
-
-		received = append(received, resp.Value...)
-	}
-
-	return received, nil
-}
-
 func newClientForTest() clientWrapper {
 	vars := loadEnv()
 
@@ -124,4 +98,19 @@ func newClientForTest() clientWrapper {
 		TestVars:   vars,
 		keyLogFile: keyLogWriter,
 	}
+}
+
+func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actual *azeventgrid.CloudEvent) {
+	t.Helper()
+
+	require.NotEmpty(t, actual.ID, "ID is not empty")
+	require.NotEmpty(t, actual.SpecVersion, "SpecVersion is not empty")
+
+	expected.ID = actual.ID
+
+	if expected.SpecVersion == nil {
+		expected.SpecVersion = actual.SpecVersion
+	}
+
+	require.Equal(t, actual, expected)
 }

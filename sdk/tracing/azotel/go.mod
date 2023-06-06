@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel
 go 1.19
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.2
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.1.1
 	github.com/stretchr/testify v1.8.3
@@ -31,5 +31,3 @@ require (
 	golang.org/x/text v0.8.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore

@@ -28,7 +28,7 @@ type TracingProviderOptions struct {
 //   - opts - optional configuration. pass nil to accept the default values
 func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
 	return tracing.NewProvider(func(namespace, version string) tracing.Tracer {
-		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version))
+		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version), trace.WithSchemaURL("https://opentelemetry.io/schemas/1.17.0"))
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal

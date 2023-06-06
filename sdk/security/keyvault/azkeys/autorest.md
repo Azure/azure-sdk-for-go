@@ -70,9 +70,6 @@ directive:
       from: DeletedKeyBundle
       to: DeletedKey
   - rename-model:
-      from: KeyBundle
-      to: KeyVaultKey
-  - rename-model:
       from: KeyItem
       to: KeyProperties
   - rename-model:

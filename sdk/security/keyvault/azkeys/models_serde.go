@@ -448,6 +448,49 @@ func (k *KeyAttributes) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type KeyBundle.
+func (k KeyBundle) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "attributes", k.Attributes)
+	populate(objectMap, "key", k.Key)
+	populate(objectMap, "managed", k.Managed)
+	populate(objectMap, "release_policy", k.ReleasePolicy)
+	populate(objectMap, "tags", k.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyBundle.
+func (k *KeyBundle) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "attributes":
+			err = unpopulate(val, "Attributes", &k.Attributes)
+			delete(rawMsg, key)
+		case "key":
+			err = unpopulate(val, "Key", &k.Key)
+			delete(rawMsg, key)
+		case "managed":
+			err = unpopulate(val, "Managed", &k.Managed)
+			delete(rawMsg, key)
+		case "release_policy":
+			err = unpopulate(val, "ReleasePolicy", &k.ReleasePolicy)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &k.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type KeyOperationParameters.
 func (k KeyOperationParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -727,49 +770,6 @@ func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "updated":
 			err = unpopulateTimeUnix(val, "Updated", &k.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", k, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyVaultKey.
-func (k KeyVaultKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "attributes", k.Attributes)
-	populate(objectMap, "key", k.Key)
-	populate(objectMap, "managed", k.Managed)
-	populate(objectMap, "release_policy", k.ReleasePolicy)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVaultKey.
-func (k *KeyVaultKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", k, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "attributes":
-			err = unpopulate(val, "Attributes", &k.Attributes)
-			delete(rawMsg, key)
-		case "key":
-			err = unpopulate(val, "Key", &k.Key)
-			delete(rawMsg, key)
-		case "managed":
-			err = unpopulate(val, "Managed", &k.Managed)
-			delete(rawMsg, key)
-		case "release_policy":
-			err = unpopulate(val, "ReleasePolicy", &k.ReleasePolicy)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &k.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {

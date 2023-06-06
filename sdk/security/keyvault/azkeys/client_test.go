@@ -159,7 +159,7 @@ func TestCRUD(t *testing.T) {
 				requireEqualAttributes(t, createResp.Attributes, getResp.Attributes)
 				require.Equal(t, createResp.Key.KID.Name(), getResp.Key.KID.Name())
 				require.Equal(t, createResp.Key.KID.Version(), getResp.Key.KID.Version())
-				testSerde(t, &getResp.KeyVaultKey)
+				testSerde(t, &getResp.KeyBundle)
 
 				updateParams := azkeys.UpdateKeyParameters{
 					KeyAttributes: &azkeys.KeyAttributes{

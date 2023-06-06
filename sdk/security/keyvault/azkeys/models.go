@@ -330,6 +330,25 @@ type KeyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
+// KeyBundle - A KeyBundle consisting of a WebKey plus its attributes.
+type KeyBundle struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The Json web key.
+	Key *JSONWebKey `json:"key,omitempty"`
+
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
 // KeyOperationParameters - The key operations parameters.
 type KeyOperationParameters struct {
 	// REQUIRED; algorithm identifier
@@ -435,25 +454,6 @@ type KeyRotationPolicyAttributes struct {
 
 	// READ-ONLY; The key rotation policy's last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// KeyVaultKey - A KeyBundle consisting of a WebKey plus its attributes.
-type KeyVaultKey struct {
-	// The key management attributes.
-	Attributes *KeyAttributes `json:"attributes,omitempty"`
-
-	// The Json web key.
-	Key *JSONWebKey `json:"key,omitempty"`
-
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // KeyVerifyResult - The key verify result.

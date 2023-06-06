@@ -14,70 +14,70 @@ import "time"
 // AgreementProperties - Terms properties for Marketplace and Confluent.
 type AgreementProperties struct {
 	// If any version of the terms have been accepted, otherwise false.
-	Accepted *bool `json:"accepted,omitempty"`
+	Accepted *bool
 
 	// Link to HTML with Microsoft and Publisher terms.
-	LicenseTextLink *string `json:"licenseTextLink,omitempty"`
+	LicenseTextLink *string
 
 	// Plan identifier string.
-	Plan *string `json:"plan,omitempty"`
+	Plan *string
 
 	// Link to the privacy policy of the publisher.
-	PrivacyPolicyLink *string `json:"privacyPolicyLink,omitempty"`
+	PrivacyPolicyLink *string
 
 	// Product identifier string.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// Publisher identifier string.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
-	RetrieveDatetime *time.Time `json:"retrieveDatetime,omitempty"`
+	RetrieveDatetime *time.Time
 
 	// Terms signature.
-	Signature *string `json:"signature,omitempty"`
+	Signature *string
 }
 
 // AgreementResource - Agreement Terms definition
 type AgreementResource struct {
 	// Represents the properties of the resource.
-	Properties *AgreementProperties `json:"properties,omitempty"`
+	Properties *AgreementProperties
 
 	// READ-ONLY; The ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the agreement.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the agreement.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AgreementResourceListResponse - Response of a list operation.
 type AgreementResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*AgreementResource `json:"value,omitempty"`
+	Value []*AgreementResource
 }
 
 // ErrorResponseBody - Response body of Error
 type ErrorResponseBody struct {
 	// READ-ONLY; Error code
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error detail
-	Details []*ErrorResponseBody `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponseBody
 
 	// READ-ONLY; Error message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Error target
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create method.
@@ -95,58 +95,58 @@ type MarketplaceAgreementsClientListOptions struct {
 // OfferDetail - Confluent Offer detail
 type OfferDetail struct {
 	// REQUIRED; Offer Id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; Offer Plan Id
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// REQUIRED; Offer Plan Name
-	PlanName *string `json:"planName,omitempty"`
+	PlanName *string
 
 	// REQUIRED; Publisher Id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// REQUIRED; Offer Plan Term unit
-	TermUnit *string `json:"termUnit,omitempty"`
+	TermUnit *string
 
 	// READ-ONLY; SaaS Offer Status
-	Status *SaaSOfferStatus `json:"status,omitempty" azure:"ro"`
+	Status *SaaSOfferStatus
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write confluent'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type, e.g., read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Confluent
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Type on which the operation is performed, e.g., 'clusters'.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of GET request to list Confluent operations.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Confluent operations supported by the Microsoft.Confluent provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 }
 
 // OperationResult - An Confluent REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OrganizationClientBeginCreateOptions contains the optional parameters for the OrganizationClient.BeginCreate method.
@@ -195,100 +195,100 @@ type OrganizationOperationsClientListOptions struct {
 // OrganizationResource - Organization resource.
 type OrganizationResource struct {
 	// REQUIRED; Organization resource properties
-	Properties *OrganizationResourceProperties `json:"properties,omitempty"`
+	Properties *OrganizationResourceProperties
 
 	// Location of Organization resource
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Organization resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OrganizationResourceListResult - The response of a list operation.
 type OrganizationResourceListResult struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of a list operation.
-	Value []*OrganizationResource `json:"value,omitempty"`
+	Value []*OrganizationResource
 }
 
 // OrganizationResourceProperties - Organization resource property
 type OrganizationResourceProperties struct {
 	// REQUIRED; Confluent offer detail
-	OfferDetail *OfferDetail `json:"offerDetail,omitempty"`
+	OfferDetail *OfferDetail
 
 	// REQUIRED; Subscriber detail
-	UserDetail *UserDetail `json:"userDetail,omitempty"`
+	UserDetail *UserDetail
 
 	// READ-ONLY; The creation time of the resource.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Id of the Confluent organization.
-	OrganizationID *string `json:"organizationId,omitempty" azure:"ro"`
+	OrganizationID *string
 
 	// READ-ONLY; Provision states for confluent RP
-	ProvisioningState *ProvisionState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisionState
 
 	// READ-ONLY; SSO url for the Confluent organization.
-	SsoURL *string `json:"ssoUrl,omitempty" azure:"ro"`
+	SsoURL *string
 }
 
 // OrganizationResourceUpdate - Organization Resource update
 type OrganizationResourceUpdate struct {
 	// ARM resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ResourceProviderDefaultErrorResponse - Default error response for resource provider
 type ResourceProviderDefaultErrorResponse struct {
 	// READ-ONLY; Response body of Error
-	Error *ErrorResponseBody `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponseBody
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UserDetail - Subscriber detail
 type UserDetail struct {
 	// REQUIRED; Email address
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// First name
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Last name
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 }
 
 // ValidationsClientValidateOrganizationOptions contains the optional parameters for the ValidationsClient.ValidateOrganization

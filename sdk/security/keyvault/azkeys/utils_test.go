@@ -259,12 +259,11 @@ func testSerde[T serdeModel](t *testing.T, model T) {
 	require.NoError(t, err)
 
 	// testing unmarshal error scenarios
-	var data2 []byte
-	err = model.UnmarshalJSON(data2)
+	err = model.UnmarshalJSON(nil)
 	require.Error(t, err)
 
 	m := regexp.MustCompile(":.*$")
-	modifiedData := m.ReplaceAllString(string(data), ":[\"test\", \"test1\", \"test2\"]}")
+	modifiedData := m.ReplaceAllString(string(data), `:["test", "test1", "test2"]}`)
 	if modifiedData != "{}" {
 		data3 := []byte(modifiedData)
 		err = model.UnmarshalJSON(data3)

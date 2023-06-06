@@ -8,6 +8,7 @@ package directory
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
@@ -17,7 +18,7 @@ import (
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
@@ -59,7 +60,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
 	// AccessConditions specifies parameters for accessing the directory
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -71,12 +72,12 @@ type RenameOptions struct {
 	// SourceModifiedAccessConditions specifies parameters for accessing the source directory
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	// AccessConditions specifies parameters for accessing the destination directory
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	CPKInfo          *CPKInfo
 }
 
@@ -102,9 +103,6 @@ type CPKInfo = path.CPKInfo
 
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
 type CPKScopeInfo = path.CPKScopeInfo
-
-// AccessConditions identifies access conditions which you optionally set.
-type AccessConditions = path.AccessConditions
 
 // HTTPHeaders contains the HTTP headers for path operations.
 type HTTPHeaders = path.HTTPHeaders
@@ -132,9 +130,3 @@ type RemoveAccessControlRecursiveOptions = path.RemoveAccessControlRecursiveOpti
 
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions = path.UpdateAccessControlRecursiveOptions
-
-// ModifiedAccessConditions identifies path-specific access conditions which you optionally set.
-type ModifiedAccessConditions = path.ModifiedAccessConditions
-
-// LeaseAccessConditions identifies path-specific access conditions associated with a lease.
-type LeaseAccessConditions = path.LeaseAccessConditions

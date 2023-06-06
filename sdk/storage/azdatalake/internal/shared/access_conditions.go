@@ -3,13 +3,12 @@ package shared
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatContainerAccessConditions(b *filesystem.AccessConditions) *container.AccessConditions {
+func FormatContainerAccessConditions(b *azdatalake.AccessConditions) *container.AccessConditions {
 	if b == nil {
 		return nil
 	}
@@ -27,7 +26,7 @@ func FormatContainerAccessConditions(b *filesystem.AccessConditions) *container.
 }
 
 // FormatPathAccessConditions formats PathAccessConditions into path's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatPathAccessConditions(p *path.AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func FormatPathAccessConditions(p *azdatalake.AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if p == nil {
 		return nil, nil
 	}
@@ -42,7 +41,7 @@ func FormatPathAccessConditions(p *path.AccessConditions) (*generated.LeaseAcces
 }
 
 // FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatBlobAccessConditions(p *path.AccessConditions) *blob.AccessConditions {
+func FormatBlobAccessConditions(p *azdatalake.AccessConditions) *blob.AccessConditions {
 	if p == nil {
 		return nil
 	}

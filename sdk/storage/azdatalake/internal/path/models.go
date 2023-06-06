@@ -24,7 +24,7 @@ type SetAccessControlOptions struct {
 	// Permissions is the octal representation of the permissions for user, group and mask.
 	Permissions *string
 	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -46,7 +46,7 @@ type GetAccessControlOptions struct {
 	// UPN is the user principal name.
 	UPN *bool
 	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -123,7 +123,7 @@ func (o *RemoveAccessControlRecursiveOptions) format() (*generated.PathClientSet
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
@@ -188,7 +188,7 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
 }
@@ -223,17 +223,5 @@ type CPKScopeInfo struct {
 	EncryptionScope *string
 }
 
-// AccessConditions identifies blob-specific access conditions which you optionally set.
-type AccessConditions struct {
-	LeaseAccessConditions    *LeaseAccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
-}
-
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
-
-// LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = azdatalake.LeaseAccessConditions
-
-// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions

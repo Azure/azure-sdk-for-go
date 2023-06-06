@@ -8,6 +8,7 @@ package file
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
@@ -18,7 +19,7 @@ import (
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint. TODO: Design formatter
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *path.AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
@@ -62,7 +63,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *path.AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -75,12 +76,12 @@ type RenameOptions struct {
 	// SourceModifiedAccessConditions identifies the source path access conditions.
 	SourceModifiedAccessConditions *path.SourceModifiedAccessConditions
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *path.AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
-	AccessConditions *path.AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	CPKInfo          *path.CPKInfo
 }
 

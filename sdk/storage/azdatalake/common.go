@@ -18,6 +18,12 @@ type ClientOptions struct {
 
 const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
+}
+
 // LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = generated.LeaseAccessConditions
 

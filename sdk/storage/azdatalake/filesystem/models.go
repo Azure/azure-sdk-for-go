@@ -17,7 +17,7 @@ type SetAccessPolicyOptions struct {
 	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
 	// If this header is not included in the request, filesystem data is private to the account owner.
 	Access           *PublicAccessType
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 	FilesystemACL    []*SignedIdentifier
 }
 
@@ -51,7 +51,7 @@ func (o *CreateOptions) format() *container.CreateOptions {
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
-	AccessConditions *AccessConditions
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *DeleteOptions) format() *container.DeleteOptions {
@@ -62,7 +62,7 @@ func (o *DeleteOptions) format() *container.DeleteOptions {
 
 // GetPropertiesOptions contains the optional parameters for the FilesystemClient.GetProperties method.
 type GetPropertiesOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions *azdatalake.LeaseAccessConditions
 }
 
 func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
@@ -75,29 +75,28 @@ func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
 
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
-	Metadata                 map[string]*string
-	LeaseAccessConditions    *LeaseAccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	Metadata         map[string]*string
+	AccessConditions *azdatalake.AccessConditions
 }
 
 func (o *SetMetadataOptions) format() *container.SetMetadataOptions {
 	return &container.SetMetadataOptions{
 		Metadata: o.Metadata,
 		LeaseAccessConditions: &container.LeaseAccessConditions{
-			LeaseID: o.LeaseAccessConditions.LeaseID,
+			LeaseID: o.AccessConditions.LeaseAccessConditions.LeaseID,
 		},
 		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfMatch:           o.ModifiedAccessConditions.IfMatch,
-			IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
-			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
-			IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+			IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+			IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+			IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+			IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 		},
 	}
 }
 
 // GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
 type GetAccessPolicyOptions struct {
-	LeaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions *azdatalake.LeaseAccessConditions
 }
 
 func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
@@ -108,20 +107,8 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	}
 }
 
-// AccessConditions identifies container-specific access conditions which you optionally set.
-type AccessConditions struct {
-	ModifiedAccessConditions *ModifiedAccessConditions
-	LeaseAccessConditions    *LeaseAccessConditions
-}
-
 // CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
 type CPKScopeInfo = container.CPKScopeInfo
-
-// LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = azdatalake.LeaseAccessConditions
-
-// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = azdatalake.ModifiedAccessConditions
 
 // AccessPolicy - An Access policy.
 type AccessPolicy = container.AccessPolicy

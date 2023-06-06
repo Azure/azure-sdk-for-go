@@ -39,7 +39,7 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	client, err := azkeys.NewClient(vaultURL, cred, &azkeys.ClientOptions{
@@ -47,8 +47,11 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 			Transport: options.Transporter,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 
-	_, err = client.CreateKey(ctx, d.keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA), KeySize: to.Ptr(int32(2048))}, nil)
+	_, err = client.CreateKey(ctx, d.keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA), KeySize: to.Ptr(int32(2048))}, nil)
 	if err != nil {
 		return nil, err
 	}

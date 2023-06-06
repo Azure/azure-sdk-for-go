@@ -58,18 +58,6 @@ func requireEqualAttributes(t *testing.T, a, b *azkeys.KeyAttributes) {
 	require.Equal(t, a.Updated, b.Updated)
 }
 
-type serdeModel interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func testSerde[T serdeModel](t *testing.T, model T) {
-	data, err := model.MarshalJSON()
-	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
-	require.NoError(t, err)
-}
-
 func TestBackupRestore(t *testing.T) {
 	name := "KV"
 	for _, mhsm := range []bool{false, true} {
@@ -80,7 +68,7 @@ func TestBackupRestore(t *testing.T) {
 			client := startTest(t, mhsm)
 
 			keyName := createRandomName(t, "testbackuprestore")
-			createResp, err := client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA)}, nil)
+			createResp, err := client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
 			require.NoError(t, err)
 			require.Equal(t, keyName, createResp.Key.KID.Name())
 			require.NotEmpty(t, createResp.Key.KID.Version())
@@ -108,7 +96,7 @@ func TestBackupRestore(t *testing.T) {
 			require.NoError(t, err)
 
 			var restoreResp azkeys.RestoreKeyResponse
-			restoreParams := azkeys.RestoreKeyParameters{KeyBundleBackup: backupResp.Value}
+			restoreParams := azkeys.RestoreKeyParameters{KeyBackup: backupResp.Value}
 			pollStatus(t, 409, func() error {
 				restoreResp, err = client.RestoreKey(context.Background(), restoreParams, nil)
 				return err
@@ -136,13 +124,13 @@ func TestCRUD(t *testing.T) {
 	for _, mhsm := range []bool{false, true} {
 		for _, params := range []azkeys.CreateKeyParameters{
 			{
-				Kty:           to.Ptr(azkeys.JSONWebKeyTypeEC),
-				Curve:         to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
+				Kty:           to.Ptr(azkeys.KeyTypeEC),
+				Curve:         to.Ptr(azkeys.CurveNameP256K),
 				KeyAttributes: attributes,
 				Tags:          tags,
 			},
 			{
-				Kty:            to.Ptr(azkeys.JSONWebKeyTypeRSA),
+				Kty:            to.Ptr(azkeys.KeyTypeRSA),
 				KeyAttributes:  attributes,
 				KeySize:        to.Ptr(int32(2048)),
 				PublicExponent: to.Ptr(int32(65537)),
@@ -190,7 +178,7 @@ func TestCRUD(t *testing.T) {
 				require.Equal(t, createResp.Key.KID.Name(), deleteResp.Key.KID.Name())
 				require.Equal(t, createResp.Key.KID.Version(), deleteResp.Key.KID.Version())
 				requireEqualAttributes(t, updateResp.Attributes, deleteResp.Attributes)
-				testSerde(t, &deleteResp.DeletedKeyBundle)
+				testSerde(t, &deleteResp.DeletedKey)
 				pollStatus(t, 404, func() error {
 					_, err := client.GetDeletedKey(context.Background(), keyName, nil)
 					return err
@@ -242,7 +230,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 			}
 			client, err := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
 			require.NoError(t, err)
-			pager := client.NewListKeysPager(nil)
+			pager := client.NewListKeyPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
@@ -265,14 +253,14 @@ func TestEncryptDecrypt(t *testing.T) {
 
 			keyName := createRandomName(t, "key")
 			createParams := azkeys.CreateKeyParameters{
-				Kty:    to.Ptr(azkeys.JSONWebKeyTypeRSAHSM),
-				KeyOps: to.SliceOfPtrs(azkeys.JSONWebKeyOperationEncrypt, azkeys.JSONWebKeyOperationDecrypt),
+				Kty:    to.Ptr(azkeys.KeyTypeRSAHSM),
+				KeyOps: to.SliceOfPtrs(azkeys.KeyOperationEncrypt, azkeys.KeyOperationDecrypt),
 			}
 			createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
 			require.NoError(t, err)
 
-			encryptParams := azkeys.KeyOperationsParameters{
-				Algorithm: to.Ptr(azkeys.JSONWebKeyEncryptionAlgorithmRSAOAEP256),
+			encryptParams := azkeys.KeyOperationParameters{
+				Algorithm: to.Ptr(azkeys.EncryptionAlgorithmRSAOAEP256),
 				Value:     []byte("plaintext"),
 			}
 			testSerde(t, &encryptParams)
@@ -281,7 +269,7 @@ func TestEncryptDecrypt(t *testing.T) {
 			require.NotEmpty(t, encryptResponse.Result)
 			testSerde(t, &encryptResponse.KeyOperationResult)
 
-			decryptParams := azkeys.KeyOperationsParameters{
+			decryptParams := azkeys.KeyOperationParameters{
 				Algorithm: encryptParams.Algorithm,
 				Value:     encryptResponse.Result,
 			}
@@ -299,15 +287,15 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 
 	keyName := createRandomName(t, "key")
 	createParams := azkeys.CreateKeyParameters{
-		Kty:     to.Ptr(azkeys.JSONWebKeyTypeOct),
-		KeyOps:  to.SliceOfPtrs(azkeys.JSONWebKeyOperationEncrypt, azkeys.JSONWebKeyOperationDecrypt),
+		Kty:     to.Ptr(azkeys.KeyTypeOct),
+		KeyOps:  to.SliceOfPtrs(azkeys.KeyOperationEncrypt, azkeys.KeyOperationDecrypt),
 		KeySize: to.Ptr(int32(256)),
 	}
 	createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
 	require.NoError(t, err)
 
-	encryptParams := azkeys.KeyOperationsParameters{
-		Algorithm: to.Ptr(azkeys.JSONWebKeyEncryptionAlgorithmA256CBCPAD),
+	encryptParams := azkeys.KeyOperationParameters{
+		Algorithm: to.Ptr(azkeys.EncryptionAlgorithmA256CBCPAD),
 		// IV must be random in real usage. This value is static only to ensure it matches in playback.
 		IV:    []byte("0123456789ABCDEF"),
 		Value: []byte("plaintext"),
@@ -317,7 +305,7 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, encryptResponse.Result)
 
-	decryptParams := azkeys.KeyOperationsParameters{
+	decryptParams := azkeys.KeyOperationParameters{
 		Algorithm: encryptParams.Algorithm,
 		IV:        encryptResponse.IV,
 		Value:     encryptResponse.Result,
@@ -330,7 +318,7 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 
 func TestGetRandomBytes(t *testing.T) {
 	client := startTest(t, true)
-	req := azkeys.GetRandomBytesRequest{Count: to.Ptr(int32(100))}
+	req := azkeys.GetRandomBytesParameters{Count: to.Ptr(int32(100))}
 	testSerde(t, &req)
 	resp, err := client.GetRandomBytes(context.Background(), req, nil)
 	require.NoError(t, err)
@@ -360,8 +348,8 @@ func TestImportKey(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			client := startTest(t, mhsm)
 			jwk := &azkeys.JSONWebKey{
-				KeyOps: to.SliceOfPtrs(string(azkeys.JSONWebKeyOperationEncrypt)),
-				Kty:    to.Ptr(azkeys.JSONWebKeyTypeRSA),
+				KeyOps: to.SliceOfPtrs(azkeys.KeyOperationEncrypt),
+				Kty:    to.Ptr(azkeys.KeyTypeRSA),
 				N:      toBytes("a0914d00234ac683b21b4c15d5bed887bdc959c2e57af54ae734e8f00720d775d275e455207e3784ceeb60a50a4655dd72a7a94d271e8ee8f7959a669ca6e775bf0e23badae991b4529d978528b4bd90521d32dd2656796ba82b6bbfc7668c8f5eeb5053747fd199319d29a8440d08f4412d527ff9311eda71825920b47b1c46b11ab3e91d7316407e89c7f340f7b85a34042ce51743b27d4718403d34c7b438af6181be05e4d11eb985d38253d7fe9bf53fc2f1b002d22d2d793fa79a504b6ab42d0492804d7071d727a06cf3a8893aa542b1503f832b296371b6707d4dc6e372f8fe67d8ded1c908fde45ce03bc086a71487fa75e43aa0e0679aa0d20efe35", t),
 				E:      toBytes("10001", t),
 				D:      toBytes("627c7d24668148fe2252c7fa649ea8a5a9ed44d75c766cda42b29b660e99404f0e862d4561a6c95af6a83d213e0a2244b03cd28576473215073785fb067f015da19084ade9f475e08b040a9a2c7ba00253bb8125508c9df140b75161d266be347a5e0f6900fe1d8bbf78ccc25eeb37e0c9d188d6e1fc15169ba4fe12276193d77790d2326928bd60d0d01d6ead8d6ac4861abadceec95358fd6689c50a1671a4a936d2376440a41445501da4e74bfb98f823bd19c45b94eb01d98fc0d2f284507f018ebd929b8180dbe6381fdd434bffb7800aaabdd973d55f9eaf9bb88a6ea7b28c2a80231e72de1ad244826d665582c2362761019de2e9f10cb8bcc2625649", t),
@@ -394,7 +382,7 @@ func TestListDeletedKeys(t *testing.T) {
 			count := 4
 			keyNames := make([]string, count)
 			createParams := azkeys.CreateKeyParameters{
-				Kty:  to.Ptr(azkeys.JSONWebKeyTypeRSA),
+				Kty:  to.Ptr(azkeys.KeyTypeRSA),
 				Tags: map[string]*string{"count-this-key": to.Ptr("yes")},
 			}
 			for i := 0; i < len(keyNames); i++ {
@@ -410,11 +398,11 @@ func TestListDeletedKeys(t *testing.T) {
 					return err
 				})
 			}
-			pager := client.NewListDeletedKeysPager(&azkeys.ListDeletedKeysOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListDeletedKeyPropertiesPager(nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.DeletedKeyListResult)
+				testSerde(t, &resp.DeletedKeyPropertiesListResult)
 				for _, key := range resp.Value {
 					require.NotEmpty(t, key.Attributes)
 					require.NotNil(t, key.DeletedDate)
@@ -447,17 +435,17 @@ func TestListKeys(t *testing.T) {
 			keyNamePrefix := "testlistkeys"
 			for i := 0; i < 4; i++ {
 				n := createRandomName(t, fmt.Sprintf("%s-%d", keyNamePrefix, i))
-				resp, err := client.CreateKey(context.Background(), n, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA)}, nil)
+				resp, err := client.CreateKey(context.Background(), n, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
 				require.NoError(t, err)
 				defer cleanUpKey(t, client, resp.Key.KID)
 				count++
 			}
 
-			pager := client.NewListKeysPager(&azkeys.ListKeysOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListKeyPropertiesPager(nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.KeyListResult)
+				testSerde(t, &resp.KeyPropertiesListResult)
 				for _, key := range resp.Value {
 					require.NotNil(t, key)
 					require.NotNil(t, key.Attributes)
@@ -487,17 +475,17 @@ func TestListKeyVersions(t *testing.T) {
 			keyName := createRandomName(t, "listkeyversions")
 			expectedVersions := make(map[string]struct{}, 4)
 			for i := 0; i < 4; i++ {
-				createResp, err = client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA)}, nil)
+				createResp, err = client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
 				expectedVersions[createResp.Key.KID.Version()] = struct{}{}
 				require.NoError(t, err)
 			}
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
-			pager := client.NewListKeyVersionsPager(keyName, &azkeys.ListKeyVersionsOptions{MaxResults: to.Ptr(int32(1))})
+			pager := client.NewListKeyPropertiesVersionsPager(keyName, nil)
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.KeyListResult)
+				testSerde(t, &resp.KeyPropertiesListResult)
 				for _, key := range resp.Value {
 					testSerde(t, key)
 					require.NotNil(t, key)
@@ -525,7 +513,7 @@ func TestRecoverDeletedKey(t *testing.T) {
 			client := startTest(t, mhsm)
 
 			key := createRandomName(t, "key")
-			createResp, err := client.CreateKey(context.Background(), key, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeEC)}, nil)
+			createResp, err := client.CreateKey(context.Background(), key, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeEC)}, nil)
 			require.NoError(t, err)
 
 			_, err = client.DeleteKey(context.Background(), key, nil)
@@ -564,11 +552,11 @@ func TestReleaseKey(t *testing.T) {
 			var err error
 			for i := 0; i < 5; i++ {
 				params := azkeys.CreateKeyParameters{
-					Curve: to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
+					Curve: to.Ptr(azkeys.CurveNameP256K),
 					KeyAttributes: &azkeys.KeyAttributes{
 						Exportable: to.Ptr(true),
 					},
-					Kty: to.Ptr(azkeys.JSONWebKeyTypeECHSM),
+					Kty: to.Ptr(azkeys.KeyTypeECHSM),
 					ReleasePolicy: &azkeys.KeyReleasePolicy{
 						EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
 						Immutable:     to.Ptr(true),
@@ -623,7 +611,7 @@ func TestRotateKey(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			client := startTest(t, mhsm)
 			key := createRandomName(t, "testrotatekey")
-			createResp, err := client.CreateKey(context.Background(), key, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeECHSM)}, nil)
+			createResp, err := client.CreateKey(context.Background(), key, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeECHSM)}, nil)
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
@@ -683,9 +671,9 @@ func TestSignVerify(t *testing.T) {
 			keyName := createRandomName(t, "key")
 
 			createParams := azkeys.CreateKeyParameters{
-				Curve:  to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
-				KeyOps: to.SliceOfPtrs(azkeys.JSONWebKeyOperationSign, azkeys.JSONWebKeyOperationVerify),
-				Kty:    to.Ptr(azkeys.JSONWebKeyTypeEC),
+				Curve:  to.Ptr(azkeys.CurveNameP256K),
+				KeyOps: to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify),
+				Kty:    to.Ptr(azkeys.KeyTypeEC),
 			}
 			_, err := client.CreateKey(context.Background(), keyName, createParams, nil)
 			require.NoError(t, err)
@@ -695,7 +683,7 @@ func TestSignVerify(t *testing.T) {
 			require.NoError(t, err)
 			digest := hasher.Sum(nil)
 
-			signParams := azkeys.SignParameters{Algorithm: to.Ptr(azkeys.JSONWebKeySignatureAlgorithmES256K), Value: digest}
+			signParams := azkeys.SignParameters{Algorithm: to.Ptr(azkeys.SignatureAlgorithmES256K), Value: digest}
 			testSerde(t, &signParams)
 			signResponse, err := client.Sign(context.Background(), keyName, "", signParams, nil)
 			require.NoError(t, err)
@@ -723,19 +711,19 @@ func TestWrapUnwrap(t *testing.T) {
 			keyName := createRandomName(t, "key")
 
 			createParams := azkeys.CreateKeyParameters{
-				KeyOps: to.SliceOfPtrs(azkeys.JSONWebKeyOperationWrapKey, azkeys.JSONWebKeyOperationUnwrapKey),
-				Kty:    to.Ptr(azkeys.JSONWebKeyTypeRSA),
+				KeyOps: to.SliceOfPtrs(azkeys.KeyOperationWrapKey, azkeys.KeyOperationUnwrapKey),
+				Kty:    to.Ptr(azkeys.KeyTypeRSA),
 			}
 			_, err := client.CreateKey(context.Background(), keyName, createParams, nil)
 			require.NoError(t, err)
 
 			keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
 
-			wrapParams := azkeys.KeyOperationsParameters{Algorithm: to.Ptr(azkeys.JSONWebKeyEncryptionAlgorithmRSAOAEP), Value: keyBytes}
+			wrapParams := azkeys.KeyOperationParameters{Algorithm: to.Ptr(azkeys.EncryptionAlgorithmRSAOAEP), Value: keyBytes}
 			wrapResp, err := client.WrapKey(context.Background(), keyName, "", wrapParams, nil)
 			require.NoError(t, err)
 
-			unwrapResp, err := client.UnwrapKey(context.Background(), keyName, "", azkeys.KeyOperationsParameters{Algorithm: wrapParams.Algorithm, Value: wrapResp.Result}, nil)
+			unwrapResp, err := client.UnwrapKey(context.Background(), keyName, "", azkeys.KeyOperationParameters{Algorithm: wrapParams.Algorithm, Value: wrapResp.Result}, nil)
 			require.NoError(t, err)
 			require.Equal(t, keyBytes, unwrapResp.Result)
 		})

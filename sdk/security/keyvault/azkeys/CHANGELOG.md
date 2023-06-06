@@ -1,6 +1,33 @@
 # Release History
 
-## 1.0.0 (2023-05-11)
+## 0.12.0 (unreleased)
+
+### Breaking Changes
+
+* Renamed `GetRandomBytesRequest` to `GetRandomBytesParameters`
+* `ListDeletedKey` to `ListDeletedKeyProperties`
+* `ListKeys` to `ListKeyProperties`
+* `DeletedKeyBundle` to `DeletedKey`
+* `KeyBundle` to `KeyVaultKey`
+* `RestoreKeyParameters.KeyBundleBackup` to `RestoreKeyParameters.KeyBackup`
+* `DeletedKeyItem` to `DeletedKeyProperties`
+* `KeyItem` to `KeyProperties`
+* `DeletedKeyListResult` to `DeletedKeyPropertiesListResult`
+* `KeyListResult` `KeyPropertiesListResult`
+* `KeyOperationsParameters` to `KeyOperationParameters`
+* Changed `JSONWebKey.KeyOperations` from type []*string to []*KeyOperation
+* `ReleaseParameters.Enc` to `ReleaseParameters.Algorithm`
+* `KeyOperationParameters.AAD` to `KeyOperationParameters.AdditionalAuthenticatedData`
+* `KeyOperationParameters.Tag` to `KeyOperationParameters.AuthenticationTag`
+* `JSONWebKeyOperation` to `KeyOperation`
+* `JSONWebKeyCurveName` to `KeyCurveName`
+* `JSONWebKeyEncryptionAlgorithm` to `EncryptionAlgorithm`
+* `JSONWebKeySignatureAlgorithm` to `SignatureAlgorithm`
+* `JSONWebKeyType` to `KeyType`
+* Removed `DeletionRecoveryLevel` type
+* Removed `SignatureAlgorithmRSNULL` constant
+* Removed `KeyOperationExport` constant
+* Removed `MaxResults` option
 
 ### Other Changes
 * Updated dependencies

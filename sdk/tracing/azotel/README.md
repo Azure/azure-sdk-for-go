@@ -1,9 +1,9 @@
 # Azure OpenTelemetry Adapter Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azcore%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1843&branchName=main)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azotel%20-%20ci?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=6176&branchName=main)
 
-The `azotel` module is used to connect an OpenTelemetry's `TracerAdapter` to an Azure SDK client.
+The `azotel` module is used to connect an instance of OpenTelemetry's `TracerProvider` to an Azure SDK client.
 
 ## Getting started
 
@@ -21,7 +21,7 @@ General documentation and examples can be found on [pkg.go.dev](https://pkg.go.d
 
 ## Using the adapter
 
-Once you have an OpenTelemetry `TracerProvider`, you connect it to an Azure SDK client via its `ClientOptions`.
+Once you have created an OpenTelemetry `TracerProvider`, you connect it to an Azure SDK client via its `ClientOptions`.
 
 ```go
 options := azcore.ClientOptions{}

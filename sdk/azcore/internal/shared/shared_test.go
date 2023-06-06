@@ -85,24 +85,54 @@ func TestValidateModVer(t *testing.T) {
 	require.Error(t, ValidateModVer("v1.2"))
 }
 
-func TestExtractPackageName(t *testing.T) {
-	pkg, err := ExtractPackageName("package.Client")
+func TestExtractModuleName(t *testing.T) {
+	mod, client, err := ExtractModuleName("module/package.Client")
 	require.NoError(t, err)
-	require.Equal(t, "package", pkg)
+	require.Equal(t, "module", mod)
+	require.Equal(t, "package.Client", client)
 
-	pkg, err = ExtractPackageName("malformed")
+	mod, client, err = ExtractModuleName("malformed/")
 	require.Error(t, err)
-	require.Empty(t, pkg)
+	require.Empty(t, mod)
+	require.Empty(t, client)
 
-	pkg, err = ExtractPackageName(".malformed")
+	mod, client, err = ExtractModuleName("malformed/malformed")
 	require.Error(t, err)
-	require.Empty(t, pkg)
+	require.Empty(t, mod)
+	require.Empty(t, client)
 
-	pkg, err = ExtractPackageName("malformed.")
+	mod, client, err = ExtractModuleName("malformed/malformed.")
 	require.Error(t, err)
-	require.Empty(t, pkg)
+	require.Empty(t, mod)
+	require.Empty(t, client)
 
-	pkg, err = ExtractPackageName("")
+	mod, client, err = ExtractModuleName("malformed/.malformed")
 	require.Error(t, err)
-	require.Empty(t, pkg)
+	require.Empty(t, mod)
+	require.Empty(t, client)
+
+	mod, client, err = ExtractModuleName("package.Client")
+	require.NoError(t, err)
+	require.Equal(t, "package", mod)
+	require.Equal(t, "package.Client", client)
+
+	mod, client, err = ExtractModuleName("malformed")
+	require.Error(t, err)
+	require.Empty(t, mod)
+	require.Empty(t, client)
+
+	mod, client, err = ExtractModuleName(".malformed")
+	require.Error(t, err)
+	require.Empty(t, mod)
+	require.Empty(t, client)
+
+	mod, client, err = ExtractModuleName("malformed.")
+	require.Error(t, err)
+	require.Empty(t, mod)
+	require.Empty(t, client)
+
+	mod, client, err = ExtractModuleName("")
+	require.Error(t, err)
+	require.Empty(t, mod)
+	require.Empty(t, client)
 }

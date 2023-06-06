@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.18
 // +build go1.18
 
@@ -27,39 +29,39 @@ type AcknowledgeResult struct {
 	SucceededLockTokens []*string
 }
 
-// AzureCoreFoundationsError - The error object.
-type AzureCoreFoundationsError struct {
+// Error - The error object.
+type Error struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []*AzureCoreFoundationsError
+	Details []*Error
 
 	// REQUIRED; A human-readable representation of the error.
 	Message *string
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *AzureCoreFoundationsInnerError
+	Innererror *InnerError
 
 	// The target of the error.
 	Target *string
 }
 
-// AzureCoreFoundationsErrorResponse - A response containing error details.
-type AzureCoreFoundationsErrorResponse struct {
+// ErrorResponse - A response containing error details.
+type ErrorResponse struct {
 	// REQUIRED; The error object.
-	Error *AzureCoreFoundationsError
+	Error *Error
 }
 
-// AzureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
+// InnerError - An object containing more specific information about the error. As per Microsoft One API
 // guidelines -
 // https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type AzureCoreFoundationsInnerError struct {
+type InnerError struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *AzureCoreFoundationsInnerError
+	Innererror *InnerError
 }
 
 // BrokerProperties - Properties of the Event Broker operation.

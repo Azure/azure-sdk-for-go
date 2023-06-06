@@ -54,4 +54,11 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+  - from:
+      - client.go
+      - models.go
+      - models_serde.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/AzureCoreFoundations/g, "");
 ```

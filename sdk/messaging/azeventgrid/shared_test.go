@@ -7,14 +7,19 @@
 package azeventgrid_test
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
 	"github.com/stretchr/testify/require"
 )
@@ -61,69 +66,62 @@ func loadEnv() (testVars, error) {
 
 type clientWrapper struct {
 	*azeventgrid.Client
-	TestVars   testVars
-	keyLogFile *os.File
+	TestVars testVars
 }
 
-func (c clientWrapper) cleanup() {
-	if c.keyLogFile != nil {
-		c.keyLogFile.Close()
+type clientWrapperOptions struct {
+	DontPurgeEvents bool
+}
+
+func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
+	testVars, err := loadEnv()
+	require.NoError(t, err)
+
+	transporter := newTransporterForTests(t, testVars)
+
+	c, err := azeventgrid.NewClientWithSharedKeyCredential(testVars.Endpoint, testVars.Key, &azeventgrid.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: transporter,
+		},
+	})
+	require.NoError(t, err)
+
+	purgePreviousEvents(t, c, testVars)
+
+	return clientWrapper{
+		Client:   c,
+		TestVars: testVars,
 	}
 }
 
-func newClientWrapperForTest(t *testing.T) clientWrapper {
-	cw, err := newClientWrapper()
+func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter {
+	if testVars.KeyLogPath != "" && recording.GetRecordMode() == recording.LiveMode {
+		keyLogWriter, err := os.OpenFile(testVars.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
+		require.NoError(t, err)
 
-	if err != nil {
-		fmt.Printf("WARNING: Not running live test: %s\n", err)
-		t.SkipNow()
-	}
-
-	return cw
-}
-
-func newClientWrapper() (clientWrapper, error) {
-	vars, err := loadEnv()
-
-	if err != nil {
-		return clientWrapper{}, err
-	}
-
-	var opts *azeventgrid.ClientOptions
-	var keyLogWriter *os.File
-
-	if vars.KeyLogPath != "" {
-		tmpKeyLogWriter, err := os.OpenFile(vars.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
-
-		if err != nil {
-			panic(err)
-		}
-
-		keyLogWriter = tmpKeyLogWriter
+		t.Cleanup(func() { keyLogWriter.Close() })
 
 		tp := http.DefaultTransport.(*http.Transport).Clone()
 		tp.TLSClientConfig = &tls.Config{
 			KeyLogWriter: keyLogWriter,
 		}
 
-		opts = &azeventgrid.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: &http.Client{Transport: tp},
-			},
-		}
+		return &http.Client{Transport: tp}
+	} else {
+		transport, err := recording.NewRecordingHTTPClient(t, nil)
+		require.NoError(t, err)
+
+		err = recording.Start(t, "./testdata", nil)
+		require.NoError(t, err)
+
+		t.Cleanup(func() {
+			err := recording.Stop(t, nil)
+			require.NoError(t, err)
+		})
+
+		return transport
 	}
 
-	c, err := azeventgrid.NewClientWithSharedKeyCredential(vars.Endpoint, vars.Key, opts)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return clientWrapper{
-		Client:     c,
-		TestVars:   vars,
-		keyLogFile: keyLogWriter,
-	}, nil
 }
 
 func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actual *azeventgrid.CloudEvent) {
@@ -139,4 +137,37 @@ func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actu
 	}
 
 	require.Equal(t, actual, expected)
+}
+
+var purge sync.Once
+
+func purgePreviousEvents(t *testing.T, c *azeventgrid.Client, testVars testVars) {
+	purge.Do(func() {
+		if recording.GetRecordMode() != recording.LiveMode {
+			return
+		}
+
+		// we'll purge all the events in the queue just to ensure tests
+		// run clean.
+		events, err := c.ReceiveCloudEvents(context.Background(), testVars.Topic, testVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+			MaxEvents:   to.Ptr[int32](100),
+			MaxWaitTime: to.Ptr[int32](10),
+		})
+		require.NoError(t, err)
+
+		var lockTokens []*string
+
+		for _, e := range events.Value {
+			lockTokens = append(lockTokens, e.BrokerProperties.LockToken)
+		}
+
+		if len(lockTokens) > 0 {
+			resp, err := c.AcknowledgeCloudEvents(context.Background(), testVars.Topic, testVars.Subscription, azeventgrid.AcknowledgeOptions{
+				LockTokens: lockTokens,
+			}, nil)
+			require.NoError(t, err)
+			require.Empty(t, resp.FailedLockTokens)
+		}
+	})
+
 }

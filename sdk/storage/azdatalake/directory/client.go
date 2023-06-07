@@ -10,7 +10,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -39,7 +38,7 @@ func NewClientWithNoCredential(serviceURL string, options *azdatalake.ClientOpti
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 

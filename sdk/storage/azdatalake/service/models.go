@@ -9,6 +9,7 @@ package service
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
 type CreateFilesystemOptions = filesystem.CreateOptions
@@ -92,3 +93,6 @@ type ListFilesystemsOptions struct {
 }
 
 // TODO: Design formatter to convert to  blob
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential

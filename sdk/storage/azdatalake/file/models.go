@@ -119,3 +119,6 @@ type ExpiryTypeNever = exported.ExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential

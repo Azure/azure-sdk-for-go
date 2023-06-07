@@ -10,7 +10,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -39,7 +38,7 @@ func NewClientWithNoCredential(serviceURL string, options *azdatalake.ClientOpti
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *exported.SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *azdatalake.ClientOptions) (*Client, error) {
 	return nil, nil
 }
 
@@ -75,6 +74,8 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 
 // SetExpiry operation sets an expiry time on an existing file.
 func (f *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	// TODO: consider using the blob client set expiry
+	// TODO: call methods in set_expiry.go
 	return SetExpiryResponse{}, nil
 }
 

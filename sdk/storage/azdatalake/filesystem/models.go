@@ -9,6 +9,7 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 )
 
@@ -136,3 +137,6 @@ type ListDeletedPathsOptions struct {
 type UndeletePathOptions struct {
 	// placeholder
 }
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential

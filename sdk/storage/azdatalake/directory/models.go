@@ -9,6 +9,7 @@ package directory
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
@@ -130,3 +131,6 @@ type RemoveAccessControlRecursiveOptions = path.RemoveAccessControlRecursiveOpti
 
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions = path.UpdateAccessControlRecursiveOptions
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential

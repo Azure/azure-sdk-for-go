@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://ripark-eg-2.eastus-1.eventgrid.azure.net/topics/testtopic1:publish?api-version=2023-06-01-preview",
+      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/testtopic1:publish?api-version=2023-06-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -16,12 +16,12 @@
       "ResponseHeaders": {
         "Content-Length": "2",
         "Content-Type": "application/json",
-        "Date": "Thu, 08 Jun 2023 21:50:45 GMT"
+        "Date": "Thu, 08 Jun 2023 22:31:46 GMT"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://ripark-eg-2.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:receive?api-version=2023-06-01-preview\u0026maxEvents=2",
+      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:receive?api-version=2023-06-01-preview\u0026maxEvents=2",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -35,7 +35,7 @@
       "ResponseHeaders": {
         "Content-Length": "423",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Jun 2023 21:50:45 GMT"
+        "Date": "Thu, 08 Jun 2023 22:31:46 GMT"
       },
       "ResponseBody": {
         "value": [
@@ -69,7 +69,7 @@
       }
     },
     {
-      "RequestUri": "https://ripark-eg-2.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:acknowledge?api-version=2023-06-01-preview",
+      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:acknowledge?api-version=2023-06-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -88,7 +88,7 @@
       "ResponseHeaders": {
         "Content-Length": "66",
         "Content-Type": "application/json",
-        "Date": "Thu, 08 Jun 2023 21:50:45 GMT"
+        "Date": "Thu, 08 Jun 2023 22:31:46 GMT"
       },
       "ResponseBody": {
         "succeededLockTokens": [
@@ -98,7 +98,7 @@
       }
     },
     {
-      "RequestUri": "https://ripark-eg-2.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:acknowledge?api-version=2023-06-01-preview",
+      "RequestUri": "https://fake.eastus-1.eventgrid.azure.net/topics/testtopic1/eventsubscriptions/testsubscription1:acknowledge?api-version=2023-06-01-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -118,7 +118,7 @@
       "ResponseHeaders": {
         "Content-Length": "161",
         "Content-Type": "application/json",
-        "Date": "Thu, 08 Jun 2023 21:50:46 GMT"
+        "Date": "Thu, 08 Jun 2023 22:31:47 GMT"
       },
       "ResponseBody": {
         "succeededLockTokens": [

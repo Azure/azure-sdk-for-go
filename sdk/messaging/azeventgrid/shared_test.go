@@ -74,29 +74,24 @@ type clientWrapperOptions struct {
 }
 
 func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
-	testVars, err := loadEnv()
-	require.NoError(t, err)
+	var client *azeventgrid.Client
+	var tv testVars
 
-	transporter := newTransporterForTests(t, testVars)
-
-	c, err := azeventgrid.NewClientWithSharedKeyCredential(testVars.Endpoint, testVars.Key, &azeventgrid.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: transporter,
-		},
-	})
-	require.NoError(t, err)
-
-	purgePreviousEvents(t, c, testVars)
-
-	return clientWrapper{
-		Client:   c,
-		TestVars: testVars,
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		tmpTestVars, err := loadEnv()
+		require.NoError(t, err)
+		tv = tmpTestVars
+	} else {
+		tv = testVars{
+			Key:          "key",
+			Endpoint:     "https://fake.eastus-1.eventgrid.azure.net",
+			Topic:        "topic",
+			Subscription: "subscription",
+		}
 	}
-}
 
-func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter {
-	if testVars.KeyLogPath != "" && recording.GetRecordMode() == recording.LiveMode {
-		keyLogWriter, err := os.OpenFile(testVars.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
+	if recording.GetRecordMode() == recording.LiveMode {
+		keyLogWriter, err := os.OpenFile(tv.KeyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 		require.NoError(t, err)
 
 		t.Cleanup(func() { keyLogWriter.Close() })
@@ -106,51 +101,77 @@ func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter 
 			KeyLogWriter: keyLogWriter,
 		}
 
-		return &http.Client{Transport: tp}
-	} else {
-		transport, err := recording.NewRecordingHTTPClient(t, nil)
-		require.NoError(t, err)
+		httpClient := &http.Client{Transport: tp}
 
-		err = recording.Start(t, "./testdata", nil)
-		require.NoError(t, err)
-
-		if recording.GetRecordMode() == recording.RecordingMode ||
-			recording.GetRecordMode() == recording.PlaybackMode {
-			_ = recording.ResetProxy(nil)
-
-			err := recording.AddGeneralRegexSanitizer(
-				`"id":"00000000-0000-0000-0000-000000000000"`,
-				`"id":"[^"]+"`, nil)
-			require.NoError(t, err)
-
-			err = recording.AddGeneralRegexSanitizer(
-				`"lockToken":"fake-lock-token"`,
-				`"lockToken":\s*"[^"]+"`, nil)
-			require.NoError(t, err)
-
-			err = recording.AddGeneralRegexSanitizer(
-				`"lockTokens": ["fake-lock-token"]`,
-				`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
-			require.NoError(t, err)
-
-			err = recording.AddGeneralRegexSanitizer(
-				`"succeededLockTokens": ["fake-lock-token"]`,
-				`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
-			require.NoError(t, err)
-
-			err = recording.AddGeneralRegexSanitizer(
-				`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
-				`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
-			require.NoError(t, err)
-		}
-
-		t.Cleanup(func() {
-			err := recording.Stop(t, nil)
-			require.NoError(t, err)
+		tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, tv.Key, &azeventgrid.ClientOptions{
+			ClientOptions: azcore.ClientOptions{
+				Transport: httpClient,
+			},
 		})
+		require.NoError(t, err)
+		client = tmpClient
 
-		return transport
+		purgePreviousEvents(t, client, tv)
+	} else {
+		tmpClient, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, tv.Key, &azeventgrid.ClientOptions{
+			ClientOptions: azcore.ClientOptions{
+				Transport: newRecordingTransporter(t, tv),
+			},
+		})
+		require.NoError(t, err)
+		client = tmpClient
 	}
+
+	return clientWrapper{
+		Client:   client,
+		TestVars: tv,
+	}
+}
+
+func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	err = recording.Start(t, "./testdata", nil)
+	require.NoError(t, err)
+
+	// err = recording.ResetProxy(nil)
+	// require.NoError(t, err)
+
+	err = recording.AddURISanitizer("https://fake.eastus-1.eventgrid.azure.net", testVars.Endpoint, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(
+		`"id":"00000000-0000-0000-0000-000000000000"`,
+		`"id":"[^"]+"`, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(
+		`"lockToken":"fake-lock-token"`,
+		`"lockToken":\s*"[^"]+"`, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(
+		`"lockTokens": ["fake-lock-token"]`,
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(
+		`"succeededLockTokens": ["fake-lock-token"]`,
+		`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+	require.NoError(t, err)
+
+	err = recording.AddGeneralRegexSanitizer(
+		`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
+		`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
+	require.NoError(t, err)
+
+	t.Cleanup(func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	})
+
+	return transport
 }
 
 func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actual *azeventgrid.CloudEvent) {

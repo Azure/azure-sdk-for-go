@@ -1,6 +1,16 @@
 ## Release History
 
-## 0.3.0 (2023-06-08)
+### 0.3.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 0.3.0 (2023-06-08)
 
 ### Breatking Changes
 * Renamed `SASTokenParameter` to `SASTokenParameters`

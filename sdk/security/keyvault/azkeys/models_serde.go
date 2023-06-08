@@ -806,16 +806,16 @@ func (k *KeyVerifyResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LifetimeActions.
-func (l LifetimeActions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type LifetimeAction.
+func (l LifetimeAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "action", l.Action)
 	populate(objectMap, "trigger", l.Trigger)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeActions.
-func (l *LifetimeActions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeAction.
+func (l *LifetimeAction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", l, err)
@@ -837,16 +837,16 @@ func (l *LifetimeActions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LifetimeActionsTrigger.
-func (l LifetimeActionsTrigger) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type LifetimeActionTrigger.
+func (l LifetimeActionTrigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "timeAfterCreate", l.TimeAfterCreate)
 	populate(objectMap, "timeBeforeExpiry", l.TimeBeforeExpiry)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeActionsTrigger.
-func (l *LifetimeActionsTrigger) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeActionTrigger.
+func (l *LifetimeActionTrigger) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", l, err)
@@ -868,15 +868,15 @@ func (l *LifetimeActionsTrigger) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LifetimeActionsType.
-func (l LifetimeActionsType) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type LifetimeActionType.
+func (l LifetimeActionType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", l.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeActionsType.
-func (l *LifetimeActionsType) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type LifetimeActionType.
+func (l *LifetimeActionType) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", l, err)

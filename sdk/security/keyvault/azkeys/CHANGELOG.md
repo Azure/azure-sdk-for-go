@@ -1,6 +1,6 @@
 # Release History
 
-## 0.12.0 (unreleased)
+## 0.12.0 (2023-06-08)
 
 ### Breaking Changes
 
@@ -24,6 +24,7 @@
 * `JSONWebKeyEncryptionAlgorithm` to `EncryptionAlgorithm`
 * `JSONWebKeySignatureAlgorithm` to `SignatureAlgorithm`
 * `JSONWebKeyType` to `KeyType`
+* `LifetimeActions` to `LifetimeAction`
 * Removed `DeletionRecoveryLevel` type
 * Removed `SignatureAlgorithmRSNULL` constant
 * Removed `KeyOperationExport` constant

@@ -137,6 +137,11 @@ func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter 
 				`"succeededLockTokens": ["fake-lock-token"]`,
 				`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
 			require.NoError(t, err)
+
+			err = recording.AddGeneralRegexSanitizer(
+				`"lockTokens": ["fake-lock-token", "fake-lock-token"]`,
+				`"lockTokens":\s*\[\s*"[^"]+"\s*\,\s*"[^"]+"\s*\]`, nil)
+			require.NoError(t, err)
 		}
 
 		t.Cleanup(func() {

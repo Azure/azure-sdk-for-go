@@ -24,6 +24,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var fakeTestVars = testVars{
+	Key:          "key",
+	Endpoint:     "https://fake.eastus-1.eventgrid.azure.net",
+	Topic:        "topic",
+	Subscription: "subscription",
+}
+
 type testVars struct {
 	Key          string
 	Endpoint     string
@@ -82,12 +89,7 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		require.NoError(t, err)
 		tv = tmpTestVars
 	} else {
-		tv = testVars{
-			Key:          "key",
-			Endpoint:     "https://fake.eastus-1.eventgrid.azure.net",
-			Topic:        "topic",
-			Subscription: "subscription",
-		}
+		tv = fakeTestVars
 	}
 
 	if recording.GetRecordMode() == recording.LiveMode {
@@ -138,7 +140,9 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 	// err = recording.ResetProxy(nil)
 	// require.NoError(t, err)
 
-	err = recording.AddURISanitizer("https://fake.eastus-1.eventgrid.azure.net", testVars.Endpoint, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Endpoint, testVars.Endpoint, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, nil)
+	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, nil)
 	require.NoError(t, err)
 
 	err = recording.AddGeneralRegexSanitizer(

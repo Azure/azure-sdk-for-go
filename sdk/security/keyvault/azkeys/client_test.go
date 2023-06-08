@@ -620,12 +620,12 @@ func TestRotateKey(t *testing.T) {
 				Attributes: &azkeys.KeyRotationPolicyAttributes{
 					ExpiryTime: to.Ptr("P90D"),
 				},
-				LifetimeActions: []*azkeys.LifetimeActions{
+				LifetimeActions: []*azkeys.LifetimeAction{
 					{
-						Action: &azkeys.LifetimeActionsType{
+						Action: &azkeys.LifetimeActionType{
 							Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 						},
-						Trigger: &azkeys.LifetimeActionsTrigger{
+						Trigger: &azkeys.LifetimeActionTrigger{
 							TimeAfterCreate: timeAfterCreate,
 						},
 					},

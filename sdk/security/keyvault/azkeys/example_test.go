@@ -123,12 +123,12 @@ func ExampleClient_UpdateKey() {
 func ExampleClient_UpdateKeyRotationPolicy() {
 	// this policy rotates the key every 18 months
 	policy := azkeys.KeyRotationPolicy{
-		LifetimeActions: []*azkeys.LifetimeActions{
+		LifetimeActions: []*azkeys.LifetimeAction{
 			{
-				Action: &azkeys.LifetimeActionsType{
+				Action: &azkeys.LifetimeActionType{
 					Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
+				Trigger: &azkeys.LifetimeActionTrigger{
 					TimeAfterCreate: to.Ptr("P18M"),
 				},
 			},

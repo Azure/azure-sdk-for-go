@@ -85,6 +85,17 @@ directive:
     where: $.definitions.RestoreKeyParameters.properties.value
     transform: $["x-ms-client-name"] = "KeyBackup"
 
+  # Change LifetimeActions to LifetimeAction
+  - rename-model:
+      from: LifetimeActions
+      to: LifetimeAction
+  - rename-model:
+      from: LifetimeActionsType
+      to: LifetimeActionType
+  - rename-model:
+      from: LifetimeActionsTrigger
+      to: LifetimeActionTrigger
+
   # Remove MaxResults parameter
   - where: "$.paths..*"
     remove-parameter:

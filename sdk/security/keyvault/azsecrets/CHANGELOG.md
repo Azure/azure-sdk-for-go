@@ -1,6 +1,6 @@
 # Release History
 
-## 0.14.0 (2023-06-06)
+## 0.14.0 (2023-06-08)
 
 ### Breaking Changes
 * Renamed `Client.ListSecrets` to `Client.ListSecretProperties`

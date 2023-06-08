@@ -437,7 +437,7 @@ type KeyRotationPolicy struct {
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two
 	// items at maximum: one for rotate, one for notify. Notification time would be
 	// default to 30 days before expiry and it is not configurable.
-	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+	LifetimeActions []*LifetimeAction `json:"lifetimeActions,omitempty"`
 
 	// READ-ONLY; The key policy id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -462,17 +462,17 @@ type KeyVerifyResult struct {
 	Value *bool `json:"value,omitempty" azure:"ro"`
 }
 
-// LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
-type LifetimeActions struct {
+// LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+type LifetimeAction struct {
 	// The action that will be executed.
-	Action *LifetimeActionsType `json:"action,omitempty"`
+	Action *LifetimeActionType `json:"action,omitempty"`
 
 	// The condition that will execute the action.
-	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
+	Trigger *LifetimeActionTrigger `json:"trigger,omitempty"`
 }
 
-// LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
-type LifetimeActionsTrigger struct {
+// LifetimeActionTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionTrigger struct {
 	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
 	// days : "P90D"
 	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
@@ -481,8 +481,8 @@ type LifetimeActionsTrigger struct {
 	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
 }
 
-// LifetimeActionsType - The action that will be executed.
-type LifetimeActionsType struct {
+// LifetimeActionType - The action that will be executed.
+type LifetimeActionType struct {
 	// The type of the action.
 	Type *KeyRotationPolicyAction `json:"type,omitempty"`
 }

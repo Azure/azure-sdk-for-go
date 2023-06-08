@@ -114,6 +114,31 @@ func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter 
 		err = recording.Start(t, "./testdata", nil)
 		require.NoError(t, err)
 
+		if recording.GetRecordMode() == recording.RecordingMode ||
+			recording.GetRecordMode() == recording.PlaybackMode {
+			_ = recording.ResetProxy(nil)
+
+			err := recording.AddGeneralRegexSanitizer(
+				`"id":"00000000-0000-0000-0000-000000000000"`,
+				`"id":"[^"]+"`, nil)
+			require.NoError(t, err)
+
+			err = recording.AddGeneralRegexSanitizer(
+				`"lockToken":"fake-lock-token"`,
+				`"lockToken":\s*"[^"]+"`, nil)
+			require.NoError(t, err)
+
+			err = recording.AddGeneralRegexSanitizer(
+				`"lockTokens": ["fake-lock-token"]`,
+				`"lockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+			require.NoError(t, err)
+
+			err = recording.AddGeneralRegexSanitizer(
+				`"succeededLockTokens": ["fake-lock-token"]`,
+				`"succeededLockTokens":\s*\[\s*"[^"]+"\s*\]`, nil)
+			require.NoError(t, err)
+		}
+
 		t.Cleanup(func() {
 			err := recording.Stop(t, nil)
 			require.NoError(t, err)
@@ -121,7 +146,6 @@ func newTransporterForTests(t *testing.T, testVars testVars) policy.Transporter 
 
 		return transport
 	}
-
 }
 
 func requireEqualCloudEvent(t *testing.T, expected *azeventgrid.CloudEvent, actual *azeventgrid.CloudEvent) {

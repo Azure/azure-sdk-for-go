@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Refine some logics and comments
 
 ## 0.2.0 (2023-06-06)
 

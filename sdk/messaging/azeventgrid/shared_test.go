@@ -141,7 +141,11 @@ func newRecordingTransporter(t *testing.T, testVars testVars) policy.Transporter
 	// require.NoError(t, err)
 
 	err = recording.AddURISanitizer(fakeTestVars.Endpoint, testVars.Endpoint, nil)
+	require.NoError(t, err)
+
 	err = recording.AddURISanitizer(fakeTestVars.Topic, testVars.Topic, nil)
+	require.NoError(t, err)
+
 	err = recording.AddURISanitizer(fakeTestVars.Subscription, testVars.Subscription, nil)
 	require.NoError(t, err)
 

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -117,15 +118,19 @@ func (t *TagsServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 func (t *TagsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if t.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/tagNames/(?P<tagName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("tagName")], nil)
+	tagNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), tagNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -142,11 +147,11 @@ func (t *TagsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.R
 
 func (t *TagsServerTransport) dispatchCreateOrUpdateAtScope(req *http.Request) (*http.Response, error) {
 	if t.srv.CreateOrUpdateAtScope == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdateAtScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateAtScope not implemented")}
 	}
-	const regexStr = "/(?P<scope>[a-zA-Z0-9-_]+)/providers/Microsoft.Resources/tags/default"
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/tags/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -154,7 +159,11 @@ func (t *TagsServerTransport) dispatchCreateOrUpdateAtScope(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.CreateOrUpdateAtScope(req.Context(), matches[regex.SubexpIndex("scope")], body, nil)
+	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CreateOrUpdateAtScope(req.Context(), scopeUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -171,15 +180,23 @@ func (t *TagsServerTransport) dispatchCreateOrUpdateAtScope(req *http.Request) (
 
 func (t *TagsServerTransport) dispatchCreateOrUpdateValue(req *http.Request) (*http.Response, error) {
 	if t.srv.CreateOrUpdateValue == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdateValue not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateValue not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/tagNames/(?P<tagName>[a-zA-Z0-9-_]+)/tagValues/(?P<tagValue>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagValues/(?P<tagValue>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.CreateOrUpdateValue(req.Context(), matches[regex.SubexpIndex("tagName")], matches[regex.SubexpIndex("tagValue")], nil)
+	tagNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
+	if err != nil {
+		return nil, err
+	}
+	tagValueUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagValue")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CreateOrUpdateValue(req.Context(), tagNameUnescaped, tagValueUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -196,15 +213,19 @@ func (t *TagsServerTransport) dispatchCreateOrUpdateValue(req *http.Request) (*h
 
 func (t *TagsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if t.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/tagNames/(?P<tagName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.Delete(req.Context(), matches[regex.SubexpIndex("tagName")], nil)
+	tagNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Delete(req.Context(), tagNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -221,15 +242,19 @@ func (t *TagsServerTransport) dispatchDelete(req *http.Request) (*http.Response,
 
 func (t *TagsServerTransport) dispatchDeleteAtScope(req *http.Request) (*http.Response, error) {
 	if t.srv.DeleteAtScope == nil {
-		return nil, &nonRetriableError{errors.New("method DeleteAtScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method DeleteAtScope not implemented")}
 	}
-	const regexStr = "/(?P<scope>[a-zA-Z0-9-_]+)/providers/Microsoft.Resources/tags/default"
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/tags/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.DeleteAtScope(req.Context(), matches[regex.SubexpIndex("scope")], nil)
+	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.DeleteAtScope(req.Context(), scopeUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -246,15 +271,23 @@ func (t *TagsServerTransport) dispatchDeleteAtScope(req *http.Request) (*http.Re
 
 func (t *TagsServerTransport) dispatchDeleteValue(req *http.Request) (*http.Response, error) {
 	if t.srv.DeleteValue == nil {
-		return nil, &nonRetriableError{errors.New("method DeleteValue not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method DeleteValue not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/tagNames/(?P<tagName>[a-zA-Z0-9-_]+)/tagValues/(?P<tagValue>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames/(?P<tagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagValues/(?P<tagValue>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.DeleteValue(req.Context(), matches[regex.SubexpIndex("tagName")], matches[regex.SubexpIndex("tagValue")], nil)
+	tagNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
+	if err != nil {
+		return nil, err
+	}
+	tagValueUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("tagValue")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.DeleteValue(req.Context(), tagNameUnescaped, tagValueUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -271,15 +304,19 @@ func (t *TagsServerTransport) dispatchDeleteValue(req *http.Request) (*http.Resp
 
 func (t *TagsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response, error) {
 	if t.srv.GetAtScope == nil {
-		return nil, &nonRetriableError{errors.New("method GetAtScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
 	}
-	const regexStr = "/(?P<scope>[a-zA-Z0-9-_]+)/providers/Microsoft.Resources/tags/default"
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/tags/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := t.srv.GetAtScope(req.Context(), matches[regex.SubexpIndex("scope")], nil)
+	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.GetAtScope(req.Context(), scopeUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -296,12 +333,12 @@ func (t *TagsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Respo
 
 func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if t.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/tagNames"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -326,11 +363,11 @@ func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 
 func (t *TagsServerTransport) dispatchUpdateAtScope(req *http.Request) (*http.Response, error) {
 	if t.srv.UpdateAtScope == nil {
-		return nil, &nonRetriableError{errors.New("method UpdateAtScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method UpdateAtScope not implemented")}
 	}
-	const regexStr = "/(?P<scope>[a-zA-Z0-9-_]+)/providers/Microsoft.Resources/tags/default"
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/tags/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -338,7 +375,11 @@ func (t *TagsServerTransport) dispatchUpdateAtScope(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.UpdateAtScope(req.Context(), matches[regex.SubexpIndex("scope")], body, nil)
+	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.UpdateAtScope(req.Context(), scopeUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

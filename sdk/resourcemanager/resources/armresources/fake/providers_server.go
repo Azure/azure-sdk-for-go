@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 )
@@ -113,23 +114,31 @@ func (p *ProvidersServerTransport) Do(req *http.Request) (*http.Response, error)
 
 func (p *ProvidersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
 	var options *armresources.ProvidersClientGetOptions
 	if expandParam != nil {
 		options = &armresources.ProvidersClientGetOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], options)
+	respr, errRespr := p.srv.Get(req.Context(), resourceProviderNamespaceUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -146,23 +155,31 @@ func (p *ProvidersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 
 func (p *ProvidersServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Response, error) {
 	if p.srv.GetAtTenantScope == nil {
-		return nil, &nonRetriableError{errors.New("method GetAtTenantScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method GetAtTenantScope not implemented")}
 	}
-	const regexStr = "/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)"
+	const regexStr = `/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
 	var options *armresources.ProvidersClientGetAtTenantScopeOptions
 	if expandParam != nil {
 		options = &armresources.ProvidersClientGetAtTenantScopeOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.GetAtTenantScope(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], options)
+	respr, errRespr := p.srv.GetAtTenantScope(req.Context(), resourceProviderNamespaceUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -179,17 +196,21 @@ func (p *ProvidersServerTransport) dispatchGetAtTenantScope(req *http.Request) (
 
 func (p *ProvidersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if p.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		expandParam := getOptional(qp.Get("$expand"))
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(expandUnescaped)
 		var options *armresources.ProvidersClientListOptions
 		if expandParam != nil {
 			options = &armresources.ProvidersClientListOptions{
@@ -217,11 +238,15 @@ func (p *ProvidersServerTransport) dispatchNewListPager(req *http.Request) (*htt
 
 func (p *ProvidersServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListAtTenantScopePager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListAtTenantScopePager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
 	}
 	if p.newListAtTenantScopePager == nil {
 		qp := req.URL.Query()
-		expandParam := getOptional(qp.Get("$expand"))
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(expandUnescaped)
 		var options *armresources.ProvidersClientListAtTenantScopeOptions
 		if expandParam != nil {
 			options = &armresources.ProvidersClientListAtTenantScopeOptions{
@@ -249,15 +274,19 @@ func (p *ProvidersServerTransport) dispatchNewListAtTenantScopePager(req *http.R
 
 func (p *ProvidersServerTransport) dispatchProviderPermissions(req *http.Request) (*http.Response, error) {
 	if p.srv.ProviderPermissions == nil {
-		return nil, &nonRetriableError{errors.New("method ProviderPermissions not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ProviderPermissions not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)/providerPermissions"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providerPermissions`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.ProviderPermissions(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], nil)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.ProviderPermissions(req.Context(), resourceProviderNamespaceUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -274,15 +303,19 @@ func (p *ProvidersServerTransport) dispatchProviderPermissions(req *http.Request
 
 func (p *ProvidersServerTransport) dispatchRegister(req *http.Request) (*http.Response, error) {
 	if p.srv.Register == nil {
-		return nil, &nonRetriableError{errors.New("method Register not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Register not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)/register"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/register`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armresources.ProviderRegistrationRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
 	if err != nil {
 		return nil, err
 	}
@@ -292,7 +325,7 @@ func (p *ProvidersServerTransport) dispatchRegister(req *http.Request) (*http.Re
 			Properties: &body,
 		}
 	}
-	respr, errRespr := p.srv.Register(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], options)
+	respr, errRespr := p.srv.Register(req.Context(), resourceProviderNamespaceUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -309,15 +342,23 @@ func (p *ProvidersServerTransport) dispatchRegister(req *http.Request) (*http.Re
 
 func (p *ProvidersServerTransport) dispatchRegisterAtManagementGroupScope(req *http.Request) (*http.Response, error) {
 	if p.srv.RegisterAtManagementGroupScope == nil {
-		return nil, &nonRetriableError{errors.New("method RegisterAtManagementGroupScope not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method RegisterAtManagementGroupScope not implemented")}
 	}
-	const regexStr = "/providers/Microsoft.Management/managementGroups/(?P<groupId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)/register"
+	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/register`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.RegisterAtManagementGroupScope(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], matches[regex.SubexpIndex("groupId")], nil)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.RegisterAtManagementGroupScope(req.Context(), resourceProviderNamespaceUnescaped, groupIDUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -334,15 +375,19 @@ func (p *ProvidersServerTransport) dispatchRegisterAtManagementGroupScope(req *h
 
 func (p *ProvidersServerTransport) dispatchUnregister(req *http.Request) (*http.Response, error) {
 	if p.srv.Unregister == nil {
-		return nil, &nonRetriableError{errors.New("method Unregister not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Unregister not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)/unregister"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unregister`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Unregister(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], nil)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Unregister(req.Context(), resourceProviderNamespaceUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

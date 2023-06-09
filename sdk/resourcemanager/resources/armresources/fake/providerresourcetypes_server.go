@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -67,23 +68,31 @@ func (p *ProviderResourceTypesServerTransport) Do(req *http.Request) (*http.Resp
 
 func (p *ProviderResourceTypesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if p.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9-_]+)/resourceTypes"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceTypes`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	resourceProviderNamespaceUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
 	var options *armresources.ProviderResourceTypesClientListOptions
 	if expandParam != nil {
 		options = &armresources.ProviderResourceTypesClientListOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.List(req.Context(), matches[regex.SubexpIndex("resourceProviderNamespace")], options)
+	respr, errRespr := p.srv.List(req.Context(), resourceProviderNamespaceUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

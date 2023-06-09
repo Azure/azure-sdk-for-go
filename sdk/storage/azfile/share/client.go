@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
@@ -34,7 +35,7 @@ type Client base.Client[generated.ShareClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	azClient, err := azcore.NewClient("share.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +51,7 @@ func NewClientWithSharedKeyCredential(shareURL string, cred *SharedKeyCredential
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	azClient, err := azcore.NewClient("share.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -102,14 +103,34 @@ func (s *Client) URL() string {
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().InternalClient(), s.sharedKey(), s.getClientOptions()))
+
+	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(s.getClientOptions().ClientOptions))
+	if err != nil {
+		if log.Should(exported.EventError) {
+			log.Writef(exported.EventError, err.Error())
+		}
+		return nil
+	}
+
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, azClient, s.sharedKey(), s.getClientOptions()))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient(), s.sharedKey(), s.getClientOptions()))
+
+	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(s.getClientOptions().ClientOptions))
+	if err != nil {
+		if log.Should(exported.EventError) {
+			log.Writef(exported.EventError, err.Error())
+		}
+		return nil
+	}
+
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, azClient, s.sharedKey(), s.getClientOptions()))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -33,7 +34,7 @@ type Client base.Client[generated.DirectoryClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	azClient, err := azcore.NewClient("directory.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +50,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	azClient, err := azcore.NewClient("directory.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +113,17 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
+
+	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(d.getClientOptions().ClientOptions))
+	if err != nil {
+		if log.Should(exported.EventError) {
+			log.Writef(exported.EventError, err.Error())
+		}
+		return nil
+	}
+
+	return (*file.Client)(base.NewFileClient(fileURL, azClient, d.sharedKey(), d.getClientOptions()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

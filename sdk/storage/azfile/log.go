@@ -13,4 +13,7 @@ import (
 const (
 	// EventUpload is used for logging events related to upload operation.
 	EventUpload = exported.EventUpload
+
+	// EventError is used for logging errors.
+	EventError = exported.EventError
 )

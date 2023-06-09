@@ -62,6 +62,13 @@ const (
 	FileAttributesDirectory = "Directory"
 )
 
+const (
+	ServiceClient   = "service.Client"
+	ShareClient     = "share.Client"
+	DirectoryClient = "directory.Client"
+	FileClient      = "file.Client"
+)
+
 func GetClientOptions[T any](o *T) *T {
 	if o == nil {
 		return new(T)

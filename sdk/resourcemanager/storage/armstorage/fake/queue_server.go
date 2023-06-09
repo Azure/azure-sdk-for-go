@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -93,11 +94,11 @@ func (q *QueueServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 func (q *QueueServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
 	if q.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("method Create not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/queueServices/default/queues/(?P<queueName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues/(?P<queueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -105,7 +106,19 @@ func (q *QueueServerTransport) dispatchCreate(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := q.srv.Create(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("queueName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	queueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.Create(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, queueNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -122,15 +135,27 @@ func (q *QueueServerTransport) dispatchCreate(req *http.Request) (*http.Response
 
 func (q *QueueServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if q.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/queueServices/default/queues/(?P<queueName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues/(?P<queueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := q.srv.Delete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("queueName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	queueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.Delete(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, queueNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -147,15 +172,27 @@ func (q *QueueServerTransport) dispatchDelete(req *http.Request) (*http.Response
 
 func (q *QueueServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if q.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/queueServices/default/queues/(?P<queueName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues/(?P<queueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := q.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("queueName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	queueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.Get(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, queueNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -172,18 +209,34 @@ func (q *QueueServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 
 func (q *QueueServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if q.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if q.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/queueServices/default/queues"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		maxpagesizeParam := getOptional(qp.Get("$maxpagesize"))
-		filterParam := getOptional(qp.Get("$filter"))
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam := getOptional(maxpagesizeUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armstorage.QueueClientListOptions
 		if maxpagesizeParam != nil || filterParam != nil {
 			options = &armstorage.QueueClientListOptions{
@@ -191,7 +244,7 @@ func (q *QueueServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 				Filter:      filterParam,
 			}
 		}
-		resp := q.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], options)
+		resp := q.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, options)
 		q.newListPager = &resp
 		server.PagerResponderInjectNextLinks(q.newListPager, req, func(page *armstorage.QueueClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -212,11 +265,11 @@ func (q *QueueServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 
 func (q *QueueServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if q.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("method Update not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/queueServices/default/queues/(?P<queueName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues/(?P<queueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -224,7 +277,19 @@ func (q *QueueServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := q.srv.Update(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("queueName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	queueNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("queueName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.Update(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, queueNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

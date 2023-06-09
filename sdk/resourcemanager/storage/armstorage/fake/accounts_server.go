@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -165,16 +166,24 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 
 func (a *AccountsServerTransport) dispatchBeginAbortHierarchicalNamespaceMigration(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginAbortHierarchicalNamespaceMigration == nil {
-		return nil, &nonRetriableError{errors.New("method BeginAbortHierarchicalNamespaceMigration not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginAbortHierarchicalNamespaceMigration not implemented")}
 	}
 	if a.beginAbortHierarchicalNamespaceMigration == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/aborthnsonmigration"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/aborthnsonmigration`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := a.srv.BeginAbortHierarchicalNamespaceMigration(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginAbortHierarchicalNamespaceMigration(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -198,11 +207,11 @@ func (a *AccountsServerTransport) dispatchBeginAbortHierarchicalNamespaceMigrati
 
 func (a *AccountsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
 	if a.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("method CheckNameAvailability not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/checkNameAvailability"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -227,12 +236,12 @@ func (a *AccountsServerTransport) dispatchCheckNameAvailability(req *http.Reques
 
 func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginCreate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
 	if a.beginCreate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -240,7 +249,15 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCreate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -264,15 +281,23 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 
 func (a *AccountsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := a.srv.Delete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -289,24 +314,36 @@ func (a *AccountsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 
 func (a *AccountsServerTransport) dispatchBeginFailover(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginFailover == nil {
-		return nil, &nonRetriableError{errors.New("method BeginFailover not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
 	}
 	if a.beginFailover == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/failover"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		failoverTypeParam := getOptional(qp.Get("failoverType"))
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		failoverTypeUnescaped, err := url.QueryUnescape(qp.Get("failoverType"))
+		if err != nil {
+			return nil, err
+		}
+		failoverTypeParam := getOptional(failoverTypeUnescaped)
 		var options *armstorage.AccountsClientBeginFailoverOptions
 		if failoverTypeParam != nil {
 			options = &armstorage.AccountsClientBeginFailoverOptions{
 				FailoverType: failoverTypeParam,
 			}
 		}
-		respr, errRespr := a.srv.BeginFailover(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], options)
+		respr, errRespr := a.srv.BeginFailover(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -330,23 +367,35 @@ func (a *AccountsServerTransport) dispatchBeginFailover(req *http.Request) (*htt
 
 func (a *AccountsServerTransport) dispatchGetProperties(req *http.Request) (*http.Response, error) {
 	if a.srv.GetProperties == nil {
-		return nil, &nonRetriableError{errors.New("method GetProperties not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method GetProperties not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(armstorage.StorageAccountExpand(qp.Get("$expand")))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armstorage.StorageAccountExpand(expandUnescaped))
 	var options *armstorage.AccountsClientGetPropertiesOptions
 	if expandParam != nil {
 		options = &armstorage.AccountsClientGetPropertiesOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := a.srv.GetProperties(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], options)
+	respr, errRespr := a.srv.GetProperties(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -363,17 +412,29 @@ func (a *AccountsServerTransport) dispatchGetProperties(req *http.Request) (*htt
 
 func (a *AccountsServerTransport) dispatchBeginHierarchicalNamespaceMigration(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginHierarchicalNamespaceMigration == nil {
-		return nil, &nonRetriableError{errors.New("method BeginHierarchicalNamespaceMigration not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginHierarchicalNamespaceMigration not implemented")}
 	}
 	if a.beginHierarchicalNamespaceMigration == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/hnsonmigration"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hnsonmigration`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		respr, errRespr := a.srv.BeginHierarchicalNamespaceMigration(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], qp.Get("requestType"), nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		requestTypeUnescaped, err := url.QueryUnescape(qp.Get("requestType"))
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginHierarchicalNamespaceMigration(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, requestTypeUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -397,12 +458,12 @@ func (a *AccountsServerTransport) dispatchBeginHierarchicalNamespaceMigration(re
 
 func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if a.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -427,11 +488,11 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 
 func (a *AccountsServerTransport) dispatchListAccountSAS(req *http.Request) (*http.Response, error) {
 	if a.srv.ListAccountSAS == nil {
-		return nil, &nonRetriableError{errors.New("method ListAccountSAS not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListAccountSAS not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/ListAccountSas"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ListAccountSas`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -439,7 +500,15 @@ func (a *AccountsServerTransport) dispatchListAccountSAS(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.ListAccountSAS(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListAccountSAS(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -456,16 +525,20 @@ func (a *AccountsServerTransport) dispatchListAccountSAS(req *http.Request) (*ht
 
 func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByResourceGroupPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	if a.newListByResourceGroupPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := a.srv.NewListByResourceGroupPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		a.newListByResourceGroupPager = &resp
 		server.PagerResponderInjectNextLinks(a.newListByResourceGroupPager, req, func(page *armstorage.AccountsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -486,23 +559,35 @@ func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.
 
 func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
 	if a.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("method ListKeys not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/listKeys"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
 	var options *armstorage.AccountsClientListKeysOptions
 	if expandParam != nil {
 		options = &armstorage.AccountsClientListKeysOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := a.srv.ListKeys(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], options)
+	respr, errRespr := a.srv.ListKeys(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -519,11 +604,11 @@ func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Res
 
 func (a *AccountsServerTransport) dispatchListServiceSAS(req *http.Request) (*http.Response, error) {
 	if a.srv.ListServiceSAS == nil {
-		return nil, &nonRetriableError{errors.New("method ListServiceSAS not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListServiceSAS not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/ListServiceSas"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ListServiceSas`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -531,7 +616,15 @@ func (a *AccountsServerTransport) dispatchListServiceSAS(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.ListServiceSAS(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListServiceSAS(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -548,11 +641,11 @@ func (a *AccountsServerTransport) dispatchListServiceSAS(req *http.Request) (*ht
 
 func (a *AccountsServerTransport) dispatchRegenerateKey(req *http.Request) (*http.Response, error) {
 	if a.srv.RegenerateKey == nil {
-		return nil, &nonRetriableError{errors.New("method RegenerateKey not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method RegenerateKey not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/regenerateKey"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regenerateKey`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -560,7 +653,15 @@ func (a *AccountsServerTransport) dispatchRegenerateKey(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.RegenerateKey(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.RegenerateKey(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -577,12 +678,12 @@ func (a *AccountsServerTransport) dispatchRegenerateKey(req *http.Request) (*htt
 
 func (a *AccountsServerTransport) dispatchBeginRestoreBlobRanges(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginRestoreBlobRanges == nil {
-		return nil, &nonRetriableError{errors.New("method BeginRestoreBlobRanges not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreBlobRanges not implemented")}
 	}
 	if a.beginRestoreBlobRanges == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/restoreBlobRanges"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restoreBlobRanges`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -590,7 +691,15 @@ func (a *AccountsServerTransport) dispatchBeginRestoreBlobRanges(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginRestoreBlobRanges(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginRestoreBlobRanges(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -614,15 +723,23 @@ func (a *AccountsServerTransport) dispatchBeginRestoreBlobRanges(req *http.Reque
 
 func (a *AccountsServerTransport) dispatchRevokeUserDelegationKeys(req *http.Request) (*http.Response, error) {
 	if a.srv.RevokeUserDelegationKeys == nil {
-		return nil, &nonRetriableError{errors.New("method RevokeUserDelegationKeys not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method RevokeUserDelegationKeys not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/revokeUserDelegationKeys"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revokeUserDelegationKeys`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := a.srv.RevokeUserDelegationKeys(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.RevokeUserDelegationKeys(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -639,11 +756,11 @@ func (a *AccountsServerTransport) dispatchRevokeUserDelegationKeys(req *http.Req
 
 func (a *AccountsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("method Update not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -651,7 +768,15 @@ func (a *AccountsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Update(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

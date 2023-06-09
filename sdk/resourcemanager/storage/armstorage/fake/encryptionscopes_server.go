@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -88,15 +89,27 @@ func (e *EncryptionScopesServerTransport) Do(req *http.Request) (*http.Response,
 
 func (e *EncryptionScopesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/encryptionScopes/(?P<encryptionScopeName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encryptionScopes/(?P<encryptionScopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := e.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("encryptionScopeName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	encryptionScopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("encryptionScopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, encryptionScopeNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -113,17 +126,29 @@ func (e *EncryptionScopesServerTransport) dispatchGet(req *http.Request) (*http.
 
 func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if e.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/encryptionScopes"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encryptionScopes`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		maxpagesizeParam, err := parseOptional(qp.Get("$maxpagesize"), func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -133,8 +158,16 @@ func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
-		includeParam := getOptional(armstorage.ListEncryptionScopesInclude(qp.Get("$include")))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		includeUnescaped, err := url.QueryUnescape(qp.Get("$include"))
+		if err != nil {
+			return nil, err
+		}
+		includeParam := getOptional(armstorage.ListEncryptionScopesInclude(includeUnescaped))
 		var options *armstorage.EncryptionScopesClientListOptions
 		if maxpagesizeParam != nil || filterParam != nil || includeParam != nil {
 			options = &armstorage.EncryptionScopesClientListOptions{
@@ -143,7 +176,7 @@ func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request
 				Include:     includeParam,
 			}
 		}
-		resp := e.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], options)
+		resp := e.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, options)
 		e.newListPager = &resp
 		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armstorage.EncryptionScopesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -164,11 +197,11 @@ func (e *EncryptionScopesServerTransport) dispatchNewListPager(req *http.Request
 
 func (e *EncryptionScopesServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
 	if e.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("method Patch not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/encryptionScopes/(?P<encryptionScopeName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encryptionScopes/(?P<encryptionScopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -176,7 +209,19 @@ func (e *EncryptionScopesServerTransport) dispatchPatch(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.Patch(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("encryptionScopeName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	encryptionScopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("encryptionScopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Patch(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, encryptionScopeNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -193,11 +238,11 @@ func (e *EncryptionScopesServerTransport) dispatchPatch(req *http.Request) (*htt
 
 func (e *EncryptionScopesServerTransport) dispatchPut(req *http.Request) (*http.Response, error) {
 	if e.srv.Put == nil {
-		return nil, &nonRetriableError{errors.New("method Put not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9-_]+)/encryptionScopes/(?P<encryptionScopeName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encryptionScopes/(?P<encryptionScopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -205,7 +250,19 @@ func (e *EncryptionScopesServerTransport) dispatchPut(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.Put(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("accountName")], matches[regex.SubexpIndex("encryptionScopeName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	encryptionScopeNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("encryptionScopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Put(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, encryptionScopeNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

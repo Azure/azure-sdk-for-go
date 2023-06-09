@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -67,15 +68,27 @@ func (s *ServiceAssociationLinksServerTransport) Do(req *http.Request) (*http.Re
 
 func (s *ServiceAssociationLinksServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if s.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9-_]+)/subnets/(?P<subnetName>[a-zA-Z0-9-_]+)/ServiceAssociationLinks"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subnets/(?P<subnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ServiceAssociationLinks`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.List(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkName")], matches[regex.SubexpIndex("subnetName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	subnetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("subnetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.List(req.Context(), resourceGroupNameUnescaped, virtualNetworkNameUnescaped, subnetNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

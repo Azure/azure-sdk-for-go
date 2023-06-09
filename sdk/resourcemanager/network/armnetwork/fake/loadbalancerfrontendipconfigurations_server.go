@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,15 +76,27 @@ func (l *LoadBalancerFrontendIPConfigurationsServerTransport) Do(req *http.Reque
 
 func (l *LoadBalancerFrontendIPConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)/frontendIPConfigurations/(?P<frontendIPConfigurationName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendIPConfigurations/(?P<frontendIPConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := l.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], matches[regex.SubexpIndex("frontendIPConfigurationName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	frontendIPConfigurationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("frontendIPConfigurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameUnescaped, loadBalancerNameUnescaped, frontendIPConfigurationNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -100,16 +113,24 @@ func (l *LoadBalancerFrontendIPConfigurationsServerTransport) dispatchGet(req *h
 
 func (l *LoadBalancerFrontendIPConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if l.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)/frontendIPConfigurations"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendIPConfigurations`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := l.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := l.srv.NewListPager(resourceGroupNameUnescaped, loadBalancerNameUnescaped, nil)
 		l.newListPager = &resp
 		server.PagerResponderInjectNextLinks(l.newListPager, req, func(page *armnetwork.LoadBalancerFrontendIPConfigurationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

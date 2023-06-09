@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -68,12 +69,12 @@ func (i *InboundSecurityRuleServerTransport) Do(req *http.Request) (*http.Respon
 
 func (i *InboundSecurityRuleServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if i.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if i.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[a-zA-Z0-9-_]+)/inboundSecurityRules/(?P<ruleCollectionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inboundSecurityRules/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -81,7 +82,19 @@ func (i *InboundSecurityRuleServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkVirtualApplianceName")], matches[regex.SubexpIndex("ruleCollectionName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkVirtualApplianceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleCollectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkVirtualApplianceNameUnescaped, ruleCollectionNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

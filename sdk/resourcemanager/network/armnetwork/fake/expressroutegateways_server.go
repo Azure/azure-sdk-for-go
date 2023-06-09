@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -100,12 +101,12 @@ func (e *ExpressRouteGatewaysServerTransport) Do(req *http.Request) (*http.Respo
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if e.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -113,7 +114,15 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRouteGatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expressRouteGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, expressRouteGatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -137,16 +146,24 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *h
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if e.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := e.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRouteGatewayName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expressRouteGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, expressRouteGatewayNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -170,15 +187,23 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Requ
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := e.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRouteGatewayName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	expressRouteGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameUnescaped, expressRouteGatewayNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -195,15 +220,19 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchGet(req *http.Request) (*h
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchListByResourceGroup(req *http.Request) (*http.Response, error) {
 	if e.srv.ListByResourceGroup == nil {
-		return nil, &nonRetriableError{errors.New("method ListByResourceGroup not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListByResourceGroup not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := e.srv.ListByResourceGroup(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListByResourceGroup(req.Context(), resourceGroupNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -220,11 +249,11 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchListByResourceGroup(req *h
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchListBySubscription(req *http.Request) (*http.Response, error) {
 	if e.srv.ListBySubscription == nil {
-		return nil, &nonRetriableError{errors.New("method ListBySubscription not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListBySubscription not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -245,12 +274,12 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchListBySubscription(req *ht
 
 func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginUpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("method BeginUpdateTags not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
 	if e.beginUpdateTags == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -258,7 +287,15 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := e.srv.BeginUpdateTags(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRouteGatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expressRouteGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdateTags(req.Context(), resourceGroupNameUnescaped, expressRouteGatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

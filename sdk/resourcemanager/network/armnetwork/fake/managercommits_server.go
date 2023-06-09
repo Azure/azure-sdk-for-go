@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -68,12 +69,12 @@ func (m *ManagerCommitsServerTransport) Do(req *http.Request) (*http.Response, e
 
 func (m *ManagerCommitsServerTransport) dispatchBeginPost(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginPost == nil {
-		return nil, &nonRetriableError{errors.New("method BeginPost not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginPost not implemented")}
 	}
 	if m.beginPost == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/commit"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commit`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -81,7 +82,15 @@ func (m *ManagerCommitsServerTransport) dispatchBeginPost(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginPost(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginPost(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

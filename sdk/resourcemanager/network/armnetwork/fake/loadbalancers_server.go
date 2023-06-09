@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -116,12 +117,12 @@ func (l *LoadBalancersServerTransport) Do(req *http.Request) (*http.Response, er
 
 func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if l.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -129,7 +130,15 @@ func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, loadBalancerNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -153,16 +162,24 @@ func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 
 func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if l.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := l.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, loadBalancerNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -186,23 +203,35 @@ func (l *LoadBalancersServerTransport) dispatchBeginDelete(req *http.Request) (*
 
 func (l *LoadBalancersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
 	var options *armnetwork.LoadBalancersClientGetOptions
 	if expandParam != nil {
 		options = &armnetwork.LoadBalancersClientGetOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := l.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], options)
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameUnescaped, loadBalancerNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -219,16 +248,20 @@ func (l *LoadBalancersServerTransport) dispatchGet(req *http.Request) (*http.Res
 
 func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if l.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := l.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := l.srv.NewListPager(resourceGroupNameUnescaped, nil)
 		l.newListPager = &resp
 		server.PagerResponderInjectNextLinks(l.newListPager, req, func(page *armnetwork.LoadBalancersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -249,12 +282,12 @@ func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (
 
 func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
 	if l.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListAllPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
 	if l.newListAllPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -279,12 +312,12 @@ func (l *LoadBalancersServerTransport) dispatchNewListAllPager(req *http.Request
 
 func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappings(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginListInboundNatRulePortMappings == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListInboundNatRulePortMappings not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListInboundNatRulePortMappings not implemented")}
 	}
 	if l.beginListInboundNatRulePortMappings == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)/backendAddressPools/(?P<backendPoolName>[a-zA-Z0-9-_]+)/queryInboundNatRulePortMapping"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backendAddressPools/(?P<backendPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryInboundNatRulePortMapping`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -292,7 +325,19 @@ func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappin
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginListInboundNatRulePortMappings(req.Context(), matches[regex.SubexpIndex("groupName")], matches[regex.SubexpIndex("loadBalancerName")], matches[regex.SubexpIndex("backendPoolName")], body, nil)
+		groupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+		if err != nil {
+			return nil, err
+		}
+		backendPoolNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("backendPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginListInboundNatRulePortMappings(req.Context(), groupNameUnescaped, loadBalancerNameUnescaped, backendPoolNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -316,12 +361,12 @@ func (l *LoadBalancersServerTransport) dispatchBeginListInboundNatRulePortMappin
 
 func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginSwapPublicIPAddresses == nil {
-		return nil, &nonRetriableError{errors.New("method BeginSwapPublicIPAddresses not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginSwapPublicIPAddresses not implemented")}
 	}
 	if l.beginSwapPublicIPAddresses == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/locations/(?P<location>[a-zA-Z0-9-_]+)/setLoadBalancerFrontendPublicIpAddresses"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setLoadBalancerFrontendPublicIpAddresses`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -329,7 +374,11 @@ func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginSwapPublicIPAddresses(req.Context(), matches[regex.SubexpIndex("location")], body, nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginSwapPublicIPAddresses(req.Context(), locationUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -353,11 +402,11 @@ func (l *LoadBalancersServerTransport) dispatchBeginSwapPublicIPAddresses(req *h
 
 func (l *LoadBalancersServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if l.srv.UpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("method UpdateTags not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -365,7 +414,15 @@ func (l *LoadBalancersServerTransport) dispatchUpdateTags(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.UpdateTags(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("loadBalancerName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	loadBalancerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.UpdateTags(req.Context(), resourceGroupNameUnescaped, loadBalancerNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

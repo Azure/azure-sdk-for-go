@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,12 +90,12 @@ func (r *RouteFilterRulesServerTransport) Do(req *http.Request) (*http.Response,
 
 func (r *RouteFilterRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if r.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[a-zA-Z0-9-_]+)/routeFilterRules/(?P<ruleName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -102,7 +103,19 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("routeFilterName")], matches[regex.SubexpIndex("ruleName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		routeFilterNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("routeFilterName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, routeFilterNameUnescaped, ruleNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -126,16 +139,28 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 
 func (r *RouteFilterRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if r.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[a-zA-Z0-9-_]+)/routeFilterRules/(?P<ruleName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := r.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("routeFilterName")], matches[regex.SubexpIndex("ruleName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		routeFilterNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("routeFilterName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, routeFilterNameUnescaped, ruleNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -159,15 +184,27 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginDelete(req *http.Request)
 
 func (r *RouteFilterRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[a-zA-Z0-9-_]+)/routeFilterRules/(?P<ruleName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := r.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("routeFilterName")], matches[regex.SubexpIndex("ruleName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	routeFilterNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("routeFilterName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameUnescaped, routeFilterNameUnescaped, ruleNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -184,16 +221,24 @@ func (r *RouteFilterRulesServerTransport) dispatchGet(req *http.Request) (*http.
 
 func (r *RouteFilterRulesServerTransport) dispatchNewListByRouteFilterPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByRouteFilterPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByRouteFilterPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByRouteFilterPager not implemented")}
 	}
 	if r.newListByRouteFilterPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[a-zA-Z0-9-_]+)/routeFilterRules"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := r.srv.NewListByRouteFilterPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("routeFilterName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		routeFilterNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("routeFilterName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByRouteFilterPager(resourceGroupNameUnescaped, routeFilterNameUnescaped, nil)
 		r.newListByRouteFilterPager = &resp
 		server.PagerResponderInjectNextLinks(r.newListByRouteFilterPager, req, func(page *armnetwork.RouteFilterRulesClientListByRouteFilterResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

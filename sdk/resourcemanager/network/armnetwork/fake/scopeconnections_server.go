@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -88,11 +89,11 @@ func (s *ScopeConnectionsServerTransport) Do(req *http.Request) (*http.Response,
 
 func (s *ScopeConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/scopeConnections/(?P<scopeConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeConnections/(?P<scopeConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -100,7 +101,19 @@ func (s *ScopeConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("scopeConnectionName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, scopeConnectionNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -117,15 +130,27 @@ func (s *ScopeConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Reque
 
 func (s *ScopeConnectionsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if s.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/scopeConnections/(?P<scopeConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeConnections/(?P<scopeConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.Delete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("scopeConnectionName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, scopeConnectionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -142,15 +167,27 @@ func (s *ScopeConnectionsServerTransport) dispatchDelete(req *http.Request) (*ht
 
 func (s *ScopeConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/scopeConnections/(?P<scopeConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeConnections/(?P<scopeConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("scopeConnectionName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scopeConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, scopeConnectionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -167,17 +204,29 @@ func (s *ScopeConnectionsServerTransport) dispatchGet(req *http.Request) (*http.
 
 func (s *ScopeConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if s.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/scopeConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -187,7 +236,11 @@ func (s *ScopeConnectionsServerTransport) dispatchNewListPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.ScopeConnectionsClientListOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.ScopeConnectionsClientListOptions{
@@ -195,7 +248,7 @@ func (s *ScopeConnectionsServerTransport) dispatchNewListPager(req *http.Request
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := s.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], options)
+		resp := s.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
 		s.newListPager = &resp
 		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.ScopeConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

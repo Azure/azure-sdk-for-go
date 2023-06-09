@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -102,11 +103,11 @@ func (m *ManagersServerTransport) Do(req *http.Request) (*http.Response, error) 
 
 func (m *ManagersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -114,7 +115,15 @@ func (m *ManagersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -131,17 +140,29 @@ func (m *ManagersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*ht
 
 func (m *ManagersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if m.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		forceParam, err := parseOptional(qp.Get("force"), strconv.ParseBool)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		forceUnescaped, err := url.QueryUnescape(qp.Get("force"))
+		if err != nil {
+			return nil, err
+		}
+		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -151,7 +172,7 @@ func (m *ManagersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 				Force: forceParam,
 			}
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], options)
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -175,15 +196,23 @@ func (m *ManagersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 
 func (m *ManagersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := m.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -200,17 +229,25 @@ func (m *ManagersServerTransport) dispatchGet(req *http.Request) (*http.Response
 
 func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if m.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -220,7 +257,11 @@ func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.ManagersClientListOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.ManagersClientListOptions{
@@ -228,7 +269,7 @@ func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := m.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], options)
+		resp := m.srv.NewListPager(resourceGroupNameUnescaped, options)
 		m.newListPager = &resp
 		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armnetwork.ManagersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -249,17 +290,21 @@ func (m *ManagersServerTransport) dispatchNewListPager(req *http.Request) (*http
 
 func (m *ManagersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListBySubscriptionPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
 	if m.newListBySubscriptionPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -269,7 +314,11 @@ func (m *ManagersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.ManagersClientListBySubscriptionOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.ManagersClientListBySubscriptionOptions{
@@ -298,11 +347,11 @@ func (m *ManagersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 
 func (m *ManagersServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
 	if m.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("method Patch not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -310,7 +359,15 @@ func (m *ManagersServerTransport) dispatchPatch(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Patch(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Patch(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -116,12 +117,12 @@ func (e *ExpressRouteCrossConnectionsServerTransport) Do(req *http.Request) (*ht
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if e.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -129,7 +130,15 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCreateOrUpdat
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -153,15 +162,23 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCreateOrUpdat
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := e.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -178,12 +195,12 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchGet(req *http.Requ
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if e.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -208,16 +225,32 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListPager(req *
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListArpTable(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginListArpTable == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListArpTable not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListArpTable not implemented")}
 	}
 	if e.beginListArpTable == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)/peerings/(?P<peeringName>[a-zA-Z0-9-_]+)/arpTables/(?P<devicePath>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arpTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := e.srv.BeginListArpTable(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], matches[regex.SubexpIndex("peeringName")], matches[regex.SubexpIndex("devicePath")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		peeringNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peeringName")])
+		if err != nil {
+			return nil, err
+		}
+		devicePathUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("devicePath")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginListArpTable(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, peeringNameUnescaped, devicePathUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -241,16 +274,20 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListArpTable(
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByResourceGroupPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	if e.newListByResourceGroupPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := e.srv.NewListByResourceGroupPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		e.newListByResourceGroupPager = &resp
 		server.PagerResponderInjectNextLinks(e.newListByResourceGroupPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -271,16 +308,32 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListByResourceG
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListRoutesTable(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginListRoutesTable == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListRoutesTable not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListRoutesTable not implemented")}
 	}
 	if e.beginListRoutesTable == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)/peerings/(?P<peeringName>[a-zA-Z0-9-_]+)/routeTables/(?P<devicePath>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := e.srv.BeginListRoutesTable(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], matches[regex.SubexpIndex("peeringName")], matches[regex.SubexpIndex("devicePath")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		peeringNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peeringName")])
+		if err != nil {
+			return nil, err
+		}
+		devicePathUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("devicePath")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginListRoutesTable(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, peeringNameUnescaped, devicePathUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -304,16 +357,32 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListRoutesTab
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListRoutesTableSummary(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginListRoutesTableSummary == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListRoutesTableSummary not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListRoutesTableSummary not implemented")}
 	}
 	if e.beginListRoutesTableSummary == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)/peerings/(?P<peeringName>[a-zA-Z0-9-_]+)/routeTablesSummary/(?P<devicePath>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTablesSummary/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := e.srv.BeginListRoutesTableSummary(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], matches[regex.SubexpIndex("peeringName")], matches[regex.SubexpIndex("devicePath")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		peeringNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peeringName")])
+		if err != nil {
+			return nil, err
+		}
+		devicePathUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("devicePath")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginListRoutesTableSummary(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, peeringNameUnescaped, devicePathUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -337,11 +406,11 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListRoutesTab
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if e.srv.UpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("method UpdateTags not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -349,7 +418,15 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.UpdateTags(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("crossConnectionName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	crossConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.UpdateTags(req.Context(), resourceGroupNameUnescaped, crossConnectionNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

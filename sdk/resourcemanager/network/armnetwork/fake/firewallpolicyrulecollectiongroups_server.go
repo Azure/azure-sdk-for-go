@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,12 +90,12 @@ func (f *FirewallPolicyRuleCollectionGroupsServerTransport) Do(req *http.Request
 
 func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if f.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -102,7 +103,19 @@ func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchBeginCreateO
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], matches[regex.SubexpIndex("ruleCollectionGroupName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleCollectionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, ruleCollectionGroupNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -126,16 +139,28 @@ func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchBeginCreateO
 
 func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if f.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := f.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], matches[regex.SubexpIndex("ruleCollectionGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleCollectionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, ruleCollectionGroupNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -159,15 +184,27 @@ func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchBeginDelete(
 
 func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollectionGroups/(?P<ruleCollectionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := f.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], matches[regex.SubexpIndex("ruleCollectionGroupName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleCollectionGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, ruleCollectionGroupNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -184,16 +221,24 @@ func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchGet(req *htt
 
 func (f *FirewallPolicyRuleCollectionGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if f.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if f.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/ruleCollectionGroups"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleCollectionGroups`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := f.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := f.srv.NewListPager(resourceGroupNameUnescaped, firewallPolicyNameUnescaped, nil)
 		f.newListPager = &resp
 		server.PagerResponderInjectNextLinks(f.newListPager, req, func(page *armnetwork.FirewallPolicyRuleCollectionGroupsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

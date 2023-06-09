@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -69,21 +70,33 @@ func (s *ServiceTagInformationServerTransport) Do(req *http.Request) (*http.Resp
 
 func (s *ServiceTagInformationServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if s.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/locations/(?P<location>[a-zA-Z0-9-_]+)/serviceTagDetails"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceTagDetails`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		noAddressPrefixesParam, err := parseOptional(qp.Get("noAddressPrefixes"), strconv.ParseBool)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		tagNameParam := getOptional(qp.Get("tagName"))
+		noAddressPrefixesUnescaped, err := url.QueryUnescape(qp.Get("noAddressPrefixes"))
+		if err != nil {
+			return nil, err
+		}
+		noAddressPrefixesParam, err := parseOptional(noAddressPrefixesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		tagNameUnescaped, err := url.QueryUnescape(qp.Get("tagName"))
+		if err != nil {
+			return nil, err
+		}
+		tagNameParam := getOptional(tagNameUnescaped)
 		var options *armnetwork.ServiceTagInformationClientListOptions
 		if noAddressPrefixesParam != nil || tagNameParam != nil {
 			options = &armnetwork.ServiceTagInformationClientListOptions{
@@ -91,7 +104,7 @@ func (s *ServiceTagInformationServerTransport) dispatchNewListPager(req *http.Re
 				TagName:           tagNameParam,
 			}
 		}
-		resp := s.srv.NewListPager(matches[regex.SubexpIndex("location")], options)
+		resp := s.srv.NewListPager(locationUnescaped, options)
 		s.newListPager = &resp
 		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.ServiceTagInformationClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

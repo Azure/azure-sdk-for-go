@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -89,11 +90,11 @@ func (c *ConnectivityConfigurationsServerTransport) Do(req *http.Request) (*http
 
 func (c *ConnectivityConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/connectivityConfigurations/(?P<configurationName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -101,7 +102,19 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchCreateOrUpdate(req *
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("configurationName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, configurationNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -118,17 +131,33 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchCreateOrUpdate(req *
 
 func (c *ConnectivityConfigurationsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if c.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/connectivityConfigurations/(?P<configurationName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		forceParam, err := parseOptional(qp.Get("force"), strconv.ParseBool)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		forceUnescaped, err := url.QueryUnescape(qp.Get("force"))
+		if err != nil {
+			return nil, err
+		}
+		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -138,7 +167,7 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchBeginDelete(req *htt
 				Force: forceParam,
 			}
 		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("configurationName")], options)
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, configurationNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -162,15 +191,27 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchBeginDelete(req *htt
 
 func (c *ConnectivityConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/connectivityConfigurations/(?P<configurationName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := c.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("configurationName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, configurationNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -187,17 +228,29 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchGet(req *http.Reques
 
 func (c *ConnectivityConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if c.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/connectivityConfigurations"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityConfigurations`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -207,7 +260,11 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchNewListPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.ConnectivityConfigurationsClientListOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.ConnectivityConfigurationsClientListOptions{
@@ -215,7 +272,7 @@ func (c *ConnectivityConfigurationsServerTransport) dispatchNewListPager(req *ht
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := c.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], options)
+		resp := c.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
 		c.newListPager = &resp
 		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armnetwork.ConnectivityConfigurationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

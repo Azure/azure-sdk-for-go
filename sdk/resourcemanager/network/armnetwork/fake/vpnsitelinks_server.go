@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,15 +76,27 @@ func (v *VPNSiteLinksServerTransport) Do(req *http.Request) (*http.Response, err
 
 func (v *VPNSiteLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/vpnSites/(?P<vpnSiteName>[a-zA-Z0-9-_]+)/vpnSiteLinks/(?P<vpnSiteLinkName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnSites/(?P<vpnSiteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnSiteLinks/(?P<vpnSiteLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vpnSiteName")], matches[regex.SubexpIndex("vpnSiteLinkName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vpnSiteNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vpnSiteName")])
+	if err != nil {
+		return nil, err
+	}
+	vpnSiteLinkNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vpnSiteLinkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameUnescaped, vpnSiteNameUnescaped, vpnSiteLinkNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -100,16 +113,24 @@ func (v *VPNSiteLinksServerTransport) dispatchGet(req *http.Request) (*http.Resp
 
 func (v *VPNSiteLinksServerTransport) dispatchNewListByVPNSitePager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByVPNSitePager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByVPNSitePager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNSitePager not implemented")}
 	}
 	if v.newListByVPNSitePager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/vpnSites/(?P<vpnSiteName>[a-zA-Z0-9-_]+)/vpnSiteLinks"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnSites/(?P<vpnSiteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnSiteLinks`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListByVPNSitePager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vpnSiteName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vpnSiteNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vpnSiteName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByVPNSitePager(resourceGroupNameUnescaped, vpnSiteNameUnescaped, nil)
 		v.newListByVPNSitePager = &resp
 		server.PagerResponderInjectNextLinks(v.newListByVPNSitePager, req, func(page *armnetwork.VPNSiteLinksClientListByVPNSiteResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

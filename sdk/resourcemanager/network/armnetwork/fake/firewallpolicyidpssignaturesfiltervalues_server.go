@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -67,11 +68,11 @@ func (f *FirewallPolicyIdpsSignaturesFilterValuesServerTransport) Do(req *http.R
 
 func (f *FirewallPolicyIdpsSignaturesFilterValuesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if f.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/listIdpsFilterOptions"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listIdpsFilterOptions`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -79,7 +80,15 @@ func (f *FirewallPolicyIdpsSignaturesFilterValuesServerTransport) dispatchList(r
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := f.srv.List(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.List(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

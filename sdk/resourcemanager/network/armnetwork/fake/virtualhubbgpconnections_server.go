@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -83,16 +84,24 @@ func (v *VirtualHubBgpConnectionsServerTransport) Do(req *http.Request) (*http.R
 
 func (v *VirtualHubBgpConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if v.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[a-zA-Z0-9-_]+)/bgpConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualHubName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualHubNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualHubName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListPager(resourceGroupNameUnescaped, virtualHubNameUnescaped, nil)
 		v.newListPager = &resp
 		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualHubBgpConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -113,16 +122,28 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchNewListPager(req *http
 
 func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListAdvertisedRoutes(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginListAdvertisedRoutes == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListAdvertisedRoutes not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListAdvertisedRoutes not implemented")}
 	}
 	if v.beginListAdvertisedRoutes == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[a-zA-Z0-9-_]+)/bgpConnections/(?P<connectionName>[a-zA-Z0-9-_]+)/advertisedRoutes"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/advertisedRoutes`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginListAdvertisedRoutes(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("hubName")], matches[regex.SubexpIndex("connectionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		hubNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hubName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginListAdvertisedRoutes(req.Context(), resourceGroupNameUnescaped, hubNameUnescaped, connectionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -146,16 +167,28 @@ func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListAdvertisedRou
 
 func (v *VirtualHubBgpConnectionsServerTransport) dispatchBeginListLearnedRoutes(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginListLearnedRoutes == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListLearnedRoutes not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListLearnedRoutes not implemented")}
 	}
 	if v.beginListLearnedRoutes == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[a-zA-Z0-9-_]+)/bgpConnections/(?P<connectionName>[a-zA-Z0-9-_]+)/learnedRoutes"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<hubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/learnedRoutes`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginListLearnedRoutes(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("hubName")], matches[regex.SubexpIndex("connectionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		hubNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hubName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginListLearnedRoutes(req.Context(), resourceGroupNameUnescaped, hubNameUnescaped, connectionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

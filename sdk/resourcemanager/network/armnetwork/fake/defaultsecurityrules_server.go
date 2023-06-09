@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,15 +76,27 @@ func (d *DefaultSecurityRulesServerTransport) Do(req *http.Request) (*http.Respo
 
 func (d *DefaultSecurityRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkSecurityGroups/(?P<networkSecurityGroupName>[a-zA-Z0-9-_]+)/defaultSecurityRules/(?P<defaultSecurityRuleName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkSecurityGroups/(?P<networkSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/defaultSecurityRules/(?P<defaultSecurityRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := d.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkSecurityGroupName")], matches[regex.SubexpIndex("defaultSecurityRuleName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkSecurityGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	defaultSecurityRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("defaultSecurityRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameUnescaped, networkSecurityGroupNameUnescaped, defaultSecurityRuleNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -100,16 +113,24 @@ func (d *DefaultSecurityRulesServerTransport) dispatchGet(req *http.Request) (*h
 
 func (d *DefaultSecurityRulesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if d.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkSecurityGroups/(?P<networkSecurityGroupName>[a-zA-Z0-9-_]+)/defaultSecurityRules"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkSecurityGroups/(?P<networkSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/defaultSecurityRules`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := d.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkSecurityGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkSecurityGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListPager(resourceGroupNameUnescaped, networkSecurityGroupNameUnescaped, nil)
 		d.newListPager = &resp
 		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armnetwork.DefaultSecurityRulesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

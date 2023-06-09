@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -83,16 +84,32 @@ func (v *VPNLinkConnectionsServerTransport) Do(req *http.Request) (*http.Respons
 
 func (v *VPNLinkConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginGetIkeSas == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGetIkeSas not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetIkeSas not implemented")}
 	}
 	if v.beginGetIkeSas == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9-_]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9-_]+)/getikesas"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getikesas`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginGetIkeSas(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], matches[regex.SubexpIndex("connectionName")], matches[regex.SubexpIndex("linkConnectionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		linkConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("linkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginGetIkeSas(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, connectionNameUnescaped, linkConnectionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -116,16 +133,28 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Req
 
 func (v *VPNLinkConnectionsServerTransport) dispatchNewListByVPNConnectionPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByVPNConnectionPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByVPNConnectionPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNConnectionPager not implemented")}
 	}
 	if v.newListByVPNConnectionPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9-_]+)/vpnLinkConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListByVPNConnectionPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], matches[regex.SubexpIndex("connectionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByVPNConnectionPager(resourceGroupNameUnescaped, gatewayNameUnescaped, connectionNameUnescaped, nil)
 		v.newListByVPNConnectionPager = &resp
 		server.PagerResponderInjectNextLinks(v.newListByVPNConnectionPager, req, func(page *armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -146,16 +175,32 @@ func (v *VPNLinkConnectionsServerTransport) dispatchNewListByVPNConnectionPager(
 
 func (v *VPNLinkConnectionsServerTransport) dispatchBeginResetConnection(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginResetConnection == nil {
-		return nil, &nonRetriableError{errors.New("method BeginResetConnection not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginResetConnection not implemented")}
 	}
 	if v.beginResetConnection == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9-_]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9-_]+)/resetconnection"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetconnection`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginResetConnection(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], matches[regex.SubexpIndex("connectionName")], matches[regex.SubexpIndex("linkConnectionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		linkConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("linkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginResetConnection(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, connectionNameUnescaped, linkConnectionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

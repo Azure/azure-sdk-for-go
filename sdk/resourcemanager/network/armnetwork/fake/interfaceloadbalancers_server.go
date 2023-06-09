@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -68,16 +69,24 @@ func (i *InterfaceLoadBalancersServerTransport) Do(req *http.Request) (*http.Res
 
 func (i *InterfaceLoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if i.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9-_]+)/loadBalancers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := i.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkInterfaceName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkInterfaceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListPager(resourceGroupNameUnescaped, networkInterfaceNameUnescaped, nil)
 		i.newListPager = &resp
 		server.PagerResponderInjectNextLinks(i.newListPager, req, func(page *armnetwork.InterfaceLoadBalancersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

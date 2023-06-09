@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -102,12 +103,12 @@ func (p *PacketCapturesServerTransport) Do(req *http.Request) (*http.Response, e
 
 func (p *PacketCapturesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginCreate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
 	if p.beginCreate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -115,7 +116,19 @@ func (p *PacketCapturesServerTransport) dispatchBeginCreate(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], matches[regex.SubexpIndex("packetCaptureName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		packetCaptureNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, networkWatcherNameUnescaped, packetCaptureNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -139,16 +152,28 @@ func (p *PacketCapturesServerTransport) dispatchBeginCreate(req *http.Request) (
 
 func (p *PacketCapturesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if p.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], matches[regex.SubexpIndex("packetCaptureName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		packetCaptureNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, networkWatcherNameUnescaped, packetCaptureNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -172,15 +197,27 @@ func (p *PacketCapturesServerTransport) dispatchBeginDelete(req *http.Request) (
 
 func (p *PacketCapturesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], matches[regex.SubexpIndex("packetCaptureName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	packetCaptureNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, networkWatcherNameUnescaped, packetCaptureNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -197,16 +234,28 @@ func (p *PacketCapturesServerTransport) dispatchGet(req *http.Request) (*http.Re
 
 func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGetStatus == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGetStatus not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetStatus not implemented")}
 	}
 	if p.beginGetStatus == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9-_]+)/queryStatus"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryStatus`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginGetStatus(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], matches[regex.SubexpIndex("packetCaptureName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		packetCaptureNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginGetStatus(req.Context(), resourceGroupNameUnescaped, networkWatcherNameUnescaped, packetCaptureNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -230,16 +279,24 @@ func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request
 
 func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if p.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := p.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(resourceGroupNameUnescaped, networkWatcherNameUnescaped, nil)
 		p.newListPager = &resp
 	}
 	resp, err := server.PagerResponderNext(p.newListPager, req)
@@ -257,16 +314,28 @@ func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) 
 
 func (p *PacketCapturesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginStop == nil {
-		return nil, &nonRetriableError{errors.New("method BeginStop not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
 	if p.beginStop == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9-_]+)/packetCaptures/(?P<packetCaptureName>[a-zA-Z0-9-_]+)/stop"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginStop(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkWatcherName")], matches[regex.SubexpIndex("packetCaptureName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		packetCaptureNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packetCaptureName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginStop(req.Context(), resourceGroupNameUnescaped, networkWatcherNameUnescaped, packetCaptureNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

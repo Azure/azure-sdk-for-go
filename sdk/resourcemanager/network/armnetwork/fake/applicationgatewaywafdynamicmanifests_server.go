@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -68,16 +69,20 @@ func (a *ApplicationGatewayWafDynamicManifestsServerTransport) Do(req *http.Requ
 
 func (a *ApplicationGatewayWafDynamicManifestsServerTransport) dispatchNewGetPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewGetPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewGetPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewGetPager not implemented")}
 	}
 	if a.newGetPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/locations/(?P<location>[a-zA-Z0-9-_]+)/applicationGatewayWafDynamicManifests"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationGatewayWafDynamicManifests`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := a.srv.NewGetPager(matches[regex.SubexpIndex("location")], nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewGetPager(locationUnescaped, nil)
 		a.newGetPager = &resp
 		server.PagerResponderInjectNextLinks(a.newGetPager, req, func(page *armnetwork.ApplicationGatewayWafDynamicManifestsClientGetResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

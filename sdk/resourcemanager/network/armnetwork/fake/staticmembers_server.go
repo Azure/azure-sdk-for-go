@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -88,11 +89,11 @@ func (s *StaticMembersServerTransport) Do(req *http.Request) (*http.Response, er
 
 func (s *StaticMembersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9-_]+)/staticMembers/(?P<staticMemberName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/staticMembers/(?P<staticMemberName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -100,7 +101,23 @@ func (s *StaticMembersServerTransport) dispatchCreateOrUpdate(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("networkGroupName")], matches[regex.SubexpIndex("staticMemberName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	networkGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	staticMemberNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("staticMemberName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, networkGroupNameUnescaped, staticMemberNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -117,15 +134,31 @@ func (s *StaticMembersServerTransport) dispatchCreateOrUpdate(req *http.Request)
 
 func (s *StaticMembersServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if s.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9-_]+)/staticMembers/(?P<staticMemberName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/staticMembers/(?P<staticMemberName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.Delete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("networkGroupName")], matches[regex.SubexpIndex("staticMemberName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	networkGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	staticMemberNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("staticMemberName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, networkGroupNameUnescaped, staticMemberNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -142,15 +175,31 @@ func (s *StaticMembersServerTransport) dispatchDelete(req *http.Request) (*http.
 
 func (s *StaticMembersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9-_]+)/staticMembers/(?P<staticMemberName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/staticMembers/(?P<staticMemberName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("networkGroupName")], matches[regex.SubexpIndex("staticMemberName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	networkGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	staticMemberNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("staticMemberName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, networkGroupNameUnescaped, staticMemberNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -167,17 +216,33 @@ func (s *StaticMembersServerTransport) dispatchGet(req *http.Request) (*http.Res
 
 func (s *StaticMembersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if s.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/networkGroups/(?P<networkGroupName>[a-zA-Z0-9-_]+)/staticMembers"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkGroups/(?P<networkGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/staticMembers`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		networkGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -187,7 +252,11 @@ func (s *StaticMembersServerTransport) dispatchNewListPager(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.StaticMembersClientListOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.StaticMembersClientListOptions{
@@ -195,7 +264,7 @@ func (s *StaticMembersServerTransport) dispatchNewListPager(req *http.Request) (
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := s.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], matches[regex.SubexpIndex("networkGroupName")], options)
+		resp := s.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, networkGroupNameUnescaped, options)
 		s.newListPager = &resp
 		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.StaticMembersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

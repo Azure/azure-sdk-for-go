@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -80,12 +81,12 @@ func (v *VipSwapServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 func (v *VipSwapServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginCreate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
 	if v.beginCreate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/cloudServiceSlots/(?P<singletonResource>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/cloudServiceSlots/(?P<singletonResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -93,7 +94,15 @@ func (v *VipSwapServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreate(req.Context(), matches[regex.SubexpIndex("groupName")], matches[regex.SubexpIndex("resourceName")], body, nil)
+		groupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginCreate(req.Context(), groupNameUnescaped, resourceNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -117,15 +126,23 @@ func (v *VipSwapServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 
 func (v *VipSwapServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/cloudServiceSlots/(?P<singletonResource>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/cloudServiceSlots/(?P<singletonResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.Get(req.Context(), matches[regex.SubexpIndex("groupName")], matches[regex.SubexpIndex("resourceName")], nil)
+	groupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), groupNameUnescaped, resourceNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -142,15 +159,23 @@ func (v *VipSwapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 
 func (v *VipSwapServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if v.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<groupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/cloudServiceSlots"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/cloudServiceSlots`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.List(req.Context(), matches[regex.SubexpIndex("groupName")], matches[regex.SubexpIndex("resourceName")], nil)
+	groupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.List(req.Context(), groupNameUnescaped, resourceNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

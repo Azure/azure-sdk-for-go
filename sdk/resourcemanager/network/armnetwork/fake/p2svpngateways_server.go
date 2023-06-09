@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -138,12 +139,12 @@ func (p *P2SVPNGatewaysServerTransport) Do(req *http.Request) (*http.Response, e
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if p.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -151,7 +152,15 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -175,16 +184,24 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if p.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -208,12 +225,12 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginDisconnectP2SVPNConnections(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginDisconnectP2SVPNConnections == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDisconnectP2SVPNConnections not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDisconnectP2SVPNConnections not implemented")}
 	}
 	if p.beginDisconnectP2SVPNConnections == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<p2sVpnGatewayName>[a-zA-Z0-9-_]+)/disconnectP2sVpnConnections"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<p2sVpnGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnectP2sVpnConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -221,7 +238,15 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDisconnectP2SVPNConnections
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginDisconnectP2SVPNConnections(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("p2sVpnGatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		p2SVPNGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("p2sVpnGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDisconnectP2SVPNConnections(req.Context(), resourceGroupNameUnescaped, p2SVPNGatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -245,12 +270,12 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDisconnectP2SVPNConnections
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGenerateVPNProfile == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGenerateVPNProfile not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGenerateVPNProfile not implemented")}
 	}
 	if p.beginGenerateVPNProfile == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/generatevpnprofile"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatevpnprofile`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -258,7 +283,15 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginGenerateVPNProfile(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginGenerateVPNProfile(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -282,15 +315,23 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *htt
 
 func (p *P2SVPNGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -307,16 +348,24 @@ func (p *P2SVPNGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Re
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealth(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGetP2SVPNConnectionHealth == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGetP2SVPNConnectionHealth not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetP2SVPNConnectionHealth not implemented")}
 	}
 	if p.beginGetP2SVPNConnectionHealth == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/getP2sVpnConnectionHealth"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getP2sVpnConnectionHealth`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginGetP2SVPNConnectionHealth(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginGetP2SVPNConnectionHealth(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -340,12 +389,12 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealth(r
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDetailed(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginGetP2SVPNConnectionHealthDetailed == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGetP2SVPNConnectionHealthDetailed not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetP2SVPNConnectionHealthDetailed not implemented")}
 	}
 	if p.beginGetP2SVPNConnectionHealthDetailed == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/getP2sVpnConnectionHealthDetailed"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getP2sVpnConnectionHealthDetailed`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -353,7 +402,15 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDe
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginGetP2SVPNConnectionHealthDetailed(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginGetP2SVPNConnectionHealthDetailed(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -377,12 +434,12 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDe
 
 func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if p.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -407,16 +464,20 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) 
 
 func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByResourceGroupPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	if p.newListByResourceGroupPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := p.srv.NewListByResourceGroupPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		p.newListByResourceGroupPager = &resp
 		server.PagerResponderInjectNextLinks(p.newListByResourceGroupPager, req, func(page *armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -437,16 +498,24 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req 
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginReset == nil {
-		return nil, &nonRetriableError{errors.New("method BeginReset not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginReset not implemented")}
 	}
 	if p.beginReset == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)/reset"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reset`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginReset(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginReset(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -470,12 +539,12 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*
 
 func (p *P2SVPNGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginUpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("method BeginUpdateTags not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
 	if p.beginUpdateTags == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -483,7 +552,15 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginUpdateTags(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("gatewayName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdateTags(req.Context(), resourceGroupNameUnescaped, gatewayNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -117,12 +118,12 @@ func (a *AzureFirewallsServerTransport) Do(req *http.Request) (*http.Response, e
 
 func (a *AzureFirewallsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if a.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -130,7 +131,15 @@ func (a *AzureFirewallsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -154,16 +163,24 @@ func (a *AzureFirewallsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 
 func (a *AzureFirewallsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if a.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -187,15 +204,23 @@ func (a *AzureFirewallsServerTransport) dispatchBeginDelete(req *http.Request) (
 
 func (a *AzureFirewallsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := a.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -212,16 +237,20 @@ func (a *AzureFirewallsServerTransport) dispatchGet(req *http.Request) (*http.Re
 
 func (a *AzureFirewallsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if a.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := a.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameUnescaped, nil)
 		a.newListPager = &resp
 		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armnetwork.AzureFirewallsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -242,12 +271,12 @@ func (a *AzureFirewallsServerTransport) dispatchNewListPager(req *http.Request) 
 
 func (a *AzureFirewallsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListAllPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
 	if a.newListAllPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -272,16 +301,24 @@ func (a *AzureFirewallsServerTransport) dispatchNewListAllPager(req *http.Reques
 
 func (a *AzureFirewallsServerTransport) dispatchBeginListLearnedPrefixes(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginListLearnedPrefixes == nil {
-		return nil, &nonRetriableError{errors.New("method BeginListLearnedPrefixes not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginListLearnedPrefixes not implemented")}
 	}
 	if a.beginListLearnedPrefixes == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)/learnedIPPrefixes"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/learnedIPPrefixes`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := a.srv.BeginListLearnedPrefixes(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginListLearnedPrefixes(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -305,12 +342,12 @@ func (a *AzureFirewallsServerTransport) dispatchBeginListLearnedPrefixes(req *ht
 
 func (a *AzureFirewallsServerTransport) dispatchBeginPacketCapture(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginPacketCapture == nil {
-		return nil, &nonRetriableError{errors.New("method BeginPacketCapture not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginPacketCapture not implemented")}
 	}
 	if a.beginPacketCapture == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)/packetCapture"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCapture`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -318,7 +355,15 @@ func (a *AzureFirewallsServerTransport) dispatchBeginPacketCapture(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginPacketCapture(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginPacketCapture(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -342,12 +387,12 @@ func (a *AzureFirewallsServerTransport) dispatchBeginPacketCapture(req *http.Req
 
 func (a *AzureFirewallsServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("method BeginUpdateTags not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
 	if a.beginUpdateTags == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewalls/(?P<azureFirewallName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -355,7 +400,15 @@ func (a *AzureFirewallsServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginUpdateTags(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("azureFirewallName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureFirewallNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("azureFirewallName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdateTags(req.Context(), resourceGroupNameUnescaped, azureFirewallNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -88,11 +89,11 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) Do(req *http.R
 
 func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -100,7 +101,15 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchCreate
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("managementGroupId")], matches[regex.SubexpIndex("networkManagerConnectionName")], body, nil)
+	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), managementGroupIDUnescaped, networkManagerConnectionNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -117,15 +126,23 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchCreate
 
 func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if m.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := m.srv.Delete(req.Context(), matches[regex.SubexpIndex("managementGroupId")], matches[regex.SubexpIndex("networkManagerConnectionName")], nil)
+	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Delete(req.Context(), managementGroupIDUnescaped, networkManagerConnectionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -142,15 +159,23 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchDelete
 
 func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagerConnections/(?P<networkManagerConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := m.srv.Get(req.Context(), matches[regex.SubexpIndex("managementGroupId")], matches[regex.SubexpIndex("networkManagerConnectionName")], nil)
+	managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), managementGroupIDUnescaped, networkManagerConnectionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -167,17 +192,25 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchGet(re
 
 func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if m.newListPager == nil {
-		const regexStr = "/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagerConnections"
+		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagerConnections`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+		managementGroupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -187,7 +220,11 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchNewLis
 		if err != nil {
 			return nil, err
 		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
 		var options *armnetwork.ManagementGroupNetworkManagerConnectionsClientListOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetwork.ManagementGroupNetworkManagerConnectionsClientListOptions{
@@ -195,7 +232,7 @@ func (m *ManagementGroupNetworkManagerConnectionsServerTransport) dispatchNewLis
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := m.srv.NewListPager(matches[regex.SubexpIndex("managementGroupId")], options)
+		resp := m.srv.NewListPager(managementGroupIDUnescaped, options)
 		m.newListPager = &resp
 		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armnetwork.ManagementGroupNetworkManagerConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

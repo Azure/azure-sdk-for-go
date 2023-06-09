@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,12 +90,12 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) Do(req *http.Request) (*h
 
 func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if v.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9-_]+)/natRules/(?P<natRuleName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -102,7 +103,19 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginCreateOrUpda
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkGatewayName")], matches[regex.SubexpIndex("natRuleName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		natRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("natRuleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, virtualNetworkGatewayNameUnescaped, natRuleNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -126,16 +139,28 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginCreateOrUpda
 
 func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if v.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9-_]+)/natRules/(?P<natRuleName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkGatewayName")], matches[regex.SubexpIndex("natRuleName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		natRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("natRuleName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, virtualNetworkGatewayNameUnescaped, natRuleNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -159,15 +184,27 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginDelete(req *
 
 func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9-_]+)/natRules/(?P<natRuleName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkGatewayName")], matches[regex.SubexpIndex("natRuleName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	natRuleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("natRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameUnescaped, virtualNetworkGatewayNameUnescaped, natRuleNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -184,16 +221,24 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchGet(req *http.Req
 
 func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchNewListByVirtualNetworkGatewayPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByVirtualNetworkGatewayPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByVirtualNetworkGatewayPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVirtualNetworkGatewayPager not implemented")}
 	}
 	if v.newListByVirtualNetworkGatewayPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[a-zA-Z0-9-_]+)/natRules"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListByVirtualNetworkGatewayPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkGatewayName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkGatewayNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByVirtualNetworkGatewayPager(resourceGroupNameUnescaped, virtualNetworkGatewayNameUnescaped, nil)
 		v.newListByVirtualNetworkGatewayPager = &resp
 		server.PagerResponderInjectNextLinks(v.newListByVirtualNetworkGatewayPager, req, func(page *armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

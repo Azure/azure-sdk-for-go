@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -68,16 +69,20 @@ func (a *AvailableDelegationsServerTransport) Do(req *http.Request) (*http.Respo
 
 func (a *AvailableDelegationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if a.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/locations/(?P<location>[a-zA-Z0-9-_]+)/availableDelegations"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableDelegations`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := a.srv.NewListPager(matches[regex.SubexpIndex("location")], nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(locationUnescaped, nil)
 		a.newListPager = &resp
 		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armnetwork.AvailableDelegationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

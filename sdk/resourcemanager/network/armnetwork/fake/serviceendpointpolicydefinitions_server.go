@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,12 +90,12 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) Do(req *http.Request) 
 
 func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if s.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[a-zA-Z0-9-_]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -102,7 +103,19 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginCreateOrU
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("serviceEndpointPolicyName")], matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceEndpointPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceEndpointPolicyDefinitionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, serviceEndpointPolicyNameUnescaped, serviceEndpointPolicyDefinitionNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -126,16 +139,28 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginCreateOrU
 
 func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if s.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[a-zA-Z0-9-_]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := s.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("serviceEndpointPolicyName")], matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceEndpointPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceEndpointPolicyDefinitionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, serviceEndpointPolicyNameUnescaped, serviceEndpointPolicyDefinitionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -159,15 +184,27 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchBeginDelete(re
 
 func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[a-zA-Z0-9-_]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions/(?P<serviceEndpointPolicyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := s.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("serviceEndpointPolicyName")], matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceEndpointPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceEndpointPolicyDefinitionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameUnescaped, serviceEndpointPolicyNameUnescaped, serviceEndpointPolicyDefinitionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -184,16 +221,24 @@ func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchGet(req *http.
 
 func (s *ServiceEndpointPolicyDefinitionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByResourceGroupPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	if s.newListByResourceGroupPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[a-zA-Z0-9-_]+)/serviceEndpointPolicyDefinitions"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/serviceEndpointPolicies/(?P<serviceEndpointPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serviceEndpointPolicyDefinitions`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := s.srv.NewListByResourceGroupPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("serviceEndpointPolicyName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceEndpointPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceEndpointPolicyName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, serviceEndpointPolicyNameUnescaped, nil)
 		s.newListByResourceGroupPager = &resp
 		server.PagerResponderInjectNextLinks(s.newListByResourceGroupPager, req, func(page *armnetwork.ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

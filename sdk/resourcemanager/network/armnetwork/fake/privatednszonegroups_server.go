@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,12 +90,12 @@ func (p *PrivateDNSZoneGroupsServerTransport) Do(req *http.Request) (*http.Respo
 
 func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if p.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9-_]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -102,7 +103,19 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("privateEndpointName")], matches[regex.SubexpIndex("privateDnsZoneGroupName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		privateDNSZoneGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateDnsZoneGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, privateEndpointNameUnescaped, privateDNSZoneGroupNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -126,16 +139,28 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginCreateOrUpdate(req *h
 
 func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if p.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9-_]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("privateEndpointName")], matches[regex.SubexpIndex("privateDnsZoneGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		privateDNSZoneGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateDnsZoneGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, privateEndpointNameUnescaped, privateDNSZoneGroupNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -159,15 +184,27 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchBeginDelete(req *http.Requ
 
 func (p *PrivateDNSZoneGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9-_]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups/(?P<privateDnsZoneGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("privateEndpointName")], matches[regex.SubexpIndex("privateDnsZoneGroupName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	privateDNSZoneGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateDnsZoneGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, privateEndpointNameUnescaped, privateDNSZoneGroupNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -184,16 +221,24 @@ func (p *PrivateDNSZoneGroupsServerTransport) dispatchGet(req *http.Request) (*h
 
 func (p *PrivateDNSZoneGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if p.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[a-zA-Z0-9-_]+)/privateDnsZoneGroups"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateEndpoints/(?P<privateEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateDnsZoneGroups`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := p.srv.NewListPager(matches[regex.SubexpIndex("privateEndpointName")], matches[regex.SubexpIndex("resourceGroupName")], nil)
+		privateEndpointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(privateEndpointNameUnescaped, resourceGroupNameUnescaped, nil)
 		p.newListPager = &resp
 		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.PrivateDNSZoneGroupsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

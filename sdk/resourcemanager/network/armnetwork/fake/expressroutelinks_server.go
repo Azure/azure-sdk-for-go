@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,15 +76,27 @@ func (e *ExpressRouteLinksServerTransport) Do(req *http.Request) (*http.Response
 
 func (e *ExpressRouteLinksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[a-zA-Z0-9-_]+)/links/(?P<linkName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links/(?P<linkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := e.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRoutePortName")], matches[regex.SubexpIndex("linkName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	expressRoutePortNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRoutePortName")])
+	if err != nil {
+		return nil, err
+	}
+	linkNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("linkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameUnescaped, expressRoutePortNameUnescaped, linkNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -100,16 +113,24 @@ func (e *ExpressRouteLinksServerTransport) dispatchGet(req *http.Request) (*http
 
 func (e *ExpressRouteLinksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if e.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[a-zA-Z0-9-_]+)/links"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ExpressRoutePorts/(?P<expressRoutePortName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := e.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("expressRoutePortName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expressRoutePortNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("expressRoutePortName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListPager(resourceGroupNameUnescaped, expressRoutePortNameUnescaped, nil)
 		e.newListPager = &resp
 		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armnetwork.ExpressRouteLinksClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

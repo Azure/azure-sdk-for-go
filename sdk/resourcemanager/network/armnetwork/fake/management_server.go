@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -147,16 +148,24 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 
 func (m *ManagementServerTransport) dispatchCheckDNSNameAvailability(req *http.Request) (*http.Response, error) {
 	if m.srv.CheckDNSNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("method CheckDNSNameAvailability not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CheckDNSNameAvailability not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/locations/(?P<location>[a-zA-Z0-9-_]+)/CheckDnsNameAvailability"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/CheckDnsNameAvailability`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	respr, errRespr := m.srv.CheckDNSNameAvailability(req.Context(), matches[regex.SubexpIndex("location")], qp.Get("domainNameLabel"), nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	domainNameLabelUnescaped, err := url.QueryUnescape(qp.Get("domainNameLabel"))
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckDNSNameAvailability(req.Context(), locationUnescaped, domainNameLabelUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -173,12 +182,12 @@ func (m *ManagementServerTransport) dispatchCheckDNSNameAvailability(req *http.R
 
 func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginDeleteBastionShareableLink == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDeleteBastionShareableLink not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteBastionShareableLink not implemented")}
 	}
 	if m.beginDeleteBastionShareableLink == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9-_]+)/deleteShareableLinks"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteShareableLinks`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -186,7 +195,15 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDeleteBastionShareableLink(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("bastionHostName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginDeleteBastionShareableLink(req.Context(), resourceGroupNameUnescaped, bastionHostNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -210,12 +227,12 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req 
 
 func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewDisconnectActiveSessionsPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewDisconnectActiveSessionsPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewDisconnectActiveSessionsPager not implemented")}
 	}
 	if m.newDisconnectActiveSessionsPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9-_]+)/disconnectActiveSessions"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnectActiveSessions`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -223,7 +240,15 @@ func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewDisconnectActiveSessionsPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("bastionHostName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewDisconnectActiveSessionsPager(resourceGroupNameUnescaped, bastionHostNameUnescaped, body, nil)
 		m.newDisconnectActiveSessionsPager = &resp
 		server.PagerResponderInjectNextLinks(m.newDisconnectActiveSessionsPager, req, func(page *armnetwork.ManagementClientDisconnectActiveSessionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -244,15 +269,19 @@ func (m *ManagementServerTransport) dispatchNewDisconnectActiveSessionsPager(req
 
 func (m *ManagementServerTransport) dispatchExpressRouteProviderPort(req *http.Request) (*http.Response, error) {
 	if m.srv.ExpressRouteProviderPort == nil {
-		return nil, &nonRetriableError{errors.New("method ExpressRouteProviderPort not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ExpressRouteProviderPort not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/expressRouteProviderPorts/(?P<providerport>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteProviderPorts/(?P<providerport>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := m.srv.ExpressRouteProviderPort(req.Context(), matches[regex.SubexpIndex("providerport")], nil)
+	providerportUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("providerport")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ExpressRouteProviderPort(req.Context(), providerportUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -269,12 +298,12 @@ func (m *ManagementServerTransport) dispatchExpressRouteProviderPort(req *http.R
 
 func (m *ManagementServerTransport) dispatchBeginGeneratevirtualwanvpnserverconfigurationvpnprofile(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGeneratevirtualwanvpnserverconfigurationvpnprofile not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGeneratevirtualwanvpnserverconfigurationvpnprofile not implemented")}
 	}
 	if m.beginGeneratevirtualwanvpnserverconfigurationvpnprofile == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[a-zA-Z0-9-_]+)/GenerateVpnProfile"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/GenerateVpnProfile`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -282,7 +311,15 @@ func (m *ManagementServerTransport) dispatchBeginGeneratevirtualwanvpnserverconf
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualWANName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualWANNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualWANName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(req.Context(), resourceGroupNameUnescaped, virtualWANNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -306,16 +343,24 @@ func (m *ManagementServerTransport) dispatchBeginGeneratevirtualwanvpnserverconf
 
 func (m *ManagementServerTransport) dispatchBeginGetActiveSessions(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginGetActiveSessions == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGetActiveSessions not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetActiveSessions not implemented")}
 	}
 	if m.beginGetActiveSessions == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9-_]+)/getActiveSessions"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getActiveSessions`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := m.srv.BeginGetActiveSessions(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("bastionHostName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginGetActiveSessions(req.Context(), resourceGroupNameUnescaped, bastionHostNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -339,12 +384,12 @@ func (m *ManagementServerTransport) dispatchBeginGetActiveSessions(req *http.Req
 
 func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewGetBastionShareableLinkPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewGetBastionShareableLinkPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewGetBastionShareableLinkPager not implemented")}
 	}
 	if m.newGetBastionShareableLinkPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9-_]+)/getShareableLinks"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getShareableLinks`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -352,7 +397,15 @@ func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req 
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewGetBastionShareableLinkPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("bastionHostName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewGetBastionShareableLinkPager(resourceGroupNameUnescaped, bastionHostNameUnescaped, body, nil)
 		m.newGetBastionShareableLinkPager = &resp
 		server.PagerResponderInjectNextLinks(m.newGetBastionShareableLinkPager, req, func(page *armnetwork.ManagementClientGetBastionShareableLinkResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -373,11 +426,11 @@ func (m *ManagementServerTransport) dispatchNewGetBastionShareableLinkPager(req 
 
 func (m *ManagementServerTransport) dispatchListActiveConnectivityConfigurations(req *http.Request) (*http.Response, error) {
 	if m.srv.ListActiveConnectivityConfigurations == nil {
-		return nil, &nonRetriableError{errors.New("method ListActiveConnectivityConfigurations not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListActiveConnectivityConfigurations not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/listActiveConnectivityConfigurations"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listActiveConnectivityConfigurations`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -386,7 +439,19 @@ func (m *ManagementServerTransport) dispatchListActiveConnectivityConfigurations
 	if err != nil {
 		return nil, err
 	}
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -402,7 +467,7 @@ func (m *ManagementServerTransport) dispatchListActiveConnectivityConfigurations
 			Top: topParam,
 		}
 	}
-	respr, errRespr := m.srv.ListActiveConnectivityConfigurations(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, options)
+	respr, errRespr := m.srv.ListActiveConnectivityConfigurations(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -419,11 +484,11 @@ func (m *ManagementServerTransport) dispatchListActiveConnectivityConfigurations
 
 func (m *ManagementServerTransport) dispatchListActiveSecurityAdminRules(req *http.Request) (*http.Response, error) {
 	if m.srv.ListActiveSecurityAdminRules == nil {
-		return nil, &nonRetriableError{errors.New("method ListActiveSecurityAdminRules not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListActiveSecurityAdminRules not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/listActiveSecurityAdminRules"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listActiveSecurityAdminRules`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -432,7 +497,19 @@ func (m *ManagementServerTransport) dispatchListActiveSecurityAdminRules(req *ht
 	if err != nil {
 		return nil, err
 	}
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -448,7 +525,7 @@ func (m *ManagementServerTransport) dispatchListActiveSecurityAdminRules(req *ht
 			Top: topParam,
 		}
 	}
-	respr, errRespr := m.srv.ListActiveSecurityAdminRules(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, options)
+	respr, errRespr := m.srv.ListActiveSecurityAdminRules(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -465,11 +542,11 @@ func (m *ManagementServerTransport) dispatchListActiveSecurityAdminRules(req *ht
 
 func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveConnectivityConfigurations(req *http.Request) (*http.Response, error) {
 	if m.srv.ListNetworkManagerEffectiveConnectivityConfigurations == nil {
-		return nil, &nonRetriableError{errors.New("method ListNetworkManagerEffectiveConnectivityConfigurations not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListNetworkManagerEffectiveConnectivityConfigurations not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9-_]+)/listNetworkManagerEffectiveConnectivityConfigurations"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNetworkManagerEffectiveConnectivityConfigurations`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -478,7 +555,19 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveConnectiv
 	if err != nil {
 		return nil, err
 	}
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -494,7 +583,7 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveConnectiv
 			Top: topParam,
 		}
 	}
-	respr, errRespr := m.srv.ListNetworkManagerEffectiveConnectivityConfigurations(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkName")], body, options)
+	respr, errRespr := m.srv.ListNetworkManagerEffectiveConnectivityConfigurations(req.Context(), resourceGroupNameUnescaped, virtualNetworkNameUnescaped, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -511,11 +600,11 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveConnectiv
 
 func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityAdminRules(req *http.Request) (*http.Response, error) {
 	if m.srv.ListNetworkManagerEffectiveSecurityAdminRules == nil {
-		return nil, &nonRetriableError{errors.New("method ListNetworkManagerEffectiveSecurityAdminRules not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListNetworkManagerEffectiveSecurityAdminRules not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[a-zA-Z0-9-_]+)/listNetworkManagerEffectiveSecurityAdminRules"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNetworkManagerEffectiveSecurityAdminRules`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -524,7 +613,19 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityA
 	if err != nil {
 		return nil, err
 	}
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualNetworkNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -540,7 +641,7 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityA
 			Top: topParam,
 		}
 	}
-	respr, errRespr := m.srv.ListNetworkManagerEffectiveSecurityAdminRules(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualNetworkName")], body, options)
+	respr, errRespr := m.srv.ListNetworkManagerEffectiveSecurityAdminRules(req.Context(), resourceGroupNameUnescaped, virtualNetworkNameUnescaped, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -557,12 +658,12 @@ func (m *ManagementServerTransport) dispatchListNetworkManagerEffectiveSecurityA
 
 func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginPutBastionShareableLink == nil {
-		return nil, &nonRetriableError{errors.New("method BeginPutBastionShareableLink not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginPutBastionShareableLink not implemented")}
 	}
 	if m.beginPutBastionShareableLink == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9-_]+)/createShareableLinks"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createShareableLinks`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -570,7 +671,15 @@ func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginPutBastionShareableLink(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("bastionHostName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginPutBastionShareableLink(req.Context(), resourceGroupNameUnescaped, bastionHostNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -594,15 +703,23 @@ func (m *ManagementServerTransport) dispatchBeginPutBastionShareableLink(req *ht
 
 func (m *ManagementServerTransport) dispatchSupportedSecurityProviders(req *http.Request) (*http.Response, error) {
 	if m.srv.SupportedSecurityProviders == nil {
-		return nil, &nonRetriableError{errors.New("method SupportedSecurityProviders not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method SupportedSecurityProviders not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[a-zA-Z0-9-_]+)/supportedSecurityProviders"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualWans/(?P<virtualWANName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/supportedSecurityProviders`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := m.srv.SupportedSecurityProviders(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("virtualWANName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	virtualWANNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("virtualWANName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.SupportedSecurityProviders(req.Context(), resourceGroupNameUnescaped, virtualWANNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

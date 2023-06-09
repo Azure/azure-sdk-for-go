@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -68,11 +69,11 @@ func (m *ManagerDeploymentStatusServerTransport) Do(req *http.Request) (*http.Re
 
 func (m *ManagerDeploymentStatusServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if m.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9-_]+)/listDeploymentStatus"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeploymentStatus`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -81,7 +82,19 @@ func (m *ManagerDeploymentStatusServerTransport) dispatchList(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -97,7 +110,7 @@ func (m *ManagerDeploymentStatusServerTransport) dispatchList(req *http.Request)
 			Top: topParam,
 		}
 	}
-	respr, errRespr := m.srv.List(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("networkManagerName")], body, options)
+	respr, errRespr := m.srv.List(req.Context(), resourceGroupNameUnescaped, networkManagerNameUnescaped, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

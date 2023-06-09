@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,23 +76,31 @@ func (w *WebCategoriesServerTransport) Do(req *http.Request) (*http.Response, er
 
 func (w *WebCategoriesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if w.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureWebCategories/(?P<name>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureWebCategories/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
+	nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
 	var options *armnetwork.WebCategoriesClientGetOptions
 	if expandParam != nil {
 		options = &armnetwork.WebCategoriesClientGetOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := w.srv.Get(req.Context(), matches[regex.SubexpIndex("name")], options)
+	respr, errRespr := w.srv.Get(req.Context(), nameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -108,12 +117,12 @@ func (w *WebCategoriesServerTransport) dispatchGet(req *http.Request) (*http.Res
 
 func (w *WebCategoriesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListBySubscriptionPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
 	if w.newListBySubscriptionPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/azureWebCategories"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureWebCategories`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}

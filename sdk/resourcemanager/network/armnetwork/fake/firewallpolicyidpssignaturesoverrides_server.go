@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -85,15 +86,23 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) Do(req *http.Requ
 
 func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/signatureOverrides/default"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/signatureOverrides/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := f.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -110,15 +119,23 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchGet(req *
 
 func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if f.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/signatureOverrides"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/signatureOverrides`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := f.srv.List(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.List(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -135,11 +152,11 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchList(req 
 
 func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
 	if f.srv.Patch == nil {
-		return nil, &nonRetriableError{errors.New("method Patch not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/signatureOverrides/default"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/signatureOverrides/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -147,7 +164,15 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchPatch(req
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := f.srv.Patch(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Patch(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -164,11 +189,11 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchPatch(req
 
 func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchPut(req *http.Request) (*http.Response, error) {
 	if f.srv.Put == nil {
-		return nil, &nonRetriableError{errors.New("method Put not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[a-zA-Z0-9-_]+)/signatureOverrides/default"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/firewallPolicies/(?P<firewallPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/signatureOverrides/default`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -176,7 +201,15 @@ func (f *FirewallPolicyIdpsSignaturesOverridesServerTransport) dispatchPut(req *
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := f.srv.Put(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("firewallPolicyName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firewallPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("firewallPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Put(req.Context(), resourceGroupNameUnescaped, firewallPolicyNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

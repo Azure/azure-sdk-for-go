@@ -1,5 +1,11 @@
 # Release History
 
+## 4.1.0-beta.2 (2023-06-12)
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
 ## 4.1.0-beta.1 (2023-05-26)
 ### Features Added
 

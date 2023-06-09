@@ -67,7 +67,7 @@ func (o *OperationsServerTransport) Do(req *http.Request) (*http.Response, error
 
 func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if o.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if o.newListPager == nil {
 		resp := o.srv.NewListPager(nil)

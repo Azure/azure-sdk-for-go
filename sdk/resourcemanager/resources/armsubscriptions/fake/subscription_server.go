@@ -67,7 +67,7 @@ func (s *SubscriptionServerTransport) Do(req *http.Request) (*http.Response, err
 
 func (s *SubscriptionServerTransport) dispatchCheckResourceName(req *http.Request) (*http.Response, error) {
 	if s.srv.CheckResourceName == nil {
-		return nil, &nonRetriableError{errors.New("method CheckResourceName not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CheckResourceName not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsubscriptions.ResourceName](req)
 	if err != nil {

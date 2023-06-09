@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -89,15 +90,31 @@ func (d *DiskRestorePointServerTransport) Do(req *http.Request) (*http.Response,
 
 func (d *DiskRestorePointServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[a-zA-Z0-9-_]+)/restorePoints/(?P<vmRestorePointName>[a-zA-Z0-9-_]+)/diskRestorePoints/(?P<diskRestorePointName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints/(?P<diskRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := d.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("restorePointCollectionName")], matches[regex.SubexpIndex("vmRestorePointName")], matches[regex.SubexpIndex("diskRestorePointName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	restorePointCollectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("restorePointCollectionName")])
+	if err != nil {
+		return nil, err
+	}
+	vmRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmRestorePointName")])
+	if err != nil {
+		return nil, err
+	}
+	diskRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskRestorePointName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameUnescaped, restorePointCollectionNameUnescaped, vmRestorePointNameUnescaped, diskRestorePointNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -114,12 +131,12 @@ func (d *DiskRestorePointServerTransport) dispatchGet(req *http.Request) (*http.
 
 func (d *DiskRestorePointServerTransport) dispatchBeginGrantAccess(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginGrantAccess == nil {
-		return nil, &nonRetriableError{errors.New("method BeginGrantAccess not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginGrantAccess not implemented")}
 	}
 	if d.beginGrantAccess == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[a-zA-Z0-9-_]+)/restorePoints/(?P<vmRestorePointName>[a-zA-Z0-9-_]+)/diskRestorePoints/(?P<diskRestorePointName>[a-zA-Z0-9-_]+)/beginGetAccess"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints/(?P<diskRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/beginGetAccess`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -127,7 +144,23 @@ func (d *DiskRestorePointServerTransport) dispatchBeginGrantAccess(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginGrantAccess(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("restorePointCollectionName")], matches[regex.SubexpIndex("vmRestorePointName")], matches[regex.SubexpIndex("diskRestorePointName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		restorePointCollectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("restorePointCollectionName")])
+		if err != nil {
+			return nil, err
+		}
+		vmRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmRestorePointName")])
+		if err != nil {
+			return nil, err
+		}
+		diskRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskRestorePointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginGrantAccess(req.Context(), resourceGroupNameUnescaped, restorePointCollectionNameUnescaped, vmRestorePointNameUnescaped, diskRestorePointNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -151,16 +184,28 @@ func (d *DiskRestorePointServerTransport) dispatchBeginGrantAccess(req *http.Req
 
 func (d *DiskRestorePointServerTransport) dispatchNewListByRestorePointPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByRestorePointPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByRestorePointPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByRestorePointPager not implemented")}
 	}
 	if d.newListByRestorePointPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[a-zA-Z0-9-_]+)/restorePoints/(?P<vmRestorePointName>[a-zA-Z0-9-_]+)/diskRestorePoints"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := d.srv.NewListByRestorePointPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("restorePointCollectionName")], matches[regex.SubexpIndex("vmRestorePointName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		restorePointCollectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("restorePointCollectionName")])
+		if err != nil {
+			return nil, err
+		}
+		vmRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmRestorePointName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByRestorePointPager(resourceGroupNameUnescaped, restorePointCollectionNameUnescaped, vmRestorePointNameUnescaped, nil)
 		d.newListByRestorePointPager = &resp
 		server.PagerResponderInjectNextLinks(d.newListByRestorePointPager, req, func(page *armcompute.DiskRestorePointClientListByRestorePointResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -181,16 +226,32 @@ func (d *DiskRestorePointServerTransport) dispatchNewListByRestorePointPager(req
 
 func (d *DiskRestorePointServerTransport) dispatchBeginRevokeAccess(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginRevokeAccess == nil {
-		return nil, &nonRetriableError{errors.New("method BeginRevokeAccess not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginRevokeAccess not implemented")}
 	}
 	if d.beginRevokeAccess == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[a-zA-Z0-9-_]+)/restorePoints/(?P<vmRestorePointName>[a-zA-Z0-9-_]+)/diskRestorePoints/(?P<diskRestorePointName>[a-zA-Z0-9-_]+)/endGetAccess"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<vmRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diskRestorePoints/(?P<diskRestorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endGetAccess`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := d.srv.BeginRevokeAccess(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("restorePointCollectionName")], matches[regex.SubexpIndex("vmRestorePointName")], matches[regex.SubexpIndex("diskRestorePointName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		restorePointCollectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("restorePointCollectionName")])
+		if err != nil {
+			return nil, err
+		}
+		vmRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmRestorePointName")])
+		if err != nil {
+			return nil, err
+		}
+		diskRestorePointNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskRestorePointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginRevokeAccess(req.Context(), resourceGroupNameUnescaped, restorePointCollectionNameUnescaped, vmRestorePointNameUnescaped, diskRestorePointNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

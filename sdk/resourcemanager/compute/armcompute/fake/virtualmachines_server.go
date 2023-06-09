@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -234,16 +235,24 @@ func (v *VirtualMachinesServerTransport) Do(req *http.Request) (*http.Response, 
 
 func (v *VirtualMachinesServerTransport) dispatchBeginAssessPatches(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginAssessPatches == nil {
-		return nil, &nonRetriableError{errors.New("method BeginAssessPatches not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginAssessPatches not implemented")}
 	}
 	if v.beginAssessPatches == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/assessPatches"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/assessPatches`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginAssessPatches(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginAssessPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -267,12 +276,12 @@ func (v *VirtualMachinesServerTransport) dispatchBeginAssessPatches(req *http.Re
 
 func (v *VirtualMachinesServerTransport) dispatchBeginCapture(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginCapture == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCapture not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCapture not implemented")}
 	}
 	if v.beginCapture == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/capture"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capture`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -280,7 +289,15 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCapture(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCapture(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginCapture(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -304,16 +321,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCapture(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchBeginConvertToManagedDisks(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginConvertToManagedDisks == nil {
-		return nil, &nonRetriableError{errors.New("method BeginConvertToManagedDisks not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginConvertToManagedDisks not implemented")}
 	}
 	if v.beginConvertToManagedDisks == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/convertToManagedDisks"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/convertToManagedDisks`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginConvertToManagedDisks(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginConvertToManagedDisks(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -337,12 +362,12 @@ func (v *VirtualMachinesServerTransport) dispatchBeginConvertToManagedDisks(req 
 
 func (v *VirtualMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if v.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -350,7 +375,15 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -374,17 +407,29 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 
 func (v *VirtualMachinesServerTransport) dispatchBeginDeallocate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginDeallocate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDeallocate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeallocate not implemented")}
 	}
 	if v.beginDeallocate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/deallocate"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deallocate`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		hibernateParam, err := parseOptional(qp.Get("hibernate"), strconv.ParseBool)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		hibernateUnescaped, err := url.QueryUnescape(qp.Get("hibernate"))
+		if err != nil {
+			return nil, err
+		}
+		hibernateParam, err := parseOptional(hibernateUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -394,7 +439,7 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDeallocate(req *http.Reque
 				Hibernate: hibernateParam,
 			}
 		}
-		respr, errRespr := v.srv.BeginDeallocate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+		respr, errRespr := v.srv.BeginDeallocate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -418,17 +463,29 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDeallocate(req *http.Reque
 
 func (v *VirtualMachinesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if v.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		forceDeletionParam, err := parseOptional(qp.Get("forceDeletion"), strconv.ParseBool)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		forceDeletionUnescaped, err := url.QueryUnescape(qp.Get("forceDeletion"))
+		if err != nil {
+			return nil, err
+		}
+		forceDeletionParam, err := parseOptional(forceDeletionUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -438,7 +495,7 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDelete(req *http.Request) 
 				ForceDeletion: forceDeletionParam,
 			}
 		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -462,15 +519,23 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDelete(req *http.Request) 
 
 func (v *VirtualMachinesServerTransport) dispatchGeneralize(req *http.Request) (*http.Response, error) {
 	if v.srv.Generalize == nil {
-		return nil, &nonRetriableError{errors.New("method Generalize not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Generalize not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/generalize"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generalize`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.Generalize(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Generalize(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -487,23 +552,35 @@ func (v *VirtualMachinesServerTransport) dispatchGeneralize(req *http.Request) (
 
 func (v *VirtualMachinesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(armcompute.InstanceViewTypes(qp.Get("$expand")))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armcompute.InstanceViewTypes(expandUnescaped))
 	var options *armcompute.VirtualMachinesClientGetOptions
 	if expandParam != nil {
 		options = &armcompute.VirtualMachinesClientGetOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := v.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -520,12 +597,12 @@ func (v *VirtualMachinesServerTransport) dispatchGet(req *http.Request) (*http.R
 
 func (v *VirtualMachinesServerTransport) dispatchBeginInstallPatches(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginInstallPatches == nil {
-		return nil, &nonRetriableError{errors.New("method BeginInstallPatches not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginInstallPatches not implemented")}
 	}
 	if v.beginInstallPatches == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/installPatches"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/installPatches`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -533,7 +610,15 @@ func (v *VirtualMachinesServerTransport) dispatchBeginInstallPatches(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginInstallPatches(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginInstallPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -557,15 +642,23 @@ func (v *VirtualMachinesServerTransport) dispatchBeginInstallPatches(req *http.R
 
 func (v *VirtualMachinesServerTransport) dispatchInstanceView(req *http.Request) (*http.Response, error) {
 	if v.srv.InstanceView == nil {
-		return nil, &nonRetriableError{errors.New("method InstanceView not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method InstanceView not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/instanceView"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instanceView`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.InstanceView(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.InstanceView(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -582,18 +675,30 @@ func (v *VirtualMachinesServerTransport) dispatchInstanceView(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if v.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(armcompute.ExpandTypeForListVMs(qp.Get("$expand")))
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(armcompute.ExpandTypeForListVMs(expandUnescaped))
 		var options *armcompute.VirtualMachinesClientListOptions
 		if filterParam != nil || expandParam != nil {
 			options = &armcompute.VirtualMachinesClientListOptions{
@@ -601,7 +706,7 @@ func (v *VirtualMachinesServerTransport) dispatchNewListPager(req *http.Request)
 				Expand: expandParam,
 			}
 		}
-		resp := v.srv.NewListPager(matches[regex.SubexpIndex("resourceGroupName")], options)
+		resp := v.srv.NewListPager(resourceGroupNameUnescaped, options)
 		v.newListPager = &resp
 		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armcompute.VirtualMachinesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -622,19 +727,31 @@ func (v *VirtualMachinesServerTransport) dispatchNewListPager(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListAllPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
 	if v.newListAllPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		statusOnlyParam := getOptional(qp.Get("statusOnly"))
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(armcompute.ExpandTypesForListVMs(qp.Get("$expand")))
+		statusOnlyUnescaped, err := url.QueryUnescape(qp.Get("statusOnly"))
+		if err != nil {
+			return nil, err
+		}
+		statusOnlyParam := getOptional(statusOnlyUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(armcompute.ExpandTypesForListVMs(expandUnescaped))
 		var options *armcompute.VirtualMachinesClientListAllOptions
 		if statusOnlyParam != nil || filterParam != nil || expandParam != nil {
 			options = &armcompute.VirtualMachinesClientListAllOptions{
@@ -664,16 +781,24 @@ func (v *VirtualMachinesServerTransport) dispatchNewListAllPager(req *http.Reque
 
 func (v *VirtualMachinesServerTransport) dispatchNewListAvailableSizesPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListAvailableSizesPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListAvailableSizesPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListAvailableSizesPager not implemented")}
 	}
 	if v.newListAvailableSizesPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/vmSizes"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListAvailableSizesPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		v.newListAvailableSizesPager = &resp
 	}
 	resp, err := server.PagerResponderNext(v.newListAvailableSizesPager, req)
@@ -691,16 +816,20 @@ func (v *VirtualMachinesServerTransport) dispatchNewListAvailableSizesPager(req 
 
 func (v *VirtualMachinesServerTransport) dispatchNewListByLocationPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByLocationPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByLocationPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
 	}
 	if v.newListByLocationPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/virtualMachines"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := v.srv.NewListByLocationPager(matches[regex.SubexpIndex("location")], nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByLocationPager(locationUnescaped, nil)
 		v.newListByLocationPager = &resp
 		server.PagerResponderInjectNextLinks(v.newListByLocationPager, req, func(page *armcompute.VirtualMachinesClientListByLocationResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -721,16 +850,24 @@ func (v *VirtualMachinesServerTransport) dispatchNewListByLocationPager(req *htt
 
 func (v *VirtualMachinesServerTransport) dispatchBeginPerformMaintenance(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginPerformMaintenance == nil {
-		return nil, &nonRetriableError{errors.New("method BeginPerformMaintenance not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginPerformMaintenance not implemented")}
 	}
 	if v.beginPerformMaintenance == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/performMaintenance"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginPerformMaintenance(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPerformMaintenance(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -754,17 +891,29 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPerformMaintenance(req *ht
 
 func (v *VirtualMachinesServerTransport) dispatchBeginPowerOff(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginPowerOff == nil {
-		return nil, &nonRetriableError{errors.New("method BeginPowerOff not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginPowerOff not implemented")}
 	}
 	if v.beginPowerOff == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/powerOff"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		skipShutdownParam, err := parseOptional(qp.Get("skipShutdown"), strconv.ParseBool)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		skipShutdownUnescaped, err := url.QueryUnescape(qp.Get("skipShutdown"))
+		if err != nil {
+			return nil, err
+		}
+		skipShutdownParam, err := parseOptional(skipShutdownUnescaped, strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -774,7 +923,7 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPowerOff(req *http.Request
 				SkipShutdown: skipShutdownParam,
 			}
 		}
-		respr, errRespr := v.srv.BeginPowerOff(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+		respr, errRespr := v.srv.BeginPowerOff(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -798,16 +947,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPowerOff(req *http.Request
 
 func (v *VirtualMachinesServerTransport) dispatchBeginReapply(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginReapply == nil {
-		return nil, &nonRetriableError{errors.New("method BeginReapply not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginReapply not implemented")}
 	}
 	if v.beginReapply == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/reapply"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reapply`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginReapply(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginReapply(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -831,16 +988,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReapply(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchBeginRedeploy(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginRedeploy == nil {
-		return nil, &nonRetriableError{errors.New("method BeginRedeploy not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginRedeploy not implemented")}
 	}
 	if v.beginRedeploy == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/redeploy"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginRedeploy(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginRedeploy(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -864,16 +1029,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRedeploy(req *http.Request
 
 func (v *VirtualMachinesServerTransport) dispatchBeginReimage(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginReimage == nil {
-		return nil, &nonRetriableError{errors.New("method BeginReimage not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginReimage not implemented")}
 	}
 	if v.beginReimage == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/reimage"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineReimageParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
 		if err != nil {
 			return nil, err
 		}
@@ -883,7 +1056,7 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReimage(req *http.Request)
 				Parameters: &body,
 			}
 		}
-		respr, errRespr := v.srv.BeginReimage(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+		respr, errRespr := v.srv.BeginReimage(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -907,16 +1080,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReimage(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginRestart == nil {
-		return nil, &nonRetriableError{errors.New("method BeginRestart not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
 	if v.beginRestart == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/restart"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginRestart(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -940,16 +1121,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRestart(req *http.Request)
 
 func (v *VirtualMachinesServerTransport) dispatchRetrieveBootDiagnosticsData(req *http.Request) (*http.Response, error) {
 	if v.srv.RetrieveBootDiagnosticsData == nil {
-		return nil, &nonRetriableError{errors.New("method RetrieveBootDiagnosticsData not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method RetrieveBootDiagnosticsData not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/retrieveBootDiagnosticsData"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveBootDiagnosticsData`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	sasURIExpirationTimeInMinutesParam, err := parseOptional(qp.Get("sasUriExpirationTimeInMinutes"), func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	sasURIExpirationTimeInMinutesUnescaped, err := url.QueryUnescape(qp.Get("sasUriExpirationTimeInMinutes"))
+	if err != nil {
+		return nil, err
+	}
+	sasURIExpirationTimeInMinutesParam, err := parseOptional(sasURIExpirationTimeInMinutesUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -965,7 +1158,7 @@ func (v *VirtualMachinesServerTransport) dispatchRetrieveBootDiagnosticsData(req
 			SasURIExpirationTimeInMinutes: sasURIExpirationTimeInMinutesParam,
 		}
 	}
-	respr, errRespr := v.srv.RetrieveBootDiagnosticsData(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], options)
+	respr, errRespr := v.srv.RetrieveBootDiagnosticsData(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -982,12 +1175,12 @@ func (v *VirtualMachinesServerTransport) dispatchRetrieveBootDiagnosticsData(req
 
 func (v *VirtualMachinesServerTransport) dispatchBeginRunCommand(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginRunCommand == nil {
-		return nil, &nonRetriableError{errors.New("method BeginRunCommand not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginRunCommand not implemented")}
 	}
 	if v.beginRunCommand == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/runCommand"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -995,7 +1188,15 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRunCommand(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginRunCommand(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginRunCommand(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1019,15 +1220,23 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRunCommand(req *http.Reque
 
 func (v *VirtualMachinesServerTransport) dispatchSimulateEviction(req *http.Request) (*http.Response, error) {
 	if v.srv.SimulateEviction == nil {
-		return nil, &nonRetriableError{errors.New("method SimulateEviction not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method SimulateEviction not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/simulateEviction"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/simulateEviction`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.SimulateEviction(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.SimulateEviction(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1044,16 +1253,24 @@ func (v *VirtualMachinesServerTransport) dispatchSimulateEviction(req *http.Requ
 
 func (v *VirtualMachinesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("method BeginStart not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
 	if v.beginStart == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)/start"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := v.srv.BeginStart(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginStart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1077,12 +1294,12 @@ func (v *VirtualMachinesServerTransport) dispatchBeginStart(req *http.Request) (
 
 func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	if v.beginUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -1090,7 +1307,15 @@ func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("vmName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

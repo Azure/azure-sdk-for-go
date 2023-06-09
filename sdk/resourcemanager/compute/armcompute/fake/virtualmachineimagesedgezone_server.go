@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -92,15 +93,39 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) Do(req *http.Request) (*ht
 
 func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/edgeZones/(?P<edgeZone>[a-zA-Z0-9-_]+)/publishers/(?P<publisherName>[a-zA-Z0-9-_]+)/artifacttypes/vmimage/offers/(?P<offer>[a-zA-Z0-9-_]+)/skus/(?P<skus>[a-zA-Z0-9-_]+)/versions/(?P<version>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.Get(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("edgeZone")], matches[regex.SubexpIndex("publisherName")], matches[regex.SubexpIndex("offer")], matches[regex.SubexpIndex("skus")], matches[regex.SubexpIndex("version")], nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	edgeZoneUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("edgeZone")])
+	if err != nil {
+		return nil, err
+	}
+	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	if err != nil {
+		return nil, err
+	}
+	offerUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offer")])
+	if err != nil {
+		return nil, err
+	}
+	skusUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("skus")])
+	if err != nil {
+		return nil, err
+	}
+	versionUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), locationUnescaped, edgeZoneUnescaped, publisherNameUnescaped, offerUnescaped, skusUnescaped, versionUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -117,17 +142,45 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchGet(req *http.Requ
 
 func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if v.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("method List not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/edgeZones/(?P<edgeZone>[a-zA-Z0-9-_]+)/publishers/(?P<publisherName>[a-zA-Z0-9-_]+)/artifacttypes/vmimage/offers/(?P<offer>[a-zA-Z0-9-_]+)/skus/(?P<skus>[a-zA-Z0-9-_]+)/versions"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus/(?P<skus>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(qp.Get("$expand"))
-	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	edgeZoneUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("edgeZone")])
+	if err != nil {
+		return nil, err
+	}
+	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	if err != nil {
+		return nil, err
+	}
+	offerUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offer")])
+	if err != nil {
+		return nil, err
+	}
+	skusUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("skus")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -137,7 +190,11 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	orderbyParam := getOptional(qp.Get("$orderby"))
+	orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+	if err != nil {
+		return nil, err
+	}
+	orderbyParam := getOptional(orderbyUnescaped)
 	var options *armcompute.VirtualMachineImagesEdgeZoneClientListOptions
 	if expandParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineImagesEdgeZoneClientListOptions{
@@ -146,7 +203,7 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Req
 			Orderby: orderbyParam,
 		}
 	}
-	respr, errRespr := v.srv.List(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("edgeZone")], matches[regex.SubexpIndex("publisherName")], matches[regex.SubexpIndex("offer")], matches[regex.SubexpIndex("skus")], options)
+	respr, errRespr := v.srv.List(req.Context(), locationUnescaped, edgeZoneUnescaped, publisherNameUnescaped, offerUnescaped, skusUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -163,15 +220,27 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Req
 
 func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListOffers(req *http.Request) (*http.Response, error) {
 	if v.srv.ListOffers == nil {
-		return nil, &nonRetriableError{errors.New("method ListOffers not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListOffers not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/edgeZones/(?P<edgeZone>[a-zA-Z0-9-_]+)/publishers/(?P<publisherName>[a-zA-Z0-9-_]+)/artifacttypes/vmimage/offers"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.ListOffers(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("edgeZone")], matches[regex.SubexpIndex("publisherName")], nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	edgeZoneUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("edgeZone")])
+	if err != nil {
+		return nil, err
+	}
+	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.ListOffers(req.Context(), locationUnescaped, edgeZoneUnescaped, publisherNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -188,15 +257,23 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListOffers(req *ht
 
 func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListPublishers(req *http.Request) (*http.Response, error) {
 	if v.srv.ListPublishers == nil {
-		return nil, &nonRetriableError{errors.New("method ListPublishers not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListPublishers not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/edgeZones/(?P<edgeZone>[a-zA-Z0-9-_]+)/publishers"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.ListPublishers(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("edgeZone")], nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	edgeZoneUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("edgeZone")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.ListPublishers(req.Context(), locationUnescaped, edgeZoneUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -213,15 +290,31 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListPublishers(req
 
 func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
 	if v.srv.ListSKUs == nil {
-		return nil, &nonRetriableError{errors.New("method ListSKUs not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/edgeZones/(?P<edgeZone>[a-zA-Z0-9-_]+)/publishers/(?P<publisherName>[a-zA-Z0-9-_]+)/artifacttypes/vmimage/offers/(?P<offer>[a-zA-Z0-9-_]+)/skus"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/edgeZones/(?P<edgeZone>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmimage/offers/(?P<offer>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := v.srv.ListSKUs(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("edgeZone")], matches[regex.SubexpIndex("publisherName")], matches[regex.SubexpIndex("offer")], nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	edgeZoneUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("edgeZone")])
+	if err != nil {
+		return nil, err
+	}
+	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	if err != nil {
+		return nil, err
+	}
+	offerUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offer")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.ListSKUs(req.Context(), locationUnescaped, edgeZoneUnescaped, publisherNameUnescaped, offerUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

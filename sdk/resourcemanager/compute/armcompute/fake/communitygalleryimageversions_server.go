@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,15 +76,31 @@ func (c *CommunityGalleryImageVersionsServerTransport) Do(req *http.Request) (*h
 
 func (c *CommunityGalleryImageVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/communityGalleries/(?P<publicGalleryName>[a-zA-Z0-9-_]+)/images/(?P<galleryImageName>[a-zA-Z0-9-_]+)/versions/(?P<galleryImageVersionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communityGalleries/(?P<publicGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryImageVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := c.srv.Get(req.Context(), matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("publicGalleryName")], matches[regex.SubexpIndex("galleryImageName")], matches[regex.SubexpIndex("galleryImageVersionName")], nil)
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	publicGalleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publicGalleryName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryImageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryImageVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), locationUnescaped, publicGalleryNameUnescaped, galleryImageNameUnescaped, galleryImageVersionNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -100,16 +117,28 @@ func (c *CommunityGalleryImageVersionsServerTransport) dispatchGet(req *http.Req
 
 func (c *CommunityGalleryImageVersionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	if c.newListPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/communityGalleries/(?P<publicGalleryName>[a-zA-Z0-9-_]+)/images/(?P<galleryImageName>[a-zA-Z0-9-_]+)/versions"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communityGalleries/(?P<publicGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := c.srv.NewListPager(matches[regex.SubexpIndex("location")], matches[regex.SubexpIndex("publicGalleryName")], matches[regex.SubexpIndex("galleryImageName")], nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		publicGalleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publicGalleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryImageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListPager(locationUnescaped, publicGalleryNameUnescaped, galleryImageNameUnescaped, nil)
 		c.newListPager = &resp
 		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armcompute.CommunityGalleryImageVersionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())

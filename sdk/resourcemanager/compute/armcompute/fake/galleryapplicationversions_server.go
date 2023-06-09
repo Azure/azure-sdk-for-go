@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -96,12 +97,12 @@ func (g *GalleryApplicationVersionsServerTransport) Do(req *http.Request) (*http
 
 func (g *GalleryApplicationVersionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginCreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	if g.beginCreateOrUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[a-zA-Z0-9-_]+)/applications/(?P<galleryApplicationName>[a-zA-Z0-9-_]+)/versions/(?P<galleryApplicationVersionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<galleryApplicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryApplicationVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -109,7 +110,23 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchBeginCreateOrUpdate(
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("galleryName")], matches[regex.SubexpIndex("galleryApplicationName")], matches[regex.SubexpIndex("galleryApplicationVersionName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, galleryApplicationNameUnescaped, galleryApplicationVersionNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -133,16 +150,32 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchBeginCreateOrUpdate(
 
 func (g *GalleryApplicationVersionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("method BeginDelete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	if g.beginDelete == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[a-zA-Z0-9-_]+)/applications/(?P<galleryApplicationName>[a-zA-Z0-9-_]+)/versions/(?P<galleryApplicationVersionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<galleryApplicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryApplicationVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		respr, errRespr := g.srv.BeginDelete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("galleryName")], matches[regex.SubexpIndex("galleryApplicationName")], matches[regex.SubexpIndex("galleryApplicationVersionName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, galleryApplicationNameUnescaped, galleryApplicationVersionNameUnescaped, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -166,23 +199,43 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchBeginDelete(req *htt
 
 func (g *GalleryApplicationVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[a-zA-Z0-9-_]+)/applications/(?P<galleryApplicationName>[a-zA-Z0-9-_]+)/versions/(?P<galleryApplicationVersionName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<galleryApplicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryApplicationVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	expandParam := getOptional(armcompute.ReplicationStatusTypes(qp.Get("$expand")))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryApplicationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryApplicationVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armcompute.ReplicationStatusTypes(expandUnescaped))
 	var options *armcompute.GalleryApplicationVersionsClientGetOptions
 	if expandParam != nil {
 		options = &armcompute.GalleryApplicationVersionsClientGetOptions{
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := g.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("galleryName")], matches[regex.SubexpIndex("galleryApplicationName")], matches[regex.SubexpIndex("galleryApplicationVersionName")], options)
+	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, galleryApplicationNameUnescaped, galleryApplicationVersionNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -199,16 +252,28 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchGet(req *http.Reques
 
 func (g *GalleryApplicationVersionsServerTransport) dispatchNewListByGalleryApplicationPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListByGalleryApplicationPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByGalleryApplicationPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryApplicationPager not implemented")}
 	}
 	if g.newListByGalleryApplicationPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[a-zA-Z0-9-_]+)/applications/(?P<galleryApplicationName>[a-zA-Z0-9-_]+)/versions"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<galleryApplicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := g.srv.NewListByGalleryApplicationPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("galleryName")], matches[regex.SubexpIndex("galleryApplicationName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListByGalleryApplicationPager(resourceGroupNameUnescaped, galleryNameUnescaped, galleryApplicationNameUnescaped, nil)
 		g.newListByGalleryApplicationPager = &resp
 		server.PagerResponderInjectNextLinks(g.newListByGalleryApplicationPager, req, func(page *armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -229,12 +294,12 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchNewListByGalleryAppl
 
 func (g *GalleryApplicationVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method BeginUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	if g.beginUpdate == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[a-zA-Z0-9-_]+)/applications/(?P<galleryApplicationName>[a-zA-Z0-9-_]+)/versions/(?P<galleryApplicationVersionName>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<galleryApplicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryApplicationVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -242,7 +307,23 @@ func (g *GalleryApplicationVersionsServerTransport) dispatchBeginUpdate(req *htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("galleryName")], matches[regex.SubexpIndex("galleryApplicationName")], matches[regex.SubexpIndex("galleryApplicationVersionName")], body, nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationName")])
+		if err != nil {
+			return nil, err
+		}
+		galleryApplicationVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryApplicationVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, galleryApplicationNameUnescaped, galleryApplicationVersionNameUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

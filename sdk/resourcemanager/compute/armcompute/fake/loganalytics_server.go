@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -75,12 +76,12 @@ func (l *LogAnalyticsServerTransport) Do(req *http.Request) (*http.Response, err
 
 func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginExportRequestRateByInterval == nil {
-		return nil, &nonRetriableError{errors.New("method BeginExportRequestRateByInterval not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginExportRequestRateByInterval not implemented")}
 	}
 	if l.beginExportRequestRateByInterval == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/logAnalytics/apiAccess/getRequestRateByInterval"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -88,7 +89,11 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), matches[regex.SubexpIndex("location")], body, nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), locationUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -112,12 +117,12 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 
 func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginExportThrottledRequests == nil {
-		return nil, &nonRetriableError{errors.New("method BeginExportThrottledRequests not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginExportThrottledRequests not implemented")}
 	}
 	if l.beginExportThrottledRequests == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/locations/(?P<location>[a-zA-Z0-9-_]+)/logAnalytics/apiAccess/getThrottledRequests"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -125,7 +130,11 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), matches[regex.SubexpIndex("location")], body, nil)
+		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), locationUnescaped, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

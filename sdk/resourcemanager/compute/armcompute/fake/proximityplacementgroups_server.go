@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 )
 
@@ -100,11 +101,11 @@ func (p *ProximityPlacementGroupsServerTransport) Do(req *http.Request) (*http.R
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("method CreateOrUpdate not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -112,7 +113,15 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchCreateOrUpdate(req *ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("proximityPlacementGroupName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	proximityPlacementGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("proximityPlacementGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, proximityPlacementGroupNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -129,15 +138,23 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchCreateOrUpdate(req *ht
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if p.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("method Delete not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := p.srv.Delete(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("proximityPlacementGroupName")], nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	proximityPlacementGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("proximityPlacementGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameUnescaped, proximityPlacementGroupNameUnescaped, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -154,23 +171,35 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchDelete(req *http.Reque
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("method Get not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	includeColocationStatusParam := getOptional(qp.Get("includeColocationStatus"))
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	proximityPlacementGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("proximityPlacementGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	includeColocationStatusUnescaped, err := url.QueryUnescape(qp.Get("includeColocationStatus"))
+	if err != nil {
+		return nil, err
+	}
+	includeColocationStatusParam := getOptional(includeColocationStatusUnescaped)
 	var options *armcompute.ProximityPlacementGroupsClientGetOptions
 	if includeColocationStatusParam != nil {
 		options = &armcompute.ProximityPlacementGroupsClientGetOptions{
 			IncludeColocationStatus: includeColocationStatusParam,
 		}
 	}
-	respr, errRespr := p.srv.Get(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("proximityPlacementGroupName")], options)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, proximityPlacementGroupNameUnescaped, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -187,16 +216,20 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchGet(req *http.Request)
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListByResourceGroupPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	if p.newListByResourceGroupPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := p.srv.NewListByResourceGroupPager(matches[regex.SubexpIndex("resourceGroupName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		p.newListByResourceGroupPager = &resp
 		server.PagerResponderInjectNextLinks(p.newListByResourceGroupPager, req, func(page *armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -217,12 +250,12 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListByResourceGroup
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListBySubscriptionPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
 	if p.newListBySubscriptionPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -247,11 +280,11 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchNewListBySubscriptionP
 
 func (p *ProximityPlacementGroupsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("method Update not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/proximityPlacementGroups/(?P<proximityPlacementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
@@ -259,7 +292,15 @@ func (p *ProximityPlacementGroupsServerTransport) dispatchUpdate(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Update(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("proximityPlacementGroupName")], body, nil)
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	proximityPlacementGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("proximityPlacementGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Update(req.Context(), resourceGroupNameUnescaped, proximityPlacementGroupNameUnescaped, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

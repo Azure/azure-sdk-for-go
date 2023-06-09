@@ -67,15 +67,15 @@ The `fake` package provides implementations for fake servers that can be used fo
 To create a fake server, declare an instance of the required fake server type(s).
 
 ```go
-myFakeAvailabilitySetsServer := fake.AvailabilitySetsServer{}
+myFakeVirtualMachinesServer := fake.VirtualMachinesServer{}
 ```
 
 Next, provide func implementations for the methods you wish to fake.
 The named return variables can be used to simplify return value construction.
 
 ```go
-myFakeAvailabilitySetsServer.Get = func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientGetResponse], err azfake.ErrorResponder) {
-	// TODO: resp.SetResponse(/* your fake AvailabilitySetsClientGetResponse response */)
+myFakeVirtualMachinesServer.Get = func(ctx context.Context, resourceGroupName string, vmName string, options *armcompute.VirtualMachinesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachinesClientGetResponse], errResp azfake.ErrorResponder) {
+	// TODO: resp.SetResponse(/* your fake armcompute.VirtualMachinesClientGetResponse response */)
 	return
 }
 ```
@@ -87,9 +87,9 @@ Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
 ```go
 import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 
-client, err := armcompute.NewAvailabilitySetsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+client, err := armcompute.VirtualMachinesClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
 	ClientOptions: azcore.ClientOptions{
-		Transport: fake.NewAvailabilitySetsServerTransport(&myFakeAvailabilitySetsServer),
+		Transport: fake.NewVirtualMachinesServerTransport(&myFakeVirtualMachinesServer),
 	},
 })
 ```

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 )
@@ -83,15 +84,27 @@ func (c *CloudServicesUpdateDomainServerTransport) Do(req *http.Request) (*http.
 
 func (c *CloudServicesUpdateDomainServerTransport) dispatchGetUpdateDomain(req *http.Request) (*http.Response, error) {
 	if c.srv.GetUpdateDomain == nil {
-		return nil, &nonRetriableError{errors.New("method GetUpdateDomain not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method GetUpdateDomain not implemented")}
 	}
-	const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[a-zA-Z0-9-_]+)/updateDomains/(?P<updateDomain>[a-zA-Z0-9-_]+)"
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDomains/(?P<updateDomain>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.Path)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	updateDomainParam, err := parseWithCast(matches[regex.SubexpIndex("updateDomain")], func(v string) (int32, error) {
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	updateDomainUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("updateDomain")])
+	if err != nil {
+		return nil, err
+	}
+	updateDomainParam, err := parseWithCast(updateDomainUnescaped, func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
@@ -101,7 +114,7 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchGetUpdateDomain(req *
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.GetUpdateDomain(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("cloudServiceName")], int32(updateDomainParam), nil)
+	respr, errRespr := c.srv.GetUpdateDomain(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, int32(updateDomainParam), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -118,16 +131,24 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchGetUpdateDomain(req *
 
 func (c *CloudServicesUpdateDomainServerTransport) dispatchNewListUpdateDomainsPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListUpdateDomainsPager == nil {
-		return nil, &nonRetriableError{errors.New("method NewListUpdateDomainsPager not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method NewListUpdateDomainsPager not implemented")}
 	}
 	if c.newListUpdateDomainsPager == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[a-zA-Z0-9-_]+)/updateDomains"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDomains`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := c.srv.NewListUpdateDomainsPager(matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("cloudServiceName")], nil)
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListUpdateDomainsPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
 		c.newListUpdateDomainsPager = &resp
 		server.PagerResponderInjectNextLinks(c.newListUpdateDomainsPager, req, func(page *armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
@@ -148,12 +169,12 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchNewListUpdateDomainsP
 
 func (c *CloudServicesUpdateDomainServerTransport) dispatchBeginWalkUpdateDomain(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginWalkUpdateDomain == nil {
-		return nil, &nonRetriableError{errors.New("method BeginWalkUpdateDomain not implemented")}
+		return nil, &nonRetriableError{errors.New("fake for method BeginWalkUpdateDomain not implemented")}
 	}
 	if c.beginWalkUpdateDomain == nil {
-		const regexStr = "/subscriptions/(?P<subscriptionId>[a-zA-Z0-9-_]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9-_]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[a-zA-Z0-9-_]+)/updateDomains/(?P<updateDomain>[a-zA-Z0-9-_]+)"
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDomains/(?P<updateDomain>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.Path)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
@@ -161,7 +182,19 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchBeginWalkUpdateDomain
 		if err != nil {
 			return nil, err
 		}
-		updateDomainParam, err := parseWithCast(matches[regex.SubexpIndex("updateDomain")], func(v string) (int32, error) {
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		updateDomainUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("updateDomain")])
+		if err != nil {
+			return nil, err
+		}
+		updateDomainParam, err := parseWithCast(updateDomainUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -171,7 +204,7 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchBeginWalkUpdateDomain
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginWalkUpdateDomain(req.Context(), matches[regex.SubexpIndex("resourceGroupName")], matches[regex.SubexpIndex("cloudServiceName")], int32(updateDomainParam), body, nil)
+		respr, errRespr := c.srv.BeginWalkUpdateDomain(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, int32(updateDomainParam), body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

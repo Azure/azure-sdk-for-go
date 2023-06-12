@@ -60,6 +60,31 @@ A client groups a set of related APIs, providing access to its functionality.  C
 client := clientFactory.NewSnapshotsClient()
 ```
 
+## Fakes
+The `fake` package provides implementations for fake servers that can be used for testing.
+To create a fake server, declare an instance of the required fake server type(s).
+```go
+myFakeManagedClustersServer := fake.ManagedClustersServer{}
+```
+Next, provide func implementations for the methods you wish to fake.
+The named return variables can be used to simplify return value construction.
+```go
+myFakeManagedClustersServer.Get = func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetResponse], errResp azfake.ErrorResponder) {
+	// TODO: resp.SetResponse(/* your fake armcontainerservice.ManagedClustersClientGetResponse response */)
+	return
+}
+```
+You connect the fake server to a client instance during construction through the optional transport.
+Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
+```go
+import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+client, err := armcontainerservice.NewManagedClustersClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	ClientOptions: azcore.ClientOptions{
+		Transport: fake.NewManagedClustersServerTransport(&myFakeManagedClustersServer),
+	},
+})
+```
+
 ## More sample code
 
 - [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/agent_pool)

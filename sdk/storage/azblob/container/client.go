@@ -37,6 +37,8 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]
 
+const containerClient = "azblob/container.Client"
+
 // NewClient creates an instance of Client with the specified values.
 //   - containerURL - the URL of the container e.g. https://<account>.blob.core.windows.net/container
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
@@ -47,7 +49,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient("container.Client", exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(containerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +63,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient("container.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(containerClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +80,7 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient("container.Client", exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(containerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

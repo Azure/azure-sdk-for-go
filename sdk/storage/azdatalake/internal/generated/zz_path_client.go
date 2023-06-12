@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
@@ -21,21 +22,11 @@ import (
 )
 
 // PathClient contains the methods for the Path group.
-// Don't use this type directly, use NewPathClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type PathClient struct {
-	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewPathClient creates a new instance of PathClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewPathClient(endpoint string, pl runtime.Pipeline) *PathClient {
-	client := &PathClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
+	internal         *azcore.Client
+	endpoint         string
+	xmsLeaseDuration int32
 }
 
 // AppendData - Append data to the file.
@@ -46,13 +37,13 @@ func NewPathClient(endpoint string, pl runtime.Pipeline) *PathClient {
 //   - options - PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the PathClient.Create method.
-func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser, options *PathClientAppendDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo) (PathClientAppendDataResponse, error) {
+//   - CPKInfo - CPKInfo contains a group of parameters for the PathClient.Create method.
+func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser, options *PathClientAppendDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo) (PathClientAppendDataResponse, error) {
 	req, err := client.appendDataCreateRequest(ctx, body, options, pathHTTPHeaders, leaseAccessConditions, cpkInfo)
 	if err != nil {
 		return PathClientAppendDataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientAppendDataResponse{}, err
 	}
@@ -63,7 +54,7 @@ func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser
 }
 
 // appendDataCreateRequest creates the AppendData request.
-func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.ReadSeekCloser, options *PathClientAppendDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
+func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.ReadSeekCloser, options *PathClientAppendDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -100,10 +91,13 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(body, "application/json")
+	if err := req.SetBody(body, "application/json"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // appendDataHandleResponse handles the AppendData response.
@@ -126,7 +120,7 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 		result.Version = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
@@ -136,11 +130,11 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
-		result.XMSContentCRC64 = xMSContentCRC64
+		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
@@ -171,13 +165,13 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 //     method.
 //   - SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the PathClient.Create
 //     method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the PathClient.Create method.
-func (client *PathClient) Create(ctx context.Context, options *PathClientCreateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, cpkInfo *CpkInfo) (PathClientCreateResponse, error) {
+//   - CPKInfo - CPKInfo contains a group of parameters for the PathClient.Create method.
+func (client *PathClient) Create(ctx context.Context, options *PathClientCreateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, cpkInfo *CPKInfo) (PathClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, options, pathHTTPHeaders, leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, cpkInfo)
 	if err != nil {
 		return PathClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientCreateResponse{}, err
 	}
@@ -188,7 +182,7 @@ func (client *PathClient) Create(ctx context.Context, options *PathClientCreateO
 }
 
 // createCreateRequest creates the Create request.
-func (client *PathClient) createCreateRequest(ctx context.Context, options *PathClientCreateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
+func (client *PathClient) createCreateRequest(ctx context.Context, options *PathClientCreateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, cpkInfo *CPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -245,10 +239,10 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-umask"] = []string{*options.Umask}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -257,10 +251,10 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
-		req.Raw().Header["x-ms-source-if-match"] = []string{*sourceModifiedAccessConditions.SourceIfMatch}
+		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
-		req.Raw().Header["x-ms-source-if-none-match"] = []string{*sourceModifiedAccessConditions.SourceIfNoneMatch}
+		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfModifiedSince != nil {
 		req.Raw().Header["x-ms-source-if-modified-since"] = []string{sourceModifiedAccessConditions.SourceIfModifiedSince.Format(time.RFC1123)}
@@ -275,7 +269,28 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+	}
+	if options != nil && options.Owner != nil {
+		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
+	}
+	if options != nil && options.Group != nil {
+		req.Raw().Header["x-ms-group"] = []string{*options.Group}
+	}
+	if options != nil && options.ACL != nil {
+		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
+	}
+	if options != nil && options.ProposedLeaseID != nil {
+		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
+	}
+	if options != nil && options.LeaseDuration != nil {
+		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(*options.LeaseDuration, 10)}
+	}
+	if options != nil && options.ExpiryOptions != nil {
+		req.Raw().Header["x-ms-expiry-option"] = []string{string(*options.ExpiryOptions)}
+	}
+	if options != nil && options.ExpiresOn != nil {
+		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +307,7 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -345,7 +360,7 @@ func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteO
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
@@ -380,10 +395,10 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -429,13 +444,13 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
 //     method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the PathClient.Create method.
-func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlushDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (PathClientFlushDataResponse, error) {
+//   - CPKInfo - CPKInfo contains a group of parameters for the PathClient.Create method.
+func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlushDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CPKInfo) (PathClientFlushDataResponse, error) {
 	req, err := client.flushDataCreateRequest(ctx, options, pathHTTPHeaders, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
 	if err != nil {
 		return PathClientFlushDataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientFlushDataResponse{}, err
 	}
@@ -446,7 +461,7 @@ func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlus
 }
 
 // flushDataCreateRequest creates the FlushData request.
-func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *PathClientFlushDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
+func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *PathClientFlushDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -491,10 +506,10 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["x-ms-content-language"] = []string{*pathHTTPHeaders.ContentLanguage}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -513,7 +528,7 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -530,7 +545,7 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -585,7 +600,7 @@ func (client *PathClient) GetProperties(ctx context.Context, options *PathClient
 	if err != nil {
 		return PathClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientGetPropertiesResponse{}, err
 	}
@@ -620,10 +635,10 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -677,7 +692,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -746,7 +761,7 @@ func (client *PathClient) Lease(ctx context.Context, xmsLeaseAction PathLeaseAct
 	if err != nil {
 		return PathClientLeaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientLeaseResponse{}, err
 	}
@@ -772,9 +787,7 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	req.Raw().Header["x-ms-lease-action"] = []string{string(xmsLeaseAction)}
-	if options != nil && options.XMSLeaseDuration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(*options.XMSLeaseDuration), 10)}
-	}
+	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(client.xmsLeaseDuration), 10)}
 	if options != nil && options.XMSLeaseBreakPeriod != nil {
 		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.XMSLeaseBreakPeriod), 10)}
 	}
@@ -785,10 +798,10 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -811,7 +824,7 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -845,13 +858,13 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
 //     method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the PathClient.Create method.
-func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (PathClientReadResponse, error) {
+//   - CPKInfo - CPKInfo contains a group of parameters for the PathClient.Create method.
+func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CPKInfo) (PathClientReadResponse, error) {
 	req, err := client.readCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
 	if err != nil {
 		return PathClientReadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientReadResponse{}, err
 	}
@@ -862,7 +875,7 @@ func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptio
 }
 
 // readCreateRequest creates the Read request.
-func (client *PathClient) readCreateRequest(ctx context.Context, options *PathClientReadOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
+func (client *PathClient) readCreateRequest(ctx context.Context, options *PathClientReadOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -887,10 +900,10 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 		req.Raw().Header["x-ms-range-get-content-md5"] = []string{strconv.FormatBool(*options.XMSRangeGetContentMD5)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -905,7 +918,7 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
-		req.Raw().Header["x-ms-encryption-algorithm"] = []string{"AES256"}
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -953,7 +966,7 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1012,7 +1025,7 @@ func (client *PathClient) SetAccessControl(ctx context.Context, options *PathCli
 	if err != nil {
 		return PathClientSetAccessControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetAccessControlResponse{}, err
 	}
@@ -1050,10 +1063,10 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -1080,7 +1093,7 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1115,7 +1128,7 @@ func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode Pa
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
@@ -1192,12 +1205,12 @@ func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Res
 // Generated from API version 2020-10-02
 //   - expiryOptions - Required. Indicates mode of the expiry time
 //   - options - PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
-func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
+func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
 	req, err := client.setExpiryCreateRequest(ctx, expiryOptions, options)
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
 	}
@@ -1208,7 +1221,7 @@ func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpir
 }
 
 // setExpiryCreateRequest creates the SetExpiry request.
-func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOptions PathExpiryOptions, options *PathClientSetExpiryOptions) (*policy.Request, error) {
+func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1235,7 +1248,7 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClientSetExpiryResponse, error) {
 	result := PathClientSetExpiryResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1273,7 +1286,7 @@ func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndel
 	if err != nil {
 		return PathClientUndeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientUndeleteResponse{}, err
 	}
@@ -1360,7 +1373,7 @@ func (client *PathClient) Update(ctx context.Context, action PathUpdateAction, m
 	if err != nil {
 		return PathClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PathClientUpdateResponse{}, err
 	}
@@ -1445,10 +1458,10 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -1457,7 +1470,10 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(body, "application/octet-stream")
+	if err := req.SetBody(body, "application/octet-stream"); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
@@ -1471,7 +1487,7 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

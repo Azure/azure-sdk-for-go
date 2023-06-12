@@ -10,6 +10,7 @@
 package generated
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
 )
@@ -23,7 +24,7 @@ type FileSystemClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -53,7 +54,7 @@ type FileSystemClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -100,7 +101,7 @@ type FileSystemClientListPathsResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -118,7 +119,7 @@ type FileSystemClientSetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -135,6 +136,9 @@ type PathClientAppendDataResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	ContentCRC64 []byte
+
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 
@@ -142,7 +146,7 @@ type PathClientAppendDataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -155,9 +159,6 @@ type PathClientAppendDataResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
-
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	XMSContentCRC64 []byte
 }
 
 // PathClientCreateResponse contains the response from method PathClient.Create.
@@ -172,7 +173,7 @@ type PathClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -220,7 +221,7 @@ type PathClientFlushDataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -274,7 +275,7 @@ type PathClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// Group contains the information returned from the x-ms-group header response.
 	Group *string
@@ -316,7 +317,7 @@ type PathClientLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -370,7 +371,7 @@ type PathClientReadResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -434,7 +435,7 @@ type PathClientSetAccessControlResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -455,7 +456,7 @@ type PathClientSetExpiryResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -519,7 +520,7 @@ type PathClientUpdateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time

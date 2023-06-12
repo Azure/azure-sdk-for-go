@@ -65,7 +65,6 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	if err != nil {
 		return nil, err
 	}
-
 	return (*Client)(base.NewServiceClient(serviceURL, azClient, nil)), nil
 }
 

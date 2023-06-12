@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 0.14.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.14.0 (2023-06-08)
 
 ### Breaking Changes
 * Renamed `Client.ListSecrets` to `Client.ListSecretProperties`
@@ -11,6 +21,7 @@
 * Renamed `DeletedSecretItem` to `DeletedSecretProperties`
 * Renamed `Kid` to `KID`
 * Removed `DeletionRecoveryLevel` type
+* Remove `MaxResults` option
 
 ### Other Changes
 * Updated dependencies

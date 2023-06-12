@@ -48,6 +48,9 @@
 # PRLabel: %Storage
 /sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft
 
+# PRLabel: %Open Telemetry
+/sdk/tracing/azotel           @jhendrixMSFT @rickwinter
+
 ################
 # Automation
 ################

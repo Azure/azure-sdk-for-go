@@ -28,7 +28,7 @@ type TracingProviderOptions struct {
 //   - opts - optional configuration. pass nil to accept the default values
 func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
 	return tracing.NewProvider(func(namespace, version string) tracing.Tracer {
-		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version))
+		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version), trace.WithSchemaURL("https://opentelemetry.io/schemas/1.17.0"))
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal
@@ -40,8 +40,8 @@ func NewTracingProvider(tracerProvider *otelsdk.TracerProvider, opts *TracingPro
 			ctx, span := tracer.Start(ctx, spanName, trace.WithSpanKind(convertSpanKind(kind)), trace.WithAttributes(attrs...))
 			return ctx, convertSpan(span)
 		}, &tracing.TracerOptions{
-			SpanFromContext: func(ctx context.Context) (tracing.Span, bool) {
-				return convertSpan(trace.SpanFromContext(ctx)), true
+			SpanFromContext: func(ctx context.Context) tracing.Span {
+				return convertSpan(trace.SpanFromContext(ctx))
 			},
 		})
 
@@ -58,9 +58,6 @@ func convertSpan(traceSpan trace.Span) tracing.Span {
 		},
 		AddEvent: func(name string, attrs ...tracing.Attribute) {
 			traceSpan.AddEvent(name, trace.WithAttributes(convertAttributes(attrs)...))
-		},
-		AddError: func(err error) {
-			traceSpan.RecordError(err)
 		},
 		SetStatus: func(code tracing.SpanStatus, desc string) {
 			traceSpan.SetStatus(convertStatus(code), desc)

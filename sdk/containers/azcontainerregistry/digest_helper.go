@@ -28,12 +28,15 @@ type digestValidator interface {
 }
 
 func parseDigestValidator(digest string) (digestValidator, error) {
-	alg := digest[:strings.Index(digest, ":")]
-	if v, ok := validatorCtors[alg]; ok {
-		return v(), nil
-	} else {
+	i := strings.Index(digest, ":")
+	if i < 0 {
 		return nil, ErrDigestAlgNotSupported
 	}
+	alg := digest[:i]
+	if v, ok := validatorCtors[alg]; ok {
+		return v(), nil
+	}
+	return nil, ErrDigestAlgNotSupported
 }
 
 type sha256Validator struct {
@@ -62,15 +65,14 @@ type DigestValidationReader struct {
 // NewDigestValidationReader creates a new reader that help you to validate digest when you read manifest or blob data.
 func NewDigestValidationReader(digest string, reader io.Reader) (*DigestValidationReader, error) {
 	validator, err := parseDigestValidator(digest)
-	if err == nil {
-		return &DigestValidationReader{
-			digest:          digest,
-			digestValidator: validator,
-			reader:          reader,
-		}, nil
-	} else {
+	if err != nil {
 		return nil, err
 	}
+	return &DigestValidationReader{
+		digest:          digest,
+		digestValidator: validator,
+		reader:          reader,
+	}, nil
 }
 
 // Read write to digest validator while read and validate digest when reach EOF.
@@ -98,6 +100,7 @@ type BlobDigestCalculator struct {
 }
 
 // NewBlobDigestCalculator creates a new calculator to help to calculate blob digest when uploading blob.
+// You should use a new BlobDigestCalculator each time you upload a blob.
 func NewBlobDigestCalculator() *BlobDigestCalculator {
 	return &BlobDigestCalculator{
 		h: sha256.New(),

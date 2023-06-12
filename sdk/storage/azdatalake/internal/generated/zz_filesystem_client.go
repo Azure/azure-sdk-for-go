@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -21,21 +22,10 @@ import (
 )
 
 // FileSystemClient contains the methods for the FileSystem group.
-// Don't use this type directly, use NewFileSystemClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type FileSystemClient struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
-}
-
-// NewFileSystemClient creates a new instance of FileSystemClient with the specified values.
-//   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewFileSystemClient(endpoint string, pl runtime.Pipeline) *FileSystemClient {
-	client := &FileSystemClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // Create - Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails. This
@@ -49,7 +39,7 @@ func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemC
 	if err != nil {
 		return FileSystemClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientCreateResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -133,7 +123,7 @@ func (client *FileSystemClient) Delete(ctx context.Context, options *FileSystemC
 	if err != nil {
 		return FileSystemClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientDeleteResponse{}, err
 	}
@@ -160,10 +150,10 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +189,7 @@ func (client *FileSystemClient) GetProperties(ctx context.Context, options *File
 	if err != nil {
 		return FileSystemClientGetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientGetPropertiesResponse{}, err
 	}
@@ -240,7 +230,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -388,7 +378,7 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -427,7 +417,7 @@ func (client *FileSystemClient) SetProperties(ctx context.Context, options *File
 	if err != nil {
 		return FileSystemClientSetPropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FileSystemClientSetPropertiesResponse{}, err
 	}
@@ -457,10 +447,10 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -477,7 +467,7 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 		result.Date = &date
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

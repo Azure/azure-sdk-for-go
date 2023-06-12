@@ -1,5 +1,12 @@
 # Release History
 
+## 4.1.0-beta.2 (2023-06-23)
+### Features Added
+
+- New struct `NetworkMonitoring`
+- New field `Monitoring` in struct `NetworkProfile`
+
+
 ## 4.1.0-beta.1 (2023-05-26)
 ### Features Added
 

@@ -3994,6 +3994,33 @@ func (m *ManagedServiceIdentityUserAssignedIdentitiesValue) UnmarshalJSON(data [
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type NetworkMonitoring.
+func (n NetworkMonitoring) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enabled", n.Enabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkMonitoring.
+func (n *NetworkMonitoring) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", n, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enabled":
+			err = unpopulate(val, "Enabled", &n.Enabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", n, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type NetworkProfile.
 func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4002,6 +4029,7 @@ func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "kubeProxyConfig", n.KubeProxyConfig)
 	populate(objectMap, "loadBalancerProfile", n.LoadBalancerProfile)
 	populate(objectMap, "loadBalancerSku", n.LoadBalancerSKU)
+	populate(objectMap, "monitoring", n.Monitoring)
 	populate(objectMap, "natGatewayProfile", n.NatGatewayProfile)
 	populate(objectMap, "networkDataplane", n.NetworkDataplane)
 	populate(objectMap, "networkMode", n.NetworkMode)
@@ -4039,6 +4067,9 @@ func (n *NetworkProfile) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "loadBalancerSku":
 			err = unpopulate(val, "LoadBalancerSKU", &n.LoadBalancerSKU)
+			delete(rawMsg, key)
+		case "monitoring":
+			err = unpopulate(val, "Monitoring", &n.Monitoring)
 			delete(rawMsg, key)
 		case "natGatewayProfile":
 			err = unpopulate(val, "NatGatewayProfile", &n.NatGatewayProfile)

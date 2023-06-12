@@ -85,6 +85,8 @@ client, err := armsubscriptions.NewClient("subscriptionID", azfake.NewTokenCrede
 })
 ```
 
+See [creating a fake](/fake_example_test.go) for a complete example.
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

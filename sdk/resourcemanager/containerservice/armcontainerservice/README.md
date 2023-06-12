@@ -88,6 +88,7 @@ client, err := armcontainerservice.NewManagedClustersClient("subscriptionID", az
 ## More sample code
 
 - [Agent Pool](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/agent_pool)
+- [Creating a Fake](/fake_example_test.go)
 - [Maintenance Configuration](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/maintenance_configurations)
 - [Managed Clusters](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/containerservice/managed_clusters)
 

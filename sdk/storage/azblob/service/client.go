@@ -43,8 +43,9 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -74,8 +75,9 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient("service.Client", exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

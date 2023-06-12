@@ -1,10 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2023-06-23)
-### Breaking Changes
-
-- Type of `ErrorDetails.Code` has been changed from `*string` to `*int32`
-
+## 1.2.0-beta.1 (2023-06-23)
 ### Features Added
 
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
@@ -12,7 +8,6 @@
 - New struct `UserAssignedIdentity`
 - New field `PortalOperationsHostName` in struct `IotDpsPropertiesDescription`
 - New field `Identity`, `Resourcegroup`, `Subscriptionid` in struct `ProvisioningServiceDescription`
-- New field `Resourcegroup`, `Subscriptionid` in struct `Resource`
 
 
 ## 1.1.0 (2023-03-28)

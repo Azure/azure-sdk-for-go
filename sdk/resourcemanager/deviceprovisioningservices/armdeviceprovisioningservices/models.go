@@ -20,15 +20,6 @@ type AsyncOperationResult struct {
 	Status *string
 }
 
-// CertificateBodyDescription - The JSON-serialized X509 Certificate.
-type CertificateBodyDescription struct {
-	// Base-64 representation of the X509 leaf certificate .cer file or just .pem file content.
-	Certificate *string
-
-	// True indicates that the certificate will be created in verified state and proof of possession will not be required.
-	IsVerified *bool
-}
-
 // CertificateListDescription - The JSON-serialized array of Certificate objects.
 type CertificateListDescription struct {
 	// The array of Certificate objects.
@@ -158,21 +149,6 @@ type DpsCertificateClientVerifyCertificateOptions struct {
 	CertificatePurpose *CertificatePurpose
 	// Raw data of certificate.
 	CertificateRawBytes []byte
-}
-
-// ErrorDetails - Error details.
-type ErrorDetails struct {
-	// READ-ONLY; The error code.
-	Code *int32
-
-	// READ-ONLY; The error details.
-	Details *string
-
-	// READ-ONLY; The HTTP status code.
-	HTTPStatusCode *string
-
-	// READ-ONLY; The error message.
-	Message *string
 }
 
 // ErrorMessage - Error response containing message and code.
@@ -592,30 +568,6 @@ type ProvisioningServiceDescriptionListResult struct {
 
 	// READ-ONLY; the next link
 	NextLink *string
-}
-
-// Resource - The common properties of an Azure resource.
-type Resource struct {
-	// REQUIRED; The resource location.
-	Location *string
-
-	// The resource group of the resource.
-	Resourcegroup *string
-
-	// The subscription id of the resource.
-	Subscriptionid *string
-
-	// The resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; The resource identifier.
-	ID *string
-
-	// READ-ONLY; The resource name.
-	Name *string
-
-	// READ-ONLY; The resource type.
-	Type *string
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription - Description of the shared access key.

@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -41,15 +42,25 @@ func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID 
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	if deploymentID == "" {
-		return nil, errors.New("parameter client.deploymentID cannot be empty")
-	}
+
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{tokenScope}, nil)
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint + "/openai", deploymentID: deploymentID, internal: azcoreClient}, nil
+
+	fullEndpoint, err := formatAzureOpenAIURL(endpoint, deploymentID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
+}
+
+func formatAzureOpenAIURL(endpoint, deploymentID string) (string, error) {
+	escapedDeplID := url.PathEscape(deploymentID)
+	return url.JoinPath(endpoint, "openai", "deployments", escapedDeplID)
 }
 
 // NewClientWithKeyCredential creates a new instance of Client with the specified values.
@@ -69,7 +80,14 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint + "/openai", deploymentID: deploymentID, internal: azcoreClient}, nil
+
+	fullEndpoint, err := formatAzureOpenAIURL(endpoint, deploymentID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
 }
 
 // NewClientForOpenAI creates a new instance of Client with the specified values.

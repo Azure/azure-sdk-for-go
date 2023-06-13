@@ -38,7 +38,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	err = recording.AddHeaderRegexSanitizer("Api-Key", `redacted`, "", nil)
 	require.NoError(t, err)
 
-	err = recording.AddURISanitizer("https://aoai", "https://[^/]+", nil)
+	err = recording.AddURISanitizer("https://aoai", endpoint, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {

@@ -10,12 +10,11 @@ package azopenai
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // Client contains the methods for the OpenAI group.
@@ -52,11 +51,7 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
 func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *ClientGetChatCompletionsOptions) (*policy.Request, error) {
-	urlPath := "/deployments/{deploymentId}/chat/completions"
-	if client.deploymentID == "" {
-		urlPath = strings.ReplaceAll(urlPath, "/deployments/{deploymentId}/", "/v1/")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentId}", url.PathEscape(client.deploymentID))
+	urlPath := "chat/completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -106,11 +101,7 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 
 // getCompletionsCreateRequest creates the GetCompletions request.
 func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *ClientGetCompletionsOptions) (*policy.Request, error) {
-	urlPath := "/deployments/{deploymentId}/completions"
-	if client.deploymentID == "" {
-		urlPath = strings.ReplaceAll(urlPath, "/deployments/{deploymentId}/", "/v1/")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentId}", url.PathEscape(client.deploymentID))
+	urlPath := "completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -159,11 +150,7 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *ClientGetEmbeddingsOptions) (*policy.Request, error) {
-	urlPath := "/deployments/{deploymentId}/embeddings"
-	if client.deploymentID == "" {
-		urlPath = strings.ReplaceAll(urlPath, "/deployments/{deploymentId}/", "/v1/")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentId}", url.PathEscape(client.deploymentID))
+	urlPath := "embeddings"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err

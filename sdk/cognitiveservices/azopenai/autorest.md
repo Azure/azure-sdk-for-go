@@ -93,14 +93,20 @@ directive:
       delete $.allOf;
       $["$ref"] = "#/components/schemas/CompletionsUsage";
 
-  # Remove deploymentId from path when not set
+  #
+  # strip out the deploymentID validation code - we absorbed this into the endpoint.
+  #
+	# urlPath := "/deployments/{deploymentId}/embeddings"
+	# if client.deploymentID == "" {
+	# 	return nil, errors.New("parameter client.deploymentID cannot be empty")
+	# }
+	# urlPath = strings.ReplaceAll(urlPath, "{deploymentId}", url.PathEscape(client.deploymentID))
   - from: client.go
     where: $
-    transform: return $.replace(/\sreturn.*parameter client.deploymentID cannot be empty"\)\s/g, "urlPath = strings.ReplaceAll(urlPath, \"/deployments/{deploymentId}/\", \"/v1/\")");
-  # Drop error import
-  - from: client.go
-    where: $
-    transform: return $.replace(/(import \(\n(\s\"\w+\"\n)+)\s\"errors\"\n/g, "$1");
+    transform: >-
+      return $.replace(
+        /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs, 
+        "$1urlPath := \"$2\"\n")
 
   # delete unused error models
   - from: models.go

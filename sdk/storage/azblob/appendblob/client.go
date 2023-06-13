@@ -29,8 +29,6 @@ type ClientOptions base.ClientOptions
 // Client represents a client to an Azure Storage append blob;
 type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClient]
 
-const abClient = "azblob/appendblob.Client"
-
 // NewClient creates an instance of Client with the specified values.
 //   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
@@ -41,7 +39,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(abClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.AppendBlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +54,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient(abClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.AppendBlobClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +72,7 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCreden
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(abClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.AppendBlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

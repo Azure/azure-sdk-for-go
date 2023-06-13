@@ -16,8 +16,8 @@ import (
 	"reflect"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsError.
-func (a AzureCoreFoundationsError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (a Error) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
@@ -27,8 +27,8 @@ func (a AzureCoreFoundationsError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsError.
-func (a *AzureCoreFoundationsError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type Error.
+func (a *Error) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -59,16 +59,16 @@ func (a *AzureCoreFoundationsError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsErrorInnererror.
-func (a AzureCoreFoundationsErrorInnererror) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorInnererror.
+func (a ErrorInnererror) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "innererror", a.Innererror)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsErrorInnererror.
-func (a *AzureCoreFoundationsErrorInnererror) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInnererror.
+func (a *ErrorInnererror) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -90,15 +90,15 @@ func (a *AzureCoreFoundationsErrorInnererror) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsErrorResponse.
-func (a AzureCoreFoundationsErrorResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
+func (a ErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", a.Error)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsErrorResponse.
-func (a *AzureCoreFoundationsErrorResponse) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
+func (a *ErrorResponse) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -117,8 +117,8 @@ func (a *AzureCoreFoundationsErrorResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsErrorResponseError.
-func (a AzureCoreFoundationsErrorResponseError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponseError.
+func (a ErrorResponseError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "details", a.Details)
@@ -128,8 +128,8 @@ func (a AzureCoreFoundationsErrorResponseError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsErrorResponseError.
-func (a *AzureCoreFoundationsErrorResponseError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponseError.
+func (a *ErrorResponseError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -160,16 +160,16 @@ func (a *AzureCoreFoundationsErrorResponseError) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsInnerError.
-func (a AzureCoreFoundationsInnerError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type InnerError.
+func (a InnerError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "innererror", a.Innererror)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsInnerError.
-func (a *AzureCoreFoundationsInnerError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type InnerError.
+func (a *InnerError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -191,16 +191,16 @@ func (a *AzureCoreFoundationsInnerError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureCoreFoundationsInnerErrorInnererror.
-func (a AzureCoreFoundationsInnerErrorInnererror) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type InnerErrorInnererror.
+func (a InnerErrorInnererror) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "innererror", a.Innererror)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureCoreFoundationsInnerErrorInnererror.
-func (a *AzureCoreFoundationsInnerErrorInnererror) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type InnerErrorInnererror.
+func (a *InnerErrorInnererror) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)

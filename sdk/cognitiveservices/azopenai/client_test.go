@@ -8,30 +8,13 @@ package azopenai
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/joho/godotenv"
 )
-
-var (
-	endpoint string
-	apiKey   string
-)
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("Failed to load .env file: %s\n", err)
-		os.Exit(1)
-	}
-	endpoint = os.Getenv("AOAI_ENDPOINT")
-	apiKey = os.Getenv("AOAI_API_KEY")
-}
 
 func TestClient_GetChatCompletions(t *testing.T) {
 	type args struct {
@@ -42,7 +25,7 @@ func TestClient_GetChatCompletions(t *testing.T) {
 	}
 	cred := KeyCredential{APIKey: apiKey}
 	deploymentID := "gpt-35-turbo"
-	chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, nil)
+	chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
@@ -117,7 +100,7 @@ func TestClient_GetCompletions(t *testing.T) {
 	}
 	cred := KeyCredential{APIKey: apiKey}
 	deploymentID := "text-davinci-003"
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, nil)
+	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
@@ -185,10 +168,11 @@ func TestClient_GetEmbeddings(t *testing.T) {
 	}
 	deploymentID := "embedding"
 	cred := KeyCredential{APIKey: apiKey}
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, nil)
+	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
+
 	tests := []struct {
 		name    string
 		client  *Client
@@ -203,7 +187,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 				ctx:          context.TODO(),
 				deploymentID: "embedding",
 				body: EmbeddingsOptions{
-					Input: "Your text string goes here",
+					Input: []byte("\"Your text string goes here\""),
 					Model: to.Ptr("text-similarity-curie-001"),
 				},
 				options: nil,

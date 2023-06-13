@@ -109,4 +109,13 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError)\).*\{\s(?:.+\s)+\}\s/g, "");
+
+  # rename the "AzureCoreFoundation" prefix from models
+  - from:
+      - client.go
+      - models.go
+      - models_serde.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/AzureCoreFoundations/g, "");
 ```

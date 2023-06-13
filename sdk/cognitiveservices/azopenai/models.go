@@ -9,76 +9,76 @@
 
 package azopenai
 
-// AzureCoreFoundationsError - The error object.
-type AzureCoreFoundationsError struct {
+// Error - The error object.
+type Error struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []*AzureCoreFoundationsError
+	Details []*Error
 
 	// REQUIRED; A human-readable representation of the error.
 	Message *string
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *AzureCoreFoundationsErrorInnererror
+	Innererror *ErrorInnererror
 
 	// The target of the error.
 	Target *string
 }
 
-// AzureCoreFoundationsErrorInnererror - An object containing more specific information than the current object about the
+// ErrorInnererror - An object containing more specific information than the current object about the
 // error.
-type AzureCoreFoundationsErrorInnererror struct {
+type ErrorInnererror struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *AzureCoreFoundationsInnerErrorInnererror
+	Innererror *InnerErrorInnererror
 }
 
-// AzureCoreFoundationsErrorResponse - A response containing error details.
-type AzureCoreFoundationsErrorResponse struct {
+// ErrorResponse - A response containing error details.
+type ErrorResponse struct {
 	// REQUIRED; The error object.
-	Error *AzureCoreFoundationsErrorResponseError
+	Error *ErrorResponseError
 }
 
-// AzureCoreFoundationsErrorResponseError - The error object.
-type AzureCoreFoundationsErrorResponseError struct {
+// ErrorResponseError - The error object.
+type ErrorResponseError struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []*AzureCoreFoundationsError
+	Details []*Error
 
 	// REQUIRED; A human-readable representation of the error.
 	Message *string
 
 	// An object containing more specific information than the current object about the error.
-	Innererror *AzureCoreFoundationsErrorInnererror
+	Innererror *ErrorInnererror
 
 	// The target of the error.
 	Target *string
 }
 
-// AzureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
+// InnerError - An object containing more specific information about the error. As per Microsoft One API
 // guidelines -
 // https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type AzureCoreFoundationsInnerError struct {
+type InnerError struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *AzureCoreFoundationsInnerErrorInnererror
+	Innererror *InnerErrorInnererror
 }
 
-// AzureCoreFoundationsInnerErrorInnererror - Inner error.
-type AzureCoreFoundationsInnerErrorInnererror struct {
+// InnerErrorInnererror - Inner error.
+type InnerErrorInnererror struct {
 	// REQUIRED; One of a server-defined set of error codes.
 	Code *string
 
 	// Inner error.
-	Innererror *AzureCoreFoundationsInnerErrorInnererror
+	Innererror *InnerErrorInnererror
 }
 
 // ChatChoice - The representation of a single prompt completion as part of an overall chat completions request. Generally,

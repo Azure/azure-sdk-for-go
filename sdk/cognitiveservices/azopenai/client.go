@@ -20,9 +20,8 @@ import (
 // Client contains the methods for the OpenAI group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-	internal     *azcore.Client
-	endpoint     string
-	deploymentID string
+	internal *azcore.Client
+	endpoint string
 }
 
 // GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks

@@ -48,18 +48,13 @@ func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID 
 		return nil, err
 	}
 
-	fullEndpoint, err := formatAzureOpenAIURL(endpoint, deploymentID)
-
-	if err != nil {
-		return nil, err
-	}
-
+	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
 	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
 }
 
-func formatAzureOpenAIURL(endpoint, deploymentID string) (string, error) {
+func formatAzureOpenAIURL(endpoint, deploymentID string) string {
 	escapedDeplID := url.PathEscape(deploymentID)
-	return url.JoinPath(endpoint, "openai", "deployments", escapedDeplID)
+	return runtime.JoinPaths(endpoint, "openai", "deployments", escapedDeplID)
 }
 
 // NewClientWithKeyCredential creates a new instance of Client with the specified values.
@@ -78,12 +73,7 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 		return nil, err
 	}
 
-	fullEndpoint, err := formatAzureOpenAIURL(endpoint, deploymentID)
-
-	if err != nil {
-		return nil, err
-	}
-
+	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
 	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
 }
 

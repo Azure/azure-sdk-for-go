@@ -108,6 +108,14 @@ directive:
         /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs, 
         "$1urlPath := \"$2\"\n")
 
+  # splice out the auto-generated `deploymentID` field from the client
+  - from: client.go
+    where: $
+    transform: >-
+      return $.replace(
+        /(type Client struct.+?)deploymentID string([^}]+})/s, 
+        "$1$2")
+
   # delete unused error models
   - from: models.go
     where: $

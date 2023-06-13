@@ -93,7 +93,7 @@ comments.
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [openai_docs]: https://learn.microsoft.com/azure/cognitive-services/openai
-[openai_key_concepts]: https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview#key-concepts
+[openai_key_concepts]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#key-concepts
 [openai_rest_docs]: https://learn.microsoft.com/azure/cognitive-services/openai/reference
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

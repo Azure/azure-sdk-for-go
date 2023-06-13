@@ -83,7 +83,7 @@ func TestClient_GetCompletionsStream(t *testing.T) {
 	}
 	cred := KeyCredential{APIKey: apiKey}
 	deploymentID := "text-davinci-003"
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, nil)
+	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
 	if err != nil {
 		t.Errorf("NewClientWithKeyCredential() error = %v", err)
 		return

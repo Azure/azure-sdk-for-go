@@ -19,13 +19,22 @@ var (
 	apiKey   string
 )
 
+const fakeEndpoint = "https://recordedhost/"
+const fakeAPIKey = "redacted"
+
 func init() {
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("Failed to load .env file: %s\n", err)
-		os.Exit(1)
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		endpoint = fakeEndpoint
+		apiKey = fakeAPIKey
+	} else {
+		if err := godotenv.Load(); err != nil {
+			fmt.Printf("Failed to load .env file: %s\n", err)
+			os.Exit(1)
+		}
+
+		endpoint = os.Getenv("AOAI_ENDPOINT")
+		apiKey = os.Getenv("AOAI_API_KEY")
 	}
-	endpoint = os.Getenv("AOAI_ENDPOINT")
-	apiKey = os.Getenv("AOAI_API_KEY")
 }
 
 func newRecordingTransporter(t *testing.T) policy.Transporter {
@@ -35,11 +44,14 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	err = recording.Start(t, "sdk/cognitive/azopenai/testdata", nil)
 	require.NoError(t, err)
 
-	err = recording.AddHeaderRegexSanitizer("Api-Key", `redacted`, "", nil)
-	require.NoError(t, err)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
+		require.NoError(t, err)
 
-	err = recording.AddURISanitizer("https://aoai", endpoint, nil)
-	require.NoError(t, err)
+		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
+		err = recording.AddURISanitizer(fakeEndpoint, endpoint, nil)
+		require.NoError(t, err)
+	}
 
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

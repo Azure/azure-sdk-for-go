@@ -87,7 +87,7 @@ client, err := armnetwork.NewInterfacesClient("subscriptionID", azfake.NewTokenC
 
 ## More sample code
 
-- [Creating a Fake](/fake_example_test.go)
+- [Creating a Fake](./fake_example_test.go)
 - [IP Address](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/ipaddress)
 - [Load Balancer](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/loadbalancer)
 - [Network Interface](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/network/networkInterface)

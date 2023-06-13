@@ -88,8 +88,9 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
-[azopenai_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/cognitiveservices/azopenai
+<!-- https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/cognitiveservices/azopenai ->
 <!-- https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai -->
+[azopenai_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
 [azopenai_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/

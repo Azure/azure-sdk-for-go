@@ -11,7 +11,6 @@ package azopenai
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/url"
 
@@ -72,9 +71,7 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	if deploymentID == "" {
-		return nil, errors.New("parameter client.deploymentID cannot be empty")
-	}
+
 	authPolicy := NewAPIKeyPolicy(credential, "api-key")
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {

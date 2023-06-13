@@ -33,7 +33,7 @@ type ClientOptions struct {
 }
 
 // NewClient creates a new instance of Client with the specified values.
-//   - endpoint - Azure OpenAI service endpoint
+//   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - deploymentID - the deployment ID of the model to query
 //   - options - client options, pass nil to accept the default values.

@@ -11,7 +11,7 @@ module: github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
-use: "@autorest/go@4.0.0-preview.48"
+use: "@autorest/go@4.0.0-preview.50"
 ```
 
 ## Transformations

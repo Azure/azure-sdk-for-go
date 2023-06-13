@@ -8,6 +8,7 @@ package azopenai
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -15,12 +16,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/joho/godotenv"
 )
 
 var (
-	endpoint = os.Getenv("AOAI_ENDPOINT")
-	apiKey   = os.Getenv("AOAI_API_KEY")
+	endpoint string
+	apiKey   string
 )
+
+func init() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Printf("Failed to load .env file: %s\n", err)
+		os.Exit(1)
+	}
+	endpoint = os.Getenv("AOAI_ENDPOINT")
+	apiKey = os.Getenv("AOAI_API_KEY")
+}
 
 func TestClient_GetChatCompletions(t *testing.T) {
 	type args struct {

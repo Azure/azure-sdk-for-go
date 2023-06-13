@@ -73,7 +73,7 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 }
 
 // NewClientForOpenAI creates a new instance of Client with the specified values.
-//   - endpoint - OpenAI service endpoint
+//   - endpoint - OpenAI service endpoint, for example: https://api.openai.com/v1
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
 func NewClientForOpenAI(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {

@@ -14,6 +14,7 @@ import (
 	"strings"
 )
 
+// EventReader streams events dynamically from an OpenAI endpoint.
 type EventReader[T any] struct {
 	reader  io.Reader // Required for Closing
 	scanner *bufio.Scanner
@@ -23,6 +24,8 @@ func newEventReader[T any](r io.Reader) *EventReader[T] {
 	return &EventReader[T]{reader: r, scanner: bufio.NewScanner(r)}
 }
 
+// Read reads the next event from the stream.
+// Returns io.EOF when there are no further events.
 func (er *EventReader[T]) Read() (T, error) {
 	// https://html.spec.whatwg.org/multipage/server-sent-events.html
 	for er.scanner.Scan() { // Scan while no error
@@ -41,7 +44,6 @@ func (er *EventReader[T]) Read() (T, error) {
 				if tokens[1] == "[DONE]" { // If data is [DONE], end of stream was reached
 					return data, io.EOF
 				}
-				//fmt.Println(tokens[1])
 				err := json.Unmarshal([]byte(tokens[1]), &data)
 				return data, err
 
@@ -54,6 +56,7 @@ func (er *EventReader[T]) Read() (T, error) {
 	return *new(T), er.scanner.Err()
 }
 
+// Close closes the EventReader and any applicable inner stream state.
 func (er *EventReader[T]) Close() {
 	if closer, ok := er.reader.(io.Closer); ok {
 		closer.Close()

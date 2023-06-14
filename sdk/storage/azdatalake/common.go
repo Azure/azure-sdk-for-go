@@ -16,8 +16,6 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
-
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions

@@ -28,7 +28,7 @@ func TestNewAPIKeyPolicy(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *APIKeyPolicy
+		want *apiKeyPolicy
 	}{
 		{
 			name: "simple",
@@ -36,7 +36,7 @@ func TestNewAPIKeyPolicy(t *testing.T) {
 				cred:   simpleCred,
 				header: simpleHeader,
 			},
-			want: &APIKeyPolicy{
+			want: &apiKeyPolicy{
 				header: simpleHeader,
 				cred:   simpleCred,
 			},
@@ -44,7 +44,7 @@ func TestNewAPIKeyPolicy(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewAPIKeyPolicy(tt.args.cred, tt.args.header); !reflect.DeepEqual(got, tt.want) {
+			if got := newAPIKeyPolicy(tt.args.cred, tt.args.header); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewAPIKeyPolicy() = %v, want %v", got, tt.want)
 			}
 		})
@@ -58,7 +58,7 @@ func TestAPIKeyPolicy_Success(t *testing.T) {
 	cred := KeyCredential{
 		APIKey: "secret",
 	}
-	authPolicy := NewAPIKeyPolicy(cred, "api-key")
+	authPolicy := newAPIKeyPolicy(cred, "api-key")
 	pipeline := runtime.NewPipeline(
 		"testmodule",
 		"v0.1.0",

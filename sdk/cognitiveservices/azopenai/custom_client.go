@@ -67,7 +67,7 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 		options = &ClientOptions{}
 	}
 
-	authPolicy := NewAPIKeyPolicy(credential, "api-key")
+	authPolicy := newAPIKeyPolicy(credential, "api-key")
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err

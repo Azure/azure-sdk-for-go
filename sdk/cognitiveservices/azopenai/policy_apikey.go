@@ -12,29 +12,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// KeyCredential
-
+// KeyCredential is used when doing APIKey-based authentication.
 type KeyCredential struct {
+	// APIKey is the api key for the client.
 	APIKey string
 }
 
-// APIKeyPolicy authorizes requests with an API key acquired from a KeyCredential.
-type APIKeyPolicy struct {
+// apiKeyPolicy authorizes requests with an API key acquired from a KeyCredential.
+type apiKeyPolicy struct {
 	header string
 	cred   KeyCredential
 }
 
-// NewAPIKeyPolicy creates a policy object that authorizes requests with an API Key.
+// newAPIKeyPolicy creates a policy object that authorizes requests with an API Key.
 // cred: a KeyCredential implementation.
-func NewAPIKeyPolicy(cred KeyCredential, header string) *APIKeyPolicy {
-	return &APIKeyPolicy{
+func newAPIKeyPolicy(cred KeyCredential, header string) *apiKeyPolicy {
+	return &apiKeyPolicy{
 		header: header,
 		cred:   cred,
 	}
 }
 
 // Do returns a function which authorizes req with a token from the policy's credential
-func (b *APIKeyPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (b *apiKeyPolicy) Do(req *policy.Request) (*http.Response, error) {
 	req.Raw().Header.Set(b.header, b.cred.APIKey)
 	return req.Next()
 }

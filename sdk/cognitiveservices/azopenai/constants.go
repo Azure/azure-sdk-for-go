@@ -43,18 +43,3 @@ func PossibleCompletionsFinishReasonValues() []CompletionsFinishReason {
 		CompletionsFinishReasonStop,
 	}
 }
-
-type ServiceAPIVersions string
-
-const (
-	ServiceAPIVersionsTwoThousandTwentyThree0315Preview ServiceAPIVersions = "2023-03-15-preview"
-	ServiceAPIVersionsTwoThousandTwentyTwo1201          ServiceAPIVersions = "2022-12-01"
-)
-
-// PossibleServiceAPIVersionsValues returns the possible values for the ServiceAPIVersions const type.
-func PossibleServiceAPIVersionsValues() []ServiceAPIVersions {
-	return []ServiceAPIVersions{
-		ServiceAPIVersionsTwoThousandTwentyThree0315Preview,
-		ServiceAPIVersionsTwoThousandTwentyTwo1201,
-	}
-}

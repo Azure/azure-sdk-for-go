@@ -132,4 +132,11 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError|InnerError|InnerErrorInnererror)\).*\{\s(?:.+\s)+\}\s/g, "");
+
+  - from: constants.go
+    where: $
+    transform: >-
+      return $.replace(
+        /type ServiceAPIVersions string.+PossibleServiceAPIVersionsValues.+?\n}/gs, 
+        "")
 ```

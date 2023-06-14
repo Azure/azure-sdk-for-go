@@ -94,12 +94,6 @@ func TestClient_GetChatCompletions(t *testing.T) {
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	type args struct {
-		ctx          context.Context
-		deploymentID string
-		body         ChatCompletionsOptions
-		options      *ClientGetChatCompletionsOptions
-	}
 	cred := KeyCredential{APIKey: apiKey}
 	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
 	require.NoError(t, err)
@@ -114,6 +108,18 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 		MaxTokens:   to.Ptr(int32(1024)),
 		Temperature: to.Ptr(float32(0.0)),
 	}, nil)
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "DeploymentNotFound", respErr.ErrorCode)
+}
+
+func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
+	cred := KeyCredential{APIKey: apiKey}
+	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	_, err = chatClient.GetEmbeddings(context.Background(), EmbeddingsOptions{}, nil)
 
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)

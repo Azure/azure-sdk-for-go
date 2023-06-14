@@ -119,17 +119,17 @@ directive:
   # delete unused error models
   - from: models.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)?type (?:ErrorResponse|ErrorResponseError).+\{(?:\s.+\s)+\}\s/g, "");
+    transform: >-
+      return $.replace(
+        /\/\/ AzureCoreFoundations.*?type AzureCoreFoundations(Error|ErrorResponse|ErrorResponseError|InnerError|InnerErrorInnererror|ErrorInnererror) struct \{[^}]+\}/gs, 
+        "")
   - from: models_serde.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError)\).*\{\s(?:.+\s)+\}\s/g, "");
-
-  # rename the "AzureCoreFoundation" prefix from models
-  - from:
-      - client.go
-      - models.go
-      - models_serde.go
-      - response_types.go
+    transform: >-
+      return $.replace(
+        /\/\/ (UnmarshalJSON|MarshalJSON) implements.*?AzureCoreFoundations.*?func.+?\n}/gs, 
+        "")
+  - from: models_serde.go
     where: $
-    transform: return $.replace(/AzureCoreFoundations/g, "");
+    transform: return $.replace(/(?:\/\/.*\s)?func \(\w \*?(?:ErrorResponse|ErrorResponseError|InnerError|InnerErrorInnererror)\).*\{\s(?:.+\s)+\}\s/g, "");
 ```

@@ -71,7 +71,7 @@ func ParseURL(u string) (URLParts, error) {
 
 	// Convert the query parameters to a case-sensitive map & trim whitespace
 	paramsMap := uri.Query()
-	up.SAS = NewQueryParameters(paramsMap, true)
+	up.SAS = newQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
 	return up, nil
 }

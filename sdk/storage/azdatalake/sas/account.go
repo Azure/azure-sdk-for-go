@@ -56,7 +56,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 	}
 	v.ResourceTypes = resources.String()
 
-	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
+	startTime, expiryTime := formatTimesForSigning(v.StartTime, v.ExpiryTime)
 
 	stringToSign := strings.Join([]string{
 		sharedKeyCredential.AccountName(),

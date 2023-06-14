@@ -11,7 +11,7 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v3.2.0"
 )
 
 // AmlFilesystemHealthStateType - List of AML file system health states.

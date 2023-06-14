@@ -77,13 +77,16 @@ func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
+	// ensure NewEnvironmentCredential returns an error
+	t.Setenv(azureTenantID, "")
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
-	defer cancel()
-	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	// make GetToken return an error in any runtime environment
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, err = cred.GetToken(ctx, testTRO)
 	if err == nil {
 		t.Fatal("expected an error")
 	}
@@ -206,7 +209,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 	}
 	for i := 0; i < 2; i++ {
 		// expecting credentialUnavailableError because delay exceeds the wrapper's timeout
-		_, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+		_, err = chain.GetToken(context.Background(), testTRO)
 		if _, ok := err.(*credentialUnavailableError); !ok {
 			t.Fatalf("expected credentialUnavailableError, got %T: %v", err, err)
 		}
@@ -214,7 +217,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 
 	// remove the delay so the credential can authenticate
 	dp.delay = 0
-	tk, err := chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := chain.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}

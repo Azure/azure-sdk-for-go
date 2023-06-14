@@ -6,11 +6,14 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"os"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -538,7 +541,18 @@ func TestConsumerClient_Detaches(t *testing.T) {
 // This is useful when testing attach/detach type scenarios where you want the service to force links
 // to detach.
 func enableOrDisableEventHub(t *testing.T, testParams test.ConnectionParamsForTest, dac *azidentity.DefaultAzureCredential, active bool) {
-	client, err := armeventhub.NewEventHubsClient(testParams.SubscriptionID, dac, nil)
+	clientOptions := &arm.ClientOptions{}
+
+	switch os.Getenv("AZEVENTHUBS_ENVIRONMENT") {
+	case "AzureUSGovernment":
+		clientOptions.Cloud = cloud.AzureGovernment
+	case "AzureChinaCloud":
+		clientOptions.Cloud = cloud.AzureChina
+	default:
+		clientOptions.Cloud = cloud.AzurePublic
+	}
+
+	client, err := armeventhub.NewEventHubsClient(testParams.SubscriptionID, dac, clientOptions)
 	require.NoError(t, err)
 
 	ns := strings.Split(testParams.EventHubNamespace, ".")[0]

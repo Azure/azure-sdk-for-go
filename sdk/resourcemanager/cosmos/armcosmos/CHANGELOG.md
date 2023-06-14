@@ -1,5 +1,17 @@
 # Release History
 
+## 2.5.0 (2023-05-26)
+### Features Added
+
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New enum type `ContinuousTier` with values `ContinuousTierContinuous30Days`, `ContinuousTierContinuous7Days`
+- New struct `ContinuousModeProperties`
+- New field `ContinuousModeProperties` in struct `ContinuousModeBackupPolicy`
+- New field `OldestRestorableTime` in struct `RestorableDatabaseAccountProperties`
+- New field `InstantMaximumThroughput`, `SoftAllowedMaximumThroughput` in struct `ThroughputSettingsGetPropertiesResource`
+- New field `InstantMaximumThroughput`, `SoftAllowedMaximumThroughput` in struct `ThroughputSettingsResource`
+
+
 ## 2.4.0 (2023-04-28)
 ### Features Added
 

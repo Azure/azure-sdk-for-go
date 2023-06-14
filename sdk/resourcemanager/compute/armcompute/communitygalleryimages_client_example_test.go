@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
 func ExampleCommunityGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCommunityGalleryImagesClient_Get() {
 	// 	Properties: &armcompute.CommunityGalleryImageProperties{
 	// 		Eula: to.Ptr("https://www.microsoft.com/en-us/"),
 	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-	// 		Identifier: &armcompute.GalleryImageIdentifier{
+	// 		Identifier: &armcompute.CommunityGalleryImageIdentifier{
 	// 			Offer: to.Ptr("myOfferName"),
 	// 			Publisher: to.Ptr("myPublisherName"),
 	// 			SKU: to.Ptr("mySkuName"),
@@ -57,7 +57,7 @@ func ExampleCommunityGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/19f98c9f526f8db961f172276dd6d6882a86ed86/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5d2adf9b7fda669b4a2538c65e937ee74fe3f966/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_List.json
 func ExampleCommunityGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleCommunityGalleryImagesClient_NewListPager() {
 		// 			Location: to.Ptr("myLocation"),
 		// 			Properties: &armcompute.CommunityGalleryImageProperties{
 		// 				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-		// 				Identifier: &armcompute.GalleryImageIdentifier{
+		// 				Identifier: &armcompute.CommunityGalleryImageIdentifier{
 		// 					Offer: to.Ptr("myOfferName"),
 		// 					Publisher: to.Ptr("myPublisherName"),
 		// 					SKU: to.Ptr("mySkuName"),

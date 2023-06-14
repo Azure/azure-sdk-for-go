@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayDelete.json
 func ExampleApplicationGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleApplicationGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayGet.json
 func ExampleApplicationGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleApplicationGatewaysClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayCreate.json
 func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,8 +455,12 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 					Name: to.Ptr("appgwpool1"),
 					Properties: &armnetwork.ApplicationGatewayBackendAddressPoolPropertiesFormat{
 						BackendAddresses: []*armnetwork.ApplicationGatewayBackendAddress{
-							{},
-							{}},
+							{
+								IPAddress: to.Ptr("10.0.0.1"),
+							},
+							{
+								IPAddress: to.Ptr("10.0.0.2"),
+							}},
 					},
 				}},
 			BackendHTTPSettingsCollection: []*armnetwork.ApplicationGatewayBackendHTTPSettings{
@@ -536,32 +540,6 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 						Protocol: to.Ptr(armnetwork.ApplicationGatewayProtocolHTTP),
 					},
 				}},
-			LoadDistributionPolicies: []*armnetwork.ApplicationGatewayLoadDistributionPolicy{
-				{
-					Name: to.Ptr("ldp1"),
-					Properties: &armnetwork.ApplicationGatewayLoadDistributionPolicyPropertiesFormat{
-						LoadDistributionAlgorithm: to.Ptr(armnetwork.ApplicationGatewayLoadDistributionAlgorithmRoundRobin),
-						LoadDistributionTargets: []*armnetwork.ApplicationGatewayLoadDistributionTarget{
-							{
-								Name: to.Ptr("ld11"),
-								Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
-									BackendAddressPool: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-									},
-									WeightPerServer: to.Ptr[int32](40),
-								},
-							},
-							{
-								Name: to.Ptr("ld11"),
-								Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
-									BackendAddressPool: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"),
-									},
-									WeightPerServer: to.Ptr[int32](60),
-								},
-							}},
-					},
-				}},
 			RequestRoutingRules: []*armnetwork.ApplicationGatewayRequestRoutingRule{
 				{
 					Name: to.Ptr("appgwrule"),
@@ -575,27 +553,11 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 						HTTPListener: &armnetwork.SubResource{
 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"),
 						},
-						LoadDistributionPolicy: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-						},
 						Priority: to.Ptr[int32](10),
 						RewriteRuleSet: &armnetwork.SubResource{
 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
 						},
 						RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypeBasic),
-					},
-				},
-				{
-					Name: to.Ptr("appgwPathBasedRule"),
-					Properties: &armnetwork.ApplicationGatewayRequestRoutingRulePropertiesFormat{
-						HTTPListener: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhttplistener"),
-						},
-						Priority: to.Ptr[int32](20),
-						RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypePathBasedRouting),
-						URLPathMap: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1"),
-						},
 					},
 				}},
 			RewriteRuleSets: []*armnetwork.ApplicationGatewayRewriteRuleSet{
@@ -689,45 +651,6 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 						KeyVaultSecretID: to.Ptr("https://kv/secret"),
 					},
 				}},
-			URLPathMaps: []*armnetwork.ApplicationGatewayURLPathMap{
-				{
-					Name: to.Ptr("pathMap1"),
-					Properties: &armnetwork.ApplicationGatewayURLPathMapPropertiesFormat{
-						DefaultBackendAddressPool: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-						},
-						DefaultBackendHTTPSettings: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
-						},
-						DefaultLoadDistributionPolicy: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-						},
-						DefaultRewriteRuleSet: &armnetwork.SubResource{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
-						},
-						PathRules: []*armnetwork.ApplicationGatewayPathRule{
-							{
-								Name: to.Ptr("apiPaths"),
-								Properties: &armnetwork.ApplicationGatewayPathRulePropertiesFormat{
-									BackendAddressPool: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-									},
-									BackendHTTPSettings: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
-									},
-									LoadDistributionPolicy: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-									},
-									Paths: []*string{
-										to.Ptr("/api"),
-										to.Ptr("/v1/api")},
-									RewriteRuleSet: &armnetwork.SubResource{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
-									},
-								},
-							}},
-					},
-				}},
 		},
 	}, nil)
 	if err != nil {
@@ -754,7 +677,12 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 				Name: to.Ptr("appgwpool"),
 	// 				Properties: &armnetwork.ApplicationGatewayBackendAddressPoolPropertiesFormat{
 	// 					BackendAddresses: []*armnetwork.ApplicationGatewayBackendAddress{
-	// 					},
+	// 						{
+	// 							IPAddress: to.Ptr("10.0.1.1"),
+	// 						},
+	// 						{
+	// 							IPAddress: to.Ptr("10.0.1.2"),
+	// 					}},
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 				},
 	// 			},
@@ -764,8 +692,10 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 				Properties: &armnetwork.ApplicationGatewayBackendAddressPoolPropertiesFormat{
 	// 					BackendAddresses: []*armnetwork.ApplicationGatewayBackendAddress{
 	// 						{
+	// 							IPAddress: to.Ptr("10.0.0.1"),
 	// 						},
 	// 						{
+	// 							IPAddress: to.Ptr("10.0.0.2"),
 	// 					}},
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 				},
@@ -788,9 +718,6 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 				Name: to.Ptr("appgwfip"),
 	// 				Properties: &armnetwork.ApplicationGatewayFrontendIPConfigurationPropertiesFormat{
 	// 					PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 					PrivateLinkConfiguration: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/privateLinkConfigurations/privateLinkConfig1"),
-	// 					},
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 					PublicIPAddress: &armnetwork.SubResource{
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/appgwpip"),
@@ -865,39 +792,18 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 					Protocol: to.Ptr(armnetwork.ApplicationGatewayProtocolHTTP),
 	// 				},
 	// 		}},
+	// 		Listeners: []*armnetwork.ApplicationGatewayListener{
+	// 		},
 	// 		LoadDistributionPolicies: []*armnetwork.ApplicationGatewayLoadDistributionPolicy{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-	// 				Name: to.Ptr("ldp1"),
-	// 				Properties: &armnetwork.ApplicationGatewayLoadDistributionPolicyPropertiesFormat{
-	// 					LoadDistributionAlgorithm: to.Ptr(armnetwork.ApplicationGatewayLoadDistributionAlgorithmRoundRobin),
-	// 					LoadDistributionTargets: []*armnetwork.ApplicationGatewayLoadDistributionTarget{
-	// 						{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1/loadDistributionTargets/ldt1"),
-	// 							Name: to.Ptr("ld11"),
-	// 							Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
-	// 								BackendAddressPool: &armnetwork.SubResource{
-	// 									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-	// 								},
-	// 								WeightPerServer: to.Ptr[int32](40),
-	// 							},
-	// 						},
-	// 						{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1/loadDistributionTargets/ldt1"),
-	// 							Name: to.Ptr("ld11"),
-	// 							Properties: &armnetwork.ApplicationGatewayLoadDistributionTargetPropertiesFormat{
-	// 								BackendAddressPool: &armnetwork.SubResource{
-	// 									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"),
-	// 								},
-	// 								WeightPerServer: to.Ptr[int32](60),
-	// 							},
-	// 					}},
-	// 				},
-	// 		}},
+	// 		},
 	// 		OperationalState: to.Ptr(armnetwork.ApplicationGatewayOperationalStateRunning),
+	// 		PrivateEndpointConnections: []*armnetwork.ApplicationGatewayPrivateEndpointConnection{
+	// 		},
 	// 		Probes: []*armnetwork.ApplicationGatewayProbe{
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		RedirectConfigurations: []*armnetwork.ApplicationGatewayRedirectConfiguration{
+	// 		},
 	// 		RequestRoutingRules: []*armnetwork.ApplicationGatewayRequestRoutingRule{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/requestRoutingRules/appgwrule"),
@@ -912,28 +818,11 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 					HTTPListener: &armnetwork.SubResource{
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"),
 	// 					},
-	// 					LoadDistributionPolicy: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-	// 					},
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 					RewriteRuleSet: &armnetwork.SubResource{
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
 	// 					},
 	// 					RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypeBasic),
-	// 				},
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/requestRoutingRules/appgwPathBasedRule"),
-	// 				Name: to.Ptr("appgwPathBasedRule"),
-	// 				Properties: &armnetwork.ApplicationGatewayRequestRoutingRulePropertiesFormat{
-	// 					HTTPListener: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhttplistener"),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					RuleType: to.Ptr(armnetwork.ApplicationGatewayRequestRoutingRuleTypePathBasedRouting),
-	// 					URLPathMap: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1"),
-	// 					},
 	// 				},
 	// 		}},
 	// 		RewriteRuleSets: []*armnetwork.ApplicationGatewayRewriteRuleSet{
@@ -972,6 +861,8 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 					}},
 	// 				},
 	// 		}},
+	// 		RoutingRules: []*armnetwork.ApplicationGatewayRoutingRule{
+	// 		},
 	// 		SKU: &armnetwork.ApplicationGatewaySKU{
 	// 			Name: to.Ptr(armnetwork.ApplicationGatewaySKUNameStandardMedium),
 	// 			Capacity: to.Ptr[int32](3),
@@ -1017,53 +908,12 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate() {
 	// 					},
 	// 			}},
 	// 			URLPathMaps: []*armnetwork.ApplicationGatewayURLPathMap{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1"),
-	// 					Name: to.Ptr("pathMap1"),
-	// 					Properties: &armnetwork.ApplicationGatewayURLPathMapPropertiesFormat{
-	// 						DefaultBackendAddressPool: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-	// 						},
-	// 						DefaultBackendHTTPSettings: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
-	// 						},
-	// 						DefaultLoadDistributionPolicy: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-	// 						},
-	// 						DefaultRewriteRuleSet: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
-	// 						},
-	// 						PathRules: []*armnetwork.ApplicationGatewayPathRule{
-	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1/pathRules/apiPaths"),
-	// 								Name: to.Ptr("apiPaths"),
-	// 								Properties: &armnetwork.ApplicationGatewayPathRulePropertiesFormat{
-	// 									BackendAddressPool: &armnetwork.SubResource{
-	// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"),
-	// 									},
-	// 									BackendHTTPSettings: &armnetwork.SubResource{
-	// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"),
-	// 									},
-	// 									LoadDistributionPolicy: &armnetwork.SubResource{
-	// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"),
-	// 									},
-	// 									Paths: []*string{
-	// 										to.Ptr("/api"),
-	// 										to.Ptr("/v1/api")},
-	// 										ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 										RewriteRuleSet: &armnetwork.SubResource{
-	// 											ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"),
-	// 										},
-	// 									},
-	// 							}},
-	// 							ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						},
-	// 				}},
 	// 			},
-	// 		}
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayUpdateTags.json
 func ExampleApplicationGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1215,7 +1065,7 @@ func ExampleApplicationGatewaysClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayList.json
 func ExampleApplicationGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1601,7 +1451,7 @@ func ExampleApplicationGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayListAll.json
 func ExampleApplicationGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1987,7 +1837,7 @@ func ExampleApplicationGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayStart.json
 func ExampleApplicationGatewaysClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2008,7 +1858,7 @@ func ExampleApplicationGatewaysClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayStop.json
 func ExampleApplicationGatewaysClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2029,7 +1879,7 @@ func ExampleApplicationGatewaysClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayBackendHealthGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayBackendHealthGet.json
 func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2092,7 +1942,7 @@ func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayBackendHealthTest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayBackendHealthTest.json
 func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2146,7 +1996,7 @@ func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
 func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2168,7 +2018,7 @@ func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	// 	to.Ptr("request_query")}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableRequestHeadersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableRequestHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2190,7 +2040,7 @@ func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	// 	to.Ptr("Accept-Charset")}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableResponseHeadersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableResponseHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2212,7 +2062,7 @@ func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	// 	to.Ptr("Access-Control-Allow-Origin")}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableWafRuleSetsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableWafRuleSetsGet.json
 func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2256,7 +2106,7 @@ func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
 func ExampleApplicationGatewaysClient_ListAvailableSSLOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2327,7 +2177,7 @@ func ExampleApplicationGatewaysClient_ListAvailableSSLOptions() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableSslOptionsPredefinedPoliciesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableSslOptionsPredefinedPoliciesGet.json
 func ExampleApplicationGatewaysClient_NewListAvailableSSLPredefinedPoliciesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2439,7 +2289,7 @@ func ExampleApplicationGatewaysClient_NewListAvailableSSLPredefinedPoliciesPager
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableSslOptionsPredefinedPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableSslOptionsPredefinedPolicyGet.json
 func ExampleApplicationGatewaysClient_GetSSLPredefinedPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

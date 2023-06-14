@@ -44,7 +44,7 @@ func NewDimensionsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewByExternalCloudProviderTypePager - Lists the dimensions by the external cloud provider type.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2022-10-01
 //   - externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
 //     'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
 //   - externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
@@ -89,7 +89,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -118,7 +118,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeHandleResponse(resp *
 
 // NewListPager - Lists the dimensions by the defined scope.
 //
-// Generated from API version 2021-10-01
+// Generated from API version 2022-10-01
 //   - scope - The scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 //     scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 //     resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -161,7 +161,7 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

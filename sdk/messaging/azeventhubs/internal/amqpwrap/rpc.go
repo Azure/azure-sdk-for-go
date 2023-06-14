@@ -21,6 +21,7 @@ type RPCResponse struct {
 // RPCLink is implemented by *rpc.Link
 type RPCLink interface {
 	Close(ctx context.Context) error
+	ConnID() uint64
 	RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error)
 	LinkName() string
 }

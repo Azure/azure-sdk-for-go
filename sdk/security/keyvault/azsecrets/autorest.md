@@ -16,7 +16,6 @@ security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
-
 directive:
   # delete unused model
   - remove-model: SecretProperties
@@ -36,17 +35,60 @@ directive:
   - rename-model:
       from: SecretUpdateParameters
       to: UpdateSecretParameters
+  - rename-model:
+      from: SecretBundle
+      to: Secret
+  - rename-model:
+      from: DeletedSecretBundle
+      to: DeletedSecret
+  - rename-model:
+      from: SecretItem
+      to: SecretProperties
+  - rename-model:
+      from: DeletedSecretItem
+      to: DeletedSecretProperties
+  - rename-model:
+      from: UpdateSecretParameters
+      to: UpdateSecretPropertiesParameters
+  - rename-model:
+      from: DeletedSecretListResult
+      to: DeletedSecretPropertiesListResult
+  - rename-model:
+      from: SecretListResult
+      to: SecretPropertiesListResult
 
-  # rename paged operations from Get* to List*
+  # rename operations
   - rename-operation:
       from: GetDeletedSecrets
-      to: ListDeletedSecrets
+      to: ListDeletedSecretProperties
   - rename-operation:
       from: GetSecrets
-      to: ListSecrets
+      to: ListSecretProperties
   - rename-operation:
       from: GetSecretVersions
-      to: ListSecretVersions
+      to: ListSecretPropertiesVersions
+  - rename-operation:
+      from: UpdateSecret
+      to: UpdateSecretProperties
+
+  # rename fields
+  - from: swagger-document
+    where: $.definitions.RestoreSecretParameters.properties.value
+    transform: $["x-ms-client-name"] = "SecretBackup"
+  - from: swagger-document
+    where: $.definitions.Secret.properties.kid
+    transform: $["x-ms-client-name"] = "KID"
+
+  # remove type DeletionRecoveryLevel, use string instead
+  - from: models.go
+    where: $
+    transform: return $.replace(/DeletionRecoveryLevel/g, "string");
+
+  # Remove MaxResults parameter
+  - where: "$.paths..*"
+    remove-parameter:
+      in: query
+      name: maxresults
 
   # delete unused error models
   - from: models.go

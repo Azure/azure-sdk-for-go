@@ -11,7 +11,7 @@ package armappcontainers
 
 const (
 	moduleName    = "armappcontainers"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 // AccessMode - Access mode for storage
@@ -27,6 +27,22 @@ func PossibleAccessModeValues() []AccessMode {
 	return []AccessMode{
 		AccessModeReadOnly,
 		AccessModeReadWrite,
+	}
+}
+
+// Action - Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny
+type Action string
+
+const (
+	ActionAllow Action = "Allow"
+	ActionDeny  Action = "Deny"
+)
+
+// PossibleActionValues returns the possible values for the Action const type.
+func PossibleActionValues() []Action {
+	return []Action{
+		ActionAllow,
+		ActionDeny,
 	}
 }
 
@@ -48,6 +64,22 @@ func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
 	}
 }
 
+// Affinity - Sticky Session Affinity
+type Affinity string
+
+const (
+	AffinityNone   Affinity = "none"
+	AffinitySticky Affinity = "sticky"
+)
+
+// PossibleAffinityValues returns the possible values for the Affinity const type.
+func PossibleAffinityValues() []Affinity {
+	return []Affinity{
+		AffinityNone,
+		AffinitySticky,
+	}
+}
+
 // AppProtocol - Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http
 type AppProtocol string
 
@@ -61,6 +93,22 @@ func PossibleAppProtocolValues() []AppProtocol {
 	return []AppProtocol{
 		AppProtocolGrpc,
 		AppProtocolHTTP,
+	}
+}
+
+// Applicability - indicates whether the profile is default for the location.
+type Applicability string
+
+const (
+	ApplicabilityCustom          Applicability = "Custom"
+	ApplicabilityLocationDefault Applicability = "LocationDefault"
+)
+
+// PossibleApplicabilityValues returns the possible values for the Applicability const type.
+func PossibleApplicabilityValues() []Applicability {
+	return []Applicability{
+		ApplicabilityCustom,
+		ApplicabilityLocationDefault,
 	}
 }
 
@@ -118,11 +166,40 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 	}
 }
 
+// ConnectedEnvironmentProvisioningState - Provisioning state of the Kubernetes Environment.
+type ConnectedEnvironmentProvisioningState string
+
+const (
+	ConnectedEnvironmentProvisioningStateCanceled                      ConnectedEnvironmentProvisioningState = "Canceled"
+	ConnectedEnvironmentProvisioningStateFailed                        ConnectedEnvironmentProvisioningState = "Failed"
+	ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete   ConnectedEnvironmentProvisioningState = "InfrastructureSetupComplete"
+	ConnectedEnvironmentProvisioningStateInfrastructureSetupInProgress ConnectedEnvironmentProvisioningState = "InfrastructureSetupInProgress"
+	ConnectedEnvironmentProvisioningStateInitializationInProgress      ConnectedEnvironmentProvisioningState = "InitializationInProgress"
+	ConnectedEnvironmentProvisioningStateScheduledForDelete            ConnectedEnvironmentProvisioningState = "ScheduledForDelete"
+	ConnectedEnvironmentProvisioningStateSucceeded                     ConnectedEnvironmentProvisioningState = "Succeeded"
+	ConnectedEnvironmentProvisioningStateWaiting                       ConnectedEnvironmentProvisioningState = "Waiting"
+)
+
+// PossibleConnectedEnvironmentProvisioningStateValues returns the possible values for the ConnectedEnvironmentProvisioningState const type.
+func PossibleConnectedEnvironmentProvisioningStateValues() []ConnectedEnvironmentProvisioningState {
+	return []ConnectedEnvironmentProvisioningState{
+		ConnectedEnvironmentProvisioningStateCanceled,
+		ConnectedEnvironmentProvisioningStateFailed,
+		ConnectedEnvironmentProvisioningStateInfrastructureSetupComplete,
+		ConnectedEnvironmentProvisioningStateInfrastructureSetupInProgress,
+		ConnectedEnvironmentProvisioningStateInitializationInProgress,
+		ConnectedEnvironmentProvisioningStateScheduledForDelete,
+		ConnectedEnvironmentProvisioningStateSucceeded,
+		ConnectedEnvironmentProvisioningStateWaiting,
+	}
+}
+
 // ContainerAppProvisioningState - Provisioning state of the Container App.
 type ContainerAppProvisioningState string
 
 const (
 	ContainerAppProvisioningStateCanceled   ContainerAppProvisioningState = "Canceled"
+	ContainerAppProvisioningStateDeleting   ContainerAppProvisioningState = "Deleting"
 	ContainerAppProvisioningStateFailed     ContainerAppProvisioningState = "Failed"
 	ContainerAppProvisioningStateInProgress ContainerAppProvisioningState = "InProgress"
 	ContainerAppProvisioningStateSucceeded  ContainerAppProvisioningState = "Succeeded"
@@ -132,6 +209,7 @@ const (
 func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState {
 	return []ContainerAppProvisioningState{
 		ContainerAppProvisioningStateCanceled,
+		ContainerAppProvisioningStateDeleting,
 		ContainerAppProvisioningStateFailed,
 		ContainerAppProvisioningStateInProgress,
 		ContainerAppProvisioningStateSucceeded,
@@ -224,6 +302,20 @@ func PossibleEnvironmentProvisioningStateValues() []EnvironmentProvisioningState
 	}
 }
 
+// ExtendedLocationTypes - The type of extendedLocation.
+type ExtendedLocationTypes string
+
+const (
+	ExtendedLocationTypesCustomLocation ExtendedLocationTypes = "CustomLocation"
+)
+
+// PossibleExtendedLocationTypesValues returns the possible values for the ExtendedLocationTypes const type.
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return []ExtendedLocationTypes{
+		ExtendedLocationTypesCustomLocation,
+	}
+}
+
 // ForwardProxyConvention - The convention used to determine the url of the request made.
 type ForwardProxyConvention string
 
@@ -242,6 +334,26 @@ func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 	}
 }
 
+// IngressClientCertificateMode - Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate
+// on forwarding. Accept indicates server forwards client certificate but does not require a client
+// certificate. Require indicates server requires a client certificate.
+type IngressClientCertificateMode string
+
+const (
+	IngressClientCertificateModeAccept  IngressClientCertificateMode = "accept"
+	IngressClientCertificateModeIgnore  IngressClientCertificateMode = "ignore"
+	IngressClientCertificateModeRequire IngressClientCertificateMode = "require"
+)
+
+// PossibleIngressClientCertificateModeValues returns the possible values for the IngressClientCertificateMode const type.
+func PossibleIngressClientCertificateModeValues() []IngressClientCertificateMode {
+	return []IngressClientCertificateMode{
+		IngressClientCertificateModeAccept,
+		IngressClientCertificateModeIgnore,
+		IngressClientCertificateModeRequire,
+	}
+}
+
 // IngressTransportMethod - Ingress transport protocol
 type IngressTransportMethod string
 
@@ -249,6 +361,7 @@ const (
 	IngressTransportMethodAuto  IngressTransportMethod = "auto"
 	IngressTransportMethodHTTP  IngressTransportMethod = "http"
 	IngressTransportMethodHTTP2 IngressTransportMethod = "http2"
+	IngressTransportMethodTCP   IngressTransportMethod = "tcp"
 )
 
 // PossibleIngressTransportMethodValues returns the possible values for the IngressTransportMethod const type.
@@ -257,6 +370,93 @@ func PossibleIngressTransportMethodValues() []IngressTransportMethod {
 		IngressTransportMethodAuto,
 		IngressTransportMethodHTTP,
 		IngressTransportMethodHTTP2,
+		IngressTransportMethodTCP,
+	}
+}
+
+// JobExecutionRunningState - Current running State of the job
+type JobExecutionRunningState string
+
+const (
+	JobExecutionRunningStateDegraded   JobExecutionRunningState = "Degraded"
+	JobExecutionRunningStateFailed     JobExecutionRunningState = "Failed"
+	JobExecutionRunningStateProcessing JobExecutionRunningState = "Processing"
+	JobExecutionRunningStateRunning    JobExecutionRunningState = "Running"
+	JobExecutionRunningStateStopped    JobExecutionRunningState = "Stopped"
+	JobExecutionRunningStateSucceeded  JobExecutionRunningState = "Succeeded"
+	JobExecutionRunningStateUnknown    JobExecutionRunningState = "Unknown"
+)
+
+// PossibleJobExecutionRunningStateValues returns the possible values for the JobExecutionRunningState const type.
+func PossibleJobExecutionRunningStateValues() []JobExecutionRunningState {
+	return []JobExecutionRunningState{
+		JobExecutionRunningStateDegraded,
+		JobExecutionRunningStateFailed,
+		JobExecutionRunningStateProcessing,
+		JobExecutionRunningStateRunning,
+		JobExecutionRunningStateStopped,
+		JobExecutionRunningStateSucceeded,
+		JobExecutionRunningStateUnknown,
+	}
+}
+
+// JobProvisioningState - Provisioning state of the Container Apps Job.
+type JobProvisioningState string
+
+const (
+	JobProvisioningStateCanceled   JobProvisioningState = "Canceled"
+	JobProvisioningStateDeleting   JobProvisioningState = "Deleting"
+	JobProvisioningStateFailed     JobProvisioningState = "Failed"
+	JobProvisioningStateInProgress JobProvisioningState = "InProgress"
+	JobProvisioningStateSucceeded  JobProvisioningState = "Succeeded"
+)
+
+// PossibleJobProvisioningStateValues returns the possible values for the JobProvisioningState const type.
+func PossibleJobProvisioningStateValues() []JobProvisioningState {
+	return []JobProvisioningState{
+		JobProvisioningStateCanceled,
+		JobProvisioningStateDeleting,
+		JobProvisioningStateFailed,
+		JobProvisioningStateInProgress,
+		JobProvisioningStateSucceeded,
+	}
+}
+
+// LogLevel - Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
+type LogLevel string
+
+const (
+	LogLevelDebug LogLevel = "debug"
+	LogLevelError LogLevel = "error"
+	LogLevelInfo  LogLevel = "info"
+	LogLevelWarn  LogLevel = "warn"
+)
+
+// PossibleLogLevelValues returns the possible values for the LogLevel const type.
+func PossibleLogLevelValues() []LogLevel {
+	return []LogLevel{
+		LogLevelDebug,
+		LogLevelError,
+		LogLevelInfo,
+		LogLevelWarn,
+	}
+}
+
+// ManagedCertificateDomainControlValidation - Selected type of domain control validation for managed certificates.
+type ManagedCertificateDomainControlValidation string
+
+const (
+	ManagedCertificateDomainControlValidationCNAME ManagedCertificateDomainControlValidation = "CNAME"
+	ManagedCertificateDomainControlValidationHTTP  ManagedCertificateDomainControlValidation = "HTTP"
+	ManagedCertificateDomainControlValidationTXT   ManagedCertificateDomainControlValidation = "TXT"
+)
+
+// PossibleManagedCertificateDomainControlValidationValues returns the possible values for the ManagedCertificateDomainControlValidation const type.
+func PossibleManagedCertificateDomainControlValidationValues() []ManagedCertificateDomainControlValidation {
+	return []ManagedCertificateDomainControlValidation{
+		ManagedCertificateDomainControlValidationCNAME,
+		ManagedCertificateDomainControlValidationHTTP,
+		ManagedCertificateDomainControlValidationTXT,
 	}
 }
 
@@ -362,6 +562,7 @@ type StorageType string
 const (
 	StorageTypeAzureFile StorageType = "AzureFile"
 	StorageTypeEmptyDir  StorageType = "EmptyDir"
+	StorageTypeSecret    StorageType = "Secret"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
@@ -369,6 +570,25 @@ func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
 		StorageTypeAzureFile,
 		StorageTypeEmptyDir,
+		StorageTypeSecret,
+	}
+}
+
+// TriggerType - Trigger type of the job
+type TriggerType string
+
+const (
+	TriggerTypeEvent     TriggerType = "Event"
+	TriggerTypeManual    TriggerType = "Manual"
+	TriggerTypeScheduled TriggerType = "Scheduled"
+)
+
+// PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
+func PossibleTriggerTypeValues() []TriggerType {
+	return []TriggerType{
+		TriggerTypeEvent,
+		TriggerTypeManual,
+		TriggerTypeScheduled,
 	}
 }
 

@@ -56,6 +56,11 @@ func (c *ClientFactory) NewMonitorsClient() *MonitorsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewVersionsClient() *VersionsClient {
+	subClient, _ := NewVersionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewMonitoredResourcesClient() *MonitoredResourcesClient {
 	subClient, _ := NewMonitoredResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

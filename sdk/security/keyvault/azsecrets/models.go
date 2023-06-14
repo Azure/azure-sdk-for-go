@@ -37,22 +37,21 @@ type GetSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListDeletedSecretsOptions contains the optional parameters for the Client.NewListDeletedSecretsPager method.
-type ListDeletedSecretsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
+// ListDeletedSecretPropertiesOptions contains the optional parameters for the Client.NewListDeletedSecretPropertiesPager
+// method.
+type ListDeletedSecretPropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
-// ListSecretVersionsOptions contains the optional parameters for the Client.NewListSecretVersionsPager method.
-type ListSecretVersionsOptions struct {
-	// Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
-	MaxResults *int32
+// ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager method.
+type ListSecretPropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
-// ListSecretsOptions contains the optional parameters for the Client.NewListSecretsPager method.
-type ListSecretsOptions struct {
-	// Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
-	MaxResults *int32
+// ListSecretPropertiesVersionsOptions contains the optional parameters for the Client.NewListSecretPropertiesVersionsPager
+// method.
+type ListSecretPropertiesVersionsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PurgeDeletedSecretOptions contains the optional parameters for the Client.PurgeDeletedSecret method.
@@ -75,14 +74,14 @@ type SetSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateSecretOptions contains the optional parameters for the Client.UpdateSecret method.
-type UpdateSecretOptions struct {
+// UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
+type UpdateSecretPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on
-// when it will be purged.
-type DeletedSecretBundle struct {
+// DeletedSecret - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
+// it will be purged.
+type DeletedSecret struct {
 	// The secret management attributes.
 	Attributes *SecretAttributes `json:"attributes,omitempty"`
 
@@ -106,7 +105,7 @@ type DeletedSecretBundle struct {
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
-	Kid *string `json:"kid,omitempty" azure:"ro"`
+	KID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.
@@ -116,8 +115,8 @@ type DeletedSecretBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
-type DeletedSecretItem struct {
+// DeletedSecretProperties - The deleted secret item containing metadata about the deleted secret.
+type DeletedSecretProperties struct {
 	// The secret management attributes.
 	Attributes *SecretAttributes `json:"attributes,omitempty"`
 
@@ -144,20 +143,46 @@ type DeletedSecretItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// DeletedSecretListResult - The deleted secret list result
-type DeletedSecretListResult struct {
+// DeletedSecretPropertiesListResult - The deleted secret list result
+type DeletedSecretPropertiesListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page
 	// of deleted secrets
-	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	Value []*DeletedSecretProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // RestoreSecretParameters - The secret restore parameters.
 type RestoreSecretParameters struct {
 	// REQUIRED; The backup blob associated with a secret bundle.
-	SecretBundleBackup []byte `json:"value,omitempty"`
+	SecretBackup []byte `json:"value,omitempty"`
+}
+
+// Secret - A secret consisting of a value, id and its attributes.
+type Secret struct {
+	// The secret management attributes.
+	Attributes *SecretAttributes `json:"attributes,omitempty"`
+
+	// The content type of the secret.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// The secret id.
+	ID *ID `json:"id,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The secret value.
+	Value *string `json:"value,omitempty"`
+
+	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+	// certificate.
+	KID *string `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+	// will be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // SecretAttributes - The secret management attributes.
@@ -180,40 +205,14 @@ type SecretAttributes struct {
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable',
 	// the secret can be permanently deleted by a privileged user; otherwise, only the
 	// system can purge the secret, at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// SecretBundle - A secret consisting of a value, id and its attributes.
-type SecretBundle struct {
-	// The secret management attributes.
-	Attributes *SecretAttributes `json:"attributes,omitempty"`
-
-	// The content type of the secret.
-	ContentType *string `json:"contentType,omitempty"`
-
-	// The secret id.
-	ID *ID `json:"id,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// The secret value.
-	Value *string `json:"value,omitempty"`
-
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
-	// certificate.
-	Kid *string `json:"kid,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
-	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
-}
-
-// SecretItem - The secret item containing secret metadata.
-type SecretItem struct {
+// SecretProperties - The secret item containing secret metadata.
+type SecretProperties struct {
 	// The secret management attributes.
 	Attributes *SecretAttributes `json:"attributes,omitempty"`
 
@@ -231,13 +230,13 @@ type SecretItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// SecretListResult - The secret list result.
-type SecretListResult struct {
+// SecretPropertiesListResult - The secret list result.
+type SecretPropertiesListResult struct {
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Value []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Value []*SecretProperties `json:"value,omitempty" azure:"ro"`
 }
 
 // SetSecretParameters - The secret set parameters.
@@ -255,8 +254,8 @@ type SetSecretParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// UpdateSecretParameters - The secret update parameters.
-type UpdateSecretParameters struct {
+// UpdateSecretPropertiesParameters - The secret update parameters.
+type UpdateSecretPropertiesParameters struct {
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
 

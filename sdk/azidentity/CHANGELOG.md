@@ -1,5 +1,20 @@
 # Release History
 
+## 1.4.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.0-beta.1 (2023-06-06)
+
+### Other Changes
+* Re-enabled CAE support as in v1.3.0-beta.3
+
 ## 1.3.0 (2023-05-09)
 
 ### Breaking Changes

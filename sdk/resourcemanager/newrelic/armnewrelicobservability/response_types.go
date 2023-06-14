@@ -66,7 +66,9 @@ type MonitorsClientListMonitoredResourcesResponse struct {
 
 // MonitorsClientSwitchBillingResponse contains the response from method MonitorsClient.SwitchBilling.
 type MonitorsClientSwitchBillingResponse struct {
-	// placeholder for future response values
+	NewRelicMonitorResource
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
 }
 
 // MonitorsClientUpdateResponse contains the response from method MonitorsClient.Update.

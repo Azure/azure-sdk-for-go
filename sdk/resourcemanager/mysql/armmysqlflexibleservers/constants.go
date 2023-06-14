@@ -11,8 +11,51 @@ package armmysqlflexibleservers
 
 const (
 	moduleName    = "armmysqlflexibleservers"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v2.0.0-beta.1"
 )
+
+type AdministratorName string
+
+const (
+	AdministratorNameActiveDirectory AdministratorName = "ActiveDirectory"
+)
+
+// PossibleAdministratorNameValues returns the possible values for the AdministratorName const type.
+func PossibleAdministratorNameValues() []AdministratorName {
+	return []AdministratorName{
+		AdministratorNameActiveDirectory,
+	}
+}
+
+// AdministratorType - Type of the sever administrator.
+type AdministratorType string
+
+const (
+	AdministratorTypeActiveDirectory AdministratorType = "ActiveDirectory"
+)
+
+// PossibleAdministratorTypeValues returns the possible values for the AdministratorType const type.
+func PossibleAdministratorTypeValues() []AdministratorType {
+	return []AdministratorType{
+		AdministratorTypeActiveDirectory,
+	}
+}
+
+// BackupFormat - Backup Format for the current backup. (CollatedFormat is INTERNAL – DO NOT USE)
+type BackupFormat string
+
+const (
+	BackupFormatCollatedFormat BackupFormat = "CollatedFormat"
+	BackupFormatNone           BackupFormat = "None"
+)
+
+// PossibleBackupFormatValues returns the possible values for the BackupFormat const type.
+func PossibleBackupFormatValues() []BackupFormat {
+	return []BackupFormat{
+		BackupFormatCollatedFormat,
+		BackupFormatNone,
+	}
+}
 
 // ConfigurationSource - Source of the configuration.
 type ConfigurationSource string
@@ -190,6 +233,50 @@ func PossibleIsReadOnlyValues() []IsReadOnly {
 	}
 }
 
+// ManagedServiceIdentityType - Type of managed service identity.
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// OperationStatus - The operation status
+type OperationStatus string
+
+const (
+	// OperationStatusPending - The operation has been accepted but hasn't started.
+	OperationStatusPending OperationStatus = "Pending"
+	// OperationStatusInProgress - The operation is running
+	OperationStatusInProgress OperationStatus = "InProgress"
+	// OperationStatusSucceeded - The operation Succeeded
+	OperationStatusSucceeded OperationStatus = "Succeeded"
+	// OperationStatusFailed - The operation Failed
+	OperationStatusFailed OperationStatus = "Failed"
+	// OperationStatusCancelInProgress - The cancellation in progress
+	OperationStatusCancelInProgress OperationStatus = "CancelInProgress"
+	// OperationStatusCanceled - The operation has been Canceled
+	OperationStatusCanceled OperationStatus = "Canceled"
+)
+
+// PossibleOperationStatusValues returns the possible values for the OperationStatus const type.
+func PossibleOperationStatusValues() []OperationStatus {
+	return []OperationStatus{
+		OperationStatusPending,
+		OperationStatusInProgress,
+		OperationStatusSucceeded,
+		OperationStatusFailed,
+		OperationStatusCancelInProgress,
+		OperationStatusCanceled,
+	}
+}
+
 // ReplicationRole - The replication role.
 type ReplicationRole string
 
@@ -205,6 +292,22 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 		ReplicationRoleNone,
 		ReplicationRoleReplica,
 		ReplicationRoleSource,
+	}
+}
+
+// ResetAllToDefault - Whether to reset all server parameters to default.
+type ResetAllToDefault string
+
+const (
+	ResetAllToDefaultFalse ResetAllToDefault = "False"
+	ResetAllToDefaultTrue  ResetAllToDefault = "True"
+)
+
+// PossibleResetAllToDefaultValues returns the possible values for the ResetAllToDefault const type.
+func PossibleResetAllToDefaultValues() []ResetAllToDefault {
+	return []ResetAllToDefault{
+		ResetAllToDefaultFalse,
+		ResetAllToDefaultTrue,
 	}
 }
 

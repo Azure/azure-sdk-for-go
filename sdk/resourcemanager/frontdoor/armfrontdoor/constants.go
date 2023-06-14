@@ -11,23 +11,25 @@ package armfrontdoor
 
 const (
 	moduleName    = "armfrontdoor"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0"
 )
 
 // ActionType - Defines the action to take on rule match.
 type ActionType string
 
 const (
-	ActionTypeAllow    ActionType = "Allow"
-	ActionTypeBlock    ActionType = "Block"
-	ActionTypeLog      ActionType = "Log"
-	ActionTypeRedirect ActionType = "Redirect"
+	ActionTypeAllow          ActionType = "Allow"
+	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
+	ActionTypeBlock          ActionType = "Block"
+	ActionTypeLog            ActionType = "Log"
+	ActionTypeRedirect       ActionType = "Redirect"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeAllow,
+		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
 		ActionTypeLog,
 		ActionTypeRedirect,
@@ -370,6 +372,8 @@ const (
 	FrontDoorResourceStateDisabling FrontDoorResourceState = "Disabling"
 	FrontDoorResourceStateEnabled   FrontDoorResourceState = "Enabled"
 	FrontDoorResourceStateEnabling  FrontDoorResourceState = "Enabling"
+	FrontDoorResourceStateMigrated  FrontDoorResourceState = "Migrated"
+	FrontDoorResourceStateMigrating FrontDoorResourceState = "Migrating"
 )
 
 // PossibleFrontDoorResourceStateValues returns the possible values for the FrontDoorResourceState const type.
@@ -381,6 +385,8 @@ func PossibleFrontDoorResourceStateValues() []FrontDoorResourceState {
 		FrontDoorResourceStateDisabling,
 		FrontDoorResourceStateEnabled,
 		FrontDoorResourceStateEnabling,
+		FrontDoorResourceStateMigrated,
+		FrontDoorResourceStateMigrating,
 	}
 }
 

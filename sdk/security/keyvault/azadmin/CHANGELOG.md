@@ -1,6 +1,20 @@
 ## Release History
 
-## 1.0.0 (2023-05-11)
+### 0.3.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 0.3.0 (2023-06-08)
+
+### Breatking Changes
+* Renamed `SASTokenParameter` to `SASTokenParameters`
+* Renamed `RestoreOperationParameters.SasTokenParameters` to `RestoreOperationParameters.SASTokenParameters`
 
 ### Other Changes
 * Updated dependencies

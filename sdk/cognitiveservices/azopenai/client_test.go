@@ -11,9 +11,11 @@ import (
 	"log"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetChatCompletions(t *testing.T) {
@@ -89,6 +91,35 @@ func TestClient_GetChatCompletions(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
+	type args struct {
+		ctx          context.Context
+		deploymentID string
+		body         ChatCompletionsOptions
+		options      *ClientGetChatCompletionsOptions
+	}
+	cred := KeyCredential{APIKey: apiKey}
+	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	_, err = chatClient.GetChatCompletions(context.Background(), ChatCompletionsOptions{
+		Messages: []*ChatMessage{
+			{
+				Role:    to.Ptr(ChatRole("user")),
+				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
+			},
+		},
+		MaxTokens:   to.Ptr(int32(1024)),
+		Temperature: to.Ptr(float32(0.0)),
+	}, nil)
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "DeploymentNotFound", respErr.ErrorCode)
 }
 
 func TestClient_GetCompletions(t *testing.T) {

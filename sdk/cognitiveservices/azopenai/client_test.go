@@ -102,9 +102,7 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 	}
 	cred := KeyCredential{APIKey: apiKey}
 	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
+	require.NoError(t, err)
 
 	_, err = chatClient.GetChatCompletions(context.Background(), ChatCompletionsOptions{
 		Messages: []*ChatMessage{

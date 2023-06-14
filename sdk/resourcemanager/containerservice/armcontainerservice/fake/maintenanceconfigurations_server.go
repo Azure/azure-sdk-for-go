@@ -25,7 +25,7 @@ import (
 // MaintenanceConfigurationsServer is a fake server for instances of the armcontainerservice.MaintenanceConfigurationsClient type.
 type MaintenanceConfigurationsServer struct {
 	// CreateOrUpdate is the fake for method MaintenanceConfigurationsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, configName string, parameters armcontainerservice.MaintenanceConfiguration, options *armcontainerservice.MaintenanceConfigurationsClientCreateOrUpdateOptions) (resp azfake.Responder[armcontainerservice.MaintenanceConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method MaintenanceConfigurationsClient.Delete
@@ -117,8 +117,8 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchCreateOrUpdate(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MaintenanceConfiguration, req)
 	if err != nil {

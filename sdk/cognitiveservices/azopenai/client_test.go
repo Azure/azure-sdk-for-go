@@ -9,28 +9,53 @@ package azopenai
 import (
 	"context"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetChatCompletions(t *testing.T) {
+	deploymentID := "gpt-35-turbo"
+
+	t.Run("WithKeyCredential", func(t *testing.T) {
+		cred := KeyCredential{APIKey: apiKey}
+		chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+		require.NoError(t, err)
+
+		testGetChatCompletions(t, chatClient)
+	})
+
+	t.Run("WithTokenCredential", func(t *testing.T) {
+		if os.Getenv("USE_TOKEN_CREDS") != "true" && recording.GetRecordMode() != recording.PlaybackMode {
+			t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
+			t.SkipNow()
+		}
+
+		dac, err := azidentity.NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+
+		chatClient, err := NewClient(endpoint, dac, deploymentID, newClientOptionsForTest(t))
+		require.NoError(t, err)
+
+		testGetChatCompletions(t, chatClient)
+	})
+}
+
+func testGetChatCompletions(t *testing.T, chatClient *Client) {
 	type args struct {
 		ctx          context.Context
 		deploymentID string
 		body         ChatCompletionsOptions
 		options      *ClientGetChatCompletionsOptions
 	}
-	cred := KeyCredential{APIKey: apiKey}
-	deploymentID := "gpt-35-turbo"
-	chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
+
 	tests := []struct {
 		name    string
 		client  *Client

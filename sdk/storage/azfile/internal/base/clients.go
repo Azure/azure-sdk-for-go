@@ -8,6 +8,7 @@ package base
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
@@ -18,6 +19,7 @@ type ClientOptions struct {
 	AllowTrailingDot       *bool
 	FileRequestIntent      *generated.ShareTokenIntent
 	AllowSourceTrailingDot *bool
+	pipelineOptions        *runtime.PipelineOptions
 }
 
 type Client[T any] struct {
@@ -36,6 +38,14 @@ func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
 
 func GetClientOptions[T any](client *Client[T]) *ClientOptions {
 	return client.options
+}
+
+func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {
+	return clOpts.pipelineOptions
+}
+
+func SetPipelineOptions(clOpts *ClientOptions, plOpts *runtime.PipelineOptions) {
+	clOpts.pipelineOptions = plOpts
 }
 
 func NewServiceClient(serviceURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.ServiceClient] {

@@ -36,7 +36,10 @@ type Client base.Client[generated.ServiceClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +54,12 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +110,8 @@ func (s *Client) NewShareClient(shareName string) *share.Client {
 	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
 
 	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(s.getClientOptions().ClientOptions))
+	clOpts := s.getClientOptions()
+	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
 	if err != nil {
 		if log.Should(exported.EventError) {
 			log.Writef(exported.EventError, err.Error())
@@ -111,7 +119,7 @@ func (s *Client) NewShareClient(shareName string) *share.Client {
 		return nil
 	}
 
-	return (*share.Client)(base.NewShareClient(shareURL, azClient, s.sharedKey(), s.getClientOptions()))
+	return (*share.Client)(base.NewShareClient(shareURL, azClient, s.sharedKey(), clOpts))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.

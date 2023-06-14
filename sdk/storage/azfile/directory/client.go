@@ -34,7 +34,10 @@ type Client base.Client[generated.DirectoryClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -49,8 +52,12 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +122,8 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
 
 	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(d.getClientOptions().ClientOptions))
+	clOpts := d.getClientOptions()
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
 	if err != nil {
 		if log.Should(exported.EventError) {
 			log.Writef(exported.EventError, err.Error())
@@ -123,7 +131,7 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 		return nil
 	}
 
-	return (*file.Client)(base.NewFileClient(fileURL, azClient, d.sharedKey(), d.getClientOptions()))
+	return (*file.Client)(base.NewFileClient(fileURL, azClient, d.sharedKey(), clOpts))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

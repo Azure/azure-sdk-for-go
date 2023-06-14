@@ -9,6 +9,7 @@ package share
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
@@ -35,7 +36,10 @@ type Client base.Client[generated.ShareClient]
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -50,8 +54,12 @@ func NewClientWithNoCredential(shareURL string, options *ClientOptions) (*Client
 func NewClientWithSharedKeyCredential(shareURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +113,8 @@ func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
 
 	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(s.getClientOptions().ClientOptions))
+	clOpts := s.getClientOptions()
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
 	if err != nil {
 		if log.Should(exported.EventError) {
 			log.Writef(exported.EventError, err.Error())
@@ -113,7 +122,7 @@ func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 		return nil
 	}
 
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, azClient, s.sharedKey(), s.getClientOptions()))
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, azClient, s.sharedKey(), clOpts))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
@@ -122,7 +131,8 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
 
 	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, runtime.PipelineOptions{}, &(s.getClientOptions().ClientOptions))
+	clOpts := s.getClientOptions()
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
 	if err != nil {
 		if log.Should(exported.EventError) {
 			log.Writef(exported.EventError, err.Error())
@@ -130,7 +140,7 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 		return nil
 	}
 
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, azClient, s.sharedKey(), s.getClientOptions()))
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, azClient, s.sharedKey(), clOpts))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

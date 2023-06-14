@@ -47,14 +47,14 @@ func PossibleCompletionsFinishReasonValues() []CompletionsFinishReason {
 type serviceAPIVersions string
 
 const (
-	ServiceAPIVersionsTwoThousandTwentyThree0315Preview serviceAPIVersions = "2023-03-15-preview"
-	ServiceAPIVersionsTwoThousandTwentyTwo1201          serviceAPIVersions = "2022-12-01"
+	serviceAPIVersionsTwoThousandTwentyThree0315Preview serviceAPIVersions = "2023-03-15-preview"
+	serviceAPIVersionsTwoThousandTwentyTwo1201          serviceAPIVersions = "2022-12-01"
 )
 
-// PossibleServiceAPIVersionsValues returns the possible values for the ServiceAPIVersions const type.
-func PossibleServiceAPIVersionsValues() []serviceAPIVersions {
+// possibleServiceAPIVersionsValues returns the possible values for the ServiceAPIVersions const type.
+func possibleServiceAPIVersionsValues() []serviceAPIVersions {
 	return []serviceAPIVersions{
-		ServiceAPIVersionsTwoThousandTwentyThree0315Preview,
-		ServiceAPIVersionsTwoThousandTwentyTwo1201,
+		serviceAPIVersionsTwoThousandTwentyThree0315Preview,
+		serviceAPIVersionsTwoThousandTwentyTwo1201,
 	}
 }

@@ -11,16 +11,10 @@ package azcertificates
 
 import "time"
 
-// Action - The action that will be executed.
-type Action struct {
-	// The type of the action.
-	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
-}
-
-// AdministratorDetails - Details of the organization administrator of the certificate issuer.
-type AdministratorDetails struct {
+// AdministratorContact - Details of the organization administrator of the certificate issuer.
+type AdministratorContact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// First name.
 	FirstName *string `json:"first_name,omitempty"`
@@ -316,7 +310,7 @@ type UpdateIssuerOptions struct {
 // Contact - The contact information for the vault certificates.
 type Contact struct {
 	// Email address.
-	EmailAddress *string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 
 	// Name.
 	Name *string `json:"name,omitempty"`
@@ -531,10 +525,26 @@ type KeyProperties struct {
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
-	Action *Action `json:"action,omitempty"`
+	Action *LifetimeActionType `json:"action,omitempty"`
 
 	// The condition that will execute the action.
-	Trigger *Trigger `json:"trigger,omitempty"`
+	Trigger *LifetimeActionTrigger `json:"trigger,omitempty"`
+}
+
+// LifetimeActionTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionTrigger struct {
+	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
+	// is 36, then value should be between 1 and 972 (36 * 27).
+	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
+
+	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
+}
+
+// LifetimeActionType - The action that will be executed.
+type LifetimeActionType struct {
+	// The type of the action.
+	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
 }
 
 // MergeCertificateParameters - The certificate merge parameters
@@ -552,7 +562,7 @@ type MergeCertificateParameters struct {
 // OrganizationDetails - Details of the organization of the certificate issuer.
 type OrganizationDetails struct {
 	// Details of the organization administrator.
-	AdminDetails []*AdministratorDetails `json:"admin_details,omitempty"`
+	AdminContacts []*AdministratorContact `json:"admin_details,omitempty"`
 
 	// Id of the organization.
 	ID *string `json:"id,omitempty"`
@@ -594,17 +604,7 @@ type SubjectAlternativeNames struct {
 	Emails []*string `json:"emails,omitempty"`
 
 	// User principal names.
-	UPNs []*string `json:"upns,omitempty"`
-}
-
-// Trigger - A condition to be satisfied for an action to be executed.
-type Trigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths
-	// is 36, then value should be between 1 and 972 (36 * 27).
-	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
-
-	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
-	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
+	UserPrincipalNames []*string `json:"upns,omitempty"`
 }
 
 // UpdateCertificateOperationParameter - The certificate operation update parameters.
@@ -643,7 +643,7 @@ type UpdateIssuerParameters struct {
 // X509CertificateProperties - Properties of the X509 component of a certificate.
 type X509CertificateProperties struct {
 	// The enhanced key usage.
-	EKUs []*string `json:"ekus,omitempty"`
+	EnhancedKeyUsage []*string `json:"ekus,omitempty"`
 
 	// Defines how the certificate's key may be used.
 	KeyUsage []*KeyUsageType `json:"key_usage,omitempty"`

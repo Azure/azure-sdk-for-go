@@ -141,8 +141,8 @@ func TestContactsCRUD(t *testing.T) {
 	client := startTest(t)
 
 	contacts := azcertificates.Contacts{ContactList: []*azcertificates.Contact{
-		{EmailAddress: to.Ptr("one@localhost"), Name: to.Ptr("One"), Phone: to.Ptr("1111111111")},
-		{EmailAddress: to.Ptr("two@localhost"), Name: to.Ptr("Two"), Phone: to.Ptr("2222222222")},
+		{Email: to.Ptr("one@localhost"), Name: to.Ptr("One"), Phone: to.Ptr("1111111111")},
+		{Email: to.Ptr("two@localhost"), Name: to.Ptr("Two"), Phone: to.Ptr("2222222222")},
 	}}
 	setResp, err := client.SetContacts(ctx, contacts, nil)
 	require.NoError(t, err)
@@ -342,12 +342,12 @@ func TestIssuerCRUD(t *testing.T) {
 			AccountID: to.Ptr("keyvaultuser"),
 		},
 		OrganizationDetails: &azcertificates.OrganizationDetails{
-			AdminDetails: []*azcertificates.AdministratorDetails{
+			AdminContacts: []*azcertificates.AdministratorContact{
 				{
-					FirstName:    to.Ptr("First"),
-					LastName:     to.Ptr("Last"),
-					EmailAddress: to.Ptr("foo@bar"),
-					Phone:        to.Ptr("42"),
+					FirstName: to.Ptr("First"),
+					LastName:  to.Ptr("Last"),
+					Email:     to.Ptr("foo@bar"),
+					Phone:     to.Ptr("42"),
 				},
 			},
 		},
@@ -358,7 +358,7 @@ func TestIssuerCRUD(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, setResp.ID)
 	require.Equal(t, setParams.Credentials, setResp.Credentials)
-	require.Equal(t, setParams.OrganizationDetails.AdminDetails[0], setResp.OrganizationDetails.AdminDetails[0])
+	require.Equal(t, setParams.OrganizationDetails.AdminContacts[0], setResp.OrganizationDetails.AdminContacts[0])
 	require.Equal(t, setParams.Provider, setResp.Provider)
 	testSerde(t, &setResp.Issuer)
 
@@ -620,19 +620,19 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 		},
 		LifetimeActions: []*azcertificates.LifetimeAction{
 			{
-				Action: &azcertificates.Action{
+				Action: &azcertificates.LifetimeActionType{
 					ActionType: to.Ptr(azcertificates.CertificatePolicyActionEmailContacts),
 				},
-				Trigger: &azcertificates.Trigger{
+				Trigger: &azcertificates.LifetimeActionTrigger{
 					LifetimePercentage: to.Ptr(int32(98)),
 				},
 			},
 		},
 		SecretProperties: &azcertificates.SecretProperties{ContentType: to.Ptr("application/x-pkcs12")},
 		X509CertificateProperties: &azcertificates.X509CertificateProperties{
-			EKUs:     []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
-			KeyUsage: []*azcertificates.KeyUsageType{to.Ptr(azcertificates.KeyUsageTypeDataEncipherment)},
-			Subject:  to.Ptr("CN=DefaultPolicy"),
+			EnhancedKeyUsage: []*string{to.Ptr("1.3.6.1.5.5.7.3.1"), to.Ptr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:         []*azcertificates.KeyUsageType{to.Ptr(azcertificates.KeyUsageTypeDataEncipherment)},
+			Subject:          to.Ptr("CN=DefaultPolicy"),
 			SubjectAlternativeNames: &azcertificates.SubjectAlternativeNames{
 				DNSNames: []*string{to.Ptr("localhost")},
 			},

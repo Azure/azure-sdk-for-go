@@ -28,6 +28,13 @@
 * `RestoreCertificateParameters.CertificateBundleBackup` to `RestoreCertificateParameters.CertificateBackup`
 * `JSONWebKeyCurveName` to `CurveName`
 * `JSONWebKeyType` to `KeyType`
+* `Trigger` to `LifetimeActionTrigger`
+* `Action` to `LifetimeActionType`
+* `AdministratorDetails` to ``AdministratorContact`
+* `OrganizationDetails.AdminDetails` to `OrganizationDetails.AdminContacts`
+* `EmailAddress` to `Email`
+* `UPNs` to `UserPrincipalNames`
+* `EKUs` to `EnhancedKeyUsage`
 * remove `MaxResults` parameter
 * remove `DeletionRecoveryLevel` type
 

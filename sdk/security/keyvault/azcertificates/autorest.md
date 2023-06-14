@@ -102,6 +102,14 @@ directive:
       from: SetCertificateIssuerParameters
       to: SetIssuerParameters
 
+  # rename LifetimeAction
+  - rename-model:
+      from: Action
+      to: LifetimeActionType
+  - rename-model:
+      from: Trigger
+      to: LifetimeActionTrigger
+  
   # rename CertificateBundle, CertificateItem, IssuerBundle
   - rename-model:
       from: CertificateBundle
@@ -124,6 +132,25 @@ directive:
   - where-model: RestoreCertificateParameters
     transform: $.properties.value["x-ms-client-name"] = "CertificateBackup"
 
+  # rename AdministratorDetails to AdministratorContact
+  - rename-model:
+      from: AdministratorDetails
+      to: AdministratorContact
+  - where-model: OrganizationDetails
+    transform: $.properties.admin_details["x-ms-client-name"] = "AdminContacts"
+  - where-model: 
+      - Contact
+      - AdministratorContact
+    transform: $.properties.email["x-ms-client-name"] = "Email"
+
+  # rename UPNs to UserPrincipalNames
+  - where-model: SubjectAlternativeNames
+    transform: $.properties.upns["x-ms-client-name"] = "UserPrincipalNames"
+
+  # rename EKUs to EnhancedKeyUsage
+  - where-model: X509CertificateProperties
+    transform: $.properties.ekus["x-ms-client-name"] = "EnhancedKeyUsage"
+
   # capitalize acronyms
   - where-model: Certificate
     transform: $.properties.cer["x-ms-client-name"] = "CER"
@@ -133,10 +160,6 @@ directive:
     transform: $.properties.sid["x-ms-client-name"] = "SID"
   - where-model: CertificateOperation
     transform: $.properties.csr["x-ms-client-name"] = "CSR"
-  - where-model: SubjectAlternativeNames
-    transform: $.properties.upns["x-ms-client-name"] = "UPNs"
-  - where-model: X509CertificateProperties
-    transform: $.properties.ekus["x-ms-client-name"] = "EKUs"
 
   # Remove MaxResults parameter
   - where: "$.paths..*"
@@ -206,7 +229,7 @@ directive:
   # (specifying models because others have "ID" fields whose values aren't cert IDs)
   - from: models.go
     where: $
-    transform: return $.replace(/(type (?:Deleted)?Certificate(?:\s|Properties\s)struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
+    transform: return $.replace(/(type (?:Deleted)?Certificate(?:Properties)? struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
 
   # remove "certificate" prefix from some method parameter names
   - from: client.go

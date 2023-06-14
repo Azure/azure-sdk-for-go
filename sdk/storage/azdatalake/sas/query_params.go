@@ -12,13 +12,11 @@ import (
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
-// TimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
+// timeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
 const (
-	TimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
+	timeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 )
 
 var (
@@ -28,7 +26,7 @@ var (
 
 // TimeFormats ISO 8601 format.
 // Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
-var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", TimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
+var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", timeFormat, "2006-01-02T15:04Z", "2006-01-02"}
 
 // Protocol indicates the http/https.
 type Protocol string
@@ -57,7 +55,7 @@ func formatTimesForSigning(startTime, expiryTime time.Time) (string, string) {
 
 // formatTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
 func formatTimeWithDefaultFormat(t *time.Time) string {
-	return formatTime(t, TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return formatTime(t, timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // formatTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
@@ -65,7 +63,7 @@ func formatTime(t *time.Time, format string) string {
 	if format != "" {
 		return t.Format(format)
 	}
-	return t.Format(TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return t.Format(timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // ParseTime try to parse a SAS time string.
@@ -316,8 +314,8 @@ func (p *QueryParameters) Encode() string {
 	if p.signedOID != "" {
 		v.Add("skoid", p.signedOID)
 		v.Add("sktid", p.signedTID)
-		v.Add("skt", p.signedStart.Format(TimeFormat))
-		v.Add("ske", p.signedExpiry.Format(TimeFormat))
+		v.Add("skt", p.signedStart.Format(timeFormat))
+		v.Add("ske", p.signedExpiry.Format(timeFormat))
 		v.Add("sks", p.signedService)
 		v.Add("skv", p.signedVersion)
 	}
@@ -356,14 +354,11 @@ func (p *QueryParameters) Encode() string {
 }
 
 // NewQueryParameters creates and initializes a QueryParameters object based on the
-// query parameter map's passed-in values. If deleteSASParametersFromValues is true,
-// all SAS-related query parameters are removed from the passed-in map. If
-// deleteSASParametersFromValues is false, the map passed-in map is unaltered.
-func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) QueryParameters {
+// query parameter map's passed-in values. If a key is unrecognized, it is ignored
+func NewQueryParameters(values url.Values) QueryParameters {
 	p := QueryParameters{}
 	for k, v := range values {
 		val := v[0]
-		isSASKey := true
 		switch strings.ToLower(k) {
 		case "sv":
 			p.version = val
@@ -373,8 +368,6 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.resourceTypes = val
 		case "spr":
 			p.protocol = Protocol(val)
-		case "snapshot":
-			p.snapshotTime, _ = time.Parse(exported.SnapshotTimeFormat, val)
 		case "st":
 			p.startTime, p.stTimeFormat, _ = parseTime(val)
 		case "se":
@@ -410,9 +403,86 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 		case "sktid":
 			p.signedTID = val
 		case "skt":
-			p.signedStart, _ = time.Parse(TimeFormat, val)
+			p.signedStart, _ = time.Parse(timeFormat, val)
 		case "ske":
-			p.signedExpiry, _ = time.Parse(TimeFormat, val)
+			p.signedExpiry, _ = time.Parse(timeFormat, val)
+		case "sks":
+			p.signedService = val
+		case "skv":
+			p.signedVersion = val
+		case "sdd":
+			p.signedDirectoryDepth = val
+		case "saoid":
+			p.authorizedObjectID = val
+		case "suoid":
+			p.unauthorizedObjectID = val
+		case "scid":
+			p.correlationID = val
+		default:
+			continue // query param didn't get recognized
+		}
+	}
+	return p
+}
+
+// newQueryParameters creates and initializes a QueryParameters object based on the
+// query parameter map's passed-in values. If deleteSASParametersFromValues is true,
+// all SAS-related query parameters are removed from the passed-in map. If
+// deleteSASParametersFromValues is false, the map passed-in map is unaltered.
+func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) QueryParameters {
+	p := QueryParameters{}
+	for k, v := range values {
+		val := v[0]
+		isSASKey := true
+		switch strings.ToLower(k) {
+		case "sv":
+			p.version = val
+		case "ss":
+			p.services = val
+		case "srt":
+			p.resourceTypes = val
+		case "spr":
+			p.protocol = Protocol(val)
+		case "st":
+			p.startTime, p.stTimeFormat, _ = parseTime(val)
+		case "se":
+			p.expiryTime, p.seTimeFormat, _ = parseTime(val)
+		case "sip":
+			dashIndex := strings.Index(val, "-")
+			if dashIndex == -1 {
+				p.ipRange.Start = net.ParseIP(val)
+			} else {
+				p.ipRange.Start = net.ParseIP(val[:dashIndex])
+				p.ipRange.End = net.ParseIP(val[dashIndex+1:])
+			}
+		case "si":
+			p.identifier = val
+		case "sr":
+			p.resource = val
+		case "sp":
+			p.permissions = val
+			//case "snapshot":
+			//	p.snapshotTime, _ = time.Parse(exported.SnapshotTimeFormat, val)
+		case "sig":
+			p.signature = val
+		case "rscc":
+			p.cacheControl = val
+		case "rscd":
+			p.contentDisposition = val
+		case "rsce":
+			p.contentEncoding = val
+		case "rscl":
+			p.contentLanguage = val
+		case "rsct":
+			p.contentType = val
+		case "skoid":
+			p.signedOID = val
+		case "sktid":
+			p.signedTID = val
+		case "skt":
+			p.signedStart, _ = time.Parse(timeFormat, val)
+		case "ske":
+			p.signedExpiry, _ = time.Parse(timeFormat, val)
 		case "sks":
 			p.signedService = val
 		case "skv":

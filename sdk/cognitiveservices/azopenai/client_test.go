@@ -33,7 +33,7 @@ func TestClient_GetChatCompletions(t *testing.T) {
 	})
 
 	t.Run("WithTokenCredential", func(t *testing.T) {
-		if os.Getenv("USE_TOKEN_CREDS") != "true" && recording.GetRecordMode() != recording.PlaybackMode {
+		if os.Getenv("USE_TOKEN_CREDS") != "true" || recording.GetRecordMode() != recording.PlaybackMode {
 			t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
 			t.SkipNow()
 		}

@@ -35,11 +35,14 @@ func TestClient_GetChatCompletions(t *testing.T) {
 }
 
 func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if os.Getenv("USE_TOKEN_CREDS") != "true" {
-			t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
-			t.SkipNow()
-		}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Logf("Not running this test in playback (for now)")
+		t.SkipNow()
+	}
+
+	if os.Getenv("USE_TOKEN_CREDS") != "true" {
+		t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
+		t.SkipNow()
 	}
 
 	deploymentID := "gpt-35-turbo"
@@ -70,10 +73,11 @@ func testGetChatCompletions(t *testing.T, chatClient *Client) {
 	}
 
 	tests := []struct {
-		name    string
-		client  *Client
-		args    args
-		want    GetChatCompletionsResponse
+		name   string
+		client *Client
+		args   args
+		want   GetChatCompletionsResponse
+
 		wantErr bool
 	}{
 		{

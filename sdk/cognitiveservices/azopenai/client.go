@@ -29,27 +29,27 @@ type Client struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-15-preview
-//   - options - ClientGetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *ClientGetChatCompletionsOptions) (ClientGetChatCompletionsResponse, error) {
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
+func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
-		return ClientGetChatCompletionsResponse{}, err
+		return GetChatCompletionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGetChatCompletionsResponse{}, err
+		return GetChatCompletionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGetChatCompletionsResponse{}, err
+		return GetChatCompletionsResponse{}, err
 	}
 	resp, err := client.getChatCompletionsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
-func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *ClientGetChatCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -66,10 +66,10 @@ func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body 
 }
 
 // getChatCompletionsHandleResponse handles the GetChatCompletions response.
-func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (ClientGetChatCompletionsResponse, error) {
-	result := ClientGetChatCompletionsResponse{}
+func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (GetChatCompletionsResponse, error) {
+	result := GetChatCompletionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatCompletions); err != nil {
-		return ClientGetChatCompletionsResponse{}, err
+		return GetChatCompletionsResponse{}, err
 	}
 	return result, nil
 }
@@ -79,27 +79,27 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Cli
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-15-preview
-//   - options - ClientGetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *ClientGetCompletionsOptions) (ClientGetCompletionsResponse, error) {
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
+func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
 	req, err := client.getCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
-		return ClientGetCompletionsResponse{}, err
+		return GetCompletionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGetCompletionsResponse{}, err
+		return GetCompletionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGetCompletionsResponse{}, err
+		return GetCompletionsResponse{}, err
 	}
 	resp, err := client.getCompletionsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCompletionsCreateRequest creates the GetCompletions request.
-func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *ClientGetCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -116,10 +116,10 @@ func (client *Client) getCompletionsCreateRequest(ctx context.Context, body Comp
 }
 
 // getCompletionsHandleResponse handles the GetCompletions response.
-func (client *Client) getCompletionsHandleResponse(resp *http.Response) (ClientGetCompletionsResponse, error) {
-	result := ClientGetCompletionsResponse{}
+func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetCompletionsResponse, error) {
+	result := GetCompletionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Completions); err != nil {
-		return ClientGetCompletionsResponse{}, err
+		return GetCompletionsResponse{}, err
 	}
 	return result, nil
 }
@@ -128,27 +128,27 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (ClientG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-15-preview
-//   - options - ClientGetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
-func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *ClientGetEmbeddingsOptions) (ClientGetEmbeddingsResponse, error) {
+//   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
+func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
 	req, err := client.getEmbeddingsCreateRequest(ctx, body, options)
 	if err != nil {
-		return ClientGetEmbeddingsResponse{}, err
+		return GetEmbeddingsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGetEmbeddingsResponse{}, err
+		return GetEmbeddingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGetEmbeddingsResponse{}, err
+		return GetEmbeddingsResponse{}, err
 	}
 	resp, err := client.getEmbeddingsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
-func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *ClientGetEmbeddingsOptions) (*policy.Request, error) {
+func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -165,10 +165,10 @@ func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body Embed
 }
 
 // getEmbeddingsHandleResponse handles the GetEmbeddings response.
-func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (ClientGetEmbeddingsResponse, error) {
-	result := ClientGetEmbeddingsResponse{}
+func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (GetEmbeddingsResponse, error) {
+	result := GetEmbeddingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Embeddings); err != nil {
-		return ClientGetEmbeddingsResponse{}, err
+		return GetEmbeddingsResponse{}, err
 	}
 	return result, nil
 }

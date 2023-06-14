@@ -138,7 +138,7 @@ func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - ClientGetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsOptions, options *ClientGetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
-	req, err := client.getCompletionsCreateRequest(ctx, CompletionsOptions{}, &ClientGetCompletionsOptions{})
+	req, err := client.getCompletionsCreateRequest(ctx, CompletionsOptions{}, &GetCompletionsOptions{})
 	var cer GetCompletionsStreamResponse
 	if err != nil {
 		return cer, err

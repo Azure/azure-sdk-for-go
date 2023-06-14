@@ -8,17 +8,17 @@
 
 package azopenai
 
-// ClientGetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
-type ClientGetChatCompletionsResponse struct {
+// GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
+type GetChatCompletionsResponse struct {
 	ChatCompletions
 }
 
-// ClientGetCompletionsResponse contains the response from method Client.GetCompletions.
-type ClientGetCompletionsResponse struct {
+// GetCompletionsResponse contains the response from method Client.GetCompletions.
+type GetCompletionsResponse struct {
 	Completions
 }
 
-// ClientGetEmbeddingsResponse contains the response from method Client.GetEmbeddings.
-type ClientGetEmbeddingsResponse struct {
+// GetEmbeddingsResponse contains the response from method Client.GetEmbeddings.
+type GetEmbeddingsResponse struct {
 	Embeddings
 }

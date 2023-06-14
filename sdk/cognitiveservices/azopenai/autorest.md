@@ -139,4 +139,12 @@ directive:
       return $.replace(
         /type ServiceAPIVersions string.+PossibleServiceAPIVersionsValues.+?\n}/gs, 
         "")
+
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

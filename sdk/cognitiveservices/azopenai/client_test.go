@@ -53,14 +53,14 @@ func testGetChatCompletions(t *testing.T, chatClient *Client) {
 		ctx          context.Context
 		deploymentID string
 		body         ChatCompletionsOptions
-		options      *ClientGetChatCompletionsOptions
+		options      *GetChatCompletionsOptions
 	}
 
 	tests := []struct {
 		name    string
 		client  *Client
 		args    args
-		want    ClientGetChatCompletionsResponse
+		want    GetChatCompletionsResponse
 		wantErr bool
 	}{
 		{
@@ -81,7 +81,7 @@ func testGetChatCompletions(t *testing.T, chatClient *Client) {
 				},
 				options: nil,
 			},
-			want: ClientGetChatCompletionsResponse{
+			want: GetChatCompletionsResponse{
 				ChatCompletions: ChatCompletions{
 					Choices: []*ChatChoice{
 						{
@@ -156,7 +156,7 @@ func TestClient_GetCompletions(t *testing.T) {
 		ctx          context.Context
 		deploymentID string
 		body         CompletionsOptions
-		options      *ClientGetCompletionsOptions
+		options      *GetCompletionsOptions
 	}
 	cred := KeyCredential{APIKey: apiKey}
 	deploymentID := "text-davinci-003"
@@ -168,7 +168,7 @@ func TestClient_GetCompletions(t *testing.T) {
 		name    string
 		client  *Client
 		args    args
-		want    ClientGetCompletionsResponse
+		want    GetCompletionsResponse
 		wantErr bool
 	}{
 		{
@@ -184,7 +184,7 @@ func TestClient_GetCompletions(t *testing.T) {
 				},
 				options: nil,
 			},
-			want: ClientGetCompletionsResponse{
+			want: GetCompletionsResponse{
 				Completions: Completions{
 					Choices: []*Choice{
 						{
@@ -224,7 +224,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 		ctx          context.Context
 		deploymentID string
 		body         EmbeddingsOptions
-		options      *ClientGetEmbeddingsOptions
+		options      *GetEmbeddingsOptions
 	}
 	deploymentID := "embedding"
 	cred := KeyCredential{APIKey: apiKey}
@@ -237,7 +237,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 		name    string
 		client  *Client
 		args    args
-		want    ClientGetEmbeddingsResponse
+		want    GetEmbeddingsResponse
 		wantErr bool
 	}{
 		{
@@ -252,7 +252,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 				},
 				options: nil,
 			},
-			want: ClientGetEmbeddingsResponse{
+			want: GetEmbeddingsResponse{
 				Embeddings{
 					Data:  []*EmbeddingItem{},
 					Usage: &EmbeddingsUsage{},

@@ -160,18 +160,18 @@ type ChoiceLogprobs struct {
 	TopLogprobs []any
 }
 
-// ClientGetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-type ClientGetChatCompletionsOptions struct {
+// GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
+type GetChatCompletionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-type ClientGetCompletionsOptions struct {
+// GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
+type GetCompletionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
-type ClientGetEmbeddingsOptions struct {
+// GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
+type GetEmbeddingsOptions struct {
 	// placeholder for future optional parameters
 }
 

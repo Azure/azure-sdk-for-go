@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -31,21 +32,33 @@ func TestClient_GetChatCompletions(t *testing.T) {
 
 		testGetChatCompletions(t, chatClient)
 	})
+}
 
-	t.Run("WithTokenCredential", func(t *testing.T) {
-		if os.Getenv("USE_TOKEN_CREDS") != "true" || recording.GetRecordMode() != recording.PlaybackMode {
+func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if os.Getenv("USE_TOKEN_CREDS") != "true" {
 			t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
 			t.SkipNow()
 		}
+	}
 
-		dac, err := azidentity.NewDefaultAzureCredential(nil)
-		require.NoError(t, err)
+	deploymentID := "gpt-35-turbo"
 
-		chatClient, err := NewClient(endpoint, dac, deploymentID, newClientOptionsForTest(t))
-		require.NoError(t, err)
+	recordingTransporter := newRecordingTransporter(t)
 
-		testGetChatCompletions(t, chatClient)
+	dac, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: recordingTransporter,
+		},
 	})
+	require.NoError(t, err)
+
+	chatClient, err := NewClient(endpoint, dac, deploymentID, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
+	})
+	require.NoError(t, err)
+
+	testGetChatCompletions(t, chatClient)
 }
 
 func testGetChatCompletions(t *testing.T, chatClient *Client) {

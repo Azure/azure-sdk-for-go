@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bbea558ac43d6ebec72455233c84b0158c89fcda/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-10-02/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7dcd41cd28d46eb256bac034760a7e2f0a036238/specification/storage/data-plane/Microsoft.FileStorage/preview/2022-11-02/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.45"
+use: "@autorest/go@4.0.0-preview.49"
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs
@@ -141,6 +141,7 @@ directive:
 ``` yaml
 directive:
 - from:
+  - zz_directory_client.go
   - zz_file_client.go
   - zz_models.go
   where: $
@@ -257,6 +258,10 @@ directive:
   where: $.parameters.FileLastWriteTime
   transform: >
     $.format = "str";
+- from: swagger-document
+  where: $.parameters.FileChangeTime
+  transform: >
+    $.format = "str";
 ```
 
 ### Remove pager methods and export various generated methods in directory client
@@ -306,4 +311,25 @@ directive:
     transform: >-
       return $.
         replace(/ShareUsageBytes\s+\*int32/g, `ShareUsageBytes *int64`);
+```
+
+### Convert StringEncoded to string type
+
+``` yaml
+directive:
+  - from: zz_models.go
+    where: $
+    transform: >-
+      return $.
+        replace(/\*StringEncoded/g, `*string`);
+```
+
+### Removing UnmarshalXML for Handle to create custom UnmarshalXML function
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Handle["x-ms-go-omit-serde-methods"] = true;
 ```

@@ -778,6 +778,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsDefault() {
 		fileCtr += len(resp.Segment.Files)
 		for _, dir := range resp.Segment.Directories {
 			_require.NotNil(dir.Name)
+			_require.Greater(len(*dir.Name), 0)
 			_require.NotNil(dir.ID)
 			_require.Nil(dir.Attributes)
 			_require.Nil(dir.PermissionKey)
@@ -788,6 +789,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsDefault() {
 		}
 		for _, f := range resp.Segment.Files {
 			_require.NotNil(f.Name)
+			_require.Greater(len(*f.Name), 0)
 			_require.NotNil(f.ID)
 			_require.Nil(f.Attributes)
 			_require.Nil(f.PermissionKey)
@@ -934,12 +936,16 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsWithPrefix() {
 		_require.NoError(err)
 		dirCtr += len(resp.Segment.Directories)
 		fileCtr += len(resp.Segment.Files)
+		_require.NotNil(resp.Prefix)
+		_require.Equal(*resp.Prefix, "1")
 		if len(resp.Segment.Directories) > 0 {
 			_require.NotNil(resp.Segment.Directories[0].Name)
+			_require.Greater(len(*resp.Segment.Directories[0].Name), 0)
 			_require.Equal(*resp.Segment.Directories[0].Name, "1"+dirName)
 		}
 		if len(resp.Segment.Files) > 0 {
 			_require.NotNil(resp.Segment.Files[0].Name)
+			_require.Greater(len(*resp.Segment.Files[0].Name), 0)
 			_require.Equal(*resp.Segment.Files[0].Name, "1"+fileName)
 		}
 	}

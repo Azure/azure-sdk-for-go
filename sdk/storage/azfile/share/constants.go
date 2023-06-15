@@ -48,3 +48,15 @@ const (
 func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	return generated.PossibleDeleteSnapshotsOptionTypeValues()
 }
+
+// TokenIntent defines values for TokenIntent
+type TokenIntent = generated.ShareTokenIntent
+
+const (
+	TokenIntentBackup TokenIntent = generated.ShareTokenIntentBackup
+)
+
+// PossibleTokenIntentValues returns the possible values for the TokenIntent const type.
+func PossibleTokenIntentValues() []TokenIntent {
+	return generated.PossibleShareTokenIntentValues()
+}

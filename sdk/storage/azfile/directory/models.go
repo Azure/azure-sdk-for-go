@@ -7,7 +7,6 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
@@ -36,24 +35,25 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *CreateOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *generated.DirectoryClientCreateOptions) {
+func (o *CreateOptions) format() (string, *generated.DirectoryClientCreateOptions) {
 	if o == nil {
-		return shared.FileAttributesDirectory, shared.DefaultCurrentTimeString, shared.DefaultCurrentTimeString, &generated.DirectoryClientCreateOptions{
-			FilePermission: to.Ptr(shared.DefaultFilePermissionString),
-		}
+		return shared.FileAttributesDirectory, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(true, shared.FileAttributesDirectory, shared.DefaultCurrentTimeString)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true, shared.FileAttributesDirectory)
 
-	permission, permissionKey := o.FilePermissions.Format(shared.DefaultFilePermissionString)
+	permission, permissionKey := o.FilePermissions.Format()
 
-	createOptions = &generated.DirectoryClientCreateOptions{
+	createOptions := &generated.DirectoryClientCreateOptions{
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
 	}
 
-	return
+	return fileAttributes, createOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -95,22 +95,23 @@ type SetPropertiesOptions struct {
 	FilePermissions *file.Permissions
 }
 
-func (o *SetPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, setPropertiesOptions *generated.DirectoryClientSetPropertiesOptions) {
+func (o *SetPropertiesOptions) format() (string, *generated.DirectoryClientSetPropertiesOptions) {
 	if o == nil {
-		return shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString, &generated.DirectoryClientSetPropertiesOptions{
-			FilePermission: to.Ptr(shared.DefaultPreserveString),
-		}
+		return shared.DefaultPreserveString, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(true, shared.DefaultPreserveString, shared.DefaultPreserveString)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true, shared.DefaultPreserveString)
 
-	permission, permissionKey := o.FilePermissions.Format(shared.DefaultPreserveString)
+	permission, permissionKey := o.FilePermissions.Format()
 
-	setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+	setPropertiesOptions := &generated.DirectoryClientSetPropertiesOptions{
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 	}
-	return
+	return fileAttributes, setPropertiesOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

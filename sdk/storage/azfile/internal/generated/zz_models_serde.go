@@ -115,39 +115,6 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type Handle.
-func (h Handle) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias Handle
-	aux := &struct {
-		*alias
-		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
-	}{
-		alias:             (*alias)(&h),
-		LastReconnectTime: (*timeRFC1123)(h.LastReconnectTime),
-		OpenTime:          (*timeRFC1123)(h.OpenTime),
-	}
-	return enc.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type Handle.
-func (h *Handle) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias Handle
-	aux := &struct {
-		*alias
-		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
-	}{
-		alias: (*alias)(h),
-	}
-	if err := dec.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	h.LastReconnectTime = (*time.Time)(aux.LastReconnectTime)
-	h.OpenTime = (*time.Time)(aux.OpenTime)
-	return nil
-}
-
 // MarshalXML implements the xml.Marshaller interface for type ListHandlesResponse.
 func (l ListHandlesResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias ListHandlesResponse

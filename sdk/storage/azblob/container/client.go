@@ -44,7 +44,6 @@ type Client base.Client[generated.ContainerClient]
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(shared.ContainerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -75,7 +74,6 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(shared.ContainerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)

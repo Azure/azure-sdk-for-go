@@ -8,8 +8,8 @@ package azopenai
 
 // Models for methods that return streaming response
 
-// ClientGetCompletionsStreamOptions contains the optional parameters for the Client.GetCompletions method.
-type ClientGetCompletionsStreamOptions struct {
+// GetCompletionsStreamOptions contains the optional parameters for the Client.GetCompletions method.
+type GetCompletionsStreamOptions struct {
 	// placeholder for future optional parameters
 }
 

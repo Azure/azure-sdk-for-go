@@ -136,25 +136,31 @@ func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
 
 // GetCompletionsStream - Return the completions for a given prompt as a sequence of events.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - options - ClientGetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsOptions, options *ClientGetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
+func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsOptions, options *GetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
 	req, err := client.getCompletionsCreateRequest(ctx, CompletionsOptions{}, &GetCompletionsOptions{})
-	var cer GetCompletionsStreamResponse
+
 	if err != nil {
-		return cer, err
+		return GetCompletionsStreamResponse{}, err
 	}
-	err = runtime.MarshalAsJSON(req, streamCompletionsOptions{body, true})
-	if err != nil {
-		return cer, err
+
+	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{body, true}); err != nil {
+		return GetCompletionsStreamResponse{}, err
 	}
+
 	runtime.SkipBodyDownload(req)
+
 	resp, err := client.internal.Pipeline().Do(req)
+
 	if err != nil {
-		return cer, err
+		return GetCompletionsStreamResponse{}, err
 	}
+
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return cer, runtime.NewResponseError(resp)
+		return GetCompletionsStreamResponse{}, runtime.NewResponseError(resp)
 	}
-	cer.Events = newEventReader[Completions](resp.Body)
-	return cer, nil
+
+	return GetCompletionsStreamResponse{
+		Events: newEventReader[Completions](resp.Body),
+	}, nil
 }

@@ -25,24 +25,20 @@ import (
 func TestClient_GetChatCompletions(t *testing.T) {
 	deploymentID := "gpt-35-turbo"
 
-	t.Run("WithKeyCredential", func(t *testing.T) {
-		cred := KeyCredential{APIKey: apiKey}
-		chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
-		require.NoError(t, err)
+	cred := KeyCredential{APIKey: apiKey}
+	chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+	require.NoError(t, err)
 
-		testGetChatCompletions(t, chatClient)
-	})
+	testGetChatCompletions(t, chatClient, deploymentID)
 }
 
 func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Logf("Not running this test in playback (for now)")
-		t.SkipNow()
+		t.Skipf("Not running this test in playback (for now)")
 	}
 
 	if os.Getenv("USE_TOKEN_CREDS") != "true" {
-		t.Logf("USE_TOKEN_CREDS is not true, disabling token credential tests")
-		t.SkipNow()
+		t.Skipf("USE_TOKEN_CREDS is not true, disabling token credential tests")
 	}
 
 	deploymentID := "gpt-35-turbo"
@@ -61,10 +57,21 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient)
+	testGetChatCompletions(t, chatClient, deploymentID)
 }
 
-func testGetChatCompletions(t *testing.T, chatClient *Client) {
+func TestClient_OpenAI(t *testing.T) {
+	if openAIKey == "" {
+		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
+	}
+
+	chatClient, err := NewClientForOpenAI(openAIEndpoint, KeyCredential{APIKey: openAIKey}, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	testGetChatCompletions(t, chatClient, "gpt-3.5-turbo")
+}
+
+func testGetChatCompletions(t *testing.T, chatClient *Client, modelOrDeployment string) {
 	type args struct {
 		ctx          context.Context
 		deploymentID string
@@ -85,7 +92,7 @@ func testGetChatCompletions(t *testing.T, chatClient *Client) {
 			client: chatClient,
 			args: args{
 				ctx:          context.TODO(),
-				deploymentID: "gpt-35-turbo",
+				deploymentID: modelOrDeployment,
 				body: ChatCompletionsOptions{
 					Messages: []*ChatMessage{
 						{
@@ -95,6 +102,7 @@ func testGetChatCompletions(t *testing.T, chatClient *Client) {
 					},
 					MaxTokens:   to.Ptr(int32(1024)),
 					Temperature: to.Ptr(float32(0.0)),
+					Model:       &modelOrDeployment,
 				},
 				options: nil,
 			},

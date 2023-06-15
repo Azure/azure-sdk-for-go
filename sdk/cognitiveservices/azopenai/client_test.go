@@ -61,26 +61,15 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	testGetChatCompletions(t, chatClient, deploymentID)
 }
 
-func TestClient_OpenAI(t *testing.T) {
-	if openAIKey == "" {
-		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
-	}
-
-	chatClient, err := NewClientForOpenAI(openAIEndpoint, KeyCredential{APIKey: openAIKey}, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
+	chatClient := newOpenAIClientForTest(t)
 	testGetChatCompletions(t, chatClient, "gpt-3.5-turbo")
 }
 
 func TestClient_OpenAI_InvalidModel(t *testing.T) {
-	if openAIKey == "" {
-		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
-	}
+	chatClient := newOpenAIClientForTest(t)
 
-	chatClient, err := NewClientForOpenAI(openAIEndpoint, KeyCredential{APIKey: openAIKey}, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	_, err = chatClient.GetChatCompletions(context.Background(), ChatCompletionsOptions{
+	_, err := chatClient.GetChatCompletions(context.Background(), ChatCompletionsOptions{
 		Messages: []*ChatMessage{
 			{
 				Role:    to.Ptr(ChatRoleSystem),
@@ -269,18 +258,29 @@ func TestClient_GetCompletions(t *testing.T) {
 	}
 }
 
+func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
+	client := newOpenAIClientForTest(t)
+	modelID := "text-similarity-curie-001"
+	testGetEmbeddings(t, client, modelID)
+}
+
 func TestClient_GetEmbeddings(t *testing.T) {
+	// model deployment points to `text-similarity-curie-001`
+	deploymentID := "embedding"
+
+	cred := KeyCredential{APIKey: apiKey}
+	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	testGetEmbeddings(t, client, deploymentID)
+}
+
+func testGetEmbeddings(t *testing.T, client *Client, modelOrDeploymentID string) {
 	type args struct {
 		ctx          context.Context
 		deploymentID string
 		body         EmbeddingsOptions
 		options      *GetEmbeddingsOptions
-	}
-	deploymentID := "embedding"
-	cred := KeyCredential{APIKey: apiKey}
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
-	if err != nil {
-		log.Fatalf("%v", err)
 	}
 
 	tests := []struct {
@@ -295,10 +295,10 @@ func TestClient_GetEmbeddings(t *testing.T) {
 			client: client,
 			args: args{
 				ctx:          context.TODO(),
-				deploymentID: "embedding",
+				deploymentID: modelOrDeploymentID,
 				body: EmbeddingsOptions{
 					Input: []byte("\"Your text string goes here\""),
-					Model: to.Ptr("text-similarity-curie-001"),
+					Model: &modelOrDeploymentID,
 				},
 				options: nil,
 			},
@@ -324,4 +324,15 @@ func TestClient_GetEmbeddings(t *testing.T) {
 			}
 		})
 	}
+}
+
+func newOpenAIClientForTest(t *testing.T) *Client {
+	if openAIKey == "" {
+		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
+	}
+
+	chatClient, err := NewClientForOpenAI(openAIEndpoint, KeyCredential{APIKey: openAIKey}, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	return chatClient
 }

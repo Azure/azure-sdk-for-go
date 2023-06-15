@@ -15,8 +15,6 @@ type GetCompletionsStreamOptions struct {
 
 // GetCompletionsStreamResponse is the response from [GetCompletionsStream].
 type GetCompletionsStreamResponse struct {
-	// REQUIRED; An EventReader to obtain the streaming completions choices associated with this completions response.
-	// Generally, n choices are generated per provided prompt with a default value of 1. Token limits and other settings
-	// may limit the number of choices generated.
-	Events *EventReader[Completions]
+	// CompletionsStream returns the stream of completions. Token limits and other settings may limit the number of completions returned by the service.
+	CompletionsStream *EventReader[Completions]
 }

@@ -161,6 +161,6 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	}
 
 	return GetCompletionsStreamResponse{
-		Events: newEventReader[Completions](resp.Body),
+		CompletionsStream: newEventReader[Completions](resp.Body),
 	}, nil
 }

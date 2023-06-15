@@ -93,7 +93,7 @@ func TestClient_GetCompletionsStream(t *testing.T) {
 		t.Errorf("Client.GetCompletionsStream() error = %v", err)
 		return
 	}
-	reader := response.Events
+	reader := response.CompletionsStream
 	defer reader.Close()
 
 	var sb strings.Builder

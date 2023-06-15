@@ -11,7 +11,8 @@ The Azure OpenAI client library for GO is an adaptation of OpenAI's REST APIs th
 ### Prerequisites
 
 * Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
-* Azure subscription - [Create a free account][azure_sub]
+* [Azure subscription][azure_sub]
+* [Azure OpenAI access][azure_openai_access]
 
 ### Install the packages
 

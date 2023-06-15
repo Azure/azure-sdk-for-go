@@ -93,6 +93,7 @@ comments.
 <!-- LINKS -->
 <!-- https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/cognitiveservices/azopenai ->
 <!-- https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai -->
+[azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azopenai_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
 [azopenai_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity

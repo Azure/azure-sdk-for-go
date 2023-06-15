@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.4.0"
+	moduleVersion = "v2.5.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -195,6 +195,22 @@ const (
 func PossibleConnectorOfferValues() []ConnectorOffer {
 	return []ConnectorOffer{
 		ConnectorOfferSmall,
+	}
+}
+
+// ContinuousTier - Enum to indicate type of Continuous backup tier.
+type ContinuousTier string
+
+const (
+	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
+	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
+)
+
+// PossibleContinuousTierValues returns the possible values for the ContinuousTier const type.
+func PossibleContinuousTierValues() []ContinuousTier {
+	return []ContinuousTier{
+		ContinuousTierContinuous30Days,
+		ContinuousTierContinuous7Days,
 	}
 }
 
@@ -583,8 +599,9 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -592,6 +609,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 

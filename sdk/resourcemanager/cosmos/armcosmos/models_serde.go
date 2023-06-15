@@ -2204,6 +2204,7 @@ func (c *ContinuousBackupRestoreLocation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ContinuousModeBackupPolicy.
 func (c ContinuousModeBackupPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "continuousModeProperties", c.ContinuousModeProperties)
 	populate(objectMap, "migrationState", c.MigrationState)
 	objectMap["type"] = BackupPolicyTypeContinuous
 	return json.Marshal(objectMap)
@@ -2218,11 +2219,41 @@ func (c *ContinuousModeBackupPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "continuousModeProperties":
+			err = unpopulate(val, "ContinuousModeProperties", &c.ContinuousModeProperties)
+			delete(rawMsg, key)
 		case "migrationState":
 			err = unpopulate(val, "MigrationState", &c.MigrationState)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &c.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContinuousModeProperties.
+func (c ContinuousModeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "tier", c.Tier)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContinuousModeProperties.
+func (c *ContinuousModeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "tier":
+			err = unpopulate(val, "Tier", &c.Tier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7428,6 +7459,7 @@ func (r RestorableDatabaseAccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "accountName", r.AccountName)
 	populateTimeRFC3339(objectMap, "creationTime", r.CreationTime)
 	populateTimeRFC3339(objectMap, "deletionTime", r.DeletionTime)
+	populateTimeRFC3339(objectMap, "oldestRestorableTime", r.OldestRestorableTime)
 	populate(objectMap, "restorableLocations", r.RestorableLocations)
 	return json.Marshal(objectMap)
 }
@@ -7452,6 +7484,9 @@ func (r *RestorableDatabaseAccountProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deletionTime":
 			err = unpopulateTimeRFC3339(val, "DeletionTime", &r.DeletionTime)
+			delete(rawMsg, key)
+		case "oldestRestorableTime":
+			err = unpopulateTimeRFC3339(val, "OldestRestorableTime", &r.OldestRestorableTime)
 			delete(rawMsg, key)
 		case "restorableLocations":
 			err = unpopulate(val, "RestorableLocations", &r.RestorableLocations)
@@ -11387,9 +11422,11 @@ func (t ThroughputSettingsGetPropertiesResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoscaleSettings", t.AutoscaleSettings)
 	populate(objectMap, "_etag", t.Etag)
+	populate(objectMap, "instantMaximumThroughput", t.InstantMaximumThroughput)
 	populate(objectMap, "minimumThroughput", t.MinimumThroughput)
 	populate(objectMap, "offerReplacePending", t.OfferReplacePending)
 	populate(objectMap, "_rid", t.Rid)
+	populate(objectMap, "softAllowedMaximumThroughput", t.SoftAllowedMaximumThroughput)
 	populate(objectMap, "throughput", t.Throughput)
 	populate(objectMap, "_ts", t.Ts)
 	return json.Marshal(objectMap)
@@ -11410,6 +11447,9 @@ func (t *ThroughputSettingsGetPropertiesResource) UnmarshalJSON(data []byte) err
 		case "_etag":
 			err = unpopulate(val, "Etag", &t.Etag)
 			delete(rawMsg, key)
+		case "instantMaximumThroughput":
+			err = unpopulate(val, "InstantMaximumThroughput", &t.InstantMaximumThroughput)
+			delete(rawMsg, key)
 		case "minimumThroughput":
 			err = unpopulate(val, "MinimumThroughput", &t.MinimumThroughput)
 			delete(rawMsg, key)
@@ -11418,6 +11458,9 @@ func (t *ThroughputSettingsGetPropertiesResource) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "_rid":
 			err = unpopulate(val, "Rid", &t.Rid)
+			delete(rawMsg, key)
+		case "softAllowedMaximumThroughput":
+			err = unpopulate(val, "SoftAllowedMaximumThroughput", &t.SoftAllowedMaximumThroughput)
 			delete(rawMsg, key)
 		case "throughput":
 			err = unpopulate(val, "Throughput", &t.Throughput)
@@ -11484,8 +11527,10 @@ func (t *ThroughputSettingsGetResults) UnmarshalJSON(data []byte) error {
 func (t ThroughputSettingsResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoscaleSettings", t.AutoscaleSettings)
+	populate(objectMap, "instantMaximumThroughput", t.InstantMaximumThroughput)
 	populate(objectMap, "minimumThroughput", t.MinimumThroughput)
 	populate(objectMap, "offerReplacePending", t.OfferReplacePending)
+	populate(objectMap, "softAllowedMaximumThroughput", t.SoftAllowedMaximumThroughput)
 	populate(objectMap, "throughput", t.Throughput)
 	return json.Marshal(objectMap)
 }
@@ -11502,11 +11547,17 @@ func (t *ThroughputSettingsResource) UnmarshalJSON(data []byte) error {
 		case "autoscaleSettings":
 			err = unpopulate(val, "AutoscaleSettings", &t.AutoscaleSettings)
 			delete(rawMsg, key)
+		case "instantMaximumThroughput":
+			err = unpopulate(val, "InstantMaximumThroughput", &t.InstantMaximumThroughput)
+			delete(rawMsg, key)
 		case "minimumThroughput":
 			err = unpopulate(val, "MinimumThroughput", &t.MinimumThroughput)
 			delete(rawMsg, key)
 		case "offerReplacePending":
 			err = unpopulate(val, "OfferReplacePending", &t.OfferReplacePending)
+			delete(rawMsg, key)
+		case "softAllowedMaximumThroughput":
+			err = unpopulate(val, "SoftAllowedMaximumThroughput", &t.SoftAllowedMaximumThroughput)
 			delete(rawMsg, key)
 		case "throughput":
 			err = unpopulate(val, "Throughput", &t.Throughput)

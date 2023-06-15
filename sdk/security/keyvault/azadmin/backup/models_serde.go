@@ -118,7 +118,7 @@ func (r *RestoreOperation) UnmarshalJSON(data []byte) error {
 func (r RestoreOperationParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "folderToRestore", r.FolderToRestore)
-	populate(objectMap, "sasTokenParameters", r.SasTokenParameters)
+	populate(objectMap, "sasTokenParameters", r.SASTokenParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -135,7 +135,7 @@ func (r *RestoreOperationParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FolderToRestore", &r.FolderToRestore)
 			delete(rawMsg, key)
 		case "sasTokenParameters":
-			err = unpopulate(val, "SasTokenParameters", &r.SasTokenParameters)
+			err = unpopulate(val, "SASTokenParameters", &r.SASTokenParameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -145,16 +145,16 @@ func (r *RestoreOperationParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SASTokenParameter.
-func (s SASTokenParameter) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SASTokenParameters.
+func (s SASTokenParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "storageResourceUri", s.StorageResourceURI)
 	populate(objectMap, "token", s.Token)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SASTokenParameter.
-func (s *SASTokenParameter) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SASTokenParameters.
+func (s *SASTokenParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -227,7 +227,7 @@ func (s *SelectiveKeyRestoreOperation) UnmarshalJSON(data []byte) error {
 func (s SelectiveKeyRestoreOperationParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "folder", s.Folder)
-	populate(objectMap, "sasTokenParameters", s.SasTokenParameters)
+	populate(objectMap, "sasTokenParameters", s.SASTokenParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -244,7 +244,7 @@ func (s *SelectiveKeyRestoreOperationParameters) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "Folder", &s.Folder)
 			delete(rawMsg, key)
 		case "sasTokenParameters":
-			err = unpopulate(val, "SasTokenParameters", &s.SasTokenParameters)
+			err = unpopulate(val, "SASTokenParameters", &s.SASTokenParameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {

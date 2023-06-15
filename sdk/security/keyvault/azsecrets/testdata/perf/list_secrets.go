@@ -100,7 +100,7 @@ func (gct *listSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfT
 }
 
 func (gcpt *listSecretsPerfTest) Run(ctx context.Context) error {
-	pager := gcpt.client.NewListSecretsPager(nil)
+	pager := gcpt.client.NewListSecretPropertiesPager(nil)
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
 		if err != nil {

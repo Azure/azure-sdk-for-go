@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostDelete.json
 func ExampleBastionHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleBastionHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostGet.json
 func ExampleBastionHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,12 @@ func ExampleBastionHostsClient_Get() {
 	// 	},
 	// 	Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 	Properties: &armnetwork.BastionHostPropertiesFormat{
+	// 		DisableCopyPaste: to.Ptr(false),
 	// 		DNSName: to.Ptr("bst-9d89d361-100e-4c01-b92d-466548c476dc.bastion.azure.com"),
+	// 		EnableIPConnect: to.Ptr(false),
+	// 		EnableKerberos: to.Ptr(false),
+	// 		EnableShareableLink: to.Ptr(false),
+	// 		EnableTunneling: to.Ptr(false),
 	// 		IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/bastionHosts/bastionhosttenant/bastionHostIpConfigurations/bastionHostIpConfiguration"),
@@ -86,6 +91,7 @@ func ExampleBastionHostsClient_Get() {
 	// 				},
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ScaleUnits: to.Ptr[int32](2),
 	// 	},
 	// 	SKU: &armnetwork.SKU{
 	// 		Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),
@@ -93,7 +99,7 @@ func ExampleBastionHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostPut.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +143,12 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate() {
 	// 	Location: to.Ptr("West US"),
 	// 	Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 	Properties: &armnetwork.BastionHostPropertiesFormat{
+	// 		DisableCopyPaste: to.Ptr(false),
 	// 		DNSName: to.Ptr("bst-9d89d361-100e-4c01-b92d-466548c476dc.bastion.azure.com"),
+	// 		EnableIPConnect: to.Ptr(false),
+	// 		EnableKerberos: to.Ptr(false),
+	// 		EnableShareableLink: to.Ptr(false),
+	// 		EnableTunneling: to.Ptr(false),
 	// 		IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/bastionHosts/bastionhosttenant/bastionHostIpConfigurations/bastionHostIpConfiguration"),
@@ -156,6 +167,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate() {
 	// 				},
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ScaleUnits: to.Ptr[int32](2),
 	// 	},
 	// 	SKU: &armnetwork.SKU{
 	// 		Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),
@@ -163,7 +175,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostPatch.json
 func ExampleBastionHostsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +213,12 @@ func ExampleBastionHostsClient_BeginUpdateTags() {
 	// 	},
 	// 	Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 	// 	Properties: &armnetwork.BastionHostPropertiesFormat{
+	// 		DisableCopyPaste: to.Ptr(false),
 	// 		DNSName: to.Ptr("bst-9d89d361-100e-4c01-b92d-466548c476dc.bastion.azure.com"),
+	// 		EnableIPConnect: to.Ptr(false),
+	// 		EnableKerberos: to.Ptr(false),
+	// 		EnableShareableLink: to.Ptr(false),
+	// 		EnableTunneling: to.Ptr(false),
 	// 		IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/bastionHosts/bastionhosttenant/bastionHostIpConfigurations/bastionHostIpConfiguration"),
@@ -220,6 +237,7 @@ func ExampleBastionHostsClient_BeginUpdateTags() {
 	// 				},
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ScaleUnits: to.Ptr[int32](2),
 	// 	},
 	// 	SKU: &armnetwork.SKU{
 	// 		Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),
@@ -227,7 +245,7 @@ func ExampleBastionHostsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostListBySubscription.json
 func ExampleBastionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +276,12 @@ func ExampleBastionHostsClient_NewListPager() {
 		// 			Location: to.Ptr("West US"),
 		// 			Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 			Properties: &armnetwork.BastionHostPropertiesFormat{
+		// 				DisableCopyPaste: to.Ptr(false),
 		// 				DNSName: to.Ptr("bst-9d89d361-100e-4c01-b92d-466548c476dc.bastion.azure.com"),
+		// 				EnableIPConnect: to.Ptr(false),
+		// 				EnableKerberos: to.Ptr(false),
+		// 				EnableShareableLink: to.Ptr(false),
+		// 				EnableTunneling: to.Ptr(false),
 		// 				IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/bastionHosts/bastionhosttenant/bastionHostIpConfigurations/bastionHostIpConfiguration"),
@@ -277,6 +300,7 @@ func ExampleBastionHostsClient_NewListPager() {
 		// 						},
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				ScaleUnits: to.Ptr[int32](2),
 		// 			},
 		// 			SKU: &armnetwork.SKU{
 		// 				Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),
@@ -286,7 +310,7 @@ func ExampleBastionHostsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/BastionHostListByResourceGroup.json
 func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +341,12 @@ func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("West US"),
 		// 			Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
 		// 			Properties: &armnetwork.BastionHostPropertiesFormat{
+		// 				DisableCopyPaste: to.Ptr(false),
 		// 				DNSName: to.Ptr("bst-9d89d361-100e-4c01-b92d-466548c476dc.bastion.azure.com"),
+		// 				EnableIPConnect: to.Ptr(false),
+		// 				EnableKerberos: to.Ptr(false),
+		// 				EnableShareableLink: to.Ptr(false),
+		// 				EnableTunneling: to.Ptr(false),
 		// 				IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/bastionHosts/bastionhosttenant/bastionHostIpConfigurations/bastionHostIpConfiguration"),
@@ -336,6 +365,7 @@ func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 		// 						},
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				ScaleUnits: to.Ptr[int32](2),
 		// 			},
 		// 			SKU: &armnetwork.SKU{
 		// 				Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),

@@ -175,6 +175,7 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 var unregisteredRPCodes = []string{
 	"MissingSubscriptionRegistration",
 	"MissingRegistrationForResourceProvider",
+	"Subscription Not Registered",
 }
 
 func isUnregisteredRPCode(errorCode string) bool {

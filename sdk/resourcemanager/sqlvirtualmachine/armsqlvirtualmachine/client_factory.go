@@ -57,3 +57,8 @@ func (c *ClientFactory) NewSQLVirtualMachinesClient() *SQLVirtualMachinesClient 
 	subClient, _ := NewSQLVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewTroubleshootClient() *TroubleshootClient {
+	subClient, _ := NewTroubleshootClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

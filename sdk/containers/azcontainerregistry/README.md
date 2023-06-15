@@ -86,55 +86,7 @@ Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-fo
 
 ## Troubleshooting
 
-### Error Handling
-
-All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Container Registry.
-
-```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
-
-resp, err := client.GetRepositoryProperties(ctx, "library/hello-world", nil)
-if err != nil {
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		// TODO: investigate httpErr
-	} else {
-		// TODO: not an HTTP error
-	}
-}
-```
-
-### Logging
-
-This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
-
-```go
-import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-
-// Print log events to stdout
-azlog.SetListener(func(cls azlog.Event, msg string) {
-	fmt.Println(msg)
-})
-
-// Includes only requests and responses in credential logs
-azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
-```
-
-### Accessing `http.Response`
-
-You can access the raw `*http.Response` returned by Container Registry using the `runtime.WithCaptureResponse` method and a context passed to any client method.
-
-```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-
-var response *http.Response
-ctx := runtime.WithCaptureResponse(context.TODO(), &response)
-_, err = client.GetRepositoryProperties(ctx, "library/hello-world", nil)
-if err != nil {
-	// TODO: handle error
-}
-// TODO: do something with response
-```
+For information about troubleshooting, refer to the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/containers/azcontainerregistry/TROUBLESHOOTING.md).
 
 ## Contributing
 

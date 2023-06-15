@@ -17,7 +17,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
@@ -84,7 +83,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 			cred.client = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -101,7 +100,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 			cred.client = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -124,7 +123,7 @@ func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			tk, err := cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -142,7 +141,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 	cred.client = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -283,7 +282,7 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

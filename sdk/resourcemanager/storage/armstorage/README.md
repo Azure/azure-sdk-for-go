@@ -60,6 +60,31 @@ A client groups a set of related APIs, providing access to its functionality.  C
 client := clientFactory.NewAccountsClient()
 ```
 
+## Fakes
+The `fake` package provides implementations for fake servers that can be used for testing.
+To create a fake server, declare an instance of the required fake server type(s).
+```go
+myFakeAccountsServer := fake.AccountsServer{}
+```
+Next, provide func implementations for the methods you wish to fake.
+The named return variables can be used to simplify return value construction.
+```go
+myFakeAccountsServer.GetProperties = func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.AccountsClientGetPropertiesOptions) (resp azfake.Responder[armstorage.AccountsClientGetPropertiesResponse], errResp azfake.ErrorResponder) {
+	// TODO: resp.SetResponse(/* your fake AccountsClientGetPropertiesResponse response */)
+	return
+}
+```
+You connect the fake server to a client instance during construction through the optional transport.
+Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
+```go
+import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+client, err := armstorage.NewAccountsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	ClientOptions: azcore.ClientOptions{
+		Transport: fake.NewAccountsServerTransport(&myFakeAccountsServer),
+	},
+})
+```
+
 ## More sample code
 
 - [Blob](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/blob)

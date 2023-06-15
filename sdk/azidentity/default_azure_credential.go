@@ -185,7 +185,7 @@ func (w *timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestO
 		defer cancel()
 		tk, err = w.mic.GetToken(c, opts)
 		if isAuthFailedDueToContext(err) {
-			err = newCredentialUnavailableError(credNameManagedIdentity, "managed identity timed out")
+			err = newCredentialUnavailableError(credNameManagedIdentity, "managed identity timed out. See https://aka.ms/azsdk/go/identity/troubleshoot#dac for more information")
 		} else {
 			// some managed identity implementation is available, so don't apply the timeout to future calls
 			w.timeout = 0

@@ -36,7 +36,7 @@ func ExampleNewClient() {
 func ExampleClient_CreateKey_rsa() {
 	params := azkeys.CreateKeyParameters{
 		KeySize: to.Ptr(int32(2048)),
-		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+		Kty:     to.Ptr(azkeys.KeyTypeRSA),
 	}
 	// if a key with the same name already exists, a new version of that key is created
 	resp, err := client.CreateKey(context.TODO(), "key-name", params, nil)
@@ -48,8 +48,8 @@ func ExampleClient_CreateKey_rsa() {
 
 func ExampleClient_CreateKey_ec() {
 	params := azkeys.CreateKeyParameters{
-		Curve: to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
-		Kty:   to.Ptr(azkeys.JSONWebKeyTypeEC),
+		Curve: to.Ptr(azkeys.CurveNameP256K),
+		Kty:   to.Ptr(azkeys.KeyTypeEC),
 	}
 	// if a key with the same name already exists, a new version of that key is created
 	resp, err := client.CreateKey(context.TODO(), "key-name", params, nil)
@@ -74,7 +74,7 @@ func ExampleClient_DeleteKey() {
 
 func ExampleClient_PurgeDeletedKey() {
 	// this loop purges all the deleted keys in the vault
-	pager := client.NewListDeletedKeysPager(nil)
+	pager := client.NewListDeletedKeyPropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -123,12 +123,12 @@ func ExampleClient_UpdateKey() {
 func ExampleClient_UpdateKeyRotationPolicy() {
 	// this policy rotates the key every 18 months
 	policy := azkeys.KeyRotationPolicy{
-		LifetimeActions: []*azkeys.LifetimeActions{
+		LifetimeActions: []*azkeys.LifetimeAction{
 			{
-				Action: &azkeys.LifetimeActionsType{
+				Action: &azkeys.LifetimeActionType{
 					Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 				},
-				Trigger: &azkeys.LifetimeActionsTrigger{
+				Trigger: &azkeys.LifetimeActionTrigger{
 					TimeAfterCreate: to.Ptr("P18M"),
 				},
 			},
@@ -141,8 +141,8 @@ func ExampleClient_UpdateKeyRotationPolicy() {
 	fmt.Printf("Updated key rotation policy at: %v", resp.Attributes.Updated)
 }
 
-func ExampleClient_NewListKeysPager() {
-	pager := client.NewListKeysPager(nil)
+func ExampleClient_NewListKeyPropertiesPager() {
+	pager := client.NewListKeyPropertiesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {

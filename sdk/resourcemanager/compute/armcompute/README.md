@@ -60,6 +60,40 @@ A client groups a set of related APIs, providing access to its functionality.  C
 client := clientFactory.NewLogAnalyticsClient()
 ```
 
+## Fakes
+
+The `fake` package provides implementations for fake servers that can be used for testing.
+
+To create a fake server, declare an instance of the required fake server type(s).
+
+```go
+myFakeVirtualMachinesServer := fake.VirtualMachinesServer{}
+```
+
+Next, provide func implementations for the methods you wish to fake.
+The named return variables can be used to simplify return value construction.
+
+```go
+myFakeVirtualMachinesServer.Get = func(ctx context.Context, resourceGroupName string, vmName string, options *armcompute.VirtualMachinesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachinesClientGetResponse], errResp azfake.ErrorResponder) {
+	// TODO: resp.SetResponse(/* your fake armcompute.VirtualMachinesClientGetResponse response */)
+	return
+}
+```
+
+You connect the fake server to a client instance during construction through the optional transport.
+
+Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
+
+```go
+import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+
+client, err := armcompute.VirtualMachinesClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	ClientOptions: azcore.ClientOptions{
+		Transport: fake.NewVirtualMachinesServerTransport(&myFakeVirtualMachinesServer),
+	},
+})
+```
+
 ## More sample code
 
 - [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/availabilityset)

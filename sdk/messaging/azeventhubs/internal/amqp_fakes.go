@@ -69,7 +69,7 @@ func (ns *FakeNSForPartClient) NewAMQPSession(ctx context.Context) (amqpwrap.AMQ
 	}, 1, nil
 }
 
-func (sess *FakeAMQPSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
+func (sess *FakeAMQPSession) NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
 	sess.NS.NewReceiverCalled++
 	sess.NS.Receiver.ManualCreditsSetFromOptions = opts.Credit == -1
 	sess.NS.Receiver.CreditsSetFromOptions = opts.Credit
@@ -81,7 +81,7 @@ func (sess *FakeAMQPSession) NewReceiver(ctx context.Context, source string, opt
 	return sess.NS.Receiver, sess.NS.NewReceiverErr
 }
 
-func (sess *FakeAMQPSession) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
+func (sess *FakeAMQPSession) NewSender(ctx context.Context, target string, partitionID string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
 	sess.NS.NewSenderCalled++
 	return sess.NS.Sender, sess.NS.NewSenderErr
 }

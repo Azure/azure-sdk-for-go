@@ -77,26 +77,6 @@ func TestBlobClient_CheckBlobExists_empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestBlobClient_CheckBlobExists_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.CheckBlobExists(ctx, "alpine", "wrong digest", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_CheckBlobExists_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewBlobClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.CheckBlobExists(ctx, "", "digest", nil)
-	require.Error(t, err)
-	_, err = client.CheckBlobExists(ctx, "alpine", "", nil)
-	require.Error(t, err)
-}
-
 func TestBlobClient_CheckChunkExists(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -230,26 +210,6 @@ func TestBlobClient_GetBlob_empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestBlobClient_GetBlob_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.GetBlob(ctx, "alpine", "wrong digest", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_GetBlob_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewBlobClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.GetBlob(ctx, "", "digest", nil)
-	require.Error(t, err)
-	_, err = client.GetBlob(ctx, "alpine", "", nil)
-	require.Error(t, err)
-}
-
 func TestBlobClient_GetChunk(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -277,26 +237,6 @@ func TestBlobClient_GetChunk(t *testing.T) {
 	require.NoError(t, err)
 	_, err = io.ReadAll(reader)
 	require.NoError(t, err)
-}
-
-func TestBlobClient_GetChunk_fail(t *testing.T) {
-	startRecording(t)
-	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	_, err = client.GetChunk(ctx, "alpine", "wrong digest", "bytes=0-999", nil)
-	require.Error(t, err)
-}
-
-func TestBlobClient_GetChunk_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewBlobClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.GetChunk(ctx, "", "digest", "bytes=0-999", nil)
-	require.Error(t, err)
-	_, err = client.GetChunk(ctx, "alpine", "", "bytes=0-999", nil)
-	require.Error(t, err)
 }
 
 func TestBlobClient_GetChunk_fail(t *testing.T) {

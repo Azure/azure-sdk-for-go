@@ -206,16 +206,6 @@ func TestClient_GetManifestProperties_empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestClient_GetManifestProperties_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.GetManifestProperties(ctx, "", "digest", nil)
-	require.Error(t, err)
-	_, err = client.GetManifestProperties(ctx, "name", "", nil)
-	require.Error(t, err)
-}
-
 func TestClient_GetManifestProperties_wrongDigest(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
@@ -648,68 +638,6 @@ func TestClient_UploadManifest(t *testing.T) {
 	require.NoError(t, err)
 	_, err = io.ReadAll(validateReader)
 	require.NoError(t, err)
-}
-
-func TestClient_UploadManifest_empty(t *testing.T) {
-	ctx := context.Background()
-	client, err := NewClient("endpoint", nil, nil)
-	require.NoError(t, err)
-	_, err = client.UploadManifest(ctx, "", "reference", "contentType", nil, nil)
-	require.Error(t, err)
-	_, err = client.UploadManifest(ctx, "name", "", "contentType", nil, nil)
-	require.Error(t, err)
-}
-
-func TestClient_UploadManifest_error(t *testing.T) {
-	srv, closeServer := mock.NewServer()
-	defer closeServer()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
-
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	client := &Client{
-		srv.URL(),
-		pl,
-	}
-	ctx := context.Background()
-	_, err := client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
-	require.Error(t, err)
-}
-
-func TestClient_wrongEndpoint(t *testing.T) {
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
-	client := &Client{
-		"wrong-endpoint",
-		pl,
-	}
-	ctx := context.Background()
-	_, err := client.DeleteManifest(ctx, "name", "digest", nil)
-	require.Error(t, err)
-	_, err = client.DeleteRepository(ctx, "name", nil)
-	require.Error(t, err)
-	_, err = client.DeleteTag(ctx, "name", "tag", nil)
-	require.Error(t, err)
-	_, err = client.GetManifest(ctx, "name", "reference", nil)
-	require.Error(t, err)
-	_, err = client.GetManifestProperties(ctx, "name", "digest", nil)
-	require.Error(t, err)
-	_, err = client.GetRepositoryProperties(ctx, "name", nil)
-	require.Error(t, err)
-	_, err = client.GetTagProperties(ctx, "name", "tag", nil)
-	require.Error(t, err)
-	_, err = client.NewListManifestsPager("name", nil).NextPage(ctx)
-	require.Error(t, err)
-	_, err = client.NewListRepositoriesPager(nil).NextPage(ctx)
-	require.Error(t, err)
-	_, err = client.NewListTagsPager("name", nil).NextPage(ctx)
-	require.Error(t, err)
-	_, err = client.UpdateManifestProperties(ctx, "name", "digest", nil)
-	require.Error(t, err)
-	_, err = client.UpdateRepositoryProperties(ctx, "name", nil)
-	require.Error(t, err)
-	_, err = client.UpdateTagProperties(ctx, "name", "tag", nil)
-	require.Error(t, err)
-	_, err = client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
-	require.Error(t, err)
 }
 
 func TestClient_UploadManifest_empty(t *testing.T) {

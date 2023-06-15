@@ -9,6 +9,8 @@ import (
 )
 
 func ExampleNewClientForOpenAI() {
+	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
+	// To connect to an Azure OpenAI endpoint, use azopenai.NewClient() or azopenai.NewClientWithyKeyCredential.
 	keyCredential := azopenai.KeyCredential{
 		APIKey: "open-ai-apikey",
 	}
@@ -23,6 +25,8 @@ func ExampleNewClientForOpenAI() {
 }
 
 func ExampleNewClient() {
+	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
+	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
@@ -40,6 +44,8 @@ func ExampleNewClient() {
 }
 
 func ExampleNewClientWithKeyCredential() {
+	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
+	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	keyCredential := azopenai.KeyCredential{
 		APIKey: "Azure OpenAI apikey",
 	}

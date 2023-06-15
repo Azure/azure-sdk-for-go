@@ -32,9 +32,9 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewClient creates a new instance of Client with the specified values.
+// NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
-//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - credential - used to authorize requests. Usually a credential from [github.com/Azure/azure-sdk-for-go/sdk/azidentity].
 //   - deploymentID - the deployment ID of the model to query
 //   - options - client options, pass nil to accept the default values.
 func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID string, options *ClientOptions) (*Client, error) {
@@ -52,12 +52,7 @@ func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID 
 	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
 }
 
-func formatAzureOpenAIURL(endpoint, deploymentID string) string {
-	escapedDeplID := url.PathEscape(deploymentID)
-	return runtime.JoinPaths(endpoint, "openai", "deployments", escapedDeplID)
-}
-
-// NewClientWithKeyCredential creates a new instance of Client with the specified values.
+// NewClientWithKeyCredential creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests with an API Key credential
 //   - deploymentID - the deployment ID of the model to query
@@ -77,7 +72,7 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
 }
 
-// NewClientForOpenAI creates a new instance of Client with the specified values.
+// NewClientForOpenAI creates a new instance of Client which connects to the public OpenAI endpoint.
 //   - endpoint - OpenAI service endpoint, for example: https://api.openai.com/v1
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
@@ -163,4 +158,9 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	return GetCompletionsStreamResponse{
 		CompletionsStream: newEventReader[Completions](resp.Body),
 	}, nil
+}
+
+func formatAzureOpenAIURL(endpoint, deploymentID string) string {
+	escapedDeplID := url.PathEscape(deploymentID)
+	return runtime.JoinPaths(endpoint, "openai", "deployments", escapedDeplID)
 }

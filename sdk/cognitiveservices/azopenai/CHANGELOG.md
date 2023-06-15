@@ -2,4 +2,4 @@
 
 ## 0.1.0 (unreleased)
 
-* This is the initial release of the `azopenai` library
+* Initial release of the `azopenai` library

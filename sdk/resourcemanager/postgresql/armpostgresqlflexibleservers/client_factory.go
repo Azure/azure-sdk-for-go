@@ -53,6 +53,11 @@ func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapab
 	return subClient
 }
 
+func (c *ClientFactory) NewServerCapabilitiesClient() *ServerCapabilitiesClient {
+	subClient, _ := NewServerCapabilitiesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
 	subClient, _ := NewCheckNameAvailabilityClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -83,6 +88,16 @@ func (c *ClientFactory) NewServersClient() *ServersClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
+	subClient, _ := NewMigrationsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
+	subClient, _ := NewPostgreSQLManagementClient(c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
@@ -98,7 +113,22 @@ func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
+	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewVirtualNetworkSubnetUsageClient() *VirtualNetworkSubnetUsageClient {
 	subClient, _ := NewVirtualNetworkSubnetUsageClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewFlexibleServerClient() *FlexibleServerClient {
+	subClient, _ := NewFlexibleServerClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewLtrBackupOperationsClient() *LtrBackupOperationsClient {
+	subClient, _ := NewLtrBackupOperationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

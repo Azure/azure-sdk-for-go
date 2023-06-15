@@ -28,12 +28,13 @@ type Client struct {
 
 // NewClient creates a new Client instance with the provided values.
 // This client is intended to be used with Azure Resource Manager endpoints.
-//   - clientName - the fully qualified name of the client ("package.Client"); this is used by the tracing provider when creating spans
+//   - clientName - the fully qualified name of the client ("module/package.Client"); this is used by the telemetry policy and tracing provider.
+//     if module and package are the same value, the "module/" prefix can be omitted.
 //   - moduleVersion - the version of the containing module; used by the telemetry policy
 //   - cred - the TokenCredential used to authenticate the request
 //   - options - optional client configurations; pass nil to accept the default values
 func NewClient(clientName, moduleVersion string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	pkg, err := shared.ExtractPackageName(clientName)
+	mod, client, err := shared.ExtractModuleName(clientName)
 	if err != nil {
 		return nil, err
 	}
@@ -52,12 +53,12 @@ func NewClient(clientName, moduleVersion string, cred azcore.TokenCredential, op
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
-	pl, err := armruntime.NewPipeline(pkg, moduleVersion, cred, runtime.PipelineOptions{}, options)
+	pl, err := armruntime.NewPipeline(mod, moduleVersion, cred, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}
 
-	tr := options.TracingProvider.NewTracer(clientName, moduleVersion)
+	tr := options.TracingProvider.NewTracer(client, moduleVersion)
 	return &Client{ep: ep, pl: pl, tr: tr}, nil
 }
 

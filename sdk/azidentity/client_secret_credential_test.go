@@ -12,7 +12,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -34,7 +33,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.client = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -84,7 +83,7 @@ func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

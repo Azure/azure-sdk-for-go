@@ -53,7 +53,7 @@ func TestHTTPTraceNamespacePolicy(t *testing.T) {
 	tr = tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 		return ctx, tracing.Span{}
 	}, &tracing.TracerOptions{
-		SpanFromContext: func(ctx context.Context) (tracing.Span, bool) {
+		SpanFromContext: func(ctx context.Context) tracing.Span {
 			spanImpl := tracing.SpanImpl{
 				SetAttributes: func(a ...tracing.Attribute) {
 					require.Len(t, a, 1)
@@ -62,7 +62,7 @@ func TestHTTPTraceNamespacePolicy(t *testing.T) {
 					attrString = a[0].Key + ":" + v
 				},
 			}
-			return tracing.NewSpan(spanImpl), true
+			return tracing.NewSpan(spanImpl)
 		},
 	})
 	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
@@ -76,7 +76,7 @@ func TestHTTPTraceNamespacePolicy(t *testing.T) {
 	tr = tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 		return ctx, tracing.Span{}
 	}, &tracing.TracerOptions{
-		SpanFromContext: func(ctx context.Context) (tracing.Span, bool) {
+		SpanFromContext: func(ctx context.Context) tracing.Span {
 			spanImpl := tracing.SpanImpl{
 				SetAttributes: func(a ...tracing.Attribute) {
 					require.Len(t, a, 1)
@@ -85,7 +85,7 @@ func TestHTTPTraceNamespacePolicy(t *testing.T) {
 					attrString = a[0].Key + ":" + v
 				},
 			}
-			return tracing.NewSpan(spanImpl), true
+			return tracing.NewSpan(spanImpl)
 		},
 	})
 	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL()+requestEndpoint)

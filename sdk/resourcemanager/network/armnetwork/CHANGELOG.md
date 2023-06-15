@@ -1,5 +1,73 @@
 # Release History
 
+## 3.1.0-beta.1 (2023-06-12)
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+## 3.0.0 (2023-05-26)
+### Breaking Changes
+
+- Type of `EffectiveRouteMapRoute.Prefix` has been changed from `[]*string` to `*string`
+- `LoadBalancerBackendAddressAdminStateDrain` from enum `LoadBalancerBackendAddressAdminState` has been removed
+- Struct `PeerRouteList` has been removed
+- Field `PeerRouteList` of struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse` has been removed
+- Field `PeerRouteList` of struct `VirtualHubBgpConnectionsClientListLearnedRoutesResponse` has been removed
+
+### Features Added
+
+- New value `NetworkInterfaceAuxiliaryModeAcceleratedConnections` added to enum type `NetworkInterfaceAuxiliaryMode`
+- New value `WebApplicationFirewallRuleTypeRateLimitRule` added to enum type `WebApplicationFirewallRuleType`
+- New enum type `ApplicationGatewayFirewallRateLimitDuration` with values `ApplicationGatewayFirewallRateLimitDurationFiveMins`, `ApplicationGatewayFirewallRateLimitDurationOneMin`
+- New enum type `ApplicationGatewayFirewallUserSessionVariable` with values `ApplicationGatewayFirewallUserSessionVariableClientAddr`, `ApplicationGatewayFirewallUserSessionVariableGeoLocation`, `ApplicationGatewayFirewallUserSessionVariableNone`
+- New enum type `AzureFirewallPacketCaptureFlagsType` with values `AzureFirewallPacketCaptureFlagsTypeAck`, `AzureFirewallPacketCaptureFlagsTypeFin`, `AzureFirewallPacketCaptureFlagsTypePush`, `AzureFirewallPacketCaptureFlagsTypeRst`, `AzureFirewallPacketCaptureFlagsTypeSyn`, `AzureFirewallPacketCaptureFlagsTypeUrg`
+- New enum type `NetworkInterfaceAuxiliarySKU` with values `NetworkInterfaceAuxiliarySKUA1`, `NetworkInterfaceAuxiliarySKUA2`, `NetworkInterfaceAuxiliarySKUA4`, `NetworkInterfaceAuxiliarySKUA8`, `NetworkInterfaceAuxiliarySKUNone`
+- New enum type `PublicIPAddressDNSSettingsDomainNameLabelScope` with values `PublicIPAddressDNSSettingsDomainNameLabelScopeNoReuse`, `PublicIPAddressDNSSettingsDomainNameLabelScopeResourceGroupReuse`, `PublicIPAddressDNSSettingsDomainNameLabelScopeSubscriptionReuse`, `PublicIPAddressDNSSettingsDomainNameLabelScopeTenantReuse`
+- New enum type `ScrubbingRuleEntryMatchOperator` with values `ScrubbingRuleEntryMatchOperatorEquals`, `ScrubbingRuleEntryMatchOperatorEqualsAny`
+- New enum type `ScrubbingRuleEntryMatchVariable` with values `ScrubbingRuleEntryMatchVariableRequestArgNames`, `ScrubbingRuleEntryMatchVariableRequestCookieNames`, `ScrubbingRuleEntryMatchVariableRequestHeaderNames`, `ScrubbingRuleEntryMatchVariableRequestIPAddress`, `ScrubbingRuleEntryMatchVariableRequestJSONArgNames`, `ScrubbingRuleEntryMatchVariableRequestPostArgNames`
+- New enum type `ScrubbingRuleEntryState` with values `ScrubbingRuleEntryStateDisabled`, `ScrubbingRuleEntryStateEnabled`
+- New enum type `WebApplicationFirewallScrubbingState` with values `WebApplicationFirewallScrubbingStateDisabled`, `WebApplicationFirewallScrubbingStateEnabled`
+- New function `*AzureFirewallsClient.BeginPacketCapture(context.Context, string, string, FirewallPacketCaptureParameters, *AzureFirewallsClientBeginPacketCaptureOptions) (*runtime.Poller[AzureFirewallsClientPacketCaptureResponse], error)`
+- New function `*ClientFactory.NewVirtualApplianceConnectionsClient() *VirtualApplianceConnectionsClient`
+- New function `NewVirtualApplianceConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualApplianceConnectionsClient, error)`
+- New function `*VirtualApplianceConnectionsClient.BeginCreateOrUpdate(context.Context, string, string, string, VirtualApplianceConnection, *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualApplianceConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*VirtualApplianceConnectionsClient.BeginDelete(context.Context, string, string, string, *VirtualApplianceConnectionsClientBeginDeleteOptions) (*runtime.Poller[VirtualApplianceConnectionsClientDeleteResponse], error)`
+- New function `*VirtualApplianceConnectionsClient.Get(context.Context, string, string, string, *VirtualApplianceConnectionsClientGetOptions) (VirtualApplianceConnectionsClientGetResponse, error)`
+- New function `*VirtualApplianceConnectionsClient.NewListPager(string, string, *VirtualApplianceConnectionsClientListOptions) *runtime.Pager[VirtualApplianceConnectionsClientListResponse]`
+- New struct `AzureFirewallPacketCaptureFlags`
+- New struct `AzureFirewallPacketCaptureRule`
+- New struct `EffectiveRouteMapRouteList`
+- New struct `FirewallPacketCaptureParameters`
+- New struct `FirewallPacketCaptureParametersFormat`
+- New struct `FirewallPolicyHTTPHeaderToInsert`
+- New struct `GroupByUserSession`
+- New struct `GroupByVariable`
+- New struct `PolicySettingsLogScrubbing`
+- New struct `PropagatedRouteTableNfv`
+- New struct `RoutingConfigurationNfv`
+- New struct `RoutingConfigurationNfvSubResource`
+- New struct `VirtualApplianceAdditionalNicProperties`
+- New struct `VirtualApplianceConnection`
+- New struct `VirtualApplianceConnectionList`
+- New struct `VirtualApplianceConnectionProperties`
+- New struct `WebApplicationFirewallScrubbingRules`
+- New field `HTTPHeadersToInsert` in struct `ApplicationRule`
+- New field `EnableKerberos` in struct `BastionHostPropertiesFormat`
+- New field `AuxiliarySKU` in struct `InterfacePropertiesFormat`
+- New field `FileUploadEnforcement`, `LogScrubbing`, `RequestBodyEnforcement`, `RequestBodyInspectLimitInKB` in struct `PolicySettings`
+- New field `PrivateEndpointLocation` in struct `PrivateEndpointConnectionProperties`
+- New field `DomainNameLabelScope` in struct `PublicIPAddressDNSSettings`
+- New field `InstanceName` in struct `VirtualApplianceNicProperties`
+- New field `AdditionalNics`, `VirtualApplianceConnections` in struct `VirtualAppliancePropertiesFormat`
+- New field `Value` in struct `VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse`
+- New field `Value` in struct `VirtualHubBgpConnectionsClientListLearnedRoutesResponse`
+- New anonymous field `VirtualHubEffectiveRouteList` in struct `VirtualHubsClientGetEffectiveVirtualHubRoutesResponse`
+- New anonymous field `EffectiveRouteMapRouteList` in struct `VirtualHubsClientGetInboundRoutesResponse`
+- New anonymous field `EffectiveRouteMapRouteList` in struct `VirtualHubsClientGetOutboundRoutesResponse`
+- New field `GroupByUserSession`, `RateLimitDuration`, `RateLimitThreshold` in struct `WebApplicationFirewallCustomRule`
+
+
 ## 2.2.1 (2023-04-14)
 ### Bug Fixes
 

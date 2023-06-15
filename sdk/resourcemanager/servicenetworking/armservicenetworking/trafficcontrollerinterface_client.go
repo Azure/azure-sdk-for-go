@@ -47,7 +47,7 @@ func NewTrafficControllerInterfaceClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - resource - Resource create parameters.
@@ -70,7 +70,7 @@ func (client *TrafficControllerInterfaceClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *TrafficControllerInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, resource TrafficController, options *TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trafficControllerName, resource, options)
 	if err != nil {
@@ -106,7 +106,7 @@ func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -115,7 +115,7 @@ func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - options - TrafficControllerInterfaceClientBeginDeleteOptions contains the optional parameters for the TrafficControllerInterfaceClient.BeginDelete
@@ -137,7 +137,7 @@ func (client *TrafficControllerInterfaceClient) BeginDelete(ctx context.Context,
 // Delete - Delete a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *TrafficControllerInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, options *TrafficControllerInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trafficControllerName, options)
 	if err != nil {
@@ -173,7 +173,7 @@ func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.
 // Get - Get a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - options - TrafficControllerInterfaceClientGetOptions contains the optional parameters for the TrafficControllerInterfaceClient.Get
@@ -222,7 +222,7 @@ func (client *TrafficControllerInterfaceClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *TrafficControllerInterfaceClient) getHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - List TrafficController resources by resource group
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - TrafficControllerInterfaceClientListByResourceGroupOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListByResourceGroupPager
 //     method.
@@ -287,7 +287,7 @@ func (client *TrafficControllerInterfaceClient) listByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +304,7 @@ func (client *TrafficControllerInterfaceClient) listByResourceGroupHandleRespons
 
 // NewListBySubscriptionPager - List TrafficController resources by subscription ID
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - options - TrafficControllerInterfaceClientListBySubscriptionOptions contains the optional parameters for the TrafficControllerInterfaceClient.NewListBySubscriptionPager
 //     method.
 func (client *TrafficControllerInterfaceClient) NewListBySubscriptionPager(options *TrafficControllerInterfaceClientListBySubscriptionOptions) *runtime.Pager[TrafficControllerInterfaceClientListBySubscriptionResponse] {
@@ -347,7 +347,7 @@ func (client *TrafficControllerInterfaceClient) listBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *TrafficControllerInterfaceClient) listBySubscriptionHandleResponse
 // Update - Update a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - properties - The resource properties to be updated.
@@ -406,7 +406,7 @@ func (client *TrafficControllerInterfaceClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

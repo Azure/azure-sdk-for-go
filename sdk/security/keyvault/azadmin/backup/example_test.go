@@ -33,7 +33,7 @@ func ExampleNewClient() {
 }
 
 func ExampleClient_BeginFullBackup() {
-	storageParameters := backup.SASTokenParameter{
+	storageParameters := backup.SASTokenParameters{
 		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 		Token:              to.Ptr("<your SAS token>"),
 	}
@@ -49,7 +49,7 @@ func ExampleClient_BeginFullBackup() {
 }
 func ExampleClient_BeginFullRestore() {
 	// first, backup the managed HSM to a blob storage container
-	storageParameters := backup.SASTokenParameter{
+	storageParameters := backup.SASTokenParameters{
 		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 		Token:              to.Ptr("<your SAS token>"),
 	}
@@ -70,7 +70,7 @@ func ExampleClient_BeginFullRestore() {
 	// begin the restore operation
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore: to.Ptr(folderName),
-		SasTokenParameters: &backup.SASTokenParameter{
+		SASTokenParameters: &backup.SASTokenParameters{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 			Token:              to.Ptr("<your SAS token>"),
 		},
@@ -101,7 +101,7 @@ func ExampleClient_BeginSelectiveKeyRestore() {
 	}
 
 	// backup the vault
-	storageParameters := backup.SASTokenParameter{
+	storageParameters := backup.SASTokenParameters{
 		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 		Token:              to.Ptr("<your SAS token>"),
 	}
@@ -121,7 +121,7 @@ func ExampleClient_BeginSelectiveKeyRestore() {
 	// restore the key
 	restoreOperationParameters := backup.SelectiveKeyRestoreOperationParameters{
 		Folder: to.Ptr(folderName),
-		SasTokenParameters: &backup.SASTokenParameter{
+		SASTokenParameters: &backup.SASTokenParameters{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 			Token:              to.Ptr("<your SAS token>"),
 		},

@@ -12,6 +12,9 @@
 
 ### Other Changes
 
+* Add `dragonfly` to the list of build constraints for `blockblob`.
+* Updating version of azcore to 1.6.0 and azidentity to 1.3.0
+
 ## 1.1.0-beta.1 (2023-05-09)
 
 ### Features Added

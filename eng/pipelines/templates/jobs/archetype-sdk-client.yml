@@ -71,6 +71,9 @@ parameters:
   - name: IncludeRelease
     type: boolean
     default: false
+  - name: ExcludeGoNMinus2
+    type: boolean
+    default: false
 
 
 stages:
@@ -82,14 +85,16 @@ stages:
         - template: /eng/pipelines/templates/variables/globals.yml
       strategy:
         matrix:
-          Linux_Go118:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.18.10'
-          Windows_Go118:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
-            go.version: '1.18.10'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Linux_Go118:
+              pool.name: azsdk-pool-mms-ubuntu-2004-general
+              image.name: MMSUbuntu20.04
+              go.version: '1.18.10'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Windows_Go118:
+              pool.name: azsdk-pool-mms-win-2022-general
+              image.name: MMS2022
+              go.version: '1.18.10'
           Linux_Go119:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04

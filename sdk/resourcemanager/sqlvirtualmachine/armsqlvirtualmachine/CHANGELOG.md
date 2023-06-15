@@ -1,5 +1,22 @@
 # Release History
 
+## 0.9.0 (2023-06-23)
+### Features Added
+
+- New value `LeastPrivilegeModeNotSet` added to enum type `LeastPrivilegeMode`
+- New enum type `TroubleshootingScenario` with values `TroubleshootingScenarioUnhealthyReplica`
+- New function `*ClientFactory.NewTroubleshootClient() *TroubleshootClient`
+- New function `NewTroubleshootClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TroubleshootClient, error)`
+- New function `*TroubleshootClient.BeginTroubleshoot(context.Context, string, string, SQLVMTroubleshooting, *TroubleshootClientBeginTroubleshootOptions) (*runtime.Poller[TroubleshootClientTroubleshootResponse], error)`
+- New struct `AADAuthenticationSettings`
+- New struct `SQLVMTroubleshooting`
+- New struct `TroubleshootingAdditionalProperties`
+- New struct `TroubleshootingStatus`
+- New struct `UnhealthyReplicaInfo`
+- New field `TroubleshootingStatus` in struct `Properties`
+- New field `AzureAdAuthenticationSettings` in struct `ServerConfigurationsManagementSettings`
+
+
 ## 0.8.0 (2023-03-31)
 ### Features Added
 

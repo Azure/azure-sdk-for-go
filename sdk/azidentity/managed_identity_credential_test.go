@@ -184,7 +184,7 @@ func TestManagedIdentityCredential_AppServiceError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -205,7 +205,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	}
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
 	for i := 0; i < 3; i++ {
-		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+		_, err = cred.GetToken(context.Background(), testTRO)
 		if _, ok := err.(*credentialUnavailableError); !ok {
 			t.Fatalf("expected credentialUnavailableError, received %T", err)
 		}
@@ -240,7 +240,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}
@@ -357,7 +357,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -375,7 +375,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = msiCred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("expected to receive an error but received none")
 	}

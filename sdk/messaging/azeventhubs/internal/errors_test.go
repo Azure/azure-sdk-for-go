@@ -6,6 +6,7 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -41,10 +42,37 @@ func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
 	require.Equal(t, GetRecoveryKind(amqpwrap.ErrConnResetNeeded), RecoveryKindConn)
 	require.Equal(t, GetRecoveryKind(&amqp.LinkError{}), RecoveryKindLink)
+	require.Equal(t, GetRecoveryKind(RPCLinkClosedErr), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
-	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}), RecoveryKindFatal)
-	require.Equal(t, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCondResourceLimitExceeded}), RecoveryKindFatal)
+
+	// fatal RPC errors
+	for _, code := range []int{http.StatusUnauthorized, http.StatusNotFound} {
+		t.Run(fmt.Sprintf("RPCError.Code==%d is fatal", code), func(t *testing.T) {
+			actual := GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: code}})
+			require.Equal(t, RecoveryKindFatal, actual)
+		})
+	}
+
+	// recoverable RPC errors
+	for _, code := range []int{http.StatusRequestTimeout, http.StatusServiceUnavailable, http.StatusInternalServerError} {
+		t.Run(fmt.Sprintf("RPCError.Code==%d is retriable", code), func(t *testing.T) {
+			actual := GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: code}})
+			require.Equal(t, RecoveryKindNone, actual)
+		})
+	}
+}
+
+func TestIsNotAllowedError(t *testing.T) {
+	require.True(t, IsNotAllowedError(&amqp.Error{
+		Condition: amqp.ErrCondNotAllowed,
+	}))
+
+	require.False(t, IsNotAllowedError(&amqp.Error{
+		Condition: amqp.ErrCondConnectionForced,
+	}))
+
+	require.False(t, IsNotAllowedError(errors.New("hello")))
 }
 
 func Test_TransformError(t *testing.T) {

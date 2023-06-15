@@ -412,6 +412,11 @@ func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
 	require.EqualValues(t, 0, logEntries)
 }
 
+func TestIsUnregisteredRPCode(t *testing.T) {
+	require.True(t, isUnregisteredRPCode("Subscription Not Registered"))
+	require.False(t, isUnregisteredRPCode("Your subscription isn't registered"))
+}
+
 type fakeClient struct {
 	ep string
 	pl runtime.Pipeline

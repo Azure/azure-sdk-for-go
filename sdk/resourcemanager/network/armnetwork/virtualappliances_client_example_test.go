@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,6 +74,11 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 		},
 	// 	},
 	// 	Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 		AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+	// 			{
+	// 				Name: to.Ptr("exrsdwan"),
+	// 				HasPublicIP: to.Ptr(true),
+	// 		}},
 	// 		AddressPrefix: to.Ptr("192.168.1.0/16"),
 	// 		BootStrapConfigurationBlobs: []*string{
 	// 			to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig")},
@@ -90,15 +95,28 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 				},
 	// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 				VirtualApplianceAsn: to.Ptr[int64](10000),
+	// 				VirtualApplianceConnections: []*armnetwork.SubResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/networkVirtualApplianceConnections/connection1"),
+	// 				}},
 	// 				VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
 	// 					{
-	// 						Name: to.Ptr("managementNic"),
+	// 						Name: to.Ptr("publicnicipconfig"),
+	// 						InstanceName: to.Ptr("nva_0"),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.1"),
 	// 						PublicIPAddress: to.Ptr("40.30.2.2"),
 	// 					},
 	// 					{
-	// 						Name: to.Ptr("privateNic-1"),
+	// 						Name: to.Ptr("privatenicipconfig"),
+	// 						InstanceName: to.Ptr("nva_0"),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						PublicIPAddress: to.Ptr(""),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("exrsdwan"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						PrivateIPAddress: to.Ptr("10.1.113.4"),
+	// 						PublicIPAddress: to.Ptr("4.231.25.19"),
 	// 				}},
 	// 				VirtualApplianceSites: []*armnetwork.SubResource{
 	// 					{
@@ -111,7 +129,7 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +203,7 @@ func ExampleVirtualAppliancesClient_UpdateTags() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualAppliancePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,6 +226,11 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 			},
 		},
 		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+			AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+				{
+					Name:        to.Ptr("exrsdwan"),
+					HasPublicIP: to.Ptr(true),
+				}},
 			BootStrapConfigurationBlobs: []*string{
 				to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig")},
 			CloudInitConfigurationBlobs: []*string{
@@ -268,13 +291,22 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 				VirtualApplianceAsn: to.Ptr[int64](10000),
 	// 				VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
 	// 					{
-	// 						Name: to.Ptr("managementNic"),
+	// 						Name: to.Ptr("publicnicipconfig"),
+	// 						InstanceName: to.Ptr("nva_0"),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.1"),
 	// 						PublicIPAddress: to.Ptr("40.30.2.2"),
 	// 					},
 	// 					{
-	// 						Name: to.Ptr("privateNic-1"),
+	// 						Name: to.Ptr("privatenicipconfig"),
+	// 						InstanceName: to.Ptr("nva_0"),
 	// 						PrivateIPAddress: to.Ptr("192.168.12.2"),
+	// 						PublicIPAddress: to.Ptr(""),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("exrsdwan"),
+	// 						InstanceName: to.Ptr("nva_0"),
+	// 						PrivateIPAddress: to.Ptr("10.1.113.4"),
+	// 						PublicIPAddress: to.Ptr("4.231.25.19"),
 	// 				}},
 	// 				VirtualApplianceSites: []*armnetwork.SubResource{
 	// 					{
@@ -287,7 +319,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +382,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -430,7 +462,7 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceListBySubscription.json
 func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -115,14 +115,14 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 		events = nil
 
 		if prefetchDisabled {
-			remainingCredits := lwid.Link.Credits()
+			remainingCredits := lwid.Link().Credits()
 
 			if count > int(remainingCredits) {
 				newCredits := uint32(count) - remainingCredits
 
 				log.Writef(EventConsumer, "(%s) Have %d outstanding credit, only issuing %d credits", lwid.String(), remainingCredits, newCredits)
 
-				if err := lwid.Link.IssueCredit(newCredits); err != nil {
+				if err := lwid.Link().IssueCredit(newCredits); err != nil {
 					log.Writef(EventConsumer, "(%s) Error when issuing credits: %s", lwid.String(), err)
 					return err
 				}
@@ -130,7 +130,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 		}
 
 		for {
-			amqpMessage, err := lwid.Link.Receive(ctx, nil)
+			amqpMessage, err := lwid.Link().Receive(ctx, nil)
 
 			if internal.IsOwnershipLostError(err) {
 				log.Writef(EventConsumer, "(%s) Error, link ownership lost: %s", lwid.String(), err)
@@ -139,7 +139,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			}
 
 			if err != nil {
-				prefetched := getAllPrefetched(lwid.Link, count-len(events))
+				prefetched := getAllPrefetched(lwid.Link(), count-len(events))
 
 				for _, amqpMsg := range prefetched {
 					re, err := newReceivedEventData(amqpMsg)
@@ -202,7 +202,7 @@ func (pc *PartitionClient) getEntityPath(partitionID string) string {
 	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", pc.eventHub, pc.consumerGroup, partitionID)
 }
 
-func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {
+func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (internal.AMQPReceiverCloser, error) {
 	props := map[string]any{
 		// this lets Event Hubs return error messages that identify which Receiver stole ownership (and other things) within
 		// error messages.
@@ -244,7 +244,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		receiverOptions.Credit == -1,
 		pc.prefetch)
 
-	receiver, err := session.NewReceiver(ctx, entityPath, receiverOptions)
+	receiver, err := session.NewReceiver(ctx, entityPath, partitionID, receiverOptions)
 
 	if err != nil {
 		return nil, err

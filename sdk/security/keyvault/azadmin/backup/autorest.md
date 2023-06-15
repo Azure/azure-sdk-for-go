@@ -30,6 +30,17 @@ directive:
       from: SelectiveKeyRestoreOperation
       to: SelectiveKeyRestore
 
+  # Fix SASToken names
+  - rename-model: 
+      from: SASTokenParameter
+      to: SASTokenParameters
+  - from: swagger-document
+    where: $.definitions.RestoreOperationParameters.properties.sasTokenParameters
+    transform: $["x-ms-client-name"] = "SASTokenParameters"
+  - from: swagger-document
+    where: $.definitions.SelectiveKeyRestoreOperationParameters.properties.sasTokenParameters
+    transform: $["x-ms-client-name"] = "SASTokenParameters"
+
   # make SASToken parameter required
   - from: swagger-document
     where: $.paths["/backup"].post.parameters[0]
@@ -79,7 +90,7 @@ directive:
 
   # add doc comments for models with missing descriptions
   - from: swagger-document
-    where: $.definitions.SASTokenParameter
+    where: $.definitions.SASTokenParameters
     transform: $["description"] = "Contains the information required to access blob storage."
   - from: swagger-document
     where: $.definitions.RestoreOperationParameters

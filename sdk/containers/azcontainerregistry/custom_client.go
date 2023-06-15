@@ -9,7 +9,6 @@ package azcontainerregistry
 import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
@@ -31,7 +30,7 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 	}
 
 	if reflect.ValueOf(options.Cloud).IsZero() {
-		options.Cloud = cloud.AzurePublic
+		options.Cloud = defaultCloud
 	}
 	c, ok := options.Cloud.Services[ServiceName]
 	if !ok || c.Audience == "" {

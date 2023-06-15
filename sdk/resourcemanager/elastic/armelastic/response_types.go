@@ -156,3 +156,8 @@ type VMHostClientListResponse struct {
 type VMIngestionClientDetailsResponse struct {
 	VMIngestionDetailsResponse
 }
+
+// VersionsClientListResponse contains the response from method VersionsClient.NewListPager.
+type VersionsClientListResponse struct {
+	VersionsListResponse
+}

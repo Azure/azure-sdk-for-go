@@ -9,6 +9,7 @@ package azopenai
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 	"testing"
 
@@ -69,6 +70,30 @@ func TestClient_OpenAI(t *testing.T) {
 	require.NoError(t, err)
 
 	testGetChatCompletions(t, chatClient, "gpt-3.5-turbo")
+}
+
+func TestClient_OpenAI_InvalidModel(t *testing.T) {
+	if openAIKey == "" {
+		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
+	}
+
+	chatClient, err := NewClientForOpenAI(openAIEndpoint, KeyCredential{APIKey: openAIKey}, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	_, err = chatClient.GetChatCompletions(context.Background(), ChatCompletionsOptions{
+		Messages: []*ChatMessage{
+			{
+				Role:    to.Ptr(ChatRoleSystem),
+				Content: to.Ptr("hello"),
+			},
+		},
+		Model: to.Ptr("non-existent-model"),
+	}, nil)
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
+	require.Contains(t, respErr.Error(), "The model `non-existent-model` does not exist")
 }
 
 func testGetChatCompletions(t *testing.T, chatClient *Client, modelOrDeployment string) {

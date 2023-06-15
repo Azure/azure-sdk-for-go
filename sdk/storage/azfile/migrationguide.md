@@ -41,7 +41,7 @@ In `azfile` you use the constructor `NewClientWithNoCredential()` instead.
 client, err := file.NewClientWithNoCredential("<public file or file with SAS URL>", nil)
 ```
 
-## Listing files/containers
+## Listing files/directories
 
 In `azure-storage-file-go` you explicitly created a `Marker` type that was used to page over results ([example](https://pkg.go.dev/github.com/Azure/azure-storage-file-go/azfile?utm_source=godoc#example-package)).
 

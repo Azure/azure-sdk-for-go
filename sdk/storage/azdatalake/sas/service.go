@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
-// DatalakeSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
+// DatalakeSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage filesystem or path.
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // For more information on creating user delegation sas, see https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas
 type DatalakeSignatureValues struct {
@@ -24,12 +24,12 @@ type DatalakeSignatureValues struct {
 	Protocol             Protocol  `param:"spr"` // See the Protocol* constants
 	StartTime            time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime           time.Time `param:"se"`  // Not specified if IsZero
-	Permissions          string    `param:"sp"`  // Create by initializing ContainerPermissions or BlobPermissions and then call String()
+	Permissions          string    `param:"sp"`  // Create by initializing FilesystemPermissions, FilePermissions or DirectoryPermissions and then call String()
 	IPRange              IPRange   `param:"sip"`
 	Identifier           string    `param:"si"`
 	FilesystemName       string
-	FileName             string // Use "" to create a Filesystem SAS
-	Directory            string // Not nil for a directory SAS (ie sr=d)
+	FilePath             string // Use "" to create a Filesystem SAS
+	DirectoryPath        string // Not nil for a directory SAS (ie sr=d)
 	CacheControl         string // rscc
 	ContentDisposition   string // rscd
 	ContentEncoding      string // rsce
@@ -63,10 +63,10 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 	v.Permissions = perms.String()
 
 	resource := "c"
-	if v.Directory != "" {
+	if v.DirectoryPath != "" {
 		resource = "d"
-		v.FileName = ""
-	} else if v.FileName == "" {
+		v.FilePath = ""
+	} else if v.FilePath == "" {
 		// do nothing
 	} else {
 		resource = "b"
@@ -84,7 +84,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(sharedKeyCredential.AccountName(), v.FilesystemName, v.FileName, v.Directory),
+		getCanonicalName(sharedKeyCredential.AccountName(), v.FilesystemName, v.FilePath, v.DirectoryPath),
 		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -119,7 +119,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		contentEncoding:      v.ContentEncoding,
 		contentLanguage:      v.ContentLanguage,
 		contentType:          v.ContentType,
-		signedDirectoryDepth: getDirectoryDepth(v.Directory),
+		signedDirectoryDepth: getDirectoryDepth(v.DirectoryPath),
 		authorizedObjectID:   v.AuthorizedObjectID,
 		unauthorizedObjectID: v.UnauthorizedObjectID,
 		correlationID:        v.CorrelationID,
@@ -142,10 +142,10 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	// Parse the resource
 	resource := "c"
-	if v.Directory != "" {
+	if v.DirectoryPath != "" {
 		resource = "d"
-		v.FileName = ""
-	} else if v.FileName == "" {
+		v.FilePath = ""
+	} else if v.FilePath == "" {
 		// do nothing
 	} else {
 		resource = "b"
@@ -178,7 +178,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.FilesystemName, v.FileName, v.Directory),
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.FilesystemName, v.FilePath, v.DirectoryPath),
 		*udk.SignedOID,
 		*udk.SignedTID,
 		udkStart,
@@ -221,7 +221,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		contentEncoding:      v.ContentEncoding,
 		contentLanguage:      v.ContentLanguage,
 		contentType:          v.ContentType,
-		signedDirectoryDepth: getDirectoryDepth(v.Directory),
+		signedDirectoryDepth: getDirectoryDepth(v.DirectoryPath),
 		authorizedObjectID:   v.AuthorizedObjectID,
 		unauthorizedObjectID: v.UnauthorizedObjectID,
 		correlationID:        v.CorrelationID,

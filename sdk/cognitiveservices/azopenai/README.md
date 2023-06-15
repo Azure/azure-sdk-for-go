@@ -1,6 +1,8 @@
 # Azure OpenAI client module for Go
 
-The Azure OpenAI client module is used to ...
+Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on Azure resources.
+
+The Azure OpenAI client library for GO is an adaptation of OpenAI's REST APIs that provides an idiomatic interface and rich integration with the rest of the Azure SDK ecosystem.
 
 [Source code][azopenai_repo] | [Package (pkg.go.dev)][azopenai_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 

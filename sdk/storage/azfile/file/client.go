@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -40,9 +42,15 @@ type Client base.Client[generated.FileClient]
 // The directoryPath is optional in the fileURL. If omitted, it points to file within the specified share.
 func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	return (*Client)(base.NewFileClient(fileURL, pl, nil)), nil
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewFileClient(fileURL, azClient, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -54,10 +62,17 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	return (*Client)(base.NewFileClient(fileURL, pl, cred)), nil
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewFileClient(fileURL, azClient, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -104,8 +119,8 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().Create(ctx, fileContentLength, fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -130,8 +145,8 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts, fileHTTPHeaders, leaseAccessConditions)
+	fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -166,8 +181,8 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, opts, leaseAccessConditions := options.format(size)
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts, nil, leaseAccessConditions)
+	fileAttributes, opts, leaseAccessConditions := options.format(size)
+	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, nil, leaseAccessConditions)
 	return resp, err
 }
 

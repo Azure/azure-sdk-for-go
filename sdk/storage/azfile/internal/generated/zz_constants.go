@@ -12,19 +12,19 @@ package generated
 type CopyStatusType string
 
 const (
-	CopyStatusTypePending CopyStatusType = "pending"
-	CopyStatusTypeSuccess CopyStatusType = "success"
 	CopyStatusTypeAborted CopyStatusType = "aborted"
 	CopyStatusTypeFailed  CopyStatusType = "failed"
+	CopyStatusTypePending CopyStatusType = "pending"
+	CopyStatusTypeSuccess CopyStatusType = "success"
 )
 
 // PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
 func PossibleCopyStatusTypeValues() []CopyStatusType {
 	return []CopyStatusType{
-		CopyStatusTypePending,
-		CopyStatusTypeSuccess,
 		CopyStatusTypeAborted,
 		CopyStatusTypeFailed,
+		CopyStatusTypePending,
+		CopyStatusTypeSuccess,
 	}
 }
 
@@ -43,18 +43,33 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	}
 }
 
+type FileLastWrittenMode string
+
+const (
+	FileLastWrittenModeNow      FileLastWrittenMode = "Now"
+	FileLastWrittenModePreserve FileLastWrittenMode = "Preserve"
+)
+
+// PossibleFileLastWrittenModeValues returns the possible values for the FileLastWrittenMode const type.
+func PossibleFileLastWrittenModeValues() []FileLastWrittenMode {
+	return []FileLastWrittenMode{
+		FileLastWrittenModeNow,
+		FileLastWrittenModePreserve,
+	}
+}
+
 type FileRangeWriteType string
 
 const (
-	FileRangeWriteTypeUpdate FileRangeWriteType = "update"
 	FileRangeWriteTypeClear  FileRangeWriteType = "clear"
+	FileRangeWriteTypeUpdate FileRangeWriteType = "update"
 )
 
 // PossibleFileRangeWriteTypeValues returns the possible values for the FileRangeWriteType const type.
 func PossibleFileRangeWriteTypeValues() []FileRangeWriteType {
 	return []FileRangeWriteType{
-		FileRangeWriteTypeUpdate,
 		FileRangeWriteTypeClear,
+		FileRangeWriteTypeUpdate,
 	}
 }
 
@@ -62,15 +77,15 @@ func PossibleFileRangeWriteTypeValues() []FileRangeWriteType {
 type LeaseDurationType string
 
 const (
-	LeaseDurationTypeInfinite LeaseDurationType = "infinite"
 	LeaseDurationTypeFixed    LeaseDurationType = "fixed"
+	LeaseDurationTypeInfinite LeaseDurationType = "infinite"
 )
 
 // PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
 func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 	return []LeaseDurationType{
-		LeaseDurationTypeInfinite,
 		LeaseDurationTypeFixed,
+		LeaseDurationTypeInfinite,
 	}
 }
 
@@ -79,20 +94,20 @@ type LeaseStateType string
 
 const (
 	LeaseStateTypeAvailable LeaseStateType = "available"
-	LeaseStateTypeLeased    LeaseStateType = "leased"
-	LeaseStateTypeExpired   LeaseStateType = "expired"
 	LeaseStateTypeBreaking  LeaseStateType = "breaking"
 	LeaseStateTypeBroken    LeaseStateType = "broken"
+	LeaseStateTypeExpired   LeaseStateType = "expired"
+	LeaseStateTypeLeased    LeaseStateType = "leased"
 )
 
 // PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
 func PossibleLeaseStateTypeValues() []LeaseStateType {
 	return []LeaseStateType{
 		LeaseStateTypeAvailable,
-		LeaseStateTypeLeased,
-		LeaseStateTypeExpired,
 		LeaseStateTypeBreaking,
 		LeaseStateTypeBroken,
+		LeaseStateTypeExpired,
+		LeaseStateTypeLeased,
 	}
 }
 
@@ -115,51 +130,51 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListFilesIncludeType string
 
 const (
-	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = "Timestamps"
-	ListFilesIncludeTypeEtag          ListFilesIncludeType = "Etag"
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = "Attributes"
+	ListFilesIncludeTypeEtag          ListFilesIncludeType = "Etag"
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = "PermissionKey"
+	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = "Timestamps"
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return []ListFilesIncludeType{
-		ListFilesIncludeTypeTimestamps,
-		ListFilesIncludeTypeEtag,
 		ListFilesIncludeTypeAttributes,
+		ListFilesIncludeTypeEtag,
 		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypeTimestamps,
 	}
 }
 
 type ListSharesIncludeType string
 
 const (
-	ListSharesIncludeTypeSnapshots ListSharesIncludeType = "snapshots"
-	ListSharesIncludeTypeMetadata  ListSharesIncludeType = "metadata"
 	ListSharesIncludeTypeDeleted   ListSharesIncludeType = "deleted"
+	ListSharesIncludeTypeMetadata  ListSharesIncludeType = "metadata"
+	ListSharesIncludeTypeSnapshots ListSharesIncludeType = "snapshots"
 )
 
 // PossibleListSharesIncludeTypeValues returns the possible values for the ListSharesIncludeType const type.
 func PossibleListSharesIncludeTypeValues() []ListSharesIncludeType {
 	return []ListSharesIncludeType{
-		ListSharesIncludeTypeSnapshots,
-		ListSharesIncludeTypeMetadata,
 		ListSharesIncludeTypeDeleted,
+		ListSharesIncludeTypeMetadata,
+		ListSharesIncludeTypeSnapshots,
 	}
 }
 
 type PermissionCopyModeType string
 
 const (
-	PermissionCopyModeTypeSource   PermissionCopyModeType = "source"
 	PermissionCopyModeTypeOverride PermissionCopyModeType = "override"
+	PermissionCopyModeTypeSource   PermissionCopyModeType = "source"
 )
 
 // PossiblePermissionCopyModeTypeValues returns the possible values for the PermissionCopyModeType const type.
 func PossiblePermissionCopyModeTypeValues() []PermissionCopyModeType {
 	return []PermissionCopyModeType{
-		PermissionCopyModeTypeSource,
 		PermissionCopyModeTypeOverride,
+		PermissionCopyModeTypeSource,
 	}
 }
 
@@ -183,17 +198,30 @@ func PossibleShareAccessTierValues() []ShareAccessTier {
 type ShareRootSquash string
 
 const (
+	ShareRootSquashAllSquash    ShareRootSquash = "AllSquash"
 	ShareRootSquashNoRootSquash ShareRootSquash = "NoRootSquash"
 	ShareRootSquashRootSquash   ShareRootSquash = "RootSquash"
-	ShareRootSquashAllSquash    ShareRootSquash = "AllSquash"
 )
 
 // PossibleShareRootSquashValues returns the possible values for the ShareRootSquash const type.
 func PossibleShareRootSquashValues() []ShareRootSquash {
 	return []ShareRootSquash{
+		ShareRootSquashAllSquash,
 		ShareRootSquashNoRootSquash,
 		ShareRootSquashRootSquash,
-		ShareRootSquashAllSquash,
+	}
+}
+
+type ShareTokenIntent string
+
+const (
+	ShareTokenIntentBackup ShareTokenIntent = "backup"
+)
+
+// PossibleShareTokenIntentValues returns the possible values for the ShareTokenIntent const type.
+func PossibleShareTokenIntentValues() []ShareTokenIntent {
+	return []ShareTokenIntent{
+		ShareTokenIntentBackup,
 	}
 }
 

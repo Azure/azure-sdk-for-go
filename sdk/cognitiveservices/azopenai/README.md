@@ -1,6 +1,8 @@
 # Azure OpenAI client module for Go
 
-The Azure OpenAI client module is used to ...
+Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on Azure resources.
+
+The Azure OpenAI client library for GO is an adaptation of OpenAI's REST APIs that provides an idiomatic interface and rich integration with the rest of the Azure SDK ecosystem.
 
 [Source code][azopenai_repo] | [Package (pkg.go.dev)][azopenai_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 
@@ -9,7 +11,8 @@ The Azure OpenAI client module is used to ...
 ### Prerequisites
 
 * Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
-* Azure subscription - [Create a free account][azure_sub]
+* [Azure subscription][azure_sub]
+* [Azure OpenAI access][azure_openai_access]
 
 ### Install the packages
 
@@ -90,6 +93,7 @@ comments.
 <!-- LINKS -->
 <!-- https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/cognitiveservices/azopenai ->
 <!-- https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai -->
+[azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azopenai_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
 [azopenai_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity

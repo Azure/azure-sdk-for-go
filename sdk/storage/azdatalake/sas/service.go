@@ -94,6 +94,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		string(v.Protocol),
 		v.Version,
 		resource,
+		"",                   //snapshot not supported
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -196,6 +197,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		string(v.Protocol),
 		v.Version,
 		resource,
+		"",                   //snapshot not supported
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce

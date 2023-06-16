@@ -20,16 +20,20 @@ import (
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // For more information on creating user delegation sas, see https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas
 type DatalakeSignatureValues struct {
-	Version              string    `param:"sv"`  // If not specified, this defaults to Version
-	Protocol             Protocol  `param:"spr"` // See the Protocol* constants
-	StartTime            time.Time `param:"st"`  // Not specified if IsZero
-	ExpiryTime           time.Time `param:"se"`  // Not specified if IsZero
-	Permissions          string    `param:"sp"`  // Create by initializing FilesystemPermissions, FilePermissions or DirectoryPermissions and then call String()
-	IPRange              IPRange   `param:"sip"`
-	Identifier           string    `param:"si"`
-	FilesystemName       string
-	FilePath             string // Use "" to create a Filesystem SAS
-	DirectoryPath        string // Not nil for a directory SAS (ie sr=d)
+	Version        string    `param:"sv"`  // If not specified, this defaults to Version
+	Protocol       Protocol  `param:"spr"` // See the Protocol* constants
+	StartTime      time.Time `param:"st"`  // Not specified if IsZero
+	ExpiryTime     time.Time `param:"se"`  // Not specified if IsZero
+	Permissions    string    `param:"sp"`  // Create by initializing FilesystemPermissions, FilePermissions or DirectoryPermissions and then call String()
+	IPRange        IPRange   `param:"sip"`
+	Identifier     string    `param:"si"`
+	FilesystemName string
+	// Use "" to create a Filesystem SAS
+	// DirectoryPath will set this to "" if it is passed
+	FilePath string
+	// Not nil for a directory SAS (ie sr=d)
+	// Use "" to create a Filesystem SAS
+	DirectoryPath        string
 	CacheControl         string // rscc
 	ContentDisposition   string // rscd
 	ContentEncoding      string // rsce
@@ -330,16 +334,16 @@ func parseFilesystemPermissions(s string) (FilesystemPermissions, error) {
 	return p, nil
 }
 
-// FilePermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// PathPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
-type FilePermissions struct {
+type PathPermissions struct {
 	Read, Add, Create, Write, Delete, List, Move bool
 	Execute, Ownership, Permissions              bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
 // Call this method to set BlobSignatureValues' Permissions field.
-func (p *FilePermissions) String() string {
+func (p *PathPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
 		b.WriteRune('r')
@@ -375,8 +379,8 @@ func (p *FilePermissions) String() string {
 }
 
 // Parse initializes BlobPermissions' fields from a string.
-func parsePathPermissions(s string) (FilePermissions, error) {
-	p := FilePermissions{} // Clear the flags
+func parsePathPermissions(s string) (PathPermissions, error) {
+	p := PathPermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -400,7 +404,7 @@ func parsePathPermissions(s string) (FilePermissions, error) {
 		case 'p':
 			p.Permissions = true
 		default:
-			return FilePermissions{}, fmt.Errorf("invalid permission: '%v'", r)
+			return PathPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return p, nil

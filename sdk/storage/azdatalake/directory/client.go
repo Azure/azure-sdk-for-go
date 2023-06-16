@@ -26,8 +26,8 @@ type DirectoryClient base.Client[generated.PathClient]
 
 type Client struct {
 	*DirectoryClient
-	blobClient                 *blob.Client
-	fileClientWithBlobEndpoint *DirectoryClient
+	blobClient                      *blob.Client
+	directoryClientWithBlobEndpoint *DirectoryClient
 }
 
 //TODO: NewClient()

@@ -6,12 +6,25 @@
 
 package generated
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 func (client *PathClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *PathClient) Pipeline() runtime.Pipeline {
-	return client.internal.Pipeline()
+func (client *PathClient) InternalClient() *azcore.Client {
+	return client.internal
+}
+
+// NewPathClient creates a new instance of ServiceClient with the specified values.
+//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
+func NewPathClient(endpoint string, azClient *azcore.Client) *PathClient {
+	client := &PathClient{
+		internal: azClient,
+		endpoint: endpoint,
+	}
+	return client
 }

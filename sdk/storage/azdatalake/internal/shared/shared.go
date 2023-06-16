@@ -25,6 +25,13 @@ const (
 )
 
 const (
+	ServiceClient    = "azdatalake/service.Client"
+	FilesystemClient = "azdatalake/share.Client"
+	DirectoryClient  = "azdatalake/directory.Client"
+	FileClient       = "azdatalake/file.Client"
+)
+
+const (
 	HeaderAuthorization     = "Authorization"
 	HeaderXmsDate           = "x-ms-date"
 	HeaderContentLength     = "Content-Length"

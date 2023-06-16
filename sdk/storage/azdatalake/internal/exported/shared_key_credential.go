@@ -28,7 +28,7 @@ import (
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCredential, error) {
-	c := SharedKeyCredential{accountName: accountName}
+	c := SharedKeyCredential{accountName: accountName, accountKeyString: accountKey}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err
 	}
@@ -38,13 +38,19 @@ func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCr
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential struct {
 	// Only the NewSharedKeyCredential method should set these; all other methods should treat them as read-only
-	accountName string
-	accountKey  atomic.Value // []byte
+	accountName      string
+	accountKey       atomic.Value // []byte
+	accountKeyString string
 }
 
 // AccountName returns the Storage account's name.
 func (c *SharedKeyCredential) AccountName() string {
 	return c.accountName
+}
+
+// AccountKey returns the Storage account's name.
+func (c *SharedKeyCredential) AccountKey() string {
+	return c.accountKeyString
 }
 
 // SetAccountKey replaces the existing account key with the specified account key.

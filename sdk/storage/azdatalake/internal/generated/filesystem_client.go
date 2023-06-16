@@ -7,17 +7,24 @@
 package generated
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"time"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func (client *FileSystemClient) Endpoint() string {
 	return client.endpoint
 }
 
-func (client *FileSystemClient) Pipeline() runtime.Pipeline {
-	return client.internal.Pipeline()
+func (client *FileSystemClient) InternalClient() *azcore.Client {
+	return client.internal
 }
 
-// used to convert times from UTC to GMT before sending across the wire
-var gmt = time.FixedZone("GMT", 0)
+// NewFilesystemClient creates a new instance of ServiceClient with the specified values.
+//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
+func NewFilesystemClient(endpoint string, azClient *azcore.Client) *FileSystemClient {
+	client := &FileSystemClient{
+		internal: azClient,
+		endpoint: endpoint,
+	}
+	return client
+}

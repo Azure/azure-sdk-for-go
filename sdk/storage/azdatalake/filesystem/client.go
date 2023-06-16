@@ -60,7 +60,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
+//   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {

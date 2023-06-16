@@ -8,7 +8,11 @@ package generated
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
 )
+
+// used to convert times from UTC to GMT before sending across the wire
+var gmt = time.FixedZone("GMT", 0)
 
 func (client *FileSystemClient) Endpoint() string {
 	return client.endpoint

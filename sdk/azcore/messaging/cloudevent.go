@@ -128,6 +128,7 @@ func NewCloudEvent(source string, eventType string, data any, options *CloudEven
 	return ce, nil
 }
 
+// MarshalJSON implements the json.Marshaler interface for CloudEvent.
 func (ce CloudEvent) MarshalJSON() ([]byte, error) {
 	m := map[string]any{
 		"id":          ce.ID,
@@ -181,6 +182,7 @@ func getValue[T any](k string, rawV any, dest *T) error {
 	return nil
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface for CloudEvent.
 func (ce *CloudEvent) UnmarshalJSON(data []byte) error {
 	var m map[string]json.RawMessage
 
@@ -189,7 +191,7 @@ func (ce *CloudEvent) UnmarshalJSON(data []byte) error {
 	}
 
 	for k, raw := range m {
-		if err := doThis(ce, k, raw); err != nil {
+		if err := updateFieldFromValue(ce, k, raw); err != nil {
 			return fmt.Errorf("failed to deserialize %q: %w", k, err)
 		}
 	}
@@ -197,7 +199,7 @@ func (ce *CloudEvent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func doThis(ce *CloudEvent, k string, raw json.RawMessage) error {
+func updateFieldFromValue(ce *CloudEvent, k string, raw json.RawMessage) error {
 	switch k {
 	//
 	// required attributes

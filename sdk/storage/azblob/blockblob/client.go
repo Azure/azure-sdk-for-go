@@ -44,7 +44,6 @@ type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(shared.BlockBlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -76,7 +75,6 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
 	azClient, err := azcore.NewClient(shared.BlockBlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)

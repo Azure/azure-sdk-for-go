@@ -50,7 +50,7 @@ const (
 	BlockBlobClient  = "azblob/blockblob.Client"
 	ContainerClient  = "azblob/container.Client"
 	PageBlobClient   = "azblob/pageblob.Client"
-	ServiceClient    = "service.Client"
+	ServiceClient    = "azblob/service.Client"
 )
 
 var CRC64Table = crc64.MakeTable(crc64Polynomial)

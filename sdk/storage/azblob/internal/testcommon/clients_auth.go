@@ -237,12 +237,10 @@ func CreateNewBlobs(ctx context.Context, _require *require.Assertions, blobNames
 }
 
 func CreateNewBlobsListTier(ctx context.Context, _require *require.Assertions, blobNames []string, containerClient *container.Client, tier *blob.AccessTier) {
-	var bbClientList []*blockblob.Client
 	for _, blobName := range blobNames {
 		bbClient := CreateNewBlockBlob(ctx, _require, blobName, containerClient)
 		_, err := bbClient.SetTier(ctx, *tier, nil)
 		_require.NoError(err)
-		bbClientList = append(bbClientList, bbClient)
 	}
 }
 

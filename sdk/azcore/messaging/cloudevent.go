@@ -8,6 +8,7 @@ package messaging
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -94,6 +95,14 @@ type CloudEventOptions struct {
 //   - data - data to be added to the event. Can be a []byte, or any JSON serializable type, or nil.
 //   - options - additional fields that are not required.
 func NewCloudEvent(source string, eventType string, data any, options *CloudEventOptions) (CloudEvent, error) {
+	if source == "" {
+		return CloudEvent{}, errors.New("source cannot be empty")
+	}
+
+	if eventType == "" {
+		return CloudEvent{}, errors.New("eventType cannot be empty")
+	}
+
 	id, err := uuid.New()
 
 	if err != nil {
@@ -116,9 +125,7 @@ func NewCloudEvent(source string, eventType string, data any, options *CloudEven
 		ce.Extensions = options.Extensions
 		ce.Subject = options.Subject
 
-		if options.Time != nil {
-			ce.Time = options.Time
-		}
+		ce.Time = options.Time
 	}
 
 	if ce.Time == nil {
@@ -194,6 +201,22 @@ func (ce *CloudEvent) UnmarshalJSON(data []byte) error {
 		if err := updateFieldFromValue(ce, k, raw); err != nil {
 			return fmt.Errorf("failed to deserialize %q: %w", k, err)
 		}
+	}
+
+	if ce.ID == "" {
+		return errors.New("required field 'id' was not present, or was empty")
+	}
+
+	if ce.Source == "" {
+		return errors.New("required field 'source' was not present, or was empty")
+	}
+
+	if ce.SpecVersion == "" {
+		return errors.New("required field 'specversion' was not present, or was empty")
+	}
+
+	if ce.Type == "" {
+		return errors.New("required field 'type' was not present, or was empty")
 	}
 
 	return nil

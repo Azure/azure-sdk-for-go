@@ -162,7 +162,16 @@ func TestCloudEventUnmarshalInvalidEvents(t *testing.T) {
 	var ce *CloudEvent
 
 	err := json.Unmarshal([]byte("{}"), &ce)
-	require.NoError(t, err)
+	require.EqualError(t, err, "required field 'id' was not present, or was empty")
+
+	err = json.Unmarshal([]byte(`{"id": "hello"}`), &ce)
+	require.EqualError(t, err, "required field 'source' was not present, or was empty")
+
+	err = json.Unmarshal([]byte(`{"id": "hello", "source": "hello"}`), &ce)
+	require.EqualError(t, err, "required field 'specversion' was not present, or was empty")
+
+	err = json.Unmarshal([]byte(`{"id": "hello", "source": "hello", "specversion": "1.0"}`), &ce)
+	require.EqualError(t, err, "required field 'type' was not present, or was empty")
 
 	err = json.Unmarshal([]byte("invalid-json"), &ce)
 	require.EqualError(t, err, "invalid character 'i' looking for beginning of value")
@@ -195,6 +204,16 @@ func TestGetValue(t *testing.T) {
 	// and that's not what the rawValue would be.
 	var ps *string
 	require.EqualError(t, getValue("k", "hello", &ps), `field "k" is a string, but should be *string`)
+}
+
+func TestInvalidCloudEvent(t *testing.T) {
+	ce, err := NewCloudEvent("", "eventType", nil, nil)
+	require.Empty(t, ce)
+	require.EqualError(t, err, "source cannot be empty")
+
+	ce, err = NewCloudEvent("source", "", nil, nil)
+	require.Empty(t, ce)
+	require.EqualError(t, err, "eventType cannot be empty")
 }
 
 func roundTrip(t *testing.T, ce CloudEvent) *CloudEvent {

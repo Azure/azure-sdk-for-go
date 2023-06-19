@@ -74,6 +74,10 @@ func ExampleClient_GetCompletionsStream() {
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
 
+	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+		return
+	}
+
 	keyCredential := azopenai.KeyCredential{
 		APIKey: azureOpenAIKey,
 	}

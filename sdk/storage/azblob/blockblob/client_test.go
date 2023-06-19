@@ -4857,6 +4857,41 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadFromReader() {
 	}
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWithGeneratedCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	var largeBlockSize, numberOfBlocks int64 = 2500 * 1024 * 1024, 2
+	_, sourceData := testcommon.GetDataAndReader(testName, int(numberOfBlocks*largeBlockSize))
+	// rsc := streaming.NopCloser(r)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	_, err = bbClient.UploadBuffer(context.Background(), sourceData, &blockblob.UploadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
+		BlockSize:               largeBlockSize,
+		Concurrency:             2,
+	})
+	_require.Nil(err)
+
+	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
+	committed := resp.BlockList.CommittedBlocks
+	_require.Equal(*(committed[0].Size), largeBlockSize)
+	_require.Equal(*(committed[1].Size), largeBlockSize)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

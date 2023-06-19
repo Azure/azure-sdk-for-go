@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -36,7 +37,10 @@ type Client struct {
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client, error) {
+	blobURL := strings.Replace(fileURL, ".dfs.", ".blob.", 1)
+	fileURL = strings.Replace(fileURL, ".blob.", ".dfs.", 1)
+
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -46,15 +50,17 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
-	fileClient := base.NewPathClient(serviceURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClientWithBlobEndpoint := base.NewPathClient(blobURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobClient, _ := blob.NewClientWithNoCredential(serviceURL, &blobClientOpts)
+	blobClient, _ := blob.NewClientWithNoCredential(blobURL, &blobClientOpts)
 
 	return &Client{
-		FileClient: (*FileClient)(fileClient),
-		blobClient: blobClient,
+		FileClient:                 (*FileClient)(fileClient),
+		blobClient:                 blobClient,
+		fileClientWithBlobEndpoint: (*FileClient)(fileClientWithBlobEndpoint),
 	}, nil
 }
 
@@ -62,7 +68,10 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+	blobURL := strings.Replace(fileURL, ".dfs.", ".blob.", 1)
+	fileURL = strings.Replace(fileURL, ".blob.", ".dfs.", 1)
+
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -75,16 +84,18 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
-	fileClient := base.NewPathClient(serviceURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	fileClientWithBlobEndpoint := base.NewPathClient(blobURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobClient, _ := blob.NewClientWithSharedKeyCredential(serviceURL, blobSharedKeyCredential, &blobClientOpts)
+	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKeyCredential, &blobClientOpts)
 
 	return &Client{
-		FileClient: (*FileClient)(fileClient),
-		blobClient: blobClient,
+		FileClient:                 (*FileClient)(fileClient),
+		blobClient:                 blobClient,
+		fileClientWithBlobEndpoint: (*FileClient)(fileClientWithBlobEndpoint),
 	}, nil
 }
 

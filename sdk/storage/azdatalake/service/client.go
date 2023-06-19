@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -32,18 +33,13 @@ type Client struct {
 	serviceClientWithBlobEndpoint *ServiceClient
 }
 
-func convertDFSToBlob() {
-
-}
-
-func convertBlobToDFS() {
-
-}
-
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
+	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -53,15 +49,16 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
-	svcClient := base.NewServiceClient(serviceURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	svcClient := base.NewServiceClient(datalakeServiceURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	svcClientWithBlobEndpoint := base.NewServiceClient(blobServiceURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSvcClient, _ := service.NewClientWithNoCredential(serviceURL, &blobServiceClientOpts)
-
+	blobSvcClient, _ := service.NewClientWithNoCredential(blobServiceURL, &blobServiceClientOpts)
 	return &Client{
-		ServiceClient:     (*ServiceClient)(svcClient),
-		blobServiceClient: blobSvcClient,
+		ServiceClient:                 (*ServiceClient)(svcClient),
+		blobServiceClient:             blobSvcClient,
+		serviceClientWithBlobEndpoint: (*ServiceClient)(svcClientWithBlobEndpoint),
 	}, nil
 }
 
@@ -70,6 +67,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
+	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -82,16 +82,18 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
-	svcClient := base.NewServiceClient(serviceURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	svcClient := base.NewServiceClient(datalakeServiceURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	svcClientWithBlobEndpoint := base.NewServiceClient(blobServiceURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(serviceURL, blobSharedKeyCredential, &blobServiceClientOpts)
+	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKeyCredential, &blobServiceClientOpts)
 
 	return &Client{
-		ServiceClient:     (*ServiceClient)(svcClient),
-		blobServiceClient: blobSvcClient,
+		ServiceClient:                 (*ServiceClient)(svcClient),
+		blobServiceClient:             blobSvcClient,
+		serviceClientWithBlobEndpoint: (*ServiceClient)(svcClientWithBlobEndpoint),
 	}, nil
 }
 

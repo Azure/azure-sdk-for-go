@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -37,7 +38,10 @@ type Client struct {
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*Client, error) {
+	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
+	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -47,15 +51,17 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
-	fsClient := base.NewFilesystemClient(serviceURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFilesystemClient(filesystemURL, azClient, nil, (*base.ClientOptions)(conOptions))
+	fsClientWithBlobEndpoint := base.NewFilesystemClient(containerURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobContainerClient, _ := container.NewClientWithNoCredential(serviceURL, &containerClientOpts)
+	blobContainerClient, _ := container.NewClientWithNoCredential(containerURL, &containerClientOpts)
 
 	return &Client{
-		FilesystemClient: (*FilesystemClient)(fsClient),
-		containerClient:  blobContainerClient,
+		FilesystemClient:                 (*FilesystemClient)(fsClient),
+		containerClient:                  blobContainerClient,
+		filesystemClientWithBlobEndpoint: (*FilesystemClient)(fsClientWithBlobEndpoint),
 	}, nil
 }
 
@@ -63,7 +69,10 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
+	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -76,16 +85,18 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
-	fsClient := base.NewFilesystemClient(serviceURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFilesystemClient(filesystemURL, azClient, cred, (*base.ClientOptions)(conOptions))
+	fsClientWithBlobEndpoint := base.NewFilesystemClient(containerURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(serviceURL, blobSharedKeyCredential, &containerClientOpts)
+	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKeyCredential, &containerClientOpts)
 
 	return &Client{
-		FilesystemClient: (*FilesystemClient)(fsClient),
-		containerClient:  blobContainerClient,
+		FilesystemClient:                 (*FilesystemClient)(fsClient),
+		containerClient:                  blobContainerClient,
+		filesystemClientWithBlobEndpoint: (*FilesystemClient)(fsClientWithBlobEndpoint),
 	}, nil
 }
 

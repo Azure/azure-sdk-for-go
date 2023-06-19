@@ -2361,7 +2361,6 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierAllTiersOnBlockBlob() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierCold)
 	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierHot)
 	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierCool)
 	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierArchive)

@@ -69,7 +69,7 @@ func ExampleNewClientWithKeyCredential() {
 
 func ExampleClient_GetCompletionsStream() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_STREAMING_MODEL")
+	modelDeploymentID := os.Getenv("AOAI_STREAMING_MODEL_DEPLOYMENT")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")

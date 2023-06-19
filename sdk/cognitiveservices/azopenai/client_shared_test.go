@@ -16,8 +16,10 @@ import (
 )
 
 var (
-	endpoint       string
-	apiKey         string
+	endpoint                 string
+	apiKey                   string
+	streamingModelDeployment string
+
 	openAIKey      string
 	openAIEndpoint string
 )
@@ -45,8 +47,11 @@ func init() {
 		}
 
 		apiKey = os.Getenv("AOAI_API_KEY")
-		openAIKey = os.Getenv("OPENAI_API_KEY")
 
+		// Ex: text-davinci-003
+		streamingModelDeployment = os.Getenv("AOAI_STREAMING_MODEL_DEPLOYMENT")
+
+		openAIKey = os.Getenv("OPENAI_API_KEY")
 		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
 
 		if !strings.HasSuffix(openAIEndpoint, "/") {

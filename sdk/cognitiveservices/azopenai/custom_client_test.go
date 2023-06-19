@@ -82,8 +82,8 @@ func TestClient_GetCompletionsStream(t *testing.T) {
 		Temperature: to.Ptr(float32(0.0)),
 	}
 	cred := KeyCredential{APIKey: apiKey}
-	deploymentID := "text-davinci-003"
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+
+	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
 	if err != nil {
 		t.Errorf("NewClientWithKeyCredential() error = %v", err)
 		return

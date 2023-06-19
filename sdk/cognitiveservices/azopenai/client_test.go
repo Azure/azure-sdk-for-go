@@ -198,8 +198,7 @@ func TestClient_GetCompletions(t *testing.T) {
 		options      *GetCompletionsOptions
 	}
 	cred := KeyCredential{APIKey: apiKey}
-	deploymentID := "text-davinci-003"
-	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
@@ -215,7 +214,7 @@ func TestClient_GetCompletions(t *testing.T) {
 			client: client,
 			args: args{
 				ctx:          context.TODO(),
-				deploymentID: deploymentID,
+				deploymentID: streamingModelDeployment,
 				body: CompletionsOptions{
 					Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
 					MaxTokens:   to.Ptr(int32(2048 - 127)),

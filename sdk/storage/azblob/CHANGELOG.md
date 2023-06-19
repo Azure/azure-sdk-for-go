@@ -3,7 +3,7 @@
 ## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
-* Added `AccessTierCold`.
+* Added support for [Cold tier](https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview?tabs=azure-portal).
 
 ### Breaking Changes
 

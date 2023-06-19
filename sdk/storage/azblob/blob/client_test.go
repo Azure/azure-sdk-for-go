@@ -3274,38 +3274,6 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	return nil
 }*/
 
-// //func (s *BlobRecordedTestsSuite) TestBlobTierInferred() {
-// //	svcClient, err := getPremiumserviceClient()
-// //	if err != nil {
-// //		c.Skip(err.Error())
-// //	}
-// //
-// //	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-// //	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-// //	bbClient, _ := createNewPageBlob(c, containerClient)
-// //
-// //	resp, err := bbClient.GetProperties(context.Background(), nil)
-// //	_require.Nil(err)
-// //	_assert(resp.AccessTierInferred(), chk.Equals, "true")
-// //
-// //	resp2, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-// //	_require.Nil(err)
-// //	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
-// //	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
-// //
-// //	_, err = bbClient.SetTier(ctx, AccessTierP4, LeaseAccessConditions{})
-// //	_require.Nil(err)
-// //
-// //	resp, err = bbClient.GetProperties(context.Background(), nil)
-// //	_require.Nil(err)
-// //	_assert(resp.AccessTierInferred(), chk.Equals, "")
-// //
-// //	resp2, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
-// //	_require.Nil(err)
-// //	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
-// //}
-// //
-
 func (s *BlobRecordedTestsSuite) TestBlobSetTierInvalidAndValid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

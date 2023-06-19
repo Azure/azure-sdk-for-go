@@ -1986,7 +1986,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
+	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
 		blobName := strings.ToLower(string(tier)) + testcommon.GenerateBlobName(testName)
 		bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 

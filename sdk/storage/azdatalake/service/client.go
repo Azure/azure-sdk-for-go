@@ -35,7 +35,7 @@ type Client struct {
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
-//   - options - client options; pass nil to accept the default values
+//   - options - client options; pass nil to accept the default values.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
 	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)

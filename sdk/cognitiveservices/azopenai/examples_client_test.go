@@ -4,6 +4,13 @@
 package azopenai_test
 
 import (
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 )
@@ -58,4 +65,52 @@ func ExampleNewClientWithKeyCredential() {
 	}
 
 	_ = client
+}
+
+func ExampleClient_GetCompletionsStream() {
+	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	modelDeploymentID := os.Getenv("AOAI_STREAMING_MODEL")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+
+	keyCredential := azopenai.KeyCredential{
+		APIKey: azureOpenAIKey,
+	}
+
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
+		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
+		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		Temperature: to.Ptr(float32(0.0)),
+	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for {
+		entry, err := resp.CompletionsStream.Read()
+
+		if errors.Is(err, io.EOF) {
+			fmt.Printf("More more completions")
+			break
+		}
+
+		if err != nil {
+			panic(err)
+		}
+
+		for _, choice := range entry.Choices {
+			fmt.Printf("%s", *choice.Text)
+		}
+	}
+
+	// Output:
+	// Azure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models.More more completions
 }

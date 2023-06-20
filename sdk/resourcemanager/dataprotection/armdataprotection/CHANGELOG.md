@@ -1,5 +1,23 @@
 # Release History
 
+## 2.2.0 (2023-06-23)
+### Features Added
+
+- New function `*ClientFactory.NewDppResourceGuardProxyClient() *DppResourceGuardProxyClient`
+- New function `NewDppResourceGuardProxyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DppResourceGuardProxyClient, error)`
+- New function `*DppResourceGuardProxyClient.CreateOrUpdate(context.Context, string, string, string, ResourceGuardProxyBaseResource, *DppResourceGuardProxyClientCreateOrUpdateOptions) (DppResourceGuardProxyClientCreateOrUpdateResponse, error)`
+- New function `*DppResourceGuardProxyClient.Delete(context.Context, string, string, string, *DppResourceGuardProxyClientDeleteOptions) (DppResourceGuardProxyClientDeleteResponse, error)`
+- New function `*DppResourceGuardProxyClient.Get(context.Context, string, string, string, *DppResourceGuardProxyClientGetOptions) (DppResourceGuardProxyClientGetResponse, error)`
+- New function `*DppResourceGuardProxyClient.NewListPager(string, string, *DppResourceGuardProxyClientListOptions) *runtime.Pager[DppResourceGuardProxyClientListResponse]`
+- New function `*DppResourceGuardProxyClient.UnlockDelete(context.Context, string, string, string, UnlockDeleteRequest, *DppResourceGuardProxyClientUnlockDeleteOptions) (DppResourceGuardProxyClientUnlockDeleteResponse, error)`
+- New struct `ResourceGuardOperationDetail`
+- New struct `ResourceGuardProxyBase`
+- New struct `ResourceGuardProxyBaseResource`
+- New struct `ResourceGuardProxyBaseResourceList`
+- New struct `UnlockDeleteRequest`
+- New struct `UnlockDeleteResponse`
+
+
 ## 2.1.1 (2023-04-14)
 ### Bug Fixes
 

@@ -14,8 +14,19 @@ import (
 
 // KeyCredential is used when doing APIKey-based authentication.
 type KeyCredential struct {
-	// APIKey is the api key for the client.
-	APIKey string
+	// apiKey is the api key for the client.
+	apiKey string
+}
+
+// KeyCredentialOptions contains the optional parameters for the [NewKeyCredential] method.
+type KeyCredentialOptions struct {
+	// For future expansion
+}
+
+// NewKeyCredential creates a KeyCredential containing an API key for
+// either Azure OpenAI or OpenAI.
+func NewKeyCredential(apiKey string, options *KeyCredentialOptions) (KeyCredential, error) {
+	return KeyCredential{apiKey: apiKey}, nil
 }
 
 // apiKeyPolicy authorizes requests with an API key acquired from a KeyCredential.
@@ -35,6 +46,6 @@ func newAPIKeyPolicy(cred KeyCredential, header string) *apiKeyPolicy {
 
 // Do returns a function which authorizes req with a token from the policy's credential
 func (b *apiKeyPolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Set(b.header, b.cred.APIKey)
+	req.Raw().Header.Set(b.header, b.cred.apiKey)
 	return req.Next()
 }

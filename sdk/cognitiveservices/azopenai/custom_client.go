@@ -104,7 +104,7 @@ func newOpenAIPolicy(cred KeyCredential) *openAIPolicy {
 func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	q := req.Raw().URL.Query()
 	q.Del("api-version")
-	req.Raw().Header.Set("authorization", "Bearer "+b.cred.APIKey)
+	req.Raw().Header.Set("authorization", "Bearer "+b.cred.apiKey)
 	return req.Next()
 }
 

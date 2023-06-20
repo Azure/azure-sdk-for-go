@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewClient(t *testing.T) {
@@ -78,10 +79,12 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 func TestClient_GetCompletionsStream(t *testing.T) {
 	body := CompletionsOptions{
 		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
 	}
-	cred := KeyCredential{APIKey: apiKey}
+
+	cred, err := NewKeyCredential(apiKey, nil)
+	require.NoError(t, err)
 
 	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
 	if err != nil {

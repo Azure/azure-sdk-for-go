@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -23,7 +24,9 @@ func TestNewAPIKeyPolicy(t *testing.T) {
 		header string
 		cred   KeyCredential
 	}
-	simpleCred := KeyCredential{APIKey: "apiKey"}
+	simpleCred, err := NewKeyCredential("apiKey", nil)
+	require.NoError(t, err)
+
 	simpleHeader := "headerName"
 	tests := []struct {
 		name string
@@ -55,9 +58,10 @@ func TestAPIKeyPolicy_Success(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred := KeyCredential{
-		APIKey: "secret",
-	}
+
+	cred, err := NewKeyCredential("secret", nil)
+	require.NoError(t, err)
+
 	authPolicy := newAPIKeyPolicy(cred, "api-key")
 	pipeline := runtime.NewPipeline(
 		"testmodule",

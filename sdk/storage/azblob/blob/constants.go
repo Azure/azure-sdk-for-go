@@ -53,6 +53,7 @@ type AccessTier = generated.AccessTier
 const (
 	AccessTierArchive AccessTier = generated.AccessTierArchive
 	AccessTierCool    AccessTier = generated.AccessTierCool
+	AccessTierCold    AccessTier = generated.AccessTierCold
 	AccessTierHot     AccessTier = generated.AccessTierHot
 	AccessTierP10     AccessTier = generated.AccessTierP10
 	AccessTierP15     AccessTier = generated.AccessTierP15

@@ -47,7 +47,7 @@ func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.Toke
 // Delete - Unregisters the given container from your Recovery Services vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - identityName - Name of the protection container to unregister.
@@ -92,7 +92,7 @@ func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

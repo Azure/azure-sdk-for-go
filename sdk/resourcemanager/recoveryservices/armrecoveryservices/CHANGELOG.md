@@ -1,5 +1,14 @@
 # Release History
 
+## 1.4.0 (2023-06-23)
+### Features Added
+
+- New enum type `CrossSubscriptionRestoreState` with values `CrossSubscriptionRestoreStateDisabled`, `CrossSubscriptionRestoreStateEnabled`, `CrossSubscriptionRestoreStatePermanentlyDisabled`
+- New struct `CrossSubscriptionRestoreSettings`
+- New struct `RestoreSettings`
+- New field `RestoreSettings` in struct `VaultProperties`
+
+
 ## 1.3.1 (2023-04-14)
 ### Bug Fixes
 

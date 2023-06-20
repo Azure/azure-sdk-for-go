@@ -46,7 +46,7 @@ func NewTrustedAccessRoleBindingsClient(subscriptionID string, credential azcore
 // CreateOrUpdate - Create or update a trusted access role binding
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-02-preview
+// Generated from API version 2023-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -67,7 +67,7 @@ func (client *TrustedAccessRoleBindingsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return TrustedAccessRoleBindingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return TrustedAccessRoleBindingsClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +99,7 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-02-preview")
+	reqQP.Set("api-version", "2023-05-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, trustedAccessRoleBinding); err != nil {
@@ -120,7 +120,7 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateHandleResponse(resp
 // Delete - Delete a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-02-preview
+// Generated from API version 2023-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -171,7 +171,7 @@ func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-02-preview")
+	reqQP.Set("api-version", "2023-05-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +180,7 @@ func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.C
 // Get - Get a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-02-preview
+// Generated from API version 2023-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -232,7 +232,7 @@ func (client *TrustedAccessRoleBindingsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-02-preview")
+	reqQP.Set("api-version", "2023-05-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,7 +249,7 @@ func (client *TrustedAccessRoleBindingsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List trusted access role bindings.
 //
-// Generated from API version 2023-04-02-preview
+// Generated from API version 2023-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - TrustedAccessRoleBindingsClientListOptions contains the optional parameters for the TrustedAccessRoleBindingsClient.NewListPager
@@ -304,7 +304,7 @@ func (client *TrustedAccessRoleBindingsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-02-preview")
+	reqQP.Set("api-version", "2023-05-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

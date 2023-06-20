@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2023-06-20)
+## 2.0.0-beta.1 (2023-06-23)
 ### Breaking Changes
 
 - Function `*ServerDevOpsAuditSettingsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ServerDevOpsAuditingSettings, *ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, DevOpsAuditingSettingsName, ServerDevOpsAuditingSettings, *ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions)`

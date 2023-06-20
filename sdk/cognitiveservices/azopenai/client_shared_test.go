@@ -34,6 +34,7 @@ func init() {
 		apiKey = fakeAPIKey
 		openAIKey = fakeAPIKey
 		openAIEndpoint = fakeEndpoint
+		streamingModelDeployment = "text-davinci-003"
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)

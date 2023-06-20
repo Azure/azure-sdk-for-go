@@ -25,15 +25,6 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/PublishCloudEvents\(/g, "internalPublishCloudEvents(");
-  # make sure the casing of the properties is what compliant.
-  # - from: swagger-document
-  #   where: $.definitions.CloudEvent.properties.data
-  #   transform: > 
-  #     $["type"] = "array"
-  # - from: swagger-document
-  #   where: $.definitions.CloudEvent.properties.data
-  #   transform: > 
-  #     $["items"] = {"type": "byte"}
   - from: swagger-document
     where: $.definitions.CloudEvent.properties.specversion
     transform: $["x-ms-client-name"] = "SpecVersion"
@@ -54,11 +45,25 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+  # replace references to the "generated" CloudEvent to the actual version in azcore/messaging
   - from:
       - client.go
       - models.go
-      - models_serde.go
       - response_types.go
     where: $
-    transform: return $.replace(/AzureCoreFoundations/g, "");
+    transform: return $.replace(/\*CloudEvent/g, "messaging.CloudEvent");
+
+  # delete some models that we don't need.
+  - from:
+      - models.go
+    where: $
+    transform: return $.replace(/\/\/ (AzureCoreFoundation|CloudEvent).+?\n}/sg, "");    
+  - from:
+      - models_serde.go
+    where: $
+    transform: return $.replace(/\/\/ MarshalJSON implements the json\.Marshaller interface for type (AzureCoreFoundation|CloudEvent).+?\n}/sg, "");    
+  - from:
+      - models_serde.go
+    where: $
+    transform: return $.replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type (AzureCoreFoundation|CloudEvent).+?\n}/sg, "");
 ```

@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.18
 // +build go1.18
 
@@ -14,9 +12,10 @@ package azeventgrid
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AcknowledgeOptions.
@@ -77,107 +76,6 @@ func (a *AcknowledgeResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Error.
-func (a Error) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "details", a.Details)
-	populate(objectMap, "innererror", a.Innererror)
-	populate(objectMap, "message", a.Message)
-	populate(objectMap, "target", a.Target)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Error.
-func (a *Error) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
-		case "details":
-			err = unpopulate(val, "Details", &a.Details)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, "Message", &a.Message)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, "Target", &a.Target)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (a ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "error", a.Error)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
-func (a *ErrorResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, "Error", &a.Error)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InnerError.
-func (a InnerError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", a.Code)
-	populate(objectMap, "innererror", a.Innererror)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InnerError.
-func (a *InnerError) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &a.Code)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &a.Innererror)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type BrokerProperties.
 func (b BrokerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -204,69 +102,6 @@ func (b *BrokerProperties) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", b, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudEvent.
-func (c CloudEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populateAny(objectMap, "data", c.Data)
-	populateByteArray(objectMap, "data_base64", c.DataBase64, runtime.Base64StdFormat)
-	populate(objectMap, "datacontenttype", c.DataContentType)
-	populate(objectMap, "dataschema", c.DataSchema)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "source", c.Source)
-	populate(objectMap, "specversion", c.SpecVersion)
-	populate(objectMap, "subject", c.Subject)
-	populateTimeRFC3339(objectMap, "time", c.Time)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEvent.
-func (c *CloudEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "data":
-			err = unpopulate(val, "Data", &c.Data)
-			delete(rawMsg, key)
-		case "data_base64":
-			err = runtime.DecodeByteArray(string(val), &c.DataBase64, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "datacontenttype":
-			err = unpopulate(val, "DataContentType", &c.DataContentType)
-			delete(rawMsg, key)
-		case "dataschema":
-			err = unpopulate(val, "DataSchema", &c.DataSchema)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &c.ID)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, "Source", &c.Source)
-			delete(rawMsg, key)
-		case "specversion":
-			err = unpopulate(val, "SpecVersion", &c.SpecVersion)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, "Subject", &c.Subject)
-			delete(rawMsg, key)
-		case "time":
-			err = unpopulateTimeRFC3339(val, "Time", &c.Time)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil

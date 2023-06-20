@@ -44,10 +44,152 @@ func NewManagedDatabasesClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
+// BeginCancelMove - Cancels a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - managedInstanceName - The name of the managed instance.
+//   - databaseName - The name of the database.
+//   - parameters - Parameters of the cancel managed database move operation.
+//   - options - ManagedDatabasesClientBeginCancelMoveOptions contains the optional parameters for the ManagedDatabasesClient.BeginCancelMove
+//     method.
+func (client *ManagedDatabasesClient) BeginCancelMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCancelMoveOptions) (*runtime.Poller[ManagedDatabasesClientCancelMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancelMove(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ManagedDatabasesClientCancelMoveResponse](resp, client.internal.Pipeline(), nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ManagedDatabasesClientCancelMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CancelMove - Cancels a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+func (client *ManagedDatabasesClient) cancelMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCancelMoveOptions) (*http.Response, error) {
+	req, err := client.cancelMoveCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// cancelMoveCreateRequest creates the CancelMove request.
+func (client *ManagedDatabasesClient) cancelMoveCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCancelMoveOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/cancelMove"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// BeginCompleteMove - Completes a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - managedInstanceName - The name of the managed instance.
+//   - databaseName - The name of the database.
+//   - parameters - Parameters of the complete managed database move operation.
+//   - options - ManagedDatabasesClientBeginCompleteMoveOptions contains the optional parameters for the ManagedDatabasesClient.BeginCompleteMove
+//     method.
+func (client *ManagedDatabasesClient) BeginCompleteMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCompleteMoveOptions) (*runtime.Poller[ManagedDatabasesClientCompleteMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.completeMove(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ManagedDatabasesClientCompleteMoveResponse](resp, client.internal.Pipeline(), nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ManagedDatabasesClientCompleteMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CompleteMove - Completes a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+func (client *ManagedDatabasesClient) completeMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCompleteMoveOptions) (*http.Response, error) {
+	req, err := client.completeMoveCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// completeMoveCreateRequest creates the CompleteMove request.
+func (client *ManagedDatabasesClient) completeMoveCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCompleteMoveOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeMove"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
 // BeginCompleteRestore - Completes the restore operation on a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -70,7 +212,7 @@ func (client *ManagedDatabasesClient) BeginCompleteRestore(ctx context.Context, 
 // CompleteRestore - Completes the restore operation on a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesClientBeginCompleteRestoreOptions) (*http.Response, error) {
 	req, err := client.completeRestoreCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
@@ -110,7 +252,7 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
@@ -118,7 +260,7 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 // BeginCreateOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -141,7 +283,7 @@ func (client *ManagedDatabasesClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
@@ -181,7 +323,7 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -190,7 +332,7 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -212,7 +354,7 @@ func (client *ManagedDatabasesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 	if err != nil {
@@ -252,7 +394,7 @@ func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -260,7 +402,7 @@ func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -305,7 +447,7 @@ func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +464,7 @@ func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (Ma
 
 // NewListByInstancePager - Gets a list of managed databases.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -376,7 +518,7 @@ func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,7 +535,7 @@ func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Re
 
 // NewListInaccessibleByInstancePager - Gets a list of inaccessible managed databases in a managed instance
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -447,7 +589,7 @@ func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -462,10 +604,81 @@ func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(r
 	return result, nil
 }
 
+// BeginStartMove - Starts a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - managedInstanceName - The name of the managed instance.
+//   - databaseName - The name of the database.
+//   - parameters - Parameters of the start managed database move operation.
+//   - options - ManagedDatabasesClientBeginStartMoveOptions contains the optional parameters for the ManagedDatabasesClient.BeginStartMove
+//     method.
+func (client *ManagedDatabasesClient) BeginStartMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseStartMoveDefinition, options *ManagedDatabasesClientBeginStartMoveOptions) (*runtime.Poller[ManagedDatabasesClientStartMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startMove(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ManagedDatabasesClientStartMoveResponse](resp, client.internal.Pipeline(), nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ManagedDatabasesClientStartMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// StartMove - Starts a managed database move operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+func (client *ManagedDatabasesClient) startMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseStartMoveDefinition, options *ManagedDatabasesClientBeginStartMoveOptions) (*http.Response, error) {
+	req, err := client.startMoveCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// startMoveCreateRequest creates the StartMove request.
+func (client *ManagedDatabasesClient) startMoveCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseStartMoveDefinition, options *ManagedDatabasesClientBeginStartMoveOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/startMove"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
 // BeginUpdate - Updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - managedInstanceName - The name of the managed instance.
@@ -488,7 +701,7 @@ func (client *ManagedDatabasesClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
@@ -528,7 +741,7 @@ func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -145,6 +145,16 @@ type DatabaseColumnsClientListByTableResponse struct {
 	DatabaseColumnListResult
 }
 
+// DatabaseEncryptionProtectorsClientRevalidateResponse contains the response from method DatabaseEncryptionProtectorsClient.BeginRevalidate.
+type DatabaseEncryptionProtectorsClientRevalidateResponse struct {
+	// placeholder for future response values
+}
+
+// DatabaseEncryptionProtectorsClientRevertResponse contains the response from method DatabaseEncryptionProtectorsClient.BeginRevert.
+type DatabaseEncryptionProtectorsClientRevertResponse struct {
+	// placeholder for future response values
+}
+
 // DatabaseExtensionsClientCreateOrUpdateResponse contains the response from method DatabaseExtensionsClient.BeginCreateOrUpdate.
 type DatabaseExtensionsClientCreateOrUpdateResponse struct {
 	ImportExportExtensionsOperationResult
@@ -184,6 +194,78 @@ type DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse struct {
 // DatabaseRecommendedActionsClientUpdateResponse contains the response from method DatabaseRecommendedActionsClient.Update.
 type DatabaseRecommendedActionsClientUpdateResponse struct {
 	RecommendedAction
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselinesClientCreateOrUpdateResponse contains the response from method DatabaseSQLVulnerabilityAssessmentBaselinesClient.CreateOrUpdate.
+type DatabaseSQLVulnerabilityAssessmentBaselinesClientCreateOrUpdateResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSet
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselinesClientGetResponse contains the response from method DatabaseSQLVulnerabilityAssessmentBaselinesClient.Get.
+type DatabaseSQLVulnerabilityAssessmentBaselinesClientGetResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSet
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselinesClientListBySQLVulnerabilityAssessmentResponse contains the response from method
+// DatabaseSQLVulnerabilityAssessmentBaselinesClient.NewListBySQLVulnerabilityAssessmentPager.
+type DatabaseSQLVulnerabilityAssessmentBaselinesClientListBySQLVulnerabilityAssessmentResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSetListResult
+}
+
+// DatabaseSQLVulnerabilityAssessmentExecuteScanClientExecuteResponse contains the response from method DatabaseSQLVulnerabilityAssessmentExecuteScanClient.BeginExecute.
+type DatabaseSQLVulnerabilityAssessmentExecuteScanClientExecuteResponse struct {
+	// placeholder for future response values
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse contains the response from method DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.CreateOrUpdate.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientCreateOrUpdateResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaseline
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientDeleteResponse contains the response from method DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.Delete.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientGetResponse contains the response from method DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.Get.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientGetResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaseline
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientListByBaselineResponse contains the response from method DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.NewListByBaselinePager.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselinesClientListByBaselineResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaselineListResult
+}
+
+// DatabaseSQLVulnerabilityAssessmentScanResultClientGetResponse contains the response from method DatabaseSQLVulnerabilityAssessmentScanResultClient.Get.
+type DatabaseSQLVulnerabilityAssessmentScanResultClientGetResponse struct {
+	VulnerabilityAssessmentScanResults
+}
+
+// DatabaseSQLVulnerabilityAssessmentScanResultClientListByScanResponse contains the response from method DatabaseSQLVulnerabilityAssessmentScanResultClient.NewListByScanPager.
+type DatabaseSQLVulnerabilityAssessmentScanResultClientListByScanResponse struct {
+	VulnerabilityAssessmentScanListResult
+}
+
+// DatabaseSQLVulnerabilityAssessmentScansClientGetResponse contains the response from method DatabaseSQLVulnerabilityAssessmentScansClient.Get.
+type DatabaseSQLVulnerabilityAssessmentScansClientGetResponse struct {
+	VulnerabilityAssessmentScanRecordForSQL
+}
+
+// DatabaseSQLVulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse contains the response from method
+// DatabaseSQLVulnerabilityAssessmentScansClient.NewListBySQLVulnerabilityAssessmentsPager.
+type DatabaseSQLVulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse struct {
+	VulnerabilityAssessmentScanRecordForSQLListResult
+}
+
+// DatabaseSQLVulnerabilityAssessmentsSettingsClientGetResponse contains the response from method DatabaseSQLVulnerabilityAssessmentsSettingsClient.Get.
+type DatabaseSQLVulnerabilityAssessmentsSettingsClientGetResponse struct {
+	VulnerabilityAssessment
+}
+
+// DatabaseSQLVulnerabilityAssessmentsSettingsClientListByDatabaseResponse contains the response from method DatabaseSQLVulnerabilityAssessmentsSettingsClient.NewListByDatabasePager.
+type DatabaseSQLVulnerabilityAssessmentsSettingsClientListByDatabaseResponse struct {
+	VulnerabilityAssessmentListResult
 }
 
 // DatabaseSchemasClientGetResponse contains the response from method DatabaseSchemasClient.Get.
@@ -554,6 +636,11 @@ type FailoverGroupsClientGetResponse struct {
 // FailoverGroupsClientListByServerResponse contains the response from method FailoverGroupsClient.NewListByServerPager.
 type FailoverGroupsClientListByServerResponse struct {
 	FailoverGroupListResult
+}
+
+// FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse contains the response from method FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover.
+type FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse struct {
+	FailoverGroup
 }
 
 // FailoverGroupsClientUpdateResponse contains the response from method FailoverGroupsClient.BeginUpdate.
@@ -1051,6 +1138,21 @@ type ManagedBackupShortTermRetentionPoliciesClientUpdateResponse struct {
 	ManagedBackupShortTermRetentionPolicy
 }
 
+// ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method ManagedDatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate.
+type ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse struct {
+	ManagedDatabaseAdvancedThreatProtection
+}
+
+// ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse contains the response from method ManagedDatabaseAdvancedThreatProtectionSettingsClient.Get.
+type ManagedDatabaseAdvancedThreatProtectionSettingsClientGetResponse struct {
+	ManagedDatabaseAdvancedThreatProtection
+}
+
+// ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse contains the response from method ManagedDatabaseAdvancedThreatProtectionSettingsClient.NewListByDatabasePager.
+type ManagedDatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse struct {
+	ManagedDatabaseAdvancedThreatProtectionListResult
+}
+
 // ManagedDatabaseColumnsClientGetResponse contains the response from method ManagedDatabaseColumnsClient.Get.
 type ManagedDatabaseColumnsClientGetResponse struct {
 	DatabaseColumn
@@ -1064,6 +1166,16 @@ type ManagedDatabaseColumnsClientListByDatabaseResponse struct {
 // ManagedDatabaseColumnsClientListByTableResponse contains the response from method ManagedDatabaseColumnsClient.NewListByTablePager.
 type ManagedDatabaseColumnsClientListByTableResponse struct {
 	DatabaseColumnListResult
+}
+
+// ManagedDatabaseMoveOperationsClientGetResponse contains the response from method ManagedDatabaseMoveOperationsClient.Get.
+type ManagedDatabaseMoveOperationsClientGetResponse struct {
+	ManagedDatabaseMoveOperationResult
+}
+
+// ManagedDatabaseMoveOperationsClientListByLocationResponse contains the response from method ManagedDatabaseMoveOperationsClient.NewListByLocationPager.
+type ManagedDatabaseMoveOperationsClientListByLocationResponse struct {
+	ManagedDatabaseMoveOperationListResult
 }
 
 // ManagedDatabaseQueriesClientGetResponse contains the response from method ManagedDatabaseQueriesClient.Get.
@@ -1236,6 +1348,16 @@ type ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse struct 
 	DatabaseVulnerabilityAssessmentListResult
 }
 
+// ManagedDatabasesClientCancelMoveResponse contains the response from method ManagedDatabasesClient.BeginCancelMove.
+type ManagedDatabasesClientCancelMoveResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedDatabasesClientCompleteMoveResponse contains the response from method ManagedDatabasesClient.BeginCompleteMove.
+type ManagedDatabasesClientCompleteMoveResponse struct {
+	// placeholder for future response values
+}
+
 // ManagedDatabasesClientCompleteRestoreResponse contains the response from method ManagedDatabasesClient.BeginCompleteRestore.
 type ManagedDatabasesClientCompleteRestoreResponse struct {
 	// placeholder for future response values
@@ -1266,6 +1388,11 @@ type ManagedDatabasesClientListInaccessibleByInstanceResponse struct {
 	ManagedDatabaseListResult
 }
 
+// ManagedDatabasesClientStartMoveResponse contains the response from method ManagedDatabasesClient.BeginStartMove.
+type ManagedDatabasesClientStartMoveResponse struct {
+	// placeholder for future response values
+}
+
 // ManagedDatabasesClientUpdateResponse contains the response from method ManagedDatabasesClient.BeginUpdate.
 type ManagedDatabasesClientUpdateResponse struct {
 	ManagedDatabase
@@ -1291,6 +1418,21 @@ type ManagedInstanceAdministratorsClientListByInstanceResponse struct {
 	ManagedInstanceAdministratorListResult
 }
 
+// ManagedInstanceAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method ManagedInstanceAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate.
+type ManagedInstanceAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse struct {
+	ManagedInstanceAdvancedThreatProtection
+}
+
+// ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse contains the response from method ManagedInstanceAdvancedThreatProtectionSettingsClient.Get.
+type ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse struct {
+	ManagedInstanceAdvancedThreatProtection
+}
+
+// ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse contains the response from method ManagedInstanceAdvancedThreatProtectionSettingsClient.NewListByInstancePager.
+type ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse struct {
+	ManagedInstanceAdvancedThreatProtectionListResult
+}
+
 // ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse contains the response from method ManagedInstanceAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate.
 type ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse struct {
 	ManagedInstanceAzureADOnlyAuthentication
@@ -1309,6 +1451,21 @@ type ManagedInstanceAzureADOnlyAuthenticationsClientGetResponse struct {
 // ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse contains the response from method ManagedInstanceAzureADOnlyAuthenticationsClient.NewListByInstancePager.
 type ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse struct {
 	ManagedInstanceAzureADOnlyAuthListResult
+}
+
+// ManagedInstanceDtcsClientCreateOrUpdateResponse contains the response from method ManagedInstanceDtcsClient.BeginCreateOrUpdate.
+type ManagedInstanceDtcsClientCreateOrUpdateResponse struct {
+	ManagedInstanceDtc
+}
+
+// ManagedInstanceDtcsClientGetResponse contains the response from method ManagedInstanceDtcsClient.Get.
+type ManagedInstanceDtcsClientGetResponse struct {
+	ManagedInstanceDtc
+}
+
+// ManagedInstanceDtcsClientListByManagedInstanceResponse contains the response from method ManagedInstanceDtcsClient.NewListByManagedInstancePager.
+type ManagedInstanceDtcsClientListByManagedInstanceResponse struct {
+	ManagedInstanceDtcListResult
 }
 
 // ManagedInstanceEncryptionProtectorsClientCreateOrUpdateResponse contains the response from method ManagedInstanceEncryptionProtectorsClient.BeginCreateOrUpdate.
@@ -1471,14 +1628,49 @@ type ManagedInstancesClientListByResourceGroupResponse struct {
 	ManagedInstanceListResult
 }
 
+// ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse contains the response from method ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager.
+type ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse struct {
+	OutboundEnvironmentEndpointCollection
+}
+
 // ManagedInstancesClientListResponse contains the response from method ManagedInstancesClient.NewListPager.
 type ManagedInstancesClientListResponse struct {
 	ManagedInstanceListResult
 }
 
+// ManagedInstancesClientStartResponse contains the response from method ManagedInstancesClient.BeginStart.
+type ManagedInstancesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedInstancesClientStopResponse contains the response from method ManagedInstancesClient.BeginStop.
+type ManagedInstancesClientStopResponse struct {
+	// placeholder for future response values
+}
+
 // ManagedInstancesClientUpdateResponse contains the response from method ManagedInstancesClient.BeginUpdate.
 type ManagedInstancesClientUpdateResponse struct {
 	ManagedInstance
+}
+
+// ManagedLedgerDigestUploadsClientCreateOrUpdateResponse contains the response from method ManagedLedgerDigestUploadsClient.BeginCreateOrUpdate.
+type ManagedLedgerDigestUploadsClientCreateOrUpdateResponse struct {
+	ManagedLedgerDigestUploads
+}
+
+// ManagedLedgerDigestUploadsClientDisableResponse contains the response from method ManagedLedgerDigestUploadsClient.BeginDisable.
+type ManagedLedgerDigestUploadsClientDisableResponse struct {
+	ManagedLedgerDigestUploads
+}
+
+// ManagedLedgerDigestUploadsClientGetResponse contains the response from method ManagedLedgerDigestUploadsClient.Get.
+type ManagedLedgerDigestUploadsClientGetResponse struct {
+	ManagedLedgerDigestUploads
+}
+
+// ManagedLedgerDigestUploadsClientListByDatabaseResponse contains the response from method ManagedLedgerDigestUploadsClient.NewListByDatabasePager.
+type ManagedLedgerDigestUploadsClientListByDatabaseResponse struct {
+	ManagedLedgerDigestUploadsListResult
 }
 
 // ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse contains the response from
@@ -1502,6 +1694,31 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListB
 // ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.BeginUpdate.
 type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse struct {
 	ManagedBackupShortTermRetentionPolicy
+}
+
+// ManagedServerDNSAliasesClientAcquireResponse contains the response from method ManagedServerDNSAliasesClient.BeginAcquire.
+type ManagedServerDNSAliasesClientAcquireResponse struct {
+	ManagedServerDNSAlias
+}
+
+// ManagedServerDNSAliasesClientCreateOrUpdateResponse contains the response from method ManagedServerDNSAliasesClient.BeginCreateOrUpdate.
+type ManagedServerDNSAliasesClientCreateOrUpdateResponse struct {
+	ManagedServerDNSAlias
+}
+
+// ManagedServerDNSAliasesClientDeleteResponse contains the response from method ManagedServerDNSAliasesClient.BeginDelete.
+type ManagedServerDNSAliasesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedServerDNSAliasesClientGetResponse contains the response from method ManagedServerDNSAliasesClient.Get.
+type ManagedServerDNSAliasesClientGetResponse struct {
+	ManagedServerDNSAlias
+}
+
+// ManagedServerDNSAliasesClientListByManagedInstanceResponse contains the response from method ManagedServerDNSAliasesClient.NewListByManagedInstancePager.
+type ManagedServerDNSAliasesClientListByManagedInstanceResponse struct {
+	ManagedServerDNSAliasListResult
 }
 
 // ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse contains the response from method ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate.
@@ -1599,7 +1816,7 @@ type RecoverableManagedDatabasesClientListByInstanceResponse struct {
 	RecoverableManagedDatabaseListResult
 }
 
-// ReplicationLinksClientDeleteResponse contains the response from method ReplicationLinksClient.Delete.
+// ReplicationLinksClientDeleteResponse contains the response from method ReplicationLinksClient.BeginDelete.
 type ReplicationLinksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -1825,6 +2042,21 @@ type ServerCommunicationLinksClientListByServerResponse struct {
 	ServerCommunicationLinkListResult
 }
 
+// ServerConfigurationOptionsClientCreateOrUpdateResponse contains the response from method ServerConfigurationOptionsClient.BeginCreateOrUpdate.
+type ServerConfigurationOptionsClientCreateOrUpdateResponse struct {
+	ServerConfigurationOption
+}
+
+// ServerConfigurationOptionsClientGetResponse contains the response from method ServerConfigurationOptionsClient.Get.
+type ServerConfigurationOptionsClientGetResponse struct {
+	ServerConfigurationOption
+}
+
+// ServerConfigurationOptionsClientListByManagedInstanceResponse contains the response from method ServerConfigurationOptionsClient.NewListByManagedInstancePager.
+type ServerConfigurationOptionsClientListByManagedInstanceResponse struct {
+	ServerConfigurationOptionListResult
+}
+
 // ServerConnectionPoliciesClientCreateOrUpdateResponse contains the response from method ServerConnectionPoliciesClient.BeginCreateOrUpdate.
 type ServerConnectionPoliciesClientCreateOrUpdateResponse struct {
 	ServerConnectionPolicy
@@ -2025,6 +2257,11 @@ type ServersClientListResponse struct {
 	ServerListResult
 }
 
+// ServersClientRefreshStatusResponse contains the response from method ServersClient.BeginRefreshStatus.
+type ServersClientRefreshStatusResponse struct {
+	RefreshExternalGovernanceStatusOperationResult
+}
+
 // ServersClientUpdateResponse contains the response from method ServersClient.BeginUpdate.
 type ServersClientUpdateResponse struct {
 	Server
@@ -2040,6 +2277,26 @@ type ServiceObjectivesClientListByServerResponse struct {
 	ServiceObjectiveListResult
 }
 
+// StartStopManagedInstanceSchedulesClientCreateOrUpdateResponse contains the response from method StartStopManagedInstanceSchedulesClient.CreateOrUpdate.
+type StartStopManagedInstanceSchedulesClientCreateOrUpdateResponse struct {
+	StartStopManagedInstanceSchedule
+}
+
+// StartStopManagedInstanceSchedulesClientDeleteResponse contains the response from method StartStopManagedInstanceSchedulesClient.Delete.
+type StartStopManagedInstanceSchedulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StartStopManagedInstanceSchedulesClientGetResponse contains the response from method StartStopManagedInstanceSchedulesClient.Get.
+type StartStopManagedInstanceSchedulesClientGetResponse struct {
+	StartStopManagedInstanceSchedule
+}
+
+// StartStopManagedInstanceSchedulesClientListByInstanceResponse contains the response from method StartStopManagedInstanceSchedulesClient.NewListByInstancePager.
+type StartStopManagedInstanceSchedulesClientListByInstanceResponse struct {
+	StartStopManagedInstanceScheduleListResult
+}
+
 // SubscriptionUsagesClientGetResponse contains the response from method SubscriptionUsagesClient.Get.
 type SubscriptionUsagesClientGetResponse struct {
 	SubscriptionUsage
@@ -2048,6 +2305,11 @@ type SubscriptionUsagesClientGetResponse struct {
 // SubscriptionUsagesClientListByLocationResponse contains the response from method SubscriptionUsagesClient.NewListByLocationPager.
 type SubscriptionUsagesClientListByLocationResponse struct {
 	SubscriptionUsageListResult
+}
+
+// SynapseLinkWorkspacesClientListByDatabaseResponse contains the response from method SynapseLinkWorkspacesClient.NewListByDatabasePager.
+type SynapseLinkWorkspacesClientListByDatabaseResponse struct {
+	SynapseLinkWorkspaceListResult
 }
 
 // SyncAgentsClientCreateOrUpdateResponse contains the response from method SyncAgentsClient.BeginCreateOrUpdate.
@@ -2185,7 +2447,7 @@ type TimeZonesClientListByLocationResponse struct {
 	TimeZoneListResult
 }
 
-// TransparentDataEncryptionsClientCreateOrUpdateResponse contains the response from method TransparentDataEncryptionsClient.CreateOrUpdate.
+// TransparentDataEncryptionsClientCreateOrUpdateResponse contains the response from method TransparentDataEncryptionsClient.BeginCreateOrUpdate.
 type TransparentDataEncryptionsClientCreateOrUpdateResponse struct {
 	LogicalDatabaseTransparentDataEncryption
 }
@@ -2225,9 +2487,9 @@ type VirtualClustersClientListResponse struct {
 	VirtualClusterListResult
 }
 
-// VirtualClustersClientUpdateDNSServersResponse contains the response from method VirtualClustersClient.UpdateDNSServers.
+// VirtualClustersClientUpdateDNSServersResponse contains the response from method VirtualClustersClient.BeginUpdateDNSServers.
 type VirtualClustersClientUpdateDNSServersResponse struct {
-	UpdateManagedInstanceDNSServersOperation
+	UpdateVirtualClusterDNSServersOperation
 }
 
 // VirtualClustersClientUpdateResponse contains the response from method VirtualClustersClient.BeginUpdate.
@@ -2253,6 +2515,86 @@ type VirtualNetworkRulesClientGetResponse struct {
 // VirtualNetworkRulesClientListByServerResponse contains the response from method VirtualNetworkRulesClient.NewListByServerPager.
 type VirtualNetworkRulesClientListByServerResponse struct {
 	VirtualNetworkRuleListResult
+}
+
+// VulnerabilityAssessmentBaselineClientGetResponse contains the response from method VulnerabilityAssessmentBaselineClient.Get.
+type VulnerabilityAssessmentBaselineClientGetResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSet
+}
+
+// VulnerabilityAssessmentBaselineClientListBySQLVulnerabilityAssessmentResponse contains the response from method VulnerabilityAssessmentBaselineClient.NewListBySQLVulnerabilityAssessmentPager.
+type VulnerabilityAssessmentBaselineClientListBySQLVulnerabilityAssessmentResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSetListResult
+}
+
+// VulnerabilityAssessmentBaselinesClientCreateOrUpdateResponse contains the response from method VulnerabilityAssessmentBaselinesClient.CreateOrUpdate.
+type VulnerabilityAssessmentBaselinesClientCreateOrUpdateResponse struct {
+	DatabaseSQLVulnerabilityAssessmentBaselineSet
+}
+
+// VulnerabilityAssessmentExecuteScanClientExecuteResponse contains the response from method VulnerabilityAssessmentExecuteScanClient.BeginExecute.
+type VulnerabilityAssessmentExecuteScanClientExecuteResponse struct {
+	// placeholder for future response values
+}
+
+// VulnerabilityAssessmentRuleBaselineClientCreateOrUpdateResponse contains the response from method VulnerabilityAssessmentRuleBaselineClient.CreateOrUpdate.
+type VulnerabilityAssessmentRuleBaselineClientCreateOrUpdateResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaseline
+}
+
+// VulnerabilityAssessmentRuleBaselineClientGetResponse contains the response from method VulnerabilityAssessmentRuleBaselineClient.Get.
+type VulnerabilityAssessmentRuleBaselineClientGetResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaseline
+}
+
+// VulnerabilityAssessmentRuleBaselineClientListByBaselineResponse contains the response from method VulnerabilityAssessmentRuleBaselineClient.NewListByBaselinePager.
+type VulnerabilityAssessmentRuleBaselineClientListByBaselineResponse struct {
+	DatabaseSQLVulnerabilityAssessmentRuleBaselineListResult
+}
+
+// VulnerabilityAssessmentRuleBaselinesClientDeleteResponse contains the response from method VulnerabilityAssessmentRuleBaselinesClient.Delete.
+type VulnerabilityAssessmentRuleBaselinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VulnerabilityAssessmentScanResultClientGetResponse contains the response from method VulnerabilityAssessmentScanResultClient.Get.
+type VulnerabilityAssessmentScanResultClientGetResponse struct {
+	VulnerabilityAssessmentScanResults
+}
+
+// VulnerabilityAssessmentScanResultClientListByScanResponse contains the response from method VulnerabilityAssessmentScanResultClient.NewListByScanPager.
+type VulnerabilityAssessmentScanResultClientListByScanResponse struct {
+	VulnerabilityAssessmentScanListResult
+}
+
+// VulnerabilityAssessmentScansClientGetResponse contains the response from method VulnerabilityAssessmentScansClient.Get.
+type VulnerabilityAssessmentScansClientGetResponse struct {
+	VulnerabilityAssessmentScanRecordForSQLAutoGenerated
+}
+
+// VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse contains the response from method VulnerabilityAssessmentScansClient.NewListBySQLVulnerabilityAssessmentsPager.
+type VulnerabilityAssessmentScansClientListBySQLVulnerabilityAssessmentsResponse struct {
+	VulnerabilityAssessmentScanRecordForSQLListResultAutoGenerated
+}
+
+// VulnerabilityAssessmentsClientDeleteResponse contains the response from method VulnerabilityAssessmentsClient.Delete.
+type VulnerabilityAssessmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse contains the response from method VulnerabilityAssessmentsSettingsClient.CreateOrUpdate.
+type VulnerabilityAssessmentsSettingsClientCreateOrUpdateResponse struct {
+	VulnerabilityAssessment
+}
+
+// VulnerabilityAssessmentsSettingsClientGetResponse contains the response from method VulnerabilityAssessmentsSettingsClient.Get.
+type VulnerabilityAssessmentsSettingsClientGetResponse struct {
+	VulnerabilityAssessment
+}
+
+// VulnerabilityAssessmentsSettingsClientListByServerResponse contains the response from method VulnerabilityAssessmentsSettingsClient.NewListByServerPager.
+type VulnerabilityAssessmentsSettingsClientListByServerResponse struct {
+	VulnerabilityAssessmentListResult
 }
 
 // WorkloadClassifiersClientCreateOrUpdateResponse contains the response from method WorkloadClassifiersClient.BeginCreateOrUpdate.

@@ -44,35 +44,53 @@ func NewTransparentDataEncryptionsClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// CreateOrUpdate - Updates a logical database's transparent data encryption configuration.
+// BeginCreateOrUpdate - Updates a logical database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-02-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the logical database for which the security alert policy is defined.
 //   - tdeName - The name of the transparent data encryption configuration.
 //   - parameters - The database transparent data encryption.
-//   - options - TransparentDataEncryptionsClientCreateOrUpdateOptions contains the optional parameters for the TransparentDataEncryptionsClient.CreateOrUpdate
+//   - options - TransparentDataEncryptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginCreateOrUpdate
 //     method.
-func (client *TransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientCreateOrUpdateOptions) (TransparentDataEncryptionsClientCreateOrUpdateResponse, error) {
+func (client *TransparentDataEncryptionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[TransparentDataEncryptionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, tdeName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransparentDataEncryptionsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[TransparentDataEncryptionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CreateOrUpdate - Updates a logical database's transparent data encryption configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-08-01-preview
+func (client *TransparentDataEncryptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, tdeName, parameters, options)
 	if err != nil {
-		return TransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return TransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return TransparentDataEncryptionsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.createOrUpdateHandleResponse(resp)
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -99,25 +117,16 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TransparentDataEncryptionsClient) createOrUpdateHandleResponse(resp *http.Response) (TransparentDataEncryptionsClientCreateOrUpdateResponse, error) {
-	result := TransparentDataEncryptionsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalDatabaseTransparentDataEncryption); err != nil {
-		return TransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
 // Get - Gets a logical database's transparent data encryption.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-02-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -168,7 +177,7 @@ func (client *TransparentDataEncryptionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +194,7 @@ func (client *TransparentDataEncryptionsClient) getHandleResponse(resp *http.Res
 
 // NewListByDatabasePager - Gets a list of the logical database's transparent data encryption.
 //
-// Generated from API version 2021-02-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -244,7 +253,7 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-02-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

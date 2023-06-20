@@ -47,7 +47,7 @@ func NewVirtualClustersClient(subscriptionID string, credential azcore.TokenCred
 // BeginDelete - Deletes a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - virtualClusterName - The name of the virtual cluster.
@@ -68,7 +68,7 @@ func (client *VirtualClustersClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Deletes a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 func (client *VirtualClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualClusterName, options)
 	if err != nil {
@@ -104,7 +104,7 @@ func (client *VirtualClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -112,7 +112,7 @@ func (client *VirtualClustersClient) deleteCreateRequest(ctx context.Context, re
 // Get - Gets a virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - virtualClusterName - The name of the virtual cluster.
@@ -152,7 +152,7 @@ func (client *VirtualClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +169,7 @@ func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListPager - Gets a list of all virtualClusters in the subscription.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - options - VirtualClustersClientListOptions contains the optional parameters for the VirtualClustersClient.NewListPager
 //     method.
 func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse] {
@@ -212,7 +212,7 @@ func (client *VirtualClustersClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (Vi
 
 // NewListByResourceGroupPager - Gets a list of virtual clusters in a resource group.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - options - VirtualClustersClientListByResourceGroupOptions contains the optional parameters for the VirtualClustersClient.NewListByResourceGroupPager
@@ -278,7 +278,7 @@ func (client *VirtualClustersClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -293,10 +293,10 @@ func (client *VirtualClustersClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// BeginUpdate - Updates a virtual cluster.
+// BeginUpdate - Updates an existing virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - virtualClusterName - The name of the virtual cluster.
@@ -315,10 +315,10 @@ func (client *VirtualClustersClient) BeginUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// Update - Updates a virtual cluster.
+// Update - Updates an existing virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 func (client *VirtualClustersClient) update(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters VirtualClusterUpdate, options *VirtualClustersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualClusterName, parameters, options)
 	if err != nil {
@@ -354,38 +354,54 @@ func (client *VirtualClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// UpdateDNSServers - Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+// BeginUpdateDNSServers - Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2022-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - virtualClusterName - The name of the virtual cluster.
-//   - options - VirtualClustersClientUpdateDNSServersOptions contains the optional parameters for the VirtualClustersClient.UpdateDNSServers
+//   - options - VirtualClustersClientBeginUpdateDNSServersOptions contains the optional parameters for the VirtualClustersClient.BeginUpdateDNSServers
 //     method.
-func (client *VirtualClustersClient) UpdateDNSServers(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientUpdateDNSServersOptions) (VirtualClustersClientUpdateDNSServersResponse, error) {
+func (client *VirtualClustersClient) BeginUpdateDNSServers(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginUpdateDNSServersOptions) (*runtime.Poller[VirtualClustersClientUpdateDNSServersResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateDNSServers(ctx, resourceGroupName, virtualClusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[VirtualClustersClientUpdateDNSServersResponse](resp, client.internal.Pipeline(), nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[VirtualClustersClientUpdateDNSServersResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// UpdateDNSServers - Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-05-01-preview
+func (client *VirtualClustersClient) updateDNSServers(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginUpdateDNSServersOptions) (*http.Response, error) {
 	req, err := client.updateDNSServersCreateRequest(ctx, resourceGroupName, virtualClusterName, options)
 	if err != nil {
-		return VirtualClustersClientUpdateDNSServersResponse{}, err
+		return nil, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return VirtualClustersClientUpdateDNSServersResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualClustersClientUpdateDNSServersResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.updateDNSServersHandleResponse(resp)
+	return resp, nil
 }
 
 // updateDNSServersCreateRequest creates the UpdateDNSServers request.
-func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientUpdateDNSServersOptions) (*policy.Request, error) {
+func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.Context, resourceGroupName string, virtualClusterName string, options *VirtualClustersClientBeginUpdateDNSServersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}/updateManagedInstanceDnsServers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -404,17 +420,8 @@ func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
-}
-
-// updateDNSServersHandleResponse handles the UpdateDNSServers response.
-func (client *VirtualClustersClient) updateDNSServersHandleResponse(resp *http.Response) (VirtualClustersClientUpdateDNSServersResponse, error) {
-	result := VirtualClustersClientUpdateDNSServersResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateManagedInstanceDNSServersOperation); err != nil {
-		return VirtualClustersClientUpdateDNSServersResponse{}, err
-	}
-	return result, nil
 }

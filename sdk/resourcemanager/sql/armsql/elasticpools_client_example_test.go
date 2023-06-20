@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsListWithFilter.json
 func ExampleElasticPoolsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleElasticPoolsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsDefinitionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsDefinitionsList.json
 func ExampleElasticPoolsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +479,7 @@ func ExampleElasticPoolsClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolListByServer.json
 func ExampleElasticPoolsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -569,7 +569,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/HyperscaleElasticPoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/HyperscaleElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -658,7 +658,157 @@ func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetElasticPoolWithAvailabilityZone.json
+func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
+	// 		MaxSizeBytes: to.Ptr[int64](5242880000),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](1),
+	// 			MinCapacity: to.Ptr[float64](0.25),
+	// 		},
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(true),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5_2"),
+	// 		Capacity: to.Ptr[int32](2),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolGetWithPreferredEnclaveType.json
+func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParameter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Kind: to.Ptr("vcore,pool"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 		HighAvailabilityReplicaCount: to.Ptr[int32](2),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaxSizeBytes: to.Ptr[int64](0),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](4),
+	// 			MinCapacity: to.Ptr[float64](0),
+	// 		},
+	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Capacity: to.Ptr[int32](4),
+	// 		Family: to.Ptr("Gen5"),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CreateElasticPoolWithAvailabilityZone.json
+func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticPoolsClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", armsql.ElasticPool{
+		Location: to.Ptr("Japan East"),
+		Properties: &armsql.ElasticPoolProperties{
+			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+				MaxCapacity: to.Ptr[float64](2),
+				MinCapacity: to.Ptr[float64](0.25),
+			},
+			ZoneRedundant: to.Ptr(true),
+		},
+		SKU: &armsql.SKU{
+			Name: to.Ptr("HS_Gen5_4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 		MaxSizeBytes: to.Ptr[int64](102400),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](2),
+	// 			MinCapacity: to.Ptr[float64](0.25),
+	// 		},
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(true),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("StandardPool"),
+	// 		Capacity: to.Ptr[int32](100),
+	// 		Tier: to.Ptr("Standard"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElasticPoolWithHighAvailabilityReplicaCountParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +866,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElast
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolCreateOrUpdateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateOrUpdateMax.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -773,7 +923,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMaintenanceConfigurationParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +973,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolCreateOrUpdateMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateOrUpdateMin.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -869,7 +1019,123 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
+func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticPoolsClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", armsql.ElasticPool{
+		Location: to.Ptr("Japan East"),
+		Properties: &armsql.ElasticPoolProperties{
+			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+		},
+		SKU: &armsql.SKU{
+			Name: to.Ptr("GP_Gen5_4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Kind: to.Ptr("vcore,pool"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaxSizeBytes: to.Ptr[int64](0),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](4),
+	// 			MinCapacity: to.Ptr[float64](0),
+	// 		},
+	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Capacity: to.Ptr[int32](4),
+	// 		Family: to.Ptr("Gen5"),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolCreateWithVBSPreferredEnclaveType.json
+func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticPoolsClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", armsql.ElasticPool{
+		Location: to.Ptr("Japan East"),
+		Properties: &armsql.ElasticPoolProperties{
+			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+		},
+		SKU: &armsql.SKU{
+			Name: to.Ptr("GP_Gen5_4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Kind: to.Ptr("vcore,pool"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaxSizeBytes: to.Ptr[int64](0),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](4),
+	// 			MinCapacity: to.Ptr[float64](0),
+	// 		},
+	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Capacity: to.Ptr[int32](4),
+	// 		Family: to.Ptr("Gen5"),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolDelete.json
 func ExampleElasticPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -890,7 +1156,7 @@ func ExampleElasticPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolUpdateAssignMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateAssignMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -939,7 +1205,121 @@ func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnEl
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolUpdateResetMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
+func ExampleElasticPoolsClient_BeginUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticPoolsClient().BeginUpdate(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", armsql.ElasticPoolUpdate{
+		Properties: &armsql.ElasticPoolUpdateProperties{
+			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+		},
+		SKU: &armsql.SKU{
+			Name: to.Ptr("GP_Gen5_4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Kind: to.Ptr("vcore,pool"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaxSizeBytes: to.Ptr[int64](0),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](4),
+	// 			MinCapacity: to.Ptr[float64](0),
+	// 		},
+	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Capacity: to.Ptr[int32](4),
+	// 		Family: to.Ptr("Gen5"),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
+func ExampleElasticPoolsClient_BeginUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticPoolsClient().BeginUpdate(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", armsql.ElasticPoolUpdate{
+		Properties: &armsql.ElasticPoolUpdateProperties{
+			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+		},
+		SKU: &armsql.SKU{
+			Name: to.Ptr("GP_Gen5_4"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ElasticPool = armsql.ElasticPool{
+	// 	Name: to.Ptr("sqlcrudtest-8102"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 	Location: to.Ptr("Japan East"),
+	// 	Kind: to.Ptr("vcore,pool"),
+	// 	Properties: &armsql.ElasticPoolProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 		LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 		MaxSizeBytes: to.Ptr[int64](0),
+	// 		PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 			MaxCapacity: to.Ptr[float64](4),
+	// 			MinCapacity: to.Ptr[float64](0),
+	// 		},
+	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+	// 		State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armsql.SKU{
+	// 		Name: to.Ptr("GP_Gen5"),
+	// 		Capacity: to.Ptr[int32](4),
+	// 		Family: to.Ptr("Gen5"),
+	// 		Tier: to.Ptr("GeneralPurpose"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateResetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnElasticPoolToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -987,7 +1367,7 @@ func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnEla
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolUpdateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateMax.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1047,7 +1427,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolUpdateMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ElasticPoolUpdateMin.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1091,7 +1471,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParamet
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1145,7 +1525,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/FailoverElasticPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fba7ffa9cee6453e2a3cf8c857074a323252a12d/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/FailoverElasticPool.json
 func ExampleElasticPoolsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -38,11 +38,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewRecoverableDatabasesClient() *RecoverableDatabasesClient {
-	subClient, _ := NewRecoverableDatabasesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewDataMaskingPoliciesClient() *DataMaskingPoliciesClient {
 	subClient, _ := NewDataMaskingPoliciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -163,18 +158,8 @@ func (c *ClientFactory) NewEncryptionProtectorsClient() *EncryptionProtectorsCli
 	return subClient
 }
 
-func (c *ClientFactory) NewFailoverGroupsClient() *FailoverGroupsClient {
-	subClient, _ := NewFailoverGroupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewInstanceFailoverGroupsClient() *InstanceFailoverGroupsClient {
-	subClient, _ := NewInstanceFailoverGroupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -260,16 +245,6 @@ func (c *ClientFactory) NewManagedDatabaseColumnsClient() *ManagedDatabaseColumn
 
 func (c *ClientFactory) NewManagedDatabaseQueriesClient() *ManagedDatabaseQueriesClient {
 	subClient, _ := NewManagedDatabaseQueriesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewManagedDatabaseRestoreDetailsClient() *ManagedDatabaseRestoreDetailsClient {
-	subClient, _ := NewManagedDatabaseRestoreDetailsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewManagedDatabasesClient() *ManagedDatabasesClient {
-	subClient, _ := NewManagedDatabasesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -488,11 +463,6 @@ func (c *ClientFactory) NewTimeZonesClient() *TimeZonesClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewVirtualClustersClient() *VirtualClustersClient {
-	subClient, _ := NewVirtualClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewVirtualNetworkRulesClient() *VirtualNetworkRulesClient {
 	subClient, _ := NewVirtualNetworkRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -505,11 +475,6 @@ func (c *ClientFactory) NewWorkloadClassifiersClient() *WorkloadClassifiersClien
 
 func (c *ClientFactory) NewWorkloadGroupsClient() *WorkloadGroupsClient {
 	subClient, _ := NewWorkloadGroupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTransparentDataEncryptionsClient() *TransparentDataEncryptionsClient {
-	subClient, _ := NewTransparentDataEncryptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -543,11 +508,6 @@ func (c *ClientFactory) NewOutboundFirewallRulesClient() *OutboundFirewallRulesC
 	return subClient
 }
 
-func (c *ClientFactory) NewServersClient() *ServersClient {
-	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -560,16 +520,6 @@ func (c *ClientFactory) NewLongTermRetentionBackupsClient() *LongTermRetentionBa
 
 func (c *ClientFactory) NewLongTermRetentionManagedInstanceBackupsClient() *LongTermRetentionManagedInstanceBackupsClient {
 	subClient, _ := NewLongTermRetentionManagedInstanceBackupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewManagedInstancesClient() *ManagedInstancesClient {
-	subClient, _ := NewManagedInstancesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewRestorableDroppedDatabasesClient() *RestorableDroppedDatabasesClient {
-	subClient, _ := NewRestorableDroppedDatabasesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -593,18 +543,8 @@ func (c *ClientFactory) NewServerTrustCertificatesClient() *ServerTrustCertifica
 	return subClient
 }
 
-func (c *ClientFactory) NewIPv6FirewallRulesClient() *IPv6FirewallRulesClient {
-	subClient, _ := NewIPv6FirewallRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewEndpointCertificatesClient() *EndpointCertificatesClient {
 	subClient, _ := NewEndpointCertificatesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewReplicationLinksClient() *ReplicationLinksClient {
-	subClient, _ := NewReplicationLinksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -655,5 +595,190 @@ func (c *ClientFactory) NewDatabaseAdvancedThreatProtectionSettingsClient() *Dat
 
 func (c *ClientFactory) NewServerAdvancedThreatProtectionSettingsClient() *ServerAdvancedThreatProtectionSettingsClient {
 	subClient, _ := NewServerAdvancedThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedServerDNSAliasesClient() *ManagedServerDNSAliasesClient {
+	subClient, _ := NewManagedServerDNSAliasesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentBaselinesClient() *DatabaseSQLVulnerabilityAssessmentBaselinesClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient() *DatabaseSQLVulnerabilityAssessmentExecuteScanClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient() *DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentScanResultClient() *DatabaseSQLVulnerabilityAssessmentScanResultClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentScanResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentScansClient() *DatabaseSQLVulnerabilityAssessmentScansClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentScansClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentsSettingsClient() *DatabaseSQLVulnerabilityAssessmentsSettingsClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentsSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedDatabaseAdvancedThreatProtectionSettingsClient() *ManagedDatabaseAdvancedThreatProtectionSettingsClient {
+	subClient, _ := NewManagedDatabaseAdvancedThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedInstanceAdvancedThreatProtectionSettingsClient() *ManagedInstanceAdvancedThreatProtectionSettingsClient {
+	subClient, _ := NewManagedInstanceAdvancedThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewReplicationLinksClient() *ReplicationLinksClient {
+	subClient, _ := NewReplicationLinksClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedDatabaseMoveOperationsClient() *ManagedDatabaseMoveOperationsClient {
+	subClient, _ := NewManagedDatabaseMoveOperationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedInstanceDtcsClient() *ManagedInstanceDtcsClient {
+	subClient, _ := NewManagedInstanceDtcsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSynapseLinkWorkspacesClient() *SynapseLinkWorkspacesClient {
+	subClient, _ := NewSynapseLinkWorkspacesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVirtualClustersClient() *VirtualClustersClient {
+	subClient, _ := NewVirtualClustersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewInstanceFailoverGroupsClient() *InstanceFailoverGroupsClient {
+	subClient, _ := NewInstanceFailoverGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedDatabaseRestoreDetailsClient() *ManagedDatabaseRestoreDetailsClient {
+	subClient, _ := NewManagedDatabaseRestoreDetailsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewDatabaseEncryptionProtectorsClient() *DatabaseEncryptionProtectorsClient {
+	subClient, _ := NewDatabaseEncryptionProtectorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedDatabasesClient() *ManagedDatabasesClient {
+	subClient, _ := NewManagedDatabasesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedInstancesClient() *ManagedInstancesClient {
+	subClient, _ := NewManagedInstancesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedLedgerDigestUploadsClient() *ManagedLedgerDigestUploadsClient {
+	subClient, _ := NewManagedLedgerDigestUploadsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewRecoverableDatabasesClient() *RecoverableDatabasesClient {
+	subClient, _ := NewRecoverableDatabasesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewRestorableDroppedDatabasesClient() *RestorableDroppedDatabasesClient {
+	subClient, _ := NewRestorableDroppedDatabasesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewServerConfigurationOptionsClient() *ServerConfigurationOptionsClient {
+	subClient, _ := NewServerConfigurationOptionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewServersClient() *ServersClient {
+	subClient, _ := NewServersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewStartStopManagedInstanceSchedulesClient() *StartStopManagedInstanceSchedulesClient {
+	subClient, _ := NewStartStopManagedInstanceSchedulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTransparentDataEncryptionsClient() *TransparentDataEncryptionsClient {
+	subClient, _ := NewTransparentDataEncryptionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewFailoverGroupsClient() *FailoverGroupsClient {
+	subClient, _ := NewFailoverGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewIPv6FirewallRulesClient() *IPv6FirewallRulesClient {
+	subClient, _ := NewIPv6FirewallRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentBaselineClient() *VulnerabilityAssessmentBaselineClient {
+	subClient, _ := NewVulnerabilityAssessmentBaselineClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentBaselinesClient() *VulnerabilityAssessmentBaselinesClient {
+	subClient, _ := NewVulnerabilityAssessmentBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentExecuteScanClient() *VulnerabilityAssessmentExecuteScanClient {
+	subClient, _ := NewVulnerabilityAssessmentExecuteScanClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentRuleBaselineClient() *VulnerabilityAssessmentRuleBaselineClient {
+	subClient, _ := NewVulnerabilityAssessmentRuleBaselineClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentRuleBaselinesClient() *VulnerabilityAssessmentRuleBaselinesClient {
+	subClient, _ := NewVulnerabilityAssessmentRuleBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentScanResultClient() *VulnerabilityAssessmentScanResultClient {
+	subClient, _ := NewVulnerabilityAssessmentScanResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentScansClient() *VulnerabilityAssessmentScansClient {
+	subClient, _ := NewVulnerabilityAssessmentScansClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentsSettingsClient() *VulnerabilityAssessmentsSettingsClient {
+	subClient, _ := NewVulnerabilityAssessmentsSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVulnerabilityAssessmentsClient() *VulnerabilityAssessmentsClient {
+	subClient, _ := NewVulnerabilityAssessmentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

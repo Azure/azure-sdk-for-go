@@ -11,8 +11,98 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v3.1.0"
+	moduleVersion = "v3.2.0"
 )
+
+// AmlFilesystemHealthStateType - List of AML file system health states.
+type AmlFilesystemHealthStateType string
+
+const (
+	AmlFilesystemHealthStateTypeAvailable     AmlFilesystemHealthStateType = "Available"
+	AmlFilesystemHealthStateTypeDegraded      AmlFilesystemHealthStateType = "Degraded"
+	AmlFilesystemHealthStateTypeMaintenance   AmlFilesystemHealthStateType = "Maintenance"
+	AmlFilesystemHealthStateTypeTransitioning AmlFilesystemHealthStateType = "Transitioning"
+	AmlFilesystemHealthStateTypeUnavailable   AmlFilesystemHealthStateType = "Unavailable"
+)
+
+// PossibleAmlFilesystemHealthStateTypeValues returns the possible values for the AmlFilesystemHealthStateType const type.
+func PossibleAmlFilesystemHealthStateTypeValues() []AmlFilesystemHealthStateType {
+	return []AmlFilesystemHealthStateType{
+		AmlFilesystemHealthStateTypeAvailable,
+		AmlFilesystemHealthStateTypeDegraded,
+		AmlFilesystemHealthStateTypeMaintenance,
+		AmlFilesystemHealthStateTypeTransitioning,
+		AmlFilesystemHealthStateTypeUnavailable,
+	}
+}
+
+// AmlFilesystemIdentityType - The type of identity used for the resource.
+type AmlFilesystemIdentityType string
+
+const (
+	AmlFilesystemIdentityTypeUserAssigned AmlFilesystemIdentityType = "UserAssigned"
+	AmlFilesystemIdentityTypeNone         AmlFilesystemIdentityType = "None"
+)
+
+// PossibleAmlFilesystemIdentityTypeValues returns the possible values for the AmlFilesystemIdentityType const type.
+func PossibleAmlFilesystemIdentityTypeValues() []AmlFilesystemIdentityType {
+	return []AmlFilesystemIdentityType{
+		AmlFilesystemIdentityTypeUserAssigned,
+		AmlFilesystemIdentityTypeNone,
+	}
+}
+
+// AmlFilesystemProvisioningStateType - ARM provisioning state.
+type AmlFilesystemProvisioningStateType string
+
+const (
+	AmlFilesystemProvisioningStateTypeCanceled  AmlFilesystemProvisioningStateType = "Canceled"
+	AmlFilesystemProvisioningStateTypeCreating  AmlFilesystemProvisioningStateType = "Creating"
+	AmlFilesystemProvisioningStateTypeDeleting  AmlFilesystemProvisioningStateType = "Deleting"
+	AmlFilesystemProvisioningStateTypeFailed    AmlFilesystemProvisioningStateType = "Failed"
+	AmlFilesystemProvisioningStateTypeSucceeded AmlFilesystemProvisioningStateType = "Succeeded"
+	AmlFilesystemProvisioningStateTypeUpdating  AmlFilesystemProvisioningStateType = "Updating"
+)
+
+// PossibleAmlFilesystemProvisioningStateTypeValues returns the possible values for the AmlFilesystemProvisioningStateType const type.
+func PossibleAmlFilesystemProvisioningStateTypeValues() []AmlFilesystemProvisioningStateType {
+	return []AmlFilesystemProvisioningStateType{
+		AmlFilesystemProvisioningStateTypeCanceled,
+		AmlFilesystemProvisioningStateTypeCreating,
+		AmlFilesystemProvisioningStateTypeDeleting,
+		AmlFilesystemProvisioningStateTypeFailed,
+		AmlFilesystemProvisioningStateTypeSucceeded,
+		AmlFilesystemProvisioningStateTypeUpdating,
+	}
+}
+
+// ArchiveStatusType - The state of the archive operation
+type ArchiveStatusType string
+
+const (
+	ArchiveStatusTypeCanceled         ArchiveStatusType = "Canceled"
+	ArchiveStatusTypeCancelling       ArchiveStatusType = "Cancelling"
+	ArchiveStatusTypeCompleted        ArchiveStatusType = "Completed"
+	ArchiveStatusTypeFSScanInProgress ArchiveStatusType = "FSScanInProgress"
+	ArchiveStatusTypeFailed           ArchiveStatusType = "Failed"
+	ArchiveStatusTypeIdle             ArchiveStatusType = "Idle"
+	ArchiveStatusTypeInProgress       ArchiveStatusType = "InProgress"
+	ArchiveStatusTypeNotConfigured    ArchiveStatusType = "NotConfigured"
+)
+
+// PossibleArchiveStatusTypeValues returns the possible values for the ArchiveStatusType const type.
+func PossibleArchiveStatusTypeValues() []ArchiveStatusType {
+	return []ArchiveStatusType{
+		ArchiveStatusTypeCanceled,
+		ArchiveStatusTypeCancelling,
+		ArchiveStatusTypeCompleted,
+		ArchiveStatusTypeFSScanInProgress,
+		ArchiveStatusTypeFailed,
+		ArchiveStatusTypeIdle,
+		ArchiveStatusTypeInProgress,
+		ArchiveStatusTypeNotConfigured,
+	}
+}
 
 // CacheIdentityType - The type of identity used for the cache
 type CacheIdentityType string
@@ -72,7 +162,23 @@ func PossibleDomainJoinedTypeValues() []DomainJoinedType {
 	}
 }
 
-// FirmwareStatusType - True if there is a firmware update ready to install on this Cache. The firmware will automatically
+// FilesystemSubnetStatusType - The status of the AML file system subnet check.
+type FilesystemSubnetStatusType string
+
+const (
+	FilesystemSubnetStatusTypeInvalid FilesystemSubnetStatusType = "Invalid"
+	FilesystemSubnetStatusTypeOk      FilesystemSubnetStatusType = "Ok"
+)
+
+// PossibleFilesystemSubnetStatusTypeValues returns the possible values for the FilesystemSubnetStatusType const type.
+func PossibleFilesystemSubnetStatusTypeValues() []FilesystemSubnetStatusType {
+	return []FilesystemSubnetStatusType{
+		FilesystemSubnetStatusTypeInvalid,
+		FilesystemSubnetStatusTypeOk,
+	}
+}
+
+// FirmwareStatusType - True if there is a firmware update ready to install on this cache. The firmware will automatically
 // be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 type FirmwareStatusType string
 
@@ -89,7 +195,11 @@ func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
 	}
 }
 
-// HealthStateType - List of Cache health states.
+// HealthStateType - List of cache health states. Down is when the cluster is not responding. Degraded is when its functioning
+// but has some alerts. Transitioning when it is creating or deleting. Unknown will be returned
+// in old api versions when a new value is added in future versions. WaitingForKey is when the create is waiting for the system
+// assigned identity to be given access to the encryption key in the
+// encryption settings.
 type HealthStateType string
 
 const (
@@ -122,6 +232,32 @@ func PossibleHealthStateTypeValues() []HealthStateType {
 		HealthStateTypeUpgradeFailed,
 		HealthStateTypeUpgrading,
 		HealthStateTypeWaitingForKey,
+	}
+}
+
+// MaintenanceDayOfWeekType - Day of the week on which the maintenance window will occur.
+type MaintenanceDayOfWeekType string
+
+const (
+	MaintenanceDayOfWeekTypeMonday    MaintenanceDayOfWeekType = "Monday"
+	MaintenanceDayOfWeekTypeTuesday   MaintenanceDayOfWeekType = "Tuesday"
+	MaintenanceDayOfWeekTypeWednesday MaintenanceDayOfWeekType = "Wednesday"
+	MaintenanceDayOfWeekTypeThursday  MaintenanceDayOfWeekType = "Thursday"
+	MaintenanceDayOfWeekTypeFriday    MaintenanceDayOfWeekType = "Friday"
+	MaintenanceDayOfWeekTypeSaturday  MaintenanceDayOfWeekType = "Saturday"
+	MaintenanceDayOfWeekTypeSunday    MaintenanceDayOfWeekType = "Sunday"
+)
+
+// PossibleMaintenanceDayOfWeekTypeValues returns the possible values for the MaintenanceDayOfWeekType const type.
+func PossibleMaintenanceDayOfWeekTypeValues() []MaintenanceDayOfWeekType {
+	return []MaintenanceDayOfWeekType{
+		MaintenanceDayOfWeekTypeMonday,
+		MaintenanceDayOfWeekTypeTuesday,
+		MaintenanceDayOfWeekTypeWednesday,
+		MaintenanceDayOfWeekTypeThursday,
+		MaintenanceDayOfWeekTypeFriday,
+		MaintenanceDayOfWeekTypeSaturday,
+		MaintenanceDayOfWeekTypeSunday,
 	}
 }
 

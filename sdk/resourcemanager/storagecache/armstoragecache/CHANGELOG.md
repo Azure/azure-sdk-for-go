@@ -1,5 +1,55 @@
 # Release History
 
+## 3.2.0 (2023-06-23)
+### Features Added
+
+- New enum type `AmlFilesystemHealthStateType` with values `AmlFilesystemHealthStateTypeAvailable`, `AmlFilesystemHealthStateTypeDegraded`, `AmlFilesystemHealthStateTypeMaintenance`, `AmlFilesystemHealthStateTypeTransitioning`, `AmlFilesystemHealthStateTypeUnavailable`
+- New enum type `AmlFilesystemIdentityType` with values `AmlFilesystemIdentityTypeNone`, `AmlFilesystemIdentityTypeUserAssigned`
+- New enum type `AmlFilesystemProvisioningStateType` with values `AmlFilesystemProvisioningStateTypeCanceled`, `AmlFilesystemProvisioningStateTypeCreating`, `AmlFilesystemProvisioningStateTypeDeleting`, `AmlFilesystemProvisioningStateTypeFailed`, `AmlFilesystemProvisioningStateTypeSucceeded`, `AmlFilesystemProvisioningStateTypeUpdating`
+- New enum type `ArchiveStatusType` with values `ArchiveStatusTypeCanceled`, `ArchiveStatusTypeCancelling`, `ArchiveStatusTypeCompleted`, `ArchiveStatusTypeFSScanInProgress`, `ArchiveStatusTypeFailed`, `ArchiveStatusTypeIdle`, `ArchiveStatusTypeInProgress`, `ArchiveStatusTypeNotConfigured`
+- New enum type `FilesystemSubnetStatusType` with values `FilesystemSubnetStatusTypeInvalid`, `FilesystemSubnetStatusTypeOk`
+- New enum type `MaintenanceDayOfWeekType` with values `MaintenanceDayOfWeekTypeFriday`, `MaintenanceDayOfWeekTypeMonday`, `MaintenanceDayOfWeekTypeSaturday`, `MaintenanceDayOfWeekTypeSunday`, `MaintenanceDayOfWeekTypeThursday`, `MaintenanceDayOfWeekTypeTuesday`, `MaintenanceDayOfWeekTypeWednesday`
+- New function `NewAmlFilesystemsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AmlFilesystemsClient, error)`
+- New function `*AmlFilesystemsClient.Archive(context.Context, string, string, *AmlFilesystemsClientArchiveOptions) (AmlFilesystemsClientArchiveResponse, error)`
+- New function `*AmlFilesystemsClient.CancelArchive(context.Context, string, string, *AmlFilesystemsClientCancelArchiveOptions) (AmlFilesystemsClientCancelArchiveResponse, error)`
+- New function `*AmlFilesystemsClient.BeginCreateOrUpdate(context.Context, string, string, AmlFilesystem, *AmlFilesystemsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AmlFilesystemsClientCreateOrUpdateResponse], error)`
+- New function `*AmlFilesystemsClient.BeginDelete(context.Context, string, string, *AmlFilesystemsClientBeginDeleteOptions) (*runtime.Poller[AmlFilesystemsClientDeleteResponse], error)`
+- New function `*AmlFilesystemsClient.Get(context.Context, string, string, *AmlFilesystemsClientGetOptions) (AmlFilesystemsClientGetResponse, error)`
+- New function `*AmlFilesystemsClient.NewListByResourceGroupPager(string, *AmlFilesystemsClientListByResourceGroupOptions) *runtime.Pager[AmlFilesystemsClientListByResourceGroupResponse]`
+- New function `*AmlFilesystemsClient.NewListPager(*AmlFilesystemsClientListOptions) *runtime.Pager[AmlFilesystemsClientListResponse]`
+- New function `*AmlFilesystemsClient.BeginUpdate(context.Context, string, string, AmlFilesystemUpdate, *AmlFilesystemsClientBeginUpdateOptions) (*runtime.Poller[AmlFilesystemsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAmlFilesystemsClient() *AmlFilesystemsClient`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagementClient, error)`
+- New function `*ManagementClient.CheckAmlFSSubnets(context.Context, *ManagementClientCheckAmlFSSubnetsOptions) (ManagementClientCheckAmlFSSubnetsResponse, error)`
+- New function `*ManagementClient.GetRequiredAmlFSSubnetsSize(context.Context, *ManagementClientGetRequiredAmlFSSubnetsSizeOptions) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error)`
+- New struct `AmlFilesystem`
+- New struct `AmlFilesystemArchive`
+- New struct `AmlFilesystemArchiveInfo`
+- New struct `AmlFilesystemArchiveStatus`
+- New struct `AmlFilesystemCheckSubnetError`
+- New struct `AmlFilesystemCheckSubnetErrorFilesystemSubnet`
+- New struct `AmlFilesystemClientInfo`
+- New struct `AmlFilesystemContainerStorageInterface`
+- New struct `AmlFilesystemEncryptionSettings`
+- New struct `AmlFilesystemHealth`
+- New struct `AmlFilesystemHsmSettings`
+- New struct `AmlFilesystemIdentity`
+- New struct `AmlFilesystemProperties`
+- New struct `AmlFilesystemPropertiesHsm`
+- New struct `AmlFilesystemPropertiesMaintenanceWindow`
+- New struct `AmlFilesystemSubnetInfo`
+- New struct `AmlFilesystemUpdate`
+- New struct `AmlFilesystemUpdateProperties`
+- New struct `AmlFilesystemUpdatePropertiesMaintenanceWindow`
+- New struct `AmlFilesystemsListResult`
+- New struct `RequiredAmlFilesystemSubnetsSize`
+- New struct `RequiredAmlFilesystemSubnetsSizeInfo`
+- New struct `Resource`
+- New struct `SKUName`
+- New struct `TrackedResource`
+
+
 ## 3.1.0 (2023-04-07)
 ### Features Added
 

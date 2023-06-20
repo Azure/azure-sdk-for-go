@@ -30,8 +30,7 @@ type HeatMapClient struct {
 }
 
 // NewHeatMapClient creates a new instance of HeatMapClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHeatMapClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HeatMapClient, error) {
@@ -49,8 +48,8 @@ func NewHeatMapClient(subscriptionID string, credential azcore.TokenCredential, 
 // Get - Gets latest heatmap for Traffic Manager profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-08-01
-//   - resourceGroupName - The name of the resource group containing the Traffic Manager endpoint.
+// Generated from API version 2022-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The name of the Traffic Manager profile.
 //   - options - HeatMapClientGetOptions contains the optional parameters for the HeatMapClient.Get method.
 func (client *HeatMapClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *HeatMapClientGetOptions) (HeatMapClientGetResponse, error) {
@@ -95,7 +94,7 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 	if options != nil && options.BotRight != nil {
 		reqQP.Set("botRight", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.BotRight), "[]")), ","))
 	}
-	reqQP.Set("api-version", "2018-08-01")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,3 +27,4 @@ stages:
     parameters:
       ServiceDirectory: "messaging/azeventgrid"
       RunLiveTests: true
+      Location: westus2

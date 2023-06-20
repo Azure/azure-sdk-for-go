@@ -2,16 +2,15 @@
 param baseName string = resourceGroup().name
 
 @description('The resource location')
-param location string = 'westus2'
+param location string = resourceGroup().location
 
 var namespaceName = '${baseName}-2'
 var topicName = 'testtopic1'
 var subscriptionName = 'testsubscription1'
-var location2 = 'westus2'
 
 resource ns_resource 'Microsoft.EventGrid/namespaces@2023-06-01-preview' = {
   name: namespaceName
-  location: location2
+  location: location
   sku: {
     name: 'Standard'
     capacity: 1

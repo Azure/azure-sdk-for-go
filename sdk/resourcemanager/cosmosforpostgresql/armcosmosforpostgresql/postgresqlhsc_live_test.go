@@ -395,7 +395,7 @@ func (testsuite *PostgresqlhscTestSuite) TestPrivateEndpointConnections() {
 	for privateEndpointConnectionsClientNewListByClusterPager.More() {
 		privateEndpointConnectionsClientListByClusterResponse, err := privateEndpointConnectionsClientNewListByClusterPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-		privateEndpointConnectionName  = *privateEndpointConnectionsClientListByClusterResponse.Value[0].Name
+		privateEndpointConnectionName = *privateEndpointConnectionsClientListByClusterResponse.Value[0].Name
 		break
 	}
 

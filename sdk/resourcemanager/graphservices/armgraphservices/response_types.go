@@ -9,23 +9,18 @@
 
 package armgraphservices
 
-// AccountClientCreateAndUpdateResponse contains the response from method AccountClient.BeginCreateAndUpdate.
-type AccountClientCreateAndUpdateResponse struct {
+// AccountsClientCreateAndUpdateResponse contains the response from method AccountsClient.BeginCreateAndUpdate.
+type AccountsClientCreateAndUpdateResponse struct {
 	AccountResource
 }
 
-// AccountClientDeleteResponse contains the response from method AccountClient.Delete.
-type AccountClientDeleteResponse struct {
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AccountClientGetResponse contains the response from method AccountClient.Get.
-type AccountClientGetResponse struct {
-	AccountResource
-}
-
-// AccountClientUpdateResponse contains the response from method AccountClient.Update.
-type AccountClientUpdateResponse struct {
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
 	AccountResource
 }
 
@@ -39,7 +34,12 @@ type AccountsClientListBySubscriptionResponse struct {
 	AccountResourceList
 }
 
-// OperationClientListResponse contains the response from method OperationClient.NewListPager.
-type OperationClientListResponse struct {
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountResource
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
 	OperationListResult
 }

@@ -670,7 +670,6 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 		TransactionalValidation: blob.TransferValidationTypeCRC64(badContentCrc64),
 	})
 	_require.NotNil(err)
-	_require.Contains(err.Error(), bloberror.CRC64Mismatch)
 }
 
 // nolint

@@ -6,6 +6,7 @@ package azopenai
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -16,12 +17,12 @@ import (
 )
 
 var (
-	endpoint                 string
-	apiKey                   string
-	streamingModelDeployment string
+	endpoint                 string // env: AOAI_ENDPOINT
+	apiKey                   string // env: AOAI_API_KEY
+	streamingModelDeployment string // env: AOAI_STREAMING_MODEL_DEPLOYMENT
 
-	openAIKey      string
-	openAIEndpoint string
+	openAIKey      string // env: OPENAI_API_KEY
+	openAIEndpoint string // env: OPENAI_ENDPOINT
 )
 
 const fakeEndpoint = "https://recordedhost/"
@@ -41,7 +42,7 @@ func init() {
 
 		endpoint = os.Getenv("AOAI_ENDPOINT")
 
-		if !strings.HasSuffix(endpoint, "/") {
+		if endpoint != "" && !strings.HasSuffix(endpoint, "/") {
 			// (this just makes recording replacement easier)
 			endpoint += "/"
 		}
@@ -54,7 +55,7 @@ func init() {
 		openAIKey = os.Getenv("OPENAI_API_KEY")
 		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
 
-		if !strings.HasSuffix(openAIEndpoint, "/") {
+		if openAIEndpoint != "" && !strings.HasSuffix(openAIEndpoint, "/") {
 			// (this just makes recording replacement easier)
 			openAIEndpoint += "/"
 		}
@@ -73,11 +74,11 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
-		err = recording.AddURISanitizer(fakeEndpoint, endpoint, nil)
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(endpoint), nil)
 		require.NoError(t, err)
 
 		if openAIEndpoint != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, openAIEndpoint, nil)
+			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAIEndpoint), nil)
 			require.NoError(t, err)
 		}
 	}

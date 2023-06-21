@@ -24,7 +24,7 @@ func TestNewAPIKeyPolicy(t *testing.T) {
 		header string
 		cred   KeyCredential
 	}
-	simpleCred, err := NewKeyCredential("apiKey", nil)
+	simpleCred, err := NewKeyCredential("apiKey")
 	require.NoError(t, err)
 
 	simpleHeader := "headerName"
@@ -59,7 +59,7 @@ func TestAPIKeyPolicy_Success(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 
-	cred, err := NewKeyCredential("secret", nil)
+	cred, err := NewKeyCredential("secret")
 	require.NoError(t, err)
 
 	authPolicy := newAPIKeyPolicy(cred, "api-key")

@@ -26,7 +26,7 @@ import (
 func TestClient_GetChatCompletions(t *testing.T) {
 	deploymentID := "gpt-35-turbo"
 
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	chatClient, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
@@ -160,7 +160,7 @@ func testGetChatCompletions(t *testing.T, chatClient *Client, modelOrDeployment 
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
@@ -183,7 +183,7 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 }
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	chatClient, err := NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
@@ -203,7 +203,7 @@ func TestClient_GetCompletions(t *testing.T) {
 		body         CompletionsOptions
 		options      *GetCompletionsOptions
 	}
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
@@ -275,7 +275,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 	// model deployment points to `text-similarity-curie-001`
 	deploymentID := "embedding"
 
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	client, err := NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
@@ -340,7 +340,7 @@ func newOpenAIClientForTest(t *testing.T) *Client {
 		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
 	}
 
-	cred, err := NewKeyCredential(openAIKey, nil)
+	cred, err := NewKeyCredential(openAIKey)
 	require.NoError(t, err)
 
 	chatClient, err := NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))

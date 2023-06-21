@@ -25,7 +25,7 @@ type KeyCredentialOptions struct {
 
 // NewKeyCredential creates a KeyCredential containing an API key for
 // either Azure OpenAI or OpenAI.
-func NewKeyCredential(apiKey string, options *KeyCredentialOptions) (KeyCredential, error) {
+func NewKeyCredential(apiKey string) (KeyCredential, error) {
 	return KeyCredential{apiKey: apiKey}, nil
 }
 

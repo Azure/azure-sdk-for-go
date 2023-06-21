@@ -83,7 +83,7 @@ func TestClient_GetCompletionsStream(t *testing.T) {
 		Temperature: to.Ptr(float32(0.0)),
 	}
 
-	cred, err := NewKeyCredential(apiKey, nil)
+	cred, err := NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
 	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))

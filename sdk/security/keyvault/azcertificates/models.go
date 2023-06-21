@@ -50,13 +50,13 @@ type Certificate struct {
 	ID *ID `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key id.
-	KID *string `json:"kid,omitempty" azure:"ro"`
+	KID *ID `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret id.
-	SID *string `json:"sid,omitempty" azure:"ro"`
+	SID *ID `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; Thumbprint of the certificate.
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
@@ -115,7 +115,7 @@ type CertificateOperation struct {
 	Target *string `json:"target,omitempty"`
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *ID `json:"id,omitempty" azure:"ro"`
 }
 
 // CertificatePolicy - Management policy for a certificate.
@@ -139,7 +139,7 @@ type CertificatePolicy struct {
 	X509CertificateProperties *X509CertificateProperties `json:"x509_props,omitempty"`
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *ID `json:"id,omitempty" azure:"ro"`
 }
 
 // CertificateProperties - The certificate item containing certificate metadata.
@@ -365,13 +365,13 @@ type DeletedCertificate struct {
 	ID *ID `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The key id.
-	KID *string `json:"kid,omitempty" azure:"ro"`
+	KID *ID `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
 
 	// READ-ONLY; The secret id.
-	SID *string `json:"sid,omitempty" azure:"ro"`
+	SID *ID `json:"sid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`

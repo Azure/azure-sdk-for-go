@@ -226,15 +226,21 @@ directive:
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
   # make cert IDs a convenience type so we can add parsing methods
-  # (specifying models because others have "ID" fields whose values aren't cert IDs)
+  # (specifying models because others have "ID" fields whose values aren't key vault object identifiers)
   - from: models.go
     where: $
-    transform: return $.replace(/(type (?:Deleted)?Certificate(?:Properties)? struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
+    transform: return $.replace(/(type (?:Deleted)?Certificate(?:Properties|Policy|Operation)? struct \{(?:\s.+\s)+\sID \*)string/g, "$1ID")
+  - from: models.go
+    where: $
+    transform: return $.replace(/(type (?:Deleted)?Certificate struct \{(?:\s.+\s)+\sKID \*)string/g, "$1ID")
+  - from: models.go
+    where: $
+    transform: return $.replace(/(type (?:Deleted)?Certificate struct \{(?:\s.+\s)+\sSID \*)string/g, "$1ID")
 
   # remove "certificate" prefix from some method parameter names
   - from: client.go
-  - where: $
-  - transform: return $.replace(/certificate((?:Name|Policy|Version)) string/g, (match) => { return match[0].toLowerCase() + match.substr(1); })
+    where: $
+    transform: return $.replace(/certificate((?:Name|Policy|Version)) string/g, (match) => { return match[0].toLowerCase() + match.substr(1); })
 
   # add doc comment
   - from: swagger-document

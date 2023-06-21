@@ -1,6 +1,6 @@
 # Release History
 
-## 3.2.1 (2023-06-21)
+## 3.2.1 (2023-06-23)
 ### Bugs Fixed
 
 - Change `ProvisioningStateTypeCancelled` value to `Canceled`

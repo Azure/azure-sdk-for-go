@@ -18,8 +18,10 @@ import (
 func ExampleNewClientForOpenAI() {
 	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
 	// To connect to an Azure OpenAI endpoint, use azopenai.NewClient() or azopenai.NewClientWithyKeyCredential.
-	keyCredential := azopenai.KeyCredential{
-		APIKey: "open-ai-apikey",
+	keyCredential, err := azopenai.NewKeyCredential("<OpenAI-APIKey>")
+
+	if err != nil {
+		panic(err)
 	}
 
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
@@ -53,8 +55,10 @@ func ExampleNewClient() {
 func ExampleNewClientWithKeyCredential() {
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
 	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
-	keyCredential := azopenai.KeyCredential{
-		APIKey: "Azure OpenAI apikey",
+	keyCredential, err := azopenai.NewKeyCredential("<Azure-OpenAI-APIKey>")
+
+	if err != nil {
+		panic(err)
 	}
 
 	modelDeploymentID := "model deployment ID"
@@ -78,8 +82,10 @@ func ExampleClient_GetCompletionsStream() {
 		return
 	}
 
-	keyCredential := azopenai.KeyCredential{
-		APIKey: azureOpenAIKey,
+	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
+
+	if err != nil {
+		panic(err)
 	}
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
@@ -90,7 +96,7 @@ func ExampleClient_GetCompletionsStream() {
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
 		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
 	}, nil)
 
@@ -102,7 +108,7 @@ func ExampleClient_GetCompletionsStream() {
 		entry, err := resp.CompletionsStream.Read()
 
 		if errors.Is(err, io.EOF) {
-			fmt.Printf("More more completions")
+			fmt.Printf("\n *** No more completions ***\n")
 			break
 		}
 

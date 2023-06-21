@@ -8,8 +8,12 @@ package azeventgrid_test
 
 import (
 	"context"
+	"encoding/json"
+	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -18,13 +22,10 @@ import (
 func TestFailedAck(t *testing.T) {
 	c := newClientWrapper(t, nil)
 
-	pubResp, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-		{
-			Data:   []byte("ack this one"),
-			Source: to.Ptr("hello-source"),
-			Type:   to.Ptr("world"),
-		},
-	}, nil)
+	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("ack this one"), nil)
+	require.NoError(t, err)
+
+	pubResp, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
 
 	// just documenting this, I don't think the return value is useful.
@@ -96,18 +97,13 @@ func TestFailedAck(t *testing.T) {
 func TestPartialAckFailure(t *testing.T) {
 	c := newClientWrapper(t, nil)
 
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-		{
-			Data:   []byte("event one"),
-			Source: to.Ptr("hello-source"),
-			Type:   to.Ptr("world"),
-		},
-		{
-			Data:   []byte("event two"),
-			Source: to.Ptr("hello-source"),
-			Type:   to.Ptr("world"),
-		},
-	}, nil)
+	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("event one"), nil)
+	require.NoError(t, err)
+
+	ce2, err := messaging.NewCloudEvent("hello-source", "world", []byte("event two"), nil)
+	require.NoError(t, err)
+
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce, ce2}, nil)
 	require.NoError(t, err)
 
 	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
@@ -143,22 +139,20 @@ func TestPartialAckFailure(t *testing.T) {
 func TestReject(t *testing.T) {
 	c := newClientWrapper(t, nil)
 
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-		{
-			Data:   "event one",
-			Source: to.Ptr("TestAbandon"),
-			Type:   to.Ptr("world"),
-		},
-	}, nil)
+	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), nil)
+	require.NoError(t, err)
+
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
 
 	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
 	require.NoError(t, err)
 
-	requireEqualCloudEvent(t, &azeventgrid.CloudEvent{
-		Data:   "event one",
-		Source: to.Ptr("TestAbandon"),
-		Type:   to.Ptr("world"),
+	requireEqualCloudEvent(t, messaging.CloudEvent{
+		SpecVersion: "1.0",
+		Data:        []byte("event one"),
+		Source:      "TestAbandon",
+		Type:        "world",
 	}, events.Value[0].Event)
 
 	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
@@ -179,23 +173,17 @@ func TestReject(t *testing.T) {
 
 func TestRelease(t *testing.T) {
 	c := newClientWrapper(t, nil)
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-		{
-			Data:   "event one",
-			Source: to.Ptr("TestAbandon"),
-			Type:   to.Ptr("world"),
-		},
-	}, nil)
+
+	ce, err := messaging.NewCloudEvent("TestAbandon", "world", []byte("event one"), nil)
+	require.NoError(t, err)
+
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
 
 	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
 	require.NoError(t, err)
 
-	requireEqualCloudEvent(t, &azeventgrid.CloudEvent{
-		Data:   "event one",
-		Source: to.Ptr("TestAbandon"),
-		Type:   to.Ptr("world"),
-	}, events.Value[0].Event)
+	requireEqualCloudEvent(t, ce, events.Value[0].Event)
 
 	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
@@ -218,23 +206,65 @@ func TestRelease(t *testing.T) {
 
 func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 	c := newClientWrapper(t, nil)
-	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []*azeventgrid.CloudEvent{
-		{
-			Data:   "hello world",
-			Source: to.Ptr("hello-source"),
-			Type:   to.Ptr("world"),
-		},
-	}, nil)
+
+	ce1, err := messaging.NewCloudEvent("hello-source", "eventType", "hello world 1", nil)
 	require.NoError(t, err)
 
-	resp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
+	ce2, err := messaging.NewCloudEvent("hello-source", "eventType", "hello world 2", &messaging.CloudEventOptions{
+		DataContentType: to.Ptr("data content type"),
+		DataSchema:      to.Ptr("https://dataschema"),
+		Extensions: map[string]any{
+			"extension1": "extension1value",
+		},
+		Subject: to.Ptr("subject"),
+	})
+	require.NoError(t, err)
+
+	type simpleType struct {
+		Name string
+	}
+
+	ce3, err := messaging.NewCloudEvent("hello-source", "eventType", simpleType{Name: "simple type name"}, nil)
+	require.NoError(t, err)
+
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce1, ce2, ce3}, nil)
+	require.NoError(t, err)
+
+	resp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+		MaxEvents: to.Ptr[int32](3),
+	})
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Value)
 
-	// this doesn't work - it comes back as a base64 encoded string.
-	require.Equal(t, "hello world", resp.Value[0].Event.Data)
-	require.Equal(t, "hello-source", *resp.Value[0].Event.Source)
-	require.Equal(t, "world", *resp.Value[0].Event.Type)
+	requireEqualCloudEvent(t, messaging.CloudEvent{
+		SpecVersion: "1.0",
+		Source:      "hello-source",
+		Type:        "eventType",
+		Data:        json.RawMessage("\"hello world 1\""),
+	}, resp.Value[0].Event)
+
+	requireEqualCloudEvent(t, messaging.CloudEvent{
+		SpecVersion:     "1.0",
+		Source:          "hello-source",
+		Type:            "eventType",
+		DataSchema:      to.Ptr("https://dataschema"),
+		Data:            json.RawMessage("\"hello world 2\""),
+		DataContentType: to.Ptr("data content type"),
+		Subject:         to.Ptr("subject"),
+		Extensions: map[string]any{
+			"extension1": "extension1value",
+		},
+	}, resp.Value[1].Event)
+
+	bytes, err := json.Marshal(simpleType{Name: "simple type name"})
+	require.NoError(t, err)
+
+	requireEqualCloudEvent(t, messaging.CloudEvent{
+		SpecVersion: "1.0",
+		Source:      "hello-source",
+		Type:        "eventType",
+		Data:        json.RawMessage(bytes),
+	}, resp.Value[2].Event)
 
 	ackArgs := azeventgrid.AcknowledgeOptions{}
 
@@ -250,4 +280,15 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 	require.NotEmpty(t, ackResp.SucceededLockTokens)
 }
 
-// https://github.com/cloudevents/spec/blob/v1.0/json-format.md#31-handling-of-data
+func TestSimpleErrors(t *testing.T) {
+	c := newClientWrapper(t, nil)
+
+	_, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{
+		{},
+	}, nil)
+	var respErr *azcore.ResponseError
+
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusBadRequest, respErr.StatusCode)
+	require.Contains(t, respErr.Error(), "'data' attribute is required")
+}

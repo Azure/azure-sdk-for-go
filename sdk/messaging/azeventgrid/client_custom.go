@@ -13,10 +13,9 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // ClientOptions contains optional settings for [Client]
@@ -59,26 +58,10 @@ func NewClientWithSharedKeyCredential(endpoint string, key string, options *Clie
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
+func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	ctx = runtime.WithHTTPHeader(ctx, http.Header{
 		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
 	})
-
-	for _, evt := range events {
-		if evt.ID == nil {
-			id, err := uuid.New()
-
-			if err != nil {
-				return PublishCloudEventsResponse{}, err
-			}
-
-			evt.ID = to.Ptr(id.String())
-		}
-
-		if evt.SpecVersion == nil || *evt.SpecVersion == "" {
-			evt.SpecVersion = &defaultSpecVersion
-		}
-	}
 
 	return client.internalPublishCloudEvents(ctx, topicName, events, options)
 }
@@ -92,5 +75,3 @@ func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
 	req.Raw().Header.Add("Authorization", "SharedAccessKey "+p.Key)
 	return req.Next()
 }
-
-var defaultSpecVersion = "1.0"

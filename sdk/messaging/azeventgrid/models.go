@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.18
 // +build go1.18
 
@@ -11,7 +9,7 @@
 
 package azeventgrid
 
-import "time"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 
 // AcknowledgeOptions - Array of lock token strings for the corresponding received Cloud Events to be acknowledged.
 type AcknowledgeOptions struct {
@@ -27,41 +25,6 @@ type AcknowledgeResult struct {
 
 	// REQUIRED; Array of lock tokens values for the successfully acknowledged cloud events.
 	SucceededLockTokens []*string
-}
-
-// Error - The error object.
-type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []*Error
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An object containing more specific information than the current object about the error.
-	Innererror *InnerError
-
-	// The target of the error.
-	Target *string
-}
-
-// ErrorResponse - A response containing error details.
-type ErrorResponse struct {
-	// REQUIRED; The error object.
-	Error *Error
-}
-
-// InnerError - An object containing more specific information about the error. As per Microsoft One API
-// guidelines -
-// https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type InnerError struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *InnerError
 }
 
 // BrokerProperties - Properties of the Event Broker operation.
@@ -105,41 +68,6 @@ type ReleaseCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEvent - Properties of an event published to an Azure Messaging EventGrid Namespace topic using the CloudEvent 1.0
-// Schema.
-type CloudEvent struct {
-	// REQUIRED; An identifier for the event. The combination of id and source must be unique for each distinct event.
-	ID *string
-
-	// REQUIRED; Identifies the context in which an event happened. The combination of id and source must be unique for each distinct
-	// event.
-	Source *string
-
-	// REQUIRED; The version of the CloudEvents specification which the event uses.
-	SpecVersion *string
-
-	// REQUIRED; Type of event related to the originating occurrence.
-	Type *string
-
-	// Event data specific to the event type.
-	Data any
-
-	// Event data specific to the event type, encoded as a base64 string.
-	DataBase64 []byte
-
-	// Content type of data value.
-	DataContentType *string
-
-	// Identifies the schema that data adheres to.
-	DataSchema *string
-
-	// This describes the subject of the event in the context of the event producer (identified by source).
-	Subject *string
-
-	// The time (in UTC) the event was generated, in RFC3339 format.
-	Time *time.Time
-}
-
 // FailedLockToken - Failed LockToken information.
 type FailedLockToken struct {
 	// REQUIRED; Error code related to the token. Example of such error codes are BadToken: which indicates the Token is not formatted
@@ -160,7 +88,7 @@ type ReceiveDetails struct {
 	BrokerProperties *BrokerProperties
 
 	// REQUIRED; Cloud Event details.
-	Event *CloudEvent
+	Event messaging.CloudEvent
 }
 
 // ReceiveResult - Details of the Receive operation response.

@@ -18,11 +18,6 @@ type KeyCredential struct {
 	apiKey string
 }
 
-// KeyCredentialOptions contains the optional parameters for the [NewKeyCredential] method.
-type KeyCredentialOptions struct {
-	// For future expansion
-}
-
 // NewKeyCredential creates a KeyCredential containing an API key for
 // either Azure OpenAI or OpenAI.
 func NewKeyCredential(apiKey string) (KeyCredential, error) {

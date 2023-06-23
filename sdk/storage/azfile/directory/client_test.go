@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -138,6 +139,45 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
 	_require.Equal(resp.FileCreationTime.IsZero(), false)
 	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+	_require.Equal(resp.FileCreationTime.IsZero(), false)
+	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(resp.FileChangeTime.IsZero(), false)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingConnectionString() {

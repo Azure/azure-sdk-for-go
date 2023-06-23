@@ -4173,6 +4173,46 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 // }
 
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 8 * 1024
+	r, srcData := testcommon.GenerateData(contentSize)
+	md5Val := md5.Sum(srcData)
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+
+	uploadBlockBlobOptions := blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(md5Val[:]),
+	}
+	uploadResp, err := bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
+	_require.Nil(err)
+	_require.Equal(uploadResp.ContentMD5, md5Val[:])
+
+	// Download blob to do data integrity check.
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
+	destData, err := io.ReadAll(downloadResp.Body)
+	_require.Nil(err)
+	_require.EqualValues(destData, srcData)
+
+	// Test Upload with bad MD5
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
+	var badMD5Validator blob.TransferValidationTypeMD5 = badMD5[:]
+
+	uploadBlockBlobOptions = blockblob.UploadOptions{
+		TransactionalValidation: badMD5Validator,
+	}
+	uploadResp, err = bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
+	_require.NotNil(err)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -4889,6 +4929,37 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWi
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBufferWithCRC64OrMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	_, content := testcommon.GetDataAndReader(testName, 1024)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	crc64Value := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+	})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
+
+	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
+	})
+	_require.NotNil(err)
+	_require.Error(err, bloberror.UnsupportedChecksum)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {

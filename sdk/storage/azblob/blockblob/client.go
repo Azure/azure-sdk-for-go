@@ -12,9 +12,11 @@ import (
 	"encoding/base64"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"io"
 	"math"
 	"os"
+	"reflect"
 	"sync"
 	"time"
 
@@ -513,6 +515,12 @@ func (bb *Client) UploadBuffer(ctx context.Context, buffer []byte, o *UploadBuff
 	if o != nil {
 		uploadOptions = *o
 	}
+
+	// If user attempts to pass in their own checksum, errors out.
+	if uploadOptions.TransactionalValidation != nil && reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func {
+		return UploadBufferResponse{}, bloberror.UnsupportedChecksum
+	}
+
 	return bb.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
@@ -526,6 +534,12 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 	if o != nil {
 		uploadOptions = *o
 	}
+
+	// If user attempts to pass in their own checksum, errors out.
+	if uploadOptions.TransactionalValidation != nil && reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func {
+		return UploadFileResponse{}, bloberror.UnsupportedChecksum
+	}
+
 	return bb.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
@@ -534,6 +548,11 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
 	if o == nil {
 		o = &UploadStreamOptions{}
+	}
+
+	// If user attempts to pass in their own checksum, errors out.
+	if o.TransactionalValidation != nil && reflect.TypeOf(o.TransactionalValidation).Kind() != reflect.Func {
+		return UploadStreamResponse{}, bloberror.UnsupportedChecksum
 	}
 
 	result, err := copyFromReader(ctx, body, bb, *o, newMMBPool)

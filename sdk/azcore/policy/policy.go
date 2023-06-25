@@ -19,6 +19,9 @@ import (
 // Request and react to the received Response.
 type Policy = exported.Policy
 
+// Func is a type that implements the Policy interface. Use this type when implementing a stateless policy as a first-class function.
+type Func = exported.PolicyFunc
+
 // Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
 type Transporter = exported.Transporter
 

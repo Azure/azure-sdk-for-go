@@ -22,14 +22,8 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
-// FileClient represents a URL to the Azure Datalake Storage service.
-type FileClient base.Client[generated.PathClient]
-
-type Client struct {
-	*FileClient
-	blobClient                 *blob.Client
-	fileClientWithBlobEndpoint *FileClient
-}
+// Client represents a URL to the Azure Datalake Storage service.
+type Client base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client]
 
 //TODO: NewClient()
 
@@ -45,23 +39,18 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	fileClient := base.NewPathClient(fileURL, azClient, nil, (*base.ClientOptions)(conOptions))
-	fileClientWithBlobEndpoint := base.NewPathClient(blobURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blob.NewClientWithNoCredential(blobURL, &blobClientOpts)
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
-	return &Client{
-		FileClient:                 (*FileClient)(fileClient),
-		blobClient:                 blobClient,
-		fileClientWithBlobEndpoint: (*FileClient)(fileClientWithBlobEndpoint),
-	}, nil
+	return (*Client)(fileClient), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -79,24 +68,19 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	fileClient := base.NewPathClient(fileURL, azClient, cred, (*base.ClientOptions)(conOptions))
-	fileClientWithBlobEndpoint := base.NewPathClient(blobURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
 	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKeyCredential, &blobClientOpts)
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
-	return &Client{
-		FileClient:                 (*FileClient)(fileClient),
-		blobClient:                 blobClient,
-		fileClientWithBlobEndpoint: (*FileClient)(fileClientWithBlobEndpoint),
-	}, nil
+	return (*Client)(fileClient), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -117,6 +101,31 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
+}
+
+func (f *Client) generatedFSClientWithDFS() *generated.PathClient {
+	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
+	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	return dirClientWithDFS
+}
+
+func (f *Client) generatedFSClientWithBlob() *generated.PathClient {
+	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	return dirClientWithBlob
+}
+
+func (f *Client) blobClient() *blob.Client {
+	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	return blobClient
+}
+
+func (f *Client) sharedKey() *exported.SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+}
+
+// URL returns the URL endpoint used by the Client object.
+func (f *Client) URL() string {
+	return "s.generated().Endpoint()"
 }
 
 // Create creates a new file (dfs1).
@@ -167,4 +176,45 @@ func (f *Client) Flush(ctx context.Context) {
 // Download downloads data from a file.
 func (f *Client) Download(ctx context.Context) {
 
+}
+
+// SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
+func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
+	return SetAccessControlResponse{}, nil
+}
+
+// SetAccessControlRecursive sets the owner, owning group, and permissions for a file or directory (dfs1).
+func (f *Client) SetAccessControlRecursive(ctx context.Context, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
+	return SetAccessControlRecursiveResponse{}, nil
+}
+
+// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a file or directory (dfs1).
+func (f *Client) UpdateAccessControlRecursive(ctx context.Context, options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
+	return SetAccessControlRecursiveResponse{}, nil
+}
+
+// GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
+func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
+	return GetAccessControlResponse{}, nil
+}
+
+// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a file or directory (dfs1).
+func (f *Client) RemoveAccessControlRecursive(ctx context.Context, options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
+	// TODO explicitly pass SetAccessControlRecursiveMode
+	return SetAccessControlRecursiveResponse{}, nil
+}
+
+// SetMetadata sets the metadata for a file or directory (blob3).
+func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	// TODO: call directly into blob
+	return SetMetadataResponse{}, nil
+}
+
+// SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
+func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+	// TODO: call formatBlobHTTPHeaders() since we want to add the blob prefix to our options before calling into blob
+	// TODO: call into blob
+	return SetHTTPHeadersResponse{}, nil
 }

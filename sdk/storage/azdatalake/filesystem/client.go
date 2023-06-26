@@ -23,14 +23,8 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
-// FilesystemClient represents a URL to the Azure Datalake Storage service.
-type FilesystemClient base.Client[generated.FileSystemClient]
-
-type Client struct {
-	*FilesystemClient
-	containerClient                  *container.Client
-	filesystemClientWithBlobEndpoint *FilesystemClient
-}
+// Client represents a URL to the Azure Datalake Storage service.
+type Client base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client]
 
 //TODO: NewClient()
 
@@ -46,23 +40,18 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	fsClient := base.NewFilesystemClient(filesystemURL, azClient, nil, (*base.ClientOptions)(conOptions))
-	fsClientWithBlobEndpoint := base.NewFilesystemClient(containerURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClientWithNoCredential(containerURL, &containerClientOpts)
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
-	return &Client{
-		FilesystemClient:                 (*FilesystemClient)(fsClient),
-		containerClient:                  blobContainerClient,
-		filesystemClientWithBlobEndpoint: (*FilesystemClient)(fsClientWithBlobEndpoint),
-	}, nil
+	return (*Client)(fsClient), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -80,24 +69,19 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	fsClient := base.NewFilesystemClient(filesystemURL, azClient, cred, (*base.ClientOptions)(conOptions))
-	fsClientWithBlobEndpoint := base.NewFilesystemClient(containerURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
 	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKeyCredential, &containerClientOpts)
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
-	return &Client{
-		FilesystemClient:                 (*FilesystemClient)(fsClient),
-		containerClient:                  blobContainerClient,
-		filesystemClientWithBlobEndpoint: (*FilesystemClient)(fsClientWithBlobEndpoint),
-	}, nil
+	return (*Client)(fsClient), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -120,12 +104,24 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-func (fs *Client) generated() *generated.FileSystemClient {
-	return base.InnerClient((*base.Client[generated.FileSystemClient])(fs.FilesystemClient))
+func (fs *Client) generatedFSClientWithDFS() *generated.FileSystemClient {
+	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
+	fsClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
+	return fsClientWithDFS
+}
+
+func (fs *Client) generatedFSClientWithBlob() *generated.FileSystemClient {
+	_, fsClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
+	return fsClientWithBlob
+}
+
+func (fs *Client) containerClient() *container.Client {
+	_, _, containerClient := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
+	return containerClient
 }
 
 func (fs *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKey((*base.Client[generated.FileSystemClient])(fs.FilesystemClient))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
 }
 
 // URL returns the URL endpoint used by the Client object.

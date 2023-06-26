@@ -24,14 +24,8 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
-// ServiceClient represents a URL to the Azure Datalake Storage service.
-type ServiceClient base.Client[generated.ServiceClient]
-
-type Client struct {
-	*ServiceClient
-	blobServiceClient             *service.Client
-	serviceClientWithBlobEndpoint *ServiceClient
-}
+// Client represents a URL to the Azure Datalake Storage service.
+type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
@@ -49,17 +43,13 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
-	svcClient := base.NewServiceClient(datalakeServiceURL, azClient, nil, (*base.ClientOptions)(conOptions))
-	svcClientWithBlobEndpoint := base.NewServiceClient(blobServiceURL, azClient, nil, (*base.ClientOptions)(conOptions))
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSvcClient, _ := service.NewClientWithNoCredential(blobServiceURL, &blobServiceClientOpts)
-	return &Client{
-		ServiceClient:                 (*ServiceClient)(svcClient),
-		blobServiceClient:             blobSvcClient,
-		serviceClientWithBlobEndpoint: (*ServiceClient)(svcClientWithBlobEndpoint),
-	}, nil
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, (*base.ClientOptions)(conOptions))
+
+	return (*Client)(svcClient), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -82,19 +72,14 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
-	svcClient := base.NewServiceClient(datalakeServiceURL, azClient, cred, (*base.ClientOptions)(conOptions))
-	svcClientWithBlobEndpoint := base.NewServiceClient(blobServiceURL, azClient, cred, (*base.ClientOptions)(conOptions))
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
 	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKeyCredential, &blobServiceClientOpts)
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
-	return &Client{
-		ServiceClient:                 (*ServiceClient)(svcClient),
-		blobServiceClient:             blobSvcClient,
-		serviceClientWithBlobEndpoint: (*ServiceClient)(svcClientWithBlobEndpoint),
-	}, nil
+	return (*Client)(svcClient), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -135,12 +120,23 @@ func (s *Client) NewFileClient(fileName string) *filesystem.Client {
 	return nil
 }
 
-func (s *Client) generated() *generated.ServiceClient {
-	return base.InnerClient((*base.Client[generated.ServiceClient])(s.ServiceClient))
+func (s *Client) generatedFSClientWithDFS() *generated.ServiceClient {
+	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return svcClientWithDFS
+}
+
+func (s *Client) generatedFSClientWithBlob() *generated.ServiceClient {
+	_, svcClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return svcClientWithBlob
+}
+
+func (s *Client) containerClient() *service.Client {
+	_, _, serviceClient := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return serviceClient
 }
 
 func (s *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKey((*base.Client[generated.ServiceClient])(s.ServiceClient))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 }
 
 // URL returns the URL endpoint used by the Client object.

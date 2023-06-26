@@ -9,6 +9,9 @@ package base
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
@@ -45,26 +48,51 @@ func SetPipelineOptions(clOpts *ClientOptions, plOpts *runtime.PipelineOptions) 
 	clOpts.pipelineOptions = plOpts
 }
 
-func NewServiceClient(serviceURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.ServiceClient] {
-	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(serviceURL, azClient),
+type CompositeClient[T, K, U any] struct {
+	// generated client with dfs
+	innerT *T
+	// generated client with blob
+	innerK *K
+	// blob client
+	innerU    *U
+	sharedKey *exported.SharedKeyCredential
+	options   *ClientOptions
+}
+
+func InnerClients[T, K, U any](client *CompositeClient[T, K, U]) (*T, *K, *U) {
+	return client.innerT, client.innerK, client.innerU
+}
+
+func SharedKeyComposite[T, K, U any](client *CompositeClient[T, K, U]) *exported.SharedKeyCredential {
+	return client.sharedKey
+}
+
+func NewFilesystemClient(fsURL string, fsURLWithBlobEndpoint string, client *container.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client] {
+	return &CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client]{
+		innerT:    generated.NewFilesystemClient(fsURL, azClient),
+		innerK:    generated.NewFilesystemClient(fsURLWithBlobEndpoint, azClient),
 		sharedKey: sharedKey,
+		innerU:    client,
 		options:   options,
 	}
 }
 
-func NewFilesystemClient(containerURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.FileSystemClient] {
-	return &Client[generated.FileSystemClient]{
-		inner:     generated.NewFilesystemClient(containerURL, azClient),
+func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, client *service.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client] {
+	return &CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]{
+		innerT:    generated.NewServiceClient(serviceURL, azClient),
+		innerK:    generated.NewServiceClient(serviceURLWithBlobEndpoint, azClient),
 		sharedKey: sharedKey,
+		innerU:    client,
 		options:   options,
 	}
 }
 
-func NewPathClient(containerURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.PathClient] {
-	return &Client[generated.PathClient]{
-		inner:     generated.NewPathClient(containerURL, azClient),
+func NewPathClient(dirURL string, dirURLWithBlobEndpoint string, client *blob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blob.Client] {
+	return &CompositeClient[generated.PathClient, generated.PathClient, blob.Client]{
+		innerT:    generated.NewPathClient(dirURL, azClient),
+		innerK:    generated.NewPathClient(dirURLWithBlobEndpoint, azClient),
 		sharedKey: sharedKey,
+		innerU:    client,
 		options:   options,
 	}
 }

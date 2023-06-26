@@ -172,3 +172,51 @@ func TestNewClientTracingEnabled(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
 }
+
+func TestClientWithClientName(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	var clientName string
+	var modVersion string
+	var attrString string
+	client, err := NewClient("module/package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+			clientName = name
+			modVersion = version
+			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+				require.NotNil(t, options)
+				for _, attr := range options.Attributes {
+					if attr.Key == "az.namespace" {
+						v, ok := attr.Value.(string)
+						require.True(t, ok)
+						attrString = attr.Key + ":" + v
+					}
+				}
+				return ctx, tracing.Span{}
+			}, nil)
+		}, nil),
+		Transport: srv,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.NotZero(t, client.Pipeline())
+	require.NotZero(t, client.Tracer())
+	require.EqualValues(t, "package.Client", clientName)
+	require.EqualValues(t, "v1.0.0", modVersion)
+
+	const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
+	req, err := exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, client.Tracer()), http.MethodGet, srv.URL()+requestEndpoint)
+	require.NoError(t, err)
+	srv.SetResponse()
+	_, err = client.Pipeline().Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
+
+	newClient := client.WithClientName("other.Client")
+	require.EqualValues(t, "other.Client", clientName)
+	require.EqualValues(t, "v1.0.0", modVersion)
+	_, err = newClient.Pipeline().Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
+}

@@ -5,6 +5,7 @@
 ### Features Added
 
 - `messaging/CloudEvent` allows you to serialize/deserialize CloudEvents, as described in the CloudEvents 1.0 specification: [link](https://github.com/cloudevents/spec)
+* Added method `WithClientName()` to type `azcore.Client` to support shallow cloning of a client with a new name used for tracing.
 
 ### Breaking Changes
 

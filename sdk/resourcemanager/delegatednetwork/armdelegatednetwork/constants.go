@@ -11,7 +11,7 @@ package armdelegatednetwork
 
 const (
 	moduleName    = "armdelegatednetwork"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v1.1.2"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

@@ -7,14 +7,8 @@
 package azdatalake
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
-
-// ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
 
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions struct {

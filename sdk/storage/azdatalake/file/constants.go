@@ -7,36 +7,37 @@
 package file
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
-type ResourceType = path.ResourceType
+type ResourceType = generated.PathResourceType
 
 // TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
-	ResourceTypeFile      ResourceType = path.ResourceTypeFile
-	ResourceTypeDirectory ResourceType = path.ResourceTypeDirectory
+	ResourceTypeFile      ResourceType = generated.PathResourceTypeFile
+	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
 )
 
-type RenameMode = path.RenameMode
+type RenameMode = generated.PathRenameMode
 
 // TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
-	RenameModeLegacy RenameMode = path.RenameModeLegacy
-	RenameModePosix  RenameMode = path.RenameModePosix
+	RenameModeLegacy RenameMode = generated.PathRenameModeLegacy
+	RenameModePosix  RenameMode = generated.PathRenameModePosix
 )
 
-type SetAccessControlRecursiveMode = path.SetAccessControlRecursiveMode
+type SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveMode
 
 const (
-	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeSet
-	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeModify
-	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeRemove
+	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeSet
+	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeModify
+	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeRemove
 )
 
-type EncryptionAlgorithmType = path.EncryptionAlgorithmType
+type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
 
 const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
 )

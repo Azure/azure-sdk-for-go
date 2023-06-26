@@ -7,29 +7,37 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
-// RenameMode defines the rename mode for RenameDirectory
-type RenameMode = path.RenameMode
+type ResourceType = generated.PathResourceType
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
-	RenameModeLegacy RenameMode = path.RenameModeLegacy
-	RenameModePosix  RenameMode = path.RenameModePosix
+	ResourceTypeFile      ResourceType = generated.PathResourceTypeFile
+	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
 )
 
-// SetAccessControlRecursiveMode defines the set access control recursive mode for SetAccessControlRecursive
-type SetAccessControlRecursiveMode = path.SetAccessControlRecursiveMode
+type RenameMode = generated.PathRenameMode
 
+// TODO: consider the possibility of not exposing this and just pass it under the hood
 const (
-	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeSet
-	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeModify
-	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = path.SetAccessControlRecursiveModeRemove
+	RenameModeLegacy RenameMode = generated.PathRenameModeLegacy
+	RenameModePosix  RenameMode = generated.PathRenameModePosix
 )
 
-type EncryptionAlgorithmType = path.EncryptionAlgorithmType
+type SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveMode
 
 const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
+	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeSet
+	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeModify
+	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeRemove
+)
+
+type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
+
+const (
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
 )

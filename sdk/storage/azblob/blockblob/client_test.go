@@ -1452,6 +1452,56 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	src := testcommon.GenerateBlobName("src" + testName)
+	srcBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, src, containerClient)
+
+	// Create SAS for source and get SAS URL
+	expiryTime := time.Now().UTC().Add(15 * time.Minute)
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
+		dest := testcommon.GenerateBlobName("dest" + string(tier) + testName)
+		destBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
+
+		opts := blockblob.UploadBlobFromURLOptions{
+			Tier: &tier,
+		}
+		// Invoke UploadBlobFromURL
+		pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &opts)
+		_require.NotNil(pbResp)
+		_require.NoError(err)
+
+		getResp, err := destBlob.GetProperties(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(*getResp.AccessTier, string(tier))
+	}
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2114,7 +2164,7 @@ func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUpload() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot} {
+	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
 		blobName := strings.ToLower(string(tier)) + testcommon.GenerateBlobName(testName)
 		bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 
@@ -2141,7 +2191,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot} {
+	for _, tier := range []blob.AccessTier{blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
 		blobName := strings.ToLower(string(tier)) + testcommon.GenerateBlobName(testName)
 		bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 
@@ -2160,6 +2210,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 		_require.NotNil(resp.BlockList.CommittedBlocks)
 		_require.Nil(resp.BlockList.UncommittedBlocks)
 		_require.Len(resp.BlockList.CommittedBlocks, 1)
+
+		getResp, err := bbClient.GetProperties(context.Background(), nil)
+		_require.NoError(err)
+		_require.Equal(*getResp.AccessTier, string(tier))
 	}
 }
 
@@ -2203,7 +2257,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot} {
+	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
 		destBlobName := strings.ToLower(string(tier)) + testcommon.GenerateBlobName(testName)
 		destBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(destBlobName))
 
@@ -2503,6 +2557,34 @@ func (s *BlockBlobRecordedTestsSuite) TestCopyBlobWithRehydratePriority() {
 	getResp2, err := destBBClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(*getResp2.ArchiveStatus, string(blob.ArchiveStatusRehydratePendingToHot))
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestCopyWithTier() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	for _, tier := range []blob.AccessTier{blob.AccessTierArchive, blob.AccessTierCool, blob.AccessTierHot, blob.AccessTierCold} {
+		src := testcommon.GenerateBlobName("src" + string(tier) + testName)
+		srcBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, src, containerClient)
+
+		dest := testcommon.GenerateBlobName("dest" + string(tier) + testName)
+		destBlob := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
+
+		_, err = destBlob.StartCopyFromURL(context.Background(), srcBlob.URL(), &blob.StartCopyFromURLOptions{
+			Tier: &tier,
+		})
+		_require.NoError(err)
+
+		getResp, err := destBlob.GetProperties(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(*getResp.AccessTier, string(tier))
+	}
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlobServiceClientDelete() {

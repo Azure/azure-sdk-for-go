@@ -158,7 +158,8 @@ func (fs *Client) URL() string {
 
 // Create creates a new filesystem under the specified account. (blob3).
 func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	return CreateResponse{}, nil
+	opts := options.format()
+	return fs.containerClient().Create(ctx, opts)
 }
 
 // Delete deletes the specified filesystem and any files or directories it contains. (blob3).

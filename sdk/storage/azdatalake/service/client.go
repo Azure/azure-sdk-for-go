@@ -134,6 +134,8 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 // NewFilesystemClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
+	//fsURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
+	//return (*filesystem.Client)(base.NewFilesystemClient(fsURL, s.generated().Pipeline(), s.credential()))
 	return nil
 }
 
@@ -149,12 +151,12 @@ func (s *Client) NewFileClient(fileName string) *filesystem.Client {
 	return nil
 }
 
-func (s *Client) generatedFSClientWithDFS() *generated.ServiceClient {
+func (s *Client) generatedServiceClientWithDFS() *generated.ServiceClient {
 	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return svcClientWithDFS
 }
 
-func (s *Client) generatedFSClientWithBlob() *generated.ServiceClient {
+func (s *Client) generatedServiceClientWithBlob() *generated.ServiceClient {
 	_, svcClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return svcClientWithBlob
 }

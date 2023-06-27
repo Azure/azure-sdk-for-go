@@ -1,14 +1,25 @@
-package shared
+package exported
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
+}
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = generated.LeaseAccessConditions
+
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = generated.ModifiedAccessConditions
+
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatContainerAccessConditions(b *azdatalake.AccessConditions) *container.AccessConditions {
+func FormatContainerAccessConditions(b *AccessConditions) *container.AccessConditions {
 	if b == nil {
 		return nil
 	}
@@ -26,7 +37,7 @@ func FormatContainerAccessConditions(b *azdatalake.AccessConditions) *container.
 }
 
 // FormatPathAccessConditions formats PathAccessConditions into path's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatPathAccessConditions(p *azdatalake.AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func FormatPathAccessConditions(p *AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if p == nil {
 		return nil, nil
 	}
@@ -41,7 +52,7 @@ func FormatPathAccessConditions(p *azdatalake.AccessConditions) (*generated.Leas
 }
 
 // FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatBlobAccessConditions(p *azdatalake.AccessConditions) *blob.AccessConditions {
+func FormatBlobAccessConditions(p *AccessConditions) *blob.AccessConditions {
 	if p == nil {
 		return nil
 	}

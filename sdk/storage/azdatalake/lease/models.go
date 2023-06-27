@@ -9,12 +9,12 @@ package lease
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
 // FilesystemAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type FilesystemAcquireOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *FilesystemAcquireOptions) format() *lease.ContainerAcquireOptions {
@@ -31,7 +31,7 @@ func (o *FilesystemAcquireOptions) format() *lease.ContainerAcquireOptions {
 // FilesystemBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
 type FilesystemBreakOptions struct {
 	BreakPeriod              *int32
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
@@ -48,7 +48,7 @@ func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
 
 // FilesystemChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type FilesystemChangeOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *FilesystemChangeOptions) format() *lease.ContainerChangeOptions {
@@ -63,7 +63,7 @@ func (o *FilesystemChangeOptions) format() *lease.ContainerChangeOptions {
 }
 
 type FilesystemReleaseOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *FilesystemReleaseOptions) format() *lease.ContainerReleaseOptions {
@@ -78,7 +78,7 @@ func (o *FilesystemReleaseOptions) format() *lease.ContainerReleaseOptions {
 }
 
 type FilesystemRenewOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *FilesystemRenewOptions) format() *lease.ContainerRenewOptions {
@@ -94,7 +94,7 @@ func (o *FilesystemRenewOptions) format() *lease.ContainerRenewOptions {
 
 // PathAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type PathAcquireOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *PathAcquireOptions) format() *lease.BlobAcquireOptions {
@@ -111,7 +111,7 @@ func (o *PathAcquireOptions) format() *lease.BlobAcquireOptions {
 // PathBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
 type PathBreakOptions struct {
 	BreakPeriod              *int32
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *PathBreakOptions) format() *lease.BlobBreakOptions {
@@ -128,7 +128,7 @@ func (o *PathBreakOptions) format() *lease.BlobBreakOptions {
 
 // PathChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type PathChangeOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *PathChangeOptions) format() *lease.BlobChangeOptions {
@@ -143,7 +143,7 @@ func (o *PathChangeOptions) format() *lease.BlobChangeOptions {
 }
 
 type PathReleaseOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *PathReleaseOptions) format() *lease.BlobReleaseOptions {
@@ -158,7 +158,7 @@ func (o *PathReleaseOptions) format() *lease.BlobReleaseOptions {
 }
 
 type PathRenewOptions struct {
-	ModifiedAccessConditions *azdatalake.ModifiedAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
 func (o *PathRenewOptions) format() *lease.BlobRenewOptions {
@@ -171,3 +171,12 @@ func (o *PathRenewOptions) format() *lease.BlobRenewOptions {
 		},
 	}
 }
+
+// AccessConditions identifies blob-specific access conditions which you optionally set.
+type AccessConditions = exported.AccessConditions
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = exported.LeaseAccessConditions
+
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = exported.ModifiedAccessConditions

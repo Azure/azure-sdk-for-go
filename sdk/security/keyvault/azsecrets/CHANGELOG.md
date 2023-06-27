@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* changed type of `KID` from string to type `ID`
 
 ### Bugs Fixed
 

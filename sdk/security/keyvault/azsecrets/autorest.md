@@ -123,6 +123,9 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(\sID \*)string(\s+.*)/g, "$1ID$2")
+  - from: models.go
+    where: $
+    transform: return $.replace(/(\sKID \*)string(\s+.*)/g, "$1ID$2")
 
   # Maxresults -> MaxResults
   - from:

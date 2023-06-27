@@ -8,12 +8,12 @@ package azopenai
 
 // Models for methods that return streaming response
 
-// GetCompletionsStreamOptions contains the optional parameters for the Client.GetCompletions method.
+// GetCompletionsStreamOptions contains the optional parameters for the [Client.GetCompletionsStream] method.
 type GetCompletionsStreamOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetCompletionsStreamResponse is the response from [GetCompletionsStream].
+// GetCompletionsStreamResponse is the response from [Client.GetCompletionsStream].
 type GetCompletionsStreamResponse struct {
 	// CompletionsStream returns the stream of completions. Token limits and other settings may limit the number of completions returned by the service.
 	CompletionsStream *EventReader[Completions]
@@ -24,6 +24,7 @@ type GetChatCompletionsStreamOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetChatCompletionsStreamResponse is the response from [Client.GetChatCompletionsStream].
 type GetChatCompletionsStreamResponse struct {
 	// ChatCompletionsStream returns the stream of completions. Token limits and other settings may limit the number of chat completions returned by the service.
 	ChatCompletionsStream *EventReader[ChatCompletions]

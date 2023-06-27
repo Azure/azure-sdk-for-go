@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.18
 // +build go1.18
 
@@ -14,13 +12,15 @@ package azeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the Client group.
@@ -101,7 +101,7 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
+func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	req, err := client.publishCloudEventsCreateRequest(ctx, topicName, events, options)
 	if err != nil {
 		return PublishCloudEventsResponse{}, err
@@ -117,7 +117,7 @@ func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName 
 }
 
 // publishCloudEventsCreateRequest creates the PublishCloudEvents request.
-func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topicName string, events []*CloudEvent, options *PublishCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}:publish"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")

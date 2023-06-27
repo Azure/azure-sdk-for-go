@@ -53,7 +53,7 @@ resource ns_testtopic1_testsubscription1 'Microsoft.EventGrid/namespaces/topics/
 // https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2023-06-01-preview/namespaces/list-shared-access-keys?tabs=HTTP
 output EVENTGRID_KEY string = listKeys(resourceId('Microsoft.EventGrid/namespaces', namespaceName), '2023-06-01-preview').key1
 // TODO: get this formatted properly
-output EVENTGRID_ENDPOINT string= 'https://${ns_resource.properties.topicsConfiguration.hostname}'
+output EVENTGRID_ENDPOINT string = 'https://${ns_resource.properties.topicsConfiguration.hostname}'
 
 output EVENTGRID_TOPIC string = topicName
 output EVENTGRID_SUBSCRIPTION string = subscriptionName

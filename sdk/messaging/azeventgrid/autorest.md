@@ -25,15 +25,6 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/PublishCloudEvents\(/g, "internalPublishCloudEvents(");
-  # make sure the casing of the properties is what compliant.
-  # - from: swagger-document
-  #   where: $.definitions.CloudEvent.properties.data
-  #   transform: > 
-  #     $["type"] = "array"
-  # - from: swagger-document
-  #   where: $.definitions.CloudEvent.properties.data
-  #   transform: > 
-  #     $["items"] = {"type": "byte"}
   - from: swagger-document
     where: $.definitions.CloudEvent.properties.specversion
     transform: $["x-ms-client-name"] = "SpecVersion"
@@ -43,6 +34,19 @@ directive:
   - from: swagger-document
     where: $.definitions.CloudEvent.properties.dataschema
     transform: $["x-ms-client-name"] = "DataSchema"
+  # mark models as external so they're just omitted
+  - from: swagger-document
+    where: $.definitions.CloudEvent
+    transform: $["x-ms-external"] = true
+  - from: swagger-document
+    where: $.definitions.["Azure.Core.Foundations.Error"]
+    transform: $["x-ms-external"] = true
+  - from: swagger-document
+    where: $.definitions.["Azure.Core.Foundations.ErrorResponse"]
+    transform: $["x-ms-external"] = true
+  - from: swagger-document
+    where: $.definitions.["Azure.Core.Foundations.InnerError"]
+    transform: $["x-ms-external"] = true
   # make the endpoint a parameter of the client constructor
   - from: swagger-document
     where: $["x-ms-parameterized-host"]
@@ -54,11 +58,11 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+  # replace references to the "generated" CloudEvent to the actual version in azcore/messaging
   - from:
       - client.go
       - models.go
-      - models_serde.go
       - response_types.go
     where: $
-    transform: return $.replace(/AzureCoreFoundations/g, "");
+    transform: return $.replace(/\*CloudEvent/g, "messaging.CloudEvent");
 ```

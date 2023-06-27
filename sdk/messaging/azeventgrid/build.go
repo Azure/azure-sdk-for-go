@@ -4,6 +4,6 @@
 // +build go1.18
 
 //go:generate autorest ./autorest.md
-//go:generate gofmt -w .
+//go:generate goimports -w .
 
 package azeventgrid

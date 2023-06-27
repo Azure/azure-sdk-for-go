@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -1181,7 +1180,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -1232,7 +1231,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -1314,7 +1313,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -1368,7 +1367,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -1403,7 +1402,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth()
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
@@ -1438,7 +1437,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryListUsingOAuth() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)

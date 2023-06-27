@@ -34,6 +34,8 @@ type Client base.Client[generated.ShareClient]
 //   - shareURL - the URL of the share e.g. https://<account>.file.core.windows.net/share
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
+// Note that the only share-level operations that support token credential authentication are CreatePermission and GetPermission.
+// Also note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(shareURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)

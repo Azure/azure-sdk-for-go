@@ -34,6 +34,9 @@ type Client base.Client[generated.ServiceClient]
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
+// Note that service-level operations do not support token credential authentication.
+// This constructor exists to allow the construction of a share.Client that has token credential authentication.
+// Also note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)

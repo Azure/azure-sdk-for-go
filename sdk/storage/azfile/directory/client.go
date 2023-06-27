@@ -32,6 +32,7 @@ type Client base.Client[generated.DirectoryClient]
 //   - directoryURL - the URL of the directory e.g. https://<account>.file.core.windows.net/share/directory
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
+// Note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)

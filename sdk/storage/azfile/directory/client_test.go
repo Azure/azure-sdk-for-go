@@ -141,45 +141,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingSharedKey() {
 	_require.Equal(resp.FileChangeTime.IsZero(), false)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingOAuth() {
-	_require := require.New(d.T())
-	testName := d.T().Name()
-
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	_require.NoError(err)
-
-	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
-	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
-
-	dirName := testcommon.GenerateDirectoryName(testName)
-	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
-
-	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
-	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
-	dirClient, err := directory.NewClient(dirURL, cred, options)
-	_require.NoError(err)
-
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp.ETag)
-	_require.NotNil(resp.RequestID)
-	_require.Equal(resp.LastModified.IsZero(), false)
-	_require.Equal(resp.FileCreationTime.IsZero(), false)
-	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
-	_require.Equal(resp.FileChangeTime.IsZero(), false)
-
-	gResp, err := dirClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(gResp)
-}
-
 func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateUsingConnectionString() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -1211,4 +1172,340 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateWithTrailingSlash() {
 
 	_, err = subDirClient.Create(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+	_require.Equal(resp.FileCreationTime.IsZero(), false)
+	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(resp.FileChangeTime.IsZero(), false)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.FileCreationTime)
+	_require.NotNil(gResp.FileLastWriteTime)
+	_require.NotNil(gResp.FilePermissionKey)
+
+	dResp, err := dirClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(dResp.Date.IsZero(), false)
+	_require.NotNil(dResp.RequestID)
+	_require.NotNil(dResp.Version)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	cResp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 21:00:00 GMT 2023")
+	_require.NoError(err)
+	creationTime := currTime.Add(5 * time.Minute).Round(time.Microsecond)
+	lastWriteTime := currTime.Add(10 * time.Minute).Round(time.Millisecond)
+
+	// Set the custom permissions
+	sResp, err := dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
+		FileSMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{
+				ReadOnly: true,
+				System:   true,
+			},
+			CreationTime:  &creationTime,
+			LastWriteTime: &lastWriteTime,
+		},
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.FileCreationTime)
+	_require.NotNil(sResp.FileLastWriteTime)
+	_require.NotNil(sResp.FilePermissionKey)
+	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
+	_require.Equal(*sResp.FileCreationTime, creationTime.UTC())
+	_require.Equal(*sResp.FileLastWriteTime, lastWriteTime.UTC())
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(sResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.ReadOnly)
+	_require.True(fileAttributes.System)
+	_require.True(fileAttributes.Directory)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.FileCreationTime)
+	_require.NotNil(gResp.FileLastWriteTime)
+	_require.NotNil(gResp.FilePermissionKey)
+	_require.Equal(*gResp.FilePermissionKey, *sResp.FilePermissionKey)
+	_require.Equal(*gResp.FileCreationTime, *sResp.FileCreationTime)
+	_require.Equal(*gResp.FileLastWriteTime, *sResp.FileLastWriteTime)
+	_require.Equal(*gResp.FileAttributes, *sResp.FileAttributes)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.ReadOnly)
+	_require.True(fileAttributes2.System)
+	_require.True(fileAttributes2.Directory)
+	_require.EqualValues(fileAttributes2, fileAttributes)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	md := map[string]*string{
+		"Foo": to.Ptr("FooValuE"),
+		"Bar": to.Ptr("bArvaLue"),
+	}
+
+	sResp, err := dirClient.SetMetadata(context.Background(), &directory.SetMetadataOptions{
+		Metadata: md,
+	})
+	_require.NoError(err)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotNil(sResp.ETag)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+	_require.NotNil(sResp.IsServerEncrypted)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotNil(gResp.ETag)
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotNil(gResp.RequestID)
+	_require.NotNil(gResp.Version)
+	_require.NotNil(gResp.IsServerEncrypted)
+	_require.EqualValues(gResp.Metadata, md)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.ListHandles(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.Handles, 0)
+	_require.NotNil(resp.NextMarker)
+	_require.Equal(*resp.NextMarker, "")
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.ForceCloseHandles(context.Background(), "*", nil)
+	_require.NoError(err)
+	_require.EqualValues(*resp.NumberOfHandlesClosed, 0)
+	_require.EqualValues(*resp.NumberOfHandlesFailedToClose, 0)
+	_require.Nil(resp.Marker)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryListUsingOAuth() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+
+	// create directories
+	for i := 0; i < 10; i++ {
+		subDirClient := dirClient.NewSubdirectoryClient(dirName + fmt.Sprintf("%v", i))
+		_, err = subDirClient.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+
+	// create files
+	for i := 0; i < 5; i++ {
+		fileClient := dirClient.NewFileClient(fileName + fmt.Sprintf("%v", i))
+		_, err = fileClient.Create(context.Background(), 2048, nil)
+		_require.NoError(err)
+	}
+
+	subDirCtr, fileCtr := 0, 0
+	pager := dirClient.NewListFilesAndDirectoriesPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		subDirCtr += len(resp.Segment.Directories)
+		fileCtr += len(resp.Segment.Files)
+		for _, dir := range resp.Segment.Directories {
+			_require.NotNil(dir.Name)
+			_require.Greater(len(*dir.Name), 0)
+			_require.NotNil(dir.ID)
+			_require.Nil(dir.Attributes)
+			_require.Nil(dir.PermissionKey)
+			_require.Nil(dir.Properties.ETag)
+			_require.Nil(dir.Properties.ChangeTime)
+			_require.Nil(dir.Properties.CreationTime)
+			_require.Nil(dir.Properties.ContentLength)
+		}
+		for _, f := range resp.Segment.Files {
+			_require.NotNil(f.Name)
+			_require.Greater(len(*f.Name), 0)
+			_require.NotNil(f.ID)
+			_require.Nil(f.Attributes)
+			_require.Nil(f.PermissionKey)
+			_require.Nil(f.Properties.ETag)
+			_require.Nil(f.Properties.ChangeTime)
+			_require.Nil(f.Properties.CreationTime)
+			_require.NotNil(f.Properties.ContentLength)
+			_require.Equal(*f.Properties.ContentLength, int64(2048))
+		}
+	}
+	_require.Equal(subDirCtr, 10)
+	_require.Equal(fileCtr, 5)
 }

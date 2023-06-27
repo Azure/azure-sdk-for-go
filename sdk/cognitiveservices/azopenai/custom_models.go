@@ -18,3 +18,13 @@ type GetCompletionsStreamResponse struct {
 	// CompletionsStream returns the stream of completions. Token limits and other settings may limit the number of completions returned by the service.
 	CompletionsStream *EventReader[Completions]
 }
+
+// GetChatCompletionsStreamOptions contains the optional parameters for the [Client.GetChatCompletionsStream] method.
+type GetChatCompletionsStreamOptions struct {
+	// placeholder for future optional parameters
+}
+
+type GetChatCompletionsStreamResponse struct {
+	// ChatCompletionsStream returns the stream of completions. Token limits and other settings may limit the number of chat completions returned by the service.
+	ChatCompletionsStream *EventReader[ChatCompletions]
+}

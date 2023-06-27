@@ -109,17 +109,20 @@ func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 // Methods that return streaming response
-
 type streamCompletionsOptions struct {
-	CompletionsOptions
+	// we strip out the 'stream' field from the options exposed to the customer so
+	// now we need to add it back in.
+	any
 	Stream bool `json:"stream"`
 }
 
 func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
-	bytes, err := o.CompletionsOptions.MarshalJSON()
+	bytes, err := json.Marshal(o.any)
+
 	if err != nil {
 		return nil, err
 	}
+
 	objectMap := make(map[string]any)
 	err = json.Unmarshal(bytes, &objectMap)
 	if err != nil {
@@ -163,4 +166,35 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 func formatAzureOpenAIURL(endpoint, deploymentID string) string {
 	escapedDeplID := url.PathEscape(deploymentID)
 	return runtime.JoinPaths(endpoint, "openai", "deployments", escapedDeplID)
+}
+
+// GetChatCompletionsStream - Return the chat completions for a given prompt as a sequence of events.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
+func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsStreamOptions) (GetChatCompletionsStreamResponse, error) {
+	req, err := client.getChatCompletionsCreateRequest(ctx, ChatCompletionsOptions{}, &GetChatCompletionsOptions{})
+
+	if err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{body, true}); err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	runtime.SkipBodyDownload(req)
+
+	resp, err := client.internal.Pipeline().Do(req)
+
+	if err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return GetChatCompletionsStreamResponse{}, runtime.NewResponseError(resp)
+	}
+
+	return GetChatCompletionsStreamResponse{
+		ChatCompletionsStream: newEventReader[ChatCompletions](resp.Body),
+	}, nil
 }

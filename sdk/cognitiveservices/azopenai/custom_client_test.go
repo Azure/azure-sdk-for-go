@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenai
+package azopenai_test
 
 import (
 	"context"
@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,19 +24,19 @@ func TestNewClient(t *testing.T) {
 		endpoint     string
 		credential   azcore.TokenCredential
 		deploymentID string
-		options      *ClientOptions
+		options      *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *Client
+		want    *azopenai.Client
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewClient(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClient(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -50,21 +51,21 @@ func TestNewClient(t *testing.T) {
 func TestNewClientWithKeyCredential(t *testing.T) {
 	type args struct {
 		endpoint     string
-		credential   KeyCredential
+		credential   azopenai.KeyCredential
 		deploymentID string
-		options      *ClientOptions
+		options      *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *Client
+		want    *azopenai.Client
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClientWithKeyCredential() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -77,16 +78,16 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 }
 
 func TestClient_GetCompletionsStream(t *testing.T) {
-	body := CompletionsOptions{
+	body := azopenai.CompletionsOptions{
 		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
 		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
 	}
 
-	cred, err := NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(apiKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, completionsModelDeployment, newClientOptionsForTest(t))
 	if err != nil {
 		t.Errorf("NewClientWithKeyCredential() error = %v", err)
 		return

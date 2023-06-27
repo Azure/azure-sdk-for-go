@@ -27,6 +27,35 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Datalake Storage service.
 type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]
 
+// NewClient creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
+	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+
+	authPolicy := shared.NewStorageChallengePolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	blobServiceClientOpts := service.ClientOptions{
+		ClientOptions: options.ClientOptions,
+	}
+	blobSvcClient, _ := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, (*base.ClientOptions)(conOptions))
+
+	return (*Client)(svcClient), nil
+}
+
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values.

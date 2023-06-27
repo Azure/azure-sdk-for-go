@@ -26,11 +26,38 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Datalake Storage service.
 type Client base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client]
 
-//TODO: NewClient()
+// NewClient creates an instance of Client with the specified values.
+//   - filesystemURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/fs
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
+	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+
+	authPolicy := shared.NewStorageChallengePolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	containerClientOpts := container.ClientOptions{
+		ClientOptions: options.ClientOptions,
+	}
+	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, (*base.ClientOptions)(conOptions))
+
+	return (*Client)(fsClient), nil
+}
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/?<sas token>
+//   - filesystemURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*Client, error) {
 	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
@@ -55,7 +82,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
+//   - filesystemURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {

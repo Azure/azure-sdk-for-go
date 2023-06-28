@@ -719,6 +719,39 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require.Contains(err.Error(), bloberror.MD5Mismatch)
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestPutBlobWithCRC64() {
+	s.T().Skip("Content CRC64 cannot be validated in Upload()")
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := "test" + testcommon.GenerateContainerName(testName) + "1"
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+	})
+	_require.Error(err, bloberror.UnsupportedChecksum)
+	// TODO: UploadResponse does not return ContentCRC64
+	//	_require.Equal(resp.ContentCRC64, crc)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2161,6 +2194,71 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 		_require.Nil(resp.BlockList.UncommittedBlocks)
 		_require.Len(resp.BlockList.CommittedBlocks, 1)
 	}
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := "test" + testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	_, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	contentMD5 := md5.Sum(sourceData)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5[:]),
+	})
+	_require.Error(err, bloberror.UnsupportedChecksum)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := "test" + testcommon.GenerateContainerName(testName) + "1"
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	_, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID, streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+	})
+	_require.Error(err, bloberror.UnsupportedChecksum)
+
+	// SDK generated checksum can be sent
+	resp, err := bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
+	})
+	_require.Nil(err)
+	_require.Equal(resp.ContentCRC64, crc)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {

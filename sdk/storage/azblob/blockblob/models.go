@@ -202,6 +202,7 @@ type CommitBlockListOptions struct {
 	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
 	ImmutabilityPolicyExpiryTime *time.Time
 
+	TransactionalValidation blob.TransferValidationType
 	// Deprecated: TransactionalContentCRC64 cannot be generated
 	TransactionalContentCRC64 []byte
 

@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+* The type for parameter `tracerProvider` in function `NewTracingProvider()` has changed to `trace.TracerProvider`.
+
 ### Bugs Fixed
 
 ### Other Changes

@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"net/http"
 	"strings"
 )
 
@@ -202,7 +203,33 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
 	//TODO: look into possibility of using blob endpoint like list deleted paths is
 	//TODO: will use ListPathsCreateRequest
-	return nil
+	listOptions := options.format()
+	return runtime.NewPager(runtime.PagingHandler[ListPathsSegmentResponse]{
+		More: func(page ListPathsSegmentResponse) bool {
+			return page.Continuation != nil && len(*page.Continuation) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListPathsSegmentResponse) (ListPathsSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = fs.generatedFSClientWithDFS().ListPathsCreateRequest(ctx, recursive, &listOptions)
+			} else {
+				listOptions.Continuation = page.Continuation
+				req, err = fs.generatedFSClientWithDFS().ListPathsCreateRequest(ctx, recursive, &listOptions)
+			}
+			if err != nil {
+				return ListPathsSegmentResponse{}, err
+			}
+			resp, err := fs.generatedFSClientWithDFS().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return ListPathsSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListPathsSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return fs.generatedFSClientWithDFS().ListPathsHandleResponse(resp)
+		},
+	})
 }
 
 // NewListDeletedPathsPager operation returns a pager of the shares under the specified account. (dfs op/blob2).

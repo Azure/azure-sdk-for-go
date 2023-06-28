@@ -9,6 +9,7 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
 // SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
@@ -139,6 +140,19 @@ type ListPathsOptions struct {
 	MaxResults *int32
 	Prefix     *string
 	Upn        *bool
+}
+
+func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
+	if o == nil {
+		return generated.FileSystemClientListPathsOptions{}
+	}
+
+	return generated.FileSystemClientListPathsOptions{
+		Continuation: o.Marker,
+		MaxResults:   o.MaxResults,
+		Path:         o.Prefix,
+		Upn:          o.Upn,
+	}
 }
 
 // ListDeletedPathsOptions contains the optional parameters for the Filesystem.ListDeletedPaths operation. PLACEHOLDER

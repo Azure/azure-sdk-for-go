@@ -30,8 +30,33 @@ func HasCode(err error, codes ...Code) bool {
 	return false
 }
 
+type StorageErrorCode string
+
 // Code - Error codes returned by the service
 type Code = bloberror.Code
+
+const (
+	ContentLengthMustBeZero                StorageErrorCode = "ContentLengthMustBeZero"
+	PathAlreadyExists                      StorageErrorCode = "PathAlreadyExists"
+	InvalidFlushPosition                   StorageErrorCode = "InvalidFlushPosition"
+	InvalidPropertyName                    StorageErrorCode = "InvalidPropertyName"
+	InvalidSourceURI                       StorageErrorCode = "InvalidSourceUri"
+	UnsupportedRestVersion                 StorageErrorCode = "UnsupportedRestVersion"
+	FileSystemNotFound                     StorageErrorCode = "FilesystemNotFound"
+	PathNotFound                           StorageErrorCode = "PathNotFound"
+	RenameDestinationParentPathNotFound    StorageErrorCode = "RenameDestinationParentPathNotFound"
+	SourcePathNotFound                     StorageErrorCode = "SourcePathNotFound"
+	DestinationPathIsBeingDeleted          StorageErrorCode = "DestinationPathIsBeingDeleted"
+	FileSystemAlreadyExists                StorageErrorCode = "FilesystemAlreadyExists"
+	FileSystemBeingDeleted                 StorageErrorCode = "FilesystemBeingDeleted"
+	InvalidDestinationPath                 StorageErrorCode = "InvalidDestinationPath"
+	InvalidRenameSourcePath                StorageErrorCode = "InvalidRenameSourcePath"
+	InvalidSourceOrDestinationResourceType StorageErrorCode = "InvalidSourceOrDestinationResourceType"
+	LeaseIsAlreadyBroken                   StorageErrorCode = "LeaseIsAlreadyBroken"
+	LeaseNameMismatch                      StorageErrorCode = "LeaseNameMismatch"
+	PathConflict                           StorageErrorCode = "PathConflict"
+	SourcePathIsBeingDeleted               StorageErrorCode = "SourcePathIsBeingDeleted"
+)
 
 const (
 	AccountAlreadyExists                              Code = "AccountAlreadyExists"
@@ -45,12 +70,12 @@ const (
 	AuthorizationResourceTypeMismatch                 Code = "AuthorizationResourceTypeMismatch"
 	AuthorizationServiceMismatch                      Code = "AuthorizationServiceMismatch"
 	AuthorizationSourceIPMismatch                     Code = "AuthorizationSourceIPMismatch"
-	PathAlreadyExists                                 Code = "BlobAlreadyExists"
+	BlobAlreadyExists                                 Code = "BlobAlreadyExists"
 	PathArchived                                      Code = "BlobArchived"
 	PathBeingRehydrated                               Code = "BlobBeingRehydrated"
 	PathImmutableDueToPolicy                          Code = "BlobImmutableDueToPolicy"
 	PathNotArchived                                   Code = "BlobNotArchived"
-	PathNotFound                                      Code = "BlobNotFound"
+	BlobNotFound                                      Code = "BlobNotFound"
 	PathOverwritten                                   Code = "BlobOverwritten"
 	PathTierInadequateForContentLength                Code = "BlobTierInadequateForContentLength"
 	PathUsesCustomerSpecifiedEncryption               Code = "BlobUsesCustomerSpecifiedEncryption"
@@ -152,5 +177,5 @@ const (
 
 var (
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
-	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
+	MissingSharedKeyCredential = bloberror.MissingSharedKeyCredential
 )

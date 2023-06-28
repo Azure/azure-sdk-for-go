@@ -58,7 +58,7 @@ func (s *RecordedTestSuite) TestCreateFilesystem() {
 	testName := s.T().Name()
 
 	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDefault, nil)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
@@ -69,7 +69,7 @@ func (s *RecordedTestSuite) TestCreateFilesystem() {
 func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {
 	_require := require.New(s.T())
 
-	fsClient, err := testcommon.GetFilesystemClient("foo bar", s.T(), testcommon.TestAccountDefault, nil)
+	fsClient, err := testcommon.GetFilesystemClient("foo bar", s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -82,7 +82,7 @@ func (s *RecordedTestSuite) TestFilesystemCreateNameCollision() {
 	testName := s.T().Name()
 
 	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDefault, nil)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
@@ -99,7 +99,7 @@ func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	testName := s.T().Name()
 
 	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDefault, nil)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
@@ -110,4 +110,32 @@ func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	_require.Nil(err)
 	_require.NotNil(resp.ETag)
 	_require.Nil(resp.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPaths() {
+	_require := require.New(s.T())
+	//testName := s.T().Name()
+
+	//filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient("cont1", s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	//defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	//_, err = fsClient.Create(context.Background(), nil)
+	//_require.Nil(err)
+
+	resp, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.Metadata)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NotNil(err)
+		if err != nil {
+			break
+		}
+	}
 }

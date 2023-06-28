@@ -160,7 +160,19 @@ type ListDeletedPathsOptions struct {
 	Marker     *string
 	MaxResults *int32
 	Prefix     *string
-	Upn        *bool
+}
+
+func (o *ListDeletedPathsOptions) format() generated.FileSystemClientListBlobHierarchySegmentOptions {
+	showOnly := "deleted"
+	if o == nil {
+		return generated.FileSystemClientListBlobHierarchySegmentOptions{Showonly: &showOnly}
+	}
+	return generated.FileSystemClientListBlobHierarchySegmentOptions{
+		Marker:     o.Marker,
+		MaxResults: o.MaxResults,
+		Prefix:     o.Prefix,
+		Showonly:   &showOnly,
+	}
 }
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.

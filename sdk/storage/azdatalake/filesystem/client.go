@@ -235,6 +235,31 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 // NewListDeletedPathsPager operation returns a pager of the shares under the specified account. (dfs op/blob2).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *runtime.Pager[ListDeletedPathsSegmentResponse] {
-	//TODO: will use ListBlobHierarchySegmentCreateRequest
-	return nil
+	listOptions := options.format()
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedPathsSegmentResponse]{
+		More: func(page ListDeletedPathsSegmentResponse) bool {
+			return page.Marker != nil && len(*page.Marker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListDeletedPathsSegmentResponse) (ListDeletedPathsSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+			} else {
+				listOptions.Marker = page.Marker
+				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+			}
+			if err != nil {
+				return ListDeletedPathsSegmentResponse{}, err
+			}
+			resp, err := fs.generatedFSClientWithDFS().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return ListDeletedPathsSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListDeletedPathsSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return fs.generatedFSClientWithDFS().ListBlobHierarchySegmentHandleResponse(resp)
+		},
+	})
 }

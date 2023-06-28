@@ -69,6 +69,36 @@ type DefaultAccountsClientSetResponse struct {
 	DefaultAccountPayload
 }
 
+// FeaturesClientAccountGetResponse contains the response from method FeaturesClient.AccountGet.
+type FeaturesClientAccountGetResponse struct {
+	BatchFeatureStatus
+}
+
+// FeaturesClientSubscriptionGetResponse contains the response from method FeaturesClient.SubscriptionGet.
+type FeaturesClientSubscriptionGetResponse struct {
+	BatchFeatureStatus
+}
+
+// KafkaConfigurationsClientCreateOrUpdateResponse contains the response from method KafkaConfigurationsClient.CreateOrUpdate.
+type KafkaConfigurationsClientCreateOrUpdateResponse struct {
+	KafkaConfiguration
+}
+
+// KafkaConfigurationsClientDeleteResponse contains the response from method KafkaConfigurationsClient.Delete.
+type KafkaConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// KafkaConfigurationsClientGetResponse contains the response from method KafkaConfigurationsClient.Get.
+type KafkaConfigurationsClientGetResponse struct {
+	KafkaConfiguration
+}
+
+// KafkaConfigurationsClientListByAccountResponse contains the response from method KafkaConfigurationsClient.NewListByAccountPager.
+type KafkaConfigurationsClientListByAccountResponse struct {
+	KafkaConfigurationList
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationList
@@ -102,4 +132,9 @@ type PrivateLinkResourcesClientGetByGroupIDResponse struct {
 // PrivateLinkResourcesClientListByAccountResponse contains the response from method PrivateLinkResourcesClient.NewListByAccountPager.
 type PrivateLinkResourcesClientListByAccountResponse struct {
 	PrivateLinkResourceList
+}
+
+// UsagesClientGetResponse contains the response from method UsagesClient.Get.
+type UsagesClientGetResponse struct {
+	UsageList
 }

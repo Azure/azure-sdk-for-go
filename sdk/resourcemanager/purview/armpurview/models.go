@@ -14,155 +14,198 @@ import "time"
 // AccessKeys - The Account access keys.
 type AccessKeys struct {
 	// Gets or sets the primary connection string.
-	AtlasKafkaPrimaryEndpoint *string `json:"atlasKafkaPrimaryEndpoint,omitempty"`
+	AtlasKafkaPrimaryEndpoint *string
 
 	// Gets or sets the secondary connection string.
-	AtlasKafkaSecondaryEndpoint *string `json:"atlasKafkaSecondaryEndpoint,omitempty"`
+	AtlasKafkaSecondaryEndpoint *string
 }
 
 // Account resource
 type Account struct {
 	// Identity Info on the tracked resource
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Gets or sets the location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the properties.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Tags on the azure resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Gets or sets the identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets or sets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets or sets the Sku.
-	SKU *AccountSKU `json:"sku,omitempty" azure:"ro"`
+	SKU *AccountSKU
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *TrackedResourceSystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *TrackedResourceSystemData
 
 	// READ-ONLY; Gets or sets the type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountEndpoints - The account endpoints
 type AccountEndpoints struct {
 	// READ-ONLY; Gets the catalog endpoint.
-	Catalog *string `json:"catalog,omitempty" azure:"ro"`
+	Catalog *string
 
 	// READ-ONLY; Gets the guardian endpoint.
-	Guardian *string `json:"guardian,omitempty" azure:"ro"`
+	Guardian *string
 
 	// READ-ONLY; Gets the scan endpoint.
-	Scan *string `json:"scan,omitempty" azure:"ro"`
+	Scan *string
 }
 
-// AccountList - Paged list of account resources
+// AccountList - Paged list of Account resources
 type AccountList struct {
 	// REQUIRED; Collection of items of type results.
-	Value []*Account `json:"value,omitempty"`
+	Value []*Account
 
 	// Total item count.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AccountProperties - The account properties
 type AccountProperties struct {
 	// Cloud connectors. External cloud identifier used as part of scanning configuration.
-	CloudConnectors *CloudConnectors `json:"cloudConnectors,omitempty"`
+	CloudConnectors *CloudConnectors
+
+	// Gets or sets the state of managed eventhub. If enabled managed eventhub will be created, if disabled the managed eventhub
+	// will be removed.
+	ManagedEventHubState *ManagedEventHubState
 
 	// Gets or sets the managed resource group name
-	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
+	ManagedResourceGroupName *string
+
+	// Gets or sets the public network access for managed resources.
+	ManagedResourcesPublicNetworkAccess *ManagedResourcesPublicNetworkAccess
 
 	// Gets or sets the public network access.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// READ-ONLY; Gets or sets the status of the account.
+	AccountStatus *AccountPropertiesAccountStatus
 
 	// READ-ONLY; Gets the time at which the entity was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Gets the creator of the entity.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; Gets the creators of the entity's object id.
-	CreatedByObjectID *string `json:"createdByObjectId,omitempty" azure:"ro"`
+	CreatedByObjectID *string
 
 	// READ-ONLY; The URIs that are the public endpoints of the account.
-	Endpoints *AccountPropertiesEndpoints `json:"endpoints,omitempty" azure:"ro"`
+	Endpoints *AccountPropertiesEndpoints
 
 	// READ-ONLY; Gets or sets the friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Gets the resource identifiers of the managed resources.
-	ManagedResources *AccountPropertiesManagedResources `json:"managedResources,omitempty" azure:"ro"`
+	ManagedResources *AccountPropertiesManagedResources
 
 	// READ-ONLY; Gets the private endpoint connections information.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Gets or sets the state of the provisioning.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
+}
+
+// AccountPropertiesAccountStatus - Gets or sets the status of the account.
+type AccountPropertiesAccountStatus struct {
+	// READ-ONLY; Gets the account status code.
+	AccountProvisioningState *AccountProvisioningState
+
+	// READ-ONLY; Gets the account error details.
+	ErrorDetails *AccountStatusErrorDetails
 }
 
 // AccountPropertiesEndpoints - The URIs that are the public endpoints of the account.
 type AccountPropertiesEndpoints struct {
 	// READ-ONLY; Gets the catalog endpoint.
-	Catalog *string `json:"catalog,omitempty" azure:"ro"`
+	Catalog *string
 
 	// READ-ONLY; Gets the guardian endpoint.
-	Guardian *string `json:"guardian,omitempty" azure:"ro"`
+	Guardian *string
 
 	// READ-ONLY; Gets the scan endpoint.
-	Scan *string `json:"scan,omitempty" azure:"ro"`
+	Scan *string
 }
 
 // AccountPropertiesManagedResources - Gets the resource identifiers of the managed resources.
 type AccountPropertiesManagedResources struct {
 	// READ-ONLY; Gets the managed event hub namespace resource identifier.
-	EventHubNamespace *string `json:"eventHubNamespace,omitempty" azure:"ro"`
+	EventHubNamespace *string
 
 	// READ-ONLY; Gets the managed resource group resource identifier. This resource group will host resource dependencies for
 	// the account.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; Gets the managed storage account resource identifier.
-	StorageAccount *string `json:"storageAccount,omitempty" azure:"ro"`
+	StorageAccount *string
 }
 
 // AccountSKU - Gets or sets the Sku.
 type AccountSKU struct {
 	// Gets or sets the sku capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Gets or sets the sku name.
-	Name *Name `json:"name,omitempty"`
+	Name *Name
 }
 
 // AccountSKUAutoGenerated - The Sku
 type AccountSKUAutoGenerated struct {
 	// Gets or sets the sku capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Gets or sets the sku name.
-	Name *Name `json:"name,omitempty"`
+	Name *Name
+}
+
+// AccountStatus - The account status.
+type AccountStatus struct {
+	// READ-ONLY; Gets the account status code.
+	AccountProvisioningState *AccountProvisioningState
+
+	// READ-ONLY; Gets the account error details.
+	ErrorDetails *AccountStatusErrorDetails
+}
+
+// AccountStatusErrorDetails - Gets the account error details.
+type AccountStatusErrorDetails struct {
+	// READ-ONLY; Gets or sets the code.
+	Code *string
+
+	// READ-ONLY; Gets or sets the details.
+	Details []*ErrorModel
+
+	// READ-ONLY; Gets or sets the messages.
+	Message *string
+
+	// READ-ONLY; Gets or sets the target.
+	Target *string
 }
 
 // AccountUpdateParameters - The account update properties.
 type AccountUpdateParameters struct {
 	// Identity related info to add/remove userAssignedIdentities.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The account properties.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Tags on the azure resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AccountsClientAddRootCollectionAdminOptions contains the optional parameters for the AccountsClient.AddRootCollectionAdmin
@@ -219,58 +262,79 @@ type AccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BatchFeatureRequest - Feature request model
+type BatchFeatureRequest struct {
+	// Set of features
+	Features []*string
+}
+
+// BatchFeatureStatus - List of features with enabled status
+type BatchFeatureStatus struct {
+	// Features with enabled status
+	Features map[string]*bool
+}
+
 // CheckNameAvailabilityRequest - The request payload for CheckNameAvailability API
 type CheckNameAvailabilityRequest struct {
 	// Resource name to verify for availability
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Fully qualified resource type which includes provider namespace
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResult - The response payload for CheckNameAvailability API
 type CheckNameAvailabilityResult struct {
 	// Error message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates if name is valid and available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason the name is not available.
-	Reason *Reason `json:"reason,omitempty"`
+	Reason *Reason
 }
 
 // CloudConnectors - External Cloud Service connectors
 type CloudConnectors struct {
 	// READ-ONLY; AWS external identifier. Configured in AWS to allow use of the role arn used for scanning
-	AwsExternalID *string `json:"awsExternalId,omitempty" azure:"ro"`
+	AwsExternalID *string
 }
 
 // CollectionAdminUpdate - Collection administrator update.
 type CollectionAdminUpdate struct {
 	// Gets or sets the object identifier of the admin.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
+}
+
+// Credentials to access the event streaming service attached to the purview account.
+type Credentials struct {
+	// Identity identifier for UserAssign type.
+	IdentityID *string
+
+	// Identity Type.
+	Type *CredentialsType
 }
 
 // DefaultAccountPayload - Payload to get and set the default account in the given scope
 type DefaultAccountPayload struct {
 	// The name of the account that is set as the default.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// The resource group name of the account that is set as the default.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// The scope object ID. For example, sub ID or tenant ID.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// The scope tenant in which the default account is set.
-	ScopeTenantID *string `json:"scopeTenantId,omitempty"`
+	ScopeTenantID *string
 
 	// The scope where the default account is set.
-	ScopeType *ScopeType `json:"scopeType,omitempty"`
+	ScopeType *ScopeType
 
 	// The subscription ID of the account that is set as the default.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // DefaultAccountsClientGetOptions contains the optional parameters for the DefaultAccountsClient.Get method.
@@ -293,189 +357,270 @@ type DefaultAccountsClientSetOptions struct {
 // DimensionProperties - properties for dimension
 type DimensionProperties struct {
 	// localized display name of the dimension to customer
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// dimension name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// flag indicating whether this dimension should be included to the customer in Azure Monitor logs (aka Shoebox)
-	ToBeExportedForCustomer *bool `json:"toBeExportedForCustomer,omitempty"`
+	ToBeExportedForCustomer *bool
 }
 
 // ErrorModel - Default error model
 type ErrorModel struct {
 	// READ-ONLY; Gets or sets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets or sets the details.
-	Details []*ErrorModel `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorModel
 
 	// READ-ONLY; Gets or sets the messages.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Gets or sets the target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponseModel - Default error response model
 type ErrorResponseModel struct {
 	// READ-ONLY; Gets or sets the error.
-	Error *ErrorResponseModelError `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponseModelError
 }
 
 // ErrorResponseModelError - Gets or sets the error.
 type ErrorResponseModelError struct {
 	// READ-ONLY; Gets or sets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets or sets the details.
-	Details []*ErrorModel `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorModel
 
 	// READ-ONLY; Gets or sets the messages.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Gets or sets the target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
+}
+
+// FeaturesClientAccountGetOptions contains the optional parameters for the FeaturesClient.AccountGet method.
+type FeaturesClientAccountGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesClientSubscriptionGetOptions contains the optional parameters for the FeaturesClient.SubscriptionGet method.
+type FeaturesClientSubscriptionGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Identity - The Managed Identity of the resource
 type Identity struct {
 	// Identity Type
-	Type *Type `json:"type,omitempty"`
+	Type *Type
 
 	// User Assigned Identities
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; Service principal object Id
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Tenant Id
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
+}
+
+// KafkaConfiguration - The configuration of the event streaming service resource attached to the Purview account for kafka
+// notifications.
+type KafkaConfiguration struct {
+	// Gets or sets the kafka configuration properties.
+	Properties *KafkaConfigurationProperties
+
+	// READ-ONLY; Gets or sets the identifier.
+	ID *string
+
+	// READ-ONLY; Gets or sets the name.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *ProxyResourceSystemData
+
+	// READ-ONLY; Gets or sets the type.
+	Type *string
+}
+
+// KafkaConfigurationList - Paged list of kafka configuration resources
+type KafkaConfigurationList struct {
+	// REQUIRED; Collection of items of type results.
+	Value []*KafkaConfiguration
+
+	// The Url of next result page.
+	NextLink *string
+}
+
+// KafkaConfigurationProperties - The kafka configuration properties of the event streaming service attached to the Purview
+// account for kafka notifications.
+type KafkaConfigurationProperties struct {
+	// Consumer group for hook event hub.
+	ConsumerGroup *string
+
+	// Credentials to access event hub.
+	Credentials *Credentials
+
+	// Optional partition Id for notification event hub. If not set, all partitions will be leveraged.
+	EventHubPartitionID *string
+	EventHubResourceID  *string
+
+	// The event hub type.
+	EventHubType *EventHubType
+
+	// The state of the event streaming service
+	EventStreamingState *EventStreamingState
+
+	// The event streaming service type
+	EventStreamingType *EventStreamingType
+}
+
+// KafkaConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the KafkaConfigurationsClient.CreateOrUpdate
+// method.
+type KafkaConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientDeleteOptions contains the optional parameters for the KafkaConfigurationsClient.Delete method.
+type KafkaConfigurationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientGetOptions contains the optional parameters for the KafkaConfigurationsClient.Get method.
+type KafkaConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KafkaConfigurationsClientListByAccountOptions contains the optional parameters for the KafkaConfigurationsClient.NewListByAccountPager
+// method.
+type KafkaConfigurationsClientListByAccountOptions struct {
+	// The skip token.
+	SkipToken *string
 }
 
 // ManagedResources - The managed resources in customer subscription.
 type ManagedResources struct {
 	// READ-ONLY; Gets the managed event hub namespace resource identifier.
-	EventHubNamespace *string `json:"eventHubNamespace,omitempty" azure:"ro"`
+	EventHubNamespace *string
 
 	// READ-ONLY; Gets the managed resource group resource identifier. This resource group will host resource dependencies for
 	// the account.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; Gets the managed storage account resource identifier.
-	StorageAccount *string `json:"storageAccount,omitempty" azure:"ro"`
+	StorageAccount *string
 }
 
 // Operation resource
 type Operation struct {
 	// Properties on the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Whether operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name for display purposes
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// properties for the operation meta info
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - The response model for get operation properties
 type OperationDisplay struct {
 	// Description of the operation for display purposes
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the operation for display purposes
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type for display purposes
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - Paged list of operation resources
 type OperationList struct {
 	// REQUIRED; Collection of items of type results.
-	Value []*Operation `json:"value,omitempty"`
-
-	// Total item count.
-	Count *int64 `json:"count,omitempty"`
+	Value []*Operation
 
 	// The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // OperationMetaLogSpecification - log specifications for operation api
 type OperationMetaLogSpecification struct {
 	// blob duration of the log
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// localized name of the log category
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// name of the log category
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationMetaMetricSpecification - metric specifications for the operation
 type OperationMetaMetricSpecification struct {
 	// aggregation type of metric
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// properties for dimension
-	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
+	Dimensions []*DimensionProperties
 
 	// description of the metric
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// localized name of the metric
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// enable regional mdm account
-	EnableRegionalMdmAccount *string `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *string
 
 	// internal metric name
-	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	InternalMetricName *string
 
 	// name of the metric
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// dimension name use to replace resource id if specified
-	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	ResourceIDDimensionNameOverride *string
 
 	// Metric namespace. Only set the namespace if different from the default value, leaving it empty makes it use the value from
 	// the ARM manifest.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// supported aggregation types
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// supported time grain types
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// units for the metric
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // OperationMetaServiceSpecification - The operation meta service specification
 type OperationMetaServiceSpecification struct {
 	// log specifications for the operation
-	LogSpecifications []*OperationMetaLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*OperationMetaLogSpecification
 
 	// metric specifications for the operation
-	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*OperationMetaMetricSpecification
 }
 
 // OperationProperties - properties on meta info
 type OperationProperties struct {
 	// meta service specification
-	ServiceSpecification *OperationMetaServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationMetaServiceSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -486,46 +631,46 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint - A private endpoint class.
 type PrivateEndpoint struct {
 	// The private endpoint identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointConnection - A private endpoint connection class.
 type PrivateEndpointConnection struct {
 	// The connection identifier.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Gets or sets the identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets or sets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *ProxyResourceSystemData
 
 	// READ-ONLY; Gets or sets the type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionList - Paged list of private endpoint connections
 type PrivateEndpointConnectionList struct {
 	// REQUIRED; Collection of items of type results.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
-
-	// Total item count.
-	Count *int64 `json:"count,omitempty"`
+	Value []*PrivateEndpointConnection
 
 	// The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - A private endpoint connection properties class.
 type PrivateEndpointConnectionProperties struct {
 	// The private endpoint information.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// The private link service connection state.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -558,40 +703,37 @@ type PrivateEndpointConnectionsClientListByAccountOptions struct {
 // PrivateLinkResource - A privately linkable resource.
 type PrivateLinkResource struct {
 	// READ-ONLY; The private link resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The private link resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The private link resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; The private link resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceList - Paged list of private link resources
 type PrivateLinkResourceList struct {
 	// REQUIRED; Collection of items of type results.
-	Value []*PrivateLinkResource `json:"value,omitempty"`
-
-	// Total item count.
-	Count *int64 `json:"count,omitempty"`
+	Value []*PrivateLinkResource
 
 	// The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PrivateLinkResourceProperties - A privately linkable resource properties.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group identifier.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; This translates to how many Private IPs should be created for each privately linkable resource.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; The required zone names for private link resource.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesClientGetByGroupIDOptions contains the optional parameters for the PrivateLinkResourcesClient.GetByGroupID
@@ -609,98 +751,172 @@ type PrivateLinkResourcesClientListByAccountOptions struct {
 // PrivateLinkServiceConnectionState - The private link service connection state.
 type PrivateLinkServiceConnectionState struct {
 	// The required actions.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The status.
-	Status *Status `json:"status,omitempty"`
+	Status *Status
 }
 
 // ProxyResource - Proxy Azure Resource
 type ProxyResource struct {
 	// READ-ONLY; Gets or sets the identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets or sets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *ProxyResourceSystemData
 
 	// READ-ONLY; Gets or sets the type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// ProxyResourceSystemData - Metadata pertaining to creation and last modification of the resource.
+type ProxyResourceSystemData struct {
+	// READ-ONLY; The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// READ-ONLY; The identity that created the resource.
+	CreatedBy *string
+
+	// READ-ONLY; The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// READ-ONLY; The timestamp of the last modification the resource (UTC).
+	LastModifiedAt *time.Time
+
+	// READ-ONLY; The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// READ-ONLY; The type of identity that last modified the resource.
+	LastModifiedByType *LastModifiedByType
+}
+
+// QuotaName - Quota name
+type QuotaName struct {
+	// Gets or sets the localized name value.
+	LocalizedValue *string
+
+	// Gets or sets the name value.
+	Value *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// READ-ONLY; The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty" azure:"ro"`
+	CreatedByType *CreatedByType
 
 	// READ-ONLY; The timestamp of the last modification the resource (UTC).
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty" azure:"ro"`
+	LastModifiedAt *time.Time
 
 	// READ-ONLY; The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; The type of identity that last modified the resource.
-	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty" azure:"ro"`
+	LastModifiedByType *LastModifiedByType
 }
 
 // TrackedResource - Azure ARM Tracked Resource
 type TrackedResource struct {
 	// Identity Info on the tracked resource
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Gets or sets the location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Tags on the azure resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Gets or sets the identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets or sets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *TrackedResourceSystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *TrackedResourceSystemData
 
 	// READ-ONLY; Gets or sets the type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TrackedResourceSystemData - Metadata pertaining to creation and last modification of the resource.
 type TrackedResourceSystemData struct {
 	// READ-ONLY; The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty" azure:"ro"`
+	CreatedByType *CreatedByType
 
 	// READ-ONLY; The timestamp of the last modification the resource (UTC).
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty" azure:"ro"`
+	LastModifiedAt *time.Time
 
 	// READ-ONLY; The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; The type of identity that last modified the resource.
-	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty" azure:"ro"`
+	LastModifiedByType *LastModifiedByType
+}
+
+// Usage - Response for usage information
+type Usage struct {
+	// READ-ONLY; Current usage quota value
+	CurrentValue *int32
+
+	// READ-ONLY; Fully qualified ARM resource Id
+	ID *string
+
+	// READ-ONLY; Usage quota limit
+	Limit *int32
+
+	// READ-ONLY; Quota name
+	Name *UsageName
+
+	// READ-ONLY; Quota usage unit.
+	Unit *string
+}
+
+// UsageList - Response for usage get request
+type UsageList struct {
+	// The Url of next result page.
+	NextLink *string
+
+	// Collection of usage values.
+	Value []*Usage
+}
+
+// UsageName - Quota name
+type UsageName struct {
+	// Gets or sets the localized name value.
+	LocalizedValue *string
+
+	// Gets or sets the name value.
+	Value *string
+}
+
+// UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
+type UsagesClientGetOptions struct {
+	Filter *string
 }
 
 // UserAssignedIdentity - Uses client ID and Principal ID
 type UserAssignedIdentity struct {
 	// READ-ONLY; Gets or Sets Client ID
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Gets or Sets Principal ID
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

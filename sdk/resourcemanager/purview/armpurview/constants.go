@@ -11,8 +11,40 @@ package armpurview
 
 const (
 	moduleName    = "armpurview"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
+
+// AccountProvisioningState - Gets the account status code.
+type AccountProvisioningState string
+
+const (
+	AccountProvisioningStateCanceled     AccountProvisioningState = "Canceled"
+	AccountProvisioningStateCreating     AccountProvisioningState = "Creating"
+	AccountProvisioningStateDeleting     AccountProvisioningState = "Deleting"
+	AccountProvisioningStateFailed       AccountProvisioningState = "Failed"
+	AccountProvisioningStateMoving       AccountProvisioningState = "Moving"
+	AccountProvisioningStateSoftDeleted  AccountProvisioningState = "SoftDeleted"
+	AccountProvisioningStateSoftDeleting AccountProvisioningState = "SoftDeleting"
+	AccountProvisioningStateSucceeded    AccountProvisioningState = "Succeeded"
+	AccountProvisioningStateUnknown      AccountProvisioningState = "Unknown"
+	AccountProvisioningStateUpdating     AccountProvisioningState = "Updating"
+)
+
+// PossibleAccountProvisioningStateValues returns the possible values for the AccountProvisioningState const type.
+func PossibleAccountProvisioningStateValues() []AccountProvisioningState {
+	return []AccountProvisioningState{
+		AccountProvisioningStateCanceled,
+		AccountProvisioningStateCreating,
+		AccountProvisioningStateDeleting,
+		AccountProvisioningStateFailed,
+		AccountProvisioningStateMoving,
+		AccountProvisioningStateSoftDeleted,
+		AccountProvisioningStateSoftDeleting,
+		AccountProvisioningStateSucceeded,
+		AccountProvisioningStateUnknown,
+		AccountProvisioningStateUpdating,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -34,6 +66,74 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CredentialsType - Identity Type.
+type CredentialsType string
+
+const (
+	CredentialsTypeNone           CredentialsType = "None"
+	CredentialsTypeSystemAssigned CredentialsType = "SystemAssigned"
+	CredentialsTypeUserAssigned   CredentialsType = "UserAssigned"
+)
+
+// PossibleCredentialsTypeValues returns the possible values for the CredentialsType const type.
+func PossibleCredentialsTypeValues() []CredentialsType {
+	return []CredentialsType{
+		CredentialsTypeNone,
+		CredentialsTypeSystemAssigned,
+		CredentialsTypeUserAssigned,
+	}
+}
+
+// EventHubType - The event hub type.
+type EventHubType string
+
+const (
+	EventHubTypeHook         EventHubType = "Hook"
+	EventHubTypeNotification EventHubType = "Notification"
+)
+
+// PossibleEventHubTypeValues returns the possible values for the EventHubType const type.
+func PossibleEventHubTypeValues() []EventHubType {
+	return []EventHubType{
+		EventHubTypeHook,
+		EventHubTypeNotification,
+	}
+}
+
+// EventStreamingState - The state of the event streaming service
+type EventStreamingState string
+
+const (
+	EventStreamingStateDisabled EventStreamingState = "Disabled"
+	EventStreamingStateEnabled  EventStreamingState = "Enabled"
+)
+
+// PossibleEventStreamingStateValues returns the possible values for the EventStreamingState const type.
+func PossibleEventStreamingStateValues() []EventStreamingState {
+	return []EventStreamingState{
+		EventStreamingStateDisabled,
+		EventStreamingStateEnabled,
+	}
+}
+
+// EventStreamingType - The event streaming service type
+type EventStreamingType string
+
+const (
+	EventStreamingTypeAzure   EventStreamingType = "Azure"
+	EventStreamingTypeManaged EventStreamingType = "Managed"
+	EventStreamingTypeNone    EventStreamingType = "None"
+)
+
+// PossibleEventStreamingTypeValues returns the possible values for the EventStreamingType const type.
+func PossibleEventStreamingTypeValues() []EventStreamingType {
+	return []EventStreamingType{
+		EventStreamingTypeAzure,
+		EventStreamingTypeManaged,
+		EventStreamingTypeNone,
+	}
+}
+
 // LastModifiedByType - The type of identity that last modified the resource.
 type LastModifiedByType string
 
@@ -51,6 +151,43 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 		LastModifiedByTypeKey,
 		LastModifiedByTypeManagedIdentity,
 		LastModifiedByTypeUser,
+	}
+}
+
+// ManagedEventHubState - Gets or sets the state of managed eventhub. If enabled managed eventhub will be created, if disabled
+// the managed eventhub will be removed.
+type ManagedEventHubState string
+
+const (
+	ManagedEventHubStateDisabled     ManagedEventHubState = "Disabled"
+	ManagedEventHubStateEnabled      ManagedEventHubState = "Enabled"
+	ManagedEventHubStateNotSpecified ManagedEventHubState = "NotSpecified"
+)
+
+// PossibleManagedEventHubStateValues returns the possible values for the ManagedEventHubState const type.
+func PossibleManagedEventHubStateValues() []ManagedEventHubState {
+	return []ManagedEventHubState{
+		ManagedEventHubStateDisabled,
+		ManagedEventHubStateEnabled,
+		ManagedEventHubStateNotSpecified,
+	}
+}
+
+// ManagedResourcesPublicNetworkAccess - Gets or sets the public network access for managed resources.
+type ManagedResourcesPublicNetworkAccess string
+
+const (
+	ManagedResourcesPublicNetworkAccessDisabled     ManagedResourcesPublicNetworkAccess = "Disabled"
+	ManagedResourcesPublicNetworkAccessEnabled      ManagedResourcesPublicNetworkAccess = "Enabled"
+	ManagedResourcesPublicNetworkAccessNotSpecified ManagedResourcesPublicNetworkAccess = "NotSpecified"
+)
+
+// PossibleManagedResourcesPublicNetworkAccessValues returns the possible values for the ManagedResourcesPublicNetworkAccess const type.
+func PossibleManagedResourcesPublicNetworkAccessValues() []ManagedResourcesPublicNetworkAccess {
+	return []ManagedResourcesPublicNetworkAccess{
+		ManagedResourcesPublicNetworkAccessDisabled,
+		ManagedResourcesPublicNetworkAccessEnabled,
+		ManagedResourcesPublicNetworkAccessNotSpecified,
 	}
 }
 

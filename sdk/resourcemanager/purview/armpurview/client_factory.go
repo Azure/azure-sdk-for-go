@@ -48,6 +48,16 @@ func (c *ClientFactory) NewDefaultAccountsClient() *DefaultAccountsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewFeaturesClient() *FeaturesClient {
+	subClient, _ := NewFeaturesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewKafkaConfigurationsClient() *KafkaConfigurationsClient {
+	subClient, _ := NewKafkaConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
@@ -60,5 +70,10 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewUsagesClient() *UsagesClient {
+	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

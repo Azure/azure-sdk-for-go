@@ -217,3 +217,8 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	// TODO: call into blob
 	return SetHTTPHeadersResponse{}, nil
 }
+
+// UndeletePath restores the specified path that was previously deleted. (dfs op/blob2).
+func (d *Client) UndeletePath(ctx context.Context, path string, options *UndeletePathOptions) (UndeletePathResponse, error) {
+	return UndeletePathResponse{}, nil
+}

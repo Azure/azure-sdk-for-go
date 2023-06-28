@@ -306,6 +306,18 @@ type CPKScopeInfo struct {
 	EncryptionScope *string
 }
 
+// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
+type UndeletePathOptions struct {
+	// placeholder
+}
+
+func (o *UndeletePathOptions) format() *UndeletePathOptions {
+	if o == nil {
+		return nil
+	}
+	return &UndeletePathOptions{}
+}
+
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 

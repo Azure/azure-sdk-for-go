@@ -164,34 +164,38 @@ func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateRes
 
 // Delete deletes the specified filesystem and any files or directories it contains. (blob3).
 func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	return DeleteResponse{}, nil
+	opts := options.format()
+	return fs.containerClient().Delete(ctx, opts)
 }
 
 // GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem. (blob3).
 func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	// TODO: format blob response to fs response
-	return GetPropertiesResponse{}, nil
+	opts := options.format()
+	newResp := GetPropertiesResponse{}
+	resp, err := fs.containerClient().GetProperties(ctx, opts)
+	formatFilesystemProperties(&newResp, &resp)
+	return newResp, err
 }
 
 // SetMetadata sets one or more user-defined name-value pairs for the specified filesystem. (blob3).
 func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	return SetMetadataResponse{}, nil
+	opts := options.format()
+	return fs.containerClient().SetMetadata(ctx, opts)
 }
 
 // SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it. (blob3).
 func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	return SetAccessPolicyResponse{}, nil
+	opts := options.format()
+	return fs.containerClient().SetAccessPolicy(ctx, opts)
 }
 
 // GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it. (blob3).
 func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
-	return GetAccessPolicyResponse{}, nil
+	opts := options.format()
+	return fs.containerClient().GetAccessPolicy(ctx, opts)
 }
 
-// UndeletePath restores the specified path that was previously deleted. (dfs op/blob2).
-func (fs *Client) UndeletePath(ctx context.Context, path string, options *UndeletePathOptions) (UndeletePathResponse, error) {
-	return UndeletePathResponse{}, nil
-}
+// TODO: implement undelete path in fs client as well
 
 // NewListPathsPager operation returns a pager of the shares under the specified account. (dfs1)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares

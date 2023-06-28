@@ -21,6 +21,9 @@ type SetAccessPolicyOptions struct {
 }
 
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
+	if o == nil {
+		return nil
+	}
 	return &container.SetAccessPolicyOptions{
 		Access:           o.Access,
 		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
@@ -57,6 +60,9 @@ type DeleteOptions struct {
 }
 
 func (o *DeleteOptions) format() *container.DeleteOptions {
+	if o == nil {
+		return nil
+	}
 	return &container.DeleteOptions{
 		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
 	}
@@ -68,6 +74,9 @@ type GetPropertiesOptions struct {
 }
 
 func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
 	return &container.GetPropertiesOptions{
 		LeaseAccessConditions: &container.LeaseAccessConditions{
 			LeaseID: o.LeaseAccessConditions.LeaseID,
@@ -82,6 +91,9 @@ type SetMetadataOptions struct {
 }
 
 func (o *SetMetadataOptions) format() *container.SetMetadataOptions {
+	if o == nil {
+		return nil
+	}
 	return &container.SetMetadataOptions{
 		Metadata: o.Metadata,
 		LeaseAccessConditions: &container.LeaseAccessConditions{
@@ -102,6 +114,9 @@ type GetAccessPolicyOptions struct {
 }
 
 func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
+	if o == nil {
+		return nil
+	}
 	return &container.GetAccessPolicyOptions{
 		LeaseAccessConditions: &container.LeaseAccessConditions{
 			LeaseID: o.LeaseAccessConditions.LeaseID,
@@ -132,11 +147,6 @@ type ListDeletedPathsOptions struct {
 	MaxResults *int32
 	Prefix     *string
 	Upn        *bool
-}
-
-// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
-type UndeletePathOptions struct {
-	// placeholder
 }
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.

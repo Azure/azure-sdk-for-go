@@ -46,3 +46,6 @@ type SetHTTPHeadersResponse = blob.SetHTTPHeadersResponse
 
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse = generated.PathClientCreateResponse
+
+// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+type UndeletePathResponse = generated.PathClientUndeleteResponse

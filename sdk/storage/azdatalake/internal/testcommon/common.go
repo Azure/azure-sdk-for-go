@@ -2,7 +2,9 @@ package testcommon
 
 import (
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
@@ -56,5 +58,16 @@ func GetRequiredEnv(name string) (string, error) {
 		return env, nil
 	} else {
 		return "", errors.New("Required environment variable not set: " + name)
+	}
+}
+
+func ValidateBlobErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
+	_require.NotNil(err)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(string(code), responseErr.ErrorCode)
+	} else {
+		_require.Contains(err.Error(), code)
 	}
 }

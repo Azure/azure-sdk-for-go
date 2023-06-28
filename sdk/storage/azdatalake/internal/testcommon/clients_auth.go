@@ -1,6 +1,7 @@
 package testcommon
 
 import (
+	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -98,4 +99,9 @@ func GetFilesystemClient(fsName string, t *testing.T, accountType TestAccountTyp
 	filesystemClient, err := filesystem.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".dfs.core.windows.net/"+fsName, cred, options)
 
 	return filesystemClient, err
+}
+
+func DeleteFilesystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
+	_, err := filesystemClient.Delete(ctx, nil)
+	_require.Nil(err)
 }

@@ -26,7 +26,43 @@ type SetMetadataResponse = container.SetMetadataResponse
 type SetAccessPolicyResponse = container.SetAccessPolicyResponse
 
 // GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
-type GetAccessPolicyResponse = container.GetAccessPolicyResponse
+type GetAccessPolicyResponse struct {
+	// PublicAccess contains the information returned from the x-ms-blob-public-access header response.
+	PublicAccess *PublicAccessType `xml:"BlobPublicAccess"`
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag `xml:"ETag"`
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time `xml:"LastModified"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// a collection of signed identifiers
+	SignedIdentifiers []*SignedIdentifier `xml:"SignedIdentifier"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
+// since we want to remove the blob prefix in access type
+func formatGetAccessPolicyResponse(r *GetAccessPolicyResponse, contResp *container.GetAccessPolicyResponse) {
+	r.PublicAccess = contResp.BlobPublicAccess
+	r.ClientRequestID = contResp.ClientRequestID
+	r.Date = contResp.Date
+	r.ETag = contResp.ETag
+	r.LastModified = contResp.LastModified
+	r.RequestID = contResp.RequestID
+	r.SignedIdentifiers = contResp.SignedIdentifiers
+	r.Version = contResp.Version
+}
 
 // GetPropertiesResponse contains the response from method FilesystemClient.GetProperties.
 type GetPropertiesResponse struct {

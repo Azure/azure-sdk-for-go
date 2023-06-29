@@ -21,7 +21,10 @@ type ModifiedAccessConditions = generated.ModifiedAccessConditions
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatContainerAccessConditions(b *AccessConditions) *container.AccessConditions {
 	if b == nil {
-		return nil
+		return &container.AccessConditions{
+			LeaseAccessConditions:    &container.LeaseAccessConditions{},
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{},
+		}
 	}
 	if b.LeaseAccessConditions == nil {
 		b.LeaseAccessConditions = &LeaseAccessConditions{}
@@ -45,7 +48,7 @@ func FormatContainerAccessConditions(b *AccessConditions) *container.AccessCondi
 // FormatPathAccessConditions formats PathAccessConditions into path's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatPathAccessConditions(p *AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if p == nil {
-		return nil, nil
+		return &generated.LeaseAccessConditions{}, &generated.ModifiedAccessConditions{}
 	}
 	if p.LeaseAccessConditions == nil {
 		p.LeaseAccessConditions = &LeaseAccessConditions{}
@@ -66,7 +69,10 @@ func FormatPathAccessConditions(p *AccessConditions) (*generated.LeaseAccessCond
 // FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatBlobAccessConditions(p *AccessConditions) *blob.AccessConditions {
 	if p == nil {
-		return nil
+		return &blob.AccessConditions{
+			LeaseAccessConditions:    &blob.LeaseAccessConditions{},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{},
+		}
 	}
 	if p.LeaseAccessConditions == nil {
 		p.LeaseAccessConditions = &LeaseAccessConditions{}

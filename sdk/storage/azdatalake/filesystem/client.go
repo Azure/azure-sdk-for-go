@@ -194,7 +194,10 @@ func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyO
 // GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it. (blob3).
 func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	opts := options.format()
-	return fs.containerClient().GetAccessPolicy(ctx, opts)
+	newResp := GetAccessPolicyResponse{}
+	resp, err := fs.containerClient().GetAccessPolicy(ctx, opts)
+	formatGetAccessPolicyResponse(&newResp, &resp)
+	return newResp, err
 }
 
 // TODO: implement undelete path in fs client as well

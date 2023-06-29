@@ -78,6 +78,9 @@ func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
+	if o.LeaseAccessConditions == nil {
+		o.LeaseAccessConditions = &LeaseAccessConditions{}
+	}
 	return &container.GetPropertiesOptions{
 		LeaseAccessConditions: &container.LeaseAccessConditions{
 			LeaseID: o.LeaseAccessConditions.LeaseID,
@@ -95,17 +98,11 @@ func (o *SetMetadataOptions) format() *container.SetMetadataOptions {
 	if o == nil {
 		return nil
 	}
+	accConditions := exported.FormatContainerAccessConditions(o.AccessConditions)
 	return &container.SetMetadataOptions{
-		Metadata: o.Metadata,
-		LeaseAccessConditions: &container.LeaseAccessConditions{
-			LeaseID: o.AccessConditions.LeaseAccessConditions.LeaseID,
-		},
-		ModifiedAccessConditions: &container.ModifiedAccessConditions{
-			IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
-			IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
-			IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
-			IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
-		},
+		Metadata:                 o.Metadata,
+		LeaseAccessConditions:    accConditions.LeaseAccessConditions,
+		ModifiedAccessConditions: accConditions.ModifiedAccessConditions,
 	}
 }
 
@@ -117,6 +114,9 @@ type GetAccessPolicyOptions struct {
 func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	if o == nil {
 		return nil
+	}
+	if o.LeaseAccessConditions == nil {
+		o.LeaseAccessConditions = &LeaseAccessConditions{}
 	}
 	return &container.GetAccessPolicyOptions{
 		LeaseAccessConditions: &container.LeaseAccessConditions{
@@ -130,6 +130,10 @@ type CPKScopeInfo = container.CPKScopeInfo
 
 // AccessPolicy - An Access policy.
 type AccessPolicy = container.AccessPolicy
+
+// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
+type AccessPolicyPermission = exported.AccessPolicyPermission
 
 // SignedIdentifier - signed identifier.
 type SignedIdentifier = container.SignedIdentifier

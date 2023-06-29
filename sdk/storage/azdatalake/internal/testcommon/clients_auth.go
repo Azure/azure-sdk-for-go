@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
@@ -28,6 +29,8 @@ const (
 	FakeDFSStorageURL  = "https://fakestorage.dfs.core.windows.net"
 	FakeToken          = "faketoken"
 )
+
+var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
 
 type TestAccountType string
 

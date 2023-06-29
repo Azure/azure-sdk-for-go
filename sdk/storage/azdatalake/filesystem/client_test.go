@@ -8,14 +8,17 @@ package filesystem_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"strconv"
+	"strings"
 	"testing"
+	"time"
 )
 
 func Test(t *testing.T) {
@@ -59,7 +62,7 @@ func validateFilesystemDeleted(_require *require.Assertions, filesystemClient *f
 	_, err := filesystemClient.GetAccessPolicy(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ContainerNotFound)
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystem() {
@@ -220,7 +223,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteNonExistent() {
 	_, err = fsClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ContainerNotFound)
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
@@ -271,7 +274,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceFalse() {
 	}
 	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceTrue() {
@@ -324,33 +327,751 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceFalse() {
 	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFilesystemListPaths() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNonEmpty() {
 	_require := require.New(s.T())
-	//testName := s.T().Name()
+	testName := s.T().Name()
 
-	//filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient("cont1", s.T(), testcommon.TestAccountDatalake, nil)
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-	//defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
-	//_, err = fsClient.Create(context.Background(), nil)
-	//_require.Nil(err)
-
-	resp, err := fsClient.GetProperties(context.Background(), nil)
+	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.NotNil(resp.ETag)
-	_require.Nil(resp.Metadata)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
-	pager := fsClient.NewListPathsPager(true, nil)
+	opts := filesystem.SetMetadataOptions{
+		Metadata: testcommon.BasicMetadata,
+	}
+	_, err = fsClient.SetMetadata(context.Background(), &opts)
+	_require.Nil(err)
 
-	for pager.More() {
-		_, err := pager.NextPage(context.Background())
-		_require.NotNil(err)
-		if err != nil {
-			break
-		}
+	resp1, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	for k, v := range testcommon.BasicMetadata {
+		_require.Equal(v, resp1.Metadata[k])
 	}
 }
+
+func (s *RecordedTestSuite) TestFilesystemSetMetadataEmpty() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	opts := filesystem.SetMetadataOptions{
+		Metadata: map[string]*string{},
+	}
+
+	_, err = fsClient.SetMetadata(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp1, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp1.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNil() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.SetMetadata(context.Background(), nil)
+	_require.Nil(err)
+
+	resp1, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp1.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetMetadataInvalidField() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	opts := filesystem.SetMetadataOptions{
+		Metadata: map[string]*string{"!nval!d Field!@#%": to.Ptr("value")},
+	}
+	_, err = fsClient.SetMetadata(context.Background(), &opts)
+	_require.NotNil(err)
+	_require.Equal(strings.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring), true)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.SetMetadata(context.Background(), nil)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
+}
+
+func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.SetAccessPolicy(context.Background(), &filesystem.SetAccessPolicyOptions{})
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestSetNilAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.SetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestSetAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
+	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	permission := "r"
+	id := "1"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		AccessPolicy: &filesystem.AccessPolicy{
+			Expiry:     &expiration,
+			Start:      &start,
+			Permission: &permission,
+		},
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestSetMultipleAccessPolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := "empty"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+
+	permission2 := "r"
+	id2 := "partial"
+
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id2,
+		AccessPolicy: &filesystem.AccessPolicy{
+			Permission: &permission2,
+		},
+	})
+
+	id3 := "full"
+	permission3 := "r"
+	start := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+	expiry := time.Date(2021, 6, 8, 2, 10, 9, 0, time.UTC)
+
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id3,
+		AccessPolicy: &filesystem.AccessPolicy{
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission3,
+		},
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	// Make a Get to assert two access policies
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 3)
+}
+
+func (s *RecordedTestSuite) TestSetNullAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := "null"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	// Define the policies
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry := start.Add(5 * time.Minute)
+	expiry2 := start.Add(time.Minute)
+	readWrite := to.Ptr(filesystem.AccessPolicyPermission{Read: true, Write: true}).String()
+	readOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	id1, id2 := "0000", "0001"
+	permissions := []*filesystem.SignedIdentifier{
+		{ID: &id1,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &readWrite,
+			},
+		},
+		{ID: &id2,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry2,
+				Permission: &readOnly,
+			},
+		},
+	}
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: permissions}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	access := filesystem.File
+	createContainerOptions := filesystem.CreateOptions{
+		Access: &access,
+	}
+	_, err = fsClient.Create(context.Background(), &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(*resp.PublicAccess, filesystem.File)
+}
+
+// TODO: TestFilesystemSetPermissionsPublicAccessNone()
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.File),
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.PublicAccess, filesystem.File)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFilesystem() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.Filesystem),
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(*resp.PublicAccess, filesystem.Filesystem)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*filesystem.SignedIdentifier, 6)
+	listOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 6; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &filesystem.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	access := filesystem.File
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	setAccessPolicyOptions.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	listOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	permissions := make([]*filesystem.SignedIdentifier, 2)
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &filesystem.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	access := filesystem.File
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	setAccessPolicyOptions.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+
+	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
+	newId := "0004"
+	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
+	setAccessPolicyOptions1 := filesystem.SetAccessPolicyOptions{
+		Access: &access,
+	}
+	setAccessPolicyOptions1.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
+	_require.Nil(err)
+
+	resp, err = fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 1)
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*filesystem.SignedIdentifier, 2)
+	listOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &filesystem.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.File),
+	}
+	setAccessPolicyOptions.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, len(permissions))
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+
+	setAccessPolicyOptions = filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.File),
+	}
+	setAccessPolicyOptions.FilesystemACL = []*filesystem.SignedIdentifier{}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp, err = fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.SignedIdentifiers)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsInvalidPolicyTimes() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	// Swap start and expiry
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+	permissions := make([]*filesystem.SignedIdentifier, 2)
+	listOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		id := "000" + strconv.Itoa(i)
+		permissions[i] = &filesystem.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.File),
+	}
+	setAccessPolicyOptions.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsNilPolicySlice() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.SetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := ""
+	for i := 0; i < 65; i++ {
+		id += "a"
+	}
+	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+	_require.Nil(err)
+	start := expiry.Add(5 * time.Minute).UTC()
+	permissions := make([]*filesystem.SignedIdentifier, 2)
+	listOnly := to.Ptr(filesystem.AccessPolicyPermission{Read: true}).String()
+	for i := 0; i < 2; i++ {
+		permissions[i] = &filesystem.SignedIdentifier{
+			ID: &id,
+			AccessPolicy: &filesystem.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &listOnly,
+			},
+		}
+	}
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		Access: to.Ptr(filesystem.File),
+	}
+	setAccessPolicyOptions.FilesystemACL = permissions
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		AccessConditions: &filesystem.AccessConditions{
+			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp1, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp1.PublicAccess)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		AccessConditions: &filesystem.AccessConditions{
+			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		AccessConditions: &filesystem.AccessConditions{
+			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.Nil(err)
+
+	resp1, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp1.PublicAccess)
+}
+
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
+		AccessConditions: &filesystem.AccessConditions{
+			ModifiedAccessConditions: &filesystem.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
+	}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+}
+
+//func (s *RecordedTestSuite) TestFilesystemListPaths() {
+//	_require := require.New(s.T())
+//	//testName := s.T().Name()
+//
+//	//filesystemName := testcommon.GenerateFilesystemName(testName)
+//	fsClient, err := testcommon.GetFilesystemClient("cont1", s.T(), testcommon.TestAccountDatalake, nil)
+//	_require.NoError(err)
+//	//defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+//
+//	//_, err = fsClient.Create(context.Background(), nil)
+//	//_require.Nil(err)
+//
+//	resp, err := fsClient.GetProperties(context.Background(), nil)
+//	_require.Nil(err)
+//	_require.NotNil(resp.ETag)
+//	_require.Nil(resp.Metadata)
+//
+//	pager := fsClient.NewListPathsPager(true, nil)
+//
+//	for pager.More() {
+//		_, err := pager.NextPage(context.Background())
+//		_require.NotNil(err)
+//		if err != nil {
+//			break
+//		}
+//	}
+//}
+
+// TODO: Lease tests

@@ -241,7 +241,7 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 	listOptions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedPathsSegmentResponse]{
 		More: func(page ListDeletedPathsSegmentResponse) bool {
-			return page.Marker != nil && len(*page.Marker) > 0
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListDeletedPathsSegmentResponse) (ListDeletedPathsSegmentResponse, error) {
 			var req *policy.Request
@@ -249,7 +249,7 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			if page == nil {
 				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
 			} else {
-				listOptions.Marker = page.Marker
+				listOptions.Marker = page.NextMarker
 				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {

@@ -1458,3 +1458,68 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_, err = shareClient.GetSASURL(sas.SharePermissions{}, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
+
+func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+
+	_, err = shareClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+
+	_, err = shareClient.SetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	// Create a permission and check that it's not empty.
+	createResp, err := shareClientOAuth.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	getResp, err := shareClientOAuth.GetPermission(context.Background(), *createResp.FilePermissionKey, nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.Permission)
+	_require.NotEmpty(*getResp.Permission)
+}

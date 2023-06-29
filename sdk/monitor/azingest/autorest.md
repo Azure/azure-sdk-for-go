@@ -17,10 +17,16 @@ override-client-name: Client
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
+rawjson-as-bytes: true
 
 directive:
   # delete unused model
   - remove-model: PendingCertificateSigningRequestResult
+
+  # make generated upload method private
+  - from: client.go
+    where: $
+    transform: return $.replace(/ Upload/g, " uploadOriginal");
 
  # delete unused error models
   - from: models.go

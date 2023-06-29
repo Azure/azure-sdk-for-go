@@ -10,11 +10,13 @@
 package azingest
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"net/http"
 	"net/url"
 	"strings"
@@ -27,7 +29,7 @@ type Client struct {
 	endpoint string
 }
 
-// Upload - See error response code and error response message for more detail.
+// uploadOriginal - See error response code and error response message for more detail.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01
@@ -35,7 +37,7 @@ type Client struct {
 //   - stream - The streamDeclaration name as defined in the Data Collection Rule.
 //   - body - An array of objects matching the schema defined by the provided stream.
 //   - options - ClientUploadOptions contains the optional parameters for the Client.Upload method.
-func (client *Client) Upload(ctx context.Context, ruleID string, stream string, body []any, options *ClientUploadOptions) (ClientUploadResponse, error) {
+func (client *Client) uploadOriginal(ctx context.Context, ruleID string, stream string, body []byte, options *ClientUploadOptions) (ClientUploadResponse, error) {
 	req, err := client.uploadCreateRequest(ctx, ruleID, stream, body, options)
 	if err != nil {
 		return ClientUploadResponse{}, err
@@ -50,8 +52,8 @@ func (client *Client) Upload(ctx context.Context, ruleID string, stream string, 
 	return ClientUploadResponse{}, nil
 }
 
-// uploadCreateRequest creates the Upload request.
-func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, body []any, options *ClientUploadOptions) (*policy.Request, error) {
+// uploadCreateRequest creates the uploadOriginal request.
+func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, body []byte, options *ClientUploadOptions) (*policy.Request, error) {
 	urlPath := "/dataCollectionRules/{ruleId}/streams/{stream}"
 	if ruleID == "" {
 		return nil, errors.New("parameter ruleID cannot be empty")
@@ -75,5 +77,5 @@ func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, st
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.XMSClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
+	return req, req.SetBody(streaming.NopCloser(bytes.NewReader(body)), "application/json")
 }

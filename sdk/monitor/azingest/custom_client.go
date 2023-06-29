@@ -9,6 +9,8 @@ package azingest
 // this file contains handwritten additions to the generated code
 
 import (
+	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -31,4 +33,12 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		return nil, err
 	}
 	return &Client{endpoint: endpoint, internal: azcoreClient}, nil
+}
+
+// Upload
+func (client *Client) Upload(ctx context.Context, ruleID string, streamName string, logs []byte, options *ClientUploadOptions) (ClientUploadResponse, error) {
+
+	// gzip logs if not already done
+
+	return client.uploadOriginal(ctx, ruleID, streamName, logs, options)
 }

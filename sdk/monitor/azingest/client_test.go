@@ -8,6 +8,7 @@ package azingest_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -31,12 +32,13 @@ func TestUpload(t *testing.T) {
 	azlog.SetListener(func(cls azlog.Event, msg string) {
 		fmt.Println(msg)
 	})
+
 	endpoint := os.Getenv("MONITOR_INGESTION_DATA_COLLECTION_ENDPOINT")
 	ruleID := os.Getenv("INGESTION_DATA_COLLECTION_RULE_IMMUTABLE_ID")
 	streamName := os.Getenv("INGESTION_STREAM_NAME")
-	clientID := os.Getenv("azingest_CLIENT_ID")
-	clientSecret := os.Getenv("azingest_CLIENT_SECRET")
-	tenantID := os.Getenv("azingest_TENANT_ID")
+	clientID := os.Getenv("AZINGESTION_CLIENT_ID")
+	clientSecret := os.Getenv("AZINGESTION_CLIENT_SECRET")
+	tenantID := os.Getenv("AZINGESTION_TENANT_ID")
 
 	credential, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
@@ -47,8 +49,7 @@ func TestUpload(t *testing.T) {
 		panic(err)
 	}
 
-	var data []any
-
+	var data []ComputerInfo
 	for i := 0; i < 10; i++ {
 		data = append(data, ComputerInfo{
 			InputTime:         time.Now().UTC(),
@@ -56,9 +57,14 @@ func TestUpload(t *testing.T) {
 			AdditionalContext: i,
 		})
 	}
-
-	_, err = client.Upload(context.Background(), ruleID, streamName, data, nil)
+	data2, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = client.Upload(context.Background(), ruleID, streamName, data2, nil)
+	if err != nil {
+		panic(err)
+	}
+
 }

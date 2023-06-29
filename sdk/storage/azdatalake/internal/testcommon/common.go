@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 )
 
 const (
@@ -70,4 +71,8 @@ func ValidateBlobErrorCode(_require *require.Assertions, err error, code bloberr
 	} else {
 		_require.Contains(err.Error(), code)
 	}
+}
+
+func GetRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
+	return anchorTime.Add(amount * time.Second)
 }

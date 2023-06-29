@@ -174,6 +174,7 @@ func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptio
 	opts := options.format()
 	newResp := GetPropertiesResponse{}
 	resp, err := fs.containerClient().GetProperties(ctx, opts)
+	// TODO: find a cleaner way to not use lease from blob package
 	formatFilesystemProperties(&newResp, &resp)
 	return newResp, err
 }
@@ -202,7 +203,6 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
 	//TODO: look into possibility of using blob endpoint like list deleted paths is
-	//TODO: will use ListPathsCreateRequest
 	listOptions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[ListPathsSegmentResponse]{
 		More: func(page ListPathsSegmentResponse) bool {

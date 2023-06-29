@@ -45,6 +45,9 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -71,6 +74,9 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -100,6 +106,9 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -130,13 +139,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-func (d *Client) generatedFSClientWithDFS() *generated.PathClient {
+func (d *Client) generatedDirClientWithDFS() *generated.PathClient {
 	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(d))
 	return dirClientWithDFS
 }
 
-func (d *Client) generatedFSClientWithBlob() *generated.PathClient {
+func (d *Client) generatedDirClientWithBlob() *generated.PathClient {
 	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(d))
 	return dirClientWithBlob
 }
@@ -150,9 +159,14 @@ func (d *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(d))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (d *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (d *Client) DFSURL() string {
+	return d.generatedDirClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (d *Client) BlobURL() string {
+	return d.generatedDirClientWithBlob().Endpoint()
 }
 
 // Create creates a new directory (dfs1).

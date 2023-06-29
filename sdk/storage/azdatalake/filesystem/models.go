@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"time"
 )
 
 // SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
@@ -177,6 +178,25 @@ func (o *ListDeletedPathsOptions) format() generated.FileSystemClientListBlobHie
 		Prefix:     o.Prefix,
 		Showonly:   &showOnly,
 	}
+}
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
 }
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.

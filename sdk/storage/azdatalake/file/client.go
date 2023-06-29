@@ -45,6 +45,9 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -71,6 +74,9 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -100,6 +106,9 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -130,13 +139,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-func (f *Client) generatedFSClientWithDFS() *generated.PathClient {
+func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
 	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 	return dirClientWithDFS
 }
 
-func (f *Client) generatedFSClientWithBlob() *generated.PathClient {
+func (f *Client) generatedFileClientWithBlob() *generated.PathClient {
 	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 	return dirClientWithBlob
 }
@@ -150,9 +159,14 @@ func (f *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (f *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (f *Client) DFSURL() string {
+	return f.generatedFileClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (f *Client) BlobURL() string {
+	return f.generatedFileClientWithBlob().Endpoint()
 }
 
 // Create creates a new file (dfs1).

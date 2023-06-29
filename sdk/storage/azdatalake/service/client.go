@@ -47,6 +47,9 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -72,6 +75,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -101,6 +107,9 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -170,9 +179,14 @@ func (s *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (s *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (s *Client) DFSURL() string {
+	return s.generatedServiceClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (s *Client) BlobURL() string {
+	return s.generatedServiceClientWithBlob().Endpoint()
 }
 
 // CreateFilesystem creates a new filesystem under the specified account. (blob3)

@@ -13,12 +13,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -47,6 +51,9 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -73,6 +80,9 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -102,6 +112,9 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -152,9 +165,14 @@ func (fs *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (fs *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (fs *Client) DFSURL() string {
+	return fs.generatedFSClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (fs *Client) BlobURL() string {
+	return fs.generatedFSClientWithBlob().Endpoint()
 }
 
 // Create creates a new filesystem under the specified account. (blob3).
@@ -265,4 +283,33 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			return fs.generatedFSClientWithDFS().ListBlobHierarchySegmentHandleResponse(resp)
 		},
 	})
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if fs.sharedKey() == nil {
+		return "", datalakeerror.MissingSharedKeyCredential
+	}
+	st := o.format()
+	urlParts, err := azdatalake.ParseURL(fs.BlobURL())
+	if err != nil {
+		return "", err
+	}
+	// Containers do not have snapshots, nor versions.
+	qps, err := sas.DatalakeSignatureValues{
+		Version:        sas.Version,
+		Protocol:       sas.ProtocolHTTPS,
+		FilesystemName: urlParts.FilesystemName,
+		Permissions:    permissions.String(),
+		StartTime:      st,
+		ExpiryTime:     expiry.UTC(),
+	}.SignWithSharedKey(fs.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := fs.BlobURL() + "?" + qps.Encode()
+
+	return endpoint, nil
 }

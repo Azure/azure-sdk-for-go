@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"strconv"
@@ -26,7 +27,7 @@ func Test(t *testing.T) {
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
 		suite.Run(t, &RecordedTestSuite{})
-		suite.Run(t, &UnrecordedTestsSuite{})
+		suite.Run(t, &UnrecordedTestSuite{})
 	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &RecordedTestSuite{})
 	} else if recordMode == recording.RecordingMode {
@@ -42,11 +43,11 @@ func (s *RecordedTestSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-func (s *UnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *UnrecordedTestSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (s *UnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *UnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
@@ -54,7 +55,7 @@ type RecordedTestSuite struct {
 	suite.Suite
 }
 
-type UnrecordedTestsSuite struct {
+type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
@@ -1045,6 +1046,133 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse()
 
 	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
+
+func (s *RecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := "timeInEST"
+	permission := "rw"
+	loc, err := time.LoadLocation("EST")
+	_require.Nil(err)
+	start := time.Now().In(loc)
+	expiry := start.Add(10 * time.Hour)
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+		AccessPolicy: &filesystem.AccessPolicy{
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission,
+		},
+	})
+
+	id2 := "timeInIST"
+	permission2 := "r"
+	loc2, err := time.LoadLocation("Asia/Kolkata")
+	_require.Nil(err)
+	start2 := time.Now().In(loc2)
+	expiry2 := start2.Add(5 * time.Hour)
+
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id2,
+		AccessPolicy: &filesystem.AccessPolicy{
+			Start:      &start2,
+			Expiry:     &expiry2,
+			Permission: &permission2,
+		},
+	})
+
+	id3 := "nilTime"
+	permission3 := "r"
+
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id3,
+		AccessPolicy: &filesystem.AccessPolicy{
+			Permission: &permission3,
+		},
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	// make a Get to assert three access policies
+	resp1, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp1.SignedIdentifiers, 3)
+	_require.EqualValues(resp1.SignedIdentifiers, signedIdentifiers)
+}
+
+func (s *RecordedTestSuite) TestSetAccessPolicyWithNullId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		AccessPolicy: &filesystem.AccessPolicy{
+			Permission: to.Ptr("rw"),
+		},
+	})
+
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+
+	resp1, err := fsClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp1.SignedIdentifiers, 0)
+}
+
+func (s *UnrecordedTestSuite) TestSASFilesystemClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	// Adding SAS and options
+	permissions := sas.FilesystemPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create filesystem client with sasUrl
+	_, err = filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+}
+
+// TODO: test sas on files
 
 //func (s *RecordedTestSuite) TestFilesystemListPaths() {
 //	_require := require.New(s.T())

@@ -25,11 +25,8 @@ func TestFailedAck(t *testing.T) {
 	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("ack this one"), nil)
 	require.NoError(t, err)
 
-	pubResp, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
-
-	// just documenting this, I don't think the return value is useful.
-	require.Equal(t, map[string]interface{}{}, pubResp.Interface)
 
 	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),

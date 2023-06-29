@@ -65,4 +65,16 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/\*CloudEvent/g, "messaging.CloudEvent");
+
+  # remove the 'Interface any' that's generated for an empty response object.
+  - from:
+      - client.go
+    where: $
+    transform: |
+      return $.replace(/if err := runtime.UnmarshalAsJSON\(resp, &result.Interface\).+?\s+}/sg, "");
+  - from:
+      - response_types.go
+    where: $
+    transform: |
+      return $.replace(/\/\/ Anything\s+Interface any/g, "");
 ```

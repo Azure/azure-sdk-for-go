@@ -296,7 +296,6 @@ func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.T
 	if err != nil {
 		return "", err
 	}
-	// Containers do not have snapshots, nor versions.
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
 		Protocol:       sas.ProtocolHTTPS,

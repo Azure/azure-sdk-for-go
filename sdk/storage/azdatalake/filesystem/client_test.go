@@ -23,7 +23,7 @@ import (
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
-	t.Logf("Running blob Tests in %s mode\n", recordMode)
+	t.Logf("Running datalake Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
 		suite.Run(t, &RecordedTestSuite{})
 		suite.Run(t, &UnrecordedTestsSuite{})

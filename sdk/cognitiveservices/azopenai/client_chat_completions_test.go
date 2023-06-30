@@ -54,7 +54,7 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetChatCompletionsStream(t, chatClient)
+	testGetChatCompletionsStream(t, chatClient, true)
 }
 
 func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
@@ -64,7 +64,7 @@ func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
 
 func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletionsStream(t, chatClient)
+	testGetChatCompletionsStream(t, chatClient, false)
 }
 
 func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
@@ -100,9 +100,16 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
 	require.Equal(t, expected, resp.ChatCompletions)
 }
 
-func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client) {
+func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, isAzure bool) {
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
 	require.NoError(t, err)
+
+	if isAzure {
+		// there's a bug right now where the first event comes back empty
+		// Issue: https://github.com/Azure/azure-sdk-for-go/issues/21086
+		_, err := streamResp.ChatCompletionsStream.Read()
+		require.NoError(t, err)
+	}
 
 	// the data comes back differently for streaming
 	// 1. the text comes back in the ChatCompletion.Delta field

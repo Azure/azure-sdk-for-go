@@ -6,6 +6,8 @@
 
 package azopenai
 
+import "encoding/json"
+
 // Models for methods that return streaming response
 
 // GetCompletionsStreamOptions contains the optional parameters for the [Client.GetCompletionsStream] method.
@@ -28,4 +30,33 @@ type GetChatCompletionsStreamOptions struct {
 type GetChatCompletionsStreamResponse struct {
 	// ChatCompletionsStream returns the stream of completions. Token limits and other settings may limit the number of chat completions returned by the service.
 	ChatCompletionsStream *EventReader[ChatCompletions]
+}
+
+// ImageGenerationsDataItem holds the result of image generation.
+type ImageGenerationsDataItem struct {
+	// Result will be:
+	// - [ImageLocation] if [ImageGenerationOptions.ResponseFormat] was set to [ImageGenerationResponseFormatURL]
+	// - [ImagePayload] if [ImageGenerationOptions.ResponseFormat] was set to [ImageGenerationResponseFormatB64JSON]
+	Result any
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for [ImageGenerationsDataItem].
+func (di *ImageGenerationsDataItem) UnmarshalJSON(data []byte) error {
+	var v *struct {
+		ImageLocation
+		ImagePayload
+	}
+
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	// which payload do we have?
+	if v.B64JSON != nil {
+		di.Result = v.ImagePayload
+	} else {
+		di.Result = v.ImageLocation
+	}
+
+	return nil
 }

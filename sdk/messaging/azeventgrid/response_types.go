@@ -16,8 +16,7 @@ type AcknowledgeCloudEventsResponse struct {
 
 // PublishCloudEventsResponse contains the response from method Client.PublishCloudEvents.
 type PublishCloudEventsResponse struct {
-	// Anything
-	Interface any
+	// placeholder for future response values
 }
 
 // ReceiveCloudEventsResponse contains the response from method Client.ReceiveCloudEvents.

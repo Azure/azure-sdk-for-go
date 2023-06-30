@@ -113,7 +113,7 @@ func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName 
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PublishCloudEventsResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.publishCloudEventsHandleResponse(resp)
+	return PublishCloudEventsResponse{}, nil
 }
 
 // publishCloudEventsCreateRequest creates the PublishCloudEvents request.
@@ -135,15 +135,6 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topic
 		return nil, err
 	}
 	return req, nil
-}
-
-// publishCloudEventsHandleResponse handles the PublishCloudEvents response.
-func (client *Client) publishCloudEventsHandleResponse(resp *http.Response) (PublishCloudEventsResponse, error) {
-	result := PublishCloudEventsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return PublishCloudEventsResponse{}, err
-	}
-	return result, nil
 }
 
 // ReceiveCloudEvents - Receive Batch of Cloud Events from the Event Subscription.

@@ -92,6 +92,9 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(endpoint), nil)
 		require.NoError(t, err)
 
+		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
+		require.NoError(t, err)
+
 		if openAIEndpoint != "" {
 			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAIEndpoint), nil)
 			require.NoError(t, err)

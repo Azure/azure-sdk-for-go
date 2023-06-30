@@ -22,6 +22,9 @@ type DeleteFilesystemOptions = filesystem.DeleteOptions
 // domain) to call APIs in another domain.
 type CORSRule = service.CORSRule
 
+// StorageServiceProperties - Storage Service Properties.
+type StorageServiceProperties = service.StorageServiceProperties
+
 // RetentionPolicy - the retention policy which determines how long the associated data should persist.
 type RetentionPolicy = service.RetentionPolicy
 
@@ -40,7 +43,10 @@ type GetPropertiesOptions struct {
 }
 
 func (o *GetPropertiesOptions) format() *service.GetPropertiesOptions {
-	return nil
+	if o == nil {
+		return nil
+	}
+	return &service.GetPropertiesOptions{}
 }
 
 // SetPropertiesOptions provides set of options for Client.SetProperties
@@ -72,7 +78,18 @@ type SetPropertiesOptions struct {
 }
 
 func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
-	return nil
+	if o == nil {
+		return nil
+	}
+	return &service.SetPropertiesOptions{
+		CORS:                  o.CORS,
+		DefaultServiceVersion: o.DefaultServiceVersion,
+		DeleteRetentionPolicy: o.DeleteRetentionPolicy,
+		HourMetrics:           o.HourMetrics,
+		Logging:               o.Logging,
+		MinuteMetrics:         o.MinuteMetrics,
+		StaticWebsite:         o.StaticWebsite,
+	}
 }
 
 // ListFilesystemsInclude indicates what additional information the service should return with each filesystem.

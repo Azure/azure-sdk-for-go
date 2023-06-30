@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
@@ -136,12 +137,25 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+func (s *Client) getClientOptions() *base.ClientOptions {
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+}
+
 // NewFilesystemClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
-	//fsURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
-	//return (*filesystem.Client)(base.NewFilesystemClient(fsURL, s.generated().Pipeline(), s.credential()))
-	return nil
+	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
+	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+	clOpts := s.getClientOptions()
+	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
+	if err != nil {
+		if log.Should(exported.EventError) {
+			log.Writef(exported.EventError, err.Error())
+		}
+		return nil
+	}
+	filesystemURL, containerURL := shared.GetURLS(filesystemURL)
+	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), azClient, s.sharedKey(), clOpts))
 }
 
 // NewDirectoryClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
@@ -166,7 +180,7 @@ func (s *Client) generatedServiceClientWithBlob() *generated.ServiceClient {
 	return svcClientWithBlob
 }
 
-func (s *Client) containerClient() *service.Client {
+func (s *Client) serviceClient() *service.Client {
 	_, _, serviceClient := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return serviceClient
 }
@@ -201,12 +215,14 @@ func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, option
 
 // SetServiceProperties sets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) SetServiceProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	return SetPropertiesResponse{}, nil
+	opts := options.format()
+	return s.serviceClient().SetProperties(ctx, opts)
 }
 
 // GetProperties gets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	return GetPropertiesResponse{}, nil
+	opts := options.format()
+	return s.serviceClient().GetProperties(ctx, opts)
 }
 
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)

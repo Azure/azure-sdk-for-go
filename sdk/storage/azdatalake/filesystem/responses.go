@@ -140,3 +140,6 @@ type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
 
 // ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
 type ListDeletedPathsSegmentResponse = generated.FileSystemClientListBlobHierarchySegmentResponse
+
+// ListBlobsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type ListBlobsHierarchySegmentResponse = generated.ListBlobsHierarchySegmentResponse

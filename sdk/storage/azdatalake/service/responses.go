@@ -28,3 +28,7 @@ type GetPropertiesResponse = service.GetPropertiesResponse
 
 // ListFilesystemsResponse contains the response fields for the ListFilesystems operation.
 type ListFilesystemsResponse = service.ListContainersResponse
+
+// TODO: IN THIS RESPONSE THERE IS A CONTAINERITEM YOU NEED TO DESERIALIZE THIS MANUALLY
+// ListContainersSegmentResponse - An enumeration of containers
+type ListContainersSegmentResponse = service.ListContainersSegmentResponse

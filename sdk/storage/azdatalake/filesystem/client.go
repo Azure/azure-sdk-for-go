@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -36,10 +35,9 @@ type Client base.CompositeClient[generated.FileSystemClient, generated.FileSyste
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
-	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
 
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
@@ -68,8 +66,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 //   - filesystemURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*Client, error) {
-	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
-	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
 
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
@@ -97,8 +94,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	containerURL := strings.Replace(filesystemURL, ".dfs.", ".blob.", 1)
-	filesystemURL = strings.Replace(filesystemURL, ".blob.", ".dfs.", 1)
+	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
 
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)

@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
-	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -32,10 +31,9 @@ type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClien
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
 
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
@@ -63,8 +61,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
 
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
@@ -92,8 +89,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
 
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)

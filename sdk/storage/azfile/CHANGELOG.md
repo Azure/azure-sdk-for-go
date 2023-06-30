@@ -5,6 +5,7 @@
 ### Features Added
 
 * Updated service version to STG 87(2022-11-02).
+* Added OAuth support.
 
 ### Breaking Changes
 

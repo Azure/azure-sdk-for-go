@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// CleanImageOptions contains the optional parameters for the Client.CreateImage method.
+// CreateImageOptions contains the optional parameters for the Client.CreateImage method.
 type CreateImageOptions struct {
 	// placeholder for future optional parameters
 }

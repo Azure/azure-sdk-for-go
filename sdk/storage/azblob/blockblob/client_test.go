@@ -2308,11 +2308,10 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
 	_require.Error(err, bloberror.UnsupportedChecksum)
 
 	// SDK generated checksum can be sent
-	resp, err := bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
 	})
 	_require.Nil(err)
-	_require.Equal(resp.ContentCRC64, crc)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {

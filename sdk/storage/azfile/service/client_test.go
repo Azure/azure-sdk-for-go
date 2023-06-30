@@ -463,6 +463,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceOAuthNegative() {
 	_require.NoError(err)
 
 	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	svcClient, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
 	_require.NoError(err)
 
@@ -500,6 +501,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
 
 	// create service client using token credential
 	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	svcClientOAuth, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
 	_require.NoError(err)
 

@@ -1469,8 +1469,9 @@ func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
 	shareName := testcommon.GenerateShareName(testName)
+	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	shareClient, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
 	_require.NoError(err)
 
@@ -1509,6 +1510,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
 	_require.NoError(err)
 

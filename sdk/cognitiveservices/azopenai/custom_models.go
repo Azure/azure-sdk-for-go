@@ -43,8 +43,8 @@ type ImageGenerationsDataItem struct {
 // UnmarshalJSON implements the json.Unmarshaler interface for [ImageGenerationsDataItem].
 func (di *ImageGenerationsDataItem) UnmarshalJSON(data []byte) error {
 	var v *struct {
-		ImageLocation
-		ImagePayload
+		Base64JSON *string `json:"b64_json"`
+		URL        *string `json:"url"`
 	}
 
 	if err := json.Unmarshal(data, &v); err != nil {
@@ -52,10 +52,10 @@ func (di *ImageGenerationsDataItem) UnmarshalJSON(data []byte) error {
 	}
 
 	// which payload do we have?
-	if v.B64JSON != nil {
-		di.Result = v.ImagePayload
+	if v.Base64JSON != nil {
+		di.Result = ImagePayload{B64JSON: v.Base64JSON}
 	} else {
-		di.Result = v.ImageLocation
+		di.Result = ImageLocation{URL: v.URL}
 	}
 
 	return nil

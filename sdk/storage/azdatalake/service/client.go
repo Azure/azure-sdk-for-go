@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
@@ -110,8 +109,11 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKeyCredential, &blobServiceClientOpts)
+	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	if err != nil {
+		return nil, err
+	}
+	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKey, &blobServiceClientOpts)
 	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil
@@ -161,12 +163,14 @@ func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
 // NewDirectoryClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewDirectoryClient(directoryName string) *filesystem.Client {
+	// TODO: implement once dir client is implemented
 	return nil
 }
 
 // NewFileClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFileClient(fileName string) *filesystem.Client {
+	// TODO: implement once file client is implemented
 	return nil
 }
 

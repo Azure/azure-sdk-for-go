@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -114,8 +113,11 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKeyCredential, &containerClientOpts)
+	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	if err != nil {
+		return nil, err
+	}
+	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKey, &containerClientOpts)
 	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil

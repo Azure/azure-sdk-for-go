@@ -108,8 +108,11 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKeyCredential, &blobClientOpts)
+	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	if err != nil {
+		return nil, err
+	}
+	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil

@@ -69,14 +69,14 @@ type ClientListResponse struct {
 	NotificationHubListResult
 }
 
-// ClientPatchResponse contains the response from method Client.Patch.
-type ClientPatchResponse struct {
-	NotificationHubResource
-}
-
 // ClientRegenerateKeysResponse contains the response from method Client.RegenerateKeys.
 type ClientRegenerateKeysResponse struct {
 	ResourceListKeys
+}
+
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	NotificationHubResource
 }
 
 // NamespacesClientCheckAvailabilityResponse contains the response from method NamespacesClient.CheckAvailability.
@@ -89,7 +89,7 @@ type NamespacesClientCreateOrUpdateAuthorizationRuleResponse struct {
 	SharedAccessAuthorizationRuleResource
 }
 
-// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.CreateOrUpdate.
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
 type NamespacesClientCreateOrUpdateResponse struct {
 	NamespaceResource
 }
@@ -99,7 +99,7 @@ type NamespacesClientDeleteAuthorizationRuleResponse struct {
 	// placeholder for future response values
 }
 
-// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.Delete.
 type NamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -107,6 +107,11 @@ type NamespacesClientDeleteResponse struct {
 // NamespacesClientGetAuthorizationRuleResponse contains the response from method NamespacesClient.GetAuthorizationRule.
 type NamespacesClientGetAuthorizationRuleResponse struct {
 	SharedAccessAuthorizationRuleResource
+}
+
+// NamespacesClientGetPnsCredentialsResponse contains the response from method NamespacesClient.GetPnsCredentials.
+type NamespacesClientGetPnsCredentialsResponse struct {
+	PnsCredentialsResource
 }
 
 // NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
@@ -134,17 +139,47 @@ type NamespacesClientListResponse struct {
 	NamespaceListResult
 }
 
-// NamespacesClientPatchResponse contains the response from method NamespacesClient.Patch.
-type NamespacesClientPatchResponse struct {
-	NamespaceResource
-}
-
 // NamespacesClientRegenerateKeysResponse contains the response from method NamespacesClient.RegenerateKeys.
 type NamespacesClientRegenerateKeysResponse struct {
 	ResourceListKeys
 }
 
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
+type NamespacesClientUpdateResponse struct {
+	NamespaceResource
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetGroupIDResponse contains the response from method PrivateEndpointConnectionsClient.GetGroupID.
+type PrivateEndpointConnectionsClientGetGroupIDResponse struct {
+	PrivateLinkResource
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionResource
+}
+
+// PrivateEndpointConnectionsClientListGroupIDsResponse contains the response from method PrivateEndpointConnectionsClient.NewListGroupIDsPager.
+type PrivateEndpointConnectionsClientListGroupIDsResponse struct {
+	PrivateLinkResourceListResult
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionResourceListResult
+}
+
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginUpdate.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	PrivateEndpointConnectionResource
 }

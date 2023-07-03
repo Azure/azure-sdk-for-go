@@ -105,10 +105,10 @@ func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *req
 	// Perform UploadStream
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeComputeCRC64()})
+	_require.NoError(err)
 
 	// TODO: UploadResponse does not return ContentCRC64
 	// // Assert that upload was successful
-	// _require.NoError(err)
 	// _require.Equal(uploadResp.ContentCRC64, crc)
 
 	// UploadStream does not accept user generated checksum, should return UnsupportedChecksum

@@ -517,7 +517,7 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 		o = &UploadStreamOptions{}
 	}
 
-	result, err := copyFromReader(ctx, body, bb, *o, newMMBPool)
+	result, err := copyFromReader(ctx, body, bb, *o, shared.NewMMBPool)
 	if err != nil {
 		return CommitBlockListResponse{}, err
 	}

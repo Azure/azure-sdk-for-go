@@ -255,11 +255,6 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 	var cpkScope *generated.CPKScopeInfo
 	var modifiedAccess *generated.ModifiedAccessConditions
 
-	// If user attempts to pass in their own checksum, errors out.
-	if options.TransactionalValidation != nil && reflect.TypeOf(options.TransactionalValidation).Kind() != reflect.Func {
-		return CommitBlockListResponse{}, bloberror.UnsupportedChecksum
-	}
-
 	if options != nil {
 		commitOptions = &generated.BlockBlobClientCommitBlockListOptions{
 			BlobTagsString:            shared.SerializeBlobTagsToStrPtr(options.Tags),
@@ -272,6 +267,11 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 			LegalHold:                 options.LegalHold,
 			ImmutabilityPolicyMode:    options.ImmutabilityPolicyMode,
 			ImmutabilityPolicyExpiry:  options.ImmutabilityPolicyExpiryTime,
+		}
+
+		// If user attempts to pass in their own checksum, errors out.
+		if options.TransactionalValidation != nil && reflect.TypeOf(options.TransactionalValidation).Kind() != reflect.Func {
+			return CommitBlockListResponse{}, bloberror.UnsupportedChecksum
 		}
 
 		headers = options.HTTPHeaders

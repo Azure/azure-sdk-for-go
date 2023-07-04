@@ -28,19 +28,17 @@ type SMBProperties struct {
 }
 
 // Format returns file attributes, creation time and last write time.
-func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string) (fileAttributes string, creationTime *string, lastWriteTime *string, changeTime *string) {
+func (sp *SMBProperties) Format(isDir bool) (fileAttributes *string, creationTime *string, lastWriteTime *string, changeTime *string) {
 	if sp == nil {
-		return defaultFileAttributes, nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
-	fileAttributes = defaultFileAttributes
+	fileAttributes = nil
 	if sp.Attributes != nil {
-		fileAttributes = sp.Attributes.String()
-		if fileAttributes == "" {
-			fileAttributes = defaultFileAttributes
-		} else if isDir && strings.ToLower(fileAttributes) != "none" {
+		fileAttributes = to.Ptr(sp.Attributes.String())
+		if isDir && fileAttributes != nil && strings.ToLower(*fileAttributes) != "none" {
 			// Directories need to have this attribute included, if setting any attributes.
-			fileAttributes += "|Directory"
+			*fileAttributes += "|Directory"
 		}
 	}
 

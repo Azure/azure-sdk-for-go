@@ -141,8 +141,8 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, fileAttributes, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().Create(ctx, fileContentLength, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -167,8 +167,8 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, fileHTTPHeaders, leaseAccessConditions)
+	opts, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().SetHTTPHeaders(ctx, opts, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -203,8 +203,8 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
-	fileAttributes, opts, leaseAccessConditions := options.format(size)
-	resp, err := f.generated().SetHTTPHeaders(ctx, fileAttributes, opts, nil, leaseAccessConditions)
+	opts, leaseAccessConditions := options.format(size)
+	resp, err := f.generated().SetHTTPHeaders(ctx, opts, nil, leaseAccessConditions)
 	return resp, err
 }
 

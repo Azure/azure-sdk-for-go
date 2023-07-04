@@ -333,3 +333,13 @@ directive:
   transform: >
     $.Handle["x-ms-go-omit-serde-methods"] = true;
 ```
+
+### Convert FileAttributes to an optional parameter
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileAttributes
+  transform: >
+    $.required = false;
+```

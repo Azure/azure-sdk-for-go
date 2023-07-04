@@ -25,11 +25,41 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Datalake Storage service.
 type Client base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client]
 
-//TODO: NewClient()
+// NewClient creates an instance of Client with the specified values.
+//   - fileURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/fs/file.txt
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	blobURL := strings.Replace(fileURL, ".dfs.", ".blob.", 1)
+	fileURL = strings.Replace(fileURL, ".blob.", ".dfs.", 1)
+
+	authPolicy := shared.NewStorageChallengePolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	blobClientOpts := blob.ClientOptions{
+		ClientOptions: options.ClientOptions,
+	}
+	blobClient, _ := blob.NewClient(blobURL, cred, &blobClientOpts)
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+
+	return (*Client)(fileClient), nil
+}
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/?<sas token>
+//   - fileURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs/file.txt?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client, error) {
 	blobURL := strings.Replace(fileURL, ".dfs.", ".blob.", 1)
@@ -44,6 +74,9 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -54,7 +87,7 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
+//   - fileURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs/file.txt
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
@@ -73,6 +106,9 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -103,13 +139,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-func (f *Client) generatedFSClientWithDFS() *generated.PathClient {
+func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
 	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 	return dirClientWithDFS
 }
 
-func (f *Client) generatedFSClientWithBlob() *generated.PathClient {
+func (f *Client) generatedFileClientWithBlob() *generated.PathClient {
 	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 	return dirClientWithBlob
 }
@@ -123,9 +159,14 @@ func (f *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (f *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (f *Client) DFSURL() string {
+	return f.generatedFileClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (f *Client) BlobURL() string {
+	return f.generatedFileClientWithBlob().Endpoint()
 }
 
 // Create creates a new file (dfs1).
@@ -217,4 +258,9 @@ func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	// TODO: call formatBlobHTTPHeaders() since we want to add the blob prefix to our options before calling into blob
 	// TODO: call into blob
 	return SetHTTPHeadersResponse{}, nil
+}
+
+// UndeletePath restores the specified path that was previously deleted. (dfs op/blob2).
+func (f *Client) UndeletePath(ctx context.Context, path string, options *UndeletePathOptions) (UndeletePathResponse, error) {
+	return UndeletePathResponse{}, nil
 }

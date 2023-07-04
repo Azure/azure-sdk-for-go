@@ -10,25 +10,18 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
 // FilesystemClient provides lease functionality for the underlying filesystem client.
 type FilesystemClient struct {
-	filesystemClient *filesystem.Client
-	leaseID          *string
-	containerClient  *lease.ContainerClient
+	leaseID         *string
+	containerClient *lease.ContainerClient
 }
 
 // FilesystemClientOptions contains the optional values when creating a FilesystemClient.
 type FilesystemClientOptions struct {
 	// LeaseID contains a caller-provided lease ID.
 	LeaseID *string
-}
-
-func (c *FilesystemClient) generated() *generated.FileSystemClient {
-	return base.InnerClient((*base.Client[generated.FileSystemClient])(c.filesystemClient))
 }
 
 // NewFilesystemClient creates a filesystem lease client for the provided filesystem client.

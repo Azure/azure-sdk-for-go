@@ -1,16 +1,36 @@
-package shared
+package exported
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
+// AccessConditions identifies container-specific access conditions which you optionally set.
+type AccessConditions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+	LeaseAccessConditions    *LeaseAccessConditions
+}
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = generated.LeaseAccessConditions
+
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = generated.ModifiedAccessConditions
+
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatContainerAccessConditions(b *azdatalake.AccessConditions) *container.AccessConditions {
+func FormatContainerAccessConditions(b *AccessConditions) *container.AccessConditions {
 	if b == nil {
-		return nil
+		return &container.AccessConditions{
+			LeaseAccessConditions:    &container.LeaseAccessConditions{},
+			ModifiedAccessConditions: &container.ModifiedAccessConditions{},
+		}
+	}
+	if b.LeaseAccessConditions == nil {
+		b.LeaseAccessConditions = &LeaseAccessConditions{}
+	}
+	if b.ModifiedAccessConditions == nil {
+		b.ModifiedAccessConditions = &ModifiedAccessConditions{}
 	}
 	return &container.AccessConditions{
 		LeaseAccessConditions: &container.LeaseAccessConditions{
@@ -26,9 +46,15 @@ func FormatContainerAccessConditions(b *azdatalake.AccessConditions) *container.
 }
 
 // FormatPathAccessConditions formats PathAccessConditions into path's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatPathAccessConditions(p *azdatalake.AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func FormatPathAccessConditions(p *AccessConditions) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if p == nil {
-		return nil, nil
+		return &generated.LeaseAccessConditions{}, &generated.ModifiedAccessConditions{}
+	}
+	if p.LeaseAccessConditions == nil {
+		p.LeaseAccessConditions = &LeaseAccessConditions{}
+	}
+	if p.ModifiedAccessConditions == nil {
+		p.ModifiedAccessConditions = &ModifiedAccessConditions{}
 	}
 	return &generated.LeaseAccessConditions{
 			LeaseID: p.LeaseAccessConditions.LeaseID,
@@ -41,9 +67,18 @@ func FormatPathAccessConditions(p *azdatalake.AccessConditions) (*generated.Leas
 }
 
 // FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.
-func FormatBlobAccessConditions(p *azdatalake.AccessConditions) *blob.AccessConditions {
+func FormatBlobAccessConditions(p *AccessConditions) *blob.AccessConditions {
 	if p == nil {
-		return nil
+		return &blob.AccessConditions{
+			LeaseAccessConditions:    &blob.LeaseAccessConditions{},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{},
+		}
+	}
+	if p.LeaseAccessConditions == nil {
+		p.LeaseAccessConditions = &LeaseAccessConditions{}
+	}
+	if p.ModifiedAccessConditions == nil {
+		p.ModifiedAccessConditions = &ModifiedAccessConditions{}
 	}
 	return &blob.AccessConditions{LeaseAccessConditions: &blob.LeaseAccessConditions{
 		LeaseID: p.LeaseAccessConditions.LeaseID,

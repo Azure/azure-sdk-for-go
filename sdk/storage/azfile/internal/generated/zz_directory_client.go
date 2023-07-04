@@ -36,11 +36,9 @@ type DirectoryClient struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-11-02
-//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-//     for directory. ‘None’ can also be specified as default.
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
-func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, fileAttributes, options)
+func (client *DirectoryClient) Create(ctx context.Context, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
 	}
@@ -55,7 +53,7 @@ func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string
 }
 
 // createCreateRequest creates the Create request.
-func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, options *DirectoryClientCreateOptions) (*policy.Request, error) {
+func (client *DirectoryClient) createCreateRequest(ctx context.Context, options *DirectoryClientCreateOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -83,7 +81,9 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttr
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
 	if options != nil && options.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
 	}
@@ -848,11 +848,9 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-11-02
-//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-//     for directory. ‘None’ can also be specified as default.
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
-func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, options)
+func (client *DirectoryClient) SetProperties(ctx context.Context, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
 	}
@@ -867,7 +865,7 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -886,7 +884,9 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, f
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
 	if options != nil && options.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
 	}

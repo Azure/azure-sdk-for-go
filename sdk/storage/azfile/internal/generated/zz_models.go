@@ -107,6 +107,9 @@ type Directory struct {
 
 // DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 type DirectoryClientCreateOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
 	// Change time for the file/directory. Default value: Now.
 	FileChangeTime *string
 	// Creation time for the file/directory. Default value: Now.
@@ -241,6 +244,9 @@ type DirectoryClientSetMetadataOptions struct {
 
 // DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 type DirectoryClientSetPropertiesOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
 	// Change time for the file/directory. Default value: Now.
 	FileChangeTime *string
 	// Creation time for the file/directory. Default value: Now.
@@ -319,6 +325,9 @@ type FileClientChangeLeaseOptions struct {
 
 // FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 type FileClientCreateOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
 	// Change time for the file/directory. Default value: Now.
 	FileChangeTime *string
 	// Creation time for the file/directory. Default value: Now.
@@ -451,6 +460,9 @@ type FileClientRenameOptions struct {
 
 // FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 type FileClientSetHTTPHeadersOptions struct {
+	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
+	// ‘None’ can also be specified as default.
+	FileAttributes *string
 	// Change time for the file/directory. Default value: Now.
 	FileChangeTime *string
 	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges

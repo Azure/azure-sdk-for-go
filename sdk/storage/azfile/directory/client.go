@@ -160,8 +160,8 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	fileAttributes, opts := options.format()
-	resp, err := d.generated().Create(ctx, fileAttributes, opts)
+	opts := options.format()
+	resp, err := d.generated().Create(ctx, opts)
 	return resp, err
 }
 
@@ -171,6 +171,16 @@ func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts := options.format()
 	resp, err := d.generated().Delete(ctx, opts)
+	return resp, err
+}
+
+// Rename operation renames a directory, and can optionally set system properties for the directory.
+//   - newName: the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+//
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/rename-directory.
+func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+	opts, srcLease, destLease, smbInfo := options.format()
+	resp, err := d.generated().Rename(ctx, newName, opts, srcLease, destLease, smbInfo)
 	return resp, err
 }
 
@@ -187,8 +197,8 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 func (d *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	fileAttributes, opts := options.format()
-	resp, err := d.generated().SetProperties(ctx, fileAttributes, opts)
+	opts := options.format()
+	resp, err := d.generated().SetProperties(ctx, opts)
 	return resp, err
 }
 

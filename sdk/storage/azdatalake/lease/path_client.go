@@ -11,15 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/path"
 )
 
 // PathClient provides lease functionality for the underlying path client.
 type PathClient struct {
 	blobClient *lease.BlobClient
-	pathClient *path.Client
 	leaseID    *string
 }
 
@@ -35,10 +31,6 @@ type PathClientOptions struct {
 func NewPathClient[T directory.Client | file.Client](client *T, options *PathClientOptions) (*PathClient, error) {
 	// TODO: set up blob lease client
 	return nil, nil
-}
-
-func (c *PathClient) generated() *generated.PathClient {
-	return base.InnerClient((*base.Client[generated.PathClient])(c.pathClient))
 }
 
 // LeaseID returns leaseID of the client.

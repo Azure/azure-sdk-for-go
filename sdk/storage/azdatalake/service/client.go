@@ -27,6 +27,38 @@ type ClientOptions base.ClientOptions
 // Client represents a URL to the Azure Datalake Storage service.
 type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]
 
+// NewClient creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
+	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
+
+	authPolicy := shared.NewStorageChallengePolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
+
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	blobServiceClientOpts := service.ClientOptions{
+		ClientOptions: options.ClientOptions,
+	}
+	blobSvcClient, _ := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, (*base.ClientOptions)(conOptions))
+
+	return (*Client)(svcClient), nil
+}
+
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values.
@@ -43,6 +75,9 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -72,6 +107,9 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -105,6 +143,8 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 // NewFilesystemClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
+	//fsURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
+	//return (*filesystem.Client)(base.NewFilesystemClient(fsURL, s.generated().Pipeline(), s.credential()))
 	return nil
 }
 
@@ -120,12 +160,12 @@ func (s *Client) NewFileClient(fileName string) *filesystem.Client {
 	return nil
 }
 
-func (s *Client) generatedFSClientWithDFS() *generated.ServiceClient {
+func (s *Client) generatedServiceClientWithDFS() *generated.ServiceClient {
 	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return svcClientWithDFS
 }
 
-func (s *Client) generatedFSClientWithBlob() *generated.ServiceClient {
+func (s *Client) generatedServiceClientWithBlob() *generated.ServiceClient {
 	_, svcClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return svcClientWithBlob
 }
@@ -139,9 +179,14 @@ func (s *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (s *Client) URL() string {
-	return "s.generated().Endpoint()"
+// DFSURL returns the URL endpoint used by the Client object.
+func (s *Client) DFSURL() string {
+	return s.generatedServiceClientWithDFS().Endpoint()
+}
+
+// BlobURL returns the URL endpoint used by the Client object.
+func (s *Client) BlobURL() string {
+	return s.generatedServiceClientWithBlob().Endpoint()
 }
 
 // CreateFilesystem creates a new filesystem under the specified account. (blob3)

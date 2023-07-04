@@ -8,17 +8,15 @@ package directory
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"time"
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
@@ -44,7 +42,7 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
 	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
-	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	httpHeaders := &generated.PathHTTPHeaders{
 		CacheControl:             o.HTTPHeaders.CacheControl,
 		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
@@ -60,11 +58,11 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
 type DeleteOptions struct {
 	// AccessConditions specifies parameters for accessing the directory
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
-	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, nil
 }
 
@@ -72,12 +70,12 @@ type RenameOptions struct {
 	// SourceModifiedAccessConditions specifies parameters for accessing the source directory
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	// AccessConditions specifies parameters for accessing the destination directory
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 }
 
@@ -85,7 +83,7 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.GetPropertiesOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -109,7 +107,7 @@ type SetAccessControlOptions struct {
 	// Permissions is the octal representation of the permissions for user, group and mask.
 	Permissions *string
 	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -117,7 +115,7 @@ func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessContro
 		return nil, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientSetAccessControlOptions{
 		Owner:       o.Owner,
 		Group:       o.Group,
@@ -131,7 +129,7 @@ type GetAccessControlOptions struct {
 	// UPN is the user principal name.
 	UPN *bool
 	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
@@ -142,7 +140,7 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 		}, nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := shared.FormatPathAccessConditions(o.AccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{
 		Upn:    o.UPN,
 		Action: &action,
@@ -208,14 +206,14 @@ func (o *RemoveAccessControlRecursiveOptions) format() (*generated.PathClientSet
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
 type SetHTTPHeadersOptions struct {
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 }
 
 func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetHTTPHeadersOptions{
 		AccessConditions: accessConditions,
 	}
@@ -273,7 +271,7 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
-	AccessConditions *azdatalake.AccessConditions
+	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
 }
@@ -282,7 +280,7 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 	if o == nil {
 		return nil
 	}
-	accessConditions := shared.FormatBlobAccessConditions(o.AccessConditions)
+	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetMetadataOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -308,8 +306,29 @@ type CPKScopeInfo struct {
 	EncryptionScope *string
 }
 
+// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
+type UndeletePathOptions struct {
+	// placeholder
+}
+
+func (o *UndeletePathOptions) format() *UndeletePathOptions {
+	if o == nil {
+		return nil
+	}
+	return &UndeletePathOptions{}
+}
+
 // SourceModifiedAccessConditions identifies the source path access conditions.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
+
+// AccessConditions identifies blob-specific access conditions which you optionally set.
+type AccessConditions = exported.AccessConditions
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = exported.LeaseAccessConditions
+
+// ModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type ModifiedAccessConditions = exported.ModifiedAccessConditions

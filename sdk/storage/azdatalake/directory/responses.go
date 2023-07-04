@@ -43,3 +43,6 @@ type SetMetadataResponse = blob.SetMetadataResponse
 
 // SetHTTPHeadersResponse contains the response fields for the SetHTTPHeaders operation.
 type SetHTTPHeadersResponse = blob.SetHTTPHeadersResponse
+
+// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+type UndeletePathResponse = generated.PathClientUndeleteResponse

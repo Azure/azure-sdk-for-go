@@ -21,6 +21,8 @@ import (
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
 // These options may not apply to all credentials in the chain.
 type DefaultAzureCredentialOptions struct {
+	// ClientOptions has additional options for credentials that use an Azure SDK HTTP pipeline. These options don't apply
+	// to credential types that authenticate via external tools such as the Azure CLI.
 	azcore.ClientOptions
 
 	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens. Add

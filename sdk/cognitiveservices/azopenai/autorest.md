@@ -40,6 +40,11 @@ directive:
     where: $.paths["/deployments/{deploymentId}/embeddings"].post.requestBody
     transform: $["required"] = true;
 
+  # get rid of these auto-generated LRO status methods that aren't exposed.
+  - from: openapi-document
+    where: $.paths
+    transform: delete $["/operations/images/{operationId}"]
+
   # Remove stream property from CompletionsOptions and ChatCompletionsOptions
   - from: openapi-document
     where: $.components.schemas["CompletionsOptions"]
@@ -180,6 +185,15 @@ directive:
       return $.replace(/ImageSizeFiveHundredTwelveX512/g, "ImageSize512x512")
         .replace(/ImageSizeOneThousandTwentyFourX1024/g, "ImageSize1024x1024")
         .replace(/ImageSizeTwoHundredFiftySixX256/g, "ImageSize256x256");
+
+  # scrub the Image(Payload|Location) deserializers.
+  - from: models_serde.go
+    where: $
+    transform: |
+      return $.replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type ImagePayload.+?\n}/s, "")
+        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type ImagePayload.+?\n}/s, "")
+        .replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type ImageLocation.+?\n}/s, "")
+        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type ImageLocation.+?\n}/s, "");
 
   # hide the image generation pollers.
   - rename-operation:

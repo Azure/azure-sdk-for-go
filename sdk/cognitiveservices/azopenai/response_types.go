@@ -13,11 +13,6 @@ type azureBatchImageGenerationInternalResponse struct {
 	batchImageGenerationOperationResponse
 }
 
-// getAzureBatchImageGenerationOperationStatusResponse contains the response from method Client.getAzureBatchImageGenerationOperationStatus.
-type getAzureBatchImageGenerationOperationStatusResponse struct {
-	batchImageGenerationOperationResponse
-}
-
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
 type GetChatCompletionsResponse struct {
 	ChatCompletions

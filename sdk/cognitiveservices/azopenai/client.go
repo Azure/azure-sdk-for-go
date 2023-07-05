@@ -10,10 +10,7 @@ package azopenai
 
 import (
 	"context"
-	"errors"
 	"net/http"
-	"net/url"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -82,58 +79,6 @@ func (client *Client) azureBatchImageGenerationInternalCreateRequest(ctx context
 		return nil, err
 	}
 	return req, nil
-}
-
-// getAzureBatchImageGenerationOperationStatus - Returns the status of the images operation
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-06-01-preview
-//   - operationID - .
-//   - options - getAzureBatchImageGenerationOperationStatusOptions contains the optional parameters for the Client.getAzureBatchImageGenerationOperationStatus
-//     method.
-func (client *Client) getAzureBatchImageGenerationOperationStatus(ctx context.Context, operationID string, options *getAzureBatchImageGenerationOperationStatusOptions) (getAzureBatchImageGenerationOperationStatusResponse, error) {
-	var err error
-	req, err := client.getAzureBatchImageGenerationOperationStatusCreateRequest(ctx, operationID, options)
-	if err != nil {
-		return getAzureBatchImageGenerationOperationStatusResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return getAzureBatchImageGenerationOperationStatusResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return getAzureBatchImageGenerationOperationStatusResponse{}, err
-	}
-	resp, err := client.getAzureBatchImageGenerationOperationStatusHandleResponse(httpResp)
-	return resp, err
-}
-
-// getAzureBatchImageGenerationOperationStatusCreateRequest creates the getAzureBatchImageGenerationOperationStatus request.
-func (client *Client) getAzureBatchImageGenerationOperationStatusCreateRequest(ctx context.Context, operationID string, options *getAzureBatchImageGenerationOperationStatusOptions) (*policy.Request, error) {
-	urlPath := "/operations/images/{operationId}"
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getAzureBatchImageGenerationOperationStatusHandleResponse handles the getAzureBatchImageGenerationOperationStatus response.
-func (client *Client) getAzureBatchImageGenerationOperationStatusHandleResponse(resp *http.Response) (getAzureBatchImageGenerationOperationStatusResponse, error) {
-	result := getAzureBatchImageGenerationOperationStatusResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.batchImageGenerationOperationResponse); err != nil {
-		return getAzureBatchImageGenerationOperationStatusResponse{}, err
-	}
-	return result, nil
 }
 
 // GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks

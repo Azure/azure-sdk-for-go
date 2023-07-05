@@ -260,12 +260,6 @@ type beginAzureBatchImageGenerationOptions struct {
 	ResumeToken string
 }
 
-// getAzureBatchImageGenerationOperationStatusOptions contains the optional parameters for the Client.getAzureBatchImageGenerationOperationStatus
-// method.
-type getAzureBatchImageGenerationOperationStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 type GetChatCompletionsOptions struct {
 	// placeholder for future optional parameters

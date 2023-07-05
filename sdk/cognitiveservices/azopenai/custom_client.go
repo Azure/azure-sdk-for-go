@@ -224,8 +224,6 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 func (client *Client) formatURL(path string) string {
 	switch path {
 	// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation
-	case "/operations/images/{operationId}":
-		return runtime.JoinPaths(client.baseEndpoint, "openai", path)
 	case "/images/generations:submit":
 		return runtime.JoinPaths(client.baseEndpoint, "openai", path)
 	default:

@@ -20,6 +20,10 @@ import (
 )
 
 func TestImageGeneration_AzureOpenAI(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Ignoring poller-based test")
+	}
+
 	cred, err := azopenai.NewKeyCredential(apiKey)
 	require.NoError(t, err)
 

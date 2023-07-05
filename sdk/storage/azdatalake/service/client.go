@@ -32,7 +32,6 @@ type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClien
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
-
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -62,7 +61,6 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - options - client options; pass nil to accept the default values.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
-
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -90,7 +88,6 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
-
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -217,8 +214,8 @@ func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, option
 	return resp, err
 }
 
-// SetServiceProperties sets properties for a storage account's File service endpoint. (blob3)
-func (s *Client) SetServiceProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+// SetProperties sets properties for a storage account's File service endpoint. (blob3)
+func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	opts := options.format()
 	return s.serviceClient().SetProperties(ctx, opts)
 }

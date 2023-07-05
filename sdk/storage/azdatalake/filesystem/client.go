@@ -35,7 +35,6 @@ type Client base.CompositeClient[generated.FileSystemClient, generated.FileSyste
 //   - options - client options; pass nil to accept the default values
 func NewClient(filesystemURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
-
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -66,7 +65,6 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
-
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -94,7 +92,6 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	containerURL, filesystemURL := shared.GetURLS(filesystemURL)
-
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{

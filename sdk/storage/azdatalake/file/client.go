@@ -30,7 +30,6 @@ type Client base.CompositeClient[generated.PathClient, generated.PathClient, blo
 //   - options - client options; pass nil to accept the default values
 func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	blobURL, fileURL := shared.GetURLS(fileURL)
-
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{

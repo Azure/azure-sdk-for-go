@@ -5075,6 +5075,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadFromReader() {
 	}
 }
 
+/* siminsavani: This test has a large allocation and blocks other tests from running that's why this test is commented out
 func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWithGeneratedCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -5108,7 +5109,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWi
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
-}
+}*/
 
 func (s *BlockBlobRecordedTestsSuite) TestUploadBufferWithCRC64OrMD5() {
 	_require := require.New(s.T())

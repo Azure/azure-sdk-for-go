@@ -177,7 +177,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
 		if err != nil {
-			return UploadResponse{}, nil
+			return UploadResponse{}, err
 		}
 	}
 

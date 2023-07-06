@@ -8,17 +8,32 @@
 
 package azopenai
 
+// azureBatchImageGenerationInternalResponse contains the response from method Client.beginAzureBatchImageGeneration.
+type azureBatchImageGenerationInternalResponse struct {
+	// A polling status update or final response payload for an image operation.
+	batchImageGenerationOperationResponse
+}
+
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
 type GetChatCompletionsResponse struct {
+	// Representation of the response data from a chat completions request.
+	// Completions support a wide variety of tasks and generate text that continues from or "completes"
+	// provided prompt data.
 	ChatCompletions
 }
 
 // GetCompletionsResponse contains the response from method Client.GetCompletions.
 type GetCompletionsResponse struct {
+	// Representation of the response data from a completions request.
+	// Completions support a wide variety of tasks and generate text that continues from or "completes"
+	// provided prompt data.
 	Completions
 }
 
 // GetEmbeddingsResponse contains the response from method Client.GetEmbeddings.
 type GetEmbeddingsResponse struct {
+	// Representation of the response data from an embeddings request.
+	// Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+	// recommendations, and other similar scenarios.
 	Embeddings
 }

@@ -8,6 +8,17 @@
 
 package azopenai
 
+// azureOpenAIOperationState - The state of a job or item.
+type azureOpenAIOperationState string
+
+const (
+	azureOpenAIOperationStateCanceled   azureOpenAIOperationState = "canceled"
+	azureOpenAIOperationStateFailed     azureOpenAIOperationState = "failed"
+	azureOpenAIOperationStateNotRunning azureOpenAIOperationState = "notRunning"
+	azureOpenAIOperationStateRunning    azureOpenAIOperationState = "running"
+	azureOpenAIOperationStateSucceeded  azureOpenAIOperationState = "succeeded"
+)
+
 // ChatRole - A description of the intended purpose of a message within a chat completions interaction.
 type ChatRole string
 
@@ -41,5 +52,39 @@ func PossibleCompletionsFinishReasonValues() []CompletionsFinishReason {
 		CompletionsFinishReasonContentFilter,
 		CompletionsFinishReasonLength,
 		CompletionsFinishReasonStop,
+	}
+}
+
+// ImageGenerationResponseFormat - The format in which the generated images are returned.
+type ImageGenerationResponseFormat string
+
+const (
+	ImageGenerationResponseFormatB64JSON ImageGenerationResponseFormat = "b64_json"
+	ImageGenerationResponseFormatURL     ImageGenerationResponseFormat = "url"
+)
+
+// PossibleImageGenerationResponseFormatValues returns the possible values for the ImageGenerationResponseFormat const type.
+func PossibleImageGenerationResponseFormatValues() []ImageGenerationResponseFormat {
+	return []ImageGenerationResponseFormat{
+		ImageGenerationResponseFormatB64JSON,
+		ImageGenerationResponseFormatURL,
+	}
+}
+
+// ImageSize - The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+type ImageSize string
+
+const (
+	ImageSize512x512   ImageSize = "512x512"
+	ImageSize1024x1024 ImageSize = "1024x1024"
+	ImageSize256x256   ImageSize = "256x256"
+)
+
+// PossibleImageSizeValues returns the possible values for the ImageSize const type.
+func PossibleImageSizeValues() []ImageSize {
+	return []ImageSize{
+		ImageSize512x512,
+		ImageSize1024x1024,
+		ImageSize256x256,
 	}
 }

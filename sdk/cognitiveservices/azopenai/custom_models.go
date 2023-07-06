@@ -29,3 +29,17 @@ type GetChatCompletionsStreamResponse struct {
 	// ChatCompletionsStream returns the stream of completions. Token limits and other settings may limit the number of chat completions returned by the service.
 	ChatCompletionsStream *EventReader[ChatCompletions]
 }
+
+// ImageGenerationsDataItem contains the results of image generation.
+//
+// The field that's set will be based on [ImageGenerationOptions.ResponseFormat] and
+// are mutually exclusive.
+type ImageGenerationsDataItem struct {
+	// Base64Data is set to image data, encoded as a base64 string, if [ImageGenerationOptions.ResponseFormat]
+	// was set to [ImageGenerationResponseFormatB64JSON].
+	Base64Data *string `json:"b64_json"`
+
+	// URL is the address of a generated image if [ImageGenerationOptions.ResponseFormat] was set
+	// to [ImageGenerationResponseFormatURL].
+	URL *string `json:"url"`
+}

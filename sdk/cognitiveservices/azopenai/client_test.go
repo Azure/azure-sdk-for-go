@@ -21,7 +21,7 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 	chatClient := newOpenAIClientForTest(t)
 
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []*azopenai.ChatMessage{
+		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleSystem),
 				Content: to.Ptr("hello"),

@@ -21,14 +21,71 @@ import (
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal *azcore.Client
-	endpoint string
+	clientData
+}
+
+// beginAzureBatchImageGeneration - Starts the generation of a batch of images from a text caption
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01-preview
+//   - options - beginAzureBatchImageGenerationOptions contains the optional parameters for the Client.beginAzureBatchImageGeneration
+//     method.
+func (client *Client) beginAzureBatchImageGeneration(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*runtime.Poller[azureBatchImageGenerationInternalResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.azureBatchImageGenerationInternal(ctx, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller[azureBatchImageGenerationInternalResponse](resp, client.internal.Pipeline(), nil)
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken[azureBatchImageGenerationInternalResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// AzureBatchImageGenerationInternal - Starts the generation of a batch of images from a text caption
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01-preview
+func (client *Client) azureBatchImageGenerationInternal(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*http.Response, error) {
+	var err error
+	req, err := client.azureBatchImageGenerationInternalCreateRequest(ctx, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// azureBatchImageGenerationInternalCreateRequest creates the AzureBatchImageGenerationInternal request.
+func (client *Client) azureBatchImageGenerationInternalCreateRequest(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*policy.Request, error) {
+	urlPath := "/images/generations:submit"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2023-06-01-preview
 //   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
@@ -51,12 +108,12 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
 func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -78,7 +135,7 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2023-06-01-preview
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
@@ -101,12 +158,12 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 // getCompletionsCreateRequest creates the GetCompletions request.
 func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,7 +184,7 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2023-06-01-preview
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
@@ -150,12 +207,12 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

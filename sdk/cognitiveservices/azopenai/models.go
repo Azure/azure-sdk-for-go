@@ -8,6 +8,99 @@
 
 package azopenai
 
+// azureCoreFoundationsError - The error object.
+type azureCoreFoundationsError struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
+
+	// REQUIRED; A human-readable representation of the error.
+	Message *string
+
+	// An array of details about specific errors that led to this reported error.
+	Details []azureCoreFoundationsError
+
+	// An object containing more specific information than the current object about the error.
+	Innererror *azureCoreFoundationsErrorInnererror
+
+	// The target of the error.
+	Target *string
+}
+
+// azureCoreFoundationsErrorInnererror - An object containing more specific information than the current object about the
+// error.
+type azureCoreFoundationsErrorInnererror struct {
+	// One of a server-defined set of error codes.
+	Code *string
+
+	// Inner error.
+	Innererror *azureCoreFoundationsInnerErrorInnererror
+}
+
+// azureCoreFoundationsErrorResponse - A response containing error details.
+type azureCoreFoundationsErrorResponse struct {
+	// REQUIRED; The error object.
+	Error *azureCoreFoundationsErrorResponseError
+}
+
+// azureCoreFoundationsErrorResponseError - The error object.
+type azureCoreFoundationsErrorResponseError struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
+
+	// REQUIRED; A human-readable representation of the error.
+	Message *string
+
+	// An array of details about specific errors that led to this reported error.
+	Details []azureCoreFoundationsError
+
+	// An object containing more specific information than the current object about the error.
+	Innererror *azureCoreFoundationsErrorInnererror
+
+	// The target of the error.
+	Target *string
+}
+
+// azureCoreFoundationsInnerError - An object containing more specific information about the error. As per Microsoft One API
+// guidelines -
+// https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+type azureCoreFoundationsInnerError struct {
+	// One of a server-defined set of error codes.
+	Code *string
+
+	// Inner error.
+	Innererror *azureCoreFoundationsInnerErrorInnererror
+}
+
+// azureCoreFoundationsInnerErrorInnererror - Inner error.
+type azureCoreFoundationsInnerErrorInnererror struct {
+	// One of a server-defined set of error codes.
+	Code *string
+
+	// Inner error.
+	Innererror *azureCoreFoundationsInnerErrorInnererror
+}
+
+// batchImageGenerationOperationResponse - A polling status update or final response payload for an image operation.
+type batchImageGenerationOperationResponse struct {
+	// REQUIRED; A timestamp when this job or item was created (in unix epochs).
+	Created *int64
+
+	// REQUIRED; The ID of the operation.
+	ID *string
+
+	// REQUIRED; The status of the operation
+	Status *azureOpenAIOperationState
+
+	// The error if the operation failed.
+	Error *azureCoreFoundationsError
+
+	// A timestamp when this operation and its associated images expire and will be deleted (in unix epochs).
+	Expires *int64
+
+	// The result of the operation if the operation succeeded.
+	Result *ImageGenerations
+}
+
 // ChatChoice - The representation of a single prompt completion as part of an overall chat completions request. Generally,
 // n choices are generated per provided prompt with a default value of 1. Token limits and
 // other settings may limit the number of choices generated.
@@ -49,7 +142,7 @@ type ChatCompletions struct {
 	// REQUIRED; The collection of completions choices associated with this completions response. Generally, n choices are generated
 	// per provided prompt with a default value of 1. Token limits and other settings may
 	// limit the number of choices generated.
-	Choices []*ChatChoice
+	Choices []ChatChoice
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -68,7 +161,7 @@ type ChatCompletionsOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the
 	// assistant, followed by alternating messages between the User and Assistant roles.
-	Messages []*ChatMessage
+	Messages []ChatMessage
 
 	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
 	// text. Positive values will make tokens less likely to appear as their frequency
@@ -100,7 +193,7 @@ type ChatCompletionsOptions struct {
 	PresencePenalty *float32
 
 	// A collection of textual sequences that will end completions generation.
-	Stop []*string
+	Stop []string
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -139,40 +232,25 @@ type Choice struct {
 	Index *int32
 
 	// REQUIRED; The log probabilities model for tokens associated with this completions choice.
-	Logprobs *ChoiceLogprobs
+	LogProbs *ChoiceLogProbs
 
 	// REQUIRED; The generated text for a given completions prompt.
 	Text *string
 }
 
-// ChoiceLogprobs - The log probabilities model for tokens associated with this completions choice.
-type ChoiceLogprobs struct {
+// ChoiceLogProbs - The log probabilities model for tokens associated with this completions choice.
+type ChoiceLogProbs struct {
 	// REQUIRED; The text offsets associated with tokens in this completions data.
-	TextOffset []*int32
+	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []*float32
+	TokenLogProbs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
-	Tokens []*string
+	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogprobs []any
-}
-
-// GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-type GetChatCompletionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-type GetCompletionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
-type GetEmbeddingsOptions struct {
-	// placeholder for future optional parameters
+	TopLogProbs []any
 }
 
 // Completions - Representation of the response data from a completions request. Completions support a wide variety of tasks
@@ -181,7 +259,7 @@ type Completions struct {
 	// REQUIRED; The collection of completions choices associated with this completions response. Generally, n choices are generated
 	// per provided prompt with a default value of 1. Token limits and other settings may
 	// limit the number of choices generated.
-	Choices []*Choice
+	Choices []Choice
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -197,23 +275,23 @@ type Completions struct {
 // CompletionsLogProbabilityModel - Representation of a log probabilities model for a completions generation.
 type CompletionsLogProbabilityModel struct {
 	// REQUIRED; The text offsets associated with tokens in this completions data.
-	TextOffset []*int32
+	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []*float32
+	TokenLogProbs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
-	Tokens []*string
+	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogprobs []any
+	TopLogProbs []any
 }
 
 // CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 type CompletionsOptions struct {
 	// REQUIRED; The prompts to generate completions from.
-	Prompt []*string
+	Prompt []string
 
 	// A value that controls how many completions will be internally generated prior to response formulation. When used together
 	// with n, bestof controls the number of candidate completions and must be
@@ -238,7 +316,7 @@ type CompletionsOptions struct {
 
 	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
 	// response.
-	Logprobs *int32
+	LogProbs *int32
 
 	// The maximum number of tokens to generate.
 	MaxTokens *int32
@@ -258,7 +336,7 @@ type CompletionsOptions struct {
 	PresencePenalty *float32
 
 	// A collection of textual sequences that will end completions generation.
-	Stop []*string
+	Stop []string
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -300,7 +378,7 @@ type Deployment struct {
 type EmbeddingItem struct {
 	// REQUIRED; List of embeddings value for the input prompt. These represent a measurement of the vector-based relatedness
 	// of the provided input.
-	Embedding []*float32
+	Embedding []float32
 
 	// REQUIRED; Index of the prompt to which the EmbeddingItem corresponds.
 	Index *int32
@@ -311,7 +389,7 @@ type EmbeddingItem struct {
 // scenarios.
 type Embeddings struct {
 	// REQUIRED; Embedding values for the prompts submitted in the request.
-	Data []*EmbeddingItem
+	Data []EmbeddingItem
 
 	// REQUIRED; Usage counts for tokens input using the embeddings API.
 	Usage *EmbeddingsUsage
@@ -320,11 +398,11 @@ type Embeddings struct {
 // EmbeddingsOptions - The configuration information for an embeddings request. Embeddings measure the relatedness of text
 // strings and are commonly used for search, clustering, recommendations, and other similar scenarios.
 type EmbeddingsOptions struct {
-	// REQUIRED; Input text to get embeddings for, encoded as a string. To get embeddings for multiple inputs in a single request,
-	// pass an array of strings. Each input must not exceed 2048 tokens in length.
+	// REQUIRED; Input texts to get embeddings for, encoded as a an array of strings. Each input must not exceed 2048 tokens in
+	// length.
 	// Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed
 	// inferior results when newlines are present.
-	Input any
+	Input []string
 
 	// The model name to provide as part of this embeddings request. Not applicable to Azure OpenAI, where deployment information
 	// should be included in the Azure resource URI that's connected to.
@@ -350,4 +428,43 @@ type EmbeddingsUsageAutoGenerated struct {
 
 	// REQUIRED; Total number of tokens transacted in this request/response.
 	TotalTokens *int32
+}
+
+// ImageGenerationOptions - Represents the request data used to generate images.
+type ImageGenerationOptions struct {
+	// REQUIRED; A description of the desired images.
+	Prompt *string
+
+	// The number of images to generate (defaults to 1).
+	N *int32
+
+	// The format in which image generation response items should be presented. Azure OpenAI only supports URL response items.
+	ResponseFormat *ImageGenerationResponseFormat
+
+	// The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 (defaults to 1024x1024).
+	Size *ImageSize
+
+	// A unique identifier representing your end-user, which can help to monitor and detect abuse.
+	User *string
+}
+
+// ImageGenerations - The result of the operation if the operation succeeded.
+type ImageGenerations struct {
+	// REQUIRED; A timestamp when this job or item was created (in unix epochs).
+	Created *int64
+
+	// REQUIRED; The images generated by the operator.
+	Data []ImageGenerationsDataItem
+}
+
+// ImageLocation - An image response item that provides a URL from which an image may be accessed.
+type ImageLocation struct {
+	// REQUIRED; The URL that provides temporary access to download the generated image.
+	URL *string
+}
+
+// ImagePayload - An image response item that directly represents the image data as a base64-encoded string.
+type ImagePayload struct {
+	// REQUIRED; The complete data for an image represented as a base64-encoded string.
+	B64JSON *string
 }

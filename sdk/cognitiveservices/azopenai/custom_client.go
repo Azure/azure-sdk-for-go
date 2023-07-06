@@ -49,7 +49,14 @@ func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID 
 	}
 
 	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
-	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			baseEndpoint: endpoint,
+			endpoint:     fullEndpoint,
+			azure:        true,
+		},
+	}, nil
 }
 
 // NewClientWithKeyCredential creates a new instance of Client that connects to an Azure OpenAI endpoint.
@@ -69,7 +76,14 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 	}
 
 	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
-	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			baseEndpoint: endpoint,
+			endpoint:     fullEndpoint,
+			azure:        true,
+		},
+	}, nil
 }
 
 // NewClientForOpenAI creates a new instance of Client which connects to the public OpenAI endpoint.
@@ -85,7 +99,15 @@ func NewClientForOpenAI(endpoint string, credential KeyCredential, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, internal: azcoreClient}, nil
+
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			baseEndpoint: endpoint,
+			endpoint:     endpoint,
+			azure:        false,
+		},
+	}, nil
 }
 
 // openAIPolicy is an internal pipeline policy to remove the api-version query parameter
@@ -197,4 +219,20 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 	return GetChatCompletionsStreamResponse{
 		ChatCompletionsStream: newEventReader[ChatCompletions](resp.Body),
 	}, nil
+}
+
+func (client *Client) formatURL(path string) string {
+	switch path {
+	// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation
+	case "/images/generations:submit":
+		return runtime.JoinPaths(client.baseEndpoint, "openai", path)
+	default:
+		return runtime.JoinPaths(client.endpoint, path)
+	}
+}
+
+type clientData struct {
+	endpoint     string
+	baseEndpoint string
+	azure        bool
 }

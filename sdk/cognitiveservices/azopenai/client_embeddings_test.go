@@ -67,14 +67,14 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input: []byte("\"Your text string goes here\""),
+					Input: []string{"\"Your text string goes here\""},
 					Model: &modelOrDeploymentID,
 				},
 				options: nil,
 			},
 			want: azopenai.GetEmbeddingsResponse{
 				azopenai.Embeddings{
-					Data:  []*azopenai.EmbeddingItem{},
+					Data:  []azopenai.EmbeddingItem{},
 					Usage: &azopenai.EmbeddingsUsage{},
 				},
 			},

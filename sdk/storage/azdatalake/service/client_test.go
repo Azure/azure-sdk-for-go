@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
@@ -540,4 +541,211 @@ func (s *ServiceRecordedTestsSuite) TestSASFilesystem2() {
 	_, err = fsClient2.Create(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.AuthorizationFailure)
+}
+
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.Nil(err)
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
+	}
+
+	fsName := testcommon.GenerateFilesystemName(testName)
+	fsClient := testcommon.ServiceGetFilesystemClient(fsName, svcClient)
+	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md})
+	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
+		_, err := fsClient.Delete(ctx, options)
+		if err != nil {
+			_require.Nil(err)
+		}
+	}(fsClient, context.Background(), nil)
+	_require.Nil(err)
+	prefix := testcommon.FilesystemPrefix
+	listOptions := service.ListFilesystemsOptions{Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
+	pager := svcClient.NewListFilesystemsPager(&listOptions)
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, ctnr := range resp.Filesystems {
+			_require.NotNil(ctnr.Name)
+
+			if *ctnr.Name == fsName {
+				_require.NotNil(ctnr.Properties)
+				_require.NotNil(ctnr.Properties.LastModified)
+				_require.NotNil(ctnr.Properties.ETag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
+				_require.Nil(ctnr.Properties.LeaseDuration)
+				_require.Nil(ctnr.Properties.PublicAccess)
+				_require.NotNil(ctnr.Metadata)
+
+				unwrappedMeta := map[string]*string{}
+				for k, v := range ctnr.Metadata {
+					if v != nil {
+						unwrappedMeta[k] = v
+					}
+				}
+
+				_require.EqualValues(unwrappedMeta, md)
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Nil(err)
+	_require.GreaterOrEqual(count, 0)
+}
+
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
+	}
+
+	fsName := testcommon.GenerateFilesystemName(testName)
+	fsClient := testcommon.ServiceGetFilesystemClient(fsName, svcClient)
+	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md})
+	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
+		_, err := fsClient.Delete(ctx, options)
+		if err != nil {
+			_require.Nil(err)
+		}
+	}(fsClient, context.Background(), nil)
+	_require.Nil(err)
+	prefix := testcommon.FilesystemPrefix
+	listOptions := service.ListFilesystemsOptions{Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
+	pager := svcClient.NewListFilesystemsPager(&listOptions)
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+
+		for _, ctnr := range resp.Filesystems {
+			_require.NotNil(ctnr.Name)
+
+			if *ctnr.Name == fsName {
+				_require.NotNil(ctnr.Properties)
+				_require.NotNil(ctnr.Properties.LastModified)
+				_require.NotNil(ctnr.Properties.ETag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
+				_require.Nil(ctnr.Properties.LeaseDuration)
+				_require.Nil(ctnr.Properties.PublicAccess)
+				_require.NotNil(ctnr.Metadata)
+
+				unwrappedMeta := map[string]*string{}
+				for k, v := range ctnr.Metadata {
+					if v != nil {
+						unwrappedMeta[k] = v
+					}
+				}
+
+				_require.EqualValues(unwrappedMeta, md)
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Nil(err)
+	_require.GreaterOrEqual(count, 0)
+}
+
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	const numFilesystems = 6
+	maxResults := int32(2)
+	const pagedFilesystemsPrefix = "azfilesystempaged"
+
+	filesystems := make([]*filesystem.Client, numFilesystems)
+	expectedResults := make(map[string]bool)
+	for i := 0; i < numFilesystems; i++ {
+		fsName := pagedFilesystemsPrefix + testcommon.GenerateFilesystemName(testName) + fmt.Sprintf("%d", i)
+		fsClient := testcommon.CreateNewFilesystem(context.Background(), _require, fsName, svcClient)
+		filesystems[i] = fsClient
+		expectedResults[fsName] = false
+	}
+
+	defer func() {
+		for i := range filesystems {
+			testcommon.DeleteFilesystem(context.Background(), _require, filesystems[i])
+		}
+	}()
+
+	prefix := pagedFilesystemsPrefix + testcommon.FilesystemPrefix
+	listOptions := service.ListFilesystemsOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListFilesystemsInclude{Metadata: true}}
+	count := 0
+	results := make([]service.FilesystemItem, 0)
+	pager := svcClient.NewListFilesystemsPager(&listOptions)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, ctnr := range resp.Filesystems {
+			_require.NotNil(ctnr.Name)
+			results = append(results, *ctnr)
+			count += 1
+		}
+	}
+
+	_require.Equal(count, numFilesystems)
+	_require.Equal(len(results), numFilesystems)
+
+	// make sure each fs we see is expected
+	for _, ctnr := range results {
+		_, ok := expectedResults[*ctnr.Name]
+		_require.Equal(ok, true)
+		expectedResults[*ctnr.Name] = true
+	}
+
+	// make sure every expected fs was seen
+	for _, seen := range expectedResults {
+		_require.Equal(seen, true)
+	}
+
+}
+
+func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	fsClient1 := testcommon.CreateNewFilesystem(context.Background(), _require, testcommon.GenerateFilesystemName(testName)+"1", svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient1)
+	fsClient2 := testcommon.CreateNewFilesystem(context.Background(), _require, testcommon.GenerateFilesystemName(testName)+"2", svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient2)
+
+	count := 0
+	pager := svcClient.NewListFilesystemsPager(nil)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+
+		for _, container := range resp.Filesystems {
+			count++
+			_require.NotNil(container.Name)
+		}
+		if err != nil {
+			break
+		}
+	}
+	_require.GreaterOrEqual(count, 2)
 }

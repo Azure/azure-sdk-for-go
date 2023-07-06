@@ -226,19 +226,44 @@ func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOption
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
 	return s.serviceClient().GetProperties(ctx, opts)
+
 }
 
-// TODO: implement filesystem deserialize
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
-	opts := options.format()
-	return s.serviceClient().NewListContainersPager(opts)
+	return runtime.NewPager(runtime.PagingHandler[ListFilesystemsResponse]{
+		More: func(page ListFilesystemsResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListFilesystemsResponse) (ListFilesystemsResponse, error) {
+			if page == nil {
+				page = &ListFilesystemsResponse{}
+				opts := options.format()
+				page.blobPager = s.serviceClient().NewListContainersPager(opts)
+			}
+			newPage := ListFilesystemsResponse{}
+			currPage, err := page.blobPager.NextPage(context.TODO())
+			if err != nil {
+				return newPage, err
+			}
+			newPage.Prefix = currPage.Prefix
+			newPage.Marker = currPage.Marker
+			newPage.MaxResults = currPage.MaxResults
+			newPage.NextMarker = currPage.NextMarker
+			newPage.Filesystems = convertContainerItemsToFSItems(currPage.ContainerItems)
+			newPage.ServiceEndpoint = currPage.ServiceEndpoint
+			newPage.blobPager = page.blobPager
+
+			return newPage, err
+		},
+	})
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	// format all options to blob service options
 	res, perms, opts := o.format(resources, permissions)
 	return s.serviceClient().GetSASURL(res, perms, expiry, opts)
 }

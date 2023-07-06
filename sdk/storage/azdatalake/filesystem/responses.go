@@ -28,28 +28,28 @@ type SetAccessPolicyResponse = container.SetAccessPolicyResponse
 // GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
 type GetAccessPolicyResponse struct {
 	// PublicAccess contains the information returned from the x-ms-blob-public-access header response.
-	PublicAccess *PublicAccessType `xml:"BlobPublicAccess"`
+	PublicAccess *PublicAccessType
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
+	ClientRequestID *string
 
 	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
+	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *azcore.ETag `xml:"ETag"`
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
-	LastModified *time.Time `xml:"LastModified"`
+	LastModified *time.Time
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
+	RequestID *string
 
 	// a collection of signed identifiers
-	SignedIdentifiers []*SignedIdentifier `xml:"SignedIdentifier"`
+	SignedIdentifiers []*SignedIdentifier
 
 	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
+	Version *string
 }
 
 // since we want to remove the blob prefix in access type

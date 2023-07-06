@@ -7,6 +7,7 @@
 package service
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -39,6 +40,9 @@ type Logging = service.Logging
 
 // StaticWebsite - The properties that enable an account to host a static website.
 type StaticWebsite = service.StaticWebsite
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
@@ -164,5 +168,13 @@ func (o *GetSASURLOptions) format(resources sas.AccountResourceTypes, permission
 	}
 }
 
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
+// listing response models
+// TODO: find another way to import these
+
+type LeaseDurationType = lease.DurationType
+
+type LeaseStateType = lease.StateType
+
+type LeaseStatusType = lease.StatusType
+
+type PublicAccessType = filesystem.PublicAccessType

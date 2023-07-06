@@ -512,7 +512,7 @@ func (c Choice) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "finish_reason", c.FinishReason)
 	populate(objectMap, "index", c.Index)
-	populate(objectMap, "logprobs", c.Logprobs)
+	populate(objectMap, "logprobs", c.LogProbs)
 	populate(objectMap, "text", c.Text)
 	return json.Marshal(objectMap)
 }
@@ -533,7 +533,7 @@ func (c *Choice) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Index", &c.Index)
 			delete(rawMsg, key)
 		case "logprobs":
-			err = unpopulate(val, "Logprobs", &c.Logprobs)
+			err = unpopulate(val, "LogProbs", &c.LogProbs)
 			delete(rawMsg, key)
 		case "text":
 			err = unpopulate(val, "Text", &c.Text)
@@ -546,18 +546,18 @@ func (c *Choice) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ChoiceLogprobs.
-func (c ChoiceLogprobs) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ChoiceLogProbs.
+func (c ChoiceLogProbs) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "text_offset", c.TextOffset)
-	populate(objectMap, "token_logprobs", c.TokenLogprobs)
+	populate(objectMap, "token_logprobs", c.TokenLogProbs)
 	populate(objectMap, "tokens", c.Tokens)
-	populate(objectMap, "top_logprobs", c.TopLogprobs)
+	populate(objectMap, "top_logprobs", c.TopLogProbs)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChoiceLogprobs.
-func (c *ChoiceLogprobs) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChoiceLogProbs.
+func (c *ChoiceLogProbs) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -569,13 +569,13 @@ func (c *ChoiceLogprobs) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TextOffset", &c.TextOffset)
 			delete(rawMsg, key)
 		case "token_logprobs":
-			err = unpopulate(val, "TokenLogprobs", &c.TokenLogprobs)
+			err = unpopulate(val, "TokenLogProbs", &c.TokenLogProbs)
 			delete(rawMsg, key)
 		case "tokens":
 			err = unpopulate(val, "Tokens", &c.Tokens)
 			delete(rawMsg, key)
 		case "top_logprobs":
-			err = unpopulate(val, "TopLogprobs", &c.TopLogprobs)
+			err = unpopulate(val, "TopLogProbs", &c.TopLogProbs)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -628,9 +628,9 @@ func (c *Completions) UnmarshalJSON(data []byte) error {
 func (c CompletionsLogProbabilityModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "text_offset", c.TextOffset)
-	populate(objectMap, "token_logprobs", c.TokenLogprobs)
+	populate(objectMap, "token_logprobs", c.TokenLogProbs)
 	populate(objectMap, "tokens", c.Tokens)
-	populate(objectMap, "top_logprobs", c.TopLogprobs)
+	populate(objectMap, "top_logprobs", c.TopLogProbs)
 	return json.Marshal(objectMap)
 }
 
@@ -647,13 +647,13 @@ func (c *CompletionsLogProbabilityModel) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "TextOffset", &c.TextOffset)
 			delete(rawMsg, key)
 		case "token_logprobs":
-			err = unpopulate(val, "TokenLogprobs", &c.TokenLogprobs)
+			err = unpopulate(val, "TokenLogProbs", &c.TokenLogProbs)
 			delete(rawMsg, key)
 		case "tokens":
 			err = unpopulate(val, "Tokens", &c.Tokens)
 			delete(rawMsg, key)
 		case "top_logprobs":
-			err = unpopulate(val, "TopLogprobs", &c.TopLogprobs)
+			err = unpopulate(val, "TopLogProbs", &c.TopLogProbs)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -670,7 +670,7 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "echo", c.Echo)
 	populate(objectMap, "frequency_penalty", c.FrequencyPenalty)
 	populate(objectMap, "logit_bias", c.LogitBias)
-	populate(objectMap, "logprobs", c.Logprobs)
+	populate(objectMap, "logprobs", c.LogProbs)
 	populate(objectMap, "max_tokens", c.MaxTokens)
 	populate(objectMap, "model", c.Model)
 	populate(objectMap, "n", c.N)
@@ -705,7 +705,7 @@ func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LogitBias", &c.LogitBias)
 			delete(rawMsg, key)
 		case "logprobs":
-			err = unpopulate(val, "Logprobs", &c.Logprobs)
+			err = unpopulate(val, "LogProbs", &c.LogProbs)
 			delete(rawMsg, key)
 		case "max_tokens":
 			err = unpopulate(val, "MaxTokens", &c.MaxTokens)

@@ -217,4 +217,15 @@ directive:
         .replace(/GetAzureBatchImageGenerationOperationStatus/g, "getAzureBatchImageGenerationOperationStatus")
         .replace(/BeginAzureBatchImageGenerationInternal/g, "beginAzureBatchImageGeneration")
         .replace(/BatchImageGenerationOperationResponse/g, "batchImageGenerationOperationResponse");
+
+  # fix some casing
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    - options.go
+    - response_types.go
+    where: $
+    transform: return $.replace(/Logprobs/g, "LogProbs")
+
 ```

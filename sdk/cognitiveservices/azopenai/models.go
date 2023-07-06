@@ -232,25 +232,25 @@ type Choice struct {
 	Index *int32
 
 	// REQUIRED; The log probabilities model for tokens associated with this completions choice.
-	Logprobs *ChoiceLogprobs
+	LogProbs *ChoiceLogProbs
 
 	// REQUIRED; The generated text for a given completions prompt.
 	Text *string
 }
 
-// ChoiceLogprobs - The log probabilities model for tokens associated with this completions choice.
-type ChoiceLogprobs struct {
+// ChoiceLogProbs - The log probabilities model for tokens associated with this completions choice.
+type ChoiceLogProbs struct {
 	// REQUIRED; The text offsets associated with tokens in this completions data.
 	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []float32
+	TokenLogProbs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
 	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogprobs []any
+	TopLogProbs []any
 }
 
 // Completions - Representation of the response data from a completions request. Completions support a wide variety of tasks
@@ -278,13 +278,13 @@ type CompletionsLogProbabilityModel struct {
 	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []float32
+	TokenLogProbs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
 	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
-	TopLogprobs []any
+	TopLogProbs []any
 }
 
 // CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
@@ -316,7 +316,7 @@ type CompletionsOptions struct {
 
 	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
 	// response.
-	Logprobs *int32
+	LogProbs *int32
 
 	// The maximum number of tokens to generate.
 	MaxTokens *int32

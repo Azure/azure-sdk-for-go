@@ -59,7 +59,7 @@ func TestClient_GetCompletions(t *testing.T) {
 							Text:         to.Ptr("\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."),
 							Index:        to.Ptr(int32(0)),
 							FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
-							Logprobs:     nil,
+							LogProbs:     nil,
 						},
 					},
 					Usage: &azopenai.CompletionsUsage{

@@ -46,7 +46,7 @@ func TestClient_GetCompletions(t *testing.T) {
 				ctx:          context.TODO(),
 				deploymentID: completionsModelDeployment,
 				body: azopenai.CompletionsOptions{
-					Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
+					Prompt:      []string{"What is Azure OpenAI?"},
 					MaxTokens:   to.Ptr(int32(2048 - 127)),
 					Temperature: to.Ptr(float32(0.0)),
 				},
@@ -54,7 +54,7 @@ func TestClient_GetCompletions(t *testing.T) {
 			},
 			want: azopenai.GetCompletionsResponse{
 				Completions: azopenai.Completions{
-					Choices: []*azopenai.Choice{
+					Choices: []azopenai.Choice{
 						{
 							Text:         to.Ptr("\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."),
 							Index:        to.Ptr(int32(0)),

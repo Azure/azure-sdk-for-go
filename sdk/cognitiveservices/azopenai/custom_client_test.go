@@ -99,7 +99,7 @@ func TestGetCompletionsStream_OpenAI(t *testing.T) {
 
 func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure bool) {
 	body := azopenai.CompletionsOptions{
-		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
+		Prompt:      []string{"What is Azure OpenAI?"},
 		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
 		Model:       to.Ptr(openAICompletionsModelDeployment),

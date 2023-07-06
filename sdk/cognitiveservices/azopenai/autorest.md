@@ -13,8 +13,10 @@ module: github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
-use: "@autorest/go@4.0.0-preview.50"
+use: "@autorest/go@4.0.0-preview.52"
 title: "OpenAI"
+slice-elements-byval: true
+remove-non-reference-schema: true
 ```
 
 ## Transformations
@@ -160,7 +162,8 @@ directive:
   - from:
       - client.go
       - models.go
-      - response_types.go
+      - options.go
+      - response_types.go      
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
@@ -204,6 +207,7 @@ directive:
     - client.go
     - models.go
     - models_serde.go
+    - options.go
     - response_types.go
     where: $
     transform: |

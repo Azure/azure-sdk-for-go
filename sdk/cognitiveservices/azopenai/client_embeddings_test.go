@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 	"github.com/stretchr/testify/require"
 )
@@ -68,14 +67,14 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input: []*string{to.Ptr("\"Your text string goes here\"")},
+					Input: []string{"\"Your text string goes here\""},
 					Model: &modelOrDeploymentID,
 				},
 				options: nil,
 			},
 			want: azopenai.GetEmbeddingsResponse{
 				azopenai.Embeddings{
-					Data:  []*azopenai.EmbeddingItem{},
+					Data:  []azopenai.EmbeddingItem{},
 					Usage: &azopenai.EmbeddingsUsage{},
 				},
 			},

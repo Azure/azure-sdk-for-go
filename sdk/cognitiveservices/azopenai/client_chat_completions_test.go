@@ -23,7 +23,7 @@ import (
 )
 
 var chatCompletionsRequest = azopenai.ChatCompletionsOptions{
-	Messages: []*azopenai.ChatMessage{
+	Messages: []azopenai.ChatMessage{
 		{
 			Role:    to.Ptr(azopenai.ChatRole("user")),
 			Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
@@ -69,7 +69,7 @@ func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
 
 func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
 	expected := azopenai.ChatCompletions{
-		Choices: []*azopenai.ChatChoice{
+		Choices: []azopenai.ChatChoice{
 			{
 				Message: &azopenai.ChatChoiceMessage{
 					Role:    &expectedRole,
@@ -115,7 +115,7 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, isAzure
 	// 1. the text comes back in the ChatCompletion.Delta field
 	// 2. the role is only sent on the first streamed ChatCompletion
 	// check that the role came back as well.
-	var choices []*azopenai.ChatChoice
+	var choices []azopenai.ChatChoice
 
 	for {
 		completion, err := streamResp.ChatCompletionsStream.Read()
@@ -178,7 +178,7 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []*azopenai.ChatMessage{
+		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRole("user")),
 				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),

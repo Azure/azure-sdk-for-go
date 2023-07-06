@@ -17,7 +17,7 @@ type azureCoreFoundationsError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []*azureCoreFoundationsError
+	Details []azureCoreFoundationsError
 
 	// An object containing more specific information than the current object about the error.
 	Innererror *azureCoreFoundationsErrorInnererror
@@ -51,7 +51,7 @@ type azureCoreFoundationsErrorResponseError struct {
 	Message *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []*azureCoreFoundationsError
+	Details []azureCoreFoundationsError
 
 	// An object containing more specific information than the current object about the error.
 	Innererror *azureCoreFoundationsErrorInnererror
@@ -142,7 +142,7 @@ type ChatCompletions struct {
 	// REQUIRED; The collection of completions choices associated with this completions response. Generally, n choices are generated
 	// per provided prompt with a default value of 1. Token limits and other settings may
 	// limit the number of choices generated.
-	Choices []*ChatChoice
+	Choices []ChatChoice
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -161,7 +161,7 @@ type ChatCompletionsOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the
 	// assistant, followed by alternating messages between the User and Assistant roles.
-	Messages []*ChatMessage
+	Messages []ChatMessage
 
 	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
 	// text. Positive values will make tokens less likely to appear as their frequency
@@ -193,7 +193,7 @@ type ChatCompletionsOptions struct {
 	PresencePenalty *float32
 
 	// A collection of textual sequences that will end completions generation.
-	Stop []*string
+	Stop []string
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -241,38 +241,16 @@ type Choice struct {
 // ChoiceLogprobs - The log probabilities model for tokens associated with this completions choice.
 type ChoiceLogprobs struct {
 	// REQUIRED; The text offsets associated with tokens in this completions data.
-	TextOffset []*int32
+	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []*float32
+	TokenLogprobs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
-	Tokens []*string
+	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
 	TopLogprobs []any
-}
-
-// beginAzureBatchImageGenerationOptions contains the optional parameters for the Client.beginAzureBatchImageGeneration
-// method.
-type beginAzureBatchImageGenerationOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-type GetChatCompletionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-type GetCompletionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
-type GetEmbeddingsOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Completions - Representation of the response data from a completions request. Completions support a wide variety of tasks
@@ -281,7 +259,7 @@ type Completions struct {
 	// REQUIRED; The collection of completions choices associated with this completions response. Generally, n choices are generated
 	// per provided prompt with a default value of 1. Token limits and other settings may
 	// limit the number of choices generated.
-	Choices []*Choice
+	Choices []Choice
 
 	// REQUIRED; The first timestamp associated with generation activity for this completions response, represented as seconds
 	// since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -297,13 +275,13 @@ type Completions struct {
 // CompletionsLogProbabilityModel - Representation of a log probabilities model for a completions generation.
 type CompletionsLogProbabilityModel struct {
 	// REQUIRED; The text offsets associated with tokens in this completions data.
-	TextOffset []*int32
+	TextOffset []int32
 
 	// REQUIRED; A collection of log probability values for the tokens in this completions data.
-	TokenLogprobs []*float32
+	TokenLogprobs []float32
 
 	// REQUIRED; The textual forms of tokens evaluated in this probability model.
-	Tokens []*string
+	Tokens []string
 
 	// REQUIRED; A mapping of tokens to maximum log probability values in this completions data.
 	TopLogprobs []any
@@ -313,7 +291,7 @@ type CompletionsLogProbabilityModel struct {
 // and generate text that continues from or "completes" provided prompt data.
 type CompletionsOptions struct {
 	// REQUIRED; The prompts to generate completions from.
-	Prompt []*string
+	Prompt []string
 
 	// A value that controls how many completions will be internally generated prior to response formulation. When used together
 	// with n, bestof controls the number of candidate completions and must be
@@ -358,7 +336,7 @@ type CompletionsOptions struct {
 	PresencePenalty *float32
 
 	// A collection of textual sequences that will end completions generation.
-	Stop []*string
+	Stop []string
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -400,7 +378,7 @@ type Deployment struct {
 type EmbeddingItem struct {
 	// REQUIRED; List of embeddings value for the input prompt. These represent a measurement of the vector-based relatedness
 	// of the provided input.
-	Embedding []*float32
+	Embedding []float32
 
 	// REQUIRED; Index of the prompt to which the EmbeddingItem corresponds.
 	Index *int32
@@ -411,7 +389,7 @@ type EmbeddingItem struct {
 // scenarios.
 type Embeddings struct {
 	// REQUIRED; Embedding values for the prompts submitted in the request.
-	Data []*EmbeddingItem
+	Data []EmbeddingItem
 
 	// REQUIRED; Usage counts for tokens input using the embeddings API.
 	Usage *EmbeddingsUsage
@@ -424,7 +402,7 @@ type EmbeddingsOptions struct {
 	// length.
 	// Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed
 	// inferior results when newlines are present.
-	Input []*string
+	Input []string
 
 	// The model name to provide as part of this embeddings request. Not applicable to Azure OpenAI, where deployment information
 	// should be included in the Azure resource URI that's connected to.
@@ -476,7 +454,7 @@ type ImageGenerations struct {
 	Created *int64
 
 	// REQUIRED; The images generated by the operator.
-	Data []*ImageGenerationsDataItem
+	Data []ImageGenerationsDataItem
 }
 
 // ImageLocation - An image response item that provides a URL from which an image may be accessed.

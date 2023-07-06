@@ -99,7 +99,7 @@ func ExampleClient_GetCompletionsStream() {
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
+		Prompt:      []string{"What is Azure OpenAI?"},
 		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
 	}, nil)

@@ -89,7 +89,7 @@ type batchImageGenerationOperationResponse struct {
 	ID *string
 
 	// REQUIRED; The status of the operation
-	Status *AzureOpenAIOperationState
+	Status *azureOpenAIOperationState
 
 	// The error if the operation failed.
 	Error *azureCoreFoundationsError

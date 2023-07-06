@@ -8,25 +8,25 @@
 
 package azopenai
 
-// AzureOpenAIOperationState - The state of a job or item.
-type AzureOpenAIOperationState string
+// azureOpenAIOperationState - The state of a job or item.
+type azureOpenAIOperationState string
 
 const (
-	AzureOpenAIOperationStateCanceled   AzureOpenAIOperationState = "canceled"
-	AzureOpenAIOperationStateFailed     AzureOpenAIOperationState = "failed"
-	AzureOpenAIOperationStateNotRunning AzureOpenAIOperationState = "notRunning"
-	AzureOpenAIOperationStateRunning    AzureOpenAIOperationState = "running"
-	AzureOpenAIOperationStateSucceeded  AzureOpenAIOperationState = "succeeded"
+	azureOpenAIOperationStateCanceled   azureOpenAIOperationState = "canceled"
+	azureOpenAIOperationStateFailed     azureOpenAIOperationState = "failed"
+	azureOpenAIOperationStateNotRunning azureOpenAIOperationState = "notRunning"
+	azureOpenAIOperationStateRunning    azureOpenAIOperationState = "running"
+	azureOpenAIOperationStateSucceeded  azureOpenAIOperationState = "succeeded"
 )
 
-// PossibleAzureOpenAIOperationStateValues returns the possible values for the AzureOpenAIOperationState const type.
-func PossibleAzureOpenAIOperationStateValues() []AzureOpenAIOperationState {
-	return []AzureOpenAIOperationState{
-		AzureOpenAIOperationStateCanceled,
-		AzureOpenAIOperationStateFailed,
-		AzureOpenAIOperationStateNotRunning,
-		AzureOpenAIOperationStateRunning,
-		AzureOpenAIOperationStateSucceeded,
+// PossibleazureOpenAIOperationStateValues returns the possible values for the azureOpenAIOperationState const type.
+func PossibleazureOpenAIOperationStateValues() []azureOpenAIOperationState {
+	return []azureOpenAIOperationState{
+		azureOpenAIOperationStateCanceled,
+		azureOpenAIOperationStateFailed,
+		azureOpenAIOperationStateNotRunning,
+		azureOpenAIOperationStateRunning,
+		azureOpenAIOperationStateSucceeded,
 	}
 }
 

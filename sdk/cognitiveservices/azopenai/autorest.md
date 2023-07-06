@@ -123,6 +123,13 @@ directive:
         /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs, 
         "$1urlPath := \"$2\"\n")
 
+  # Unexport the the poller state enum.
+  - from: 
+      - constants.go
+      - models.go
+    where: $
+    transform: return $.replace(/AzureOpenAIOperationState/g, "azureOpenAIOperationState");
+
   # splice out the auto-generated `deploymentID` field from the client
   - from: client.go
     where: $
@@ -131,12 +138,6 @@ directive:
         /(type Client struct[^}]+})/s, 
         "type Client struct {\ninternal *azcore.Client; clientData;\n}")
 
-  # - from: models_serde.go
-  #   where: $
-  #   transform: >-
-  #     return $.replace(
-  #       /\/\/ (UnmarshalJSON|MarshalJSON) implements.*?AzureCoreFoundations.*?func.+?\n}/gs, 
-  #       "")
   - from: 
     - models_serde.go
     - models.go

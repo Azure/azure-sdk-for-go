@@ -19,17 +19,6 @@ const (
 	azureOpenAIOperationStateSucceeded  azureOpenAIOperationState = "succeeded"
 )
 
-// PossibleazureOpenAIOperationStateValues returns the possible values for the azureOpenAIOperationState const type.
-func PossibleazureOpenAIOperationStateValues() []azureOpenAIOperationState {
-	return []azureOpenAIOperationState{
-		azureOpenAIOperationStateCanceled,
-		azureOpenAIOperationStateFailed,
-		azureOpenAIOperationStateNotRunning,
-		azureOpenAIOperationStateRunning,
-		azureOpenAIOperationStateSucceeded,
-	}
-}
-
 // ChatRole - A description of the intended purpose of a message within a chat completions interaction.
 type ChatRole string
 

@@ -228,4 +228,8 @@ directive:
     where: $
     transform: return $.replace(/Logprobs/g, "LogProbs")
 
+  # remove PossibleazureOpenAIOperationStateValues, since we don't expose the poller
+  - from: constants.go
+    where: $
+    transform: return $.replace(/\/\/ PossibleazureOpenAIOperationStateValues returns.+?\n}/s, "");
 ```

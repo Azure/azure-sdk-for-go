@@ -30,8 +30,16 @@ type GetChatCompletionsStreamResponse struct {
 	ChatCompletionsStream *EventReader[ChatCompletions]
 }
 
-// ImageGenerationsDataItem holds the result of image generation.
+// ImageGenerationsDataItem contains the results of image generation.
+//
+// The field that's set will be based on [ImageGenerationOptions.ResponseFormat] and
+// are mutually exclusive.
 type ImageGenerationsDataItem struct {
+	// Base64Data is set to image data, encoded as a base64 string, if [ImageGenerationOptions.ResponseFormat]
+	// was set to [ImageGenerationResponseFormatB64JSON].
 	Base64Data *string `json:"b64_json"`
-	URL        *string `json:"url"`
+
+	// URL is the address of a generated image if [ImageGenerationOptions.ResponseFormat] was set
+	// to [ImageGenerationResponseFormatURL].
+	URL *string `json:"url"`
 }

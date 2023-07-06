@@ -18,6 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -226,8 +228,17 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return s.serviceClient().GetProperties(ctx, opts)
 }
 
+// TODO: implement filesystem deserialize
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
-	return nil
+	opts := options.format()
+	return s.serviceClient().NewListContainersPager(opts)
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	res, perms, opts := o.format(resources, permissions)
+	return s.serviceClient().GetSASURL(res, perms, expiry, opts)
 }

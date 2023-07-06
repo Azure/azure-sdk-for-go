@@ -10,7 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"time"
 )
+import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
 type CreateFilesystemOptions = filesystem.CreateOptions
 
@@ -101,6 +104,16 @@ type ListFilesystemsInclude struct {
 	Deleted bool
 }
 
+func (o *ListFilesystemsInclude) format() service.ListContainersInclude {
+	if o == nil {
+		return service.ListContainersInclude{}
+	}
+	return service.ListContainersInclude{
+		Metadata: o.Metadata,
+		Deleted:  o.Deleted,
+	}
+}
+
 // ListFilesystemsOptions contains the optional parameters for the Client.List method.
 type ListFilesystemsOptions struct {
 	Include    ListFilesystemsInclude
@@ -109,7 +122,47 @@ type ListFilesystemsOptions struct {
 	Prefix     *string
 }
 
-// TODO: Design formatter to convert to  blob
+func (o *ListFilesystemsOptions) format() *service.ListContainersOptions {
+	if o == nil {
+		return nil
+	}
+	return &service.ListContainersOptions{
+		Include:    o.Include.format(),
+		Marker:     o.Marker,
+		MaxResults: o.MaxResults,
+		Prefix:     o.Prefix,
+	}
+}
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format(resources sas.AccountResourceTypes, permissions sas.AccountPermissions) (blobSAS.AccountResourceTypes, blobSAS.AccountPermissions, *service.GetSASURLOptions) {
+	res := blobSAS.AccountResourceTypes{
+		Service:   resources.Service,
+		Container: resources.Container,
+		Object:    resources.Object,
+	}
+	perms := blobSAS.AccountPermissions{
+		Read:    permissions.Read,
+		Write:   permissions.Write,
+		Delete:  permissions.Delete,
+		List:    permissions.List,
+		Add:     permissions.Add,
+		Create:  permissions.Create,
+		Update:  permissions.Update,
+		Process: permissions.Process,
+	}
+	if o == nil {
+		return res, perms, nil
+	}
+
+	return res, perms, &service.GetSASURLOptions{
+		StartTime: o.StartTime,
+	}
+}
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential

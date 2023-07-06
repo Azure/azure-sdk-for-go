@@ -44,6 +44,18 @@ type StaticWebsite = service.StaticWebsite
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// GetUserDelegationCredentialOptions contains the optional parameters for the Client.GetUserDelegationCredential method.
+type GetUserDelegationCredentialOptions = service.GetUserDelegationCredentialOptions
+
+// KeyInfo contains KeyInfo struct.
+type KeyInfo = service.KeyInfo
+
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
+// UserDelegationKey contains UserDelegationKey.
+type UserDelegationKey = exported.UserDelegationKey
+
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
 	// placeholder for future options

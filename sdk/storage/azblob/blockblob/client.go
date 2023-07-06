@@ -270,7 +270,7 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 		}
 
 		// If user attempts to pass in their own checksum, errors out.
-		if options.TransactionalValidation != nil && reflect.TypeOf(options.TransactionalValidation).Kind() != reflect.Func {
+		if options.TransactionalContentMD5 != nil || options.TransactionalContentCRC64 != nil {
 			return CommitBlockListResponse{}, bloberror.UnsupportedChecksum
 		}
 

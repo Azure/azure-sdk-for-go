@@ -2273,7 +2273,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithMD5() {
 
 	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
-		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5[:]),
+		TransactionalContentMD5: contentMD5[:],
 	})
 	_require.Error(err, bloberror.UnsupportedChecksum)
 }
@@ -2303,15 +2303,9 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
 
 	// CommitBlockList is a multipart upload, user generated checksum cannot be passed
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
-		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+		TransactionalContentCRC64: crc,
 	})
 	_require.Error(err, bloberror.UnsupportedChecksum)
-
-	// SDK generated checksum can be sent
-	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
-		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
-	})
-	_require.Nil(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {

@@ -57,13 +57,11 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 	if recording.GetRecordMode() == recording.LiveMode {
 		switch responseFormat {
 		case azopenai.ImageGenerationResponseFormatURL:
-			imageLocation := resp.Data[0].Result.(azopenai.ImageLocation)
-			headResp, err := http.DefaultClient.Head(*imageLocation.URL)
+			headResp, err := http.DefaultClient.Head(*resp.Data[0].URL)
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
 		case azopenai.ImageGenerationResponseFormatB64JSON:
-			imagePayload := resp.Data[0].Result.(azopenai.ImagePayload)
-			bytes, err := base64.StdEncoding.DecodeString(*imagePayload.B64JSON)
+			bytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
 			require.NoError(t, err)
 			require.NotEmpty(t, bytes)
 		}

@@ -162,7 +162,6 @@ func ExampleClient_CreateImage() {
 		// the underlying type for the generatedImage is dictated by the value of
 		// ImageGenerationOptions.ResponseFormat. In this example we used `azopenai.ImageGenerationResponseFormatURL`,
 		// so the underlying type will be ImageLocation.
-		imageLocation := generatedImage.Result.(azopenai.ImageLocation)
-		fmt.Printf("Image generated at URL %q\n", *imageLocation.URL)
+		fmt.Printf("Image generated at URL %q\n", *generatedImage.URL)
 	}
 }

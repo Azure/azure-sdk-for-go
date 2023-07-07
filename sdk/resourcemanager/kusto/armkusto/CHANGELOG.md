@@ -1,5 +1,31 @@
 # Release History
 
+## 2.0.0 (2023-07-28)
+### Breaking Changes
+
+- `LanguageExtensionImageNamePython3912`, `LanguageExtensionImageNamePython3912IncludeDeepLearning` from enum `LanguageExtensionImageName` has been removed
+
+### Features Added
+
+- New value `StateMigrated` added to enum type `State`
+- New enum type `MigrationClusterRole` with values `MigrationClusterRoleDestination`, `MigrationClusterRoleSource`
+- New function `*ClientFactory.NewDatabaseClient() *DatabaseClient`
+- New function `*ClustersClient.BeginMigrate(context.Context, string, string, ClusterMigrateRequest, *ClustersClientBeginMigrateOptions) (*runtime.Poller[ClustersClientMigrateResponse], error)`
+- New function `NewDatabaseClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DatabaseClient, error)`
+- New function `*DatabaseClient.InviteFollower(context.Context, string, string, string, DatabaseInviteFollowerRequest, *DatabaseClientInviteFollowerOptions) (DatabaseClientInviteFollowerResponse, error)`
+- New struct `ClusterMigrateRequest`
+- New struct `DatabaseInviteFollowerRequest`
+- New struct `DatabaseInviteFollowerResult`
+- New struct `MigrationClusterProperties`
+- New struct `SuspensionDetails`
+- New field `MigrationCluster` in struct `ClusterProperties`
+- New field `NextLink` in struct `DatabaseListResult`
+- New field `Skiptoken`, `Top` in struct `DatabasesClientListByClusterOptions`
+- New field `AzureAsyncOperation` in struct `OperationsResultsLocationClientGetResponse`
+- New field `SuspensionDetails` in struct `ReadOnlyFollowingDatabaseProperties`
+- New field `KeyVaultProperties`, `SuspensionDetails` in struct `ReadWriteDatabaseProperties`
+
+
 ## 1.3.1 (2023-04-14)
 ### Bug Fixes
 

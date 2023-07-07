@@ -29,8 +29,7 @@ type OperationsResultsClient struct {
 }
 
 // NewOperationsResultsClient creates a new instance of OperationsResultsClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsClient, error) {
@@ -48,9 +47,9 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - location - Azure location (region) name.
-//   - operationID - The Guid of the operation ID
+// Generated from API version 2023-05-02
+//   - location - The name of Azure region.
+//   - operationID - The ID of an ongoing async operation.
 //   - options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
 func (client *OperationsResultsClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (OperationsResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
@@ -87,7 +86,7 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

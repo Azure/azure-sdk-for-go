@@ -27,17 +27,39 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 - An [Event Grid namespace](https://learn.microsoft.com/azure/event-grid/).
 - An Event Grid namespace. You can create an Event Grid Namespace using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces).
 
+### Authenticate the client
+
+Event Grid clients authenticate using a shared key credential. An example of that can be viewed here: [ExampleNewClientWithSharedKeyCredential][godoc_example_newclient].
+
 # Key concepts
 
-Bullet point list of your library's main concepts.
+An Azure Event Grid [**namespace**](https://learn.microsoft.com/azure/event-grid/mqtt-event-grid-namespace-terminology#namespace) can contain multiple **namespace topics**. Publishers publish events to namespace topics. More on creating namespace topics can be found here: [link](https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics).
+
+To receive events, you must create an **event subscription**, which is associated with a topic. More on creating topic subscriptions can be found here: [link](https://learn.microsoft.com/azure/event-grid/create-view-manage-event-subscriptions).
 
 # Examples
 
-Examples of some of the key concepts for your library.
+Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventgrid](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventgrid).
 
 # Troubleshooting
 
-Running into issues? This section should contain details as to what to do there.
+### Logging
+
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
+
+Use the `azcore/log` package to control log event output.
+
+```go
+import (
+  "fmt"
+  azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+// print log output to stdout
+azlog.SetListener(func(event azlog.Event, s string) {
+    fmt.Printf("[%s] %s\n", event, s)
+})
+```
 
 # Next steps
 
@@ -89,3 +111,4 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventgrid
 [godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 [godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples
+[godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#example-NewClientWithSharedKeyCredential

@@ -241,10 +241,10 @@ func purgePreviousEvents(t *testing.T, c *azeventgrid.Client, testVars testVars)
 		})
 		require.NoError(t, err)
 
-		var lockTokens []*string
+		var lockTokens []string
 
 		for _, e := range events.Value {
-			lockTokens = append(lockTokens, e.BrokerProperties.LockToken)
+			lockTokens = append(lockTokens, *e.BrokerProperties.LockToken)
 		}
 
 		if len(lockTokens) > 0 {

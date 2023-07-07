@@ -49,7 +49,7 @@ func TestFailedAck(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -65,7 +65,7 @@ func TestFailedAck(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -81,7 +81,7 @@ func TestFailedAck(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -123,14 +123,14 @@ func TestPartialAckFailure(t *testing.T) {
 		},
 	}, nil)
 	require.NoError(t, err)
-	require.Equal(t, []*azeventgrid.FailedLockToken{
+	require.Equal(t, []azeventgrid.FailedLockToken{
 		{
 			LockToken:        events.Value[0].BrokerProperties.LockToken,
 			ErrorCode:        to.Ptr("TokenLost"),
 			ErrorDescription: to.Ptr("Token has expired."),
 		},
 	}, ackResp.FailedLockTokens)
-	require.Equal(t, []*string{events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+	require.Equal(t, []string{*events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
 func TestReject(t *testing.T) {

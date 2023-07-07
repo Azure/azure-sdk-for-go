@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.0-beta.1 (2023-07-28)
+### Features Added
+
+- New field `EnableSecureChannel` in struct `StorageAccount`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

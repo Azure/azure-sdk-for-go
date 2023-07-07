@@ -21,55 +21,56 @@ import (
 	"strings"
 )
 
-// ResourceSKUsClient contains the methods for the ResourceSKUs group.
-// Don't use this type directly, use NewResourceSKUsClient() instead.
-type ResourceSKUsClient struct {
+// UsagesClient contains the methods for the Usages group.
+// Don't use this type directly, use NewUsagesClient() instead.
+type UsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
+// NewUsagesClient creates a new instance of UsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceSKUsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceSKUsClient", moduleVersion, credential, options)
+func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
+	cl, err := arm.NewClient(moduleName+".UsagesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceSKUsClient{
+	client := &UsagesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListPager - Gets the list of Microsoft.CognitiveServices SKUs available for your Subscription.
+// NewListPager - Get usages for the requested subscription
 //
 // Generated from API version 2023-05-01
-//   - options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
-func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceSKUsClientListResponse]{
-		More: func(page ResourceSKUsClientListResponse) bool {
+//   - location - Resource location.
+//   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
+func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UsagesClientListResponse]{
+		More: func(page UsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceSKUsClientListResponse) (ResourceSKUsClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *UsagesClientListResponse) (UsagesClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, location, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ResourceSKUsClientListResponse{}, err
+				return UsagesClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ResourceSKUsClientListResponse{}, err
+				return UsagesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceSKUsClientListResponse{}, runtime.NewResponseError(resp)
+				return UsagesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -77,28 +78,35 @@ func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOp
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options *ResourceSKUsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus"
+func (client *UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-05-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (ResourceSKUsClientListResponse, error) {
-	result := ResourceSKUsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUListResult); err != nil {
-		return ResourceSKUsClientListResponse{}, err
+func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
+	result := UsagesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
+		return UsagesClientListResponse{}, err
 	}
 	return result, nil
 }

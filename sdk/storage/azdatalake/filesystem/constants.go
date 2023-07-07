@@ -17,6 +17,8 @@ const (
 	Filesystem PublicAccessType = azblob.PublicAccessTypeContainer
 )
 
+// TODO: figure out a way to import this from datalake rather than blob again
+
 // StatusType defines values for StatusType
 type StatusType = lease.StatusType
 

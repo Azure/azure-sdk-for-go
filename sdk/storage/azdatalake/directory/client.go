@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
-	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -30,10 +29,9 @@ type Client base.CompositeClient[generated.PathClient, generated.PathClient, blo
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	blobURL := strings.Replace(directoryURL, ".dfs.", ".blob.", 1)
-	directoryURL = strings.Replace(directoryURL, ".blob.", ".dfs.", 1)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
@@ -62,8 +60,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 //   - directoryURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs/dir?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
-	blobURL := strings.Replace(directoryURL, ".dfs.", ".blob.", 1)
-	directoryURL = strings.Replace(directoryURL, ".blob.", ".dfs.", 1)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
@@ -91,8 +88,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	blobURL := strings.Replace(directoryURL, ".dfs.", ".blob.", 1)
-	directoryURL = strings.Replace(directoryURL, ".blob.", ".dfs.", 1)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
@@ -112,8 +108,11 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	blobClientOpts := blob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKeyCredential, &blobClientOpts)
+	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	if err != nil {
+		return nil, err
+	}
+	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
 	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil

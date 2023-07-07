@@ -22,24 +22,6 @@ type ClientOptions struct {
 	pipelineOptions *runtime.PipelineOptions
 }
 
-type Client[T any] struct {
-	inner     *T
-	sharedKey *exported.SharedKeyCredential
-	options   *ClientOptions
-}
-
-func InnerClient[T any](client *Client[T]) *T {
-	return client.inner
-}
-
-func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
-	return client.sharedKey
-}
-
-func GetClientOptions[T any](client *Client[T]) *ClientOptions {
-	return client.options
-}
-
 func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {
 	return clOpts.pipelineOptions
 }
@@ -95,4 +77,8 @@ func NewPathClient(dirURL string, dirURLWithBlobEndpoint string, client *blob.Cl
 		innerU:    client,
 		options:   options,
 	}
+}
+
+func GetCompositeClientOptions[T, K, U any](client *CompositeClient[T, K, U]) *ClientOptions {
+	return client.options
 }

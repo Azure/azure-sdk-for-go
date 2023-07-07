@@ -10,8 +10,11 @@
 package service
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"time"
 )
 
 // CreateFilesystemResponse contains the response fields for the CreateFilesystem operation.
@@ -26,5 +29,96 @@ type SetPropertiesResponse = service.SetPropertiesResponse
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = service.GetPropertiesResponse
 
-// ListFilesystemsResponse contains the response fields for the ListFilesystems operation.
-type ListFilesystemsResponse = service.ListContainersResponse
+// TODO: use below after implementing listing
+
+type ListFilesystemsResponse struct {
+	ListFilesystemsSegmentResponse
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	blobPager *runtime.Pager[service.ListContainersResponse]
+}
+
+// ListFilesystemsSegmentResponse - An enumeration of containers
+type ListFilesystemsSegmentResponse struct {
+	// REQUIRED
+	Filesystems []*FilesystemItem
+
+	// REQUIRED
+	ServiceEndpoint *string
+	Marker          *string
+	MaxResults      *int32
+	NextMarker      *string
+	Prefix          *string
+}
+
+// FilesystemItem - An Azure Storage filesystem
+type FilesystemItem struct {
+	// REQUIRED
+	Name *string
+
+	// REQUIRED; Properties of a container
+	Properties *FilesystemProperties
+	Deleted    *bool
+
+	// Dictionary of
+	Metadata map[string]*string
+	Version  *string
+}
+
+// FilesystemProperties - Properties of a filesystem
+type FilesystemProperties struct {
+	// REQUIRED
+	ETag *azcore.ETag
+
+	// REQUIRED
+	LastModified           *time.Time
+	DefaultEncryptionScope *string
+	DeletedTime            *time.Time
+	HasImmutabilityPolicy  *bool
+	HasLegalHold           *bool
+
+	// Indicates if version level worm is enabled on this container.
+	IsImmutableStorageWithVersioningEnabled *bool
+	LeaseDuration                           *LeaseDurationType
+	LeaseState                              *LeaseStateType
+	LeaseStatus                             *LeaseStatusType
+	PreventEncryptionScopeOverride          *bool
+	PublicAccess                            *PublicAccessType
+	RemainingRetentionDays                  *int32
+}
+
+// converter from container items to filesystem items
+func convertContainerItemsToFSItems(items []*service.ContainerItem) []*FilesystemItem {
+	var filesystemItems []*FilesystemItem
+	for _, item := range items {
+		filesystemItems = append(filesystemItems, &FilesystemItem{
+			Name: item.Name,
+			Properties: &FilesystemProperties{
+				LastModified:                            item.Properties.LastModified,
+				ETag:                                    item.Properties.ETag,
+				DefaultEncryptionScope:                  item.Properties.DefaultEncryptionScope,
+				LeaseStatus:                             item.Properties.LeaseStatus,
+				LeaseState:                              item.Properties.LeaseState,
+				LeaseDuration:                           item.Properties.LeaseDuration,
+				PublicAccess:                            item.Properties.PublicAccess,
+				HasImmutabilityPolicy:                   item.Properties.HasImmutabilityPolicy,
+				HasLegalHold:                            item.Properties.HasLegalHold,
+				IsImmutableStorageWithVersioningEnabled: item.Properties.IsImmutableStorageWithVersioningEnabled,
+				PreventEncryptionScopeOverride:          item.Properties.PreventEncryptionScopeOverride,
+				RemainingRetentionDays:                  item.Properties.RemainingRetentionDays,
+				DeletedTime:                             item.Properties.DeletedTime,
+			},
+			Deleted:  item.Deleted,
+			Metadata: item.Metadata,
+			Version:  item.Version,
+		})
+	}
+	return filesystemItems
+}

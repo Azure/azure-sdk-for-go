@@ -11,14 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
-	"strings"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -32,10 +33,8 @@ type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClien
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
-
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},
@@ -63,9 +62,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
-
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -92,9 +89,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL := strings.Replace(serviceURL, ".dfs.", ".blob.", 1)
-	datalakeServiceURL := strings.Replace(serviceURL, ".blob.", ".dfs.", 1)
-
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -113,8 +108,11 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobSharedKeyCredential, _ := blob.NewSharedKeyCredential(cred.AccountName(), cred.AccountKey())
-	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKeyCredential, &blobServiceClientOpts)
+	blobSharedKey, err := cred.ConvertToBlobSharedKey()
+	if err != nil {
+		return nil, err
+	}
+	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKey, &blobServiceClientOpts)
 	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil
@@ -140,23 +138,38 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+func (s *Client) getClientOptions() *base.ClientOptions {
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+}
+
 // NewFilesystemClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
-	//fsURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
-	//return (*filesystem.Client)(base.NewFilesystemClient(fsURL, s.generated().Pipeline(), s.credential()))
-	return nil
+	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
+	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+	clOpts := s.getClientOptions()
+	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
+	if err != nil {
+		if log.Should(exported.EventError) {
+			log.Writef(exported.EventError, err.Error())
+		}
+		return nil
+	}
+	filesystemURL, containerURL := shared.GetURLs(filesystemURL)
+	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), azClient, s.sharedKey(), clOpts))
 }
 
 // NewDirectoryClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewDirectoryClient(directoryName string) *filesystem.Client {
+	// TODO: implement once dir client is implemented
 	return nil
 }
 
 // NewFileClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFileClient(fileName string) *filesystem.Client {
+	// TODO: implement once file client is implemented
 	return nil
 }
 
@@ -170,7 +183,7 @@ func (s *Client) generatedServiceClientWithBlob() *generated.ServiceClient {
 	return svcClientWithBlob
 }
 
-func (s *Client) containerClient() *service.Client {
+func (s *Client) serviceClient() *service.Client {
 	_, _, serviceClient := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return serviceClient
 }
@@ -203,18 +216,61 @@ func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, option
 	return resp, err
 }
 
-// SetServiceProperties sets properties for a storage account's File service endpoint. (blob3)
-func (s *Client) SetServiceProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	return SetPropertiesResponse{}, nil
+// SetProperties sets properties for a storage account's File service endpoint. (blob3)
+func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+	opts := options.format()
+	return s.serviceClient().SetProperties(ctx, opts)
 }
 
 // GetProperties gets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	return GetPropertiesResponse{}, nil
+	opts := options.format()
+	return s.serviceClient().GetProperties(ctx, opts)
+
 }
 
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
-	return nil
+	return runtime.NewPager(runtime.PagingHandler[ListFilesystemsResponse]{
+		More: func(page ListFilesystemsResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListFilesystemsResponse) (ListFilesystemsResponse, error) {
+			if page == nil {
+				page = &ListFilesystemsResponse{}
+				opts := options.format()
+				page.blobPager = s.serviceClient().NewListContainersPager(opts)
+			}
+			newPage := ListFilesystemsResponse{}
+			currPage, err := page.blobPager.NextPage(context.TODO())
+			if err != nil {
+				return newPage, err
+			}
+			newPage.Prefix = currPage.Prefix
+			newPage.Marker = currPage.Marker
+			newPage.MaxResults = currPage.MaxResults
+			newPage.NextMarker = currPage.NextMarker
+			newPage.Filesystems = convertContainerItemsToFSItems(currPage.ContainerItems)
+			newPage.ServiceEndpoint = currPage.ServiceEndpoint
+			newPage.blobPager = page.blobPager
+
+			return newPage, err
+		},
+	})
 }
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	// format all options to blob service options
+	res, perms, opts := o.format(resources, permissions)
+	return s.serviceClient().GetSASURL(res, perms, expiry, opts)
+}
+
+// TODO: Figure out how we can convert from blob delegation key to one defined in datalake
+//// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+//// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+//func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+//	return s.serviceClient().GetUserDelegationCredential(ctx, info, o)
+//}

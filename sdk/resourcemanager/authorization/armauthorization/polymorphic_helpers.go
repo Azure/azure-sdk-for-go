@@ -11,6 +11,92 @@ package armauthorization
 
 import "encoding/json"
 
+func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage) (AccessReviewDecisionIdentityClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AccessReviewDecisionIdentityClassification
+	switch m["type"] {
+	case string(DecisionTargetTypeServicePrincipal):
+		b = &AccessReviewDecisionServicePrincipalIdentity{}
+	case string(DecisionTargetTypeUser):
+		b = &AccessReviewDecisionUserIdentity{}
+	default:
+		b = &AccessReviewDecisionIdentity{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalAccessReviewDecisionInsightPropertiesClassification(rawMsg json.RawMessage) (AccessReviewDecisionInsightPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AccessReviewDecisionInsightPropertiesClassification
+	switch m["type"] {
+	case string(AccessReviewDecisionInsightTypeUserSignInInsight):
+		b = &AccessReviewDecisionUserSignInInsightProperties{}
+	default:
+		b = &AccessReviewDecisionInsightProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalAlertConfigurationPropertiesClassification(rawMsg json.RawMessage) (AlertConfigurationPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AlertConfigurationPropertiesClassification
+	switch m["alertConfigurationType"] {
+	case "AzureRolesAssignedOutsidePimAlertConfiguration":
+		b = &AzureRolesAssignedOutsidePimAlertConfigurationProperties{}
+	case "DuplicateRoleCreatedAlertConfiguration":
+		b = &DuplicateRoleCreatedAlertConfigurationProperties{}
+	case "TooManyOwnersAssignedToResourceAlertConfiguration":
+		b = &TooManyOwnersAssignedToResourceAlertConfigurationProperties{}
+	case "TooManyPermanentOwnersAssignedToResourceAlertConfiguration":
+		b = &TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties{}
+	default:
+		b = &AlertConfigurationProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalAlertIncidentPropertiesClassification(rawMsg json.RawMessage) (AlertIncidentPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AlertIncidentPropertiesClassification
+	switch m["alertIncidentType"] {
+	case "AzureRolesAssignedOutsidePimAlertIncident":
+		b = &AzureRolesAssignedOutsidePimAlertIncidentProperties{}
+	case "DuplicateRoleCreatedAlertIncident":
+		b = &DuplicateRoleCreatedAlertIncidentProperties{}
+	case "TooManyOwnersAssignedToResourceAlertIncident":
+		b = &TooManyOwnersAssignedToResourceAlertIncidentProperties{}
+	case "TooManyPermanentOwnersAssignedToResourceAlertIncident":
+		b = &TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties{}
+	default:
+		b = &AlertIncidentProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

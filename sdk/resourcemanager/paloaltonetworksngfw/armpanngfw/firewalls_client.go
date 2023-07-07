@@ -47,7 +47,7 @@ func NewFirewallsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Create a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - resource - Resource create parameters.
@@ -70,7 +70,7 @@ func (client *FirewallsClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Create a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, options *FirewallsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, firewallName, resource, options)
 	if err != nil {
@@ -106,7 +106,7 @@ func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -115,7 +115,7 @@ func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Delete a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientBeginDeleteOptions contains the optional parameters for the FirewallsClient.BeginDelete method.
@@ -136,7 +136,7 @@ func (client *FirewallsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Delete a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallName string, options *FirewallsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, firewallName, options)
 	if err != nil {
@@ -172,7 +172,7 @@ func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Get a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientGetOptions contains the optional parameters for the FirewallsClient.Get method.
@@ -220,7 +220,7 @@ func (client *FirewallsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +238,7 @@ func (client *FirewallsClient) getHandleResponse(resp *http.Response) (Firewalls
 // GetGlobalRulestack - Get Global Rulestack associated with the Firewall
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientGetGlobalRulestackOptions contains the optional parameters for the FirewallsClient.GetGlobalRulestack
@@ -278,7 +278,7 @@ func (client *FirewallsClient) getGlobalRulestackCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -296,7 +296,7 @@ func (client *FirewallsClient) getGlobalRulestackHandleResponse(resp *http.Respo
 // GetLogProfile - Log Profile for Firewall
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientGetLogProfileOptions contains the optional parameters for the FirewallsClient.GetLogProfile method.
@@ -335,7 +335,7 @@ func (client *FirewallsClient) getLogProfileCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -353,7 +353,7 @@ func (client *FirewallsClient) getLogProfileHandleResponse(resp *http.Response) 
 // GetSupportInfo - support info for firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientGetSupportInfoOptions contains the optional parameters for the FirewallsClient.GetSupportInfo
@@ -393,7 +393,7 @@ func (client *FirewallsClient) getSupportInfoCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Email != nil {
 		reqQP.Set("email", *options.Email)
 	}
@@ -413,7 +413,7 @@ func (client *FirewallsClient) getSupportInfoHandleResponse(resp *http.Response)
 
 // NewListByResourceGroupPager - List FirewallResource resources by resource group
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FirewallsClientListByResourceGroupOptions contains the optional parameters for the FirewallsClient.NewListByResourceGroupPager
 //     method.
@@ -461,7 +461,7 @@ func (client *FirewallsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -478,7 +478,7 @@ func (client *FirewallsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // NewListBySubscriptionPager - List FirewallResource resources by subscription ID
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - options - FirewallsClientListBySubscriptionOptions contains the optional parameters for the FirewallsClient.NewListBySubscriptionPager
 //     method.
 func (client *FirewallsClient) NewListBySubscriptionPager(options *FirewallsClientListBySubscriptionOptions) *runtime.Pager[FirewallsClientListBySubscriptionResponse] {
@@ -521,7 +521,7 @@ func (client *FirewallsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -539,7 +539,7 @@ func (client *FirewallsClient) listBySubscriptionHandleResponse(resp *http.Respo
 // SaveLogProfile - Log Profile for Firewall
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallsClientSaveLogProfileOptions contains the optional parameters for the FirewallsClient.SaveLogProfile
@@ -579,7 +579,7 @@ func (client *FirewallsClient) saveLogProfileCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.LogSettings != nil {
@@ -591,7 +591,7 @@ func (client *FirewallsClient) saveLogProfileCreateRequest(ctx context.Context, 
 // Update - Update a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - properties - The resource properties to be updated.
@@ -631,7 +631,7 @@ func (client *FirewallsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

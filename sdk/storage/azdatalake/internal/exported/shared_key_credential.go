@@ -12,6 +12,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"net/http"
 	"net/url"
 	"sort"
@@ -48,9 +49,12 @@ func (c *SharedKeyCredential) AccountName() string {
 	return c.accountName
 }
 
-// AccountKey returns the Storage account's name.
-func (c *SharedKeyCredential) AccountKey() string {
-	return c.accountKeyString
+func (c *SharedKeyCredential) ConvertToBlobSharedKey() (*azblob.SharedKeyCredential, error) {
+	cred, err := azblob.NewSharedKeyCredential(c.accountName, c.accountKeyString)
+	if err != nil {
+		return nil, err
+	}
+	return cred, nil
 }
 
 // SetAccountKey replaces the existing account key with the specified account key.

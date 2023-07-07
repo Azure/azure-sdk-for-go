@@ -3,6 +3,7 @@ package testcommon
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -104,7 +105,59 @@ func GetFilesystemClient(fsName string, t *testing.T, accountType TestAccountTyp
 	return filesystemClient, err
 }
 
+func ServiceGetFilesystemClient(filesystemName string, s *service.Client) *filesystem.Client {
+	return s.NewFilesystemClient(filesystemName)
+}
+
 func DeleteFilesystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
 	_, err := filesystemClient.Delete(ctx, nil)
 	_require.Nil(err)
+}
+
+func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
+	accountName, accountKey := GetGenericAccountInfo(accountType)
+	if accountName == "" || accountKey == "" {
+		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+	}
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
+		accountName, accountKey)
+	return &connectionString, nil
+}
+
+func CreateNewFilesystem(ctx context.Context, _require *require.Assertions, filesystemName string, serviceClient *service.Client) *filesystem.Client {
+	fsClient := ServiceGetFilesystemClient(filesystemName, serviceClient)
+
+	_, err := fsClient.Create(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
+	return fsClient
+}
+func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
+	}
+	SetClientOptions(t, &options.ClientOptions)
+
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	options.Transport = transport
+
+	cred, err := GetGenericConnectionString(accountType)
+	if err != nil {
+		return nil, err
+	}
+	svcClient, err := service.NewClientFromConnectionString(*cred, options)
+	return svcClient, err
+}
+
+func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	serviceClient, err := service.NewClientWithNoCredential(sasUrl, options)
+
+	return serviceClient, err
 }

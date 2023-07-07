@@ -336,16 +336,16 @@ func parseFilesystemPermissions(s string) (FilesystemPermissions, error) {
 	return p, nil
 }
 
-// PathPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// FilePermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
-type PathPermissions struct {
+type FilePermissions struct {
 	Read, Add, Create, Write, Delete, List, Move bool
 	Execute, Ownership, Permissions              bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
 // Call this method to set BlobSignatureValues' Permissions field.
-func (p *PathPermissions) String() string {
+func (p *FilePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
 		b.WriteRune('r')
@@ -380,9 +380,53 @@ func (p *PathPermissions) String() string {
 	return b.String()
 }
 
-// Parse initializes BlobPermissions' fields from a string.
-func parsePathPermissions(s string) (PathPermissions, error) {
-	p := PathPermissions{} // Clear the flags
+// DirectoryPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
+// Initialize an instance of this type and then call its String method to set BlobSignatureValues' Permissions field.
+type DirectoryPermissions struct {
+	Read, Add, Create, Write, Delete, List, Move bool
+	Execute, Ownership, Permissions              bool
+}
+
+// String produces the SAS permissions string for an Azure Storage blob.
+// Call this method to set BlobSignatureValues' Permissions field.
+func (p *DirectoryPermissions) String() string {
+	var b bytes.Buffer
+	if p.Read {
+		b.WriteRune('r')
+	}
+	if p.Add {
+		b.WriteRune('a')
+	}
+	if p.Create {
+		b.WriteRune('c')
+	}
+	if p.Write {
+		b.WriteRune('w')
+	}
+	if p.Delete {
+		b.WriteRune('d')
+	}
+	if p.List {
+		b.WriteRune('l')
+	}
+	if p.Move {
+		b.WriteRune('m')
+	}
+	if p.Execute {
+		b.WriteRune('e')
+	}
+	if p.Ownership {
+		b.WriteRune('o')
+	}
+	if p.Permissions {
+		b.WriteRune('p')
+	}
+	return b.String()
+}
+
+// Since this is internal we can just always convert to FilePermissions to avoid some duplication here
+func parsePathPermissions(s string) (FilePermissions, error) {
+	p := FilePermissions{} // Clear the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -406,7 +450,7 @@ func parsePathPermissions(s string) (PathPermissions, error) {
 		case 'p':
 			p.Permissions = true
 		default:
-			return PathPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
+			return FilePermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}
 	}
 	return p, nil

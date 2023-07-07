@@ -72,6 +72,12 @@ type ParsedConnectionString struct {
 	AccountKey  string
 }
 
+func GetURLs(url string) (string, string) {
+	blobURL := strings.Replace(url, ".dfs.", ".blob.", 1)
+	dfsURL := strings.Replace(url, ".blob.", ".dfs.", 1)
+	return blobURL, dfsURL
+}
+
 func ParseConnectionString(connectionString string) (ParsedConnectionString, error) {
 	const (
 		defaultScheme = "https"

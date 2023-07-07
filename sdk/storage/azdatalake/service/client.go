@@ -33,7 +33,7 @@ type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClien
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -62,7 +62,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - serviceURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/
 //   - options - client options; pass nil to accept the default values.
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -89,7 +89,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	blobServiceURL, datalakeServiceURL := shared.GetURLS(serviceURL)
+	blobServiceURL, datalakeServiceURL := shared.GetURLs(serviceURL)
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
@@ -155,7 +155,7 @@ func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
 		}
 		return nil
 	}
-	filesystemURL, containerURL := shared.GetURLS(filesystemURL)
+	filesystemURL, containerURL := shared.GetURLs(filesystemURL)
 	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), azClient, s.sharedKey(), clOpts))
 }
 

@@ -72,7 +72,7 @@ type ParsedConnectionString struct {
 	AccountKey  string
 }
 
-func GetURLS(url string) (string, string) {
+func GetURLs(url string) (string, string) {
 	blobURL := strings.Replace(url, ".dfs.", ".blob.", 1)
 	dfsURL := strings.Replace(url, ".blob.", ".dfs.", 1)
 	return blobURL, dfsURL

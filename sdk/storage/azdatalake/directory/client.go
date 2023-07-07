@@ -29,7 +29,7 @@ type Client base.CompositeClient[generated.PathClient, generated.PathClient, blo
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	blobURL, directoryURL := shared.GetURLS(directoryURL)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
@@ -60,7 +60,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 //   - directoryURL - the URL of the storage account e.g. https://<account>.dfs.core.windows.net/fs/dir?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
-	blobURL, directoryURL := shared.GetURLS(directoryURL)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{}
@@ -88,7 +88,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	blobURL, directoryURL := shared.GetURLS(directoryURL)
+	blobURL, directoryURL := shared.GetURLs(directoryURL)
 
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)

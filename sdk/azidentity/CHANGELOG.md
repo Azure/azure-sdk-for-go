@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `DefaultAzureCredentialOptions.TenantID` applies to workload identity authentication
 
 ## 1.4.0-beta.1 (2023-06-06)
 

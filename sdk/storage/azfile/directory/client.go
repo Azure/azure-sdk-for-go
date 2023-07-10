@@ -8,6 +8,7 @@ package directory
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -17,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"net/http"
 	"net/url"
 	"strings"
@@ -175,13 +177,43 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 }
 
 // Rename operation renames a directory, and can optionally set system properties for the directory.
-//   - newName: the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+//   - destinationPath: the destination path to rename the directory to.
 //
 // For more information, see https://learn.microsoft.com/rest/api/storageservices/rename-directory.
-func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+func (d *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
+	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
+	if len(destinationPath) == 0 {
+		return RenameResponse{}, errors.New("destination path must not be empty")
+	}
+
 	opts, srcLease, destLease, smbInfo := options.format()
-	resp, err := d.generated().Rename(ctx, newName, opts, srcLease, destLease, smbInfo)
-	return resp, err
+
+	urlParts, err := sas.ParseURL(d.URL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+
+	destParts := strings.Split(destinationPath, "?")
+	newDestPath := destParts[0]
+	newDestQuery := ""
+	if len(destParts) == 2 {
+		newDestQuery = destParts[1]
+	}
+
+	urlParts.DirectoryOrFilePath = newDestPath
+	destURL := urlParts.String()
+	// replace the query part if it is present in destination path
+	if len(newDestQuery) > 0 {
+		destURL = strings.Split(destURL, "?")[0] + "?" + newDestQuery
+	}
+
+	destDirClient := (*Client)(base.NewDirectoryClient(destURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
+
+	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts, srcLease, destLease, smbInfo)
+	return RenameResponse{
+		DirectoryClientRenameResponse: resp,
+		Client:                        destDirClient,
+	}, err
 }
 
 // GetProperties operation returns all system properties for the specified directory, and it can also be used to check the existence of a directory.

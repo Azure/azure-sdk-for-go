@@ -22,11 +22,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest"
 )
 
+// for testing, create struct with all the data types
+// remove computer field, not supported anymore
 type ComputerInfo struct {
 	InputTime         time.Time
 	Computer          string
 	AdditionalContext int
 }
+
+// test for greater than 1 mb
+// generate a file and read from it
 
 func TestUpload(t *testing.T) {
 	azlog.SetListener(func(cls azlog.Event, msg string) {

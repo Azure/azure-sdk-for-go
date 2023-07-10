@@ -7,4 +7,9 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package azingest
+package generated
+
+// ClientUploadResponse contains the response from method Client.Upload.
+type ClientUploadResponse struct {
+	// placeholder for future response values
+}

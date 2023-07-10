@@ -10,9 +10,9 @@ export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/f07297ce913bfc911470a86436e73c9aceec0587/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
+#module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
 openapi-type: "data-plane"
-output-folder: ../azingest
+output-folder: ../generated
 override-client-name: Client
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.46"
@@ -22,11 +22,6 @@ rawjson-as-bytes: true
 directive:
   # delete unused model
   - remove-model: PendingCertificateSigningRequestResult
-
-  # make generated upload method private
-  - from: client.go
-    where: $
-    transform: return $.replace(/ Upload/g, " uploadOriginal");
 
  # delete unused error models
   - from: models.go

@@ -15,7 +15,10 @@ type CreateResponse = generated.DirectoryClientCreateResponse
 type DeleteResponse = generated.DirectoryClientDeleteResponse
 
 // RenameResponse contains the response from method Client.Rename.
-type RenameResponse = generated.DirectoryClientRenameResponse
+type RenameResponse struct {
+	generated.DirectoryClientRenameResponse
+	Client *Client
+}
 
 // GetPropertiesResponse contains the response from method Client.GetProperties.
 type GetPropertiesResponse = generated.DirectoryClientGetPropertiesResponse

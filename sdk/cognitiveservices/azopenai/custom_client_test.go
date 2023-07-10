@@ -102,7 +102,7 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure boo
 		Prompt:      []string{"What is Azure OpenAI?"},
 		MaxTokens:   to.Ptr(int32(2048)),
 		Temperature: to.Ptr(float32(0.0)),
-		Model:       to.Ptr(openAICompletionsModelDeployment),
+		Model:       to.Ptr(openAICompletionsModel),
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
@@ -141,4 +141,27 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure boo
 
 	require.Equal(t, want, got)
 	require.Equal(t, 86, eventCount)
+}
+
+func TestClient_GetCompletions_Error(t *testing.T) {
+	doTest := func(t *testing.T, client *azopenai.Client) {
+		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
+			Prompt:      []string{"What is Azure OpenAI?"},
+			MaxTokens:   to.Ptr(int32(2048 - 127)),
+			Temperature: to.Ptr(float32(0.0)),
+			Model:       &openAICompletionsModel,
+		}, nil)
+		require.Empty(t, streamResp)
+		assertResponseIsError(t, err)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newBogusAzureOpenAIClient(t, completionsModelDeployment)
+		doTest(t, client)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		client := newBogusOpenAIClient(t)
+		doTest(t, client)
+	})
 }

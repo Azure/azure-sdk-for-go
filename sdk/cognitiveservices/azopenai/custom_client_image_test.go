@@ -7,8 +7,10 @@
 package azopenai_test
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
+	"image/png"
 	"net/http"
 	"testing"
 	"time"
@@ -61,9 +63,16 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
 		case azopenai.ImageGenerationResponseFormatB64JSON:
-			bytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
+			pngBytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
 			require.NoError(t, err)
-			require.NotEmpty(t, bytes)
+			require.NotEmpty(t, pngBytes)
+
+			// the bytes here should just be a valid PNG
+			buff := bytes.NewBuffer(pngBytes)
+
+			// just check that it's a valid PNG
+			_, err = png.Decode(buff)
+			require.NoError(t, err)
 		}
 	}
 }

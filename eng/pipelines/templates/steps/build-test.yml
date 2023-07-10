@@ -54,6 +54,14 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
+  - pwsh: PowerShell@2
+    displayName: 'Restore Test Proxy Recordings'
+    inputs:
+      targetType: inline
+      script: |
+        Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }} -Filter assets.json | ForEach-Object { test-proxy restore -a $_.FullName }
+      pwsh: true
+
   - task: PowerShell@2
     displayName: 'Run Tests'
     inputs:

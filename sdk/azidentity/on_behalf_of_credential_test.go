@@ -20,6 +20,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 	realGetClient := getConfidentialClient
 	t.Cleanup(func() { getConfidentialClient = realGetClient })
 	expectedAssertion := "user-assertion"
+	certs, key := allCertTests[0].certs, allCertTests[0].key
 	for _, test := range []struct {
 		ctor    func(policy.Transporter) (*OnBehalfOfCredential, error)
 		name    string
@@ -27,7 +28,6 @@ func TestOnBehalfOfCredential(t *testing.T) {
 	}{
 		{
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
-				certs, key := allCertTests[0].certs, allCertTests[0].key
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
 				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
@@ -35,7 +35,6 @@ func TestOnBehalfOfCredential(t *testing.T) {
 		},
 		{
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
-				certs, key := allCertTests[0].certs, allCertTests[0].key
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}, SendCertificateChain: true}
 				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
@@ -67,6 +66,9 @@ func TestOnBehalfOfCredential(t *testing.T) {
 				}
 				if assertion := r.FormValue("assertion"); assertion != expectedAssertion {
 					t.Errorf(`unexpected assertion "%s"`, assertion)
+				}
+				if test.sendX5C {
+					validateX5C(t, certs)(r)
 				}
 			}}
 			cred, err := test.ctor(&srv)

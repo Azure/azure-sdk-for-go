@@ -48,7 +48,11 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	}
+	c, err := getPublicClient(clientID, tenantID, msalOpts)
 	if err != nil {
 		return nil, err
 	}

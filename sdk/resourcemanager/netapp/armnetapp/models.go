@@ -14,31 +14,31 @@ import "time"
 // Account - NetApp account resource
 type Account struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The identity used for the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// NetApp Account properties
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete method.
@@ -60,58 +60,61 @@ type AccountBackupsClientListOptions struct {
 // AccountEncryption - Encryption settings
 type AccountEncryption struct {
 	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
-	Identity *EncryptionIdentity `json:"identity,omitempty"`
+	Identity *EncryptionIdentity
 
 	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
-	KeySource *KeySource `json:"keySource,omitempty"`
+	KeySource *KeySource
 
 	// Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *KeyVaultProperties
 }
 
 // AccountList - List of NetApp account resources
 type AccountList struct {
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Multiple NetApp accounts
-	Value []*Account `json:"value,omitempty"`
+	Value []*Account
 }
 
 // AccountPatch - NetApp account patch resource
 type AccountPatch struct {
+	// The identity used for the resource.
+	Identity *ManagedServiceIdentity
+
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// NetApp Account properties
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountProperties - NetApp account properties
 type AccountProperties struct {
 	// Active Directories
-	ActiveDirectories []*ActiveDirectory `json:"activeDirectories,omitempty"`
+	ActiveDirectories []*ActiveDirectory
 
 	// Encryption settings
-	Encryption *AccountEncryption `json:"encryption,omitempty"`
+	Encryption *AccountEncryption
 
 	// READ-ONLY; Shows the status of disableShowmount for all volumes under the subscription, null equals false
-	DisableShowmount *bool `json:"disableShowmount,omitempty" azure:"ro"`
+	DisableShowmount *bool
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // AccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateOrUpdate method.
@@ -158,114 +161,114 @@ type AccountsClientListOptions struct {
 // ActiveDirectory - Active Directory
 type ActiveDirectory struct {
 	// Id of the Active Directory
-	ActiveDirectoryID *string `json:"activeDirectoryId,omitempty"`
+	ActiveDirectoryID *string
 
 	// Name of the active directory machine. This optional parameter is used only while creating kerberos volume
-	AdName *string `json:"adName,omitempty"`
+	AdName *string
 
 	// Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier
-	Administrators []*string `json:"administrators,omitempty"`
+	Administrators []*string
 
 	// If enabled, AES encryption will be enabled for SMB communication.
-	AesEncryption *bool `json:"aesEncryption,omitempty"`
+	AesEncryption *bool
 
 	// If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
-	AllowLocalNfsUsersWithLdap *bool `json:"allowLocalNfsUsersWithLdap,omitempty"`
+	AllowLocalNfsUsersWithLdap *bool
 
 	// Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier
-	BackupOperators []*string `json:"backupOperators,omitempty"`
+	BackupOperators []*string
 
 	// Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain
-	DNS *string `json:"dns,omitempty"`
+	DNS *string
 
 	// Name of the Active Directory domain
-	Domain *string `json:"domain,omitempty"`
+	Domain *string
 
 	// If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted.
-	EncryptDCConnections *bool `json:"encryptDCConnections,omitempty"`
+	EncryptDCConnections *bool
 
 	// kdc server IP addresses for the active directory machine. This optional parameter is used only while creating kerberos
 	// volume.
-	KdcIP *string `json:"kdcIP,omitempty"`
+	KdcIP *string
 
 	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool `json:"ldapOverTLS,omitempty"`
+	LdapOverTLS *bool
 
 	// LDAP Search scope options
-	LdapSearchScope *LdapSearchScopeOpt `json:"ldapSearchScope,omitempty"`
+	LdapSearchScope *LdapSearchScopeOpt
 
 	// Specifies whether or not the LDAP traffic needs to be signed.
-	LdapSigning *bool `json:"ldapSigning,omitempty"`
+	LdapSigning *bool
 
 	// The Organizational Unit (OU) within the Windows Active Directory
-	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
+	OrganizationalUnit *string
 
 	// Plain text password of Active Directory domain administrator, value is masked in the response
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4 addresses
 	// can be passed.
-	PreferredServersForLdapClient *string `json:"preferredServersForLdapClient,omitempty"`
+	PreferredServersForLdapClient *string
 
 	// Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares
 	// for SQL). A list of unique usernames without domain specifier
-	SecurityOperators []*string `json:"securityOperators,omitempty"`
+	SecurityOperators []*string
 
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's
 	// self-signed root CA certificate, this optional parameter is used only for
 	// dual protocol with LDAP user-mapping volumes.
-	ServerRootCACertificate *string `json:"serverRootCACertificate,omitempty"`
+	ServerRootCACertificate *string
 
 	// The Active Directory site the service will limit Domain Controller discovery to
-	Site *string `json:"site,omitempty"`
+	Site *string
 
 	// NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
-	SmbServerName *string `json:"smbServerName,omitempty"`
+	SmbServerName *string
 
 	// A domain user account with permission to create machine accounts
-	Username *string `json:"username,omitempty"`
+	Username *string
 
 	// READ-ONLY; Status of the Active Directory
-	Status *ActiveDirectoryStatus `json:"status,omitempty" azure:"ro"`
+	Status *ActiveDirectoryStatus
 
 	// READ-ONLY; Any details in regards to the Status of the Active Directory
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // AuthorizeRequest - Authorize request
 type AuthorizeRequest struct {
 	// Resource id of the remote volume
-	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
+	RemoteVolumeResourceID *string
 }
 
 // Backup of a Volume
 type Backup struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Backup Properties
-	Properties *BackupProperties `json:"properties,omitempty"`
+	Properties *BackupProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupPatch - Backup patch
 type BackupPatch struct {
 	// Backup Properties
-	Properties *BackupProperties `json:"properties,omitempty"`
+	Properties *BackupProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // BackupPoliciesClientBeginCreateOptions contains the optional parameters for the BackupPoliciesClient.BeginCreate method.
@@ -299,153 +302,153 @@ type BackupPoliciesClientListOptions struct {
 // BackupPoliciesList - List of Backup Policies
 type BackupPoliciesList struct {
 	// A list of backup policies
-	Value []*BackupPolicy `json:"value,omitempty"`
+	Value []*BackupPolicy
 }
 
 // BackupPolicy - Backup policy information
 type BackupPolicy struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Backup policy Properties
-	Properties *BackupPolicyProperties `json:"properties,omitempty"`
+	Properties *BackupPolicyProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupPolicyPatch - Backup policy Details for create and update
 type BackupPolicyPatch struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Backup policy Properties
-	Properties *BackupPolicyProperties `json:"properties,omitempty"`
+	Properties *BackupPolicyProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupPolicyProperties - Backup policy properties
 type BackupPolicyProperties struct {
 	// Daily backups count to keep
-	DailyBackupsToKeep *int32 `json:"dailyBackupsToKeep,omitempty"`
+	DailyBackupsToKeep *int32
 
 	// The property to decide policy is enabled or not
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Monthly backups count to keep
-	MonthlyBackupsToKeep *int32 `json:"monthlyBackupsToKeep,omitempty"`
+	MonthlyBackupsToKeep *int32
 
 	// Weekly backups count to keep
-	WeeklyBackupsToKeep *int32 `json:"weeklyBackupsToKeep,omitempty"`
+	WeeklyBackupsToKeep *int32
 
 	// READ-ONLY; Backup Policy Resource ID
-	BackupPolicyID *string `json:"backupPolicyId,omitempty" azure:"ro"`
+	BackupPolicyID *string
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; A list of volumes assigned to this policy
-	VolumeBackups []*VolumeBackups `json:"volumeBackups,omitempty" azure:"ro"`
+	VolumeBackups []*VolumeBackups
 
 	// READ-ONLY; Volumes using current backup policy
-	VolumesAssigned *int32 `json:"volumesAssigned,omitempty" azure:"ro"`
+	VolumesAssigned *int32
 }
 
 // BackupProperties - Backup properties
 type BackupProperties struct {
 	// Label for backup
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for manual backups
-	UseExistingSnapshot *bool `json:"useExistingSnapshot,omitempty"`
+	UseExistingSnapshot *bool
 
 	// READ-ONLY; UUID v4 used to identify the Backup
-	BackupID *string `json:"backupId,omitempty" azure:"ro"`
+	BackupID *string
 
 	// READ-ONLY; Type of backup Manual or Scheduled
-	BackupType *BackupType `json:"backupType,omitempty" azure:"ro"`
+	BackupType *BackupType
 
 	// READ-ONLY; The creation date of the backup
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; Failure reason
-	FailureReason *string `json:"failureReason,omitempty" azure:"ro"`
+	FailureReason *string
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Size of backup
-	Size *int64 `json:"size,omitempty" azure:"ro"`
+	Size *int64
 
 	// READ-ONLY; Volume name
-	VolumeName *string `json:"volumeName,omitempty" azure:"ro"`
+	VolumeName *string
 }
 
 // BackupRestoreFiles - Restore payload for single file backup restore
 type BackupRestoreFiles struct {
 	// REQUIRED; Resource Id of the destination volume on which the files need to be restored
-	DestinationVolumeID *string `json:"destinationVolumeId,omitempty"`
+	DestinationVolumeID *string
 
 	// REQUIRED; List of files to be restored
-	FileList []*string `json:"fileList,omitempty"`
+	FileList []*string
 
 	// Destination folder where the files will be restored. The path name should start with a forward slash. If it is omitted
 	// from request then restore is done at the root folder of the destination volume by
 	// default
-	RestoreFilePath *string `json:"restoreFilePath,omitempty"`
+	RestoreFilePath *string
 }
 
 // BackupStatus - Backup status
 type BackupStatus struct {
 	// READ-ONLY; Displays error message if the backup is in an error state
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; Backup health status
-	Healthy *bool `json:"healthy,omitempty" azure:"ro"`
+	Healthy *bool
 
 	// READ-ONLY; Displays the last transfer size
-	LastTransferSize *int64 `json:"lastTransferSize,omitempty" azure:"ro"`
+	LastTransferSize *int64
 
 	// READ-ONLY; Displays the last transfer type
-	LastTransferType *string `json:"lastTransferType,omitempty" azure:"ro"`
+	LastTransferType *string
 
 	// READ-ONLY; The status of the backup
-	MirrorState *MirrorState `json:"mirrorState,omitempty" azure:"ro"`
+	MirrorState *MirrorState
 
 	// READ-ONLY; Status of the backup mirror relationship
-	RelationshipStatus *RelationshipStatus `json:"relationshipStatus,omitempty" azure:"ro"`
+	RelationshipStatus *RelationshipStatus
 
 	// READ-ONLY; Displays the total bytes transferred
-	TotalTransferBytes *int64 `json:"totalTransferBytes,omitempty" azure:"ro"`
+	TotalTransferBytes *int64
 
 	// READ-ONLY; Reason for the unhealthy backup relationship
-	UnhealthyReason *string `json:"unhealthyReason,omitempty" azure:"ro"`
+	UnhealthyReason *string
 }
 
 // BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
@@ -496,392 +499,404 @@ type BackupsClientListOptions struct {
 // BackupsList - List of Backups
 type BackupsList struct {
 	// A list of Backups
-	Value []*Backup `json:"value,omitempty"`
+	Value []*Backup
 }
 
 // BreakFileLocksRequest - Break file locks request
 type BreakFileLocksRequest struct {
 	// To clear file locks on a volume for a particular client
-	ClientIP *string `json:"clientIp,omitempty"`
+	ClientIP *string
 
 	// Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want to process,
 	// set to true.
-	ConfirmRunningDisruptiveOperation *bool `json:"confirmRunningDisruptiveOperation,omitempty"`
+	ConfirmRunningDisruptiveOperation *bool
 }
 
 // BreakReplicationRequest - Break replication request
 type BreakReplicationRequest struct {
 	// If replication is in status transferring and you want to force break the replication, set to true
-	ForceBreakReplication *bool `json:"forceBreakReplication,omitempty"`
+	ForceBreakReplication *bool
 }
 
 // CapacityPool - Capacity pool resource
 type CapacityPool struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Capacity pool properties
-	Properties *PoolProperties `json:"properties,omitempty"`
+	Properties *PoolProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CapacityPoolList - List of capacity pool resources
 type CapacityPoolList struct {
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Capacity pools
-	Value []*CapacityPool `json:"value,omitempty"`
+	Value []*CapacityPool
 }
 
 // CapacityPoolPatch - Capacity pool patch resource
 type CapacityPoolPatch struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Capacity pool properties
-	Properties *PoolPatchProperties `json:"properties,omitempty"`
+	Properties *PoolPatchProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CheckAvailabilityResponse - Information regarding availability of a resource.
 type CheckAvailabilityResponse struct {
 	// true indicates name is valid and available. false indicates the name is invalid, unavailable, or both.
-	IsAvailable *bool `json:"isAvailable,omitempty"`
+	IsAvailable *bool
 
 	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements
 	// so that the user can select a valid name. If reason == AlreadyExists,
 	// explain that resource name is already in use, and direct them to select a different name.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that
 	// the name is already in use and is therefore unavailable.
-	Reason *InAvailabilityReasonType `json:"reason,omitempty"`
+	Reason *InAvailabilityReasonType
 }
 
 // DailySchedule - Daily Schedule properties
 type DailySchedule struct {
 	// Indicates which hour in UTC timezone a snapshot should be taken
-	Hour *int32 `json:"hour,omitempty"`
+	Hour *int32
 
 	// Indicates which minute snapshot should be taken
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 
 	// Daily snapshot count to keep
-	SnapshotsToKeep *int32 `json:"snapshotsToKeep,omitempty"`
+	SnapshotsToKeep *int32
 
 	// Resource size in bytes, current storage usage for the volume in bytes
-	UsedBytes *int64 `json:"usedBytes,omitempty"`
+	UsedBytes *int64
 }
 
 // Dimension of blobs, possibly be blob type or access tier.
 type Dimension struct {
 	// Display name of dimension.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Display name of dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // EncryptionIdentity - Identity used to authenticate with key vault.
 type EncryptionIdentity struct {
 	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
 	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 
 	// READ-ONLY; The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // ExportPolicyRule - Volume Export Policy Rule
 type ExportPolicyRule struct {
 	// Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
-	AllowedClients *string `json:"allowedClients,omitempty"`
+	AllowedClients *string
 
 	// This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the
 	// ownership of the file. unrestricted - Non-root users can change ownership of
 	// files that they own.
-	ChownMode *ChownMode `json:"chownMode,omitempty"`
+	ChownMode *ChownMode
 
 	// Allows CIFS protocol
-	Cifs *bool `json:"cifs,omitempty"`
+	Cifs *bool
 
 	// Has root access to volume
-	HasRootAccess *bool `json:"hasRootAccess,omitempty"`
+	HasRootAccess *bool
 
 	// Kerberos5i Read only access. To be use with swagger version 2020-05-01 or later
-	Kerberos5IReadOnly *bool `json:"kerberos5iReadOnly,omitempty"`
+	Kerberos5IReadOnly *bool
 
 	// Kerberos5i Read and write access. To be use with swagger version 2020-05-01 or later
-	Kerberos5IReadWrite *bool `json:"kerberos5iReadWrite,omitempty"`
+	Kerberos5IReadWrite *bool
 
 	// Kerberos5p Read only access. To be use with swagger version 2020-05-01 or later
-	Kerberos5PReadOnly *bool `json:"kerberos5pReadOnly,omitempty"`
+	Kerberos5PReadOnly *bool
 
 	// Kerberos5p Read and write access. To be use with swagger version 2020-05-01 or later
-	Kerberos5PReadWrite *bool `json:"kerberos5pReadWrite,omitempty"`
+	Kerberos5PReadWrite *bool
 
 	// Kerberos5 Read only access. To be use with swagger version 2020-05-01 or later
-	Kerberos5ReadOnly *bool `json:"kerberos5ReadOnly,omitempty"`
+	Kerberos5ReadOnly *bool
 
 	// Kerberos5 Read and write access. To be use with swagger version 2020-05-01 or later
-	Kerberos5ReadWrite *bool `json:"kerberos5ReadWrite,omitempty"`
+	Kerberos5ReadWrite *bool
 
 	// Allows NFSv3 protocol. Enable only for NFSv3 type volumes
-	Nfsv3 *bool `json:"nfsv3,omitempty"`
+	Nfsv3 *bool
 
 	// Allows NFSv4.1 protocol. Enable only for NFSv4.1 type volumes
-	Nfsv41 *bool `json:"nfsv41,omitempty"`
+	Nfsv41 *bool
 
 	// Order index
-	RuleIndex *int32 `json:"ruleIndex,omitempty"`
+	RuleIndex *int32
 
 	// Read only access
-	UnixReadOnly *bool `json:"unixReadOnly,omitempty"`
+	UnixReadOnly *bool
 
 	// Read and write access
-	UnixReadWrite *bool `json:"unixReadWrite,omitempty"`
+	UnixReadWrite *bool
 }
 
 // FilePathAvailabilityRequest - File path availability request content - availability is based on the name and the subnetId.
 type FilePathAvailabilityRequest struct {
 	// REQUIRED; File path to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
+}
+
+// GetGroupIDListForLDAPUserRequest - Get group Id list for LDAP User request
+type GetGroupIDListForLDAPUserRequest struct {
+	// REQUIRED; username is required to fetch the group to which user is part of
+	Username *string
+}
+
+// GetGroupIDListForLDAPUserResponse - Group Id list for Ldap user
+type GetGroupIDListForLDAPUserResponse struct {
+	// Group Id list
+	GroupIDsForLdapUser []*string
 }
 
 // HourlySchedule - Hourly Schedule properties
 type HourlySchedule struct {
 	// Indicates which minute snapshot should be taken
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 
 	// Hourly snapshot count to keep
-	SnapshotsToKeep *int32 `json:"snapshotsToKeep,omitempty"`
+	SnapshotsToKeep *int32
 
 	// Resource size in bytes, current storage usage for the volume in bytes
-	UsedBytes *int64 `json:"usedBytes,omitempty"`
+	UsedBytes *int64
 }
 
 // KeyVaultProperties - Properties of key vault.
 type KeyVaultProperties struct {
 	// REQUIRED; The name of KeyVault key.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// REQUIRED; The resource ID of KeyVault.
-	KeyVaultResourceID *string `json:"keyVaultResourceId,omitempty"`
+	KeyVaultResourceID *string
 
 	// REQUIRED; The Uri of KeyVault.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// READ-ONLY; UUID v4 used to identify the Azure Key Vault configuration
-	KeyVaultID *string `json:"keyVaultId,omitempty" azure:"ro"`
+	KeyVaultID *string
 
 	// READ-ONLY; Status of the KeyVault connection.
-	Status *KeyVaultStatus `json:"status,omitempty" azure:"ro"`
+	Status *KeyVaultStatus
 }
 
 // LdapSearchScopeOpt - LDAP search scope
 type LdapSearchScopeOpt struct {
 	// This specifies the group DN, which overrides the base DN for group lookups.
-	GroupDN *string `json:"groupDN,omitempty"`
+	GroupDN *string
 
 	// This specifies the custom LDAP search filter to be used when looking up group membership from LDAP server.
-	GroupMembershipFilter *string `json:"groupMembershipFilter,omitempty"`
+	GroupMembershipFilter *string
 
 	// This specifies the user DN, which overrides the base DN for user lookups.
-	UserDN *string `json:"userDN,omitempty"`
+	UserDN *string
 }
 
 // ListReplications - List Replications
 type ListReplications struct {
 	// A list of replications
-	Value []*Replication `json:"value,omitempty"`
+	Value []*Replication
 }
 
 // LogSpecification - Log Definition of a single resource metric.
 type LogSpecification struct {
 	// Display name of log specification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of log specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // MetricSpecification - Metric specification of operation.
 type MetricSpecification struct {
 	// Aggregation type could be Average.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// The category this metric specification belong to, could be Capacity.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// Dimensions of blobs, including blob type and access tier.
-	Dimensions []*Dimension `json:"dimensions,omitempty"`
+	Dimensions []*Dimension
 
 	// Display description of metric specification.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Display name of metric specification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether or not the service is using regional MDM accounts.
-	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *bool
 
 	// The property to decide fill gap with zero or not.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// The internal metric name.
-	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	InternalMetricName *string
 
 	// Whether the metric is internal.
-	IsInternal *bool `json:"isInternal,omitempty"`
+	IsInternal *bool
 
 	// Name of metric specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Account Resource Id.
-	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	ResourceIDDimensionNameOverride *string
 
 	// The source MDM account.
-	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	SourceMdmAccount *string
 
 	// The source MDM namespace.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// Support metric aggregation type.
-	SupportedAggregationTypes []*MetricAggregationType `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*MetricAggregationType
 
 	// The supported time grain types for the metrics.
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// Unit could be Bytes or Count.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // MonthlySchedule - Monthly Schedule properties
 type MonthlySchedule struct {
 	// Indicates which days of the month snapshot should be taken. A comma delimited string.
-	DaysOfMonth *string `json:"daysOfMonth,omitempty"`
+	DaysOfMonth *string
 
 	// Indicates which hour in UTC timezone a snapshot should be taken
-	Hour *int32 `json:"hour,omitempty"`
+	Hour *int32
 
 	// Indicates which minute snapshot should be taken
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 
 	// Monthly snapshot count to keep
-	SnapshotsToKeep *int32 `json:"snapshotsToKeep,omitempty"`
+	SnapshotsToKeep *int32
 
 	// Resource size in bytes, current storage usage for the volume in bytes
-	UsedBytes *int64 `json:"usedBytes,omitempty"`
+	UsedBytes *int64
 }
 
 // MountTargetProperties - Mount target properties
 type MountTargetProperties struct {
 	// REQUIRED; UUID v4 used to identify the MountTarget
-	FileSystemID *string `json:"fileSystemId,omitempty"`
+	FileSystemID *string
 
 	// The SMB server's Fully Qualified Domain Name, FQDN
-	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
+	SmbServerFqdn *string
 
 	// READ-ONLY; The mount target's IPv4 address
-	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
+	IPAddress *string
 
 	// READ-ONLY; UUID v4 used to identify the MountTarget
-	MountTargetID *string `json:"mountTargetId,omitempty" azure:"ro"`
+	MountTargetID *string
 }
 
 // Operation - Microsoft.NetApp REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The origin of operations.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of operation, include metric specifications.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Operation description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft NetApp.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Cloud Volume operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
 	// List of Storage operations supported by the Storage resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationProperties - Properties of operation, include metric specifications.
 type OperationProperties struct {
 	// One property of operation, include metric specifications.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -892,59 +907,59 @@ type OperationsClientListOptions struct {
 // PlacementKeyValuePairs - Application specific parameters for the placement of volumes in the volume group
 type PlacementKeyValuePairs struct {
 	// REQUIRED; Key for an application specific parameter for the placement of volumes in the volume group
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// REQUIRED; Value for an application specific parameter for the placement of volumes in the volume group
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // PoolChangeRequest - Pool change request
 type PoolChangeRequest struct {
 	// REQUIRED; Resource id of the pool to move volume to
-	NewPoolResourceID *string `json:"newPoolResourceId,omitempty"`
+	NewPoolResourceID *string
 }
 
 // PoolPatchProperties - Patchable pool properties
 type PoolPatchProperties struct {
 	// If enabled (true) the pool can contain cool Access enabled volumes.
-	CoolAccess *bool `json:"coolAccess,omitempty"`
+	CoolAccess *bool
 
 	// The qos type of the pool
-	QosType *QosType `json:"qosType,omitempty"`
+	QosType *QosType
 
 	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 4398046511104).
-	Size *int64 `json:"size,omitempty"`
+	Size *int64
 }
 
 // PoolProperties - Pool properties
 type PoolProperties struct {
 	// REQUIRED; The service level of the file system
-	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
+	ServiceLevel *ServiceLevel
 
 	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 4398046511104).
-	Size *int64 `json:"size,omitempty"`
+	Size *int64
 
 	// If enabled (true) the pool can contain cool Access enabled volumes.
-	CoolAccess *bool `json:"coolAccess,omitempty"`
+	CoolAccess *bool
 
 	// Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value
 	// can only be set when creating new pool.
-	EncryptionType *EncryptionType `json:"encryptionType,omitempty"`
+	EncryptionType *EncryptionType
 
 	// The qos type of the pool
-	QosType *QosType `json:"qosType,omitempty"`
+	QosType *QosType
 
 	// READ-ONLY; UUID v4 used to identify the Pool
-	PoolID *string `json:"poolId,omitempty" azure:"ro"`
+	PoolID *string
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Total throughput of pool in MiB/s
-	TotalThroughputMibps *float32 `json:"totalThroughputMibps,omitempty" azure:"ro"`
+	TotalThroughputMibps *float32
 
 	// READ-ONLY; Utilized throughput of pool in MiB/s
-	UtilizedThroughputMibps *float32 `json:"utilizedThroughputMibps,omitempty" azure:"ro"`
+	UtilizedThroughputMibps *float32
 }
 
 // PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate method.
@@ -978,93 +993,93 @@ type PoolsClientListOptions struct {
 // QuotaAvailabilityRequest - Quota availability request content.
 type QuotaAvailabilityRequest struct {
 	// REQUIRED; Name of the resource to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Resource group name.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// REQUIRED; Resource type used for verification.
-	Type *CheckQuotaNameResourceTypes `json:"type,omitempty"`
+	Type *CheckQuotaNameResourceTypes
 }
 
 // ReestablishReplicationRequest - Re-establish request object supplied in the body of the operation.
 type ReestablishReplicationRequest struct {
 	// Resource id of the source volume for the replication
-	SourceVolumeID *string `json:"sourceVolumeId,omitempty"`
+	SourceVolumeID *string
 }
 
 // RegionInfo - Provides region specific information.
 type RegionInfo struct {
 	// Provides logical availability zone mappings for the subscription for a region.
-	AvailabilityZoneMappings []*RegionInfoAvailabilityZoneMappingsItem `json:"availabilityZoneMappings,omitempty"`
+	AvailabilityZoneMappings []*RegionInfoAvailabilityZoneMappingsItem
 
 	// Provides storage to network proximity information in the region.
-	StorageToNetworkProximity *RegionStorageToNetworkProximity `json:"storageToNetworkProximity,omitempty"`
+	StorageToNetworkProximity *RegionStorageToNetworkProximity
 }
 
 type RegionInfoAvailabilityZoneMappingsItem struct {
 	// Logical availability zone.
-	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+	AvailabilityZone *string
 
 	// Available availability zone
-	IsAvailable *bool `json:"isAvailable,omitempty"`
+	IsAvailable *bool
 }
 
 // RelocateVolumeRequest - Relocate volume request
 type RelocateVolumeRequest struct {
 	// New creation token for the volume that controls the mount point name
-	CreationToken *string `json:"creationToken,omitempty"`
+	CreationToken *string
 }
 
 // Replication properties
 type Replication struct {
 	// REQUIRED; The resource ID of the remote volume.
-	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
+	RemoteVolumeResourceID *string
 
 	// Indicates whether the local volume is the source or destination for the Volume Replication
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// The remote region for the other end of the Volume Replication.
-	RemoteVolumeRegion *string `json:"remoteVolumeRegion,omitempty"`
+	RemoteVolumeRegion *string
 
 	// Schedule
-	ReplicationSchedule *ReplicationSchedule `json:"replicationSchedule,omitempty"`
+	ReplicationSchedule *ReplicationSchedule
 }
 
 // ReplicationObject - Replication properties
 type ReplicationObject struct {
 	// REQUIRED; The resource ID of the remote volume.
-	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
+	RemoteVolumeResourceID *string
 
 	// Indicates whether the local volume is the source or destination for the Volume Replication
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// The remote region for the other end of the Volume Replication.
-	RemoteVolumeRegion *string `json:"remoteVolumeRegion,omitempty"`
+	RemoteVolumeRegion *string
 
 	// Id
-	ReplicationID *string `json:"replicationId,omitempty"`
+	ReplicationID *string
 
 	// Schedule
-	ReplicationSchedule *ReplicationSchedule `json:"replicationSchedule,omitempty"`
+	ReplicationSchedule *ReplicationSchedule
 }
 
 // ReplicationStatus - Replication status
 type ReplicationStatus struct {
 	// Displays error message if the replication is in an error state
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Replication health check
-	Healthy *bool `json:"healthy,omitempty"`
+	Healthy *bool
 
 	// The status of the replication
-	MirrorState *MirrorState `json:"mirrorState,omitempty"`
+	MirrorState *MirrorState
 
 	// Status of the mirror relationship
-	RelationshipStatus *RelationshipStatus `json:"relationshipStatus,omitempty"`
+	RelationshipStatus *RelationshipStatus
 
 	// The progress of the replication
-	TotalProgress *string `json:"totalProgress,omitempty"`
+	TotalProgress *string
 }
 
 // ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
@@ -1093,13 +1108,13 @@ type ResourceClientQueryRegionInfoOptions struct {
 // ResourceNameAvailabilityRequest - Resource name availability request content.
 type ResourceNameAvailabilityRequest struct {
 	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Resource group name.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	ResourceGroup *string
 
 	// REQUIRED; Resource type used for verification.
-	Type *CheckNameResourceTypes `json:"type,omitempty"`
+	Type *CheckNameResourceTypes
 }
 
 // ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
@@ -1115,52 +1130,52 @@ type ResourceQuotaLimitsClientListOptions struct {
 // RestoreStatus - Restore status
 type RestoreStatus struct {
 	// READ-ONLY; Displays error message if the restore is in an error state
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; Restore health status
-	Healthy *bool `json:"healthy,omitempty" azure:"ro"`
+	Healthy *bool
 
 	// READ-ONLY; The status of the restore
-	MirrorState *MirrorState `json:"mirrorState,omitempty" azure:"ro"`
+	MirrorState *MirrorState
 
 	// READ-ONLY; Status of the restore SnapMirror relationship
-	RelationshipStatus *RelationshipStatus `json:"relationshipStatus,omitempty" azure:"ro"`
+	RelationshipStatus *RelationshipStatus
 
 	// READ-ONLY; Displays the total bytes transferred
-	TotalTransferBytes *int64 `json:"totalTransferBytes,omitempty" azure:"ro"`
+	TotalTransferBytes *int64
 
 	// READ-ONLY; Reason for the unhealthy restore relationship
-	UnhealthyReason *string `json:"unhealthyReason,omitempty" azure:"ro"`
+	UnhealthyReason *string
 }
 
 // ServiceSpecification - One property of operation, include metric specifications.
 type ServiceSpecification struct {
 	// Log specification of operation.
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification
 
 	// Metric specifications of operation.
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // Snapshot of a Volume
 type Snapshot struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Snapshot Properties
-	Properties *SnapshotProperties `json:"properties,omitempty"`
+	Properties *SnapshotProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the SnapshotPoliciesClient.BeginDelete method.
@@ -1198,103 +1213,103 @@ type SnapshotPoliciesClientListVolumesOptions struct {
 // SnapshotPoliciesList - List of Snapshot Policies
 type SnapshotPoliciesList struct {
 	// A list of snapshot policies
-	Value []*SnapshotPolicy `json:"value,omitempty"`
+	Value []*SnapshotPolicy
 }
 
 // SnapshotPolicy - Snapshot policy information
 type SnapshotPolicy struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Snapshot policy Properties
-	Properties *SnapshotPolicyProperties `json:"properties,omitempty"`
+	Properties *SnapshotPolicyProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SnapshotPolicyPatch - Snapshot policy Details for create and update
 type SnapshotPolicyPatch struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Snapshot Policy properties
-	Properties *SnapshotPolicyProperties `json:"properties,omitempty"`
+	Properties *SnapshotPolicyProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SnapshotPolicyProperties - Snapshot policy properties
 type SnapshotPolicyProperties struct {
 	// Schedule for daily snapshots
-	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
+	DailySchedule *DailySchedule
 
 	// The property to decide policy is enabled or not
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Schedule for hourly snapshots
-	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+	HourlySchedule *HourlySchedule
 
 	// Schedule for monthly snapshots
-	MonthlySchedule *MonthlySchedule `json:"monthlySchedule,omitempty"`
+	MonthlySchedule *MonthlySchedule
 
 	// Schedule for weekly snapshots
-	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
+	WeeklySchedule *WeeklySchedule
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SnapshotPolicyVolumeList - Volumes associated with snapshot policy
 type SnapshotPolicyVolumeList struct {
 	// List of volumes
-	Value []*Volume `json:"value,omitempty"`
+	Value []*Volume
 }
 
 // SnapshotProperties - Snapshot properties
 type SnapshotProperties struct {
 	// READ-ONLY; The creation date of the snapshot
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; UUID v4 used to identify the Snapshot
-	SnapshotID *string `json:"snapshotId,omitempty" azure:"ro"`
+	SnapshotID *string
 }
 
 // SnapshotRestoreFiles - Restore payload for Single File Snapshot Restore
 type SnapshotRestoreFiles struct {
 	// REQUIRED; List of files to be restored
-	FilePaths []*string `json:"filePaths,omitempty"`
+	FilePaths []*string
 
 	// Destination folder where the files will be restored
-	DestinationPath *string `json:"destinationPath,omitempty"`
+	DestinationPath *string
 }
 
 // SnapshotsClientBeginCreateOptions contains the optional parameters for the SnapshotsClient.BeginCreate method.
@@ -1334,136 +1349,136 @@ type SnapshotsClientListOptions struct {
 // SnapshotsList - List of Snapshots
 type SnapshotsList struct {
 	// A list of Snapshots
-	Value []*Snapshot `json:"value,omitempty"`
+	Value []*Snapshot
 }
 
 // SubscriptionQuotaItem - Information regarding Subscription Quota Item.
 type SubscriptionQuotaItem struct {
 	// SubscriptionQuotaItem properties
-	Properties *SubscriptionQuotaItemProperties `json:"properties,omitempty"`
+	Properties *SubscriptionQuotaItemProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubscriptionQuotaItemList - List of Subscription Quota Items
 type SubscriptionQuotaItemList struct {
 	// A list of SubscriptionQuotaItems
-	Value []*SubscriptionQuotaItem `json:"value,omitempty"`
+	Value []*SubscriptionQuotaItem
 }
 
 // SubscriptionQuotaItemProperties - SubscriptionQuotaItem Properties
 type SubscriptionQuotaItemProperties struct {
 	// READ-ONLY; The current quota value.
-	Current *int32 `json:"current,omitempty" azure:"ro"`
+	Current *int32
 
 	// READ-ONLY; The default quota value.
-	Default *int32 `json:"default,omitempty" azure:"ro"`
+	Default *int32
 }
 
 // SubvolumeInfo - Subvolume Information properties
 type SubvolumeInfo struct {
 	// Subvolume Properties
-	Properties *SubvolumeProperties `json:"properties,omitempty"`
+	Properties *SubvolumeProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubvolumeModel - Result of the post subvolume and action is to get metadata of the subvolume.
 type SubvolumeModel struct {
 	// It represents the minimal properties of the subvolume.
-	Properties *SubvolumeModelProperties `json:"properties,omitempty"`
+	Properties *SubvolumeModelProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubvolumeModelProperties - Properties which represents actual subvolume model which is stored as a file in the system.
 type SubvolumeModelProperties struct {
 	// Most recent access time and date
-	AccessedTimeStamp *time.Time `json:"accessedTimeStamp,omitempty"`
+	AccessedTimeStamp *time.Time
 
 	// Bytes used
-	BytesUsed *int64 `json:"bytesUsed,omitempty"`
+	BytesUsed *int64
 
 	// Most recent change time and date
-	ChangedTimeStamp *time.Time `json:"changedTimeStamp,omitempty"`
+	ChangedTimeStamp *time.Time
 
 	// Creation time and date
-	CreationTimeStamp *time.Time `json:"creationTimeStamp,omitempty"`
+	CreationTimeStamp *time.Time
 
 	// Most recent modification time and date
-	ModifiedTimeStamp *time.Time `json:"modifiedTimeStamp,omitempty"`
+	ModifiedTimeStamp *time.Time
 
 	// Path to the parent subvolume
-	ParentPath *string `json:"parentPath,omitempty"`
+	ParentPath *string
 
 	// Path to the subvolume
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Permissions of the subvolume
-	Permissions *string `json:"permissions,omitempty"`
+	Permissions *string
 
 	// Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Size of subvolume
-	Size *int64 `json:"size,omitempty"`
+	Size *int64
 }
 
 // SubvolumePatchParams - Parameters with which a subvolume can be updated
 type SubvolumePatchParams struct {
 	// path to the subvolume
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Truncate subvolume to the provided size in bytes
-	Size *int64 `json:"size,omitempty"`
+	Size *int64
 }
 
 // SubvolumePatchRequest - Subvolume Patch Request properties
 type SubvolumePatchRequest struct {
 	// Subvolume Properties
-	Properties *SubvolumePatchParams `json:"properties,omitempty"`
+	Properties *SubvolumePatchParams
 }
 
 // SubvolumeProperties - This represents path associated with the subvolume
 type SubvolumeProperties struct {
 	// parent path to the subvolume
-	ParentPath *string `json:"parentPath,omitempty"`
+	ParentPath *string
 
 	// Path to the subvolume
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Truncate subvolume to the provided size in bytes
-	Size *int64 `json:"size,omitempty"`
+	Size *int64
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SubvolumesClientBeginCreateOptions contains the optional parameters for the SubvolumesClient.BeginCreate method.
@@ -1503,196 +1518,196 @@ type SubvolumesClientListByVolumeOptions struct {
 // SubvolumesList - List of Subvolumes
 type SubvolumesList struct {
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of Subvolumes
-	Value []*SubvolumeInfo `json:"value,omitempty"`
+	Value []*SubvolumeInfo
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // Volume resource
 type Volume struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Volume properties
-	Properties *VolumeProperties `json:"properties,omitempty"`
+	Properties *VolumeProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Availability Zone
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeBackupProperties - Volume Backup Properties
 type VolumeBackupProperties struct {
 	// Backup Enabled
-	BackupEnabled *bool `json:"backupEnabled,omitempty"`
+	BackupEnabled *bool
 
 	// Backup Policy Resource ID
-	BackupPolicyID *string `json:"backupPolicyId,omitempty"`
+	BackupPolicyID *string
 
 	// Policy Enforced
-	PolicyEnforced *bool `json:"policyEnforced,omitempty"`
+	PolicyEnforced *bool
 }
 
 // VolumeBackups - Volume details using the backup policy
 type VolumeBackups struct {
 	// Total count of backups for volume
-	BackupsCount *int32 `json:"backupsCount,omitempty"`
+	BackupsCount *int32
 
 	// Policy enabled
-	PolicyEnabled *bool `json:"policyEnabled,omitempty"`
+	PolicyEnabled *bool
 
 	// Volume name
-	VolumeName *string `json:"volumeName,omitempty"`
+	VolumeName *string
 }
 
 // VolumeGroup - Volume group resource
 type VolumeGroup struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Volume group properties
-	Properties *VolumeGroupListProperties `json:"properties,omitempty"`
+	Properties *VolumeGroupListProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeGroupDetails - Volume group resource for create
 type VolumeGroupDetails struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Volume group properties
-	Properties *VolumeGroupProperties `json:"properties,omitempty"`
+	Properties *VolumeGroupProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeGroupList - List of volume group resources
 type VolumeGroupList struct {
 	// List of volume Groups
-	Value []*VolumeGroup `json:"value,omitempty"`
+	Value []*VolumeGroup
 }
 
 // VolumeGroupListProperties - Volume group properties
 type VolumeGroupListProperties struct {
 	// Volume group details
-	GroupMetaData *VolumeGroupMetaData `json:"groupMetaData,omitempty"`
+	GroupMetaData *VolumeGroupMetaData
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // VolumeGroupMetaData - Volume group properties
 type VolumeGroupMetaData struct {
 	// Application specific identifier
-	ApplicationIdentifier *string `json:"applicationIdentifier,omitempty"`
+	ApplicationIdentifier *string
 
 	// Application Type
-	ApplicationType *ApplicationType `json:"applicationType,omitempty"`
+	ApplicationType *ApplicationType
 
 	// Application specific identifier of deployment rules for the volume group
-	DeploymentSpecID *string `json:"deploymentSpecId,omitempty"`
+	DeploymentSpecID *string
 
 	// Application specific placement rules for the volume group
-	GlobalPlacementRules []*PlacementKeyValuePairs `json:"globalPlacementRules,omitempty"`
+	GlobalPlacementRules []*PlacementKeyValuePairs
 
 	// Group Description
-	GroupDescription *string `json:"groupDescription,omitempty"`
+	GroupDescription *string
 
 	// READ-ONLY; Number of volumes in volume group
-	VolumesCount *int64 `json:"volumesCount,omitempty" azure:"ro"`
+	VolumesCount *int64
 }
 
 // VolumeGroupProperties - Volume group properties
 type VolumeGroupProperties struct {
 	// Volume group details
-	GroupMetaData *VolumeGroupMetaData `json:"groupMetaData,omitempty"`
+	GroupMetaData *VolumeGroupMetaData
 
 	// List of volumes from group
-	Volumes []*VolumeGroupVolumeProperties `json:"volumes,omitempty"`
+	Volumes []*VolumeGroupVolumeProperties
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // VolumeGroupVolumeProperties - Volume resource
 type VolumeGroupVolumeProperties struct {
 	// REQUIRED; Volume properties
-	Properties *VolumeProperties `json:"properties,omitempty"`
+	Properties *VolumeProperties
 
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate method.
@@ -1721,316 +1736,326 @@ type VolumeGroupsClientListByNetAppAccountOptions struct {
 // VolumeList - List of volume resources
 type VolumeList struct {
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of volumes
-	Value []*Volume `json:"value,omitempty"`
+	Value []*Volume
 }
 
 // VolumePatch - Volume patch resource
 type VolumePatch struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Patchable volume properties
-	Properties *VolumePatchProperties `json:"properties,omitempty"`
+	Properties *VolumePatchProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumePatchProperties - Patchable volume properties
 type VolumePatchProperties struct {
 	// Specifies whether Cool Access(tiering) is enabled for the volume.
-	CoolAccess *bool `json:"coolAccess,omitempty"`
+	CoolAccess *bool
 
 	// Specifies the number of days after which data that is not accessed by clients will be tiered.
-	CoolnessPeriod *int32 `json:"coolnessPeriod,omitempty"`
+	CoolnessPeriod *int32
 
 	// DataProtection type volumes include an object containing details of the replication
-	DataProtection *VolumePatchPropertiesDataProtection `json:"dataProtection,omitempty"`
+	DataProtection *VolumePatchPropertiesDataProtection
 
 	// Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.
-	DefaultGroupQuotaInKiBs *int64 `json:"defaultGroupQuotaInKiBs,omitempty"`
+	DefaultGroupQuotaInKiBs *int64
 
 	// Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
-	DefaultUserQuotaInKiBs *int64 `json:"defaultUserQuotaInKiBs,omitempty"`
+	DefaultUserQuotaInKiBs *int64
 
 	// Set of export policy rules
-	ExportPolicy *VolumePatchPropertiesExportPolicy `json:"exportPolicy,omitempty"`
+	ExportPolicy *VolumePatchPropertiesExportPolicy
 
 	// Specifies if default quota is enabled for the volume.
-	IsDefaultQuotaEnabled *bool `json:"isDefaultQuotaEnabled,omitempty"`
+	IsDefaultQuotaEnabled *bool
 
 	// The service level of the file system
-	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
+	ServiceLevel *ServiceLevel
+
+	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
+	// snapshots.
+	SnapshotDirectoryVisible *bool
 
 	// Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType
 	// volume
-	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
+	ThroughputMibps *float32
 
 	// UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID
 	// (2) and sticky (1) attributes. Second digit selects permission for the owner of
 	// the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth
 	// for other users not in the group. 0755 - gives read/write/execute permissions to
 	// owner and read/execute to group and other users.
-	UnixPermissions *string `json:"unixPermissions,omitempty"`
+	UnixPermissions *string
 
 	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is
 	// 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
-	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	UsageThreshold *int64
 }
 
 // VolumePatchPropertiesDataProtection - DataProtection type volumes include an object containing details of the replication
 type VolumePatchPropertiesDataProtection struct {
 	// Backup Properties
-	Backup *VolumeBackupProperties `json:"backup,omitempty"`
+	Backup *VolumeBackupProperties
 
 	// Snapshot properties.
-	Snapshot *VolumeSnapshotProperties `json:"snapshot,omitempty"`
+	Snapshot *VolumeSnapshotProperties
 }
 
 // VolumePatchPropertiesExportPolicy - Set of export policy rules
 type VolumePatchPropertiesExportPolicy struct {
 	// Export policy rule
-	Rules []*ExportPolicyRule `json:"rules,omitempty"`
+	Rules []*ExportPolicyRule
 }
 
 // VolumeProperties - Volume properties
 type VolumeProperties struct {
 	// REQUIRED; A unique file path for the volume. Used when creating mount targets
-	CreationToken *string `json:"creationToken,omitempty"`
+	CreationToken *string
 
 	// REQUIRED; The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
 	// size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
-	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	UsageThreshold *int64
 
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
-	AvsDataStore *AvsDataStore `json:"avsDataStore,omitempty"`
+	AvsDataStore *AvsDataStore
 
 	// UUID v4 or resource identifier used to identify the Backup.
-	BackupID *string `json:"backupId,omitempty"`
+	BackupID *string
 
 	// Pool Resource Id used in case of creating a volume through volume group
-	CapacityPoolResourceID *string `json:"capacityPoolResourceId,omitempty"`
+	CapacityPoolResourceID *string
 
 	// Specifies whether Cool Access(tiering) is enabled for the volume.
-	CoolAccess *bool `json:"coolAccess,omitempty"`
+	CoolAccess *bool
 
 	// Specifies the number of days after which data that is not accessed by clients will be tiered.
-	CoolnessPeriod *int32 `json:"coolnessPeriod,omitempty"`
+	CoolnessPeriod *int32
 
 	// DataProtection type volumes include an object containing details of the replication
-	DataProtection *VolumePropertiesDataProtection `json:"dataProtection,omitempty"`
+	DataProtection *VolumePropertiesDataProtection
 
 	// Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.
-	DefaultGroupQuotaInKiBs *int64 `json:"defaultGroupQuotaInKiBs,omitempty"`
+	DefaultGroupQuotaInKiBs *int64
 
 	// Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
-	DefaultUserQuotaInKiBs *int64 `json:"defaultUserQuotaInKiBs,omitempty"`
+	DefaultUserQuotaInKiBs *int64
 
 	// If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create operation
 	// has finished. Defaults to false
-	DeleteBaseSnapshot *bool `json:"deleteBaseSnapshot,omitempty"`
+	DeleteBaseSnapshot *bool
 
 	// Flag indicating whether subvolume operations are enabled on the volume
-	EnableSubvolumes *EnableSubvolumes `json:"enableSubvolumes,omitempty"`
+	EnableSubvolumes *EnableSubvolumes
 
 	// Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'.
 	// Possible values (case-insensitive) are: 'Microsoft.NetApp,
 	// Microsoft.KeyVault'
-	EncryptionKeySource *EncryptionKeySource `json:"encryptionKeySource,omitempty"`
+	EncryptionKeySource *EncryptionKeySource
 
 	// Set of export policy rules
-	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
+	ExportPolicy *VolumePropertiesExportPolicy
 
 	// Specifies if default quota is enabled for the volume.
-	IsDefaultQuotaEnabled *bool `json:"isDefaultQuotaEnabled,omitempty"`
+	IsDefaultQuotaEnabled *bool
 
 	// Specifies whether volume is a Large Volume or Regular Volume.
-	IsLargeVolume *bool `json:"isLargeVolume,omitempty"`
+	IsLargeVolume *bool
 
 	// Restoring
-	IsRestoring *bool `json:"isRestoring,omitempty"`
+	IsRestoring *bool
 
 	// Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later
-	KerberosEnabled *bool `json:"kerberosEnabled,omitempty"`
+	KerberosEnabled *bool
 
 	// The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource
 	// = 'Microsoft.KeyVault'.
-	KeyVaultPrivateEndpointResourceID *string `json:"keyVaultPrivateEndpointResourceId,omitempty"`
+	KeyVaultPrivateEndpointResourceID *string
 
 	// Specifies whether LDAP is enabled or not for a given NFS volume.
-	LdapEnabled *bool `json:"ldapEnabled,omitempty"`
+	LdapEnabled *bool
 
 	// Basic network, or Standard features available to the volume.
-	NetworkFeatures *NetworkFeatures `json:"networkFeatures,omitempty"`
+	NetworkFeatures *NetworkFeatures
 
 	// Application specific placement rules for the particular volume
-	PlacementRules []*PlacementKeyValuePairs `json:"placementRules,omitempty"`
+	PlacementRules []*PlacementKeyValuePairs
 
 	// Set of protocol types, default NFSv3, CIFS for SMB protocol
-	ProtocolTypes []*string `json:"protocolTypes,omitempty"`
+	ProtocolTypes []*string
 
 	// Proximity placement group associated with the volume
-	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
+	ProximityPlacementGroup *string
 
 	// The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
-	SecurityStyle *SecurityStyle `json:"securityStyle,omitempty"`
+	SecurityStyle *SecurityStyle
 
 	// The service level of the file system
-	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
+	ServiceLevel *ServiceLevel
 
 	// Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
-	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration `json:"smbAccessBasedEnumeration,omitempty"`
+	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration
 
 	// Enables continuously available share property for smb volume. Only applicable for SMB volume
-	SmbContinuouslyAvailable *bool `json:"smbContinuouslyAvailable,omitempty"`
+	SmbContinuouslyAvailable *bool
 
 	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version
 	// 2020-08-01 or later
-	SmbEncryption *bool `json:"smbEncryption,omitempty"`
+	SmbEncryption *bool
 
 	// Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
-	SmbNonBrowsable *SmbNonBrowsable `json:"smbNonBrowsable,omitempty"`
+	SmbNonBrowsable *SmbNonBrowsable
 
 	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
-	// snapshots (default to true).
-	SnapshotDirectoryVisible *bool `json:"snapshotDirectoryVisible,omitempty"`
+	// snapshots (defaults to true).
+	SnapshotDirectoryVisible *bool
 
 	// UUID v4 or resource identifier used to identify the Snapshot.
-	SnapshotID *string `json:"snapshotId,omitempty"`
+	SnapshotID *string
 
 	// Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType
 	// volume
-	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
+	ThroughputMibps *float32
 
 	// UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID
 	// (2) and sticky (1) attributes. Second digit selects permission for the owner of
 	// the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth
 	// for other users not in the group. 0755 - gives read/write/execute permissions to
 	// owner and read/execute to group and other users.
-	UnixPermissions *string `json:"unixPermissions,omitempty"`
+	UnixPermissions *string
 
 	// Volume spec name is the application specific designation or identifier for the particular volume in a volume group for
 	// e.g. data, log
-	VolumeSpecName *string `json:"volumeSpecName,omitempty"`
+	VolumeSpecName *string
 
 	// What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
-	VolumeType *string `json:"volumeType,omitempty"`
+	VolumeType *string
+
+	// READ-ONLY; Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel
+	ActualThroughputMibps *float32
 
 	// READ-ONLY; Unique Baremetal Tenant Identifier.
-	BaremetalTenantID *string `json:"baremetalTenantId,omitempty" azure:"ro"`
+	BaremetalTenantID *string
 
 	// READ-ONLY; When a volume is being restored from another volume's snapshot, will show the percentage completion of this
 	// cloning process. When this value is empty/null there is no cloning process currently
 	// happening on this volume. This value will update every 5 minutes during cloning.
-	CloneProgress *int32 `json:"cloneProgress,omitempty" azure:"ro"`
+	CloneProgress *int32
 
 	// READ-ONLY; Data store resource unique identifier
-	DataStoreResourceID []*string `json:"dataStoreResourceId,omitempty" azure:"ro"`
+	DataStoreResourceID []*string
 
 	// READ-ONLY; Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01.
-	Encrypted *bool `json:"encrypted,omitempty" azure:"ro"`
+	Encrypted *bool
 
 	// READ-ONLY; Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present
 	// on the volume.
-	FileAccessLogs *FileAccessLogs `json:"fileAccessLogs,omitempty" azure:"ro"`
+	FileAccessLogs *FileAccessLogs
 
 	// READ-ONLY; Unique FileSystem Identifier.
-	FileSystemID *string `json:"fileSystemId,omitempty" azure:"ro"`
+	FileSystemID *string
 
 	// READ-ONLY; Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed
 	// if volume quota is more than 4TiB.
-	MaximumNumberOfFiles *int64 `json:"maximumNumberOfFiles,omitempty" azure:"ro"`
+	MaximumNumberOfFiles *int64
 
 	// READ-ONLY; List of mount targets
-	MountTargets []*MountTargetProperties `json:"mountTargets,omitempty" azure:"ro"`
+	MountTargets []*MountTargetProperties
 
 	// READ-ONLY; Network Sibling Set ID for the the group of volumes sharing networking resources.
-	NetworkSiblingSetID *string `json:"networkSiblingSetId,omitempty" azure:"ro"`
+	NetworkSiblingSetID *string
+
+	// READ-ONLY; Id of the snapshot or backup that the volume is restored from.
+	OriginatingResourceID *string
 
 	// READ-ONLY; The availability zone where the volume is provisioned. This refers to the logical availability zone where the
 	// volume resides.
-	ProvisionedAvailabilityZone *string `json:"provisionedAvailabilityZone,omitempty" azure:"ro"`
+	ProvisionedAvailabilityZone *string
 
 	// READ-ONLY; Azure lifecycle management
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Provides storage to network proximity information for the volume.
-	StorageToNetworkProximity *VolumeStorageToNetworkProximity `json:"storageToNetworkProximity,omitempty" azure:"ro"`
+	StorageToNetworkProximity *VolumeStorageToNetworkProximity
 
 	// READ-ONLY; T2 network information
-	T2Network *string `json:"t2Network,omitempty" azure:"ro"`
+	T2Network *string
 
 	// READ-ONLY; Volume Group Name
-	VolumeGroupName *string `json:"volumeGroupName,omitempty" azure:"ro"`
+	VolumeGroupName *string
 }
 
 // VolumePropertiesDataProtection - DataProtection type volumes include an object containing details of the replication
 type VolumePropertiesDataProtection struct {
 	// Backup Properties
-	Backup *VolumeBackupProperties `json:"backup,omitempty"`
+	Backup *VolumeBackupProperties
 
 	// Replication properties
-	Replication *ReplicationObject `json:"replication,omitempty"`
+	Replication *ReplicationObject
 
 	// Snapshot properties.
-	Snapshot *VolumeSnapshotProperties `json:"snapshot,omitempty"`
+	Snapshot *VolumeSnapshotProperties
 
 	// VolumeRelocation properties
-	VolumeRelocation *VolumeRelocationProperties `json:"volumeRelocation,omitempty"`
+	VolumeRelocation *VolumeRelocationProperties
 }
 
 // VolumePropertiesExportPolicy - Set of export policy rules
 type VolumePropertiesExportPolicy struct {
 	// Export policy rule
-	Rules []*ExportPolicyRule `json:"rules,omitempty"`
+	Rules []*ExportPolicyRule
 }
 
 // VolumeQuotaRule - Quota Rule of a Volume
 type VolumeQuotaRule struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Volume Quota Rule Properties
-	Properties *VolumeQuotaRulesProperties `json:"properties,omitempty"`
+	Properties *VolumeQuotaRulesProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeQuotaRulePatch - Patchable Quota Rule of a Volume
 type VolumeQuotaRulePatch struct {
 	// Volume Quota Rule Properties
-	Properties *VolumeQuotaRulesProperties `json:"properties,omitempty"`
+	Properties *VolumeQuotaRulesProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // VolumeQuotaRulesClientBeginCreateOptions contains the optional parameters for the VolumeQuotaRulesClient.BeginCreate method.
@@ -2065,44 +2090,44 @@ type VolumeQuotaRulesClientListByVolumeOptions struct {
 // VolumeQuotaRulesList - List of Volume Quota Rules
 type VolumeQuotaRulesList struct {
 	// A list of Volume Quota Rules
-	Value []*VolumeQuotaRule `json:"value,omitempty"`
+	Value []*VolumeQuotaRule
 }
 
 // VolumeQuotaRulesProperties - Volume Quota Rule properties
 type VolumeQuotaRulesProperties struct {
 	// Size of quota
-	QuotaSizeInKiBs *int64 `json:"quotaSizeInKiBs,omitempty"`
+	QuotaSizeInKiBs *int64
 
 	// UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command
 	// for the user or group and SID can be found by running
-	QuotaTarget *string `json:"quotaTarget,omitempty"`
+	QuotaTarget *string
 
 	// Type of quota
-	QuotaType *Type `json:"quotaType,omitempty"`
+	QuotaType *Type
 
 	// READ-ONLY; Gets the status of the VolumeQuotaRule at the time the operation was called.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // VolumeRelocationProperties - Volume relocation properties
 type VolumeRelocationProperties struct {
 	// Has relocation been requested for this volume
-	RelocationRequested *bool `json:"relocationRequested,omitempty"`
+	RelocationRequested *bool
 
 	// READ-ONLY; Has relocation finished and is ready to be cleaned up
-	ReadyToBeFinalized *bool `json:"readyToBeFinalized,omitempty" azure:"ro"`
+	ReadyToBeFinalized *bool
 }
 
 // VolumeRevert - revert a volume to the snapshot
 type VolumeRevert struct {
 	// Resource id of the snapshot
-	SnapshotID *string `json:"snapshotId,omitempty"`
+	SnapshotID *string
 }
 
 // VolumeSnapshotProperties - Volume Snapshot Properties
 type VolumeSnapshotProperties struct {
 	// Snapshot Policy ResourceId
-	SnapshotPolicyID *string `json:"snapshotPolicyId,omitempty"`
+	SnapshotPolicyID *string
 }
 
 // VolumesClientBeginAuthorizeReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeReplication
@@ -2153,6 +2178,13 @@ type VolumesClientBeginDeleteReplicationOptions struct {
 // VolumesClientBeginFinalizeRelocationOptions contains the optional parameters for the VolumesClient.BeginFinalizeRelocation
 // method.
 type VolumesClientBeginFinalizeRelocationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
+// method.
+type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2241,17 +2273,17 @@ type VolumesClientReplicationStatusOptions struct {
 // WeeklySchedule - Weekly Schedule properties, make a snapshot every week at a specific day or days
 type WeeklySchedule struct {
 	// Indicates which weekdays snapshot should be taken, accepts a comma separated list of week day names in english
-	Day *string `json:"day,omitempty"`
+	Day *string
 
 	// Indicates which hour in UTC timezone a snapshot should be taken
-	Hour *int32 `json:"hour,omitempty"`
+	Hour *int32
 
 	// Indicates which minute snapshot should be taken
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 
 	// Weekly snapshot count to keep
-	SnapshotsToKeep *int32 `json:"snapshotsToKeep,omitempty"`
+	SnapshotsToKeep *int32
 
 	// Resource size in bytes, current storage usage for the volume in bytes
-	UsedBytes *int64 `json:"usedBytes,omitempty"`
+	UsedBytes *int64
 }

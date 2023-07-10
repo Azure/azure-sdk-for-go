@@ -54,7 +54,7 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
-  - pwsh: PowerShell@2
+  - task: PowerShell@2
     displayName: 'Restore Test Proxy Recordings'
     inputs:
       targetType: inline

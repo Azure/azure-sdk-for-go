@@ -88,12 +88,7 @@ func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
 }
 
 func TestGetCompletionsStream_OpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(openAIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newOpenAIClientForTest(t)
 	testGetCompletionsStream(t, client, false)
 }
 

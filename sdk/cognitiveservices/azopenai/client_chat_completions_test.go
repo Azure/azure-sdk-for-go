@@ -195,6 +195,7 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 
 func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 	doTest := func(t *testing.T, client *azopenai.Client) {
+		t.Helper()
 		streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)

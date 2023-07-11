@@ -39,7 +39,8 @@ func init() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		endpoint = fakeEndpoint
 		apiKey = fakeAPIKey
-		openAIKey = fakeAPIKey
+		// openAIKey = fakeAPIKey
+		openAIKey = ""
 		openAIEndpoint = fakeEndpoint
 
 		completionsModelDeployment = "text-davinci-003"
@@ -89,7 +90,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", ".*", "", nil)
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", ".*", nil)
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",

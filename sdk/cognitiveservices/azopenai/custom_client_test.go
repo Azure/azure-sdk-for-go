@@ -85,15 +85,19 @@ func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
 	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, completionsModelDeployment, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetCompletionsStream(t, client, true)
+	testGetCompletionsStream(t, client)
 }
 
 func TestGetCompletionsStream_OpenAI(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
-	testGetCompletionsStream(t, client, false)
+	testGetCompletionsStream(t, client)
 }
 
-func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure bool) {
+func testGetCompletionsStream(t *testing.T, client *azopenai.Client) {
 	body := azopenai.CompletionsOptions{
 		Prompt:      []string{"What is Azure OpenAI?"},
 		MaxTokens:   to.Ptr(int32(2048)),
@@ -102,6 +106,8 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure boo
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
+	require.NoError(t, err)
+
 	if err != nil {
 		t.Errorf("Client.GetCompletionsStream() error = %v", err)
 		return
@@ -112,25 +118,29 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure boo
 	var sb strings.Builder
 	var eventCount int
 
-	if isAzure {
-		// there's a bug right now where the first event comes back empty
-		// Issue: https://github.com/Azure/azure-sdk-for-go/issues/21086
-		_, err := reader.Read()
-		require.NoError(t, err)
-	}
-
 	for {
-		event, err := reader.Read()
+		completion, err := reader.Read()
+
 		if err == io.EOF {
 			break
 		}
+
+		if completion.PromptAnnotations != nil {
+			require.Equal(t, []azopenai.PromptFilterResult{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+			}, completion.PromptAnnotations)
+		}
+
 		eventCount++
+
 		if err != nil {
 			t.Errorf("reader.Read() error = %v", err)
 			return
 		}
 
-		sb.WriteString(*event.Choices[0].Text)
+		if len(completion.Choices) > 0 {
+			sb.WriteString(*completion.Choices[0].Text)
+		}
 	}
 	got := sb.String()
 	const want = "\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."

@@ -46,7 +46,6 @@ func (er *EventReader[T]) Read() (T, error) {
 				}
 				err := json.Unmarshal([]byte(tokens[1]), &data)
 				return data, err
-
 			default: // Any other event type is an unexpected
 				return data, errors.New("Unexpected event type: " + tokens[0])
 			}

@@ -130,6 +130,10 @@ func (f *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.FileClient])(f))
 }
 
+func (f *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.FileClient])(f))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (f *Client) URL() string {
 	return f.generated().Endpoint()
@@ -152,6 +156,46 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	opts, leaseAccessConditions := options.format()
 	resp, err := f.generated().Delete(ctx, opts, leaseAccessConditions)
 	return resp, err
+}
+
+// Rename operation renames a file, and can optionally set system properties for the file.
+//   - destinationPath: the destination path to rename the file to.
+//
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/rename-file.
+func (f *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
+	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
+	if len(destinationPath) == 0 {
+		return RenameResponse{}, errors.New("destination path must not be empty")
+	}
+
+	opts, srcLease, destLease, smbInfo, fileHTTPHeaders := options.format()
+
+	urlParts, err := sas.ParseURL(f.URL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+
+	destParts := strings.Split(destinationPath, "?")
+	newDestPath := destParts[0]
+	newDestQuery := ""
+	if len(destParts) == 2 {
+		newDestQuery = destParts[1]
+	}
+
+	urlParts.DirectoryOrFilePath = newDestPath
+	destURL := urlParts.String()
+	// replace the query part if it is present in destination path
+	if len(newDestQuery) > 0 {
+		destURL = strings.Split(destURL, "?")[0] + "?" + newDestQuery
+	}
+
+	destFileClient := (*Client)(base.NewFileClient(destURL, f.generated().InternalClient(), f.sharedKey(), f.getClientOptions()))
+
+	resp, err := destFileClient.generated().Rename(ctx, f.URL(), opts, srcLease, destLease, smbInfo, fileHTTPHeaders)
+	return RenameResponse{
+		FileClientRenameResponse: resp,
+		Client:                   destFileClient,
+	}, err
 }
 
 // GetProperties operation returns all user-defined metadata, standard HTTP properties, and system properties for the file.

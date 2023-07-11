@@ -44,6 +44,11 @@ type ClientListKeysResponse struct {
 	Keys
 }
 
+// ClientListReplicaSKUsResponse contains the response from method Client.ListReplicaSKUs.
+type ClientListReplicaSKUsResponse struct {
+	SKUList
+}
+
 // ClientListSKUsResponse contains the response from method Client.ListSKUs.
 type ClientListSKUsResponse struct {
 	SKUList
@@ -152,6 +157,36 @@ type PrivateEndpointConnectionsClientUpdateResponse struct {
 // PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceList
+}
+
+// ReplicasClientCreateOrUpdateResponse contains the response from method ReplicasClient.BeginCreateOrUpdate.
+type ReplicasClientCreateOrUpdateResponse struct {
+	Replica
+}
+
+// ReplicasClientDeleteResponse contains the response from method ReplicasClient.Delete.
+type ReplicasClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ReplicasClientGetResponse contains the response from method ReplicasClient.Get.
+type ReplicasClientGetResponse struct {
+	Replica
+}
+
+// ReplicasClientListResponse contains the response from method ReplicasClient.NewListPager.
+type ReplicasClientListResponse struct {
+	ReplicaList
+}
+
+// ReplicasClientRestartResponse contains the response from method ReplicasClient.BeginRestart.
+type ReplicasClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// ReplicasClientUpdateResponse contains the response from method ReplicasClient.BeginUpdate.
+type ReplicasClientUpdateResponse struct {
+	Replica
 }
 
 // SharedPrivateLinkResourcesClientCreateOrUpdateResponse contains the response from method SharedPrivateLinkResourcesClient.BeginCreateOrUpdate.

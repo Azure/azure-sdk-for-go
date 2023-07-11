@@ -23,20 +23,17 @@ type DeleteResponse = generated.PathClientDeleteResponse
 // SetAccessControlResponse contains the response fields for the SetAccessControl operation.
 type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
 
-// SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
-type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+// UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 
-// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
-type UpdateAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
-
-// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
-type RemoveAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+// RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
 type GetAccessControlResponse = generated.PathClientGetPropertiesResponse
 
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
-type GetPropertiesResponse = generated.PathClientGetPropertiesResponse
+type GetPropertiesResponse = blob.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = blob.SetMetadataResponse
@@ -46,6 +43,3 @@ type SetHTTPHeadersResponse = blob.SetHTTPHeadersResponse
 
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse = generated.PathClientCreateResponse
-
-// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
-type UndeletePathResponse = generated.PathClientUndeleteResponse

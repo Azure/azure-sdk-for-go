@@ -10,10 +10,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"time"
 )
 
-// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint. TODO: Design formatter
+// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
@@ -23,11 +22,10 @@ type CreateOptions struct {
 	CPKInfo CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
 	HTTPHeaders HTTPHeaders
-	//PathExpiryOptions *ExpiryOptions
-	// ExpiresOn specifies the time that the file will expire.
-	ExpiresOn *time.Time
+	// Expiry specifies the type and time of expiry for the file.
+	Expiry ExpiryType
 	// LeaseDuration specifies the duration of the lease.
-	LeaseDuration *time.Duration
+	LeaseDuration *int64
 	// ProposedLeaseID specifies the proposed lease ID for the file.
 	ProposedLeaseID *string
 	// Permissions is the octal representation of the permissions for user, group and mask.
@@ -42,19 +40,33 @@ type CreateOptions struct {
 	ACL *string
 }
 
-func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
-	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	httpHeaders := &generated.PathHTTPHeaders{
-		CacheControl:             o.HTTPHeaders.CacheControl,
-		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
-		ContentEncoding:          o.HTTPHeaders.ContentEncoding,
-		ContentLanguage:          o.HTTPHeaders.ContentLanguage,
-		ContentMD5:               o.HTTPHeaders.ContentMD5,
-		ContentType:              o.HTTPHeaders.ContentType,
-		TransactionalContentHash: o.HTTPHeaders.ContentMD5,
+func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
+	resource := generated.PathResourceTypeFile
+	if o == nil {
+		o = &CreateOptions{}
 	}
-	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, nil
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	expOpts, expireOnOpts := o.Expiry.Format(&exported.SetExpiryOptions{})
+
+	createOpts := &generated.PathClientCreateOptions{
+		ACL:             o.ACL,
+		Group:           o.Group,
+		Owner:           o.Owner,
+		Umask:           o.Umask,
+		Permissions:     o.Permissions,
+		ProposedLeaseID: o.ProposedLeaseID,
+		LeaseDuration:   o.LeaseDuration,
+		ExpiryOptions:   (*generated.PathExpiryOptions)(&expOpts),
+		ExpiresOn:       expireOnOpts.ExpiresOn,
+		Resource:        &resource,
+	}
+	httpHeaders := o.HTTPHeaders.formatPathHTTPHeaders()
+	cpkOpts := &generated.CPKInfo{
+		EncryptionAlgorithm: (*generated.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+	}
+	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
 
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
@@ -63,17 +75,46 @@ type DeleteOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
+func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathClientDeleteOptions) {
+	recursive := false
+	deleteOpts := &generated.PathClientDeleteOptions{
+		Recursive: &recursive,
+	}
+
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, modifiedAccessConditions, nil
+	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
 }
 
 // RenameOptions contains the optional parameters when calling the Rename operation. TODO: Design formatter
 type RenameOptions struct {
-	// SourceModifiedAccessConditions identifies the source path access conditions.
-	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	// SourceAccessConditions identifies the source path access conditions.
+	SourceAccessConditions *SourceAccessConditions
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
+}
+
+func (o *RenameOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
+	// we don't need sourceModAccCond since this is not rename
+	mode := generated.PathRenameModeLegacy
+	resource := generated.PathResourceTypeFile
+	if o == nil {
+		o = &RenameOptions{}
+	}
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	sourceModifiedAccessConditon := &generated.SourceModifiedAccessConditions{
+		SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+	}
+
+	createOpts := &generated.PathClientCreateOptions{
+		Mode:          &mode,
+		Resource:      &resource,
+		SourceLeaseID: o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID,
+	}
+
+	return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditon, createOpts
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
@@ -98,6 +139,7 @@ func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
 }
 
 // ===================================== PATH IMPORTS ===========================================
+
 // SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
 type SetAccessControlOptions struct {
 	// Owner is the owner of the path.
@@ -112,9 +154,9 @@ type SetAccessControlOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
+func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
@@ -123,7 +165,7 @@ func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessContro
 		Group:       o.Group,
 		ACL:         o.ACL,
 		Permissions: o.Permissions,
-	}, leaseAccessConditions, modifiedAccessConditions, nil
+	}, leaseAccessConditions, modifiedAccessConditions
 }
 
 // GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
@@ -134,76 +176,47 @@ type GetAccessControlOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
+func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
 	action := generated.PathGetPropertiesActionGetAccessControl
 	if o == nil {
 		return &generated.PathClientGetPropertiesOptions{
 			Action: &action,
-		}, nil, nil, nil
+		}, nil, nil
 	}
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return &generated.PathClientGetPropertiesOptions{
 		Upn:    o.UPN,
 		Action: &action,
-	}, leaseAccessConditions, modifiedAccessConditions, nil
+	}, leaseAccessConditions, modifiedAccessConditions
 }
 
-// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation. TODO: Design formatter
-type SetAccessControlRecursiveOptions struct {
+// UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
+type UpdateAccessControlOptions struct {
 	// ACL is the access control list for the path.
 	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
-	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
-	ContinueOnFailure *bool
-	// Marker is the continuation token to use when continuing the operation.
-	Marker *string
 }
 
-func (o *SetAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
-	// TODO: design formatter
-	return nil, nil
-}
-
-// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
-type UpdateAccessControlRecursiveOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
-	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
-	ContinueOnFailure *bool
-	// Marker is the continuation token to use when continuing the operation.
-	Marker *string
-}
-
-func (o *UpdateAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
+func (o *UpdateAccessControlOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+	mode := generated.PathSetAccessControlRecursiveModeModify
+	if o == nil {
+		return nil, mode
+	}
 	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
-	return nil, nil
+	opts := &generated.PathClientSetAccessControlRecursiveOptions{
+		ACL: o.ACL,
+	}
+	return opts, mode
 }
 
-// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
-type RemoveAccessControlRecursiveOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
-	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
-	ContinueOnFailure *bool
-	// Marker is the continuation token to use when continuing the operation.
-	Marker *string
+// RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
+type RemoveAccessControlOptions struct {
+	//placeholder
 }
 
-func (o *RemoveAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
-	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
-	return nil, nil
+func (o *RemoveAccessControlOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+	mode := generated.PathSetAccessControlRecursiveModeRemove
+	return nil, mode
 }
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
@@ -211,14 +224,22 @@ type SetHTTPHeadersOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetHTTPHeadersOptions) format() *blob.SetHTTPHeadersOptions {
+func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) (*blob.SetHTTPHeadersOptions, blob.HTTPHeaders) {
+	httpHeaderOpts := blob.HTTPHeaders{
+		BlobCacheControl:       httpHeaders.CacheControl,
+		BlobContentDisposition: httpHeaders.ContentDisposition,
+		BlobContentEncoding:    httpHeaders.ContentEncoding,
+		BlobContentLanguage:    httpHeaders.ContentLanguage,
+		BlobContentMD5:         httpHeaders.ContentMD5,
+		BlobContentType:        httpHeaders.ContentType,
+	}
 	if o == nil {
-		return nil
+		return nil, httpHeaderOpts
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &blob.SetHTTPHeadersOptions{
 		AccessConditions: accessConditions,
-	}
+	}, httpHeaderOpts
 }
 
 // HTTPHeaders contains the HTTP headers for path operations.
@@ -239,25 +260,24 @@ type HTTPHeaders struct {
 	ContentType *string
 }
 
-func (o *HTTPHeaders) formatBlobHTTPHeaders() (*blob.HTTPHeaders, error) {
-	if o == nil {
-		return nil, nil
-	}
-	opts := blob.HTTPHeaders{
-		BlobCacheControl:       o.CacheControl,
-		BlobContentDisposition: o.ContentDisposition,
-		BlobContentEncoding:    o.ContentEncoding,
-		BlobContentLanguage:    o.ContentLanguage,
-		BlobContentMD5:         o.ContentMD5,
-		BlobContentType:        o.ContentType,
-	}
-	return &opts, nil
-}
+//
+//func (o HTTPHeaders) formatBlobHTTPHeaders() blob.HTTPHeaders {
+//
+//	opts := blob.HTTPHeaders{
+//		BlobCacheControl:       o.CacheControl,
+//		BlobContentDisposition: o.ContentDisposition,
+//		BlobContentEncoding:    o.ContentEncoding,
+//		BlobContentLanguage:    o.ContentLanguage,
+//		BlobContentMD5:         o.ContentMD5,
+//		BlobContentType:        o.ContentType,
+//	}
+//	return opts
+//}
 
-func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error) {
+func (o *HTTPHeaders) formatPathHTTPHeaders() *generated.PathHTTPHeaders {
 	// TODO: will be used for file related ops, like append
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 	opts := generated.PathHTTPHeaders{
 		CacheControl:             o.CacheControl,
@@ -268,7 +288,7 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() (*generated.PathHTTPHeaders, error
 		ContentType:              o.ContentType,
 		TransactionalContentHash: o.ContentMD5,
 	}
-	return &opts, nil
+	return &opts
 }
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
@@ -308,21 +328,6 @@ type CPKScopeInfo struct {
 	EncryptionScope *string
 }
 
-// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
-type UndeletePathOptions struct {
-	// placeholder
-}
-
-func (o *UndeletePathOptions) format() *UndeletePathOptions {
-	if o == nil {
-		return nil
-	}
-	return &UndeletePathOptions{}
-}
-
-// SourceModifiedAccessConditions identifies the source path access conditions.
-type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
-
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
@@ -347,8 +352,14 @@ type SetExpiryOptions = exported.SetExpiryOptions
 // AccessConditions identifies blob-specific access conditions which you optionally set.
 type AccessConditions = exported.AccessConditions
 
+// SourceAccessConditions identifies blob-specific access conditions which you optionally set.
+type SourceAccessConditions = exported.SourceAccessConditions
+
 // LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = exported.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
+
+// SourceModifiedAccessConditions contains a group of parameters for specifying access conditions.
+type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions

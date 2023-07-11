@@ -199,6 +199,18 @@ func (o *GetSASURLOptions) format() time.Time {
 	return st
 }
 
+// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
+type UndeletePathOptions struct {
+	// placeholder
+}
+
+func (o *UndeletePathOptions) format() *UndeletePathOptions {
+	if o == nil {
+		return nil
+	}
+	return &UndeletePathOptions{}
+}
+
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
@@ -216,3 +228,6 @@ type PathList = generated.PathList
 
 // Path contains the path properties
 type Path = generated.Path
+
+// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+type UndeletePathResponse = generated.PathClientUndeleteResponse

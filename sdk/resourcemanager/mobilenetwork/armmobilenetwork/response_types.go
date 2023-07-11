@@ -59,6 +59,26 @@ type DataNetworksClientUpdateTagsResponse struct {
 	DataNetwork
 }
 
+// DiagnosticsPackagesClientCreateOrUpdateResponse contains the response from method DiagnosticsPackagesClient.BeginCreateOrUpdate.
+type DiagnosticsPackagesClientCreateOrUpdateResponse struct {
+	DiagnosticsPackage
+}
+
+// DiagnosticsPackagesClientDeleteResponse contains the response from method DiagnosticsPackagesClient.BeginDelete.
+type DiagnosticsPackagesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DiagnosticsPackagesClientGetResponse contains the response from method DiagnosticsPackagesClient.Get.
+type DiagnosticsPackagesClientGetResponse struct {
+	DiagnosticsPackage
+}
+
+// DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse contains the response from method DiagnosticsPackagesClient.NewListByPacketCoreControlPlanePager.
+type DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse struct {
+	DiagnosticsPackageListResult
+}
+
 // MobileNetworksClientCreateOrUpdateResponse contains the response from method MobileNetworksClient.BeginCreateOrUpdate.
 type MobileNetworksClientCreateOrUpdateResponse struct {
 	MobileNetwork
@@ -94,9 +114,44 @@ type OperationsClientListResponse struct {
 	OperationList
 }
 
+// PacketCapturesClientCreateOrUpdateResponse contains the response from method PacketCapturesClient.BeginCreateOrUpdate.
+type PacketCapturesClientCreateOrUpdateResponse struct {
+	PacketCapture
+}
+
+// PacketCapturesClientDeleteResponse contains the response from method PacketCapturesClient.BeginDelete.
+type PacketCapturesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PacketCapturesClientGetResponse contains the response from method PacketCapturesClient.Get.
+type PacketCapturesClientGetResponse struct {
+	PacketCapture
+}
+
+// PacketCapturesClientListByPacketCoreControlPlaneResponse contains the response from method PacketCapturesClient.NewListByPacketCoreControlPlanePager.
+type PacketCapturesClientListByPacketCoreControlPlaneResponse struct {
+	PacketCaptureListResult
+}
+
+// PacketCapturesClientStopResponse contains the response from method PacketCapturesClient.BeginStop.
+type PacketCapturesClientStopResponse struct {
+	AsyncOperationStatus
+}
+
+// PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse contains the response from method PacketCoreControlPlaneVersionsClient.GetBySubscription.
+type PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse struct {
+	PacketCoreControlPlaneVersion
+}
+
 // PacketCoreControlPlaneVersionsClientGetResponse contains the response from method PacketCoreControlPlaneVersionsClient.Get.
 type PacketCoreControlPlaneVersionsClientGetResponse struct {
 	PacketCoreControlPlaneVersion
+}
+
+// PacketCoreControlPlaneVersionsClientListBySubscriptionResponse contains the response from method PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager.
+type PacketCoreControlPlaneVersionsClientListBySubscriptionResponse struct {
+	PacketCoreControlPlaneVersionListResult
 }
 
 // PacketCoreControlPlaneVersionsClientListResponse contains the response from method PacketCoreControlPlaneVersionsClient.NewListPager.
@@ -292,6 +347,11 @@ type SimsClientListByGroupResponse struct {
 // SitesClientCreateOrUpdateResponse contains the response from method SitesClient.BeginCreateOrUpdate.
 type SitesClientCreateOrUpdateResponse struct {
 	Site
+}
+
+// SitesClientDeletePacketCoreResponse contains the response from method SitesClient.BeginDeletePacketCore.
+type SitesClientDeletePacketCoreResponse struct {
+	// placeholder for future response values
 }
 
 // SitesClientDeleteResponse contains the response from method SitesClient.BeginDelete.

@@ -80,7 +80,7 @@ type AttachedDataNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -251,7 +251,7 @@ type DataNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -290,11 +290,9 @@ type DataNetworkConfiguration struct {
 	// The default PDU session type, which is used if the UE does not request a specific session type.
 	DefaultSessionType *PduSessionType
 
-	// Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow.
-	// This must not be a standardized 5QI value corresponding to a GBR (guaranteed
-	// bit rate) QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85.
-	// See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter,
-	// and table 5.7.4-1 for the definition of which are the GBR 5QI values.
+	// Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See
+	// 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and
+	// table 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended Buffering.
@@ -364,6 +362,77 @@ type DataNetworksClientListByMobileNetworkOptions struct {
 // DataNetworksClientUpdateTagsOptions contains the optional parameters for the DataNetworksClient.UpdateTags method.
 type DataNetworksClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DiagnosticsPackage - Diagnostics package resource.
+type DiagnosticsPackage struct {
+	// REQUIRED; Diagnostics package properties. A diagnostics package file derived from the name of this resource will be uploaded
+	// to the Storage Account Container URL in the packet core control plane properties
+	Properties *DiagnosticsPackagePropertiesFormat
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiagnosticsPackageListResult - Response for diagnostics package API service call.
+type DiagnosticsPackageListResult struct {
+	// A list of diagnostics packages under a packet core control plane.
+	Value []*DiagnosticsPackage
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// DiagnosticsPackagePropertiesFormat - Diagnostics package properties.
+type DiagnosticsPackagePropertiesFormat struct {
+	// READ-ONLY; The provisioning state of the diagnostics package resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The reason for the current state of the diagnostics package collection.
+	Reason *string
+
+	// READ-ONLY; The status of the diagnostics package collection.
+	Status *DiagnosticsPackageStatus
+}
+
+// DiagnosticsPackagesClientBeginCreateOrUpdateOptions contains the optional parameters for the DiagnosticsPackagesClient.BeginCreateOrUpdate
+// method.
+type DiagnosticsPackagesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DiagnosticsPackagesClientBeginDeleteOptions contains the optional parameters for the DiagnosticsPackagesClient.BeginDelete
+// method.
+type DiagnosticsPackagesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DiagnosticsPackagesClientGetOptions contains the optional parameters for the DiagnosticsPackagesClient.Get method.
+type DiagnosticsPackagesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the DiagnosticsPackagesClient.NewListByPacketCoreControlPlanePager
+// method.
+type DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticsUploadConfiguration - Configuration for uploading packet core diagnostics.
+type DiagnosticsUploadConfiguration struct {
+	// REQUIRED; The Storage Account Container URL to upload diagnostics to.
+	StorageAccountContainerURL *string
 }
 
 // EncryptedSimPropertiesFormat - Encrypted SIM properties.
@@ -470,12 +539,30 @@ type HTTPSServerCertificate struct {
 	Provisioning *CertificateProvisioning
 }
 
+// IdentityAndTagsObject - Identity and Tags object for patch operations.
+type IdentityAndTagsObject struct {
+	// The managed service identity associated with this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // Installation - The installation state of the packet core.
 type Installation struct {
-	// A reference to an in-progress installation operation
+	// The desired installation state
+	DesiredState *DesiredInstallationState
+
+	// READ-ONLY; A reference to an in-progress installation operation
 	Operation *AsyncOperationID
 
-	// Installation state
+	// READ-ONLY; Reason(s) for the current installation state of the packet core.
+	Reasons []*InstallationReason
+
+	// READ-ONLY; Whether a reinstall of the packet core is required to pick up the latest configuration changes.
+	ReinstallRequired *ReinstallRequired
+
+	// READ-ONLY; Installation state
 	State *InstallationState
 }
 
@@ -519,9 +606,9 @@ type LocalDiagnosticsAccessConfiguration struct {
 	HTTPSServerCertificate *HTTPSServerCertificate
 }
 
-// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+// ManagedServiceIdentity - Managed service identity (User assigned identity)
 type ManagedServiceIdentity struct {
-	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	// REQUIRED; Type of managed service identity (currently only UserAssigned allowed).
 	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
@@ -530,13 +617,6 @@ type ManagedServiceIdentity struct {
 	// The dictionary values can be empty objects ({}) in
 	// requests.
 	UserAssignedIdentities map[string]*UserAssignedIdentity
-
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string
 }
 
 // MobileNetwork - Mobile network resource.
@@ -550,7 +630,7 @@ type MobileNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -661,6 +741,91 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PacketCapture - Packet capture session resource.
+type PacketCapture struct {
+	// REQUIRED; Packet capture session properties. Packet capture file(s) derived from the name of this session will be uploaded
+	// to the Storage Account Container URL in the packet core control plane properties
+	Properties *PacketCapturePropertiesFormat
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PacketCaptureListResult - Response for packet capture API service call.
+type PacketCaptureListResult struct {
+	// A list of packet capture sessions under a packet core control plane.
+	Value []*PacketCapture
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// PacketCapturePropertiesFormat - Packet capture session properties.
+type PacketCapturePropertiesFormat struct {
+	// Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet is captured.
+	BytesToCapturePerPacket *int64
+
+	// List of network interfaces to capture on.
+	NetworkInterfaces []*string
+
+	// Maximum duration of the capture session in seconds.
+	TimeLimitInSeconds *int32
+
+	// Maximum size of the capture output.
+	TotalBytesPerSession *int64
+
+	// READ-ONLY; The start time of the packet capture session.
+	CaptureStartTime *time.Time
+
+	// READ-ONLY; The provisioning state of the packet capture session resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The reason the current packet capture session state.
+	Reason *string
+
+	// READ-ONLY; The status of the packet capture session.
+	Status *PacketCaptureStatus
+}
+
+// PacketCapturesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCapturesClient.BeginCreateOrUpdate
+// method.
+type PacketCapturesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PacketCapturesClientBeginDeleteOptions contains the optional parameters for the PacketCapturesClient.BeginDelete method.
+type PacketCapturesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PacketCapturesClientBeginStopOptions contains the optional parameters for the PacketCapturesClient.BeginStop method.
+type PacketCapturesClientBeginStopOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PacketCapturesClientGetOptions contains the optional parameters for the PacketCapturesClient.Get method.
+type PacketCapturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PacketCapturesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCapturesClient.NewListByPacketCoreControlPlanePager
+// method.
+type PacketCapturesClientListByPacketCoreControlPlaneOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PacketCoreControlPlane - Packet core control plane resource.
 type PacketCoreControlPlane struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -675,7 +840,7 @@ type PacketCoreControlPlane struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -725,6 +890,12 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	// The core network technology generation (5G core or EPC / 4G core).
 	CoreNetworkTechnology *CoreNetworkType
 
+	// Configuration for uploading packet core diagnostics
+	DiagnosticsUpload *DiagnosticsUploadConfiguration
+
+	// The installation state of the packet core control plane resource.
+	Installation *Installation
+
 	// Settings to allow interoperability with third party components e.g. RANs and UEs.
 	InteropSettings any
 
@@ -733,11 +904,11 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	// value to allow for GTP encapsulation.
 	UeMtu *int32
 
-	// The version of the packet core software that is deployed.
+	// The desired version of the packet core software.
 	Version *string
 
-	// READ-ONLY; The installation state of the packet core control plane resource.
-	Installation *Installation
+	// READ-ONLY; The currently installed version of the packet core software.
+	InstalledVersion *string
 
 	// READ-ONLY; The provisioning state of the packet core control plane resource.
 	ProvisioningState *ProvisioningState
@@ -746,12 +917,18 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	RollbackVersion *string
 }
 
+// PacketCoreControlPlaneResourceID - Reference to an packet core control plane resource.
+type PacketCoreControlPlaneResourceID struct {
+	// REQUIRED; Packet core control plane resource ID.
+	ID *string
+}
+
 // PacketCoreControlPlaneVersion - Packet core control plane version resource.
 type PacketCoreControlPlaneVersion struct {
 	// REQUIRED; Packet core control plane version properties.
 	Properties *PacketCoreControlPlaneVersionPropertiesFormat
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -782,9 +959,21 @@ type PacketCoreControlPlaneVersionPropertiesFormat struct {
 	ProvisioningState *ProvisioningState
 }
 
+// PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.GetBySubscription
+// method.
+type PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
 // method.
 type PacketCoreControlPlaneVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PacketCoreControlPlaneVersionsClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager
+// method.
+type PacketCoreControlPlaneVersionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -864,7 +1053,7 @@ type PacketCoreDataPlane struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -960,11 +1149,9 @@ type PccRuleQosPolicy struct {
 	// section 5.7.2.2 for a full description of the ARP parameters.
 	AllocationAndRetentionPriorityLevel *int32
 
-	// QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. This
-	// must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate)
-	// QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
+	// 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP
 	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
-	// 5.7.4-1 for the definition of which are the GBR 5QI values.
+	// 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting.
@@ -1088,7 +1275,7 @@ type PropertiesFormat struct {
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1112,11 +1299,9 @@ type QosPolicy struct {
 	// section 5.7.2.2 for a full description of the ARP parameters.
 	AllocationAndRetentionPriorityLevel *int32
 
-	// QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. This
-	// must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate)
-	// QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
+	// 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP
 	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
-	// 5.7.4-1 for the definition of which are the GBR 5QI values.
+	// 5.7.4-1 for the definition the 5QI values.
 	FiveQi *int32
 
 	// QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow
@@ -1132,7 +1317,7 @@ type QosPolicy struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1162,7 +1347,7 @@ type Service struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1271,7 +1456,7 @@ type Sim struct {
 	// REQUIRED; SIM Properties.
 	Properties *SimPropertiesFormat
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1304,7 +1489,7 @@ type SimGroup struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1446,7 +1631,7 @@ type SimPolicy struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1482,7 +1667,7 @@ type SimPolicyPropertiesFormat struct {
 	// section 5.7.2.6 for a full description of the UE-AMBR.
 	UeAmbr *Ambr
 
-	// Interval for the UE periodic registration update procedure, in seconds.
+	// UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds.
 	RegistrationTimer *int32
 
 	// RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is unspecified.
@@ -1624,7 +1809,7 @@ type Site struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1635,6 +1820,12 @@ type Site struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SiteDeletePacketCore - The packet core to delete under a site.
+type SiteDeletePacketCore struct {
+	// Reference to an packet core control plane resource.
+	PacketCore *PacketCoreControlPlaneResourceID
 }
 
 // SiteListResult - Response for sites API service call.
@@ -1674,6 +1865,12 @@ type SitesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// SitesClientBeginDeletePacketCoreOptions contains the optional parameters for the SitesClient.BeginDeletePacketCore method.
+type SitesClientBeginDeletePacketCoreOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
 type SitesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1701,7 +1898,7 @@ type Slice struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1835,7 +2032,7 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

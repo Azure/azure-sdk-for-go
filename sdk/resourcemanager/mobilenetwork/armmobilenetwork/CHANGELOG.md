@@ -1,5 +1,53 @@
 # Release History
 
+## 3.0.0 (2023-07-28)
+### Breaking Changes
+
+- Function `NewPacketCoreControlPlaneVersionsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*PacketCoreControlPlanesClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsObject, *PacketCoreControlPlanesClientUpdateTagsOptions)` to `(context.Context, string, string, IdentityAndTagsObject, *PacketCoreControlPlanesClientUpdateTagsOptions)`
+- Function `*SimGroupsClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsObject, *SimGroupsClientUpdateTagsOptions)` to `(context.Context, string, string, IdentityAndTagsObject, *SimGroupsClientUpdateTagsOptions)`
+- `BillingSKUG3`, `BillingSKUG4` from enum `BillingSKU` has been removed
+- `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned` from enum `ManagedServiceIdentityType` has been removed
+- Field `PrincipalID`, `TenantID` of struct `ManagedServiceIdentity` has been removed
+
+### Features Added
+
+- New value `CoreNetworkTypeEPC5GC` added to enum type `CoreNetworkType`
+- New enum type `DesiredInstallationState` with values `DesiredInstallationStateInstalled`, `DesiredInstallationStateUninstalled`
+- New enum type `DiagnosticsPackageStatus` with values `DiagnosticsPackageStatusCollected`, `DiagnosticsPackageStatusCollecting`, `DiagnosticsPackageStatusError`, `DiagnosticsPackageStatusNotStarted`
+- New enum type `InstallationReason` with values `InstallationReasonNoAttachedDataNetworks`, `InstallationReasonNoPacketCoreDataPlane`, `InstallationReasonNoSlices`
+- New enum type `PacketCaptureStatus` with values `PacketCaptureStatusError`, `PacketCaptureStatusNotStarted`, `PacketCaptureStatusRunning`, `PacketCaptureStatusStopped`
+- New enum type `ReinstallRequired` with values `ReinstallRequiredNotRequired`, `ReinstallRequiredRequired`
+- New function `*ClientFactory.NewDiagnosticsPackagesClient() *DiagnosticsPackagesClient`
+- New function `*ClientFactory.NewPacketCapturesClient() *PacketCapturesClient`
+- New function `NewDiagnosticsPackagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DiagnosticsPackagesClient, error)`
+- New function `*DiagnosticsPackagesClient.BeginCreateOrUpdate(context.Context, string, string, string, *DiagnosticsPackagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DiagnosticsPackagesClientCreateOrUpdateResponse], error)`
+- New function `*DiagnosticsPackagesClient.BeginDelete(context.Context, string, string, string, *DiagnosticsPackagesClientBeginDeleteOptions) (*runtime.Poller[DiagnosticsPackagesClientDeleteResponse], error)`
+- New function `*DiagnosticsPackagesClient.Get(context.Context, string, string, string, *DiagnosticsPackagesClientGetOptions) (DiagnosticsPackagesClientGetResponse, error)`
+- New function `*DiagnosticsPackagesClient.NewListByPacketCoreControlPlanePager(string, string, *DiagnosticsPackagesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse]`
+- New function `NewPacketCapturesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PacketCapturesClient, error)`
+- New function `*PacketCapturesClient.BeginCreateOrUpdate(context.Context, string, string, string, PacketCapture, *PacketCapturesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PacketCapturesClientCreateOrUpdateResponse], error)`
+- New function `*PacketCapturesClient.BeginDelete(context.Context, string, string, string, *PacketCapturesClientBeginDeleteOptions) (*runtime.Poller[PacketCapturesClientDeleteResponse], error)`
+- New function `*PacketCapturesClient.Get(context.Context, string, string, string, *PacketCapturesClientGetOptions) (PacketCapturesClientGetResponse, error)`
+- New function `*PacketCapturesClient.NewListByPacketCoreControlPlanePager(string, string, *PacketCapturesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCapturesClientListByPacketCoreControlPlaneResponse]`
+- New function `*PacketCapturesClient.BeginStop(context.Context, string, string, string, *PacketCapturesClientBeginStopOptions) (*runtime.Poller[PacketCapturesClientStopResponse], error)`
+- New function `*PacketCoreControlPlaneVersionsClient.GetBySubscription(context.Context, string, *PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions) (PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse, error)`
+- New function `*PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager(*PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]`
+- New function `*SitesClient.BeginDeletePacketCore(context.Context, string, string, string, SiteDeletePacketCore, *SitesClientBeginDeletePacketCoreOptions) (*runtime.Poller[SitesClientDeletePacketCoreResponse], error)`
+- New struct `DiagnosticsPackage`
+- New struct `DiagnosticsPackageListResult`
+- New struct `DiagnosticsPackagePropertiesFormat`
+- New struct `DiagnosticsUploadConfiguration`
+- New struct `IdentityAndTagsObject`
+- New struct `PacketCapture`
+- New struct `PacketCaptureListResult`
+- New struct `PacketCapturePropertiesFormat`
+- New struct `PacketCoreControlPlaneResourceID`
+- New struct `SiteDeletePacketCore`
+- New field `DesiredState`, `Reasons`, `ReinstallRequired` in struct `Installation`
+- New field `DiagnosticsUpload`, `InstalledVersion` in struct `PacketCoreControlPlanePropertiesFormat`
+
+
 ## 2.1.1 (2023-04-14)
 ### Bug Fixes
 

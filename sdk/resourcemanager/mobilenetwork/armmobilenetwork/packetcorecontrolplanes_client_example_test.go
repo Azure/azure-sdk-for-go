@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneDelete.json
 func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneGet.json
 func ExamplePacketCoreControlPlanesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	// res.PacketCoreControlPlane = armmobilenetwork.PacketCoreControlPlane{
 	// 	Name: to.Ptr("TestPacketCoreCP"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlane"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -83,6 +83,7 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	// 			},
 	// 			State: to.Ptr(armmobilenetwork.InstallationStateInstalling),
 	// 		},
+	// 		InstalledVersion: to.Ptr("0.2.0"),
 	// 		LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
 	// 			AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypePassword),
 	// 			HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
@@ -95,27 +96,27 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	// 		Platform: &armmobilenetwork.PlatformConfiguration{
 	// 			Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
 	// 			AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 			},
 	// 			AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
 	// 			}},
 	// 			ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
 	// 			},
 	// 			CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RollbackVersion: to.Ptr("0.1.0"),
 	// 		Sites: []*armmobilenetwork.SiteResourceID{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 	// 		}},
 	// 		SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
 	// 		UeMtu: to.Ptr[int32](1600),
@@ -124,7 +125,7 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCreate.json
 func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,6 +143,9 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 				Name: to.Ptr("N2"),
 			},
 			CoreNetworkTechnology: to.Ptr(armmobilenetwork.CoreNetworkTypeFiveGC),
+			Installation: &armmobilenetwork.Installation{
+				DesiredState: to.Ptr(armmobilenetwork.DesiredInstallationStateInstalled),
+			},
 			LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
 				AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypeAAD),
 				HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
@@ -151,18 +155,18 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 			Platform: &armmobilenetwork.PlatformConfiguration{
 				Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
 				AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 				},
 				ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
 				},
 				CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
 				},
 			},
 			Sites: []*armmobilenetwork.SiteResourceID{
 				{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 				}},
 			SKU:     to.Ptr(armmobilenetwork.BillingSKUG0),
 			UeMtu:   to.Ptr[int32](1600),
@@ -182,7 +186,7 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	// res.PacketCoreControlPlane = armmobilenetwork.PacketCoreControlPlane{
 	// 	Name: to.Ptr("TestPacketCoreCP"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlane"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -200,6 +204,8 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		CoreNetworkTechnology: to.Ptr(armmobilenetwork.CoreNetworkTypeFiveGC),
 	// 		Installation: &armmobilenetwork.Installation{
+	// 			DesiredState: to.Ptr(armmobilenetwork.DesiredInstallationStateInstalled),
+	// 			ReinstallRequired: to.Ptr(armmobilenetwork.ReinstallRequiredNotRequired),
 	// 			State: to.Ptr(armmobilenetwork.InstallationStateInstalled),
 	// 		},
 	// 		LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
@@ -214,26 +220,26 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	// 		Platform: &armmobilenetwork.PlatformConfiguration{
 	// 			Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
 	// 			AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 			},
 	// 			AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
 	// 			}},
 	// 			ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
 	// 			},
 	// 			CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		Sites: []*armmobilenetwork.SiteResourceID{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 	// 		}},
 	// 		SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
 	// 		UeMtu: to.Ptr[int32](1600),
@@ -242,7 +248,7 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlanePatch.json
 func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +259,13 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPacketCoreControlPlanesClient().UpdateTags(ctx, "rg1", "TestPacketCoreCP", armmobilenetwork.TagsObject{
+	res, err := clientFactory.NewPacketCoreControlPlanesClient().UpdateTags(ctx, "rg1", "TestPacketCoreCP", armmobilenetwork.IdentityAndTagsObject{
+		Identity: &armmobilenetwork.ManagedServiceIdentity{
+			Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": {},
+			},
+		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -268,7 +280,7 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// res.PacketCoreControlPlane = armmobilenetwork.PacketCoreControlPlane{
 	// 	Name: to.Ptr("TestPacketCoreCP"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlane"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -282,6 +294,15 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	Identity: &armmobilenetwork.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
+	// 				PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armmobilenetwork.PacketCoreControlPlanePropertiesFormat{
 	// 		ControlPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
 	// 			Name: to.Ptr("N2"),
@@ -290,6 +311,7 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// 		Installation: &armmobilenetwork.Installation{
 	// 			State: to.Ptr(armmobilenetwork.InstallationStateInstalled),
 	// 		},
+	// 		InstalledVersion: to.Ptr("0.2.0"),
 	// 		LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
 	// 			AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypePassword),
 	// 			HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
@@ -302,27 +324,27 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// 		Platform: &armmobilenetwork.PlatformConfiguration{
 	// 			Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
 	// 			AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 			},
 	// 			AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 	// 				},
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
 	// 			}},
 	// 			ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
 	// 			},
 	// 			CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RollbackVersion: to.Ptr("0.1.0"),
 	// 		Sites: []*armmobilenetwork.SiteResourceID{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 	// 		}},
 	// 		SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
 	// 		UeMtu: to.Ptr[int32](1600),
@@ -331,7 +353,7 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneListBySubscription.json
 func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +380,7 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("TestPacketCoreCP"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlane"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -378,6 +400,7 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 		// 				Installation: &armmobilenetwork.Installation{
 		// 					State: to.Ptr(armmobilenetwork.InstallationStateInstalled),
 		// 				},
+		// 				InstalledVersion: to.Ptr("0.2.0"),
 		// 				LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
 		// 					AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypePassword),
 		// 					HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
@@ -390,27 +413,27 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 		// 				Platform: &armmobilenetwork.PlatformConfiguration{
 		// 					Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
 		// 					AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 		// 					},
 		// 					AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 		// 						},
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
 		// 					}},
 		// 					ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
 		// 					},
 		// 					CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 		// 				RollbackVersion: to.Ptr("0.1.0"),
 		// 				Sites: []*armmobilenetwork.SiteResourceID{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 		// 				}},
 		// 				SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
 		// 				UeMtu: to.Ptr[int32](1600),
@@ -421,7 +444,7 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneListByResourceGroup.json
 func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +471,7 @@ func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("TestPacketCoreCP"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlane"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -466,52 +489,55 @@ func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				CoreNetworkTechnology: to.Ptr(armmobilenetwork.CoreNetworkTypeFiveGC),
 		// 				Installation: &armmobilenetwork.Installation{
-		// 					State: to.Ptr(armmobilenetwork.InstallationStateInstalled),
-		// 				},
-		// 				LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
-		// 					AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypePassword),
-		// 					HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
-		// 						CertificateURL: to.Ptr("https://contosovault.vault.azure.net/certificates/ingress"),
-		// 						Provisioning: &armmobilenetwork.CertificateProvisioning{
-		// 							State: to.Ptr(armmobilenetwork.CertificateProvisioningStateNotProvisioned),
+		// 					Reasons: []*armmobilenetwork.InstallationReason{
+		// 						to.Ptr(armmobilenetwork.InstallationReasonNoSlices)},
+		// 						State: to.Ptr(armmobilenetwork.InstallationStateUninstalled),
+		// 					},
+		// 					InstalledVersion: to.Ptr("0.2.0"),
+		// 					LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
+		// 						AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypePassword),
+		// 						HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
+		// 							CertificateURL: to.Ptr("https://contosovault.vault.azure.net/certificates/ingress"),
+		// 							Provisioning: &armmobilenetwork.CertificateProvisioning{
+		// 								State: to.Ptr(armmobilenetwork.CertificateProvisioningStateNotProvisioned),
+		// 							},
 		// 						},
 		// 					},
-		// 				},
-		// 				Platform: &armmobilenetwork.PlatformConfiguration{
-		// 					Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 					AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
-		// 					},
-		// 					AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+		// 					Platform: &armmobilenetwork.PlatformConfiguration{
+		// 						Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 						AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
 		// 						},
+		// 						AzureStackEdgeDevices: []*armmobilenetwork.AzureStackEdgeDeviceResourceID{
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+		// 							},
+		// 							{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+		// 						}},
+		// 						ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+		// 						},
+		// 						CustomLocation: &armmobilenetwork.CustomLocationResourceID{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
+		// 					RollbackVersion: to.Ptr("0.1.0"),
+		// 					Sites: []*armmobilenetwork.SiteResourceID{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
 		// 					}},
-		// 					ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
-		// 					},
-		// 					CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
-		// 					},
+		// 					SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
+		// 					UeMtu: to.Ptr[int32](1600),
+		// 					Version: to.Ptr("0.2.0"),
 		// 				},
-		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
-		// 				RollbackVersion: to.Ptr("0.1.0"),
-		// 				Sites: []*armmobilenetwork.SiteResourceID{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
-		// 				}},
-		// 				SKU: to.Ptr(armmobilenetwork.BillingSKUG0),
-		// 				UeMtu: to.Ptr[int32](1600),
-		// 				Version: to.Ptr("0.2.0"),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneRollback.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneRollback.json
 func ExamplePacketCoreControlPlanesClient_BeginRollback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,7 +568,7 @@ func ExamplePacketCoreControlPlanesClient_BeginRollback() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneReinstall.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneReinstall.json
 func ExamplePacketCoreControlPlanesClient_BeginReinstall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +599,7 @@ func ExamplePacketCoreControlPlanesClient_BeginReinstall() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
 func ExamplePacketCoreControlPlanesClient_BeginCollectDiagnosticsPackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

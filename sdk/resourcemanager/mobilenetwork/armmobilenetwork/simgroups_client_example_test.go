@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupDelete.json
 func ExampleSimGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleSimGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupGet.json
 func ExampleSimGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSimGroupsClient_Get() {
 	// res.SimGroup = armmobilenetwork.SimGroup{
 	// 	Name: to.Ptr("testSimGroup"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -75,7 +75,7 @@ func ExampleSimGroupsClient_Get() {
 	// 	Identity: &armmobilenetwork.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 	// 		UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 				PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 			},
@@ -86,14 +86,14 @@ func ExampleSimGroupsClient_Get() {
 	// 			KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 	// 		},
 	// 		MobileNetwork: &armmobilenetwork.ResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupCreate.json
 func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 		Identity: &armmobilenetwork.ManagedServiceIdentity{
 			Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-				"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": {},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": {},
 			},
 		},
 		Properties: &armmobilenetwork.SimGroupPropertiesFormat{
@@ -117,7 +117,7 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 				KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 			},
 			MobileNetwork: &armmobilenetwork.ResourceID{
-				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 			},
 		},
 	}, nil)
@@ -134,7 +134,7 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	// res.SimGroup = armmobilenetwork.SimGroup{
 	// 	Name: to.Ptr("testSimGroup"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -149,7 +149,7 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	// 	Identity: &armmobilenetwork.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 	// 		UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 				PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 			},
@@ -160,14 +160,14 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	// 			KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 	// 		},
 	// 		MobileNetwork: &armmobilenetwork.ResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupPatch.json
 func ExampleSimGroupsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,13 @@ func ExampleSimGroupsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSimGroupsClient().UpdateTags(ctx, "rg1", "testSimGroup", armmobilenetwork.TagsObject{
+	res, err := clientFactory.NewSimGroupsClient().UpdateTags(ctx, "rg1", "testSimGroup", armmobilenetwork.IdentityAndTagsObject{
+		Identity: &armmobilenetwork.ManagedServiceIdentity{
+			Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": {},
+			},
+		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -193,7 +199,7 @@ func ExampleSimGroupsClient_UpdateTags() {
 	// res.SimGroup = armmobilenetwork.SimGroup{
 	// 	Name: to.Ptr("testSimGroup"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -210,7 +216,7 @@ func ExampleSimGroupsClient_UpdateTags() {
 	// 	Identity: &armmobilenetwork.ManagedServiceIdentity{
 	// 		Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 	// 		UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 				PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 	// 			},
@@ -221,14 +227,14 @@ func ExampleSimGroupsClient_UpdateTags() {
 	// 			KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 	// 		},
 	// 		MobileNetwork: &armmobilenetwork.ResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupListBySubscription.json
 func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +261,7 @@ func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("testSimGroup"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/simGroups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -270,7 +276,7 @@ func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 		// 			Identity: &armmobilenetwork.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 		// 				UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-		// 					"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+		// 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
 		// 						ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 		// 						PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 		// 					},
@@ -281,7 +287,7 @@ func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 		// 					KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 		// 				},
 		// 				MobileNetwork: &armmobilenetwork.ResourceID{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 		// 			},
@@ -290,7 +296,7 @@ func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupListByResourceGroup.json
 func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +323,7 @@ func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("testSimGroup"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/simGroups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/simGroups/testSimGroup"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -332,7 +338,7 @@ func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 		// 			Identity: &armmobilenetwork.ManagedServiceIdentity{
 		// 				Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
 		// 				UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
-		// 					"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
+		// 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": &armmobilenetwork.UserAssignedIdentity{
 		// 						ClientID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 		// 						PrincipalID: to.Ptr("12345678-abcd-dcba-abcd-0123456789ef"),
 		// 					},
@@ -343,7 +349,7 @@ func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 		// 					KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
 		// 				},
 		// 				MobileNetwork: &armmobilenetwork.ResourceID{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 		// 			},

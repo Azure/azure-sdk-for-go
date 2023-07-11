@@ -24,19 +24,22 @@ import (
 // PacketCoreControlPlaneVersionsClient contains the methods for the PacketCoreControlPlaneVersions group.
 // Don't use this type directly, use NewPacketCoreControlPlaneVersionsClient() instead.
 type PacketCoreControlPlaneVersionsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewPacketCoreControlPlaneVersionsClient creates a new instance of PacketCoreControlPlaneVersionsClient with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPacketCoreControlPlaneVersionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreControlPlaneVersionsClient, error) {
+func NewPacketCoreControlPlaneVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreControlPlaneVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName+".PacketCoreControlPlaneVersionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PacketCoreControlPlaneVersionsClient{
-		internal: cl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -44,7 +47,7 @@ func NewPacketCoreControlPlaneVersionsClient(credential azcore.TokenCredential, 
 // Get - Gets information about the specified packet core control plane version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-06-01
 //   - versionName - The name of the packet core control plane version.
 //   - options - PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
 //     method.
@@ -75,7 +78,7 @@ func (client *PacketCoreControlPlaneVersionsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -90,9 +93,59 @@ func (client *PacketCoreControlPlaneVersionsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
+// GetBySubscription - Gets information about the specified packet core control plane version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01
+//   - versionName - The name of the packet core control plane version.
+//   - options - PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.GetBySubscription
+//     method.
+func (client *PacketCoreControlPlaneVersionsClient) GetBySubscription(ctx context.Context, versionName string, options *PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions) (PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse, error) {
+	req, err := client.getBySubscriptionCreateRequest(ctx, versionName, options)
+	if err != nil {
+		return PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse{}, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getBySubscriptionHandleResponse(resp)
+}
+
+// getBySubscriptionCreateRequest creates the GetBySubscription request.
+func (client *PacketCoreControlPlaneVersionsClient) getBySubscriptionCreateRequest(ctx context.Context, versionName string, options *PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/{versionName}"
+	if versionName == "" {
+		return nil, errors.New("parameter versionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getBySubscriptionHandleResponse handles the GetBySubscription response.
+func (client *PacketCoreControlPlaneVersionsClient) getBySubscriptionHandleResponse(resp *http.Response) (PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse, error) {
+	result := PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneVersion); err != nil {
+		return PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Lists all supported packet core control planes versions.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-06-01
 //   - options - PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListPager
 //     method.
 func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *PacketCoreControlPlaneVersionsClientListOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse] {
@@ -131,7 +184,7 @@ func (client *PacketCoreControlPlaneVersionsClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -142,6 +195,63 @@ func (client *PacketCoreControlPlaneVersionsClient) listHandleResponse(resp *htt
 	result := PacketCoreControlPlaneVersionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneVersionListResult); err != nil {
 		return PacketCoreControlPlaneVersionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListBySubscriptionPager - Lists all supported packet core control planes versions.
+//
+// Generated from API version 2023-06-01
+//   - options - PacketCoreControlPlaneVersionsClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager
+//     method.
+func (client *PacketCoreControlPlaneVersionsClient) NewListBySubscriptionPager(options *PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]{
+		More: func(page PacketCoreControlPlaneVersionsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PacketCoreControlPlaneVersionsClientListBySubscriptionResponse) (PacketCoreControlPlaneVersionsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PacketCoreControlPlaneVersionsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PacketCoreControlPlaneVersionsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PacketCoreControlPlaneVersionsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
+		},
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *PacketCoreControlPlaneVersionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *PacketCoreControlPlaneVersionsClient) listBySubscriptionHandleResponse(resp *http.Response) (PacketCoreControlPlaneVersionsClientListBySubscriptionResponse, error) {
+	result := PacketCoreControlPlaneVersionsClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneVersionListResult); err != nil {
+		return PacketCoreControlPlaneVersionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

@@ -24,7 +24,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -48,6 +48,11 @@ func (c *ClientFactory) NewDataNetworksClient() *DataNetworksClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewDiagnosticsPackagesClient() *DiagnosticsPackagesClient {
+	subClient, _ := NewDiagnosticsPackagesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewMobileNetworksClient() *MobileNetworksClient {
 	subClient, _ := NewMobileNetworksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -58,13 +63,18 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewPacketCapturesClient() *PacketCapturesClient {
+	subClient, _ := NewPacketCapturesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewPacketCoreControlPlanesClient() *PacketCoreControlPlanesClient {
 	subClient, _ := NewPacketCoreControlPlanesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewPacketCoreControlPlaneVersionsClient() *PacketCoreControlPlaneVersionsClient {
-	subClient, _ := NewPacketCoreControlPlaneVersionsClient(c.credential, c.options)
+	subClient, _ := NewPacketCoreControlPlaneVersionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

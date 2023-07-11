@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyDelete.json
 func ExampleSimPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleSimPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyGet.json
 func ExampleSimPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSimPoliciesClient_Get() {
 	// res.SimPolicy = armmobilenetwork.SimPolicy{
 	// 	Name: to.Ptr("testPolicy"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simPolicy"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -74,13 +74,13 @@ func ExampleSimPoliciesClient_Get() {
 	// 	},
 	// 	Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 	// 		DefaultSlice: &armmobilenetwork.SliceResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RegistrationTimer: to.Ptr[int32](3240),
 	// 		SiteProvisioningState: map[string]*armmobilenetwork.SiteProvisioningState{
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateAdding),
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateAdding),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateAdding),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateAdding),
 	// 		},
 	// 		SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
 	// 			{
@@ -92,10 +92,10 @@ func ExampleSimPoliciesClient_Get() {
 	// 						AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 	// 						AllowedServices: []*armmobilenetwork.ServiceResourceID{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 	// 						}},
 	// 						DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 						},
 	// 						DefaultSessionType: to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 	// 						MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
@@ -107,10 +107,10 @@ func ExampleSimPoliciesClient_Get() {
 	// 						},
 	// 				}},
 	// 				DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 				},
 	// 				Slice: &armmobilenetwork.SliceResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 				},
 	// 		}},
 	// 		UeAmbr: &armmobilenetwork.Ambr{
@@ -121,7 +121,7 @@ func ExampleSimPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyCreate.json
 func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("eastus"),
 		Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 			DefaultSlice: &armmobilenetwork.SliceResourceID{
-				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 			},
 			RegistrationTimer: to.Ptr[int32](3240),
 			SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
@@ -148,10 +148,10 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 							AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 							AllowedServices: []*armmobilenetwork.ServiceResourceID{
 								{
-									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 								}},
 							DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 							},
 							DefaultSessionType:             to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 							MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
@@ -163,10 +163,10 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 							},
 						}},
 					DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 					},
 					Slice: &armmobilenetwork.SliceResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 					},
 				}},
 			UeAmbr: &armmobilenetwork.Ambr{
@@ -188,7 +188,7 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	// res.SimPolicy = armmobilenetwork.SimPolicy{
 	// 	Name: to.Ptr("testPolicy"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simPolicy"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -202,13 +202,13 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 	// 		DefaultSlice: &armmobilenetwork.SliceResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RegistrationTimer: to.Ptr[int32](3240),
 	// 		SiteProvisioningState: map[string]*armmobilenetwork.SiteProvisioningState{
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
-	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite2": to.Ptr(armmobilenetwork.SiteProvisioningStateProvisioned),
 	// 		},
 	// 		SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
 	// 			{
@@ -220,10 +220,10 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	// 						AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 	// 						AllowedServices: []*armmobilenetwork.ServiceResourceID{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 	// 						}},
 	// 						DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 						},
 	// 						DefaultSessionType: to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 	// 						MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
@@ -235,10 +235,10 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	// 						},
 	// 				}},
 	// 				DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 				},
 	// 				Slice: &armmobilenetwork.SliceResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 				},
 	// 		}},
 	// 		UeAmbr: &armmobilenetwork.Ambr{
@@ -249,7 +249,7 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyUpdateTags.json
 func ExampleSimPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	// res.SimPolicy = armmobilenetwork.SimPolicy{
 	// 	Name: to.Ptr("testPolicy"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/simPolicy"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
 	// 	SystemData: &armmobilenetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -291,7 +291,7 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	// 	},
 	// 	Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 	// 		DefaultSlice: &armmobilenetwork.SliceResourceID{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 	// 		RegistrationTimer: to.Ptr[int32](3240),
@@ -305,10 +305,10 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	// 						AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 	// 						AllowedServices: []*armmobilenetwork.ServiceResourceID{
 	// 							{
-	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 	// 						}},
 	// 						DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 						},
 	// 						DefaultSessionType: to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 	// 						MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
@@ -320,10 +320,10 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	// 						},
 	// 				}},
 	// 				DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 	// 				},
 	// 				Slice: &armmobilenetwork.SliceResourceID{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 	// 				},
 	// 		}},
 	// 		UeAmbr: &armmobilenetwork.Ambr{
@@ -334,7 +334,7 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/340d577969b7bff5ad0488d79543314bc17daa50/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyListByMobileNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyListByMobileNetwork.json
 func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +360,7 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 		// 	Value: []*armmobilenetwork.SimPolicy{
 		// 		{
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/simPolicy"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/testPolicy"),
 		// 			SystemData: &armmobilenetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -374,7 +374,7 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 		// 			},
 		// 			Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 		// 				DefaultSlice: &armmobilenetwork.SliceResourceID{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmobilenetwork.ProvisioningStateSucceeded),
 		// 				RegistrationTimer: to.Ptr[int32](3240),
@@ -388,10 +388,10 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 		// 								AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 		// 								AllowedServices: []*armmobilenetwork.ServiceResourceID{
 		// 									{
-		// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 		// 								}},
 		// 								DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-		// 									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 		// 								},
 		// 								DefaultSessionType: to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 		// 								MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
@@ -403,10 +403,10 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 		// 								},
 		// 						}},
 		// 						DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 		// 						},
 		// 						Slice: &armmobilenetwork.SliceResourceID{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 		// 						},
 		// 				}},
 		// 				UeAmbr: &armmobilenetwork.Ambr{

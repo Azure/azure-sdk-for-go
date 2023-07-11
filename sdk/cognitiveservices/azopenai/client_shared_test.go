@@ -89,6 +89,9 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
+		err = recording.AddHeaderRegexSanitizer("User-Agent", ".*", "", nil)
+		require.NoError(t, err)
+
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
 		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(endpoint), nil)
 		require.NoError(t, err)

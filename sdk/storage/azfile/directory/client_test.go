@@ -15,6 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -1781,4 +1783,96 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNonDefault() {
 	_require.Equal(*gResp.FilePermissionKey, *resp.FilePermissionKey)
 	_require.Equal(*gResp.FileAttributes, *resp.FileAttributes)
 	_require.EqualValues(gResp.Metadata, md)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDestLease() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcDirCl := testcommon.CreateNewDirectory(context.Background(), _require, "dir1", shareClient)
+
+	destParentDirCl := testcommon.CreateNewDirectory(context.Background(), _require, "dir2", shareClient)
+
+	destFileClient := destParentDirCl.NewFileClient("testFile")
+	_, err = destFileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	// acquire lease on destFile
+	fileLeaseClient, err := lease.NewFileClient(destFileClient, nil)
+	acqResp, err := fileLeaseClient.Acquire(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(acqResp.LeaseID)
+
+	destPath := "dir2/testFile"
+	_, err = srcDirCl.Rename(context.Background(), destPath, &directory.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+	})
+	_require.Error(err)
+
+	resp, err := srcDirCl.Rename(context.Background(), destPath, &directory.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+		DestinationLeaseAccessConditions: &directory.DestinationLeaseAccessConditions{
+			DestinationLeaseID: acqResp.LeaseID,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcDirCl.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destDirCl := resp.Client
+	_, err = destDirCl.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingSAS() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	perms := sas.FilePermissions{Read: true, Create: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	srcDirCl, err := directory.NewClientWithNoCredential(shareClient.URL()+"/dir1?"+sasToken, nil)
+	_require.NoError(err)
+	_, err = srcDirCl.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	destPathWithSAS := "dir2?" + sasToken
+	resp, err := srcDirCl.Rename(context.Background(), destPathWithSAS, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcDirCl.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destDirCl := resp.Client
+	_, err = destDirCl.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }

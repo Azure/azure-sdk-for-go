@@ -75,10 +75,6 @@ func (client *GalleryApplicationsClient) BeginCreateOrUpdate(ctx context.Context
 // Generated from API version 2022-03-03
 func (client *GalleryApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryApplicationsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return nil, err
@@ -155,10 +151,6 @@ func (client *GalleryApplicationsClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2022-03-03
 func (client *GalleryApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryApplicationsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
 		return nil, err
@@ -214,10 +206,6 @@ func (client *GalleryApplicationsClient) deleteCreateRequest(ctx context.Context
 //   - options - GalleryApplicationsClientGetOptions contains the optional parameters for the GalleryApplicationsClient.Get method.
 func (client *GalleryApplicationsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsClientGetOptions) (GalleryApplicationsClientGetResponse, error) {
 	var err error
-	const operationName = "GalleryApplicationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
 		return GalleryApplicationsClientGetResponse{}, err
@@ -286,7 +274,6 @@ func (client *GalleryApplicationsClient) NewListByGalleryPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GalleryApplicationsClientListByGalleryResponse) (GalleryApplicationsClientListByGalleryResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryApplicationsClient.NewListByGalleryPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -306,7 +293,6 @@ func (client *GalleryApplicationsClient) NewListByGalleryPager(resourceGroupName
 			}
 			return client.listByGalleryHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -376,10 +362,6 @@ func (client *GalleryApplicationsClient) BeginUpdate(ctx context.Context, resour
 // Generated from API version 2022-03-03
 func (client *GalleryApplicationsClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryApplicationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
 		return nil, err

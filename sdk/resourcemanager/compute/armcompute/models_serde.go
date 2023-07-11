@@ -6233,6 +6233,7 @@ func (g GrantAccessData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "access", g.Access)
 	populate(objectMap, "durationInSeconds", g.DurationInSeconds)
+	populate(objectMap, "fileFormat", g.FileFormat)
 	populate(objectMap, "getSecureVMGuestStateSAS", g.GetSecureVMGuestStateSAS)
 	return json.Marshal(objectMap)
 }
@@ -6251,6 +6252,9 @@ func (g *GrantAccessData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "durationInSeconds":
 			err = unpopulate(val, "DurationInSeconds", &g.DurationInSeconds)
+			delete(rawMsg, key)
+		case "fileFormat":
+			err = unpopulate(val, "FileFormat", &g.FileFormat)
 			delete(rawMsg, key)
 		case "getSecureVMGuestStateSAS":
 			err = unpopulate(val, "GetSecureVMGuestStateSAS", &g.GetSecureVMGuestStateSAS)

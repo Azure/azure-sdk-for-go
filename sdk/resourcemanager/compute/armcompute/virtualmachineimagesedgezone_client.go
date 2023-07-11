@@ -59,10 +59,6 @@ func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azc
 //     method.
 func (client *VirtualMachineImagesEdgeZoneClient) Get(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesEdgeZoneClientGetOptions) (VirtualMachineImagesEdgeZoneClientGetResponse, error) {
 	var err error
-	const operationName = "VirtualMachineImagesEdgeZoneClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, version, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientGetResponse{}, err
@@ -143,10 +139,6 @@ func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.R
 //     method.
 func (client *VirtualMachineImagesEdgeZoneClient) List(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, options *VirtualMachineImagesEdgeZoneClientListOptions) (VirtualMachineImagesEdgeZoneClientListResponse, error) {
 	var err error
-	const operationName = "VirtualMachineImagesEdgeZoneClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListResponse{}, err
@@ -230,10 +222,6 @@ func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.
 //     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListOffers(ctx context.Context, location string, edgeZone string, publisherName string, options *VirtualMachineImagesEdgeZoneClientListOffersOptions) (VirtualMachineImagesEdgeZoneClientListOffersResponse, error) {
 	var err error
-	const operationName = "VirtualMachineImagesEdgeZoneClient.ListOffers"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listOffersCreateRequest(ctx, location, edgeZone, publisherName, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListOffersResponse{}, err
@@ -299,10 +287,6 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp 
 //     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListPublishers(ctx context.Context, location string, edgeZone string, options *VirtualMachineImagesEdgeZoneClientListPublishersOptions) (VirtualMachineImagesEdgeZoneClientListPublishersResponse, error) {
 	var err error
-	const operationName = "VirtualMachineImagesEdgeZoneClient.ListPublishers"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listPublishersCreateRequest(ctx, location, edgeZone, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListPublishersResponse{}, err
@@ -366,10 +350,6 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(r
 //     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListSKUs(ctx context.Context, location string, edgeZone string, publisherName string, offer string, options *VirtualMachineImagesEdgeZoneClientListSKUsOptions) (VirtualMachineImagesEdgeZoneClientListSKUsResponse, error) {
 	var err error
-	const operationName = "VirtualMachineImagesEdgeZoneClient.ListSKUs"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listSKUsCreateRequest(ctx, location, edgeZone, publisherName, offer, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListSKUsResponse{}, err

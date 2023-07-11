@@ -269,5 +269,6 @@ func (f *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o
 // SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
 func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	opts, blobHTTPHeaders := options.format(httpHeaders)
+	// TODO: format response since there is a blob sequence header in the response
 	return f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
 }

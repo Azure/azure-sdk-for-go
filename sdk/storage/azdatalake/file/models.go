@@ -85,7 +85,7 @@ func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
 }
 
-// RenameOptions contains the optional parameters when calling the Rename operation. TODO: Design formatter
+// RenameOptions contains the optional parameters when calling the Rename operation.
 type RenameOptions struct {
 	// SourceAccessConditions identifies the source path access conditions.
 	SourceAccessConditions *SourceAccessConditions
@@ -191,7 +191,7 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 	}, leaseAccessConditions, modifiedAccessConditions
 }
 
-// UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
+// UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
 	// ACL is the access control list for the path.
 	ACL *string
@@ -202,14 +202,13 @@ func (o *UpdateAccessControlOptions) format() (*generated.PathClientSetAccessCon
 	if o == nil {
 		return nil, mode
 	}
-	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
 	opts := &generated.PathClientSetAccessControlRecursiveOptions{
 		ACL: o.ACL,
 	}
 	return opts, mode
 }
 
-// RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
+// RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
 type RemoveAccessControlOptions struct {
 	//placeholder
 }
@@ -310,9 +309,7 @@ func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
 			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		},
-		CPKScopeInfo: &blob.CPKScopeInfo{
-			EncryptionScope: o.CPKScopeInfo.EncryptionScope,
-		},
+		CPKScopeInfo: (*blob.CPKScopeInfo)(o.CPKScopeInfo),
 	}
 }
 
@@ -324,9 +321,7 @@ type CPKInfo struct {
 }
 
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
-type CPKScopeInfo struct {
-	EncryptionScope *string
-}
+type CPKScopeInfo blob.CPKScopeInfo
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential

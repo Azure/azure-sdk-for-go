@@ -152,7 +152,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountProperties() {
 	_require.EqualValues(len(getPropsResp.CORS), len(setPropertiesOptions.CORS))
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountHourMetrics() {
+func (s *ServiceRecordedTestsSuite) TestServiceAccountHourMetrics() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

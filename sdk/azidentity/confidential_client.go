@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
@@ -133,9 +134,14 @@ func (c *confidentialClient) client(ctx context.Context, tro policy.TokenRequest
 }
 
 func (c *confidentialClient) newMSALClient(enableCAE bool) (msalConfidentialClient, error) {
+	cache, err := internal.NewCache(c.opts.TokenCachePersistenceOptions, enableCAE)
+	if err != nil {
+		return nil, err
+	}
 	authority := runtime.JoinPaths(c.host, c.tenantID)
 	o := []confidential.Option{
 		confidential.WithAzureRegion(c.region),
+		confidential.WithCache(cache),
 		confidential.WithHTTPClient(newPipelineAdapter(&c.opts.ClientOptions)),
 	}
 	if enableCAE {

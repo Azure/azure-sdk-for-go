@@ -19,7 +19,7 @@ import (
 const defaultName = "msal.cache"
 
 func init() {
-	internal.NewCache = func(o *internal.TokenCachePersistenceOptions) (cache.ExportReplace, error) {
+	internal.NewCache = func(o *internal.TokenCachePersistenceOptions, enableCAE bool) (cache.ExportReplace, error) {
 		if o == nil {
 			return nil, nil
 		}
@@ -27,6 +27,11 @@ func init() {
 		if cp.Name == "" {
 			cp.Name = defaultName
 		}
+		suffix := ".nocae"
+		if enableCAE {
+			suffix = ".cae"
+		}
+		cp.Name += suffix
 		a, err := storage(cp)
 		if err != nil {
 			return nil, err

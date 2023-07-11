@@ -48,7 +48,7 @@ func NewManagerDeploymentStatusClient(subscriptionID string, credential azcore.T
 // List - Post to List of Network Manager Deployment Status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - parameters - Parameters supplied to specify which Managed Network deployment status is.
@@ -56,10 +56,6 @@ func NewManagerDeploymentStatusClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *ManagerDeploymentStatusClient) List(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerDeploymentStatusParameter, options *ManagerDeploymentStatusClientListOptions) (ManagerDeploymentStatusClientListResponse, error) {
 	var err error
-	const operationName = "ManagerDeploymentStatusClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagerDeploymentStatusClientListResponse{}, err
@@ -96,7 +92,7 @@ func (client *ManagerDeploymentStatusClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

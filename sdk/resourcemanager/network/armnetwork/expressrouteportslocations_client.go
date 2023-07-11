@@ -48,16 +48,12 @@ func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcor
 // peering location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - locationName - Name of the requested ExpressRoutePort peering location.
 //   - options - ExpressRoutePortsLocationsClientGetOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.Get
 //     method.
 func (client *ExpressRoutePortsLocationsClient) Get(ctx context.Context, locationName string, options *ExpressRoutePortsLocationsClientGetOptions) (ExpressRoutePortsLocationsClientGetResponse, error) {
 	var err error
-	const operationName = "ExpressRoutePortsLocationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return ExpressRoutePortsLocationsClientGetResponse{}, err
@@ -90,7 +86,7 @@ func (client *ExpressRoutePortsLocationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +104,7 @@ func (client *ExpressRoutePortsLocationsClient) getHandleResponse(resp *http.Res
 // NewListPager - Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
 // Available bandwidths can only be obtained when retrieving a specific peering location.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.NewListPager
 //     method.
 func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
@@ -117,7 +113,6 @@ func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRoutePortsLocationsClientListResponse) (ExpressRoutePortsLocationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRoutePortsLocationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -137,7 +132,6 @@ func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRou
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -153,7 +147,7 @@ func (client *ExpressRoutePortsLocationsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

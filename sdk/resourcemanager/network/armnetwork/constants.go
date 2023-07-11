@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "armnetwork"
-	moduleVersion = "v3.1.0-beta.1"
+	moduleVersion = "v4.0.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -81,6 +81,23 @@ func PossibleAdminRuleKindValues() []AdminRuleKind {
 	}
 }
 
+// AdminState - Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+// in the vnet
+type AdminState string
+
+const (
+	AdminStateDisabled AdminState = "Disabled"
+	AdminStateEnabled  AdminState = "Enabled"
+)
+
+// PossibleAdminStateValues returns the possible values for the AdminState const type.
+func PossibleAdminStateValues() []AdminState {
+	return []AdminState{
+		AdminStateDisabled,
+		AdminStateEnabled,
+	}
+}
+
 // ApplicationGatewayBackendHealthServerHealth - Health of backend server.
 type ApplicationGatewayBackendHealthServerHealth string
 
@@ -144,7 +161,6 @@ const (
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus404 ApplicationGatewayCustomErrorStatusCode = "HttpStatus404"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus405 ApplicationGatewayCustomErrorStatusCode = "HttpStatus405"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus408 ApplicationGatewayCustomErrorStatusCode = "HttpStatus408"
-	ApplicationGatewayCustomErrorStatusCodeHTTPStatus499 ApplicationGatewayCustomErrorStatusCode = "HttpStatus499"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus500 ApplicationGatewayCustomErrorStatusCode = "HttpStatus500"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
 	ApplicationGatewayCustomErrorStatusCodeHTTPStatus503 ApplicationGatewayCustomErrorStatusCode = "HttpStatus503"
@@ -159,7 +175,6 @@ func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewa
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus404,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus405,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus408,
-		ApplicationGatewayCustomErrorStatusCodeHTTPStatus499,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus500,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus502,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus503,

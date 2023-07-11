@@ -47,7 +47,7 @@ func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string, creden
 // Get - Gets load balancer frontend IP configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - frontendIPConfigurationName - The name of the frontend IP configuration.
@@ -55,10 +55,6 @@ func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string, creden
 //     method.
 func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsClientGetOptions) (LoadBalancerFrontendIPConfigurationsClientGetResponse, error) {
 	var err error
-	const operationName = "LoadBalancerFrontendIPConfigurationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, frontendIPConfigurationName, options)
 	if err != nil {
 		return LoadBalancerFrontendIPConfigurationsClientGetResponse{}, err
@@ -99,7 +95,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +112,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp
 
 // NewListPager - Gets all the load balancer frontend IP configurations.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerFrontendIPConfigurationsClientListOptions contains the optional parameters for the LoadBalancerFrontendIPConfigurationsClient.NewListPager
@@ -127,7 +123,6 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) NewListPager(resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerFrontendIPConfigurationsClientListResponse) (LoadBalancerFrontendIPConfigurationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerFrontendIPConfigurationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -147,7 +142,6 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) NewListPager(resourceG
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -171,7 +165,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) listCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

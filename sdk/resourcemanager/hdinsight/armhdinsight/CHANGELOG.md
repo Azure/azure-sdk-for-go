@@ -4,7 +4,7 @@
 ### Features Added
 
 - New field `EnableSecureChannel` in struct `StorageAccount`
-
+- Added feature to support selecting use secure channel during creation. The paramter would force to true if the cluster created based on a stroage account that secure transfer enabled, no matter it use 'blob' or 'dfs' type.
 
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes

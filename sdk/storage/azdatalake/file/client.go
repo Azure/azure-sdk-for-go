@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -23,7 +23,7 @@ import (
 type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service.
-type Client base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client]
+type Client base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]
 
 // NewClient creates an instance of Client with the specified values.
 //   - fileURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/fs/file.txt
@@ -46,10 +46,10 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	blobClientOpts := blob.ClientOptions{
+	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobClient, _ := blob.NewClient(blobURL, cred, &blobClientOpts)
+	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
@@ -74,10 +74,10 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	blobClientOpts := blob.ClientOptions{
+	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
-	blobClient, _ := blob.NewClientWithNoCredential(blobURL, &blobClientOpts)
+	blobClient, _ := blockblob.NewClientWithNoCredential(blobURL, &blobClientOpts)
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
@@ -105,14 +105,14 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	blobClientOpts := blob.ClientOptions{
+	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
 	blobSharedKey, err := cred.ConvertToBlobSharedKey()
 	if err != nil {
 		return nil, err
 	}
-	blobClient, _ := blob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
+	blobClient, _ := blockblob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
@@ -140,26 +140,26 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
 	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
-	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 	return dirClientWithDFS
 }
 
 func (f *Client) generatedFileClientWithBlob() *generated.PathClient {
-	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 	return dirClientWithBlob
 }
 
-func (f *Client) blobClient() *blob.Client {
-	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+func (f *Client) blobClient() *blockblob.Client {
+	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 	return blobClient
 }
 
 func (f *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
 
 func (f *Client) getClientOptions() *base.ClientOptions {
-	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blob.Client])(f))
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.
@@ -187,7 +187,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
-	// TODO format response
+	// TODO: format response
 	return f.blobClient().GetProperties(ctx, opts)
 }
 
@@ -269,6 +269,8 @@ func (f *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o
 // SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
 func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	opts, blobHTTPHeaders := options.format(httpHeaders)
-	// TODO: format response since there is a blob sequence header in the response
-	return f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
+	resp, err := f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
+	newResp := SetHTTPHeadersResponse{}
+	formatSetHTTPHeadersResponse(&newResp, &resp)
+	return newResp, err
 }

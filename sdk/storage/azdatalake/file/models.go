@@ -320,6 +320,9 @@ type CPKInfo struct {
 	EncryptionKeySHA256 *string
 }
 
+// ACLFailedEntry contains the failed ACL entry (response model).
+type ACLFailedEntry = generated.ACLFailedEntry
+
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
 type CPKScopeInfo blob.CPKScopeInfo
 

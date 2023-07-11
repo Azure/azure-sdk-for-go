@@ -41,7 +41,7 @@ func TestMain(m *testing.M) {
 		hsmURL = fakeHsmURL
 	}
 
-	err := recording.ResetProxy(nil)
+	err = recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
 	}

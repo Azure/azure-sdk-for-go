@@ -524,6 +524,7 @@ var client = http.Client{
 
 type RecordingOptions struct {
 	UseHTTPS        bool
+	ProxyPort       int
 	GroupForReplace string
 	Variables       map[string]interface{}
 	TestInstance    *testing.T
@@ -531,7 +532,8 @@ type RecordingOptions struct {
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
-		UseHTTPS: true,
+		UseHTTPS:  true,
+		ProxyPort: os.Getpid()%10000 + 20000,
 	}
 }
 
@@ -558,6 +560,10 @@ func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *
 }
 
 func (r RecordingOptions) host() string {
+	if r.ProxyPort != 0 {
+		return fmt.Sprintf("localhost:%d", r.ProxyPort)
+	}
+
 	if r.UseHTTPS {
 		return "localhost:5001"
 	}
@@ -667,7 +673,8 @@ func requestStart(url string, testId string, assetConfigLocation string) (*http.
 	return client.Do(req)
 }
 
-// Start tells the test proxy to begin accepting requests for a given test
+// Start optionally installs and starts a test proxy instance
+// and tells the test proxy instance to begin accepting requests for a given test
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -940,7 +947,7 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
 func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
 	if options == nil {
-		options = &RecordingOptions{UseHTTPS: true}
+		options = defaultOptions()
 	}
 	c, err := GetHTTPClient(t)
 	if err != nil {

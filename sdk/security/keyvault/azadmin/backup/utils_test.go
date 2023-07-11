@@ -59,7 +59,7 @@ func TestMain(m *testing.M) {
 		token = fakeToken
 	}
 
-	err := recording.ResetProxy(nil)
+	err = recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
 	}

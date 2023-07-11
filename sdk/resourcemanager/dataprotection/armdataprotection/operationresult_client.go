@@ -48,7 +48,7 @@ func NewOperationResultClient(subscriptionID string, credential azcore.TokenCred
 // Get - Gets the operation result for a resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-05-01
 //   - options - OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
 func (client *OperationResultClient) Get(ctx context.Context, operationID string, location string, options *OperationResultClientGetOptions) (OperationResultClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, operationID, location, options)
@@ -82,7 +82,7 @@ func (client *OperationResultClient) getCreateRequest(ctx context.Context, opera
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

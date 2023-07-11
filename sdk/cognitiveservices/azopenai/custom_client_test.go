@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -139,6 +140,10 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, isAzure boo
 }
 
 func TestClient_GetCompletions_Error(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
 	doTest := func(t *testing.T, client *azopenai.Client) {
 		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
 			Prompt:      []string{"What is Azure OpenAI?"},

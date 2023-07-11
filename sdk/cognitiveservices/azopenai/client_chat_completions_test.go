@@ -194,6 +194,10 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 }
 
 func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
 	doTest := func(t *testing.T, client *azopenai.Client) {
 		t.Helper()
 		streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)

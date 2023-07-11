@@ -39,11 +39,19 @@ func TestImageGeneration_OpenAI(t *testing.T) {
 }
 
 func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
 	client := newBogusAzureOpenAIClient(t, "")
 	testImageGenerationFailure(t, client)
 }
 
 func TestImageGeneration_OpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
 	client := newBogusOpenAIClient(t)
 	testImageGenerationFailure(t, client)
 }

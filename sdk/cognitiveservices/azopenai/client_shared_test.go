@@ -39,8 +39,7 @@ func init() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		endpoint = fakeEndpoint
 		apiKey = fakeAPIKey
-		// openAIKey = fakeAPIKey
-		openAIKey = ""
+		openAIKey = fakeAPIKey
 		openAIEndpoint = fakeEndpoint
 
 		completionsModelDeployment = "text-davinci-003"

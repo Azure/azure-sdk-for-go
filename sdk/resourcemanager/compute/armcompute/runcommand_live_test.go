@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -47,14 +48,14 @@ func (testsuite *RunCommandTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.adminUsername = testutil.GenerateAlphaNumericID(testsuite.T(), "rc", 6)
-	testsuite.networkInterfaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmnicrc", 6)
-	testsuite.virtualNetworkSubnetName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmssvnetnarc", 6)
-	testsuite.virtualNetworksName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmvnetrc", 6)
-	testsuite.vmName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmcommand", 6)
-	testsuite.vmScaleSetName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmscalesetcommand", 6)
-	testsuite.vmRunCommandName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmruncommand", 6)
-	testsuite.vmssRunCommandName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmssruncommand", 6)
+	testsuite.adminUsername, _ = recording.GenerateAlphaNumericID(testsuite.T(), "rc", 8, true)
+	testsuite.networkInterfaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmnicrc", 13, false)
+	testsuite.virtualNetworkSubnetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmssvnetnarc", 18, false)
+	testsuite.virtualNetworksName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmvnetrc", 14, false)
+	testsuite.vmName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmcommand", 15, false)
+	testsuite.vmScaleSetName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmscalesetcommand", 23, false)
+	testsuite.vmRunCommandName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmruncommand", 18, false)
+	testsuite.vmssRunCommandName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmssruncommand", 20, false)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

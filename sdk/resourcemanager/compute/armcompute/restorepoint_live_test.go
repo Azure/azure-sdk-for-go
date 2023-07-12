@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -30,6 +31,7 @@ type RestorePointTestSuite struct {
 	networkInterfaceId         string
 	networkInterfaceName       string
 	restorePointCollectionName string
+	restorePointName           string
 	virtaulMachineId           string
 	virtualNetworksName        string
 	vmName                     string
@@ -44,11 +46,12 @@ func (testsuite *RestorePointTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.adminUsername = testutil.GenerateAlphaNumericID(testsuite.T(), "rp", 6)
-	testsuite.networkInterfaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmnicrp", 6)
-	testsuite.restorePointCollectionName = testutil.GenerateAlphaNumericID(testsuite.T(), "restorepoi", 6)
-	testsuite.virtualNetworksName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmvnetrp", 6)
-	testsuite.vmName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmnamerp", 6)
+	testsuite.adminUsername, _ = recording.GenerateAlphaNumericID(testsuite.T(), "rp", 8, true)
+	testsuite.networkInterfaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmnicrp", 13, false)
+	testsuite.restorePointCollectionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "restorepoi", 16, false)
+	testsuite.restorePointName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "restorepoi", 16, false)
+	testsuite.virtualNetworksName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmvnetrp", 14, false)
+	testsuite.vmName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmnamerp", 14, false)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
@@ -248,25 +251,24 @@ func (testsuite *RestorePointTestSuite) TestRestorePointCollections() {
 
 // Microsoft.Compute/restorePointCollections/restorePoints
 func (testsuite *RestorePointTestSuite) TestRestorePoints() {
-	restorePointName := testutil.GenerateAlphaNumericID(testsuite.T(), "restorepoi", 6)
 	var err error
 	// From step RestorePoints_Create
 	fmt.Println("Call operation: RestorePoints_Create")
 	restorePointsClient, err := armcompute.NewRestorePointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	restorePointsClientCreateResponsePoller, err := restorePointsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, restorePointName, armcompute.RestorePoint{}, nil)
+	restorePointsClientCreateResponsePoller, err := restorePointsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, testsuite.restorePointName, armcompute.RestorePoint{}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, restorePointsClientCreateResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step RestorePoints_Get
 	fmt.Println("Call operation: RestorePoints_Get")
-	_, err = restorePointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, restorePointName, &armcompute.RestorePointsClientGetOptions{Expand: nil})
+	_, err = restorePointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, testsuite.restorePointName, &armcompute.RestorePointsClientGetOptions{Expand: nil})
 	testsuite.Require().NoError(err)
 
 	// From step RestorePoints_Delete
 	fmt.Println("Call operation: RestorePoints_Delete")
-	restorePointsClientDeleteResponsePoller, err := restorePointsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, restorePointName, nil)
+	restorePointsClientDeleteResponsePoller, err := restorePointsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.restorePointCollectionName, testsuite.restorePointName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, restorePointsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

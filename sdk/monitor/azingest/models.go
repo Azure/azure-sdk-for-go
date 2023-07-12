@@ -7,9 +7,12 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package generated
+package azingest
 
-// ClientUploadResponse contains the response from method Client.Upload.
-type ClientUploadResponse struct {
-	// placeholder for future response values
+// UploadOptions contains the optional parameters for the Client.Upload method.
+type UploadOptions struct {
+	// gzip
+	ContentEncoding *string
+	// Client request Id
+	XMSClientRequestID *string
 }

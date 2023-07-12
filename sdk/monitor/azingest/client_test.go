@@ -9,17 +9,9 @@ package azingest_test
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"os"
 	"strconv"
 	"testing"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest"
 )
 
 // for testing, create struct with all the data types
@@ -34,25 +26,7 @@ type ComputerInfo struct {
 // generate a file and read from it
 
 func TestUpload(t *testing.T) {
-	azlog.SetListener(func(cls azlog.Event, msg string) {
-		fmt.Println(msg)
-	})
-
-	endpoint := os.Getenv("MONITOR_INGESTION_DATA_COLLECTION_ENDPOINT")
-	ruleID := os.Getenv("INGESTION_DATA_COLLECTION_RULE_IMMUTABLE_ID")
-	streamName := os.Getenv("INGESTION_STREAM_NAME")
-	clientID := os.Getenv("AZINGESTION_CLIENT_ID")
-	clientSecret := os.Getenv("AZINGESTION_CLIENT_SECRET")
-	tenantID := os.Getenv("AZINGESTION_TENANT_ID")
-
-	credential, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	client, err := azingest.NewClient(endpoint, credential, &azingest.ClientOptions{azcore.ClientOptions{Logging: policy.LogOptions{IncludeBody: true}}})
-	if err != nil {
-		panic(err)
-	}
+	client := startTest(t)
 
 	var data []ComputerInfo
 	for i := 0; i < 10; i++ {
@@ -67,7 +41,7 @@ func TestUpload(t *testing.T) {
 		panic(err)
 	}
 
-	_, err = client.Upload(context.Background(), ruleID, streamName, data2, nil)
+	_, err = client.Upload(context.Background(), ruleID, stream, data2, nil)
 	if err != nil {
 		panic(err)
 	}

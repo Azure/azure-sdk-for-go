@@ -12,7 +12,7 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/f07297ce913bfc911
 license-header: MICROSOFT_MIT_NO_VERSION
 #module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
 openapi-type: "data-plane"
-output-folder: ../generated
+output-folder: ../azingest
 override-client-name: Client
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.46"
@@ -27,5 +27,13 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+type (?:ErrorResponse|ErrorDetail|ErrorAdditionalInfo).+\{(?:\s.+\s)+\}\s/g, "");
+
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
 ```

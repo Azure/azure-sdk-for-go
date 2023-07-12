@@ -14,6 +14,8 @@
 
 ### Other Changes
 
+* Added `dragonfly` and `aix` to build constraints in `mmf_unix.go`.
+
 ## 0.1.0 (2023-05-09)
 
 ### Features Added

@@ -1,15 +1,10 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.0-beta.2 (2023-07-14)
 
 ### Other Changes
 * `DefaultAzureCredentialOptions.TenantID` applies to workload identity authentication
+* Upgraded dependencies
 
 ## 1.4.0-beta.1 (2023-06-06)
 

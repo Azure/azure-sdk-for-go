@@ -29,7 +29,7 @@ type Client struct {
 	endpoint string
 }
 
-// Upload - See error response code and error response message for more detail.
+// Upload - Ingestion API used to directly ingest data using Data Collection Rules. Maximum size of of API call is 1 MB.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01

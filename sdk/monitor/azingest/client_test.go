@@ -66,8 +66,10 @@ func TestUploadWithGzip(t *testing.T) {
 	// gzip data
 	var buf bytes.Buffer
 	zw := gzip.NewWriter(&buf)
-	zw.Write(logs)
-	zw.Close()
+	_, err := zw.Write(logs)
+	require.NoError(t, err)
+	err = zw.Close()
+	require.NoError(t, err)
 
 	res, err := client.Upload(context.Background(), ruleID, stream, buf.Bytes(), &azingest.UploadOptions{ContentEncoding: to.Ptr("gzip")})
 	require.NoError(t, err)

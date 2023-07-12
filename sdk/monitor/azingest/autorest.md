@@ -10,7 +10,7 @@ export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/f07297ce913bfc911470a86436e73c9aceec0587/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
 license-header: MICROSOFT_MIT_NO_VERSION
-#module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
+module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest
 openapi-type: "data-plane"
 output-folder: ../azingest
 override-client-name: Client
@@ -41,8 +41,11 @@ directive:
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
-  # update doc comment for ContentEncoding option
+  # update doc comments
   - from: swagger-document
     where: $.paths..parameters..[?(@.name=='Content-Encoding')]
     transform: $["description"] = "If the bytes of the \"logs\" parameter are already gzipped, set ContentEncoding to \"gzip\""
+  - from: swagger-document
+    where: $.paths./dataCollectionRules/{ruleId}/streams/{stream}.post
+    transform: $["description"] = "Ingestion API used to directly ingest data using Data Collection Rules. Maximum size of of API call is 1 MB."
 ```

@@ -35,10 +35,10 @@ type Client struct {
 // Generated from API version 2023-01-01
 //   - ruleID - The immutable Id of the Data Collection Rule resource.
 //   - stream - The streamDeclaration name as defined in the Data Collection Rule.
-//   - body - An array of objects matching the schema defined by the provided stream.
+//   - logs - An array of objects matching the schema defined by the provided stream.
 //   - options - UploadOptions contains the optional parameters for the Client.Upload method.
-func (client *Client) Upload(ctx context.Context, ruleID string, stream string, body []byte, options *UploadOptions) (UploadResponse, error) {
-	req, err := client.uploadCreateRequest(ctx, ruleID, stream, body, options)
+func (client *Client) Upload(ctx context.Context, ruleID string, stream string, logs []byte, options *UploadOptions) (UploadResponse, error) {
+	req, err := client.uploadCreateRequest(ctx, ruleID, stream, logs, options)
 	if err != nil {
 		return UploadResponse{}, err
 	}
@@ -53,7 +53,7 @@ func (client *Client) Upload(ctx context.Context, ruleID string, stream string, 
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, body []byte, options *UploadOptions) (*policy.Request, error) {
+func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, logs []byte, options *UploadOptions) (*policy.Request, error) {
 	urlPath := "/dataCollectionRules/{ruleId}/streams/{stream}"
 	if ruleID == "" {
 		return nil, errors.New("parameter ruleID cannot be empty")
@@ -77,5 +77,5 @@ func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, st
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.XMSClientRequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(streaming.NopCloser(bytes.NewReader(body)), "application/json")
+	return req, req.SetBody(streaming.NopCloser(bytes.NewReader(logs)), "application/json")
 }

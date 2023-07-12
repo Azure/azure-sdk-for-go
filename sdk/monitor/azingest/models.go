@@ -11,7 +11,7 @@ package azingest
 
 // UploadOptions contains the optional parameters for the Client.Upload method.
 type UploadOptions struct {
-	// gzip
+	// If the bytes of the "logs" parameter are already gzipped, set ContentEncoding to "gzip"
 	ContentEncoding *string
 	// Client request Id
 	XMSClientRequestID *string

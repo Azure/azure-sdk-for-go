@@ -23,6 +23,11 @@ directive:
   # delete unused model
   - remove-model: PendingCertificateSigningRequestResult
 
+  # rename parameter from "body" to "logs"
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='body')]
+    transform: $["x-ms-client-name"] = "logs"
+
  # delete unused error models
   - from: models.go
     where: $
@@ -36,4 +41,8 @@ directive:
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
+  # update doc comment for ContentEncoding option
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='Content-Encoding')]
+    transform: $["description"] = "If the bytes of the \"logs\" parameter are already gzipped, set ContentEncoding to \"gzip\""
 ```

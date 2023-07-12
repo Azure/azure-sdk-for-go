@@ -40,24 +40,24 @@ func TestMain(m *testing.M) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := lookupEnvVar("AZINGESTION_TENANT_ID")
-		clientID := lookupEnvVar("AZINGESTION_CLIENT_ID")
-		secret := lookupEnvVar("AZINGESTION_CLIENT_SECRET")
+		tenantID := lookupEnvVar("AZINGEST_TENANT_ID")
+		clientID := lookupEnvVar("AZINGEST_CLIENT_ID")
+		secret := lookupEnvVar("AZINGEST_CLIENT_SECRET")
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
-	endpoint = getEnvVar("MONITOR_INGESTION_DATA_COLLECTION_ENDPOINT", fakeEndpoint)
-	ruleID = getEnvVar("INGESTION_DATA_COLLECTION_RULE_IMMUTABLE_ID", fakeRuleID)
-	stream = getEnvVar("INGESTION_STREAM_NAME", fakeStream)
+	endpoint = getEnvVar("AZURE_MONITOR_DCE", fakeEndpoint)
+	ruleID = getEnvVar("AZURE_MONITOR_DCR_ID", fakeRuleID)
+	stream = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStream)
 
 	code := m.Run()
 	os.Exit(code)
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/monitor/azingestion/testdata", nil)
+	err := recording.Start(t, "sdk/monitor/azingest/testdata", nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

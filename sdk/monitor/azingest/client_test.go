@@ -7,43 +7,84 @@
 package azingest_test
 
 import (
+	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest"
+	"github.com/stretchr/testify/require"
 )
 
-// for testing, create struct with all the data types
-// remove computer field, not supported anymore
 type ComputerInfo struct {
-	InputTime         time.Time
+	Time              time.Time
 	Computer          string
-	AdditionalContext int
+	AdditionalContext AdditionalContext
 }
 
-// test for greater than 1 mb
-// generate a file and read from it
+type AdditionalContext struct {
+	TestContextKey int
+	CounterName    string
+}
 
-func TestUpload(t *testing.T) {
-	client := startTest(t)
-
+func generateLogs() []byte {
 	var data []ComputerInfo
 	for i := 0; i < 10; i++ {
 		data = append(data, ComputerInfo{
-			InputTime:         time.Now().UTC(),
+			Time:              time.Date(2023, 01, 01, 0, 0, 0, 0, time.UTC),
 			Computer:          "Computer" + strconv.Itoa(i),
-			AdditionalContext: i,
+			AdditionalContext: AdditionalContext{TestContextKey: i, CounterName: "AppMetric2"},
 		})
 	}
 	data2, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
+	return data2
+}
 
-	_, err = client.Upload(context.Background(), ruleID, stream, data2, nil)
-	if err != nil {
-		panic(err)
-	}
+func TestUpload(t *testing.T) {
+	client := startTest(t)
 
+	logs := generateLogs()
+
+	res, err := client.Upload(context.Background(), ruleID, stream, logs, nil)
+	require.NoError(t, err)
+	require.Empty(t, res)
+}
+
+func TestUploadWithGzip(t *testing.T) {
+	client := startTest(t)
+
+	logs := generateLogs()
+
+	// gzip data
+	var buf bytes.Buffer
+	zw := gzip.NewWriter(&buf)
+	zw.Write(logs)
+	zw.Close()
+
+	res, err := client.Upload(context.Background(), ruleID, stream, buf.Bytes(), &azingest.UploadOptions{ContentEncoding: to.Ptr("gzip")})
+	require.NoError(t, err)
+	require.Empty(t, res)
+}
+
+func TestUploadWithError(t *testing.T) {
+	client := startTest(t)
+
+	logs := generateLogs()
+
+	res, err := client.Upload(context.Background(), ruleID, "incorrect stream", logs, nil)
+	require.Error(t, err)
+	require.Empty(t, res)
+
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "InvalidStream")
+	require.Equal(t, httpErr.StatusCode, 400)
 }

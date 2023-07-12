@@ -1,12 +1,10 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.0 (2023-07-12)
 
 ### Features Added
 
 * Added `ParseNTFSFileAttributes` method for parsing the file attributes to `file.NTFSFileAttributes` type.
-
-### Breaking Changes
 
 ### Bugs Fixed
 

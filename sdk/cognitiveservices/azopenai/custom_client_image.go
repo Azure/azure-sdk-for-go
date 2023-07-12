@@ -72,6 +72,10 @@ func generateImageWithOpenAI(ctx context.Context, client *Client, body ImageGene
 		return CreateImageResponse{}, err
 	}
 
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CreateImageResponse{}, runtime.NewResponseError(resp)
+	}
+
 	var gens *ImageGenerations
 
 	if err := runtime.UnmarshalAsJSON(resp, &gens); err != nil {

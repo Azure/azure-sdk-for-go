@@ -31,7 +31,7 @@ var chatCompletionsRequest = azopenai.ChatCompletionsOptions{
 	},
 	MaxTokens:   to.Ptr(int32(1024)),
 	Temperature: to.Ptr(float32(0.0)),
-	Model:       &openAIChatCompletionsModelDeployment,
+	Model:       &openAIChatCompletionsModel,
 }
 
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
@@ -191,4 +191,27 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, "DeploymentNotFound", respErr.ErrorCode)
+}
+
+func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	doTest := func(t *testing.T, client *azopenai.Client) {
+		t.Helper()
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
+		require.Empty(t, streamResp)
+		assertResponseIsError(t, err)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newBogusAzureOpenAIClient(t, chatCompletionsModelDeployment)
+		doTest(t, client)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		client := newBogusOpenAIClient(t)
+		doTest(t, client)
+	})
 }

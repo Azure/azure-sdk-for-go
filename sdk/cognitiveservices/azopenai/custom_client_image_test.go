@@ -7,8 +7,10 @@
 package azopenai_test
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
+	"image/png"
 	"net/http"
 	"testing"
 	"time"
@@ -38,6 +40,24 @@ func TestImageGeneration_OpenAI(t *testing.T) {
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
 
+func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	client := newBogusAzureOpenAIClient(t, "")
+	testImageGenerationFailure(t, client)
+}
+
+func TestImageGeneration_OpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	client := newBogusOpenAIClient(t)
+	testImageGenerationFailure(t, client)
+}
+
 func TestImageGeneration_OpenAI_Base64(t *testing.T) {
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
@@ -61,9 +81,30 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
 		case azopenai.ImageGenerationResponseFormatB64JSON:
-			bytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
+			pngBytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
 			require.NoError(t, err)
-			require.NotEmpty(t, bytes)
+			require.NotEmpty(t, pngBytes)
+
+			// the bytes here should just be a valid PNG
+			buff := bytes.NewBuffer(pngBytes)
+
+			// just check that it's a valid PNG
+			_, err = png.Decode(buff)
+			require.NoError(t, err)
 		}
 	}
+}
+
+func testImageGenerationFailure(t *testing.T, bogusClient *azopenai.Client) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	resp, err := bogusClient.CreateImage(ctx, azopenai.ImageGenerationOptions{
+		Prompt:         to.Ptr("a cat"),
+		Size:           to.Ptr(azopenai.ImageSize256x256),
+		ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+	}, nil)
+	require.Empty(t, resp)
+
+	assertResponseIsError(t, err)
 }

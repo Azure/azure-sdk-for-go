@@ -36,5 +36,5 @@ const (
 	Module = "azcore"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v1.8.0-beta.1"
+	Version = "v1.8.0-beta.2"
 )

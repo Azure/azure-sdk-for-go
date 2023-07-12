@@ -2584,7 +2584,7 @@ func (f *FileRecordedTestsSuite) TestGetRangeListNonDefaultExact() {
 }
 
 // Default means clear the entire file's range
-func (f *FileRecordedTestsSuite) TestFileClearRangeDefault() {
+func (f *FileRecordedTestsSuite) TestClearRangeDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

@@ -433,7 +433,7 @@ func (l *LeaseRecordedTestsSuite) TestNegativeFileAcquireMultipleLease() {
 	_require.NoError(err)
 }
 
-func (l *LeaseRecordedTestsSuite) TestFileDeleteWithoutLeaseId() {
+func (l *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 	_require := require.New(l.T())
 	testName := l.T().Name()
 

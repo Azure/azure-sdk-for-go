@@ -646,6 +646,44 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set tags to source
+	srcBlobTagsMap := map[string]string{
+		"source": "tags",
+	}
+	_, err = srcBlob.SetTags(context.Background(), srcBlobTagsMap, nil)
+	_require.NoError(err)
+
+	// Dest tags
+	destBlobTagsMap := map[string]string{
+		"dest": "tags",
+	}
+
+	// By default, the CopySourceTag header is Replace
+	options := blockblob.UploadBlobFromURLOptions{
+		Tags: destBlobTagsMap,
+	}
+
+	// Invoke UploadBlobFromURL
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	// Get tags from dest and check if tags got replaced with dest tags
+	resp, err := destBlob.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.BlobTagSet[0].Key, "dest")
+	_require.Equal(*resp.BlobTagSet[0].Value, "tags")
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsReplace() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -669,7 +707,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsRepl
 
 	options := blockblob.UploadBlobFromURLOptions{
 		Tags:           destBlobTagsMap,
-		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsREPLACE),
+		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsReplace),
 	}
 
 	// Invoke UploadBlobFromURL
@@ -708,7 +746,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsCopy
 	_require.NoError(err)
 
 	options := blockblob.UploadBlobFromURLOptions{
-		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsCOPY),
+		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsCopy),
 	}
 
 	// Invoke UploadBlobFromURL

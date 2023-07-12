@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0 (Unreleased)
+## 1.7.0 (2023-07-12)
 
 ### Features Added
 * Added method `WithClientName()` to type `azcore.Client` to support shallow cloning of a client with a new name used for tracing.
@@ -8,10 +8,6 @@
 ### Breaking Changes
 > These changes affect only code written against beta versions v1.7.0-beta.1 or v1.7.0-beta.2
 * The beta features for CAE, tracing, and fakes have been omitted for this release.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.7.0-beta.2 (2023-06-06)
 

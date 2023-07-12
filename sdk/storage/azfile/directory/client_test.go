@@ -1805,6 +1805,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDestLease() {
 
 	// acquire lease on destFile
 	fileLeaseClient, err := lease.NewFileClient(destFileClient, nil)
+	_require.NoError(err)
 	acqResp, err := fileLeaseClient.Acquire(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(acqResp.LeaseID)

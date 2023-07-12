@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
@@ -3385,6 +3386,342 @@ func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeUsingOAuth() {
 	rangeList2, err := fileClient.GetRangeList(context.Background(), nil)
 	_require.NoError(err)
 	_require.Len(rangeList2.Ranges, 0)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 2048, shareClient)
+
+	resp, err := srcFileClient.Rename(context.Background(), "testFile", nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+	_require.Equal(resp.FileCreationTime.IsZero(), false)
+	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(resp.FileChangeTime.IsZero(), false)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	gResp, err := destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.ETag)
+	_require.NotNil(gResp.RequestID)
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.Equal(gResp.FileCreationTime.IsZero(), false)
+	_require.Equal(gResp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(gResp.FileChangeTime.IsZero(), false)
+	_require.NotNil(gResp.ContentLength)
+	_require.EqualValues(*gResp.ContentLength, 2048)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	srcFileClient, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = srcFileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	resp, err := srcFileClient.Rename(context.Background(), "testFile", nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+	_require.Equal(resp.FileCreationTime.IsZero(), false)
+	_require.Equal(resp.FileLastWriteTime.IsZero(), false)
+	_require.Equal(resp.FileChangeTime.IsZero(), false)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	_, err = destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameDifferentDir() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcDirCl := testcommon.CreateNewDirectory(context.Background(), _require, "dir1", shareClient)
+
+	srcFileClient := srcDirCl.NewFileClient("file1")
+	_, err = srcFileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	_ = testcommon.CreateNewDirectory(context.Background(), _require, "dir2", shareClient)
+
+	resp, err := srcFileClient.Rename(context.Background(), "dir2/file2/", nil)
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	_, err = destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameIgnoreReadOnly() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file1", 2048, shareClient)
+
+	_, err = shareClient.NewRootDirectoryClient().NewFileClient("file2").Create(context.Background(), 1024, &file.CreateOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{ReadOnly: true},
+		},
+	})
+	_require.NoError(err)
+
+	_, err = srcFileClient.Rename(context.Background(), "file2", nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceAlreadyExists)
+
+	_, err = srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+	})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ReadOnlyAttribute)
+
+	resp, err := srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+		IgnoreReadOnly:  to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	gResp, err := destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.ContentLength)
+	_require.EqualValues(*gResp.ContentLength, 2048)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameNonDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file1", 2048, shareClient)
+
+	currTime, err := time.Parse(time.UnixDate, "Fri Mar 31 21:00:00 GMT 2023")
+	_require.NoError(err)
+	creationTime := currTime.Add(5 * time.Minute).Round(time.Microsecond)
+	lastWriteTime := currTime.Add(8 * time.Minute).Round(time.Millisecond)
+	changeTime := currTime.Add(10 * time.Minute).Round(time.Millisecond)
+
+	md := map[string]*string{
+		"Foo": to.Ptr("FooValuE"),
+		"Bar": to.Ptr("bArvaLue"),
+	}
+
+	renameOptions := file.RenameOptions{
+		SMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{
+				ReadOnly: true,
+				System:   true,
+			},
+			CreationTime:  &creationTime,
+			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
+		},
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+		Metadata:    md,
+		ContentType: to.Ptr("my_type"),
+	}
+
+	resp, err := srcFileClient.Rename(context.Background(), "file2", &renameOptions)
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+	_require.NotNil(resp.FileCreationTime)
+	_require.Equal(*resp.FileCreationTime, creationTime.UTC())
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.Equal(*resp.FileLastWriteTime, lastWriteTime.UTC())
+	_require.NotNil(resp.FileChangeTime)
+	_require.Equal(*resp.FileChangeTime, changeTime.UTC())
+	_require.NotNil(resp.FilePermissionKey)
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(resp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.ReadOnly)
+	_require.True(fileAttributes.System)
+
+	destFileClient := resp.Client
+	gResp, err := destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.FileCreationTime)
+	_require.Equal(*gResp.FileCreationTime, *resp.FileCreationTime)
+	_require.NotNil(gResp.FileLastWriteTime)
+	_require.Equal(*gResp.FileLastWriteTime, *resp.FileLastWriteTime)
+	_require.NotNil(gResp.FileChangeTime)
+	_require.Equal(*gResp.FileChangeTime, *resp.FileChangeTime)
+	_require.NotNil(gResp.FilePermissionKey)
+	_require.Equal(*gResp.FilePermissionKey, *resp.FilePermissionKey)
+	_require.Equal(*gResp.FileAttributes, *resp.FileAttributes)
+	_require.EqualValues(gResp.Metadata, md)
+	_require.NotNil(gResp.ContentType)
+	_require.EqualValues(*gResp.ContentType, *renameOptions.ContentType)
+}
+
+func (f *FileRecordedTestsSuite) TestFileRenameSrcDestLease() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file1", 2048, shareClient)
+	destFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file2", 2048, shareClient)
+
+	// acquire lease on source file
+	srcFileLeaseClient, err := lease.NewFileClient(srcFileClient, nil)
+	_require.NoError(err)
+	srcAcqResp, err := srcFileLeaseClient.Acquire(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(srcAcqResp.LeaseID)
+
+	// acquire lease on destination file
+	destFileLeaseClient, err := lease.NewFileClient(destFileClient, nil)
+	_require.NoError(err)
+	destAcqResp, err := destFileLeaseClient.Acquire(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(destAcqResp.LeaseID)
+
+	_, err = srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+	})
+	_require.Error(err)
+
+	resp, err := srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		ReplaceIfExists: to.Ptr(true),
+		SourceLeaseAccessConditions: &file.SourceLeaseAccessConditions{
+			SourceLeaseID: srcAcqResp.LeaseID,
+		},
+		DestinationLeaseAccessConditions: &file.DestinationLeaseAccessConditions{
+			DestinationLeaseID: destAcqResp.LeaseID,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	newFileClient := resp.Client
+	_, err = newFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileRenameUsingSAS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	perms := sas.FilePermissions{Read: true, Create: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	srcFileClient, err := file.NewClientWithNoCredential(shareClient.URL()+"/file1?"+sasToken, nil)
+	_require.NoError(err)
+
+	_, err = srcFileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	destPathWithSAS := "file2?" + sasToken
+	resp, err := srcFileClient.Rename(context.Background(), destPathWithSAS, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.Client)
+
+	_, err = srcFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+
+	destFileClient := resp.Client
+	_, err = destFileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 // TODO: Add tests for retry header options

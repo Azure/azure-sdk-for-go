@@ -4,7 +4,7 @@ The Azure Monitor Ingestion client module is used to send custom logs to [Azure 
 
 This library allows you to send data from virtually any source to supported built-in tables or to custom tables that you create in Log Analytics workspaces. You can even extend the schema of built-in tables with custom columns.
 
-[Source code][module_source] | Package (pkg.go.dev) | [Product documentation][azure_monitor_overview] | [Samples][ingest_samples]
+Source code | Package (pkg.go.dev) | [Product documentation][azure_monitor_overview] | [Samples][ingest_samples]
 
 ## Getting started
 
@@ -114,7 +114,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [example_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest#example-NewClient
 [ingest_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azingest#pkg-examples
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
-[module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azingest
 
 [cla]: https://cla.microsoft.com
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

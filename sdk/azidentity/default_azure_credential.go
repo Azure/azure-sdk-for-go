@@ -34,8 +34,7 @@ type DefaultAzureCredentialOptions struct {
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
-	// TenantID identifies the tenant the Azure CLI should authenticate in.
-	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
+	// TenantID sets the default tenant for authentication via the Azure CLI and workload identity.
 	TenantID string
 }
 
@@ -85,11 +84,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
-	// workload identity requires values for AZURE_AUTHORITY_HOST, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE, AZURE_TENANT_ID
 	wic, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		AdditionallyAllowedTenants: additionalTenants,
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+		TenantID:                   options.TenantID,
 	})
 	if err == nil {
 		creds = append(creds, wic)
@@ -97,6 +96,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errorMessages = append(errorMessages, credNameWorkloadIdentity+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
 	}
+
 	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
 	if ID, ok := os.LookupEnv(azureClientID); ok {
 		o.ID = ClientID(ID)

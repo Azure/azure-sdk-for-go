@@ -40,6 +40,24 @@ func TestImageGeneration_OpenAI(t *testing.T) {
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
 
+func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	client := newBogusAzureOpenAIClient(t, "")
+	testImageGenerationFailure(t, client)
+}
+
+func TestImageGeneration_OpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	client := newBogusOpenAIClient(t)
+	testImageGenerationFailure(t, client)
+}
+
 func TestImageGeneration_OpenAI_Base64(t *testing.T) {
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
@@ -75,4 +93,18 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 			require.NoError(t, err)
 		}
 	}
+}
+
+func testImageGenerationFailure(t *testing.T, bogusClient *azopenai.Client) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	resp, err := bogusClient.CreateImage(ctx, azopenai.ImageGenerationOptions{
+		Prompt:         to.Ptr("a cat"),
+		Size:           to.Ptr(azopenai.ImageSize256x256),
+		ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+	}, nil)
+	require.Empty(t, resp)
+
+	assertResponseIsError(t, err)
 }

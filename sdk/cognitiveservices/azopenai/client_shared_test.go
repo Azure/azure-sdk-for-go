@@ -12,6 +12,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -25,10 +26,10 @@ var (
 	completionsModelDeployment     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT
 	chatCompletionsModelDeployment string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT
 
-	openAIKey                            string // env: OPENAI_API_KEY
-	openAIEndpoint                       string // env: OPENAI_ENDPOINT
-	openAICompletionsModelDeployment     string // env: OPENAI_CHAT_COMPLETIONS_MODEL
-	openAIChatCompletionsModelDeployment string // env: OPENAI_COMPLETIONS_MODEL
+	openAIKey                  string // env: OPENAI_API_KEY
+	openAIEndpoint             string // env: OPENAI_ENDPOINT
+	openAICompletionsModel     string // env: OPENAI_CHAT_COMPLETIONS_MODEL
+	openAIChatCompletionsModel string // env: OPENAI_COMPLETIONS_MODEL
 )
 
 const fakeEndpoint = "https://recordedhost/"
@@ -42,10 +43,10 @@ func init() {
 		openAIEndpoint = fakeEndpoint
 
 		completionsModelDeployment = "text-davinci-003"
-		openAICompletionsModelDeployment = "text-davinci-003"
+		openAICompletionsModel = "text-davinci-003"
 
 		chatCompletionsModelDeployment = "gpt-4"
-		openAIChatCompletionsModelDeployment = "gpt-4"
+		openAIChatCompletionsModel = "gpt-4"
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
@@ -67,8 +68,8 @@ func init() {
 
 		openAIKey = os.Getenv("OPENAI_API_KEY")
 		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
-		openAICompletionsModelDeployment = os.Getenv("OPENAI_COMPLETIONS_MODEL")
-		openAIChatCompletionsModelDeployment = os.Getenv("OPENAI_CHAT_COMPLETIONS_MODEL")
+		openAICompletionsModel = os.Getenv("OPENAI_COMPLETIONS_MODEL")
+		openAIChatCompletionsModel = os.Getenv("OPENAI_CHAT_COMPLETIONS_MODEL")
 
 		if openAIEndpoint != "" && !strings.HasSuffix(openAIEndpoint, "/") {
 			// (this just makes recording replacement easier)
@@ -86,6 +87,9 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
+		require.NoError(t, err)
+
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", ".*", nil)
 		require.NoError(t, err)
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
@@ -137,4 +141,36 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	}
 
 	return co
+}
+
+// newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return
+// a failure.
+func newBogusAzureOpenAIClient(t *testing.T, modelDeploymentID string) *azopenai.Client {
+	cred, err := azopenai.NewKeyCredential("bogus-api-key")
+	require.NoError(t, err)
+
+	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, modelDeploymentID, newClientOptionsForTest(t))
+	require.NoError(t, err)
+	return client
+}
+
+// newBogusOpenAIClient creates a client that uses an invalid key, which will cause OpenAI to return
+// a failure.
+func newBogusOpenAIClient(t *testing.T) *azopenai.Client {
+	cred, err := azopenai.NewKeyCredential("bogus-api-key")
+	require.NoError(t, err)
+
+	client, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
+	require.NoError(t, err)
+	return client
+}
+
+func assertResponseIsError(t *testing.T, err error) {
+	t.Helper()
+
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+
+	// we sometimes get rate limited but (for this kind of test) it's actually okay
+	require.Truef(t, respErr.StatusCode == http.StatusUnauthorized || respErr.StatusCode == http.StatusTooManyRequests, "An acceptable error comes back (actual: %d)", respErr.StatusCode)
 }

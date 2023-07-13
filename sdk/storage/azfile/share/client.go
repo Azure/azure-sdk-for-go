@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
@@ -134,36 +133,14 @@ func (s *Client) URL() string {
 func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 	directoryName = url.PathEscape(strings.TrimRight(directoryName, "/"))
 	directoryURL := runtime.JoinPaths(s.URL(), directoryName)
-
-	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	clOpts := s.getClientOptions()
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-	if err != nil {
-		if log.Should(exported.EventError) {
-			log.Writef(exported.EventError, err.Error())
-		}
-		return nil
-	}
-
-	return (*directory.Client)(base.NewDirectoryClient(directoryURL, azClient, s.sharedKey(), clOpts))
+	return (*directory.Client)(base.NewDirectoryClient(directoryURL, s.generated().InternalClient().WithClientName(shared.DirectoryClient), s.sharedKey(), s.getClientOptions()))
 }
 
 // NewRootDirectoryClient creates a new directory.Client object for the root of the share using the Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
-
-	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	clOpts := s.getClientOptions()
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-	if err != nil {
-		if log.Should(exported.EventError) {
-			log.Writef(exported.EventError, err.Error())
-		}
-		return nil
-	}
-
-	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, azClient, s.sharedKey(), clOpts))
+	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(shared.DirectoryClient), s.sharedKey(), s.getClientOptions()))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

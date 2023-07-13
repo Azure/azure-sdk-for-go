@@ -1803,12 +1803,17 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDestLease() {
 	_, err = destFileClient.Create(context.Background(), 2048, nil)
 	_require.NoError(err)
 
+	proposedLeaseID := "c820a799-76d7-4ee2-6e15-546f19325c2c"
+
 	// acquire lease on destFile
-	fileLeaseClient, err := lease.NewFileClient(destFileClient, nil)
+	fileLeaseClient, err := lease.NewFileClient(destFileClient, &lease.FileClientOptions{
+		LeaseID: &proposedLeaseID,
+	})
 	_require.NoError(err)
 	acqResp, err := fileLeaseClient.Acquire(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(acqResp.LeaseID)
+	_require.Equal(*acqResp.LeaseID, proposedLeaseID)
 
 	destPath := "dir2/testFile"
 	_, err = srcDirCl.Rename(context.Background(), destPath, &directory.RenameOptions{

@@ -3639,19 +3639,27 @@ func (f *FileRecordedTestsSuite) TestFileRenameSrcDestLease() {
 	srcFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file1", 2048, shareClient)
 	destFileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "file2", 2048, shareClient)
 
+	var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+
 	// acquire lease on source file
-	srcFileLeaseClient, err := lease.NewFileClient(srcFileClient, nil)
+	srcFileLeaseClient, err := lease.NewFileClient(srcFileClient, &lease.FileClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
 	_require.NoError(err)
 	srcAcqResp, err := srcFileLeaseClient.Acquire(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(srcAcqResp.LeaseID)
+	_require.Equal(*srcAcqResp.LeaseID, *proposedLeaseIDs[0])
 
 	// acquire lease on destination file
-	destFileLeaseClient, err := lease.NewFileClient(destFileClient, nil)
+	destFileLeaseClient, err := lease.NewFileClient(destFileClient, &lease.FileClientOptions{
+		LeaseID: proposedLeaseIDs[1],
+	})
 	_require.NoError(err)
 	destAcqResp, err := destFileLeaseClient.Acquire(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(destAcqResp.LeaseID)
+	_require.Equal(*destAcqResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = srcFileClient.Rename(context.Background(), "file2", &file.RenameOptions{
 		ReplaceIfExists: to.Ptr(true),

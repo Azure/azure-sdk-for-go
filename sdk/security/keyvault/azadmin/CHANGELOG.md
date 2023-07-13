@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0 (2023-07-11)
+### 1.0.0 (2023-07-17)
 
 #### Features Added
 * First stable release of the azadmin module

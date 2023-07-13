@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel
 go 1.19
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.1.1
 	github.com/stretchr/testify v1.8.3

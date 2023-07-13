@@ -23,13 +23,13 @@ import (
 
 const fakeEndpoint = "https://test.eastus-1.ingest.monitor.azure.com"
 const fakeRuleID = "Custom-TestTable_CL"
-const fakeStream = "dcr-testing"
+const fakeStreamName = "dcr-testing"
 
 var (
 	credential azcore.TokenCredential
 	endpoint   string
 	ruleID     string
-	stream     string
+	streamName string
 )
 
 func TestMain(m *testing.M) {
@@ -50,7 +50,7 @@ func TestMain(m *testing.M) {
 	}
 	endpoint = getEnvVar("AZURE_MONITOR_DCE", fakeEndpoint)
 	ruleID = getEnvVar("AZURE_MONITOR_DCR_ID", fakeRuleID)
-	stream = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStream)
+	streamName = getEnvVar("AZURE_MONITOR_STREAM_NAME", fakeStreamName)
 
 	code := m.Run()
 	os.Exit(code)

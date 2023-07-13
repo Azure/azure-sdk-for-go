@@ -53,7 +53,7 @@ func TestUpload(t *testing.T) {
 
 	logs := generateLogs()
 
-	res, err := client.Upload(context.Background(), ruleID, stream, logs, nil)
+	res, err := client.Upload(context.Background(), ruleID, streamName, logs, nil)
 	require.NoError(t, err)
 	require.Empty(t, res)
 }
@@ -71,7 +71,7 @@ func TestUploadWithGzip(t *testing.T) {
 	err = zw.Close()
 	require.NoError(t, err)
 
-	res, err := client.Upload(context.Background(), ruleID, stream, buf.Bytes(), &azingest.UploadOptions{ContentEncoding: to.Ptr("gzip")})
+	res, err := client.Upload(context.Background(), ruleID, streamName, buf.Bytes(), &azingest.UploadOptions{ContentEncoding: to.Ptr("gzip")})
 	require.NoError(t, err)
 	require.Empty(t, res)
 }

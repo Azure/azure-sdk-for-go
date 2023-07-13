@@ -42,7 +42,7 @@ func ExampleNewClient() {
 func ExampleClient_Upload() {
 	// set necessary data collection rule variables
 	ruleID := os.Getenv("DATA_COLLECTION_RULE_IMMUTABLE_ID")
-	stream := os.Getenv("DATA_COLLECTION_RULE_STREAM_NAME")
+	streamName := os.Getenv("DATA_COLLECTION_RULE_STREAM_NAME")
 
 	// generating logs
 	// logs should match the schema defined by the provided stream
@@ -61,7 +61,7 @@ func ExampleClient_Upload() {
 	}
 
 	// upload logs
-	_, err = client.Upload(context.TODO(), ruleID, stream, logs, nil)
+	_, err = client.Upload(context.TODO(), ruleID, streamName, logs, nil)
 	if err != nil {
 		//TODO: handle error
 	}

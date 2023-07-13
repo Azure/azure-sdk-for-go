@@ -23,10 +23,13 @@ directive:
   # delete unused model
   - remove-model: PendingCertificateSigningRequestResult
 
-  # rename parameter from "body" to "logs"
+  # rename parameter from "body" to "logs", "stream" to "streamName"
   - from: swagger-document
     where: $.paths..parameters..[?(@.name=='body')]
     transform: $["x-ms-client-name"] = "logs"
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='stream')]
+    transform: $["x-ms-client-name"] = "streamName"
 
  # delete unused error models
   - from: models.go

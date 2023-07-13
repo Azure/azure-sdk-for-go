@@ -34,11 +34,11 @@ type Client struct {
 //
 // Generated from API version 2023-01-01
 //   - ruleID - The immutable Id of the Data Collection Rule resource.
-//   - stream - The streamDeclaration name as defined in the Data Collection Rule.
+//   - streamName - The streamDeclaration name as defined in the Data Collection Rule.
 //   - logs - An array of objects matching the schema defined by the provided stream.
 //   - options - UploadOptions contains the optional parameters for the Client.Upload method.
-func (client *Client) Upload(ctx context.Context, ruleID string, stream string, logs []byte, options *UploadOptions) (UploadResponse, error) {
-	req, err := client.uploadCreateRequest(ctx, ruleID, stream, logs, options)
+func (client *Client) Upload(ctx context.Context, ruleID string, streamName string, logs []byte, options *UploadOptions) (UploadResponse, error) {
+	req, err := client.uploadCreateRequest(ctx, ruleID, streamName, logs, options)
 	if err != nil {
 		return UploadResponse{}, err
 	}
@@ -53,16 +53,16 @@ func (client *Client) Upload(ctx context.Context, ruleID string, stream string, 
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, logs []byte, options *UploadOptions) (*policy.Request, error) {
+func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, streamName string, logs []byte, options *UploadOptions) (*policy.Request, error) {
 	urlPath := "/dataCollectionRules/{ruleId}/streams/{stream}"
 	if ruleID == "" {
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	if stream == "" {
-		return nil, errors.New("parameter stream cannot be empty")
+	if streamName == "" {
+		return nil, errors.New("parameter streamName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{stream}", url.PathEscape(stream))
+	urlPath = strings.ReplaceAll(urlPath, "{stream}", url.PathEscape(streamName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err

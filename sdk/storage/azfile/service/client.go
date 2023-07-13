@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -132,18 +131,7 @@ func (s *Client) URL() string {
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewShareClient(shareName string) *share.Client {
 	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
-
-	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	clOpts := s.getClientOptions()
-	azClient, err := azcore.NewClient(shared.ShareClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-	if err != nil {
-		if log.Should(exported.EventError) {
-			log.Writef(exported.EventError, err.Error())
-		}
-		return nil
-	}
-
-	return (*share.Client)(base.NewShareClient(shareURL, azClient, s.sharedKey(), clOpts))
+	return (*share.Client)(base.NewShareClient(shareURL, s.generated().InternalClient().WithClientName(shared.ShareClient), s.sharedKey(), s.getClientOptions()))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.

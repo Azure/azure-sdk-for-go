@@ -24,7 +24,7 @@ func TestGlobalEndpointManager(t *testing.T) {
 	}
 
 	preferredRegions := []string{"West US", "Central US"}
-	gem, err := NewGlobalEndpointManager(client, preferredRegions)
+	gem, err := newGlobalEndpointManager(client, preferredRegions, 5)
 	if err != nil {
 		t.Fatalf("failed to create globalEndpointManager: %v", err)
 	}
@@ -35,12 +35,6 @@ func TestGlobalEndpointManager(t *testing.T) {
 		assert.NoError(t, err, "GetAccountProperties should not return an error")
 		assert.NotNil(t, accountProperties, "accountProperties should not be nil")
 
-		accountProperties.EnableMultipleWriteLocations = true
-		assert.Equal(t, accountProperties.EnableMultipleWriteLocations, true, "EnableMultipleWriteLocations should be true")
-
-		accountProperties.EnableMultipleWriteLocations = false
-		assert.Equal(t, accountProperties.EnableMultipleWriteLocations, false, "EnableMultipleWriteLocations should be false")
-
 		ReadRegions := accountProperties.ReadRegions
 		assert.NotNil(t, ReadRegions, "ReadRegions should not be nil")
 		assert.Len(t, ReadRegions, 2, "ReadRegions should contain 2 regions")
@@ -48,35 +42,6 @@ func TestGlobalEndpointManager(t *testing.T) {
 		WriteRegion := accountProperties.WriteRegions
 		assert.NotNil(t, WriteRegion, "WriteRegion should not be nil")
 		assert.Len(t, WriteRegion, 1, "WriteRegion should contain 1 region")
-	})
-
-	t.Run("TestLocationCache", func(t *testing.T) {
-		locationCache := gem.locationCache
-
-		defaultEndpoint := locationCache.defaultEndpoint
-		assert.NotNil(t, defaultEndpoint, "defaultEndpoint should not be nil")
-
-		locationCache.enableMultipleWriteLocations = true
-		assert.Equal(t, locationCache.enableMultipleWriteLocations, true, "enableMultipleWriteLocations should be true")
-		availReadLocations := locationCache.locationInfo.availReadLocations
-		assert.NotNil(t, availReadLocations, "availReadLocations should not be nil")
-
-		prefLocations := locationCache.locationInfo.prefLocations
-		assert.NotNil(t, prefLocations, "prefLocations should not be nil")
-		availWriteLocations := locationCache.locationInfo.availWriteLocations
-		assert.NotNil(t, availWriteLocations, "availWriteLocations should not be nil")
-		availReadLocations = locationCache.locationInfo.availReadLocations
-		assert.NotNil(t, availReadLocations, "availReadLocations should not be nil")
-		availWriteEndpointsByLocation := locationCache.locationInfo.availWriteEndpointsByLocation
-		assert.NotNil(t, availWriteEndpointsByLocation, "availWriteEndpointsByLocation should not be nil")
-		availReadEndpointsByLocation := locationCache.locationInfo.availReadEndpointsByLocation
-		assert.NotNil(t, availReadEndpointsByLocation, "availReadEndpointsByLocation should not be nil")
-		writeEndpoints := locationCache.locationInfo.writeEndpoints
-		assert.NotNil(t, writeEndpoints, "writeEndpoints should not be nil")
-		readEndpoints := locationCache.locationInfo.readEndpoints
-		assert.NotNil(t, readEndpoints, "readEndpoints should not be nil")
-		prefLocations = locationCache.locationInfo.prefLocations
-		assert.NotNil(t, prefLocations, "prefLocations should not be nil")
 	})
 
 	t.Run("TestGetWriteEndpoints", func(t *testing.T) {
@@ -113,13 +78,7 @@ func TestGlobalEndpointManager(t *testing.T) {
 	})
 
 	t.Run("TestUpdate", func(t *testing.T) {
-		accountProperties := accountProperties{
-			ReadRegions:                  []accountRegion{loc1, loc2},
-			WriteRegions:                 []accountRegion{loc1, loc2},
-			EnableMultipleWriteLocations: true,
-		}
-
-		err = gem.Update(accountProperties)
+		err = gem.Update()
 		assert.NoError(t, err, "Update should not return an error")
 	})
 
@@ -142,14 +101,9 @@ func TestGlobalEndpointManager(t *testing.T) {
 	})
 
 	t.Run("TestBackgroundRefresh", func(t *testing.T) {
-		accountProperties := accountProperties{
-			ReadRegions:                  []accountRegion{loc1, loc2},
-			WriteRegions:                 []accountRegion{loc1, loc2},
-			EnableMultipleWriteLocations: true,
-		}
 
 		// Start background refresh
-		gem.startBackgroundRefresh(accountProperties)
+		gem.startBackgroundRefresh(5 * time.Minute)
 
 		// Wait for background refresh to occur (assuming it takes less than 1 second)
 		time.Sleep(1 * time.Second)
@@ -212,7 +166,7 @@ func TestGlobalEndpointManager(t *testing.T) {
 		client := emulatorTests.getClient(t)
 
 		preferredRegions := []string{"location1", "location2"}
-		gem, err := NewGlobalEndpointManager(client, preferredRegions)
+		gem, err := newGlobalEndpointManager(client, preferredRegions, (5 * time.Minute))
 		if err != nil {
 			t.Fatalf("failed to create globalEndpointManager: %v", err)
 		}

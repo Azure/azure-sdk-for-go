@@ -61,7 +61,7 @@ type ContentFilterResponseError struct {
 }
 
 // Unwrap returns the inner error for this error.
-func (e ContentFilterResponseError) Unwrap() error {
+func (e *ContentFilterResponseError) Unwrap() error {
 	return &e.ResponseError
 }
 

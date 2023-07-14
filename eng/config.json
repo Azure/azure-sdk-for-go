@@ -26,7 +26,7 @@
         },
         {
             "Name": "azidentity",
-            "CoverageGoal": 0.68
+            "CoverageGoal": 0.87
         },
         {
             "Name": "azqueue",

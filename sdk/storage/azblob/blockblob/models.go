@@ -27,8 +27,8 @@ type BlockList = generated.BlockList
 type BlobCopySourceTags = generated.BlobCopySourceTags
 
 const (
-	BlobCopySourceTagsCopy    BlobCopySourceTags = "COPY"
-	BlobCopySourceTagsReplace BlobCopySourceTags = "REPLACE"
+	BlobCopySourceTagsCopy    = generated.BlobCopySourceTagsCOPY
+	BlobCopySourceTagsReplace = generated.BlobCopySourceTagsREPLACE
 )
 
 // Request Model Declaration -------------------------------------------------------------------------------------------

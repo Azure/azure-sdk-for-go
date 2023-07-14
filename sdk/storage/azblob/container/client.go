@@ -133,7 +133,7 @@ func (c *Client) URL() string {
 func (c *Client) NewBlobClient(blobName string) *blob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient(), c.credential()))
+	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlobClient), c.credential()))
 }
 
 // NewAppendBlobClient creates a new appendblob.Client object by concatenating blobName to the end of
@@ -142,7 +142,7 @@ func (c *Client) NewBlobClient(blobName string) *blob.Client {
 func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().InternalClient(), c.sharedKey()))
+	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.AppendBlobClient), c.sharedKey()))
 }
 
 // NewBlockBlobClient creates a new blockblob.Client object by concatenating blobName to the end of
@@ -151,7 +151,7 @@ func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().InternalClient(), c.sharedKey()))
+	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlockBlobClient), c.sharedKey()))
 }
 
 // NewPageBlobClient creates a new pageblob.Client object by concatenating blobName to the end of
@@ -160,7 +160,7 @@ func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().InternalClient(), c.sharedKey()))
+	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.PageBlobClient), c.sharedKey()))
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.

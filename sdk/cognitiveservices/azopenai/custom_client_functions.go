@@ -21,6 +21,7 @@ type ChatCompletionsOptionsFunctionCall struct {
 	Value *string
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ChatCompletionsOptionsFunctionCall.
 func (c ChatCompletionsOptionsFunctionCall) MarshalJSON() ([]byte, error) {
 	if c.IsFunction {
 		if c.Value == nil {

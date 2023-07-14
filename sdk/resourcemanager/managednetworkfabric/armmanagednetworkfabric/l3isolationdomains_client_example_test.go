@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Create_MaximumSet_Gen.json
 func ExampleL3IsolationDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,154 +29,13 @@ func ExampleL3IsolationDomainsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginCreate(ctx, "resourceGroupName", "example-l3domain", armmanagednetworkfabric.L3IsolationDomain{
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginCreate(ctx, "example-rg", "example-l3domain", armmanagednetworkfabric.L3IsolationDomain{
 		Location: to.Ptr("eastus"),
-		Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-			Description: to.Ptr("creating L3 isolation domain"),
-			AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
-				IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
-					{
-						Prefix: to.Ptr("10.0.0.0/24"),
-					}},
-				IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
-					{
-						Prefix: to.Ptr("10.0.0.1"),
-					}},
-			},
-			ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-				ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName2"),
-			},
-			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
-			RedistributeStaticRoutes:     to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-			NetworkFabricID:              to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
+		Tags: map[string]*string{
+			"keyID": to.Ptr("KeyValue"),
 		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.L3IsolationDomain = armmanagednetworkfabric.L3IsolationDomain{
-	// 	Name: to.Ptr("example-l3domain"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
-	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
-	// 		CreatedBy: to.Ptr("email@address.com"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserId"),
-	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 	},
-	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-	// 		Description: to.Ptr("creating L3 isolation domain"),
-	// 		AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
-	// 			IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
-	// 				{
-	// 					Prefix: to.Ptr("10.0.0.0/24"),
-	// 			}},
-	// 			IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
-	// 				{
-	// 					Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
-	// 			}},
-	// 		},
-	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 		},
-	// 		RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
-	// 		RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
-	// 			OptionBDisabledOnResources: []*string{
-	// 				to.Ptr("")},
-	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Get_MaximumSet_Gen.json
-func ExampleL3IsolationDomainsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewL3IsolationDomainsClient().Get(ctx, "resourceGroupName", "example-l3domain", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.L3IsolationDomain = armmanagednetworkfabric.L3IsolationDomain{
-	// 	Name: to.Ptr("example-l3domain"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
-	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
-	// 		CreatedBy: to.Ptr("email@address.com"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserId"),
-	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 	},
-	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-	// 		Description: to.Ptr("creating L3 isolation domain"),
-	// 		AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
-	// 			IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
-	// 				{
-	// 					Prefix: to.Ptr("10.0.0.0/24"),
-	// 			}},
-	// 			IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
-	// 				{
-	// 					Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
-	// 			}},
-	// 		},
-	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
-	// 		},
-	// 		RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
-	// 		RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
-	// 			OptionBDisabledOnResources: []*string{
-	// 				to.Ptr("")},
-	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Update_MaximumSet_Gen.json
-func ExampleL3IsolationDomainsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginUpdate(ctx, "resourceGroupName", "example-l3domain", armmanagednetworkfabric.L3IsolationDomainPatch{
-		Properties: &armmanagednetworkfabric.L3IsolationDomainPatchProperties{
-			Description: to.Ptr("creating L3 isolation domain"),
+		Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
+			Annotation: to.Ptr("annotation"),
 			AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
 				IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
 					{
@@ -187,8 +46,169 @@ func ExampleL3IsolationDomainsClient_BeginUpdate() {
 						Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
 					}},
 			},
-			ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-				ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+				ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+					ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+					ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+				},
+				ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+			},
+			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
+			RedistributeStaticRoutes:     to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
+			NetworkFabricID:              to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.L3IsolationDomain = armmanagednetworkfabric.L3IsolationDomain{
+	// 	Name: to.Ptr("example-l3domain"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+	// 	SystemData: &armmanagednetworkfabric.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("UserId"),
+	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"keyID": to.Ptr("KeyValue"),
+	// 	},
+	// 	Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
+	// 		Annotation: to.Ptr("annotation"),
+	// 		AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
+	// 			IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
+	// 				{
+	// 					Prefix: to.Ptr("10.0.0.0/24"),
+	// 			}},
+	// 			IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
+	// 				{
+	// 					Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
+	// 			}},
+	// 		},
+	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+	// 			ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+	// 				ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+	// 				ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+	// 			},
+	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
+	// 		RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Get_MaximumSet_Gen.json
+func ExampleL3IsolationDomainsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewL3IsolationDomainsClient().Get(ctx, "example-rg", "example-l3domain", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.L3IsolationDomain = armmanagednetworkfabric.L3IsolationDomain{
+	// 	Name: to.Ptr("example-l3domain"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+	// 	SystemData: &armmanagednetworkfabric.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("UserId"),
+	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"keyID": to.Ptr("KeyValue"),
+	// 	},
+	// 	Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
+	// 		Annotation: to.Ptr("annotation"),
+	// 		AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
+	// 			IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
+	// 				{
+	// 					Prefix: to.Ptr("10.0.0.0/24"),
+	// 			}},
+	// 			IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
+	// 				{
+	// 					Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
+	// 			}},
+	// 		},
+	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+	// 			ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+	// 				ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+	// 				ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+	// 			},
+	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		},
+	// 		RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
+	// 		RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Update_MaximumSet_Gen.json
+func ExampleL3IsolationDomainsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginUpdate(ctx, "example-rg", "example-l3domain", armmanagednetworkfabric.L3IsolationDomainPatch{
+		Tags: map[string]*string{
+			"key4953": to.Ptr("1234"),
+		},
+		Properties: &armmanagednetworkfabric.L3IsolationDomainPatchProperties{
+			Annotation: to.Ptr("annotation1"),
+			AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
+				IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
+					{
+						Prefix: to.Ptr("10.0.0.0/24"),
+					}},
+				IPv6Routes: []*armmanagednetworkfabric.AggregateRoute{
+					{
+						Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
+					}},
+			},
+			ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+				ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+					ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"),
+					ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"),
+				},
+				ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
 			},
 			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
 			RedistributeStaticRoutes:     to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
@@ -207,18 +227,21 @@ func ExampleL3IsolationDomainsClient_BeginUpdate() {
 	// res.L3IsolationDomain = armmanagednetworkfabric.L3IsolationDomain{
 	// 	Name: to.Ptr("example-l3domain"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("UserId"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key4953": to.Ptr("1234"),
+	// 	},
 	// 	Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-	// 		Description: to.Ptr("creating L3 isolation domain"),
+	// 		Annotation: to.Ptr("annotation"),
 	// 		AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
 	// 			IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
 	// 				{
@@ -229,24 +252,24 @@ func ExampleL3IsolationDomainsClient_BeginUpdate() {
 	// 					Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
 	// 			}},
 	// 		},
-	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+	// 		ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+	// 			ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+	// 				ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"),
+	// 				ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"),
+	// 			},
+	// 			ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
 	// 		},
 	// 		RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
 	// 		RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-	// 		DisabledOnResources: []*string{
-	// 			to.Ptr("")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
-	// 			OptionBDisabledOnResources: []*string{
-	// 				to.Ptr("")},
-	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			},
-	// 		}
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Delete_MaximumSet_Gen.json
 func ExampleL3IsolationDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +280,7 @@ func ExampleL3IsolationDomainsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginDelete(ctx, "resourceGroupName", "example-l3domain", nil)
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginDelete(ctx, "example-rg", "example-l3domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -267,7 +290,7 @@ func ExampleL3IsolationDomainsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleL3IsolationDomainsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +301,7 @@ func ExampleL3IsolationDomainsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewL3IsolationDomainsClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewL3IsolationDomainsClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -294,18 +317,21 @@ func ExampleL3IsolationDomainsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("example-l3domain"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("UserId"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
+		// 			Tags: map[string]*string{
+		// 				"keyID": to.Ptr("KeyValue"),
+		// 			},
 		// 			Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-		// 				Description: to.Ptr("creating L3 isolation domain"),
+		// 				Annotation: to.Ptr("annotation"),
 		// 				AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
 		// 					IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
 		// 						{
@@ -316,26 +342,26 @@ func ExampleL3IsolationDomainsClient_NewListByResourceGroupPager() {
 		// 							Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
 		// 					}},
 		// 				},
-		// 				ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 					ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+		// 					ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+		// 						ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+		// 						ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+		// 					},
+		// 					ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
 		// 				},
 		// 				RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
 		// 				RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 				DisabledOnResources: []*string{
-		// 					to.Ptr("")},
-		// 					NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
-		// 					OptionBDisabledOnResources: []*string{
-		// 						to.Ptr("")},
-		// 						ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 					},
-		// 			}},
-		// 		}
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_ListBySubscription_MaximumSet_Gen.json
 func ExampleL3IsolationDomainsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,18 +388,21 @@ func ExampleL3IsolationDomainsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("example-l3domain"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/l3isolationdomains"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-09T18:35:44.070Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-05T18:37:10.310Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("UserId"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
+		// 			Tags: map[string]*string{
+		// 				"keyID": to.Ptr("KeyValue"),
+		// 			},
 		// 			Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
-		// 				Description: to.Ptr("creating L3 isolation domain"),
+		// 				Annotation: to.Ptr("annotation"),
 		// 				AggregateRouteConfiguration: &armmanagednetworkfabric.AggregateRouteConfiguration{
 		// 					IPv4Routes: []*armmanagednetworkfabric.AggregateRoute{
 		// 						{
@@ -384,26 +413,26 @@ func ExampleL3IsolationDomainsClient_NewListBySubscriptionPager() {
 		// 							Prefix: to.Ptr("3FFE:FFFF:0:CD30::a0/29"),
 		// 					}},
 		// 				},
-		// 				ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy{
-		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 					ExportRoutePolicyID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
+		// 				ConnectedSubnetRoutePolicy: &armmanagednetworkfabric.ConnectedSubnetRoutePolicy{
+		// 					ExportRoutePolicy: &armmanagednetworkfabric.L3ExportRoutePolicy{
+		// 						ExportIPv4RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+		// 						ExportIPv6RoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"),
+		// 					},
+		// 					ExportRoutePolicyID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"),
 		// 				},
 		// 				RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
 		// 				RedistributeStaticRoutes: to.Ptr(armmanagednetworkfabric.RedistributeStaticRoutesFalse),
-		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.EnabledDisabledStateEnabled),
-		// 				DisabledOnResources: []*string{
-		// 					to.Ptr("")},
-		// 					NetworkFabricID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/networkFabrics/FabricName"),
-		// 					OptionBDisabledOnResources: []*string{
-		// 						to.Ptr("")},
-		// 						ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 					},
-		// 			}},
-		// 		}
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
 func ExampleL3IsolationDomainsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,22 +443,45 @@ func ExampleL3IsolationDomainsClient_BeginUpdateAdministrativeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "resourceGroupName", "example-l3domain", armmanagednetworkfabric.UpdateAdministrativeState{
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-l3domain", armmanagednetworkfabric.UpdateAdministrativeState{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
+			to.Ptr("")},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForDeviceUpdate = armmanagednetworkfabric.CommonPostActionResponseForDeviceUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 	FailedDevices: []*string{
+	// 		to.Ptr("")},
+	// 		SuccessfulDevices: []*string{
+	// 			to.Ptr("")},
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_updateOptionBAdministrativeState_MaximumSet_Gen.json
-func ExampleL3IsolationDomainsClient_BeginUpdateOptionBAdministrativeState() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_ValidateConfiguration_MaximumSet_Gen.json
+func ExampleL3IsolationDomainsClient_BeginValidateConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -439,22 +491,38 @@ func ExampleL3IsolationDomainsClient_BeginUpdateOptionBAdministrativeState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginUpdateOptionBAdministrativeState(ctx, "resourceGroupName", "example-l3domain", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-		State: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnable),
-	}, nil)
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginValidateConfiguration(ctx, "example-rg", "example-l3domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ValidateConfigurationResponse = armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 	URL: to.Ptr("https://ActionDetails"),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_clearArpTable_MaximumSet_Gen.json
-func ExampleL3IsolationDomainsClient_BeginClearArpTable() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_CommitConfiguration_MaximumSet_Gen.json
+func ExampleL3IsolationDomainsClient_BeginCommitConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -464,39 +532,31 @@ func ExampleL3IsolationDomainsClient_BeginClearArpTable() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginClearArpTable(ctx, "resourceGroupName", "l3IsolationDomainName", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain")},
-	}, nil)
+	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginCommitConfiguration(ctx, "example-rg", "example-l3domain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_clearNeighborTable_MaximumSet_Gen.json
-func ExampleL3IsolationDomainsClient_BeginClearNeighborTable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewL3IsolationDomainsClient().BeginClearNeighborTable(ctx, "resourceGroupName", "example-l3domain", armmanagednetworkfabric.EnableDisableOnResources{
-		ResourceIDs: []*string{
-			to.Ptr("wnaxqikneofcni")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }

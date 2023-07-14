@@ -29,7 +29,7 @@ type NetworkFabricsClient struct {
 }
 
 // NewNetworkFabricsClient creates a new instance of NetworkFabricsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkFabricsClient, error) {
@@ -44,12 +44,76 @@ func NewNetworkFabricsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginCommitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginCommitConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginCommitConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginCommitConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*runtime.Poller[NetworkFabricsClientCommitConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.commitConfiguration(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientCommitConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientCommitConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CommitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) commitConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*http.Response, error) {
+	req, err := client.commitConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// commitConfigurationCreateRequest creates the CommitConfiguration request.
+func (client *NetworkFabricsClient) commitConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/commitConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // BeginCreate - Create Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric
+//   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
 //   - options - NetworkFabricsClientBeginCreateOptions contains the optional parameters for the NetworkFabricsClient.BeginCreate
 //     method.
@@ -70,7 +134,7 @@ func (client *NetworkFabricsClient) BeginCreate(ctx context.Context, resourceGro
 // Create - Create Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabric, options *NetworkFabricsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
 	if err != nil {
@@ -89,9 +153,6 @@ func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupNam
 // createCreateRequest creates the Create request.
 func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabric, options *NetworkFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +167,7 @@ func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -115,9 +176,9 @@ func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, res
 // BeginDelete - Delete Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric
+//   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginDeleteOptions contains the optional parameters for the NetworkFabricsClient.BeginDelete
 //     method.
 func (client *NetworkFabricsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeleteOptions) (*runtime.Poller[NetworkFabricsClientDeleteResponse], error) {
@@ -137,7 +198,7 @@ func (client *NetworkFabricsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkFabricName, options)
 	if err != nil {
@@ -147,7 +208,7 @@ func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -156,9 +217,6 @@ func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourc
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +231,7 @@ func (client *NetworkFabricsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,9 +240,9 @@ func (client *NetworkFabricsClient) deleteCreateRequest(ctx context.Context, res
 // BeginDeprovision - Deprovisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the NetworkFabric.
+//   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginDeprovisionOptions contains the optional parameters for the NetworkFabricsClient.BeginDeprovision
 //     method.
 func (client *NetworkFabricsClient) BeginDeprovision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeprovisionOptions) (*runtime.Poller[NetworkFabricsClientDeprovisionResponse], error) {
@@ -204,7 +262,7 @@ func (client *NetworkFabricsClient) BeginDeprovision(ctx context.Context, resour
 // Deprovision - Deprovisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeprovisionOptions) (*http.Response, error) {
 	req, err := client.deprovisionCreateRequest(ctx, resourceGroupName, networkFabricName, options)
 	if err != nil {
@@ -214,7 +272,7 @@ func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -223,9 +281,6 @@ func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGro
 // deprovisionCreateRequest creates the Deprovision request.
 func (client *NetworkFabricsClient) deprovisionCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeprovisionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/deprovision"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -240,7 +295,7 @@ func (client *NetworkFabricsClient) deprovisionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,9 +304,9 @@ func (client *NetworkFabricsClient) deprovisionCreateRequest(ctx context.Context
 // Get - Get Network Fabric resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric
+//   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientGetOptions contains the optional parameters for the NetworkFabricsClient.Get method.
 func (client *NetworkFabricsClient) Get(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientGetOptions) (NetworkFabricsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkFabricName, options)
@@ -271,9 +326,6 @@ func (client *NetworkFabricsClient) Get(ctx context.Context, resourceGroupName s
 // getCreateRequest creates the Get request.
 func (client *NetworkFabricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -288,7 +340,7 @@ func (client *NetworkFabricsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,9 +355,73 @@ func (client *NetworkFabricsClient) getHandleResponse(resp *http.Response) (Netw
 	return result, nil
 }
 
+// BeginGetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginGetTopologyOptions contains the optional parameters for the NetworkFabricsClient.BeginGetTopology
+//     method.
+func (client *NetworkFabricsClient) BeginGetTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*runtime.Poller[NetworkFabricsClientGetTopologyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.getTopology(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientGetTopologyResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientGetTopologyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// GetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) getTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*http.Response, error) {
+	req, err := client.getTopologyCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// getTopologyCreateRequest creates the GetTopology request.
+func (client *NetworkFabricsClient) getTopologyCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/getTopology"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // NewListByResourceGroupPager - List all the Network Fabric resources in the given resource group.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkFabricsClientListByResourceGroupOptions contains the optional parameters for the NetworkFabricsClient.NewListByResourceGroupPager
 //     method.
@@ -340,9 +456,6 @@ func (client *NetworkFabricsClient) NewListByResourceGroupPager(resourceGroupNam
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *NetworkFabricsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkFabricsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -353,7 +466,7 @@ func (client *NetworkFabricsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -370,7 +483,7 @@ func (client *NetworkFabricsClient) listByResourceGroupHandleResponse(resp *http
 
 // NewListBySubscriptionPager - List all the Network Fabric resources in the given subscription.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - options - NetworkFabricsClientListBySubscriptionOptions contains the optional parameters for the NetworkFabricsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFabricsClient) NewListBySubscriptionPager(options *NetworkFabricsClientListBySubscriptionOptions) *runtime.Pager[NetworkFabricsClientListBySubscriptionResponse] {
@@ -404,16 +517,13 @@ func (client *NetworkFabricsClient) NewListBySubscriptionPager(options *NetworkF
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *NetworkFabricsClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkFabricsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,9 +541,9 @@ func (client *NetworkFabricsClient) listBySubscriptionHandleResponse(resp *http.
 // BeginProvision - Provisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the NetworkFabric.
+//   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginProvisionOptions contains the optional parameters for the NetworkFabricsClient.BeginProvision
 //     method.
 func (client *NetworkFabricsClient) BeginProvision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*runtime.Poller[NetworkFabricsClientProvisionResponse], error) {
@@ -453,7 +563,7 @@ func (client *NetworkFabricsClient) BeginProvision(ctx context.Context, resource
 // Provision - Provisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*http.Response, error) {
 	req, err := client.provisionCreateRequest(ctx, resourceGroupName, networkFabricName, options)
 	if err != nil {
@@ -463,7 +573,7 @@ func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -472,9 +582,6 @@ func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroup
 // provisionCreateRequest creates the Provision request.
 func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/provision"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -489,7 +596,71 @@ func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - options - NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginRefreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*runtime.Poller[NetworkFabricsClientRefreshConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshConfiguration(ctx, resourceGroupName, networkFabricName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientRefreshConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientRefreshConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// RefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*http.Response, error) {
+	req, err := client.refreshConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// refreshConfigurationCreateRequest creates the RefreshConfiguration request.
+func (client *NetworkFabricsClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -498,13 +669,13 @@ func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, 
 // BeginUpdate - Update certain properties of the Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2023-06-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkFabricName - Name of the Network Fabric
+//   - networkFabricName - Name of the Network Fabric.
 //   - body - Network Fabric properties to update.
 //   - options - NetworkFabricsClientBeginUpdateOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdate
 //     method.
-func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatchParameters, options *NetworkFabricsClientBeginUpdateOptions) (*runtime.Poller[NetworkFabricsClientUpdateResponse], error) {
+func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*runtime.Poller[NetworkFabricsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, networkFabricName, body, options)
 		if err != nil {
@@ -521,8 +692,8 @@ func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Update certain properties of the Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatchParameters, options *NetworkFabricsClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
 	if err != nil {
 		return nil, err
@@ -538,11 +709,8 @@ func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupNam
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatchParameters, options *NetworkFabricsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -557,7 +725,271 @@ func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginUpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Request payload.
+//   - options - NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions contains the optional parameters for the
+//     NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration method.
+func (client *NetworkFabricsClient) BeginUpdateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateInfraManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientUpdateInfraManagementBfdConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// UpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources in the
+// given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) updateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*http.Response, error) {
+	req, err := client.updateInfraManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// updateInfraManagementBfdConfigurationCreateRequest creates the UpdateInfraManagementBfdConfiguration request.
+func (client *NetworkFabricsClient) updateInfraManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateInfraManagementBfdConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginUpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Request payload.
+//   - options - NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions contains the optional parameters for
+//     the NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration method.
+func (client *NetworkFabricsClient) BeginUpdateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*runtime.Poller[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateWorkloadManagementBfdConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientUpdateWorkloadManagementBfdConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// UpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
+// in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*http.Response, error) {
+	req, err := client.updateWorkloadManagementBfdConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// updateWorkloadManagementBfdConfigurationCreateRequest creates the UpdateWorkloadManagementBfdConfiguration request.
+func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginUpgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Network Fabric properties to update.
+//   - options - NetworkFabricsClientBeginUpgradeOptions contains the optional parameters for the NetworkFabricsClient.BeginUpgrade
+//     method.
+func (client *NetworkFabricsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateVersion, options *NetworkFabricsClientBeginUpgradeOptions) (*runtime.Poller[NetworkFabricsClientUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgrade(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientUpgradeResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientUpgradeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// Upgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) upgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateVersion, options *NetworkFabricsClientBeginUpgradeOptions) (*http.Response, error) {
+	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// upgradeCreateRequest creates the Upgrade request.
+func (client *NetworkFabricsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateVersion, options *NetworkFabricsClientBeginUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/upgrade"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+// BeginValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkFabricName - Name of the Network Fabric.
+//   - body - Validate configuration properties.
+//   - options - NetworkFabricsClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginValidateConfiguration
+//     method.
+func (client *NetworkFabricsClient) BeginValidateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*runtime.Poller[NetworkFabricsClientValidateConfigurationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateConfiguration(ctx, resourceGroupName, networkFabricName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkFabricsClientValidateConfigurationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[NetworkFabricsClientValidateConfigurationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// ValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-15
+func (client *NetworkFabricsClient) validateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*http.Response, error) {
+	req, err := client.validateConfigurationCreateRequest(ctx, resourceGroupName, networkFabricName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// validateConfigurationCreateRequest creates the ValidateConfiguration request.
+func (client *NetworkFabricsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/validateConfiguration"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkFabricName == "" {
+		return nil, errors.New("parameter networkFabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkFabricName}", url.PathEscape(networkFabricName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

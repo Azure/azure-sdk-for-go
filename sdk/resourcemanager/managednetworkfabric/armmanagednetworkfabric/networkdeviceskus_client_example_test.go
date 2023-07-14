@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDeviceSkus_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDeviceSkus_Get_MaximumSet_Gen.json
 func ExampleNetworkDeviceSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleNetworkDeviceSKUsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNetworkDeviceSKUsClient().Get(ctx, "DefaultSku", nil)
+	res, err := clientFactory.NewNetworkDeviceSKUsClient().Get(ctx, "example-deviceSku", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -36,53 +36,45 @@ func ExampleNetworkDeviceSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkDeviceSKU = armmanagednetworkfabric.NetworkDeviceSKU{
-	// 	ID: to.Ptr("resourceId"),
+	// 	Name: to.Ptr("example-deviceSku"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkDeviceSkus"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus/example-deviceSku"),
+	// 	SystemData: &armmanagednetworkfabric.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:55:43.467Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:55:43.467Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
+	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
 	// 		Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
 	// 			{
-	// 				Identifier: to.Ptr("1"),
-	// 				InterfaceType: to.Ptr("Ethernet"),
+	// 				Identifier: to.Ptr("HundredGigE0/0"),
+	// 				InterfaceType: to.Ptr("type1"),
 	// 				SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
 	// 					{
-	// 						ConnectorType: to.Ptr("10GBASE-LRL"),
-	// 						MaxSpeedInMbps: to.Ptr[int32](10240),
-	// 				}},
-	// 			},
-	// 			{
-	// 				Identifier: to.Ptr("2"),
-	// 				InterfaceType: to.Ptr("Ethernet"),
-	// 				SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-	// 					{
-	// 						ConnectorType: to.Ptr("10GBASE-LRL"),
-	// 						MaxSpeedInMbps: to.Ptr[int32](10240),
+	// 						ConnectorType: to.Ptr("Optical"),
+	// 						MaxSpeedInMbps: to.Ptr[int32](100),
 	// 				}},
 	// 		}},
-	// 		Limits: &armmanagednetworkfabric.DeviceLimits{
-	// 			MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-	// 			MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-	// 			MaxSubInterfaces: to.Ptr[int32](0),
-	// 			MaxTunnelInterfaces: to.Ptr[int32](0),
-	// 			MaxVirtualRouterFunctions: to.Ptr[int32](0),
-	// 			PhysicalInterfaceCount: to.Ptr[int32](2),
-	// 		},
 	// 		Manufacturer: to.Ptr("Arista"),
-	// 		Model: to.Ptr("DCS-7280DR3A-36-F"),
+	// 		Model: to.Ptr("model1"),
+	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-	// 			to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameCE),
-	// 			to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameToR)},
+	// 			to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameCE)},
 	// 			SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
 	// 				{
-	// 					IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-	// 					IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-	// 					VendorFirmwareVersion: to.Ptr("1.1.2"),
-	// 					VendorOsVersion: to.Ptr("4.22.2"),
-	// 					Version: to.Ptr("4.22.2,1.1.2"),
+	// 					IsDefault: to.Ptr(armmanagednetworkfabric.BooleanEnumPropertyTrue),
+	// 					VendorFirmwareVersion: to.Ptr("11.2"),
+	// 					VendorOsVersion: to.Ptr("2.0"),
+	// 					Version: to.Ptr("1.0.0"),
 	// 			}},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDeviceSkus_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDeviceSkus_ListBySubscription_MaximumSet_Gen.json
 func ExampleNetworkDeviceSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,241 +99,42 @@ func ExampleNetworkDeviceSKUsClient_NewListBySubscriptionPager() {
 		// page.NetworkDeviceSKUsListResult = armmanagednetworkfabric.NetworkDeviceSKUsListResult{
 		// 	Value: []*armmanagednetworkfabric.NetworkDeviceSKU{
 		// 		{
-		// 			Name: to.Ptr("A-DCS-7280DR3A-36-F"),
-		// 			Type: to.Ptr("NetworkDeviceSkus"),
-		// 			ID: to.Ptr("A-DCS-7280DR3A-36-F"),
+		// 			Name: to.Ptr("example-deviceSku"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkDeviceSkus"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus/example-deviceSku"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:55:43.467Z"); return t}()),
 		// 				CreatedBy: to.Ptr("email@address.com"),
-		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("email@address.com"),
-		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
+		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:55:43.467Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@mail.com"),
+		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
 		// 				Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
 		// 					{
-		// 						Identifier: to.Ptr("1"),
-		// 						InterfaceType: to.Ptr("Ethernet"),
+		// 						Identifier: to.Ptr("HundredGigE0/0"),
+		// 						InterfaceType: to.Ptr("type1"),
 		// 						SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
 		// 							{
-		// 								ConnectorType: to.Ptr("10GBASE-LRL"),
-		// 								MaxSpeedInMbps: to.Ptr[int32](10240),
-		// 						}},
-		// 					},
-		// 					{
-		// 						Identifier: to.Ptr("2"),
-		// 						InterfaceType: to.Ptr("Ethernet"),
-		// 						SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-		// 							{
-		// 								ConnectorType: to.Ptr("10GBASE-LRL"),
-		// 								MaxSpeedInMbps: to.Ptr[int32](10240),
+		// 								ConnectorType: to.Ptr("Optical"),
+		// 								MaxSpeedInMbps: to.Ptr[int32](100),
 		// 						}},
 		// 				}},
-		// 				Limits: &armmanagednetworkfabric.DeviceLimits{
-		// 					MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-		// 					MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-		// 					MaxSubInterfaces: to.Ptr[int32](0),
-		// 					MaxTunnelInterfaces: to.Ptr[int32](0),
-		// 					MaxVirtualRouterFunctions: to.Ptr[int32](0),
-		// 					PhysicalInterfaceCount: to.Ptr[int32](2),
-		// 				},
 		// 				Manufacturer: to.Ptr("Arista"),
-		// 				Model: to.Ptr("DCS-7280DR3A-36-F"),
+		// 				Model: to.Ptr("model1"),
+		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 				SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-		// 					to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameCE),
-		// 					to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameToR)},
+		// 					to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameCE)},
 		// 					SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
 		// 						{
-		// 							IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-		// 							IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-		// 							VendorFirmwareVersion: to.Ptr("1.1.2"),
-		// 							VendorOsVersion: to.Ptr("4.22.2"),
-		// 							Version: to.Ptr("4.22.2,1.1.2"),
+		// 							IsDefault: to.Ptr(armmanagednetworkfabric.BooleanEnumPropertyTrue),
+		// 							VendorFirmwareVersion: to.Ptr("11.2"),
+		// 							VendorOsVersion: to.Ptr("2.0"),
+		// 							Version: to.Ptr("1.0.0"),
 		// 					}},
 		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("A-DCS-7280DR3K-24-F"),
-		// 				Type: to.Ptr("NetworkDeviceSkus"),
-		// 				ID: to.Ptr("A-DCS-7280DR3K-24-F"),
-		// 				SystemData: &armmanagednetworkfabric.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 					CreatedBy: to.Ptr("email@address.com"),
-		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("email@address.com"),
-		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 				},
-		// 				Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
-		// 					Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
-		// 						{
-		// 							Identifier: to.Ptr(""),
-		// 							InterfaceType: to.Ptr(""),
-		// 							SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-		// 								{
-		// 									ConnectorType: to.Ptr(""),
-		// 									MaxSpeedInMbps: to.Ptr[int32](0),
-		// 							}},
-		// 					}},
-		// 					Limits: &armmanagednetworkfabric.DeviceLimits{
-		// 						MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-		// 						MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-		// 						MaxSubInterfaces: to.Ptr[int32](0),
-		// 						MaxTunnelInterfaces: to.Ptr[int32](0),
-		// 						MaxVirtualRouterFunctions: to.Ptr[int32](0),
-		// 						PhysicalInterfaceCount: to.Ptr[int32](0),
-		// 					},
-		// 					Manufacturer: to.Ptr("Arista"),
-		// 					Model: to.Ptr("DCS-7280DR3K-24-F"),
-		// 					SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-		// 						to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameNPB)},
-		// 						SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
-		// 							{
-		// 								IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-		// 								IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-		// 								VendorFirmwareVersion: to.Ptr(""),
-		// 								VendorOsVersion: to.Ptr(""),
-		// 								Version: to.Ptr(""),
-		// 						}},
-		// 					},
-		// 				},
-		// 				{
-		// 					Name: to.Ptr("O-OM2248-10G-US"),
-		// 					Type: to.Ptr("NetworkDeviceSkus"),
-		// 					ID: to.Ptr("O-OM2248-10G-US"),
-		// 					SystemData: &armmanagednetworkfabric.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 						CreatedBy: to.Ptr("email@address.com"),
-		// 						CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 						LastModifiedBy: to.Ptr("email@address.com"),
-		// 						LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 					},
-		// 					Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
-		// 						Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
-		// 							{
-		// 								Identifier: to.Ptr(""),
-		// 								InterfaceType: to.Ptr(""),
-		// 								SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-		// 									{
-		// 										ConnectorType: to.Ptr(""),
-		// 										MaxSpeedInMbps: to.Ptr[int32](0),
-		// 								}},
-		// 						}},
-		// 						Limits: &armmanagednetworkfabric.DeviceLimits{
-		// 							MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-		// 							MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-		// 							MaxSubInterfaces: to.Ptr[int32](0),
-		// 							MaxTunnelInterfaces: to.Ptr[int32](0),
-		// 							MaxVirtualRouterFunctions: to.Ptr[int32](0),
-		// 							PhysicalInterfaceCount: to.Ptr[int32](0),
-		// 						},
-		// 						Manufacturer: to.Ptr("OpenGear"),
-		// 						Model: to.Ptr("OM2248-10G-US"),
-		// 						SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-		// 							to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameTS)},
-		// 							SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
-		// 								{
-		// 									IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-		// 									IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-		// 									VendorFirmwareVersion: to.Ptr(""),
-		// 									VendorOsVersion: to.Ptr(""),
-		// 									Version: to.Ptr(""),
-		// 							}},
-		// 						},
-		// 					},
-		// 					{
-		// 						Name: to.Ptr("A-DCS-7010TX-48-F"),
-		// 						Type: to.Ptr("NetworkDeviceSkus"),
-		// 						ID: to.Ptr("A-DCS-7010TX-48-F"),
-		// 						SystemData: &armmanagednetworkfabric.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 							CreatedBy: to.Ptr("email@address.com"),
-		// 							CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 							LastModifiedBy: to.Ptr("email@address.com"),
-		// 							LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 						},
-		// 						Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
-		// 							Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
-		// 								{
-		// 									Identifier: to.Ptr(""),
-		// 									InterfaceType: to.Ptr(""),
-		// 									SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-		// 										{
-		// 											ConnectorType: to.Ptr(""),
-		// 											MaxSpeedInMbps: to.Ptr[int32](0),
-		// 									}},
-		// 							}},
-		// 							Limits: &armmanagednetworkfabric.DeviceLimits{
-		// 								MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-		// 								MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-		// 								MaxSubInterfaces: to.Ptr[int32](0),
-		// 								MaxTunnelInterfaces: to.Ptr[int32](0),
-		// 								MaxVirtualRouterFunctions: to.Ptr[int32](0),
-		// 								PhysicalInterfaceCount: to.Ptr[int32](0),
-		// 							},
-		// 							Manufacturer: to.Ptr("Arista"),
-		// 							Model: to.Ptr("DCS-7010TX-48-F"),
-		// 							SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-		// 								to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameManagement)},
-		// 								SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
-		// 									{
-		// 										IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-		// 										IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-		// 										VendorFirmwareVersion: to.Ptr(""),
-		// 										VendorOsVersion: to.Ptr(""),
-		// 										Version: to.Ptr(""),
-		// 								}},
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("A-DCS-7280DR3-24-F"),
-		// 							Type: to.Ptr("NetworkDeviceSkus"),
-		// 							ID: to.Ptr("A-DCS-7280DR3-24-F"),
-		// 							SystemData: &armmanagednetworkfabric.SystemData{
-		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 								CreatedBy: to.Ptr("email@address.com"),
-		// 								CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-04T13:05:13.867Z"); return t}()),
-		// 								LastModifiedBy: to.Ptr("email@address.com"),
-		// 								LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 							},
-		// 							Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
-		// 								Interfaces: []*armmanagednetworkfabric.DeviceInterfaceProperties{
-		// 									{
-		// 										Identifier: to.Ptr(""),
-		// 										InterfaceType: to.Ptr(""),
-		// 										SupportedConnectorTypes: []*armmanagednetworkfabric.SupportedConnectorProperties{
-		// 											{
-		// 												ConnectorType: to.Ptr(""),
-		// 												MaxSpeedInMbps: to.Ptr[int32](0),
-		// 										}},
-		// 								}},
-		// 								Limits: &armmanagednetworkfabric.DeviceLimits{
-		// 									MaxBidirectionalForwardingDetectionPeers: to.Ptr[int32](0),
-		// 									MaxBorderGatewayProtocolPeers: to.Ptr[int32](0),
-		// 									MaxSubInterfaces: to.Ptr[int32](0),
-		// 									MaxTunnelInterfaces: to.Ptr[int32](0),
-		// 									MaxVirtualRouterFunctions: to.Ptr[int32](0),
-		// 									PhysicalInterfaceCount: to.Ptr[int32](0),
-		// 								},
-		// 								Manufacturer: to.Ptr("Arista"),
-		// 								Model: to.Ptr("DCS-7280DR3-24-F"),
-		// 								SupportedRoleTypes: []*armmanagednetworkfabric.NetworkDeviceRoleName{
-		// 									to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameCE),
-		// 									to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleNameToR)},
-		// 									SupportedVersions: []*armmanagednetworkfabric.SupportedVersionProperties{
-		// 										{
-		// 											IsCurrent: to.Ptr(armmanagednetworkfabric.IsCurrentVersionTrue),
-		// 											IsTest: to.Ptr(armmanagednetworkfabric.IsTestVersionFalse),
-		// 											VendorFirmwareVersion: to.Ptr(""),
-		// 											VendorOsVersion: to.Ptr(""),
-		// 											Version: to.Ptr(""),
-		// 									}},
-		// 								},
-		// 						}},
-		// 					}
+		// 		}},
+		// 	}
 	}
 }

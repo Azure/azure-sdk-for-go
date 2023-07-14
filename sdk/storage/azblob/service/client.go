@@ -145,7 +145,7 @@ func (s *Client) URL() string {
 // this Client's URL. The new container.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().InternalClient(), s.credential()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().InternalClient().WithClientName(shared.ContainerClient), s.credential()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.

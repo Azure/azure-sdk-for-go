@@ -38,7 +38,7 @@ func getClientForFunctionsTest(t *testing.T, azure bool) *azopenai.Client {
 		cred, err := azopenai.NewKeyCredential(openAIKey)
 		require.NoError(t, err)
 
-		chatClient, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", cred, newClientOptionsForTest(t))
+		chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
 		require.NoError(t, err)
 
 		return chatClient

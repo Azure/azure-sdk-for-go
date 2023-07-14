@@ -9,167 +9,196 @@ package recording
 import (
 	"bytes"
 	"net/http"
+	"os"
+	"os/exec"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
-func TestSetBodilessMatcher(t *testing.T) {
-	temp := recordMode
-	recordMode = RecordingMode
-	defer func() { recordMode = temp }()
-
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
-
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
-
-	req.Header.Set(UpstreamURIHeader, "https://bing.com")
-	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
-
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
-
-	_, err = client.Do(req)
-	require.NoError(t, err)
-
-	err = Stop(t, nil)
-	require.NoError(t, err)
-
-	// Run a second request to with different body to verify it works
-	recordMode = PlaybackMode
-
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
-
-	err = SetBodilessMatcher(t, nil)
-	require.NoError(t, err)
-
-	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
-	require.NoError(t, err)
-
-	req.Header.Set(UpstreamURIHeader, "https://bing.com")
-	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
-
-	_, err = client.Do(req)
-	require.NoError(t, err)
-
-	err = Stop(t, nil)
-	require.NoError(t, err)
-
-	err = ResetProxy(nil)
-	require.NoError(t, err)
+type matchersTests struct {
+	suite.Suite
+	proxyCmd *exec.Cmd
 }
 
-func TestSetBodilessMatcherNilTest(t *testing.T) {
+func TestMatchers(t *testing.T) {
+	suite.Run(t, new(matchersTests))
+}
+
+func (s *matchersTests) SetupSuite() {
+	proxyCmd, err := StartTestProxyInstance(nil)
+	s.proxyCmd = proxyCmd
+	require.NoError(s.T(), err)
+}
+
+func (s *matchersTests) TearDownSuite() {
+	StopTestProxyInstance(s.proxyCmd, nil)
+
+	err := os.RemoveAll("./testdata/recordings/TestMatchers/")
+	require.NoError(s.T(), err)
+}
+
+func (s *matchersTests) TestSetBodilessMatcher() {
+	require := require.New(s.T())
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
 
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	_, err = client.Do(req)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Run a second request to with different body to verify it works
 	recordMode = PlaybackMode
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
+
+	err = SetBodilessMatcher(s.T(), nil)
+	require.NoError(err)
+
+	req, err = http.NewRequest("POST", defaultOptions().baseURL(), bytes.NewReader([]byte("abcdef")))
+	require.NoError(err)
+
+	req.Header.Set(UpstreamURIHeader, "https://bing.com")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
+
+	_, err = client.Do(req)
+	require.NoError(err)
+
+	err = Stop(s.T(), nil)
+	require.NoError(err)
+
+	err = ResetProxy(nil)
+	require.NoError(err)
+}
+
+func (s *matchersTests) TestSetBodilessMatcherNilTest() {
+	require := require.New(s.T())
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
+
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
+
+	req.Header.Set(UpstreamURIHeader, "https://bing.com")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
+
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
+
+	_, err = client.Do(req)
+	require.NoError(err)
+
+	err = Stop(s.T(), nil)
+	require.NoError(err)
+
+	// Run a second request to with different body to verify it works
+	recordMode = PlaybackMode
+
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
 	err = SetBodilessMatcher(nil, nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
-	require.NoError(t, err)
+	req, err = http.NewRequest("POST", defaultOptions().baseURL(), bytes.NewReader([]byte("abcdef")))
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	_, err = client.Do(req)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	err = ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 }
 
-func TestSetDefaultMatcher(t *testing.T) {
+func (s *matchersTests) TestSetDefaultMatcher() {
+	require := require.New(s.T())
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
 
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	_, err = client.Do(req)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Run a second request to with different body to verify it works
 	recordMode = PlaybackMode
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
 	err = SetDefaultMatcher(nil, &SetDefaultMatcherOptions{ExcludedHeaders: []string{"ExampleHeader"}})
-	require.NoError(t, err)
+	require.NoError(err)
 
-	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err = http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("ExampleHeader", "blah-blah-blah")
 
 	err = handleProxyResponse(client.Do(req))
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	err = ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 }
 
-func TestAddDefaults(t *testing.T) {
-	require.Equal(t, 4, len(addDefaults([]string{})))
-	require.Equal(t, 4, len(addDefaults([]string{":path"})))
-	require.Equal(t, 4, len(addDefaults([]string{":path", ":authority"})))
-	require.Equal(t, 4, len(addDefaults([]string{":path", ":authority", ":method"})))
-	require.Equal(t, 4, len(addDefaults([]string{":path", ":authority", ":method", ":scheme"})))
-	require.Equal(t, 5, len(addDefaults([]string{":path", ":authority", ":method", ":scheme", "extra"})))
+func (s *matchersTests) TestAddDefaults() {
+	require := require.New(s.T())
+	require.Equal(4, len(addDefaults([]string{})))
+	require.Equal(4, len(addDefaults([]string{":path"})))
+	require.Equal(4, len(addDefaults([]string{":path", ":authority"})))
+	require.Equal(4, len(addDefaults([]string{":path", ":authority", ":method"})))
+	require.Equal(4, len(addDefaults([]string{":path", ":authority", ":method", ":scheme"})))
+	require.Equal(5, len(addDefaults([]string{":path", ":authority", ":method", ":scheme", "extra"})))
 }

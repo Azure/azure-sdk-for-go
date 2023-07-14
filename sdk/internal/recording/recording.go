@@ -673,8 +673,6 @@ func requestStart(url string, testId string, assetConfigLocation string) (*http.
 	return client.Do(req)
 }
 
-// Start optionally installs and starts a test proxy instance
-// and tells the test proxy instance to begin accepting requests for a given test
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -796,6 +794,9 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	req.Header.Set(IDHeader, recTest.recordingId)
 	testSuite.Remove(t.Name())
 	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
 	if resp.StatusCode != 200 {
 		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()

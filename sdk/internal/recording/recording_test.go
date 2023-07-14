@@ -13,6 +13,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -24,12 +25,32 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+const packagePath = "sdk/internal/recording/testdata"
+
 type recordingTests struct {
 	suite.Suite
+	proxyCmd *exec.Cmd
 }
 
 func TestRecording(t *testing.T) {
 	suite.Run(t, new(recordingTests))
+}
+
+func (s *recordingTests) SetupSuite() {
+	proxyCmd, err := StartTestProxyInstance(nil)
+	s.proxyCmd = proxyCmd
+	require.NoError(s.T(), err)
+}
+
+func (s *recordingTests) TearDownSuite() {
+	StopTestProxyInstance(s.proxyCmd, nil)
+
+	files, err := filepath.Glob("recordings/**/*.yaml")
+	require.NoError(s.T(), err)
+	for _, f := range files {
+		err := os.Remove(f)
+		require.NoError(s.T(), err)
+	}
 }
 
 func (s *recordingTests) TestInitializeRecording() {
@@ -239,7 +260,7 @@ func (s *recordingTests) TestNow() {
 	require.NoError(err)
 }
 
-func (s *recordingTests) TestGenerateAlphaNumericID() {
+func (s *recordingTests) TestRecordingGenerateAlphaNumericID() {
 	require := require.New(s.T())
 	context := NewTestContext(func(msg string) { require.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
@@ -370,215 +391,214 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	require.NoError(err)
 }
 
-func (s *recordingTests) TearDownSuite() {
-	files, err := filepath.Glob("recordings/**/*.yaml")
-	require.NoError(s.T(), err)
-	for _, f := range files {
-		err := os.Remove(f)
-		require.NoError(s.T(), err)
-	}
-}
-
-func TestGetEnvVariable(t *testing.T) {
-	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+func (s *recordingTests) TestGetEnvVariable() {
+	require := require.New(s.T())
+	require.Equal(GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	temp := recordMode
 	recordMode = RecordingMode
-	t.Setenv("TEST_VARIABLE", "expected")
-	require.Equal(t, "expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
+	s.T().Setenv("TEST_VARIABLE", "expected")
+	require.Equal("expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
 	recordMode = temp
 }
 
-func TestRecordingOptions(t *testing.T) {
+func (s *recordingTests) TestRecordingOptions() {
+	require := require.New(s.T())
 	r := RecordingOptions{
 		UseHTTPS: true,
 	}
-	require.Equal(t, r.baseURL(), "https://localhost:5001")
+	require.Equal(r.baseURL(), "https://localhost:5001")
 
 	r.UseHTTPS = false
-	require.Equal(t, r.baseURL(), "http://localhost:5000")
+	require.Equal(r.baseURL(), "http://localhost:5000")
+
+	r = *defaultOptions()
+	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", r.ProxyPort))
+	// ProxyPort should be generated deterministically
+	require.Equal(r.ProxyPort, defaultOptions().ProxyPort)
 }
 
-var packagePath = "sdk/internal/recording/testdata"
-
-func TestStartStop(t *testing.T) {
+func (s *recordingTests) TestStartStop() {
+	require := require.New(s.T())
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://www.bing.com/")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./testdata/recordings/TestStartStop.json")
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 }
 
-func TestStartStopRecordingClient(t *testing.T) {
+func (s *recordingTests) TestStartStopRecordingClient() {
+	require := require.New(s.T())
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
 
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
+	client, err := NewRecordingHTTPClient(s.T(), nil)
+	require.NoError(err)
 
 	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer func() {
 		err = jsonFile.Close()
-		require.NoError(t, err)
+		require.NoError(err)
 		err = os.Remove(jsonFile.Name())
-		require.NoError(t, err)
+		require.NoError(err)
 	}()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
-	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
-	require.Equal(t, resp.Request.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
+	require.NoError(err)
+	require.Equal("https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags",
+		data.Entries[0].RequestURI)
+	require.Equal(resp.Request.URL.String(),
+		fmt.Sprintf("%s/acr/v1/some_registry/_tags", defaultOptions().baseURL()))
 }
 
-func TestStopRecordingNoStart(t *testing.T) {
+func (s *recordingTests) TestStopRecordingNoStart() {
+	require := require.New(s.T())
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := Stop(t, nil)
-	require.Error(t, err)
+	err := Stop(s.T(), nil)
+	require.Error(err)
 
-	jsonFile, err := os.Open("./testdata/recordings/TestStopRecordingNoStart.json")
-	require.Error(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.Error(err)
 	defer jsonFile.Close()
 }
 
-func TestLiveModeOnly(t *testing.T) {
-	LiveOnly(t)
+func (s *recordingTests) TestLiveModeOnly() {
+	LiveOnly(s.T())
 	if GetRecordMode() == PlaybackMode {
-		t.Fatalf("Test should not run in playback")
+		s.T().Fatalf("Test should not run in playback")
 	}
 }
 
-func TestSleep(t *testing.T) {
+func (s *recordingTests) TestSleep() {
 	start := time.Now()
-	Sleep(time.Second * 5)
+	Sleep(time.Millisecond * 100)
 	duration := time.Since(start)
 	if GetRecordMode() == PlaybackMode {
-		if duration > (time.Second * 1) {
-			t.Fatalf("Sleep took longer than five seconds")
+		if duration >= (time.Millisecond * 50) {
+			s.T().Fatalf("Sleep took at least 50ms")
 		}
 	} else {
-		if duration < (time.Second * 1) {
-			t.Fatalf("Sleep took less than five seconds")
+		if duration < (time.Second * 50) {
+			s.T().Fatalf("Sleep took less than 50ms")
 		}
 	}
 }
 
-func TestBadAzureRecordMode(t *testing.T) {
+func (s *recordingTests) TestBadAzureRecordMode() {
+	require := require.New(s.T())
 	temp := recordMode
 
 	recordMode = "badvalue"
-	err := Start(t, packagePath, nil)
-	require.Error(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.Error(err)
 
 	recordMode = temp
 }
 
-func TestBackwardSlashPath(t *testing.T) {
-	t.Skip("Temporarily skipping due to changes in test-proxy.")
+func (s *recordingTests) TestBackwardSlashPath() {
+	s.T().Skip("Temporarily skipping due to changes in test-proxy.")
+
+	require := require.New(s.T())
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
 	packagePathBackslash := "sdk\\internal\\recording\\testdata"
 
-	err := Start(t, packagePathBackslash, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePathBackslash, nil)
+	require.NoError(err)
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 }
 
-func TestLiveOnly(t *testing.T) {
-	require.Equal(t, IsLiveOnly(t), false)
-	LiveOnly(t)
-	require.Equal(t, IsLiveOnly(t), true)
+func (s *recordingTests) TestLiveOnly() {
+	require := require.New(s.T())
+	require.Equal(IsLiveOnly(s.T()), false)
+	LiveOnly(s.T())
+	require.Equal(IsLiveOnly(s.T()), true)
 }
 
-func TestHostAndScheme(t *testing.T) {
-	r := RecordingOptions{UseHTTPS: true}
-	require.Equal(t, r.scheme(), "https")
-	require.Equal(t, r.host(), "localhost:5001")
-
-	r.UseHTTPS = false
-	require.Equal(t, r.scheme(), "http")
-	require.Equal(t, r.host(), "localhost:5000")
-}
-
-func TestGitRootDetection(t *testing.T) {
+func (s *recordingTests) TestGitRootDetection() {
+	require := require.New(s.T())
 	cwd, err := os.Getwd()
-	require.NoError(t, err)
+	require.NoError(err)
 	gitRoot, err := getGitRoot(cwd)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	parentDir := filepath.Dir(gitRoot)
 	_, err = getGitRoot(parentDir)
-	require.Error(t, err)
+	require.Error(err)
 }
 
-func TestRecordingAssetConfigNotExist(t *testing.T) {
+func (s *recordingTests) TestRecordingAssetConfigNotExist() {
+	require := require.New(s.T())
 	absPath, relPath, err := getAssetsConfigLocation(".")
-	require.NoError(t, err)
-	require.Equal(t, "", absPath)
-	require.Equal(t, "", relPath)
+	require.NoError(err)
+	require.Equal("", absPath)
+	require.Equal("", relPath)
 }
 
-func TestRecordingAssetConfigOutOfBounds(t *testing.T) {
+func (s *recordingTests) TestRecordingAssetConfigOutOfBounds() {
+	require := require.New(s.T())
 	cwd, err := os.Getwd()
-	require.NoError(t, err)
+	require.NoError(err)
 	gitRoot, err := getGitRoot(cwd)
-	require.NoError(t, err)
+	require.NoError(err)
 	parentDir := filepath.Dir(gitRoot)
 
 	absPath, err := findAssetsConfigFile(parentDir, gitRoot)
-	require.NoError(t, err)
-	require.Equal(t, "", absPath)
+	require.NoError(err)
+	require.Equal("", absPath)
 }
 
-func TestRecordingAssetConfig(t *testing.T) {
+func (s *recordingTests) TestRecordingAssetConfig() {
+	require := require.New(s.T())
 	cases := []struct{ expectedDirectory, searchDirectory, testFileLocation string }{
 		{"sdk/internal/recording", "sdk/internal/recording", recordingAssetConfigName},
 		{"sdk/internal/recording", "sdk/internal/recording/", recordingAssetConfigName},
@@ -587,31 +607,32 @@ func TestRecordingAssetConfig(t *testing.T) {
 	}
 
 	cwd, err := os.Getwd()
-	require.NoError(t, err)
+	require.NoError(err)
 	gitRoot, err := getGitRoot(cwd)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	for _, c := range cases {
 		_ = os.Remove(c.testFileLocation)
 		o, err := os.Create(c.testFileLocation)
-		require.NoError(t, err)
+		require.NoError(err)
 		o.Close()
 
 		absPath, relPath, err := getAssetsConfigLocation(c.searchDirectory)
 		// Clean up first in case of an assertion panic
-		require.NoError(t, os.Remove(c.testFileLocation))
-		require.NoError(t, err)
+		require.NoError(os.Remove(c.testFileLocation))
+		require.NoError(err)
 
 		expected := c.expectedDirectory + string(os.PathSeparator) + recordingAssetConfigName
 		expected = strings.ReplaceAll(expected, "/", string(os.PathSeparator))
-		require.Equal(t, expected, relPath)
+		require.Equal(expected, relPath)
 
 		absPathExpected := filepath.Join(gitRoot, expected)
-		require.Equal(t, absPathExpected, absPath)
+		require.Equal(absPathExpected, absPath)
 	}
 }
 
-func TestFindProxyCertLocation(t *testing.T) {
+func (s *recordingTests) TestFindProxyCertLocation() {
+	require := require.New(s.T())
 	savedValue, ok := os.LookupEnv("PROXY_CERT")
 	if ok {
 		defer os.Setenv("PROXY_CERT", savedValue)
@@ -619,120 +640,126 @@ func TestFindProxyCertLocation(t *testing.T) {
 
 	if ok {
 		location, err := findProxyCertLocation()
-		require.NoError(t, err)
-		require.Contains(t, location, "dotnet-devcert.crt")
+		require.NoError(err)
+		require.Contains(location, "dotnet-devcert.crt")
 	}
 
 	err := os.Unsetenv("PROXY_CERT")
-	require.NoError(t, err)
+	require.NoError(err)
 
 	location, err := findProxyCertLocation()
-	require.NoError(t, err)
-	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
+	require.NoError(err)
+	require.Contains(location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
 }
 
-func TestVariables(t *testing.T) {
+func (s *recordingTests) TestVariables() {
+	require := require.New(s.T())
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
 
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
+	client, err := NewRecordingHTTPClient(s.T(), nil)
+	require.NoError(err)
 
 	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, &RecordingOptions{Variables: map[string]interface{}{"key1": "value1", "key2": "1"}})
-	require.NoError(t, err)
+	opts := defaultOptions()
+	opts.Variables = map[string]interface{}{"key1": "value1", "key2": "1"}
+	err = Stop(s.T(), opts)
+	require.NoError(err)
 
 	recordMode = PlaybackMode
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	variables := GetVariables(t)
-	require.Equal(t, variables["key1"], "value1")
-	require.Equal(t, variables["key2"], "1")
+	variables := GetVariables(s.T())
+	require.Equal(variables["key1"], "value1")
+	require.Equal(variables["key2"], "1")
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer func() {
 		err = jsonFile.Close()
-		require.NoError(t, err)
+		require.NoError(err)
 		err = os.Remove(jsonFile.Name())
-		require.NoError(t, err)
+		require.NoError(err)
 	}()
 }
 
-func TestRace(t *testing.T) {
+func (s *recordingTests) TestRace() {
+	require := require.New(s.T())
 	temp := recordMode
 	recordMode = LiveMode
-	t.Cleanup(func() { recordMode = temp })
+	s.T().Cleanup(func() { recordMode = temp })
 	for i := 0; i < 4; i++ {
-		t.Run("", func(t *testing.T) {
+		s.T().Run("", func(t *testing.T) {
 			t.Parallel()
 			err := Start(t, "", nil)
-			require.NoError(t, err)
+			require.NoError(err)
 			GetRecordingId(t)
 			GetVariables(t)
 			IsLiveOnly(t)
 			err = Stop(t, nil)
-			require.NoError(t, err)
+			require.NoError(err)
 			LiveOnly(t)
 		})
 	}
 }
 
-func Test_generateAlphaNumericID(t *testing.T) {
+func (s *recordingTests) TestInnerGenerateAlphaNumericID() {
+	require := require.New(s.T())
 	seed1 := int64(1234567)
 	seed2 := int64(7654321)
 	randomSource1 := rand.NewSource(seed1)
 	randomSource2 := rand.NewSource(seed2)
 	randomSource3 := rand.NewSource(seed2)
 	rand1, err := generateAlphaNumericID("test", 10, false, randomSource1)
-	require.NoError(t, err)
-	require.Equal(t, 10, len(rand1))
-	require.Equal(t, "test", rand1[0:4])
+	require.NoError(err)
+	require.Equal(10, len(rand1))
+	require.Equal("test", rand1[0:4])
 	rand2, err := generateAlphaNumericID("test", 10, false, randomSource2)
-	require.NoError(t, err)
+	require.NoError(err)
 	rand3, err := generateAlphaNumericID("test", 10, false, randomSource3)
-	require.NoError(t, err)
-	require.Equal(t, rand2, rand3)
-	require.NotEqual(t, rand1, rand2)
+	require.NoError(err)
+	require.Equal(rand2, rand3)
+	require.NotEqual(rand1, rand2)
 }
 
-func TestGenerateAlphaNumericID(t *testing.T) {
+func (s *recordingTests) TestGenerateAlphaNumericID() {
+	require := require.New(s.T())
 	recordMode = RecordingMode
-	err := Start(t, packagePath, nil)
-	require.NoError(t, err)
-	rand1, err := GenerateAlphaNumericID(t, "test", 10, false)
-	require.NoError(t, err)
-	rand2, err := GenerateAlphaNumericID(t, "test", 10, false)
-	require.NoError(t, err)
-	require.NotEqual(t, rand1, rand2)
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err := Start(s.T(), packagePath, nil)
+	require.NoError(err)
+	rand1, err := GenerateAlphaNumericID(s.T(), "test", 10, false)
+	require.NoError(err)
+	rand2, err := GenerateAlphaNumericID(s.T(), "test", 10, false)
+	require.NoError(err)
+	require.NotEqual(rand1, rand2)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 	recordMode = PlaybackMode
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
-	rand3, err := GenerateAlphaNumericID(t, "test", 10, false)
-	require.NoError(t, err)
-	rand4, err := GenerateAlphaNumericID(t, "test", 10, false)
-	require.NoError(t, err)
-	require.Equal(t, rand1, rand3)
-	require.Equal(t, rand2, rand4)
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
+	rand3, err := GenerateAlphaNumericID(s.T(), "test", 10, false)
+	require.NoError(err)
+	rand4, err := GenerateAlphaNumericID(s.T(), "test", 10, false)
+	require.NoError(err)
+	require.Equal(rand1, rand3)
+	require.Equal(rand2, rand4)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 }

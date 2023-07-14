@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -25,6 +26,7 @@ import (
 
 type sanitizerTests struct {
 	suite.Suite
+	proxyCmd *exec.Cmd
 }
 
 const authHeader string = "Authorization"
@@ -34,6 +36,19 @@ const nonSanitizedHeader string = "notsanitized"
 
 func TestRecordingSanitizer(t *testing.T) {
 	suite.Run(t, new(sanitizerTests))
+}
+
+func (s *sanitizerTests) SetupSuite() {
+	proxyCmd, err := StartTestProxyInstance(nil)
+	s.proxyCmd = proxyCmd
+	require.NoError(s.T(), err)
+}
+
+func (s *sanitizerTests) TearDownSuite() {
+	StopTestProxyInstance(s.proxyCmd, nil)
+	// cleanup test files
+	err := os.RemoveAll("testfiles")
+	require.NoError(s.T(), err)
 }
 
 func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
@@ -140,13 +155,6 @@ func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
 	}
 }
 
-func (s *sanitizerTests) TearDownSuite() {
-	require := require.New(s.T())
-	// cleanup test files
-	err := os.RemoveAll("testfiles")
-	require.NoError(err)
-}
-
 func getTestFileName(t *testing.T, addSuffix bool) string {
 	name := "testfiles/" + t.Name()
 	if addSuffix {
@@ -191,552 +199,572 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 	return m[k]
 }
 
-func TestUriSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestUriSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/"
 
 	err = AddURISanitizer("https://replacement.com/", srvURL, nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.Equal(t, data.Entries[0].RequestURI, "https://replacement.com/")
+	require.Equal(data.Entries[0].RequestURI, "https://replacement.com/")
 }
 
-func TestHeaderRegexSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestHeaderRegexSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("testproxy-header", "fakevalue")
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
 
 	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	// This is the only failing one
-	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
-	require.NoError(t, err)
+	opts := defaultOptions()
+	opts.GroupForReplace = "account"
+	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", opts)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.Equal(t, "Sanitized", data.Entries[0].RequestHeaders["testproxy-header"])
-	require.Equal(t, "Sanitized", data.Entries[0].RequestHeaders["fakestoragelocation"])
-	require.Equal(t, "https://Sanitized.table.core.windows.net", data.Entries[0].RequestHeaders["complexregex"])
+	require.Equal("Sanitized", data.Entries[0].RequestHeaders["testproxy-header"])
+	require.Equal("Sanitized", data.Entries[0].RequestHeaders["fakestoragelocation"])
+	require.Equal("https://Sanitized.table.core.windows.net", data.Entries[0].RequestHeaders["complexregex"])
 }
 
-func TestBodyKeySanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestBodyKeySanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	bodyValue := map[string]string{
 		"key1": "value1",
 	}
 	marshalled, err := json.Marshal(bodyValue)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.Equal(t, "Sanitized", data.Entries[0].ResponseBodyByValue("Tag"))
+	require.Equal("Sanitized", data.Entries[0].ResponseBodyByValue("Tag"))
 }
 
-func TestBodyRegexSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestBodyRegexSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	bodyValue := map[string]string{
 		"key1": "value1",
 	}
 	marshalled, err := json.Marshal(bodyValue)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyRegexSanitizer("Sanitized", "Value", nil)
-	require.NoError(t, err)
-	err = AddBodyRegexSanitizer("Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
-	require.NoError(t, err)
+	require.NoError(err)
+
+	opts := defaultOptions()
+	opts.GroupForReplace = "account"
+	err = AddBodyRegexSanitizer("Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", opts)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotContains(t, "storageaccount", data.Entries[0].ResponseBody)
-	require.NotContains(t, "Value", data.Entries[0].ResponseBody)
+	require.NotContains("storageaccount", data.Entries[0].ResponseBody)
+	require.NotContains("Value", data.Entries[0].ResponseBody)
 }
 
-func TestRemoveHeaderSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestRemoveHeaderSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegexRemove", "https://fakeaccount.table.core.windows.net")
 
 	err = AddRemoveHeaderSanitizer([]string{"ComplexRegexRemove", "FakeStorageLocation"}, nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotContains(t, []string{"ComplexRegexRemove", "FakeStorageLocation"}, data.Entries[0].ResponseHeaders)
+	require.NotContains([]string{"ComplexRegexRemove", "FakeStorageLocation"}, data.Entries[0].ResponseHeaders)
 }
 
-func TestContinuationSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestContinuationSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("Location", "/posts/2")
 
 	bodyValue := map[string]string{
 		"key1": "value1",
 	}
 	marshalled, err := json.Marshal(bodyValue)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddContinuationSanitizer("Location", "Sanitized", true, nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err = http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("Location", "/posts/3")
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotContains(t, "Location", data.Entries[0].ResponseHeaders)
-	require.NotContains(t, "Location", data.Entries[0].ResponseHeaders)
+	require.NotContains("Location", data.Entries[0].ResponseHeaders)
+	require.NotContains("Location", data.Entries[0].ResponseHeaders)
 }
 
-func TestGeneralRegexSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestGeneralRegexSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	err = AddGeneralRegexSanitizer("Sanitized", "Value", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	_, err = client.Do(req)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotContains(t, "Value", data.Entries[0].ResponseBody)
+	require.NotContains("Value", data.Entries[0].ResponseBody)
 }
 
-func TestOAuthResponseSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestOAuthResponseSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	err = AddOAuthResponseSanitizer(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	_, err = client.Do(req)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
-
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 }
 
-func TestUriSubscriptionIdSanitizer(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestUriSubscriptionIdSanitizer() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, "https://management.azure.com/subscriptions/12345678-1234-1234-5678-123456789010/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 
 	err = AddURISubscriptionIDSanitizer("", nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.Equal(t, "https://management.azure.com/", data.Entries[0].RequestURI)
+	require.Equal("https://management.azure.com/", data.Entries[0].RequestURI)
 }
 
-func TestResetSanitizers(t *testing.T) {
-	defer reset(t)
+func (s *sanitizerTests) TestResetSanitizers() {
+	require := require.New(s.T())
+	defer reset(s.T())
 
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	err = Start(t, packagePath, nil)
-	require.NoError(t, err)
+	err = Start(s.T(), packagePath, nil)
+	require.NoError(err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
+	client, err := GetHTTPClient(s.T())
+	require.NoError(err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-	require.NoError(t, err)
+	req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+	require.NoError(err)
 
 	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(s.T()))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 
+	opts := defaultOptions()
+	opts.TestInstance = s.T()
+
 	// Add a sanitizer
-	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
-	require.NoError(t, err)
+	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, opts)
+	require.NoError(err)
 
 	// Remove all sanitizers
-	err = ResetProxy(&RecordingOptions{TestInstance: t})
-	require.NoError(t, err)
+	err = ResetProxy(opts)
+	require.NoError(err)
 
 	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NoError(err)
+	require.NotNil(resp)
 
-	require.NotNil(t, GetRecordingId(t))
+	require.NotNil(GetRecordingId(s.T()))
 
-	err = Stop(t, nil)
-	require.NoError(t, err)
+	err = Stop(s.T(), nil)
+	require.NoError(err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	require.NoError(err)
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
 	byteValue, err := io.ReadAll(jsonFile)
-	require.NoError(t, err)
+	require.NoError(err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
+	require.NoError(err)
 
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+	require.Equal(data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 }
 
-func TestSingleTestSanitizer(t *testing.T) {
+func (s *sanitizerTests) TestSingleTestSanitizer() {
+	require := require.New(s.T())
 	err := ResetProxy(nil)
-	require.NoError(t, err)
+	require.NoError(err)
 
 	// The first iteration, add a sanitizer for just that test. The
 	// second iteration, verify that the sanitizer was not applied.
 	for i := 0; i < 2; i++ {
-		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
+		s.T().Run(fmt.Sprintf("%s-%d", s.T().Name(), i), func(t *testing.T) {
 			err = Start(t, packagePath, nil)
-			require.NoError(t, err)
+			require.NoError(err)
 
 			if i == 0 {
 				// The first time we'll set a per-test sanitizer
 				// Add a sanitizer
-				err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
-				require.NoError(t, err)
+				opts := defaultOptions()
+				opts.TestInstance = t
+				err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, opts)
+				require.NoError(err)
 			}
 
 			srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
 			client, err := GetHTTPClient(t)
-			require.NoError(t, err)
+			require.NoError(err)
 
-			req, err := http.NewRequest("POST", "https://localhost:5001", nil)
-			require.NoError(t, err)
+			req, err := http.NewRequest("POST", defaultOptions().baseURL(), nil)
+			require.NoError(err)
 
 			req.Header.Set(UpstreamURIHeader, srvURL)
 			req.Header.Set(ModeHeader, GetRecordMode())
@@ -744,26 +772,26 @@ func TestSingleTestSanitizer(t *testing.T) {
 			req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 
 			_, err = client.Do(req)
-			require.NoError(t, err)
+			require.NoError(err)
 
 			err = Stop(t, nil)
-			require.NoError(t, err)
+			require.NoError(err)
 
 			// Read the file
 			jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-			require.NoError(t, err)
+			require.NoError(err)
 			defer jsonFile.Close()
 
 			var data RecordingFileStruct
 			byteValue, err := io.ReadAll(jsonFile)
-			require.NoError(t, err)
+			require.NoError(err)
 			err = json.Unmarshal(byteValue, &data)
-			require.NoError(t, err)
+			require.NoError(err)
 
 			if i == 0 {
-				require.NotContains(t, data.Entries[0].RequestHeaders, "fakestoragelocation")
+				require.NotContains(data.Entries[0].RequestHeaders, "fakestoragelocation")
 			} else {
-				require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+				require.Equal(data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 			}
 		})
 	}

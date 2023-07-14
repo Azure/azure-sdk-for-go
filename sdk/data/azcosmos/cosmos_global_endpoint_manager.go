@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const DefaultBackgroundRefreshInterval = 5 * time.Minute
+const globalEndpointManagerDefaultBackgroundRefreshInterval = 5 * time.Minute
 
 type globalEndpointManager struct {
 	client           *Client
@@ -25,17 +25,24 @@ type globalEndpointManager struct {
 }
 
 // NewGlobalEndpointManager creates a new global endpoint manager.
-func NewGlobalEndpointManager(client *Client, preferredRegions []string) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(client *Client, preferredRegions []string, refreshInterval time.Duration) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(client.endpoint)
 	if err != nil {
 		return nil, err
 	}
-
-	return &globalEndpointManager{
+	gem, err := &globalEndpointManager{
 		client:           client,
 		preferredRegions: preferredRegions,
 		locationCache:    newLocationCache(preferredRegions, *endpoint),
 	}, nil
+	if err != nil {
+		return nil, err
+	}
+	gem.stopBackgroundRefresh()
+	gem.startBackgroundRefresh(refreshInterval)
+	defer gem.stopBackgroundRefresh()
+
+	return gem, nil
 }
 
 // GetWriteEndpoints returns the write endpoints from the location cache.
@@ -65,7 +72,7 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 		return accountProperties{}, fmt.Errorf("failed to send GET request: %w", err)
 	}
 
-	properties, err := parseAccountProperties(azResponse)
+	properties, err := newAccountProperties(azResponse)
 	if err != nil {
 		return accountProperties{}, fmt.Errorf("failed to parse account properties: %w", err)
 	}
@@ -73,8 +80,8 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 	return properties, nil
 }
 
-// parseAccountProperties parses the account properties from the HTTP response.
-func parseAccountProperties(azResponse *http.Response) (accountProperties, error) {
+// newAccountProperties parses the account properties from the HTTP response.
+func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
 	properties := accountProperties{}
 	err := azruntime.UnmarshalAsJSON(azResponse, &properties)
 	if err != nil {
@@ -99,32 +106,35 @@ func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.U
 }
 
 // Update updates the location cache and the client's default endpoint based on the provided account properties.
-func (gem *globalEndpointManager) Update(accountProperties accountProperties) error {
+func (gem *globalEndpointManager) Update() error {
+	accountProperties, err := gem.GetAccountProperties()
+	if err != nil {
+		return fmt.Errorf("failed to retrieve account properties: %w", err)
+	}
+
 	if err := gem.locationCache.update(accountProperties.WriteRegions, accountProperties.ReadRegions, gem.preferredRegions, &accountProperties.EnableMultipleWriteLocations); err != nil {
 		return fmt.Errorf("failed to update location cache: %w", err)
 	}
-
-	gem.stopBackgroundRefresh()
-	gem.startBackgroundRefresh(accountProperties)
-
-	endpoints, err := gem.locationCache.writeEndpoints()
-	if err != nil {
-		return fmt.Errorf("failed to retrieve write endpoints: %w", err)
-	}
-	if len(endpoints) > 0 {
-		gem.client.endpoint = endpoints[0].String()
-	}
-
 	return nil
 }
 
-func (gem *globalEndpointManager) startBackgroundRefresh(accountProperties accountProperties) {
+func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Duration) {
 	gem.Lock()
 	defer gem.Unlock()
 
-	gem.refreshTicker = time.NewTicker(DefaultBackgroundRefreshInterval)
-	gem.refreshDone = make(chan struct{})
+	if gem.refreshTicker != nil {
+		// Background refresh already running, stop it first
+		gem.refreshTicker.Stop()
+		close(gem.refreshDone)
+	}
 
+	gem.refreshTicker = time.NewTicker(refreshInterval)
+	gem.refreshDone = make(chan struct{})
+	accountProperties, err := gem.GetAccountProperties()
+	if err != nil {
+		log.Write(azlog.EventResponse, fmt.Sprintf("Background refresh error: %v", err))
+		return
+	}
 	go func() {
 		for {
 			select {
@@ -151,6 +161,12 @@ func (gem *globalEndpointManager) stopBackgroundRefresh() {
 		close(gem.refreshDone)
 		gem.refreshTicker = nil
 		gem.refreshDone = nil
+
+		err := gem.Update()
+		if err != nil {
+			log.Write(azlog.EventResponse, fmt.Sprintf("Failed to update location cache: %v", err))
+			return
+		}
 	}
 }
 

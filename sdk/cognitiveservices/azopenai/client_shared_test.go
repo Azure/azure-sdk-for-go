@@ -203,7 +203,7 @@ func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
 		MaxRetryDelay: time.Second,
 	}
 
-	chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
+	chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, options)
 	require.NoError(t, err)
 
 	return chatClient

@@ -44,30 +44,33 @@ func TestClient_GetChatCompletions(t *testing.T) {
 	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient)
+	testGetChatCompletions(t, chatClient, true)
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
-	require.NoError(t, err)
-
-	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	testGetChatCompletionsStream(t, chatClient, true)
+	chatClient := newAzureOpenAIClientForTest(t, canaryChatCompletionsModelDeployment, true)
+	testGetChatCompletionsStream(t, chatClient)
 }
 
 func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletions(t, chatClient)
+	testGetChatCompletions(t, chatClient, false)
 }
 
 func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletionsStream(t, chatClient, false)
+	testGetChatCompletionsStream(t, chatClient)
 }
 
-func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
+func testGetChatCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 	expected := azopenai.ChatCompletions{
 		Choices: []azopenai.ChatChoice{
 			{
@@ -91,6 +94,15 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
 	resp, err := client.GetChatCompletions(context.Background(), chatCompletionsRequest, nil)
 	require.NoError(t, err)
 
+	if isAzure {
+		// Azure also provides content-filtering. This particular prompt and responses
+		// will be considered safe.
+		expected.PromptAnnotations = []azopenai.PromptFilterResult{
+			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+		}
+		expected.Choices[0].ContentFilterResults = safeContentFilter
+	}
+
 	require.NotEmpty(t, resp.ID)
 	require.NotEmpty(t, resp.Created)
 
@@ -100,16 +112,9 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client) {
 	require.Equal(t, expected, resp.ChatCompletions)
 }
 
-func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, isAzure bool) {
+func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client) {
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), chatCompletionsRequest, nil)
 	require.NoError(t, err)
-
-	if isAzure {
-		// there's a bug right now where the first event comes back empty
-		// Issue: https://github.com/Azure/azure-sdk-for-go/issues/21086
-		_, err := streamResp.ChatCompletionsStream.Read()
-		require.NoError(t, err)
-	}
 
 	// the data comes back differently for streaming
 	// 1. the text comes back in the ChatCompletion.Delta field
@@ -125,6 +130,18 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, isAzure
 		}
 
 		require.NoError(t, err)
+
+		if completion.PromptAnnotations != nil {
+			require.Equal(t, []azopenai.PromptFilterResult{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+			}, completion.PromptAnnotations)
+		}
+
+		if len(completion.Choices) == 0 {
+			// you can get empty entries that contain just metadata (ie, prompt annotations)
+			continue
+		}
+
 		require.Equal(t, 1, len(completion.Choices))
 		choices = append(choices, completion.Choices[0])
 	}
@@ -140,7 +157,6 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, isAzure
 	}
 
 	require.Equal(t, expectedContent, message, "Ultimately, the same result as GetChatCompletions(), just sent across the .Delta field instead")
-
 	require.Equal(t, azopenai.ChatRoleAssistant, expectedRole)
 }
 
@@ -167,7 +183,7 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient)
+	testGetChatCompletions(t, chatClient, true)
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {

@@ -231,6 +231,10 @@ func (client *Client) formatURL(path string) string {
 	}
 }
 
+func (client *Client) newError(resp *http.Response) error {
+	return newContentFilterResponseError(resp)
+}
+
 type clientData struct {
 	endpoint     string
 	baseEndpoint string

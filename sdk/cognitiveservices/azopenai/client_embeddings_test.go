@@ -27,6 +27,10 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 }
 
 func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	modelID := "text-similarity-curie-001"
 	testGetEmbeddings(t, client, modelID)

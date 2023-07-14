@@ -36,6 +36,10 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
@@ -50,8 +54,8 @@ func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
 }
 
 func TestImageGeneration_OpenAI_WithError(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip()
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
 	}
 
 	client := newBogusOpenAIClient(t)
@@ -59,6 +63,10 @@ func TestImageGeneration_OpenAI_WithError(t *testing.T) {
 }
 
 func TestImageGeneration_OpenAI_Base64(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
 }

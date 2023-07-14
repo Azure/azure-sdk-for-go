@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -26,11 +27,31 @@ var (
 	completionsModelDeployment     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT
 	chatCompletionsModelDeployment string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT
 
+	canaryEndpoint                       string // env: AOAI_ENDPOINT_CANARY
+	canaryAPIKey                         string // env: AOAI_API_KEY_CANARY
+	canaryCompletionsModelDeployment     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT_CANARY
+	canaryChatCompletionsModelDeployment string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT_CANARY
+
 	openAIKey                  string // env: OPENAI_API_KEY
 	openAIEndpoint             string // env: OPENAI_ENDPOINT
 	openAICompletionsModel     string // env: OPENAI_CHAT_COMPLETIONS_MODEL
 	openAIChatCompletionsModel string // env: OPENAI_COMPLETIONS_MODEL
 )
+
+func getVars(suffix string) (endpoint, apiKey, completionsModelDeployment, chatCompletionsModelDeployment string) {
+	endpoint = os.Getenv("AOAI_ENDPOINT" + suffix)
+
+	if endpoint != "" && !strings.HasSuffix(endpoint, "/") {
+		// (this just makes recording replacement easier)
+		endpoint += "/"
+	}
+
+	apiKey = os.Getenv("AOAI_API_KEY" + suffix)
+	completionsModelDeployment = os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
+	chatCompletionsModelDeployment = os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
+
+	return
+}
 
 const fakeEndpoint = "https://recordedhost/"
 const fakeAPIKey = "redacted"
@@ -41,6 +62,11 @@ func init() {
 		apiKey = fakeAPIKey
 		openAIKey = fakeAPIKey
 		openAIEndpoint = fakeEndpoint
+
+		canaryEndpoint = fakeEndpoint
+		canaryAPIKey = fakeAPIKey
+		canaryCompletionsModelDeployment = ""
+		canaryChatCompletionsModelDeployment = "gpt-4"
 
 		completionsModelDeployment = "text-davinci-003"
 		openAICompletionsModel = "text-davinci-003"
@@ -53,18 +79,8 @@ func init() {
 			os.Exit(1)
 		}
 
-		endpoint = os.Getenv("AOAI_ENDPOINT")
-
-		if endpoint != "" && !strings.HasSuffix(endpoint, "/") {
-			// (this just makes recording replacement easier)
-			endpoint += "/"
-		}
-
-		apiKey = os.Getenv("AOAI_API_KEY")
-
-		// Ex: text-davinci-003
-		completionsModelDeployment = os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
-		chatCompletionsModelDeployment = os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
+		endpoint, apiKey, completionsModelDeployment, chatCompletionsModelDeployment = getVars("")
+		canaryEndpoint, canaryAPIKey, canaryCompletionsModelDeployment, canaryChatCompletionsModelDeployment = getVars("_CANARY")
 
 		openAIKey = os.Getenv("OPENAI_API_KEY")
 		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
@@ -94,6 +110,9 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 
 		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
 		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(endpoint), nil)
+		require.NoError(t, err)
+
+		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(canaryEndpoint), nil)
 		require.NoError(t, err)
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
@@ -141,6 +160,53 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	}
 
 	return co
+}
+
+// newAzureOpenAIClientForTest can create a client pointing to the "canary" endpoint (basically - leading fixes or features)
+// or the current deployed endpoint.
+func newAzureOpenAIClientForTest(t *testing.T, modelDeploymentID string, useCanary bool) *azopenai.Client {
+	var apiKey = apiKey
+	var endpoint = endpoint
+
+	if useCanary {
+		apiKey = canaryAPIKey
+		endpoint = canaryEndpoint
+	}
+
+	cred, err := azopenai.NewKeyCredential(apiKey)
+	require.NoError(t, err)
+
+	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, modelDeploymentID, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	return client
+}
+
+func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
+	if openAIKey == "" {
+		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
+	}
+
+	cred, err := azopenai.NewKeyCredential(openAIKey)
+	require.NoError(t, err)
+
+	// we get rate limited quite a bit.
+	options := newClientOptionsForTest(t)
+
+	if options == nil {
+		options = &azopenai.ClientOptions{}
+	}
+
+	options.Retry = policy.RetryOptions{
+		MaxRetries:    60,
+		RetryDelay:    time.Second,
+		MaxRetryDelay: time.Second,
+	}
+
+	chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, options)
+	require.NoError(t, err)
+
+	return chatClient
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return

@@ -5,7 +5,6 @@ package azopenai_test
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 	"os"
 	"regexp"
@@ -17,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -74,10 +72,10 @@ func init() {
 		chatCompletionsModelDeployment = "gpt-4"
 		openAIChatCompletionsModel = "gpt-4"
 	} else {
-		if err := godotenv.Load(); err != nil {
-			fmt.Printf("Failed to load .env file: %s\n", err)
-			os.Exit(1)
-		}
+		// if err := godotenv.Load(); err != nil {
+		// 	fmt.Printf("Failed to load .env file: %s\n", err)
+		// 	os.Exit(1)
+		// }
 
 		endpoint, apiKey, completionsModelDeployment, chatCompletionsModelDeployment = getVars("")
 		canaryEndpoint, canaryAPIKey, canaryCompletionsModelDeployment, canaryChatCompletionsModelDeployment = getVars("_CANARY")

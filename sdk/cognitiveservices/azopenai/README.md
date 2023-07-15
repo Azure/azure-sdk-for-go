@@ -1,6 +1,8 @@
 # Azure OpenAI client module for Go
 
-Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on Azure resources.
+NOTE: this client can connect to both Azure OpenAI and Open AI.
+
+Azure OpenAI Service provides REST API access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series.
 
 The Azure OpenAI client library for GO is an adaptation of OpenAI's REST APIs that provides an idiomatic interface and rich integration with the rest of the Azure SDK ecosystem.
 
@@ -20,41 +22,33 @@ Install the `azopenai` and `azidentity` modules with `go get`:
 
 ```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
+
+# optional
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
-The [azidentity][azure_identity] module is used for authentication during client construction.
+The [azidentity][azure_identity] module is used for Azure Active Directory authentication with Azure OpenAI.
 
 ### Authentication
 
-<!-- TODO: Add api-key authentication instructions -->
+#### Azure OpenAI
 
-#### Create a client
+Azure OpenAI clients can authenticate using Azure Active Directory or with an API key:
 
-Constructing the client requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
+* Using Azure Active Directory, with a TokenCredential: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai#example-NewClient)
+* Using an API key: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai#example-NewClientWithKeyCredential)
 
-```go
-import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
-)
+#### OpenAI
 
-func main() {
-	endpoint     := "https://<TODO: OpenAI endpoint>"
-	apiKey       := "<TODO: OpenAI API key>"
-
-	var err error
-	cred := azopenai.KeyCredential{APIKey: apiKey}
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, &options)
-	if err != nil {
-		// TODO: handle error
-	}
-}
-```
+OpenAI supports connecting using an API key: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai#example-NewClientForOpenAI)
 
 ## Key concepts
 
 See [Key concepts][openai_key_concepts] in the product documentation for more details about general concepts.
+
+# Examples
+
+Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenai](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/cognitiveservices/azopenai).
 
 ## Troubleshooting
 
@@ -103,3 +97,4 @@ comments.
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[azure_openai_quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart

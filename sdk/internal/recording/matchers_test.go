@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"net/http"
 	"os"
-	"os/exec"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -19,7 +18,7 @@ import (
 
 type matchersTests struct {
 	suite.Suite
-	proxyCmd *exec.Cmd
+	proxy *TestProxyInstance
 }
 
 func TestMatchers(t *testing.T) {
@@ -27,16 +26,16 @@ func TestMatchers(t *testing.T) {
 }
 
 func (s *matchersTests) SetupSuite() {
-	proxyCmd, err := StartTestProxyInstance(nil)
-	s.proxyCmd = proxyCmd
+	proxy, err := StartTestProxy(nil)
+	s.proxy = proxy
 	require.NoError(s.T(), err)
 }
 
 func (s *matchersTests) TearDownSuite() {
-	StopTestProxyInstance(s.proxyCmd, nil)
-
-	err := os.RemoveAll("./testdata/recordings/TestMatchers/")
-	require.NoError(s.T(), err)
+	err1 := StopTestProxy(s.proxy)
+	err2 := os.RemoveAll("./testdata/recordings/TestMatchers/")
+	require.NoError(s.T(), err1)
+	require.NoError(s.T(), err2)
 }
 
 func (s *matchersTests) TestSetBodilessMatcher() {

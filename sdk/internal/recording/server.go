@@ -24,6 +24,11 @@ import (
 	"time"
 )
 
+type TestProxyInstance struct {
+	Cmd *exec.Cmd
+	Options *RecordingOptions
+}
+
 func getTestProxyDownloadFile() (string, error) {
 	switch {
 	case runtime.GOOS == "windows":
@@ -242,7 +247,18 @@ func getProxyLog() (*os.File, error) {
 	return proxyLog, nil
 }
 
-func StartTestProxyInstance(options *RecordingOptions) (*exec.Cmd, error) {
+func getProxyVersion(gitRoot string) (string, error) {
+	proxyVersionConfig := filepath.Join(gitRoot, "eng/common/testproxy/target_version.txt")
+	version, err := ioutil.ReadFile(proxyVersionConfig)
+	if err != nil {
+		return "", err
+	}
+	proxyVersion := strings.TrimSpace(string(version))
+
+	return proxyVersion, nil
+}
+
+func StartTestProxy(options *RecordingOptions) (*TestProxyInstance, error) {
 	manualStart := strings.ToLower(os.Getenv("PROXY_MANUAL_START"))
 	if manualStart == "true" {
 		log.Println("PROXY_MANUAL_START env variable is set to true, not starting test proxy...")
@@ -257,12 +273,11 @@ func StartTestProxyInstance(options *RecordingOptions) (*exec.Cmd, error) {
 	if err != nil {
 		return nil, err
 	}
-	proxyVersionConfig := filepath.Join(gitRoot, "eng/common/testproxy/target_version.txt")
-	version, err := ioutil.ReadFile(proxyVersionConfig)
+
+	proxyVersion, err := getProxyVersion(gitRoot)
 	if err != nil {
 		return nil, err
 	}
-	proxyVersion := strings.TrimSpace(string(version))
 
 	proxyDir := filepath.Join(gitRoot, ".proxy")
 	if err := os.MkdirAll(proxyDir, 0755); err != nil {
@@ -309,18 +324,15 @@ func StartTestProxyInstance(options *RecordingOptions) (*exec.Cmd, error) {
 	}
 	log.Printf("Started test proxy instance (PID %d) on %s\n", cmd.Process.Pid, options.baseURL())
 
-	return cmd, nil
+	return &TestProxyInstance{Cmd: cmd, Options: options}, nil
 }
 
-func StopTestProxyInstance(proxyCmd *exec.Cmd, options *RecordingOptions) error {
-	if options == nil {
-		options = defaultOptions()
-	}
-	if proxyCmd == nil {
+func StopTestProxy(proxyInstance *TestProxyInstance) error {
+	if proxyInstance == nil || proxyInstance.Cmd == nil || proxyInstance.Cmd.Process == nil {
 		return nil
 	}
-	log.Printf("Stopping test proxy instance (PID %d) on %s\n", proxyCmd.Process.Pid, options.baseURL())
-	err := proxyCmd.Process.Kill()
+	log.Printf("Stopping test proxy instance (PID %d) on %s\n", proxyInstance.Cmd.Process.Pid, proxyInstance.Options.baseURL())
+	err := proxyInstance.Cmd.Process.Kill()
 	if err != nil {
 		return err
 	}

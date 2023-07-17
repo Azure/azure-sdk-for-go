@@ -595,7 +595,7 @@ func getGitRoot(fromPath string) (string, error) {
 
 	root, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("Unable to find git root for path '%s'", absPath)
+		return "", fmt.Errorf("unable to find git root for path '%s'", absPath)
 	}
 
 	// Wrap with Abs() to get os-specific path separators to support sub-path matching

@@ -13,7 +13,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -29,7 +28,7 @@ const packagePath = "sdk/internal/recording/testdata"
 
 type recordingTests struct {
 	suite.Suite
-	proxyCmd *exec.Cmd
+	proxy *TestProxyInstance
 }
 
 func TestRecording(t *testing.T) {
@@ -37,13 +36,14 @@ func TestRecording(t *testing.T) {
 }
 
 func (s *recordingTests) SetupSuite() {
-	proxyCmd, err := StartTestProxyInstance(nil)
-	s.proxyCmd = proxyCmd
+	proxy, err := StartTestProxy(nil)
+	s.proxy = proxy
 	require.NoError(s.T(), err)
 }
 
 func (s *recordingTests) TearDownSuite() {
-	StopTestProxyInstance(s.proxyCmd, nil)
+	stopErr := StopTestProxy(s.proxy)
+	require.NoError(s.T(), stopErr)
 
 	files, err := filepath.Glob("recordings/**/*.yaml")
 	require.NoError(s.T(), err)

@@ -22,7 +22,7 @@ Recording and playing back tests relies on the [Test Proxy](https://github.com/A
 
 ```golang
 func TestMain(m *testing.M) {
-	proxyCmd, err := StartTestProxyInstance(nil)
+	proxy, err := recording.StartTestProxy(nil)
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 
-	StopTestProxyInstance(proxyCmd, nil)
+	recording.StopTestProxy(proxy)
 	if err != nil {
 		panic(err)
 	}

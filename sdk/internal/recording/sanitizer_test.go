@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"strings"
 	"testing"
 
@@ -26,7 +25,7 @@ import (
 
 type sanitizerTests struct {
 	suite.Suite
-	proxyCmd *exec.Cmd
+	proxy *TestProxyInstance
 }
 
 const authHeader string = "Authorization"
@@ -39,16 +38,16 @@ func TestRecordingSanitizer(t *testing.T) {
 }
 
 func (s *sanitizerTests) SetupSuite() {
-	proxyCmd, err := StartTestProxyInstance(nil)
-	s.proxyCmd = proxyCmd
+	proxy, err := StartTestProxy(nil)
+	s.proxy = proxy
 	require.NoError(s.T(), err)
 }
 
 func (s *sanitizerTests) TearDownSuite() {
-	StopTestProxyInstance(s.proxyCmd, nil)
-	// cleanup test files
-	err := os.RemoveAll("testfiles")
-	require.NoError(s.T(), err)
+	err1 := StopTestProxy(s.proxy)
+	err2 := os.RemoveAll("testfiles")
+	require.NoError(s.T(), err1)
+	require.NoError(s.T(), err2)
 }
 
 func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {

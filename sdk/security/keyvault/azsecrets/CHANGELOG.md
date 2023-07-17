@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (1.0.0)
+## 1.0.0 (2023-07-17)
 
 ### Features Added
 * first stable release of `azsecrets` module

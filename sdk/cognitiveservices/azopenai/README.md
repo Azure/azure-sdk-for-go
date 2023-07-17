@@ -2,9 +2,7 @@
 
 NOTE: this client can be used with Azure OpenAI and Open AI.
 
-Azure OpenAI Service provides REST API access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series.
-
-The Azure OpenAI client library for GO is an adaptation of OpenAI's REST APIs that provides an idiomatic interface and rich integration with the rest of the Azure SDK ecosystem.
+Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
 
 [Source code][azopenai_repo] | [Package (pkg.go.dev)][azopenai_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 

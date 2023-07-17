@@ -4,6 +4,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+// Package azopenai Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4,
+// GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
+//
+// The [Client] in this package can be used with Azure OpenAI or OpenAI.
 package azopenai
 
 // this file contains handwritten additions to the generated code
@@ -21,7 +25,6 @@ import (
 
 const (
 	clientName = "azopenai.Client"
-	apiVersion = "2023-03-15-preview"
 	tokenScope = "https://cognitiveservices.azure.com/.default"
 )
 

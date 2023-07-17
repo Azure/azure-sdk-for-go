@@ -47,7 +47,7 @@ func NewLocalRulesClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -71,7 +71,7 @@ func (client *LocalRulesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *LocalRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource LocalRulesResource, options *LocalRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, localRulestackName, priority, resource, options)
 	if err != nil {
@@ -111,7 +111,7 @@ func (client *LocalRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -120,7 +120,7 @@ func (client *LocalRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -142,7 +142,7 @@ func (client *LocalRulesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *LocalRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *LocalRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, localRulestackName, priority, options)
 	if err != nil {
@@ -182,7 +182,7 @@ func (client *LocalRulesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -191,7 +191,7 @@ func (client *LocalRulesClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -235,7 +235,7 @@ func (client *LocalRulesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *LocalRulesClient) getHandleResponse(resp *http.Response) (LocalRul
 // GetCounters - Get counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -297,7 +297,7 @@ func (client *LocalRulesClient) getCountersCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -317,7 +317,7 @@ func (client *LocalRulesClient) getCountersHandleResponse(resp *http.Response) (
 
 // NewListByLocalRulestacksPager - List LocalRulesResource resources by LocalRulestacks
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulesClientListByLocalRulestacksOptions contains the optional parameters for the LocalRulesClient.NewListByLocalRulestacksPager
@@ -370,7 +370,7 @@ func (client *LocalRulesClient) listByLocalRulestacksCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -388,7 +388,7 @@ func (client *LocalRulesClient) listByLocalRulestacksHandleResponse(resp *http.R
 // RefreshCounters - Refresh counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -433,7 +433,7 @@ func (client *LocalRulesClient) refreshCountersCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -445,7 +445,7 @@ func (client *LocalRulesClient) refreshCountersCreateRequest(ctx context.Context
 // ResetCounters - Reset counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - priority - Local Rule priority
@@ -490,7 +490,7 @@ func (client *LocalRulesClient) resetCountersCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}

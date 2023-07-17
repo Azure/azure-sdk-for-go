@@ -47,7 +47,7 @@ func NewDiscoverySolutionClient(credential azcore.TokenCredential, options *arm.
 // Note: ‘requiredParameterSets’ from Solutions Discovery API response must be passed via ‘additionalParameters’ as an input
 // to Diagnostics API.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - options - DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager
 //     method.
@@ -88,7 +88,7 @@ func (client *DiscoverySolutionClient) listCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}

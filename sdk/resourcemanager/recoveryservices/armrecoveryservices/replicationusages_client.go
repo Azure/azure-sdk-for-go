@@ -46,7 +46,7 @@ func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Fetches the replication usages of the vault.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.NewListPager
@@ -93,7 +93,7 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

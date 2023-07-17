@@ -182,6 +182,31 @@ type DeletedBackupInstancesClientUndeleteResponse struct {
 	// placeholder for future response values
 }
 
+// DppResourceGuardProxyClientCreateOrUpdateResponse contains the response from method DppResourceGuardProxyClient.CreateOrUpdate.
+type DppResourceGuardProxyClientCreateOrUpdateResponse struct {
+	ResourceGuardProxyBaseResource
+}
+
+// DppResourceGuardProxyClientDeleteResponse contains the response from method DppResourceGuardProxyClient.Delete.
+type DppResourceGuardProxyClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DppResourceGuardProxyClientGetResponse contains the response from method DppResourceGuardProxyClient.Get.
+type DppResourceGuardProxyClientGetResponse struct {
+	ResourceGuardProxyBaseResource
+}
+
+// DppResourceGuardProxyClientListResponse contains the response from method DppResourceGuardProxyClient.NewListPager.
+type DppResourceGuardProxyClientListResponse struct {
+	ResourceGuardProxyBaseResourceList
+}
+
+// DppResourceGuardProxyClientUnlockDeleteResponse contains the response from method DppResourceGuardProxyClient.UnlockDelete.
+type DppResourceGuardProxyClientUnlockDeleteResponse struct {
+	UnlockDeleteResponse
+}
+
 // ExportJobsClientTriggerResponse contains the response from method ExportJobsClient.BeginTrigger.
 type ExportJobsClientTriggerResponse struct {
 	// placeholder for future response values

@@ -48,7 +48,7 @@ func NewLocalRulestacksClient(subscriptionID string, credential azcore.TokenCred
 // BeginCommit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientBeginCommitOptions contains the optional parameters for the LocalRulestacksClient.BeginCommit
@@ -70,7 +70,7 @@ func (client *LocalRulestacksClient) BeginCommit(ctx context.Context, resourceGr
 // Commit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *LocalRulestacksClient) commit(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientBeginCommitOptions) (*http.Response, error) {
 	req, err := client.commitCreateRequest(ctx, resourceGroupName, localRulestackName, options)
 	if err != nil {
@@ -106,7 +106,7 @@ func (client *LocalRulestacksClient) commitCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *LocalRulestacksClient) commitCreateRequest(ctx context.Context, re
 // BeginCreateOrUpdate - Create a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - resource - Resource create parameters.
@@ -138,7 +138,7 @@ func (client *LocalRulestacksClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *LocalRulestacksClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, resource LocalRulestackResource, options *LocalRulestacksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, localRulestackName, resource, options)
 	if err != nil {
@@ -174,7 +174,7 @@ func (client *LocalRulestacksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -183,7 +183,7 @@ func (client *LocalRulestacksClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientBeginDeleteOptions contains the optional parameters for the LocalRulestacksClient.BeginDelete
@@ -205,7 +205,7 @@ func (client *LocalRulestacksClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *LocalRulestacksClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, localRulestackName, options)
 	if err != nil {
@@ -241,7 +241,7 @@ func (client *LocalRulestacksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +250,7 @@ func (client *LocalRulestacksClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientGetOptions contains the optional parameters for the LocalRulestacksClient.Get method.
@@ -289,7 +289,7 @@ func (client *LocalRulestacksClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -307,7 +307,7 @@ func (client *LocalRulestacksClient) getHandleResponse(resp *http.Response) (Loc
 // GetChangeLog - Get changelog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientGetChangeLogOptions contains the optional parameters for the LocalRulestacksClient.GetChangeLog
@@ -347,7 +347,7 @@ func (client *LocalRulestacksClient) getChangeLogCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *LocalRulestacksClient) getChangeLogHandleResponse(resp *http.Respo
 // GetSupportInfo - support info for rulestack.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientGetSupportInfoOptions contains the optional parameters for the LocalRulestacksClient.GetSupportInfo
@@ -405,7 +405,7 @@ func (client *LocalRulestacksClient) getSupportInfoCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Email != nil {
 		reqQP.Set("email", *options.Email)
 	}
@@ -426,7 +426,7 @@ func (client *LocalRulestacksClient) getSupportInfoHandleResponse(resp *http.Res
 // ListAdvancedSecurityObjects - Get the list of advanced security objects
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListAdvancedSecurityObjectsOptions contains the optional parameters for the LocalRulestacksClient.ListAdvancedSecurityObjects
@@ -466,7 +466,7 @@ func (client *LocalRulestacksClient) listAdvancedSecurityObjectsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -491,7 +491,7 @@ func (client *LocalRulestacksClient) listAdvancedSecurityObjectsHandleResponse(r
 // ListAppIDs - List of AppIds for LocalRulestack ApiVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListAppIDsOptions contains the optional parameters for the LocalRulestacksClient.ListAppIDs
@@ -531,7 +531,7 @@ func (client *LocalRulestacksClient) listAppIDsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.AppIDVersion != nil {
 		reqQP.Set("appIdVersion", *options.AppIDVersion)
 	}
@@ -560,7 +560,7 @@ func (client *LocalRulestacksClient) listAppIDsHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - List LocalRulestackResource resources by resource group
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - LocalRulestacksClientListByResourceGroupOptions contains the optional parameters for the LocalRulestacksClient.NewListByResourceGroupPager
 //     method.
@@ -608,7 +608,7 @@ func (client *LocalRulestacksClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -625,7 +625,7 @@ func (client *LocalRulestacksClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - List LocalRulestackResource resources by subscription ID
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - options - LocalRulestacksClientListBySubscriptionOptions contains the optional parameters for the LocalRulestacksClient.NewListBySubscriptionPager
 //     method.
 func (client *LocalRulestacksClient) NewListBySubscriptionPager(options *LocalRulestacksClientListBySubscriptionOptions) *runtime.Pager[LocalRulestacksClientListBySubscriptionResponse] {
@@ -668,7 +668,7 @@ func (client *LocalRulestacksClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -686,7 +686,7 @@ func (client *LocalRulestacksClient) listBySubscriptionHandleResponse(resp *http
 // ListCountries - List of countries for Rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListCountriesOptions contains the optional parameters for the LocalRulestacksClient.ListCountries
@@ -726,7 +726,7 @@ func (client *LocalRulestacksClient) listCountriesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -750,7 +750,7 @@ func (client *LocalRulestacksClient) listCountriesHandleResponse(resp *http.Resp
 // ListFirewalls - List of Firewalls associated with Rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListFirewallsOptions contains the optional parameters for the LocalRulestacksClient.ListFirewalls
@@ -790,7 +790,7 @@ func (client *LocalRulestacksClient) listFirewallsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -808,7 +808,7 @@ func (client *LocalRulestacksClient) listFirewallsHandleResponse(resp *http.Resp
 // ListPredefinedURLCategories - List predefined URL categories for rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListPredefinedURLCategoriesOptions contains the optional parameters for the LocalRulestacksClient.ListPredefinedURLCategories
@@ -848,7 +848,7 @@ func (client *LocalRulestacksClient) listPredefinedURLCategoriesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -872,7 +872,7 @@ func (client *LocalRulestacksClient) listPredefinedURLCategoriesHandleResponse(r
 // ListSecurityServices - List the security services for rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientListSecurityServicesOptions contains the optional parameters for the LocalRulestacksClient.ListSecurityServices
@@ -912,7 +912,7 @@ func (client *LocalRulestacksClient) listSecurityServicesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -937,7 +937,7 @@ func (client *LocalRulestacksClient) listSecurityServicesHandleResponse(resp *ht
 // Revert - Revert rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - LocalRulestacksClientRevertOptions contains the optional parameters for the LocalRulestacksClient.Revert method.
@@ -976,7 +976,7 @@ func (client *LocalRulestacksClient) revertCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -985,7 +985,7 @@ func (client *LocalRulestacksClient) revertCreateRequest(ctx context.Context, re
 // Update - Update a LocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - properties - The resource properties to be updated.
@@ -1025,7 +1025,7 @@ func (client *LocalRulestacksClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

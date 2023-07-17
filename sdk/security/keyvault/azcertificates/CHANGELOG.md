@@ -2,6 +2,42 @@
 
 ## 0.11.0 (unreleased)
 
+### Breaking Changes
+* Rename `ListCertificates` to `ListCertificateProperties`
+* `ListCertificateIssuers` to `ListIssuerProperties`
+* `ListCertificateVersions` to `ListCertificatePropertiesVersions`
+* `ListDeletedCertificates` to `ListDeletedCertificateProperties`
+* `CertificateListResult` to `CertificatePropertiesListResult`
+* `DeletedCertificateListResult` to `DeletedCertificatePropertiesListResult`
+* `SetCertificateContacts` to `SetContacts`
+* `GetCertificateContacts` to `GetContacts`
+* `DeleteCertificateContacts` to `DeleteContacts`
+* `SetCertificateIssuer` to `SetIssuer`
+* `UpdateCertificateIssuer` to `UpdateIssuer`
+* `GetCertificateIssuer` to `GetIssuer`
+* `DeleteCertificateIssuer` to `DeleteIssuer`
+* `CertificateIssuerListResult` to `IssuerPropertiesListResult`
+* `UpdateCertificateIssuerParameters` to `UpdateIssuerParameters`
+* `SetCertificateIssuerParameters` to `SetIssuerParameters`
+* `CertificateBundle` to `Certificate`
+* `CertificateItem` to `CertificateProperties`
+* `DeletedCertificateBundle` to `DeletedCertificate`
+* `DeletedCertificateItem` to `DeletedCertificateProperties`
+* `IssuerBundle` to `Issuer`
+* `CertificateIssuerItem` to `IssuerProperties`
+* `RestoreCertificateParameters.CertificateBundleBackup` to `RestoreCertificateParameters.CertificateBackup`
+* `JSONWebKeyCurveName` to `CurveName`
+* `JSONWebKeyType` to `KeyType`
+* `Trigger` to `LifetimeActionTrigger`
+* `Action` to `LifetimeActionType`
+* `AdministratorDetails` to ``AdministratorContact`
+* `OrganizationDetails.AdminDetails` to `OrganizationDetails.AdminContacts`
+* `EmailAddress` to `Email`
+* `UPNs` to `UserPrincipalNames`
+* `EKUs` to `EnhancedKeyUsage`
+* remove `MaxResults` parameter
+* remove `DeletionRecoveryLevel` type
+
 ### Other Changes
 * Updated dependencies
 

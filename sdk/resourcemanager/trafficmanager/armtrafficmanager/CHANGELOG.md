@@ -1,5 +1,14 @@
 # Release History
 
+## 1.2.0 (2023-06-23)
+### Features Added
+
+- New value `EndpointMonitorStatusUnmonitored` added to enum type `EndpointMonitorStatus`
+- New enum type `AlwaysServe` with values `AlwaysServeDisabled`, `AlwaysServeEnabled`
+- New function `*ProfilesClient.CheckTrafficManagerNameAvailabilityV2(context.Context, CheckTrafficManagerRelativeDNSNameAvailabilityParameters, *ProfilesClientCheckTrafficManagerNameAvailabilityV2Options) (ProfilesClientCheckTrafficManagerNameAvailabilityV2Response, error)`
+- New field `AlwaysServe` in struct `EndpointProperties`
+
+
 ## 1.1.0 (2023-04-07)
 ### Features Added
 

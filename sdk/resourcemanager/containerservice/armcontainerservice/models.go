@@ -2005,6 +2005,13 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string
 }
 
+// NetworkMonitoring - This addon can be used to configure network monitoring and generate network monitoring data in Prometheus
+// format
+type NetworkMonitoring struct {
+	// Enable or disable the network monitoring plugin on the cluster
+	Enabled *bool
+}
+
 // NetworkProfile - Profile of network configuration.
 type NetworkProfile struct {
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
@@ -2027,6 +2034,9 @@ type NetworkProfile struct {
 	// The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus] for more
 	// information about the differences between load balancer SKUs.
 	LoadBalancerSKU *LoadBalancerSKU
+
+	// This addon can be used to configure network monitoring and generate network monitoring data in Prometheus format
+	Monitoring *NetworkMonitoring
 
 	// Profile of the cluster NAT gateway.
 	NatGatewayProfile *ManagedClusterNATGatewayProfile

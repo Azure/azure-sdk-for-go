@@ -44,7 +44,7 @@ func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.Client
 // CheckNameAvailability - This API is used to check the uniqueness of a resource name used for a diagnostic check.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - options - DiagnosticsClientCheckNameAvailabilityOptions contains the optional parameters for the DiagnosticsClient.CheckNameAvailability
 //     method.
@@ -72,7 +72,7 @@ func (client *DiagnosticsClient) checkNameAvailabilityCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CheckNameAvailabilityRequest != nil {
@@ -97,7 +97,7 @@ func (client *DiagnosticsClient) checkNameAvailabilityHandleResponse(resp *http.
 // to Diagnostics API
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - diagnosticResourceRequest - The required request body for this insightResource invocation.
@@ -123,7 +123,7 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 // to Diagnostics API
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-06-01
 func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, scope, diagnosticsResourceName, diagnosticResourceRequest, options)
 	if err != nil {
@@ -133,7 +133,7 @@ func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagn
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -152,7 +152,7 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diagnosticResourceRequest)
@@ -161,7 +161,7 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 // Get - Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
@@ -193,7 +193,7 @@ func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

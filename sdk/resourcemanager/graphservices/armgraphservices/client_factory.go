@@ -43,12 +43,7 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewAccountClient() *AccountClient {
-	subClient, _ := NewAccountClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewOperationClient() *OperationClient {
-	subClient, _ := NewOperationClient(c.credential, c.options)
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }

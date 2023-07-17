@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.3 (Unreleased)
+## 1.8.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,28 @@
 
 ### Bugs Fixed
 
+* Enable TLS renegotiation in the default transport policy.
+
 ### Other Changes
+
+## 1.8.0-beta.1 (2023-07-12)
+
+### Features Added
+
+- `messaging/CloudEvent` allows you to serialize/deserialize CloudEvents, as described in the CloudEvents 1.0 specification: [link](https://github.com/cloudevents/spec)
+
+### Other Changes
+
+* The beta features for CAE, tracing, and fakes have been reinstated.
+
+## 1.7.0 (2023-07-12)
+
+### Features Added
+* Added method `WithClientName()` to type `azcore.Client` to support shallow cloning of a client with a new name used for tracing.
+
+### Breaking Changes
+> These changes affect only code written against beta versions v1.7.0-beta.1 or v1.7.0-beta.2
+* The beta features for CAE, tracing, and fakes have been omitted for this release.
 
 ## 1.7.0-beta.2 (2023-06-06)
 
@@ -19,8 +40,13 @@
 * Method `AddError()` has been removed from type `tracing.Span`.
 * Method `Span.End()` now requires an argument of type `*tracing.SpanEndOptions`.
 
+## 1.6.1 (2023-06-06)
+
 ### Bugs Fixed
 * Fixed an issue in `azcore.NewClient()` and `arm.NewClient()` that could cause an incorrect module name to be used in telemetry.
+
+### Other Changes
+* This version contains all bug fixes from `v1.7.0-beta.1`
 
 ## 1.7.0-beta.1 (2023-05-24)
 

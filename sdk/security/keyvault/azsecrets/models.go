@@ -105,7 +105,7 @@ type DeletedSecret struct {
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
-	KID *string `json:"kid,omitempty" azure:"ro"`
+	KID *ID `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.
@@ -178,7 +178,7 @@ type Secret struct {
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
-	KID *string `json:"kid,omitempty" azure:"ro"`
+	KID *ID `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.

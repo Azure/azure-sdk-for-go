@@ -851,7 +851,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    expiryTime,
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, Tag: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -882,6 +882,121 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURL() {
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, nil)
 	_require.Nil(err)
 	_require.Equal(destBuffer, sourceData)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set tags to source
+	srcBlobTagsMap := map[string]string{
+		"source": "tags",
+	}
+	_, err = srcBlob.SetTags(context.Background(), srcBlobTagsMap, nil)
+	_require.NoError(err)
+
+	// Dest tags
+	destBlobTagsMap := map[string]string{
+		"dest": "tags",
+	}
+
+	// By default, the CopySourceTag header is Replace
+	options := blockblob.UploadBlobFromURLOptions{
+		Tags: destBlobTagsMap,
+	}
+
+	// Invoke UploadBlobFromURL
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	// Get tags from dest and check if tags got replaced with dest tags
+	resp, err := destBlob.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.BlobTagSet[0].Key, "dest")
+	_require.Equal(*resp.BlobTagSet[0].Value, "tags")
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsReplace() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set tags to source
+	srcBlobTagsMap := map[string]string{
+		"source": "tags",
+	}
+	_, err = srcBlob.SetTags(context.Background(), srcBlobTagsMap, nil)
+	_require.NoError(err)
+
+	// Dest tags
+	destBlobTagsMap := map[string]string{
+		"dest": "tags",
+	}
+
+	options := blockblob.UploadBlobFromURLOptions{
+		Tags:           destBlobTagsMap,
+		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsReplace),
+	}
+
+	// Invoke UploadBlobFromURL
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	// Get tags from dest and check if tags got replaced with dest tags
+	resp, err := destBlob.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.BlobTagSet[0].Key, "dest")
+	_require.Equal(*resp.BlobTagSet[0].Value, "tags")
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithCopySourceTagsCopy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient, srcBlob, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set tags to source
+	srcBlobTagsMap := map[string]string{
+		"source": "tags",
+	}
+	_, err = srcBlob.SetTags(context.Background(), srcBlobTagsMap, nil)
+	_require.NoError(err)
+
+	// Set tags to dest to ensure that COPY works
+	destBlobTagsMap := map[string]string{
+		"dest": "tags",
+	}
+	_, err = destBlob.SetTags(context.Background(), destBlobTagsMap, nil)
+	_require.NoError(err)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		CopySourceTags: to.Ptr(blockblob.BlobCopySourceTagsCopy),
+	}
+
+	// Invoke UploadBlobFromURL
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	// Get tags from dest and check if it matches source tags
+	resp, err := destBlob.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.BlobTagSet[0].Key, "source")
+	_require.Equal(*resp.BlobTagSet[0].Value, "tags")
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLNegative() {

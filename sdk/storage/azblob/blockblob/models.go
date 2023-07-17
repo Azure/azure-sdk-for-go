@@ -85,6 +85,9 @@ type UploadBlobFromURLOptions struct {
 	// Optional, default is true. Indicates if properties from the source blob should be copied.
 	CopySourceBlobProperties *bool
 
+	// Optional, default 'replace'. Indicates if source tags should be copied or replaced with the tags specified by x-ms-tags.
+	CopySourceTags *BlobCopySourceTags
+
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata map[string]*string
 
@@ -113,6 +116,7 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
 		CopySourceBlobProperties: o.CopySourceBlobProperties,
+		CopySourceTags:           o.CopySourceTags,
 		Metadata:                 o.Metadata,
 		SourceContentMD5:         o.SourceContentMD5,
 		Tier:                     o.Tier,

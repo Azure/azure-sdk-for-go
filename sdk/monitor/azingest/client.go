@@ -73,9 +73,6 @@ func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, st
 	if options != nil && options.ContentEncoding != nil {
 		req.Raw().Header["Content-Encoding"] = []string{*options.ContentEncoding}
 	}
-	if options != nil && options.XMSClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.XMSClientRequestID}
-	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, req.SetBody(streaming.NopCloser(bytes.NewReader(logs)), "application/json")
 }

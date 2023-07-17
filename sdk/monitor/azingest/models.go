@@ -13,6 +13,4 @@ package azingest
 type UploadOptions struct {
 	// If the bytes of the "logs" parameter are already gzipped, set ContentEncoding to "gzip"
 	ContentEncoding *string
-	// Client request Id
-	XMSClientRequestID *string
 }

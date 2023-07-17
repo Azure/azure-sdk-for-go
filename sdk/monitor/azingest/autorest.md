@@ -23,6 +23,12 @@ directive:
   # delete unused model
   - remove-model: PendingCertificateSigningRequestResult
 
+  # remove x-ms-client-request-id, it's added in a pipeline policy
+  - where-operation: Upload
+    remove-parameter:
+      in: header
+      name: x-ms-client-request-id
+
   # rename parameter from "body" to "logs", "stream" to "streamName"
   - from: swagger-document
     where: $.paths..parameters..[?(@.name=='body')]

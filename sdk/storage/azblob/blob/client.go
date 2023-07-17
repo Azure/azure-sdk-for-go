@@ -410,10 +410,50 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		return 0, nil
 	}
 
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	// helper routine to get body
+	getBodyForRange := func(ctx context.Context,
+							chunkStart int64,
+							size int64) (io.ReadCloser, error) {
+		downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
+			Offset: chunkStart + o.Range.Offset,
+			Count:  size,
+		}, nil)
+		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
+		if err != nil {
+			return nil, err
+		}
+
+		var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
+		if o.Progress != nil {
+			rangeProgress := int64(0)
+			body = streaming.NewResponseProgress(
+				body,
+				func(bytesTransferred int64) {
+					diff := bytesTransferred - rangeProgress
+					rangeProgress = bytesTransferred
+					progressLock.Lock()
+					progress += diff
+					o.Progress(progress)
+					progressLock.Unlock()
+				})
+		}
+
+		return body, nil
+	}
+
 	// if file fits in a single buffer, we'll download here.
 	if count <= o.BlockSize {
+		body, err := getBodyForRange(ctx, int64(0), count)
+		if err != nil {
+			return 0, err
+		}
 
+		return io.Copy(writer, body)
 	}
+
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
 	aquireBuffer := func() ([]byte, error) {
@@ -457,38 +497,13 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	}(writerError)
 
 	// Prepare and do parallel download.
-	progress := int64(0)
-	progressLock := &sync.Mutex{}
-
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
-				Offset: chunkStart + o.Range.Offset,
-				Count:  count,
-			}, nil)
-			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
-			if err != nil {
-				return err
-			}
-
-			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
-			if o.Progress != nil {
-				rangeProgress := int64(0)
-				body = streaming.NewResponseProgress(
-					body,
-					func(bytesTransferred int64) {
-						diff := bytesTransferred - rangeProgress
-						rangeProgress = bytesTransferred
-						progressLock.Lock()
-						progress += diff
-						o.Progress(progress)
-						progressLock.Unlock()
-					})
-			}
+			body, err := getBodyForRange(ctx, chunkStart, count)
 
 			buff, err := aquireBuffer()
 			if err != nil {

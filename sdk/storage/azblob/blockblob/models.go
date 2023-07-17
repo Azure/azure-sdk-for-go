@@ -23,14 +23,6 @@ type Block = generated.Block
 // BlockList - can be uncommitted or committed blocks (committed/uncommitted)
 type BlockList = generated.BlockList
 
-// BlobCopySourceTags - can be 'COPY' or 'REPLACE'
-type BlobCopySourceTags = generated.BlobCopySourceTags
-
-const (
-	BlobCopySourceTagsCopy    = generated.BlobCopySourceTagsCOPY
-	BlobCopySourceTagsReplace = generated.BlobCopySourceTagsREPLACE
-)
-
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
 // UploadOptions contains the optional parameters for the Client.Upload method.

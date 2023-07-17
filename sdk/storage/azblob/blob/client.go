@@ -314,8 +314,8 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
-// download downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
+// downloadBuffer downloads an Azure blob to a WriterAt in parallel.
+func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
@@ -381,6 +381,129 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	return count, nil
 }
 
+// downloadFile downloads an Azure blob to a Writer. The blocks are downloaded parallely,
+// but written to file serially
+func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadOptions) (int64, error) {
+	if o.BlockSize == 0 {
+		o.BlockSize = DefaultDownloadBlockSize
+	}
+
+	count := o.Range.Count
+	if count == CountToEnd { // If size not specified, calculate it
+		// If we don't have the length at all, get it
+		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
+		if err != nil {
+			return 0, err
+		}
+		count = *gr.ContentLength - o.Range.Offset
+	}
+
+	if count <= 0 {
+		// The file is empty, there is nothing to download.
+		return 0, nil
+	}
+
+	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
+	defer buffers.Free()
+	aquireBuffer := func() ([]byte, error) {
+		select {
+		case b := <-buffers.Acquire():
+			// got a buffer
+			return b, nil
+		default:
+			// no buffer available; allocate a new buffer if possible
+			if _, err := buffers.Grow(); err != nil {
+				return nil, err
+			}
+
+			// either grab the newly allocated buffer or wait for one to become available
+			return <-buffers.Acquire(), nil
+		}
+	}
+
+	numChunks := uint16((count - 1)/ o.BlockSize) + 1
+	blocks := make([]chan []byte, numChunks)
+	for b := range blocks { 
+		blocks[b] = make(chan []byte)
+	}
+
+	writerError := make(chan error)
+	go func(ch chan error) {
+		for _, block := range blocks {
+			select {
+			case <-ctx.Done():
+				return
+			case block := <- block:
+				_, err := writer.Write(block)
+				if err != nil {
+					ch <- err
+					return
+				}
+			}
+		}
+		ch <- nil
+	}(writerError)
+
+	// Prepare and do parallel download.
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "downloadBlobToWriterAt",
+		TransferSize:  count,
+		ChunkSize:     o.BlockSize,
+		Concurrency:   o.Concurrency,
+		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			}, nil)
+			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
+			if err != nil {
+				return err
+			}
+			buff, err := aquireBuffer()
+			if err != nil {
+				return err
+			}
+
+			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
+			if o.Progress != nil {
+				rangeProgress := int64(0)
+				body = streaming.NewResponseProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+
+			_, err = io.ReadFull(body, buff)
+			if err != nil {
+				return err
+			}
+			body.Close()
+
+			blockIndex := (chunkStart / o.BlockSize)
+			blocks[blockIndex] <- buff
+			return nil
+		},
+	})
+
+	if err != nil {
+		return 0, err
+	}
+	// error from writer thread.
+	if err = <- writerError; err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
@@ -409,7 +532,7 @@ func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadB
 	if o == nil {
 		o = &DownloadBufferOptions{}
 	}
-	return b.download(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
+	return b.downloadBuffer(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
 }
 
 // DownloadFile downloads an Azure blob to a local file.
@@ -448,7 +571,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.download(ctx, file, *do)
+		return b.downloadBuffer(ctx, file, *do)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

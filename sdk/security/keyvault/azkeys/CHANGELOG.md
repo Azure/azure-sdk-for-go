@@ -1,14 +1,9 @@
 # Release History
 
-## 0.12.1 (Unreleased)
+## 1.0.0 (2023-07-17)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* first stable release of `azkeys` module
 
 ## 0.12.0 (2023-06-08)
 

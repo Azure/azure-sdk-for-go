@@ -29,8 +29,7 @@ type UsageModelsClient struct {
 }
 
 // NewUsageModelsClient creates a new instance of UsageModelsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageModelsClient, error) {
@@ -45,9 +44,9 @@ func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// NewListPager - Get the list of Cache Usage Models available to this subscription.
+// NewListPager - Get the list of cache usage models available to this subscription.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-05-01
 //   - options - UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.NewListPager method.
 func (client *UsageModelsClient) NewListPager(options *UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsageModelsClientListResponse]{
@@ -89,7 +88,7 @@ func (client *UsageModelsClient) listCreateRequest(ctx context.Context, options 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

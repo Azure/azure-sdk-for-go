@@ -46,9 +46,11 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if err != nil {
 		return nil, err
 	}
-	c, err := getConfidentialClient(
-		clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery),
-	)
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	}
+	c, err := getConfidentialClient(clientID, tenantID, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}

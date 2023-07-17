@@ -69,8 +69,8 @@ func ExampleClient_UpdateCertificate() {
 	fmt.Println(*resp.ID)
 }
 
-func ExampleClient_NewListCertificatesPager() {
-	pager := client.NewListCertificatesPager(nil)
+func ExampleClient_NewListCertificatePropertiesPager() {
+	pager := client.NewListCertificatePropertiesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql",
+  "Tag": "go/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql_e31a4e5848"
+}

@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armgraphservices
+package armmanagednetworkfabric
 
 import (
 	"context"
@@ -18,36 +18,36 @@ import (
 	"net/http"
 )
 
-// OperationClient contains the methods for the Operation group.
-// Don't use this type directly, use NewOperationClient() instead.
-type OperationClient struct {
+// OperationsClient contains the methods for the Operations group.
+// Don't use this type directly, use NewOperationsClient() instead.
+type OperationsClient struct {
 	internal *arm.Client
 }
 
-// NewOperationClient creates a new instance of OperationClient with the specified values.
+// NewOperationsClient creates a new instance of OperationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationClient", moduleVersion, credential, options)
+func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+	cl, err := arm.NewClient(moduleName+".OperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationClient{
+	client := &OperationsClient{
 		internal: cl,
 	}
 	return client, nil
 }
 
-// NewListPager - Returns list of operations.
+// NewListPager - Returns list of all operations.
 //
-// Generated from API version 2022-09-22-preview
-//   - options - OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
-func (client *OperationClient) NewListPager(options *OperationClientListOptions) *runtime.Pager[OperationClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OperationClientListResponse]{
-		More: func(page OperationClientListResponse) bool {
+// Generated from API version 2023-02-01-preview
+//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
+		More: func(page OperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *OperationClientListResponse) (OperationClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -56,14 +56,14 @@ func (client *OperationClient) NewListPager(options *OperationClientListOptions)
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return OperationClientListResponse{}, err
+				return OperationsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return OperationClientListResponse{}, err
+				return OperationsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OperationClientListResponse{}, runtime.NewResponseError(resp)
+				return OperationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -71,24 +71,24 @@ func (client *OperationClient) NewListPager(options *OperationClientListOptions)
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationClient) listCreateRequest(ctx context.Context, options *OperationClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.GraphServices/operations"
+func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.ManagedNetworkFabric/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-22-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationClient) listHandleResponse(resp *http.Response) (OperationClientListResponse, error) {
-	result := OperationClientListResponse{}
+func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+	result := OperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OperationClientListResponse{}, err
+		return OperationsClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Enable TLS renegotiation in the default transport policy.
+
 ### Other Changes
 
 ## 1.8.0-beta.1 (2023-07-12)

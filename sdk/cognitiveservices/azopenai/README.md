@@ -1,6 +1,6 @@
 # Azure OpenAI client module for Go
 
-NOTE: this client can connect to both Azure OpenAI and Open AI.
+NOTE: this client can be used with Azure OpenAI and Open AI.
 
 Azure OpenAI Service provides REST API access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series.
 

@@ -8,11 +8,12 @@ package blob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"io"
 	"os"
 	"sync"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -384,8 +385,14 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 // downloadFile downloads an Azure blob to a Writer. The blocks are downloaded parallely,
 // but written to file serially
 func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadOptions) (int64, error) {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
+	}
+
+	if o.Concurrency == 0 {
+		o.Concurrency = defaultConcurrency
 	}
 
 	count := o.Range.Count
@@ -403,6 +410,10 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		return 0, nil
 	}
 
+	// if file fits in a single buffer, we'll download here.
+	if count <= o.BlockSize {
+
+	}
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
 	aquireBuffer := func() ([]byte, error) {
@@ -421,9 +432,9 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		}
 	}
 
-	numChunks := uint16((count - 1)/ o.BlockSize) + 1
+	numChunks := uint16((count-1)/o.BlockSize) + 1
 	blocks := make([]chan []byte, numChunks)
-	for b := range blocks { 
+	for b := range blocks {
 		blocks[b] = make(chan []byte)
 	}
 
@@ -433,8 +444,9 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 			select {
 			case <-ctx.Done():
 				return
-			case block := <- block:
+			case block := <-block:
 				_, err := writer.Write(block)
+				buffers.Release(block)
 				if err != nil {
 					ch <- err
 					return
@@ -462,10 +474,6 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 			if err != nil {
 				return err
 			}
-			buff, err := aquireBuffer()
-			if err != nil {
-				return err
-			}
 
 			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
@@ -482,7 +490,12 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 					})
 			}
 
-			_, err = io.ReadFull(body, buff)
+			buff, err := aquireBuffer()
+			if err != nil {
+				return err
+			}
+
+			_, err = io.ReadFull(body, buff[:count])
 			if err != nil {
 				return err
 			}
@@ -498,7 +511,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		return 0, err
 	}
 	// error from writer thread.
-	if err = <- writerError; err != nil {
+	if err = <-writerError; err != nil {
 		return 0, err
 	}
 	return count, nil
@@ -571,7 +584,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.downloadBuffer(ctx, file, *do)
+		return b.downloadFile(ctx, file, *do)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

@@ -18,6 +18,8 @@ const (
 
 	// DefaultDownloadBlockSize is default block size
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
+
+	defaultConcurrency = 5
 )
 
 // BlobType defines values for BlobType

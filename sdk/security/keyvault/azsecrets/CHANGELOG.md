@@ -1,15 +1,12 @@
 # Release History
 
-## 0.14.1 (Unreleased)
+## 1.0.0 (2023-07-17)
 
 ### Features Added
+* first stable release of `azsecrets` module
 
 ### Breaking Changes
 * changed type of `KID` from string to type `ID`
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.14.0 (2023-06-08)
 

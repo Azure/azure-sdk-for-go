@@ -40,6 +40,7 @@ steps:
 
   - task: Powershell@2
     displayName: 'Dependency Check'
+    condition: ne(variables['Skip.DependencyCheck'], 'true')
     env:
       GO111MODULE: 'on'
     inputs:

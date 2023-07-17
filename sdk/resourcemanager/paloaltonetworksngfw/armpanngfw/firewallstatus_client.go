@@ -47,7 +47,7 @@ func NewFirewallStatusClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Get a FirewallStatusResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallStatusClientGetOptions contains the optional parameters for the FirewallStatusClient.Get method.
@@ -86,7 +86,7 @@ func (client *FirewallStatusClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *FirewallStatusClient) getHandleResponse(resp *http.Response) (Fire
 
 // NewListByFirewallsPager - List FirewallStatusResource resources by Firewalls
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallStatusClientListByFirewallsOptions contains the optional parameters for the FirewallStatusClient.NewListByFirewallsPager
@@ -156,7 +156,7 @@ func (client *FirewallStatusClient) listByFirewallsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

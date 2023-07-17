@@ -36,7 +36,7 @@ type PrivateEndpointConnectionsServer struct {
 	List func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.PrivateEndpointConnectionsClientListOptions) (resp azfake.Responder[armcontainerservice.PrivateEndpointConnectionsClientListResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method PrivateEndpointConnectionsClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Update func(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, parameters armcontainerservice.PrivateEndpointConnection, options *armcontainerservice.PrivateEndpointConnectionsClientUpdateOptions) (resp azfake.Responder[armcontainerservice.PrivateEndpointConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
@@ -231,8 +231,8 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchUpdate(req *http.Req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnection, req)
 	if err != nil {

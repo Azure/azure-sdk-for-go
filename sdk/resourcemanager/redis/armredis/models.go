@@ -152,6 +152,9 @@ type CommonPropertiesRedisConfiguration struct {
 	// The storage account connection string for storing rdb file
 	RdbStorageConnectionString *string
 
+	// SubscriptionId of the storage account for persistence (aof/rdb) using ManagedIdentity.
+	StorageSubscriptionID *string
+
 	// READ-ONLY; The max clients config
 	Maxclients *string
 
@@ -269,6 +272,9 @@ type ExportRDBParameters struct {
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
 	// value is SAS
 	PreferredDataArchiveAuthMethod *string
+
+	// Subscription id of the storage container for data to be exported using ManagedIdentity.
+	StorageSubscriptionID *string
 }
 
 // FirewallRule - A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
@@ -342,6 +348,9 @@ type ImportRDBParameters struct {
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
 	// value is SAS
 	PreferredDataArchiveAuthMethod *string
+
+	// Subscription id of the storage container containing files to import using Managed Identity.
+	StorageSubscriptionID *string
 }
 
 // InstanceDetails - Details of single instance of redis.

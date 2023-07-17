@@ -72,12 +72,12 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	if options == nil {
 		options = &OnBehalfOfCredentialOptions{}
 	}
-	opts := []confidential.Option{}
-	if options.SendCertificateChain {
-		opts = append(opts, confidential.WithX5C())
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+		SendX5C:                  options.SendCertificateChain,
 	}
-	opts = append(opts, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, opts...)
+	c, err := getConfidentialClient(clientID, tenantID, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}

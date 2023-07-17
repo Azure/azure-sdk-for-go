@@ -19,16 +19,6 @@ type CreateCertificateResponse struct {
 	CertificateOperation
 }
 
-// DeleteCertificateContactsResponse contains the response from method Client.DeleteCertificateContacts.
-type DeleteCertificateContactsResponse struct {
-	Contacts
-}
-
-// DeleteCertificateIssuerResponse contains the response from method Client.DeleteCertificateIssuer.
-type DeleteCertificateIssuerResponse struct {
-	IssuerBundle
-}
-
 // DeleteCertificateOperationResponse contains the response from method Client.DeleteCertificateOperation.
 type DeleteCertificateOperationResponse struct {
 	CertificateOperation
@@ -36,17 +26,17 @@ type DeleteCertificateOperationResponse struct {
 
 // DeleteCertificateResponse contains the response from method Client.DeleteCertificate.
 type DeleteCertificateResponse struct {
-	DeletedCertificateBundle
+	DeletedCertificate
 }
 
-// GetCertificateContactsResponse contains the response from method Client.GetCertificateContacts.
-type GetCertificateContactsResponse struct {
+// DeleteContactsResponse contains the response from method Client.DeleteContacts.
+type DeleteContactsResponse struct {
 	Contacts
 }
 
-// GetCertificateIssuerResponse contains the response from method Client.GetCertificateIssuer.
-type GetCertificateIssuerResponse struct {
-	IssuerBundle
+// DeleteIssuerResponse contains the response from method Client.DeleteIssuer.
+type DeleteIssuerResponse struct {
+	Issuer
 }
 
 // GetCertificateOperationResponse contains the response from method Client.GetCertificateOperation.
@@ -61,42 +51,52 @@ type GetCertificatePolicyResponse struct {
 
 // GetCertificateResponse contains the response from method Client.GetCertificate.
 type GetCertificateResponse struct {
-	CertificateBundle
+	Certificate
+}
+
+// GetContactsResponse contains the response from method Client.GetContacts.
+type GetContactsResponse struct {
+	Contacts
 }
 
 // GetDeletedCertificateResponse contains the response from method Client.GetDeletedCertificate.
 type GetDeletedCertificateResponse struct {
-	DeletedCertificateBundle
+	DeletedCertificate
+}
+
+// GetIssuerResponse contains the response from method Client.GetIssuer.
+type GetIssuerResponse struct {
+	Issuer
 }
 
 // ImportCertificateResponse contains the response from method Client.ImportCertificate.
 type ImportCertificateResponse struct {
-	CertificateBundle
+	Certificate
 }
 
-// ListCertificateIssuersResponse contains the response from method Client.NewListCertificateIssuersPager.
-type ListCertificateIssuersResponse struct {
-	CertificateIssuerListResult
+// ListCertificatePropertiesResponse contains the response from method Client.NewListCertificatePropertiesPager.
+type ListCertificatePropertiesResponse struct {
+	CertificatePropertiesListResult
 }
 
-// ListCertificateVersionsResponse contains the response from method Client.NewListCertificateVersionsPager.
-type ListCertificateVersionsResponse struct {
-	CertificateListResult
+// ListCertificatePropertiesVersionsResponse contains the response from method Client.NewListCertificatePropertiesVersionsPager.
+type ListCertificatePropertiesVersionsResponse struct {
+	CertificatePropertiesListResult
 }
 
-// ListCertificatesResponse contains the response from method Client.NewListCertificatesPager.
-type ListCertificatesResponse struct {
-	CertificateListResult
+// ListDeletedCertificatePropertiesResponse contains the response from method Client.NewListDeletedCertificatePropertiesPager.
+type ListDeletedCertificatePropertiesResponse struct {
+	DeletedCertificatePropertiesListResult
 }
 
-// ListDeletedCertificatesResponse contains the response from method Client.NewListDeletedCertificatesPager.
-type ListDeletedCertificatesResponse struct {
-	DeletedCertificateListResult
+// ListIssuerPropertiesResponse contains the response from method Client.NewListIssuerPropertiesPager.
+type ListIssuerPropertiesResponse struct {
+	IssuerPropertiesListResult
 }
 
 // MergeCertificateResponse contains the response from method Client.MergeCertificate.
 type MergeCertificateResponse struct {
-	CertificateBundle
+	Certificate
 }
 
 // PurgeDeletedCertificateResponse contains the response from method Client.PurgeDeletedCertificate.
@@ -106,27 +106,22 @@ type PurgeDeletedCertificateResponse struct {
 
 // RecoverDeletedCertificateResponse contains the response from method Client.RecoverDeletedCertificate.
 type RecoverDeletedCertificateResponse struct {
-	CertificateBundle
+	Certificate
 }
 
 // RestoreCertificateResponse contains the response from method Client.RestoreCertificate.
 type RestoreCertificateResponse struct {
-	CertificateBundle
+	Certificate
 }
 
-// SetCertificateContactsResponse contains the response from method Client.SetCertificateContacts.
-type SetCertificateContactsResponse struct {
+// SetContactsResponse contains the response from method Client.SetContacts.
+type SetContactsResponse struct {
 	Contacts
 }
 
-// SetCertificateIssuerResponse contains the response from method Client.SetCertificateIssuer.
-type SetCertificateIssuerResponse struct {
-	IssuerBundle
-}
-
-// UpdateCertificateIssuerResponse contains the response from method Client.UpdateCertificateIssuer.
-type UpdateCertificateIssuerResponse struct {
-	IssuerBundle
+// SetIssuerResponse contains the response from method Client.SetIssuer.
+type SetIssuerResponse struct {
+	Issuer
 }
 
 // UpdateCertificateOperationResponse contains the response from method Client.UpdateCertificateOperation.
@@ -141,5 +136,10 @@ type UpdateCertificatePolicyResponse struct {
 
 // UpdateCertificateResponse contains the response from method Client.UpdateCertificate.
 type UpdateCertificateResponse struct {
-	CertificateBundle
+	Certificate
+}
+
+// UpdateIssuerResponse contains the response from method Client.UpdateIssuer.
+type UpdateIssuerResponse struct {
+	Issuer
 }

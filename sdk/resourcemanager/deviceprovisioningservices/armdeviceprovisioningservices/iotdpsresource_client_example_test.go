@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGet.json
 func ExampleIotDpsResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,15 +41,29 @@ func ExampleIotDpsResourceClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 	ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
 	// 	Location: to.Ptr("eastus"),
+	// 	Resourcegroup: to.Ptr("myResourceGroup"),
+	// 	Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Etag: to.Ptr("AAAAAAAADGk="),
+	// 	Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 		UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+	// 			"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+	// 				PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 	// 		AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 	// 		AuthorizationPolicies: []*armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
 	// 		},
 	// 		DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 	// 		IDScope: to.Ptr("0ne00000012"),
+	// 		PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 	// 		ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 	// 		State: to.Ptr(armdeviceprovisioningservices.StateActive),
 	// 	},
@@ -61,8 +75,8 @@ func ExampleIotDpsResourceClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreate.json
-func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSCreate.json
+func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -98,6 +112,8 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 	ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups//providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
 	// 	Location: to.Ptr("eastus"),
+	// 	Resourcegroup: to.Ptr("myResourceGroup"),
+	// 	Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Etag: to.Ptr("AAAAAAAADGk="),
@@ -108,6 +124,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 	// 		DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 	// 		EnableDataResidency: to.Ptr(false),
 	// 		IDScope: to.Ptr("0ne00000012"),
+	// 		PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 	// 		ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 	// 		State: to.Ptr(armdeviceprovisioningservices.StateActive),
 	// 	},
@@ -119,7 +136,85 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSUpdate.json
+func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceprovisioningservices.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewIotDpsResourceClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.ProvisioningServiceDescription{
+		Location: to.Ptr("East US"),
+		Tags:     map[string]*string{},
+		Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+			Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": {},
+			},
+		},
+		Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
+			EnableDataResidency: to.Ptr(false),
+		},
+		SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
+			Name:     to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
+			Capacity: to.Ptr[int64](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProvisioningServiceDescription = armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	Name: to.Ptr("myFirstProvisioningService"),
+	// 	Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
+	// 	ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups//providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Resourcegroup: to.Ptr("myResourceGroup"),
+	// 	Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Etag: to.Ptr("AAAAAAAADGk="),
+	// 	Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 		UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+	// 			"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+	// 				PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
+	// 		AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
+	// 		AuthorizationPolicies: []*armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
+	// 		},
+	// 		DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
+	// 		EnableDataResidency: to.Ptr(false),
+	// 		IDScope: to.Ptr("0ne00000012"),
+	// 		PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
+	// 		ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
+	// 		State: to.Ptr(armdeviceprovisioningservices.StateActive),
+	// 	},
+	// 	SKU: &armdeviceprovisioningservices.IotDpsSKUInfo{
+	// 		Name: to.Ptr(armdeviceprovisioningservices.IotDpsSKUS1),
+	// 		Capacity: to.Ptr[int64](1),
+	// 		Tier: to.Ptr("Standard"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSPatch.json
 func ExampleIotDpsResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,14 +245,28 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	// 	Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 	ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
 	// 	Location: to.Ptr("eastus"),
+	// 	Resourcegroup: to.Ptr("myResourceGroup"),
+	// 	Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 	// 	Tags: map[string]*string{
 	// 		"foo": to.Ptr("bar"),
 	// 	},
 	// 	Etag: to.Ptr("AAAAAAAADGk="),
+	// 	Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+	// 		UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+	// 			"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+	// 				PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 	// 		AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 	// 		DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 	// 		IDScope: to.Ptr("0ne00000012"),
+	// 		PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 	// 		ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 	// 		State: to.Ptr(armdeviceprovisioningservices.StateActive),
 	// 	},
@@ -169,7 +278,7 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSDelete.json
 func ExampleIotDpsResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +299,7 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListBySubscription.json
 func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,13 +328,27 @@ func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 		// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 		// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
 		// 			Location: to.Ptr("eastus"),
+		// 			Resourcegroup: to.Ptr("myResourceGroup"),
+		// 			Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Etag: to.Ptr("AAAAAAAADGk="),
+		// 			Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 				PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+		// 				TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+		// 				UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+		// 					"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+		// 						ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+		// 						PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 		// 				AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 		// 				DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 		// 				IDScope: to.Ptr("0ne00000012"),
+		// 				PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 		// 				ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 		// 				State: to.Ptr(armdeviceprovisioningservices.StateActive),
 		// 			},
@@ -240,13 +363,27 @@ func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 		// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 		// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/mySecondProvisioningService"),
 		// 			Location: to.Ptr("eastus"),
+		// 			Resourcegroup: to.Ptr("myResourceGroup"),
+		// 			Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Etag: to.Ptr("AAAAAAAADGk="),
+		// 			Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 				PrincipalID: to.Ptr("01341f2b-d497-4117-b5c1-1f1d50b25444"),
+		// 				TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+		// 				UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+		// 					"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity2": &armdeviceprovisioningservices.UserAssignedIdentity{
+		// 						ClientID: to.Ptr("8cd6d250-17dd-4c1b-9847-225237b94c55"),
+		// 						PrincipalID: to.Ptr("8785a11f-848a-4d5d-a55b-e381b9e15512"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 		// 				AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 		// 				DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 		// 				IDScope: to.Ptr("0ne00000012"),
+		// 				PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 		// 				ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 		// 				State: to.Ptr(armdeviceprovisioningservices.StateActive),
 		// 			},
@@ -260,7 +397,7 @@ func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListByResourceGroup.json
 func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,13 +426,27 @@ func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 		// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService"),
 		// 			Location: to.Ptr("eastus"),
+		// 			Resourcegroup: to.Ptr("myResourceGroup"),
+		// 			Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Etag: to.Ptr("AAAAAAAADGk="),
+		// 			Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 				PrincipalID: to.Ptr("aa80bd74-a3f0-4f14-b9da-99c5351cf9d5"),
+		// 				TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+		// 				UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+		// 					"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{
+		// 						ClientID: to.Ptr("c38f618d-47f6-4260-8b3d-1dd8c130f323"),
+		// 						PrincipalID: to.Ptr("f1b0b133-10dc-4985-966f-a98a04675fe9"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 		// 				AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 		// 				DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 		// 				IDScope: to.Ptr("0ne00000012"),
+		// 				PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 		// 				ServiceOperationsHostName: to.Ptr("myFirstProvisioningService.azure-devices-provisioning.net"),
 		// 				State: to.Ptr(armdeviceprovisioningservices.StateActive),
 		// 			},
@@ -310,13 +461,27 @@ func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 		// 			ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/mySecondProvisioningService"),
 		// 			Location: to.Ptr("eastus"),
+		// 			Resourcegroup: to.Ptr("myResourceGroup"),
+		// 			Subscriptionid: to.Ptr("91d12660-3dec-467a-be2a-213b5544ddc0"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Etag: to.Ptr("AAAAAAAADGk="),
+		// 			Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 				PrincipalID: to.Ptr("01341f2b-d497-4117-b5c1-1f1d50b25444"),
+		// 				TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
+		// 				UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
+		// 					"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity2": &armdeviceprovisioningservices.UserAssignedIdentity{
+		// 						ClientID: to.Ptr("8cd6d250-17dd-4c1b-9847-225237b94c55"),
+		// 						PrincipalID: to.Ptr("8785a11f-848a-4d5d-a55b-e381b9e15512"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armdeviceprovisioningservices.IotDpsPropertiesDescription{
 		// 				AllocationPolicy: to.Ptr(armdeviceprovisioningservices.AllocationPolicyHashed),
 		// 				DeviceProvisioningHostName: to.Ptr("global.azure-devices-provisioning.net"),
 		// 				IDScope: to.Ptr("0ne00000012"),
+		// 				PortalOperationsHostName: to.Ptr("myFirstProvisioningService.services.azure-devices-provisioning.net"),
 		// 				ServiceOperationsHostName: to.Ptr("mySecondProvisioningService.azure-devices-provisioning.net"),
 		// 				State: to.Ptr(armdeviceprovisioningservices.StateActive),
 		// 			},
@@ -330,7 +495,7 @@ func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetOperationResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetOperationResult.json
 func ExampleIotDpsResourceClient_GetOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +518,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetValidSku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetValidSku.json
 func ExampleIotDpsResourceClient_NewListValidSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +549,7 @@ func ExampleIotDpsResourceClient_NewListValidSKUsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSCheckNameAvailability.json
 func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,7 +576,7 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListKeys.json
 func ExampleIotDpsResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +616,7 @@ func ExampleIotDpsResourceClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetKey.json
 func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +642,7 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListPrivateLinkResources.json
 func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +677,7 @@ func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetPrivateLinkResources.json
 func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +709,7 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListPrivateEndpointConnections.json
 func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,7 +745,7 @@ func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetPrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +780,7 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreateOrUpdatePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSCreateOrUpdatePrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +826,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSDeletePrivateEndpointConnection.json
 func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

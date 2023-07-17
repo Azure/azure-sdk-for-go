@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (2023-06-23)
+### Features Added
+
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `PortalOperationsHostName` in struct `IotDpsPropertiesDescription`
+- New field `Identity`, `Resourcegroup`, `Subscriptionid` in struct `ProvisioningServiceDescription`
+
+
 ## 1.1.0 (2023-03-28)
 ### Features Added
 

@@ -44,7 +44,7 @@ func NewPostRulesClient(credential azcore.TokenCredential, options *arm.ClientOp
 // BeginCreateOrUpdate - Create a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - resource - Resource create parameters.
@@ -67,7 +67,7 @@ func (client *PostRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRu
 // CreateOrUpdate - Create a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PostRulesClient) createOrUpdate(ctx context.Context, globalRulestackName string, priority string, resource PostRulesResource, options *PostRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, globalRulestackName, priority, resource, options)
 	if err != nil {
@@ -99,7 +99,7 @@ func (client *PostRulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -108,7 +108,7 @@ func (client *PostRulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Delete a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - options - PostRulesClientBeginDeleteOptions contains the optional parameters for the PostRulesClient.BeginDelete method.
@@ -129,7 +129,7 @@ func (client *PostRulesClient) BeginDelete(ctx context.Context, globalRulestackN
 // Delete - Delete a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PostRulesClient) deleteOperation(ctx context.Context, globalRulestackName string, priority string, options *PostRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, globalRulestackName, priority, options)
 	if err != nil {
@@ -161,7 +161,7 @@ func (client *PostRulesClient) deleteCreateRequest(ctx context.Context, globalRu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *PostRulesClient) deleteCreateRequest(ctx context.Context, globalRu
 // Get - Get a PostRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - options - PostRulesClientGetOptions contains the optional parameters for the PostRulesClient.Get method.
@@ -205,7 +205,7 @@ func (client *PostRulesClient) getCreateRequest(ctx context.Context, globalRules
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -223,7 +223,7 @@ func (client *PostRulesClient) getHandleResponse(resp *http.Response) (PostRules
 // GetCounters - Get counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - options - PostRulesClientGetCountersOptions contains the optional parameters for the PostRulesClient.GetCounters method.
@@ -258,7 +258,7 @@ func (client *PostRulesClient) getCountersCreateRequest(ctx context.Context, glo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -278,7 +278,7 @@ func (client *PostRulesClient) getCountersHandleResponse(resp *http.Response) (P
 
 // NewListPager - List PostRulesResource resources by Tenant
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - PostRulesClientListOptions contains the optional parameters for the PostRulesClient.NewListPager method.
 func (client *PostRulesClient) NewListPager(globalRulestackName string, options *PostRulesClientListOptions) *runtime.Pager[PostRulesClientListResponse] {
@@ -321,7 +321,7 @@ func (client *PostRulesClient) listCreateRequest(ctx context.Context, globalRule
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *PostRulesClient) listHandleResponse(resp *http.Response) (PostRule
 // RefreshCounters - Refresh counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - options - PostRulesClientRefreshCountersOptions contains the optional parameters for the PostRulesClient.RefreshCounters
@@ -375,7 +375,7 @@ func (client *PostRulesClient) refreshCountersCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -387,7 +387,7 @@ func (client *PostRulesClient) refreshCountersCreateRequest(ctx context.Context,
 // ResetCounters - Reset counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Post Rule priority
 //   - options - PostRulesClientResetCountersOptions contains the optional parameters for the PostRulesClient.ResetCounters method.
@@ -422,7 +422,7 @@ func (client *PostRulesClient) resetCountersCreateRequest(ctx context.Context, g
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}

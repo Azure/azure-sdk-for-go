@@ -44,7 +44,7 @@ func NewPreRulesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // BeginCreateOrUpdate - Create a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - resource - Resource create parameters.
@@ -67,7 +67,7 @@ func (client *PreRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRul
 // CreateOrUpdate - Create a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestackName string, priority string, resource PreRulesResource, options *PreRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, globalRulestackName, priority, resource, options)
 	if err != nil {
@@ -99,7 +99,7 @@ func (client *PreRulesClient) createOrUpdateCreateRequest(ctx context.Context, g
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -108,7 +108,7 @@ func (client *PreRulesClient) createOrUpdateCreateRequest(ctx context.Context, g
 // BeginDelete - Delete a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - options - PreRulesClientBeginDeleteOptions contains the optional parameters for the PreRulesClient.BeginDelete method.
@@ -129,7 +129,7 @@ func (client *PreRulesClient) BeginDelete(ctx context.Context, globalRulestackNa
 // Delete - Delete a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulestackName string, priority string, options *PreRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, globalRulestackName, priority, options)
 	if err != nil {
@@ -161,7 +161,7 @@ func (client *PreRulesClient) deleteCreateRequest(ctx context.Context, globalRul
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *PreRulesClient) deleteCreateRequest(ctx context.Context, globalRul
 // Get - Get a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - options - PreRulesClientGetOptions contains the optional parameters for the PreRulesClient.Get method.
@@ -205,7 +205,7 @@ func (client *PreRulesClient) getCreateRequest(ctx context.Context, globalRulest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -223,7 +223,7 @@ func (client *PreRulesClient) getHandleResponse(resp *http.Response) (PreRulesCl
 // GetCounters - Get counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - options - PreRulesClientGetCountersOptions contains the optional parameters for the PreRulesClient.GetCounters method.
@@ -258,7 +258,7 @@ func (client *PreRulesClient) getCountersCreateRequest(ctx context.Context, glob
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -278,7 +278,7 @@ func (client *PreRulesClient) getCountersHandleResponse(resp *http.Response) (Pr
 
 // NewListPager - List PreRulesResource resources by Tenant
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - PreRulesClientListOptions contains the optional parameters for the PreRulesClient.NewListPager method.
 func (client *PreRulesClient) NewListPager(globalRulestackName string, options *PreRulesClientListOptions) *runtime.Pager[PreRulesClientListResponse] {
@@ -321,7 +321,7 @@ func (client *PreRulesClient) listCreateRequest(ctx context.Context, globalRules
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *PreRulesClient) listHandleResponse(resp *http.Response) (PreRulesC
 // RefreshCounters - Refresh counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - options - PreRulesClientRefreshCountersOptions contains the optional parameters for the PreRulesClient.RefreshCounters
@@ -375,7 +375,7 @@ func (client *PreRulesClient) refreshCountersCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}
@@ -387,7 +387,7 @@ func (client *PreRulesClient) refreshCountersCreateRequest(ctx context.Context, 
 // ResetCounters - Reset counters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - priority - Pre Rule priority
 //   - options - PreRulesClientResetCountersOptions contains the optional parameters for the PreRulesClient.ResetCounters method.
@@ -422,7 +422,7 @@ func (client *PreRulesClient) resetCountersCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.FirewallName != nil {
 		reqQP.Set("firewallName", *options.FirewallName)
 	}

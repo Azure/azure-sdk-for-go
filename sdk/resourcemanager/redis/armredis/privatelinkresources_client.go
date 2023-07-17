@@ -47,7 +47,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // NewListByRedisCachePager - Gets the private link resources that need to be created for a redis cache.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - cacheName - The name of the Redis cache.
 //   - options - PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByRedisCachePager
@@ -94,7 +94,7 @@ func (client *PrivateLinkResourcesClient) listByRedisCacheCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

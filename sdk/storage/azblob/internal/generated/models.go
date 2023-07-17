@@ -41,6 +41,14 @@ func (p *PageBlobClientUploadPagesOptions) SetMD5(v []byte) {
 	p.TransactionalContentMD5 = v
 }
 
+func (b *BlockBlobClientUploadOptions) SetCRC64(v []byte) {
+	b.TransactionalContentCRC64 = v
+}
+
+func (b *BlockBlobClientUploadOptions) SetMD5(v []byte) {
+	b.TransactionalContentMD5 = v
+}
+
 type SourceContentSetter interface {
 	SetSourceContentCRC64(v []byte)
 	SetSourceContentMD5(v []byte)

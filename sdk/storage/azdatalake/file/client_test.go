@@ -1290,6 +1290,45 @@ func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
+func (s *RecordedTestSuite) TestDeleteWithSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	// Adding SAS and options
+	permissions := sas.FilePermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	fClient2, _ := file.NewClientWithNoCredential(sasURL, nil)
+
+	_, err = fClient2.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *RecordedTestSuite) TestGetAccessControlWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

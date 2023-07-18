@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/internal/exported"
 	azexported "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	fakepoller "github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -218,4 +219,12 @@ func PollerResponderMore[T any](p *fake.PollerResponder[T]) bool {
 // This function is called by the fake server internals.
 func PollerResponderNext[T any](p *fake.PollerResponder[T], req *http.Request) (*http.Response, error) {
 	return (*exported.PollerResponder[T])(p).Next(req)
+}
+
+// SanitizePagerPollerPath removes any fake-appended suffix from a URL's path.
+// This function is called by the fake server internals.
+func SanitizePagerPollerPath(path string) string {
+	path = exported.SanitizePagerPath(path)
+	path = fakepoller.SanitizePollerPath(path)
+	return path
 }

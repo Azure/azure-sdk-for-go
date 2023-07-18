@@ -268,6 +268,11 @@ func TestPollerResponderHelpers(t *testing.T) {
 	require.Nil(t, resp)
 }
 
+func TestSanitizePagerPollerPath(t *testing.T) {
+	const untouched = "/this/path/wont/change"
+	require.EqualValues(t, untouched, SanitizePagerPollerPath(untouched))
+}
+
 type readFailer struct {
 	wrapped io.ReadCloser
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.3 (2023-07-19)
+## 4.1.0-beta.4 (2023-07-19)
 
 ### Bug Fixes
 

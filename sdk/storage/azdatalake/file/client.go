@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -191,24 +190,29 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return f.blobClient().GetProperties(ctx, opts)
 }
 
-// Rename renames a file (dfs1).
-func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	lac, mac, smac, createOpts := options.format()
-	fileURL := runtime.JoinPaths(f.generatedFileClientWithDFS().Endpoint(), newName)
-	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	clOpts := f.getClientOptions()
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-	if err != nil {
-		if log.Should(exported.EventError) {
-			log.Writef(exported.EventError, err.Error())
-		}
-		return RenameResponse{}, err
-	}
-	fileURL, blobURL := shared.GetURLs(fileURL)
-	tempFileClient := (*Client)(base.NewPathClient(fileURL, blobURL, nil, azClient, f.sharedKey(), clOpts))
-	// this tempClient does not have a blobClient
-	return tempFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
-}
+// TODO: implement below
+//// Rename renames a file (dfs1). TODO: look into returning a new client possibly or changing the url
+//func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+//	path, err := url.Parse(f.DFSURL())
+//	if err != nil {
+//		return RenameResponse{}, err
+//	}
+//	lac, mac, smac, createOpts := options.format(path.Path)
+//	fileURL := runtime.JoinPaths(f.generatedFileClientWithDFS().Endpoint(), newName)
+//	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
+//	clOpts := f.getClientOptions()
+//	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
+//	if err != nil {
+//		if log.Should(exported.EventError) {
+//			log.Writef(exported.EventError, err.Error())
+//		}
+//		return RenameResponse{}, err
+//	}
+//	blobURL, fileURL := shared.GetURLs(fileURL)
+//	tempFileClient := (*Client)(base.NewPathClient(fileURL, blobURL, nil, azClient, f.sharedKey(), clOpts))
+//	// this tempClient does not have a blobClient
+//	return tempFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+//}
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).
 func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
@@ -238,7 +242,10 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 
 // SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
-	opts, lac, mac := options.format()
+	opts, lac, mac, err := options.format()
+	if err != nil {
+		return SetAccessControlResponse{}, err
+	}
 	return f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
 }
 

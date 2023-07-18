@@ -69,10 +69,10 @@ func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, clie
 	}
 }
 
-func NewPathClient(dirURL string, dirURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client] {
+func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client] {
 	return &CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]{
-		innerT:    generated.NewPathClient(dirURL, azClient),
-		innerK:    generated.NewPathClient(dirURLWithBlobEndpoint, azClient),
+		innerT:    generated.NewPathClient(pathURL, azClient),
+		innerK:    generated.NewPathClient(pathURLWithBlobEndpoint, azClient),
 		sharedKey: sharedKey,
 		innerU:    client,
 		options:   options,

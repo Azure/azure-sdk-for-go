@@ -7,8 +7,10 @@
 package file
 
 import (
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"net/http"
@@ -113,13 +115,12 @@ type RenameOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *RenameOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
+func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
-	resource := generated.PathResourceTypeFile
 	createOpts := &generated.PathClientCreateOptions{
-		Mode:     &mode,
-		Resource: &resource,
+		Mode:         &mode,
+		RenameSource: &path,
 	}
 	if o == nil {
 		return nil, nil, nil, createOpts
@@ -177,18 +178,21 @@ type SetAccessControlOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, datalakeerror.MissingParameters
 	}
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	if o.Owner == nil && o.Group == nil && o.ACL == nil && o.Permissions == nil {
+		return nil, nil, nil, errors.New("at least one parameter should be set for SetAccessControl API")
+	}
 	return &generated.PathClientSetAccessControlOptions{
 		Owner:       o.Owner,
 		Group:       o.Group,
 		ACL:         o.ACL,
 		Permissions: o.Permissions,
-	}, leaseAccessConditions, modifiedAccessConditions
+	}, leaseAccessConditions, modifiedAccessConditions, nil
 }
 
 // GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.

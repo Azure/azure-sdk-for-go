@@ -46,8 +46,8 @@ type VirtualMachineImagesEdgeZoneServer struct {
 }
 
 // NewVirtualMachineImagesEdgeZoneServerTransport creates a new instance of VirtualMachineImagesEdgeZoneServerTransport with the provided implementation.
-// The returned VirtualMachineImagesEdgeZoneServerTransport instance is connected to an instance of armcompute.VirtualMachineImagesEdgeZoneClient by way of the
-// undefined.Transporter field.
+// The returned VirtualMachineImagesEdgeZoneServerTransport instance is connected to an instance of armcompute.VirtualMachineImagesEdgeZoneClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineImagesEdgeZoneServerTransport(srv *VirtualMachineImagesEdgeZoneServer) *VirtualMachineImagesEdgeZoneServerTransport {
 	return &VirtualMachineImagesEdgeZoneServerTransport{srv: srv}
 }

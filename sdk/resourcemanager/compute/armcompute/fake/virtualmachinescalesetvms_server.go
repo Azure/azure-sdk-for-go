@@ -92,28 +92,42 @@ type VirtualMachineScaleSetVMsServer struct {
 }
 
 // NewVirtualMachineScaleSetVMsServerTransport creates a new instance of VirtualMachineScaleSetVMsServerTransport with the provided implementation.
-// The returned VirtualMachineScaleSetVMsServerTransport instance is connected to an instance of armcompute.VirtualMachineScaleSetVMsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualMachineScaleSetVMsServerTransport instance is connected to an instance of armcompute.VirtualMachineScaleSetVMsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetVMsServerTransport(srv *VirtualMachineScaleSetVMsServer) *VirtualMachineScaleSetVMsServerTransport {
-	return &VirtualMachineScaleSetVMsServerTransport{srv: srv}
+	return &VirtualMachineScaleSetVMsServerTransport{
+		srv:                     srv,
+		beginDeallocate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
+		beginPerformMaintenance: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
+		beginPowerOff:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
+		beginRedeploy:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
+		beginReimage:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
+		beginReimageAll:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
+		beginRestart:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
+		beginRunCommand:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
+		beginStart:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
+		beginUpdate:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
+	}
 }
 
 // VirtualMachineScaleSetVMsServerTransport connects instances of armcompute.VirtualMachineScaleSetVMsClient to instances of VirtualMachineScaleSetVMsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsServerTransport instead.
 type VirtualMachineScaleSetVMsServerTransport struct {
 	srv                     *VirtualMachineScaleSetVMsServer
-	beginDeallocate         *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]
-	beginDelete             *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]
-	newListPager            *azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]
-	beginPerformMaintenance *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]
-	beginPowerOff           *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]
-	beginRedeploy           *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]
-	beginReimage            *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]
-	beginReimageAll         *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]
-	beginRestart            *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]
-	beginRunCommand         *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]
-	beginStart              *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]
-	beginUpdate             *azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]
+	beginDeallocate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
+	newListPager            *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
+	beginPerformMaintenance *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
+	beginPowerOff           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
+	beginRedeploy           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
+	beginReimage            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
+	beginReimageAll         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
+	beginRestart            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
+	beginRunCommand         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
+	beginStart              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
+	beginUpdate             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMsServerTransport.
@@ -175,7 +189,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginDeallocate(req *
 	if v.srv.BeginDeallocate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeallocate not implemented")}
 	}
-	if v.beginDeallocate == nil {
+	beginDeallocate := v.beginDeallocate.get(req)
+	if beginDeallocate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deallocate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -198,19 +213,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginDeallocate(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDeallocate = &respr
+		beginDeallocate = &respr
+		v.beginDeallocate.add(req, beginDeallocate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDeallocate, req)
+	resp, err := server.PollerResponderNext(beginDeallocate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginDeallocate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDeallocate) {
-		v.beginDeallocate = nil
+	if !server.PollerResponderMore(beginDeallocate) {
+		v.beginDeallocate.remove(req)
 	}
 
 	return resp, nil
@@ -220,7 +237,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginDelete(req *http
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -258,19 +276,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginDelete(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -366,7 +386,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchNewListPager(req *htt
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -406,20 +427,22 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchNewListPager(req *htt
 			}
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, options)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armcompute.VirtualMachineScaleSetVMsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.VirtualMachineScaleSetVMsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -428,7 +451,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPerformMaintenan
 	if v.srv.BeginPerformMaintenance == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPerformMaintenance not implemented")}
 	}
-	if v.beginPerformMaintenance == nil {
+	beginPerformMaintenance := v.beginPerformMaintenance.get(req)
+	if beginPerformMaintenance == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -451,19 +475,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPerformMaintenan
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginPerformMaintenance = &respr
+		beginPerformMaintenance = &respr
+		v.beginPerformMaintenance.add(req, beginPerformMaintenance)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginPerformMaintenance, req)
+	resp, err := server.PollerResponderNext(beginPerformMaintenance, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginPerformMaintenance.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginPerformMaintenance) {
-		v.beginPerformMaintenance = nil
+	if !server.PollerResponderMore(beginPerformMaintenance) {
+		v.beginPerformMaintenance.remove(req)
 	}
 
 	return resp, nil
@@ -473,7 +499,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPowerOff(req *ht
 	if v.srv.BeginPowerOff == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPowerOff not implemented")}
 	}
-	if v.beginPowerOff == nil {
+	beginPowerOff := v.beginPowerOff.get(req)
+	if beginPowerOff == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/poweroff`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -511,19 +538,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPowerOff(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginPowerOff = &respr
+		beginPowerOff = &respr
+		v.beginPowerOff.add(req, beginPowerOff)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginPowerOff, req)
+	resp, err := server.PollerResponderNext(beginPowerOff, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginPowerOff.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginPowerOff) {
-		v.beginPowerOff = nil
+	if !server.PollerResponderMore(beginPowerOff) {
+		v.beginPowerOff.remove(req)
 	}
 
 	return resp, nil
@@ -533,7 +562,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRedeploy(req *ht
 	if v.srv.BeginRedeploy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRedeploy not implemented")}
 	}
-	if v.beginRedeploy == nil {
+	beginRedeploy := v.beginRedeploy.get(req)
+	if beginRedeploy == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -556,19 +586,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRedeploy(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginRedeploy = &respr
+		beginRedeploy = &respr
+		v.beginRedeploy.add(req, beginRedeploy)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginRedeploy, req)
+	resp, err := server.PollerResponderNext(beginRedeploy, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginRedeploy.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginRedeploy) {
-		v.beginRedeploy = nil
+	if !server.PollerResponderMore(beginRedeploy) {
+		v.beginRedeploy.remove(req)
 	}
 
 	return resp, nil
@@ -578,7 +610,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginReimage(req *htt
 	if v.srv.BeginReimage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReimage not implemented")}
 	}
-	if v.beginReimage == nil {
+	beginReimage := v.beginReimage.get(req)
+	if beginReimage == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -611,19 +644,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginReimage(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginReimage = &respr
+		beginReimage = &respr
+		v.beginReimage.add(req, beginReimage)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginReimage, req)
+	resp, err := server.PollerResponderNext(beginReimage, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginReimage.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginReimage) {
-		v.beginReimage = nil
+	if !server.PollerResponderMore(beginReimage) {
+		v.beginReimage.remove(req)
 	}
 
 	return resp, nil
@@ -633,7 +668,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginReimageAll(req *
 	if v.srv.BeginReimageAll == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReimageAll not implemented")}
 	}
-	if v.beginReimageAll == nil {
+	beginReimageAll := v.beginReimageAll.get(req)
+	if beginReimageAll == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimageall`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -656,19 +692,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginReimageAll(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginReimageAll = &respr
+		beginReimageAll = &respr
+		v.beginReimageAll.add(req, beginReimageAll)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginReimageAll, req)
+	resp, err := server.PollerResponderNext(beginReimageAll, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginReimageAll.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginReimageAll) {
-		v.beginReimageAll = nil
+	if !server.PollerResponderMore(beginReimageAll) {
+		v.beginReimageAll.remove(req)
 	}
 
 	return resp, nil
@@ -678,7 +716,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRestart(req *htt
 	if v.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
-	if v.beginRestart == nil {
+	beginRestart := v.beginRestart.get(req)
+	if beginRestart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -701,19 +740,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRestart(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginRestart = &respr
+		beginRestart = &respr
+		v.beginRestart.add(req, beginRestart)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginRestart, req)
+	resp, err := server.PollerResponderNext(beginRestart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginRestart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginRestart) {
-		v.beginRestart = nil
+	if !server.PollerResponderMore(beginRestart) {
+		v.beginRestart.remove(req)
 	}
 
 	return resp, nil
@@ -781,7 +822,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRunCommand(req *
 	if v.srv.BeginRunCommand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRunCommand not implemented")}
 	}
-	if v.beginRunCommand == nil {
+	beginRunCommand := v.beginRunCommand.get(req)
+	if beginRunCommand == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -808,19 +850,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRunCommand(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginRunCommand = &respr
+		beginRunCommand = &respr
+		v.beginRunCommand.add(req, beginRunCommand)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginRunCommand, req)
+	resp, err := server.PollerResponderNext(beginRunCommand, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginRunCommand.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginRunCommand) {
-		v.beginRunCommand = nil
+	if !server.PollerResponderMore(beginRunCommand) {
+		v.beginRunCommand.remove(req)
 	}
 
 	return resp, nil
@@ -867,7 +911,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginStart(req *http.
 	if v.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
-	if v.beginStart == nil {
+	beginStart := v.beginStart.get(req)
+	if beginStart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -890,19 +935,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginStart(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginStart = &respr
+		beginStart = &respr
+		v.beginStart.add(req, beginStart)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginStart, req)
+	resp, err := server.PollerResponderNext(beginStart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginStart) {
-		v.beginStart = nil
+	if !server.PollerResponderMore(beginStart) {
+		v.beginStart.remove(req)
 	}
 
 	return resp, nil
@@ -912,7 +959,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginUpdate(req *http
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if v.beginUpdate == nil {
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -939,19 +987,21 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginUpdate(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginUpdate = &respr
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginUpdate) {
-		v.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
 	}
 
 	return resp, nil

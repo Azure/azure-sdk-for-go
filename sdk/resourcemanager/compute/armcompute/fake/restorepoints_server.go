@@ -37,18 +37,22 @@ type RestorePointsServer struct {
 }
 
 // NewRestorePointsServerTransport creates a new instance of RestorePointsServerTransport with the provided implementation.
-// The returned RestorePointsServerTransport instance is connected to an instance of armcompute.RestorePointsClient by way of the
-// undefined.Transporter field.
+// The returned RestorePointsServerTransport instance is connected to an instance of armcompute.RestorePointsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRestorePointsServerTransport(srv *RestorePointsServer) *RestorePointsServerTransport {
-	return &RestorePointsServerTransport{srv: srv}
+	return &RestorePointsServerTransport{
+		srv:         srv,
+		beginCreate: newTracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]](),
+	}
 }
 
 // RestorePointsServerTransport connects instances of armcompute.RestorePointsClient to instances of RestorePointsServer.
 // Don't use this type directly, use NewRestorePointsServerTransport instead.
 type RestorePointsServerTransport struct {
 	srv         *RestorePointsServer
-	beginCreate *azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]
-	beginDelete *azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]
+	beginCreate *tracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for RestorePointsServerTransport.
@@ -84,7 +88,8 @@ func (r *RestorePointsServerTransport) dispatchBeginCreate(req *http.Request) (*
 	if r.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if r.beginCreate == nil {
+	beginCreate := r.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<restorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -111,19 +116,21 @@ func (r *RestorePointsServerTransport) dispatchBeginCreate(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginCreate = &respr
+		beginCreate = &respr
+		r.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusCreated}, resp.StatusCode) {
+		r.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginCreate) {
-		r.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		r.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -133,7 +140,8 @@ func (r *RestorePointsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if r.beginDelete == nil {
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/restorePointCollections/(?P<restorePointCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorePoints/(?P<restorePointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -156,19 +164,21 @@ func (r *RestorePointsServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginDelete = &respr
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginDelete) {
-		r.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
 
 	return resp, nil

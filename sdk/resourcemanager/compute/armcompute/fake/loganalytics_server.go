@@ -33,18 +33,22 @@ type LogAnalyticsServer struct {
 }
 
 // NewLogAnalyticsServerTransport creates a new instance of LogAnalyticsServerTransport with the provided implementation.
-// The returned LogAnalyticsServerTransport instance is connected to an instance of armcompute.LogAnalyticsClient by way of the
-// undefined.Transporter field.
+// The returned LogAnalyticsServerTransport instance is connected to an instance of armcompute.LogAnalyticsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLogAnalyticsServerTransport(srv *LogAnalyticsServer) *LogAnalyticsServerTransport {
-	return &LogAnalyticsServerTransport{srv: srv}
+	return &LogAnalyticsServerTransport{
+		srv:                              srv,
+		beginExportRequestRateByInterval: newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]](),
+		beginExportThrottledRequests:     newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]](),
+	}
 }
 
 // LogAnalyticsServerTransport connects instances of armcompute.LogAnalyticsClient to instances of LogAnalyticsServer.
 // Don't use this type directly, use NewLogAnalyticsServerTransport instead.
 type LogAnalyticsServerTransport struct {
 	srv                              *LogAnalyticsServer
-	beginExportRequestRateByInterval *azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]
-	beginExportThrottledRequests     *azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]
+	beginExportRequestRateByInterval *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]]
+	beginExportThrottledRequests     *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]]
 }
 
 // Do implements the policy.Transporter interface for LogAnalyticsServerTransport.
@@ -78,7 +82,8 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 	if l.srv.BeginExportRequestRateByInterval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginExportRequestRateByInterval not implemented")}
 	}
-	if l.beginExportRequestRateByInterval == nil {
+	beginExportRequestRateByInterval := l.beginExportRequestRateByInterval.get(req)
+	if beginExportRequestRateByInterval == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -97,19 +102,21 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginExportRequestRateByInterval = &respr
+		beginExportRequestRateByInterval = &respr
+		l.beginExportRequestRateByInterval.add(req, beginExportRequestRateByInterval)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginExportRequestRateByInterval, req)
+	resp, err := server.PollerResponderNext(beginExportRequestRateByInterval, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginExportRequestRateByInterval.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginExportRequestRateByInterval) {
-		l.beginExportRequestRateByInterval = nil
+	if !server.PollerResponderMore(beginExportRequestRateByInterval) {
+		l.beginExportRequestRateByInterval.remove(req)
 	}
 
 	return resp, nil
@@ -119,7 +126,8 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 	if l.srv.BeginExportThrottledRequests == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginExportThrottledRequests not implemented")}
 	}
-	if l.beginExportThrottledRequests == nil {
+	beginExportThrottledRequests := l.beginExportThrottledRequests.get(req)
+	if beginExportThrottledRequests == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -138,19 +146,21 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		l.beginExportThrottledRequests = &respr
+		beginExportThrottledRequests = &respr
+		l.beginExportThrottledRequests.add(req, beginExportThrottledRequests)
 	}
 
-	resp, err := server.PollerResponderNext(l.beginExportThrottledRequests, req)
+	resp, err := server.PollerResponderNext(beginExportThrottledRequests, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginExportThrottledRequests.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(l.beginExportThrottledRequests) {
-		l.beginExportThrottledRequests = nil
+	if !server.PollerResponderMore(beginExportThrottledRequests) {
+		l.beginExportThrottledRequests.remove(req)
 	}
 
 	return resp, nil

@@ -49,17 +49,20 @@ type LocalUsersServer struct {
 }
 
 // NewLocalUsersServerTransport creates a new instance of LocalUsersServerTransport with the provided implementation.
-// The returned LocalUsersServerTransport instance is connected to an instance of armstorage.LocalUsersClient by way of the
-// undefined.Transporter field.
+// The returned LocalUsersServerTransport instance is connected to an instance of armstorage.LocalUsersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLocalUsersServerTransport(srv *LocalUsersServer) *LocalUsersServerTransport {
-	return &LocalUsersServerTransport{srv: srv}
+	return &LocalUsersServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.LocalUsersClientListResponse]](),
+	}
 }
 
 // LocalUsersServerTransport connects instances of armstorage.LocalUsersClient to instances of LocalUsersServer.
 // Don't use this type directly, use NewLocalUsersServerTransport instead.
 type LocalUsersServerTransport struct {
 	srv          *LocalUsersServer
-	newListPager *azfake.PagerResponder[armstorage.LocalUsersClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.LocalUsersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LocalUsersServerTransport.
@@ -216,7 +219,8 @@ func (l *LocalUsersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if l.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if l.newListPager == nil {
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/localUsers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -232,17 +236,19 @@ func (l *LocalUsersServerTransport) dispatchNewListPager(req *http.Request) (*ht
 			return nil, err
 		}
 		resp := l.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, nil)
-		l.newListPager = &resp
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(l.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(l.newListPager) {
-		l.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
 	return resp, nil
 }

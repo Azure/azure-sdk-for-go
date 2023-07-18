@@ -62,17 +62,20 @@ type TagsServer struct {
 }
 
 // NewTagsServerTransport creates a new instance of TagsServerTransport with the provided implementation.
-// The returned TagsServerTransport instance is connected to an instance of armresources.TagsClient by way of the
-// undefined.Transporter field.
+// The returned TagsServerTransport instance is connected to an instance of armresources.TagsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTagsServerTransport(srv *TagsServer) *TagsServerTransport {
-	return &TagsServerTransport{srv: srv}
+	return &TagsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armresources.TagsClientListResponse]](),
+	}
 }
 
 // TagsServerTransport connects instances of armresources.TagsClient to instances of TagsServer.
 // Don't use this type directly, use NewTagsServerTransport instead.
 type TagsServerTransport struct {
 	srv          *TagsServer
-	newListPager *azfake.PagerResponder[armresources.TagsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armresources.TagsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TagsServerTransport.
@@ -335,7 +338,8 @@ func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tagNames`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -343,20 +347,22 @@ func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := t.srv.NewListPager(nil)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armresources.TagsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.TagsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

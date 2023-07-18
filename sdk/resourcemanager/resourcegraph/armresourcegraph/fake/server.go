@@ -31,8 +31,8 @@ type Server struct {
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
-// The returned ServerTransport instance is connected to an instance of armresourcegraph.Client by way of the
-// undefined.Transporter field.
+// The returned ServerTransport instance is connected to an instance of armresourcegraph.Client via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{srv: srv}
 }

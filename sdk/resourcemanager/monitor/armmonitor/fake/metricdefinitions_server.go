@@ -32,18 +32,22 @@ type MetricDefinitionsServer struct {
 }
 
 // NewMetricDefinitionsServerTransport creates a new instance of MetricDefinitionsServerTransport with the provided implementation.
-// The returned MetricDefinitionsServerTransport instance is connected to an instance of armmonitor.MetricDefinitionsClient by way of the
-// undefined.Transporter field.
+// The returned MetricDefinitionsServerTransport instance is connected to an instance of armmonitor.MetricDefinitionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricDefinitionsServerTransport(srv *MetricDefinitionsServer) *MetricDefinitionsServerTransport {
-	return &MetricDefinitionsServerTransport{srv: srv}
+	return &MetricDefinitionsServerTransport{
+		srv:                             srv,
+		newListPager:                    newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]](),
+		newListAtSubscriptionScopePager: newTracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]](),
+	}
 }
 
 // MetricDefinitionsServerTransport connects instances of armmonitor.MetricDefinitionsClient to instances of MetricDefinitionsServer.
 // Don't use this type directly, use NewMetricDefinitionsServerTransport instead.
 type MetricDefinitionsServerTransport struct {
 	srv                             *MetricDefinitionsServer
-	newListPager                    *azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]
-	newListAtSubscriptionScopePager *azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]
+	newListPager                    *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListResponse]]
+	newListAtSubscriptionScopePager *tracker[azfake.PagerResponder[armmonitor.MetricDefinitionsClientListAtSubscriptionScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricDefinitionsServerTransport.
@@ -77,7 +81,8 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Reques
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -101,17 +106,19 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Reques
 			}
 		}
 		resp := m.srv.NewListPager(resourceURIUnescaped, options)
-		m.newListPager = &resp
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -120,7 +127,8 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 	if m.srv.NewListAtSubscriptionScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
 	}
-	if m.newListAtSubscriptionScopePager == nil {
+	newListAtSubscriptionScopePager := m.newListAtSubscriptionScopePager.get(req)
+	if newListAtSubscriptionScopePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -144,17 +152,19 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 			}
 		}
 		resp := m.srv.NewListAtSubscriptionScopePager(regionUnescaped, options)
-		m.newListAtSubscriptionScopePager = &resp
+		newListAtSubscriptionScopePager = &resp
+		m.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
 	}
-	resp, err := server.PagerResponderNext(m.newListAtSubscriptionScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtSubscriptionScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListAtSubscriptionScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListAtSubscriptionScopePager) {
-		m.newListAtSubscriptionScopePager = nil
+	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
+		m.newListAtSubscriptionScopePager.remove(req)
 	}
 	return resp, nil
 }

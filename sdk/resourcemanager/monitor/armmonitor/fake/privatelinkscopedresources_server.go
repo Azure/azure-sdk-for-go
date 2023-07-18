@@ -42,19 +42,24 @@ type PrivateLinkScopedResourcesServer struct {
 }
 
 // NewPrivateLinkScopedResourcesServerTransport creates a new instance of PrivateLinkScopedResourcesServerTransport with the provided implementation.
-// The returned PrivateLinkScopedResourcesServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopedResourcesClient by way of the
-// undefined.Transporter field.
+// The returned PrivateLinkScopedResourcesServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopedResourcesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkScopedResourcesServerTransport(srv *PrivateLinkScopedResourcesServer) *PrivateLinkScopedResourcesServerTransport {
-	return &PrivateLinkScopedResourcesServerTransport{srv: srv}
+	return &PrivateLinkScopedResourcesServerTransport{
+		srv:                            srv,
+		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]](),
+		beginDelete:                    newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]](),
+		newListByPrivateLinkScopePager: newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]](),
+	}
 }
 
 // PrivateLinkScopedResourcesServerTransport connects instances of armmonitor.PrivateLinkScopedResourcesClient to instances of PrivateLinkScopedResourcesServer.
 // Don't use this type directly, use NewPrivateLinkScopedResourcesServerTransport instead.
 type PrivateLinkScopedResourcesServerTransport struct {
 	srv                            *PrivateLinkScopedResourcesServer
-	beginCreateOrUpdate            *azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]
-	beginDelete                    *azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]
-	newListByPrivateLinkScopePager *azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]
+	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientCreateOrUpdateResponse]]
+	beginDelete                    *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopedResourcesClientDeleteResponse]]
+	newListByPrivateLinkScopePager *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinkScopedResourcesServerTransport.
@@ -92,7 +97,8 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginCreateOrUpdate(
 	if p.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if p.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginCreateOrUpdate(
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreateOrUpdate) {
-		p.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		p.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginDelete(req *htt
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchBeginDelete(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchNewListByPrivateLink
 	if p.srv.NewListByPrivateLinkScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByPrivateLinkScopePager not implemented")}
 	}
-	if p.newListByPrivateLinkScopePager == nil {
+	newListByPrivateLinkScopePager := p.newListByPrivateLinkScopePager.get(req)
+	if newListByPrivateLinkScopePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopedResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (p *PrivateLinkScopedResourcesServerTransport) dispatchNewListByPrivateLink
 			return nil, err
 		}
 		resp := p.srv.NewListByPrivateLinkScopePager(resourceGroupNameUnescaped, scopeNameUnescaped, nil)
-		p.newListByPrivateLinkScopePager = &resp
-		server.PagerResponderInjectNextLinks(p.newListByPrivateLinkScopePager, req, func(page *armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, createLink func() string) {
+		newListByPrivateLinkScopePager = &resp
+		p.newListByPrivateLinkScopePager.add(req, newListByPrivateLinkScopePager)
+		server.PagerResponderInjectNextLinks(newListByPrivateLinkScopePager, req, func(page *armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListByPrivateLinkScopePager, req)
+	resp, err := server.PagerResponderNext(newListByPrivateLinkScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByPrivateLinkScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListByPrivateLinkScopePager) {
-		p.newListByPrivateLinkScopePager = nil
+	if !server.PagerResponderMore(newListByPrivateLinkScopePager) {
+		p.newListByPrivateLinkScopePager.remove(req)
 	}
 	return resp, nil
 }

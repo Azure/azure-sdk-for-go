@@ -4,20 +4,11 @@
 package azopenai_test
 
 import (
-	"fmt"
 	"os"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/joho/godotenv"
 )
 
 func TestMain(m *testing.M) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if err := godotenv.Load(); err != nil {
-			fmt.Printf("No .env file - can't run examples or live tests\n")
-		}
-	}
-
+	initEnvVars()
 	os.Exit(m.Run())
 }

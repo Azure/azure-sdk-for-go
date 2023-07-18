@@ -5,6 +5,7 @@ package azopenai_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -78,6 +79,97 @@ func ExampleClient_GetChatCompletions() {
 	if gotReply {
 		fmt.Fprintf(os.Stderr, "Got chat completions reply\n")
 	}
+
+	// Output:
+}
+
+func ExampleClient_GetChatCompletions_functions() {
+	openAIKey := os.Getenv("OPENAI_API_KEY")
+	const model = "gpt-3.5-turbo-0613"
+
+	if openAIKey == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	keyCredential, err := azopenai.NewKeyCredential(openAIKey)
+
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// some JSON schema keys
+	const jsonSchemaType = "type"
+	const jsonSchemaDesc = "description"
+	const jsonSchemaEnum = "enum"
+	const jsonSchemaRequired = "required"
+	const jsonSchemaProps = "properties"
+
+	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+		Model: to.Ptr(model),
+		Messages: []azopenai.ChatMessage{
+			{
+				Role:    to.Ptr(azopenai.ChatRoleUser),
+				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+			},
+		},
+		FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
+			Value: to.Ptr("auto"),
+		},
+		Functions: []azopenai.FunctionDefinition{
+			{
+				Name:        to.Ptr("get_current_weather"),
+				Description: to.Ptr("Get the current weather in a given location"),
+
+				Parameters: map[string]any{
+					jsonSchemaRequired: []string{"location"},
+					jsonSchemaType:     "object",
+					jsonSchemaProps: map[string]any{
+						"location": map[string]any{
+							jsonSchemaType: "string",
+							jsonSchemaDesc: "The city and state, e.g. San Francisco, CA",
+						},
+						"unit": map[string]any{
+							jsonSchemaType: "string",
+							jsonSchemaEnum: []string{"celsius", "fahrenheit"},
+						},
+					},
+				},
+			},
+		},
+		Temperature: to.Ptr[float32](0.0),
+	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
+
+	// This is the function name we gave in the call to GetCompletions
+	// Prints: Function name: "get_current_weather"
+	fmt.Fprintf(os.Stderr, "Function name: %q\n", *funcCall.Name)
+
+	// The arguments for your function come back as a JSON string
+	var funcParams *struct {
+		Location string `json:"location"`
+		Unit     string `json:"unit"`
+	}
+	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Prints:
+	// Parameters: azopenai_test.location{Location:"Boston, MA", Unit:"celsius"}
+	fmt.Fprintf(os.Stderr, "Parameters: %#v\n", *funcParams)
 
 	// Output:
 }

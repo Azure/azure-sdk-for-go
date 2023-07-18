@@ -97,7 +97,7 @@ func ExampleClient_GetCompletionsStream() {
 		entry, err := resp.CompletionsStream.Read()
 
 		if errors.Is(err, io.EOF) {
-			fmt.Printf("\n*** No more completions ***\n")
+			fmt.Fprintf(os.Stderr, "\n*** No more completions ***\n")
 			break
 		}
 

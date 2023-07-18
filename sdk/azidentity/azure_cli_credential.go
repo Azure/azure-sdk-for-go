@@ -65,7 +65,13 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	}
 	cp.init()
 	c := AzureCLICredential{tokenProvider: cp.tokenProvider}
-	c.s = newSyncer(credNameAzureCLI, cp.TenantID, cp.AdditionallyAllowedTenants, c.requestToken, c.requestToken)
+	c.s = newSyncer(
+		credNameAzureCLI,
+		cp.TenantID,
+		c.requestToken,
+		c.requestToken,
+		syncerOptions{AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants},
+	)
 	return &c, nil
 }
 

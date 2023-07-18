@@ -82,7 +82,7 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 		return nil, err
 	}
 	obo := OnBehalfOfCredential{assertion: userAssertion, client: c}
-	obo.s = newSyncer(credNameOBO, tenantID, options.AdditionallyAllowedTenants, obo.requestToken, obo.requestToken)
+	obo.s = newSyncer(credNameOBO, tenantID, obo.requestToken, obo.requestToken, syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants})
 	return &obo, nil
 }
 

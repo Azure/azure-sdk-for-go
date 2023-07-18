@@ -28,9 +28,14 @@ type syncer struct {
 	name, tenant     string
 }
 
-func newSyncer(name, tenant string, additionalTenants []string, reqToken, silentAuth authFn) *syncer {
+type syncerOptions struct {
+	// AdditionallyAllowedTenants syncer may authenticate to
+	AdditionallyAllowedTenants []string
+}
+
+func newSyncer(name, tenant string, reqToken, silentAuth authFn, opts syncerOptions) *syncer {
 	return &syncer{
-		addlTenants: resolveAdditionalTenants(additionalTenants),
+		addlTenants: resolveAdditionalTenants(opts.AdditionallyAllowedTenants),
 		mu:          &sync.Mutex{},
 		name:        name,
 		reqToken:    reqToken,

@@ -84,21 +84,26 @@ func ExampleClient_GetChatCompletions() {
 }
 
 func ExampleClient_GetChatCompletions_functions() {
-	openAIKey := os.Getenv("OPENAI_API_KEY")
-	const model = "gpt-3.5-turbo-0613"
+	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT")
 
-	if openAIKey == "" {
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+
+	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(openAIKey)
+	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
 		// TODO: handle error
 	}
 
-	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
+	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
+	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
 		// TODO: handle error
@@ -112,7 +117,7 @@ func ExampleClient_GetChatCompletions_functions() {
 	const jsonSchemaProps = "properties"
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Model: to.Ptr(model),
+		Model: &modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),

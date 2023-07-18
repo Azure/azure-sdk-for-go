@@ -748,6 +748,45 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	}
 }
 
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsDelimiterPrefixVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobNames := []string{"a/1", "a/2", "b/1", "blob"}
+	blobMap := testcommon.BlobListToMap(blobNames)
+	for _, name := range blobNames {
+		testcommon.CreateNewBlockBlob(context.Background(), _require, name, containerClient)
+	}
+
+	opts := container.ListBlobsHierarchyOptions{
+		Include:    container.ListBlobsInclude{Versions: true},
+		Marker:     nil,
+		MaxResults: nil,
+		Prefix:     to.Ptr("a/"),
+	}
+
+	pager := containerClient.NewListBlobsHierarchyPager("/", &opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 2)
+		for _, blobs := range resp.Segment.BlobItems {
+			_require.Equal(blobMap[*(blobs.Name)], true)
+			_require.NotNil(blobs.VersionID) // checks if blob has version id
+		}
+		if err != nil {
+			break
+		}
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

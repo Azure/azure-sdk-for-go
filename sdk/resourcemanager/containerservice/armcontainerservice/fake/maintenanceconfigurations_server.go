@@ -42,17 +42,20 @@ type MaintenanceConfigurationsServer struct {
 }
 
 // NewMaintenanceConfigurationsServerTransport creates a new instance of MaintenanceConfigurationsServerTransport with the provided implementation.
-// The returned MaintenanceConfigurationsServerTransport instance is connected to an instance of armcontainerservice.MaintenanceConfigurationsClient by way of the
-// undefined.Transporter field.
+// The returned MaintenanceConfigurationsServerTransport instance is connected to an instance of armcontainerservice.MaintenanceConfigurationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMaintenanceConfigurationsServerTransport(srv *MaintenanceConfigurationsServer) *MaintenanceConfigurationsServerTransport {
-	return &MaintenanceConfigurationsServerTransport{srv: srv}
+	return &MaintenanceConfigurationsServerTransport{
+		srv:                          srv,
+		newListByManagedClusterPager: newTracker[azfake.PagerResponder[armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse]](),
+	}
 }
 
 // MaintenanceConfigurationsServerTransport connects instances of armcontainerservice.MaintenanceConfigurationsClient to instances of MaintenanceConfigurationsServer.
 // Don't use this type directly, use NewMaintenanceConfigurationsServerTransport instead.
 type MaintenanceConfigurationsServerTransport struct {
 	srv                          *MaintenanceConfigurationsServer
-	newListByManagedClusterPager *azfake.PagerResponder[armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse]
+	newListByManagedClusterPager *tracker[azfake.PagerResponder[armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for MaintenanceConfigurationsServerTransport.
@@ -205,7 +208,8 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchNewListByManagedClust
 	if m.srv.NewListByManagedClusterPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByManagedClusterPager not implemented")}
 	}
-	if m.newListByManagedClusterPager == nil {
+	newListByManagedClusterPager := m.newListByManagedClusterPager.get(req)
+	if newListByManagedClusterPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/maintenanceConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -221,20 +225,22 @@ func (m *MaintenanceConfigurationsServerTransport) dispatchNewListByManagedClust
 			return nil, err
 		}
 		resp := m.srv.NewListByManagedClusterPager(resourceGroupNameUnescaped, resourceNameUnescaped, nil)
-		m.newListByManagedClusterPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListByManagedClusterPager, req, func(page *armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse, createLink func() string) {
+		newListByManagedClusterPager = &resp
+		m.newListByManagedClusterPager.add(req, newListByManagedClusterPager)
+		server.PagerResponderInjectNextLinks(newListByManagedClusterPager, req, func(page *armcontainerservice.MaintenanceConfigurationsClientListByManagedClusterResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListByManagedClusterPager, req)
+	resp, err := server.PagerResponderNext(newListByManagedClusterPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByManagedClusterPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListByManagedClusterPager) {
-		m.newListByManagedClusterPager = nil
+	if !server.PagerResponderMore(newListByManagedClusterPager) {
+		m.newListByManagedClusterPager.remove(req)
 	}
 	return resp, nil
 }

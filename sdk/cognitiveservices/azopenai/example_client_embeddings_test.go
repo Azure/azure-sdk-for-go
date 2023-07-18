@@ -26,7 +26,7 @@ func ExampleClient_GetEmbeddings() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -34,7 +34,7 @@ func ExampleClient_GetEmbeddings() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
@@ -43,7 +43,7 @@ func ExampleClient_GetEmbeddings() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	for _, embed := range resp.Data {

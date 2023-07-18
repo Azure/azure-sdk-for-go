@@ -29,7 +29,7 @@ func ExampleClient_GetCompletions() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -37,7 +37,7 @@ func ExampleClient_GetCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
@@ -47,7 +47,7 @@ func ExampleClient_GetCompletions() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	for _, choice := range resp.Choices {
@@ -72,7 +72,7 @@ func ExampleClient_GetCompletionsStream() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -80,7 +80,7 @@ func ExampleClient_GetCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
@@ -90,7 +90,7 @@ func ExampleClient_GetCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	for {
@@ -102,7 +102,7 @@ func ExampleClient_GetCompletionsStream() {
 		}
 
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
 
 		for _, choice := range entry.Choices {

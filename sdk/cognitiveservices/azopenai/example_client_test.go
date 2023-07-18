@@ -14,13 +14,13 @@ func ExampleNewClientForOpenAI() {
 	keyCredential, err := azopenai.NewKeyCredential("<OpenAI-APIKey>")
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	_ = client
@@ -32,14 +32,14 @@ func ExampleNewClient() {
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	modelDeploymentID := "model deployment ID"
 	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	_ = client
@@ -51,7 +51,7 @@ func ExampleNewClientWithKeyCredential() {
 	keyCredential, err := azopenai.NewKeyCredential("<Azure-OpenAI-APIKey>")
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -60,7 +60,7 @@ func ExampleNewClientWithKeyCredential() {
 	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	_ = client

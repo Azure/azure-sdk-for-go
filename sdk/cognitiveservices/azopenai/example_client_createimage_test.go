@@ -30,13 +30,13 @@ func ExampleClient_CreateImage() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, "", nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.CreateImage(context.TODO(), azopenai.ImageGenerationOptions{
@@ -45,7 +45,7 @@ func ExampleClient_CreateImage() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	for _, generatedImage := range resp.Data {
@@ -56,7 +56,7 @@ func ExampleClient_CreateImage() {
 		resp, err := http.Head(*generatedImage.URL)
 
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
 
 		fmt.Fprintf(os.Stderr, "Image generated, HEAD request on URL returned %d\n", resp.StatusCode)

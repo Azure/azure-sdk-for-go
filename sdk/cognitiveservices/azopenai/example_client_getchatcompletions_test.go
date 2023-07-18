@@ -30,7 +30,7 @@ func ExampleClient_GetChatCompletions() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -38,7 +38,7 @@ func ExampleClient_GetChatCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// This is a conversation in progress.
@@ -68,7 +68,7 @@ func ExampleClient_GetChatCompletions() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	for _, choice := range resp.Choices {
@@ -95,13 +95,13 @@ func ExampleClient_GetChatCompletions_functions() {
 	keyCredential, err := azopenai.NewKeyCredential(openAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// some JSON schema keys
@@ -147,7 +147,7 @@ func ExampleClient_GetChatCompletions_functions() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
@@ -164,7 +164,7 @@ func ExampleClient_GetChatCompletions_functions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// Prints:
@@ -189,7 +189,7 @@ func ExampleClient_GetChatCompletionsStream() {
 	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
@@ -197,7 +197,7 @@ func ExampleClient_GetChatCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	// This is a conversation in progress.
@@ -226,7 +226,7 @@ func ExampleClient_GetChatCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	streamReader := resp.ChatCompletionsStream
@@ -240,7 +240,7 @@ func ExampleClient_GetChatCompletionsStream() {
 		}
 
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
 
 		for _, choice := range chatCompletions.Choices {

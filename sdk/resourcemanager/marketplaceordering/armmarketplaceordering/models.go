@@ -74,37 +74,6 @@ type ErrorResponseError struct {
 	Message *string
 }
 
-// MarketplaceAgreementsClientCancelOptions contains the optional parameters for the MarketplaceAgreementsClient.Cancel method.
-type MarketplaceAgreementsClientCancelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create method.
-type MarketplaceAgreementsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MarketplaceAgreementsClientGetAgreementOptions contains the optional parameters for the MarketplaceAgreementsClient.GetAgreement
-// method.
-type MarketplaceAgreementsClientGetAgreementOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MarketplaceAgreementsClientGetOptions contains the optional parameters for the MarketplaceAgreementsClient.Get method.
-type MarketplaceAgreementsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List method.
-type MarketplaceAgreementsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MarketplaceAgreementsClientSignOptions contains the optional parameters for the MarketplaceAgreementsClient.Sign method.
-type MarketplaceAgreementsClientSignOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Operation - Microsoft.MarketplaceOrdering REST API operation
 type Operation struct {
 	// The object that represents the operation.
@@ -137,11 +106,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string
-}
-
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Resource - ARM resource.

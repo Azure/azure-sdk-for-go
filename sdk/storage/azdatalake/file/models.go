@@ -220,19 +220,14 @@ func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOp
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
+	//placeholder
 }
 
-func (o *UpdateAccessControlOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+func (o *UpdateAccessControlOptions) format(ACL string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
 	mode := generated.PathSetAccessControlRecursiveModeModify
-	if o == nil {
-		return nil, mode
-	}
-	opts := &generated.PathClientSetAccessControlRecursiveOptions{
-		ACL: o.ACL,
-	}
-	return opts, mode
+	return &generated.PathClientSetAccessControlRecursiveOptions{
+		ACL: &ACL,
+	}, mode
 }
 
 // RemoveAccessControlOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
@@ -240,9 +235,11 @@ type RemoveAccessControlOptions struct {
 	//placeholder
 }
 
-func (o *RemoveAccessControlOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
+func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSetAccessControlRecursiveOptions, generated.PathSetAccessControlRecursiveMode) {
 	mode := generated.PathSetAccessControlRecursiveModeRemove
-	return nil, mode
+	return &generated.PathClientSetAccessControlRecursiveOptions{
+		ACL: &ACL,
+	}, mode
 }
 
 // SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
@@ -319,25 +316,31 @@ func (o *HTTPHeaders) formatPathHTTPHeaders() *generated.PathHTTPHeaders {
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
+	Metadata         map[string]*string
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *SetMetadataOptions) format() *blob.SetMetadataOptions {
+func (o *SetMetadataOptions) format() (*blob.SetMetadataOptions, map[string]*string) {
 	if o == nil {
-		return nil
+		return nil, nil
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &blob.SetMetadataOptions{
+	opts := &blob.SetMetadataOptions{
 		AccessConditions: accessConditions,
-		CPKInfo: &blob.CPKInfo{
+	}
+	if o.CPKInfo != nil {
+		opts.CPKInfo = &blob.CPKInfo{
 			EncryptionKey:       o.CPKInfo.EncryptionKey,
 			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		},
-		CPKScopeInfo: (*blob.CPKScopeInfo)(o.CPKScopeInfo),
+		}
 	}
+	if o.CPKScopeInfo != nil {
+		opts.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	}
+	return opts, o.Metadata
 }
 
 // CPKInfo contains a group of parameters for the PathClient.Download method.
@@ -385,6 +388,9 @@ func (e CreationExpiryTypeNever) notPubliclyImplementable() {}
 
 // ACLFailedEntry contains the failed ACL entry (response model).
 type ACLFailedEntry = generated.ACLFailedEntry
+
+// SetAccessControlRecursiveResponse contains part of the response data returned by the []OP_AccessControl operations.
+type SetAccessControlRecursiveResponse = generated.SetAccessControlRecursiveResponse
 
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
 type CPKScopeInfo blob.CPKScopeInfo

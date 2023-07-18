@@ -250,8 +250,8 @@ func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 }
 
 // UpdateAccessControl updates the owner, owning group, and permissions for a file or directory (dfs1).
-func (f *Client) UpdateAccessControl(ctx context.Context, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
-	opts, mode := options.format()
+func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
+	opts, mode := options.format(ACL)
 	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 }
 
@@ -262,14 +262,14 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 }
 
 // RemoveAccessControl removes the owner, owning group, and permissions for a file or directory (dfs1).
-func (f *Client) RemoveAccessControl(ctx context.Context, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
-	opts, mode := options.format()
+func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
+	opts, mode := options.format(ACL)
 	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
 }
 
 // SetMetadata sets the metadata for a file or directory (blob3).
-func (f *Client) SetMetadata(ctx context.Context, metadata map[string]*string, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts := options.format()
+func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	opts, metadata := options.format()
 	return f.blobClient().SetMetadata(ctx, metadata, opts)
 }
 

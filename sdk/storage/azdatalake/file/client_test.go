@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"net/http"
@@ -1241,6 +1242,50 @@ func (s *RecordedTestSuite) TestGetAccessControl() {
 	_require.NotNil(resp)
 
 	getACLResp, err := fClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	createOpts := &file.CreateOptions{
+		ACL: &acl,
+	}
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), createOpts)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	// Adding SAS and options
+	permissions := sas.FilePermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	fClient2, _ := file.NewClientWithNoCredential(sasURL, nil)
+
+	getACLResp, err := fClient2.GetAccessControl(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(acl, *getACLResp.ACL)
 }

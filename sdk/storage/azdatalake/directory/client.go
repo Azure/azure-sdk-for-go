@@ -113,7 +113,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 		return nil, err
 	}
 	blobClient, _ := blockblob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
-	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil
 }

@@ -350,6 +350,25 @@ type CPKInfo struct {
 	EncryptionKeySHA256 *string
 }
 
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}
+
 // CreationExpiryType defines values for Create() ExpiryType
 type CreationExpiryType interface {
 	Format() (generated.ExpiryOptions, *string)

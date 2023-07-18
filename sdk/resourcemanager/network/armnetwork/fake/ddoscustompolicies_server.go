@@ -41,18 +41,22 @@ type DdosCustomPoliciesServer struct {
 }
 
 // NewDdosCustomPoliciesServerTransport creates a new instance of DdosCustomPoliciesServerTransport with the provided implementation.
-// The returned DdosCustomPoliciesServerTransport instance is connected to an instance of armnetwork.DdosCustomPoliciesClient by way of the
-// undefined.Transporter field.
+// The returned DdosCustomPoliciesServerTransport instance is connected to an instance of armnetwork.DdosCustomPoliciesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDdosCustomPoliciesServerTransport(srv *DdosCustomPoliciesServer) *DdosCustomPoliciesServerTransport {
-	return &DdosCustomPoliciesServerTransport{srv: srv}
+	return &DdosCustomPoliciesServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientDeleteResponse]](),
+	}
 }
 
 // DdosCustomPoliciesServerTransport connects instances of armnetwork.DdosCustomPoliciesClient to instances of DdosCustomPoliciesServer.
 // Don't use this type directly, use NewDdosCustomPoliciesServerTransport instead.
 type DdosCustomPoliciesServerTransport struct {
 	srv                 *DdosCustomPoliciesServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientDeleteResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for DdosCustomPoliciesServerTransport.
@@ -90,7 +94,8 @@ func (d *DdosCustomPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosCustomPolicies/(?P<ddosCustomPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -113,19 +118,21 @@ func (d *DdosCustomPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -135,7 +142,8 @@ func (d *DdosCustomPoliciesServerTransport) dispatchBeginDelete(req *http.Reques
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ddosCustomPolicies/(?P<ddosCustomPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -154,19 +162,21 @@ func (d *DdosCustomPoliciesServerTransport) dispatchBeginDelete(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil

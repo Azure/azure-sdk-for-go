@@ -29,8 +29,8 @@ type ApplicationGatewayWafDynamicManifestsDefaultServer struct {
 }
 
 // NewApplicationGatewayWafDynamicManifestsDefaultServerTransport creates a new instance of ApplicationGatewayWafDynamicManifestsDefaultServerTransport with the provided implementation.
-// The returned ApplicationGatewayWafDynamicManifestsDefaultServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayWafDynamicManifestsDefaultClient by way of the
-// undefined.Transporter field.
+// The returned ApplicationGatewayWafDynamicManifestsDefaultServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayWafDynamicManifestsDefaultClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewApplicationGatewayWafDynamicManifestsDefaultServerTransport(srv *ApplicationGatewayWafDynamicManifestsDefaultServer) *ApplicationGatewayWafDynamicManifestsDefaultServerTransport {
 	return &ApplicationGatewayWafDynamicManifestsDefaultServerTransport{srv: srv}
 }

@@ -37,17 +37,20 @@ type VipSwapServer struct {
 }
 
 // NewVipSwapServerTransport creates a new instance of VipSwapServerTransport with the provided implementation.
-// The returned VipSwapServerTransport instance is connected to an instance of armnetwork.VipSwapClient by way of the
-// undefined.Transporter field.
+// The returned VipSwapServerTransport instance is connected to an instance of armnetwork.VipSwapClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVipSwapServerTransport(srv *VipSwapServer) *VipSwapServerTransport {
-	return &VipSwapServerTransport{srv: srv}
+	return &VipSwapServerTransport{
+		srv:         srv,
+		beginCreate: newTracker[azfake.PollerResponder[armnetwork.VipSwapClientCreateResponse]](),
+	}
 }
 
 // VipSwapServerTransport connects instances of armnetwork.VipSwapClient to instances of VipSwapServer.
 // Don't use this type directly, use NewVipSwapServerTransport instead.
 type VipSwapServerTransport struct {
 	srv         *VipSwapServer
-	beginCreate *azfake.PollerResponder[armnetwork.VipSwapClientCreateResponse]
+	beginCreate *tracker[azfake.PollerResponder[armnetwork.VipSwapClientCreateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VipSwapServerTransport.
@@ -83,7 +86,8 @@ func (v *VipSwapServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	if v.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if v.beginCreate == nil {
+	beginCreate := v.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/cloudServiceSlots/(?P<singletonResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -106,19 +110,21 @@ func (v *VipSwapServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreate = &respr
+		beginCreate = &respr
+		v.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreate) {
-		v.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		v.beginCreate.remove(req)
 	}
 
 	return resp, nil

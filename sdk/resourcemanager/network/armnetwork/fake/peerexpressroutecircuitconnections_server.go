@@ -34,17 +34,20 @@ type PeerExpressRouteCircuitConnectionsServer struct {
 }
 
 // NewPeerExpressRouteCircuitConnectionsServerTransport creates a new instance of PeerExpressRouteCircuitConnectionsServerTransport with the provided implementation.
-// The returned PeerExpressRouteCircuitConnectionsServerTransport instance is connected to an instance of armnetwork.PeerExpressRouteCircuitConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned PeerExpressRouteCircuitConnectionsServerTransport instance is connected to an instance of armnetwork.PeerExpressRouteCircuitConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPeerExpressRouteCircuitConnectionsServerTransport(srv *PeerExpressRouteCircuitConnectionsServer) *PeerExpressRouteCircuitConnectionsServerTransport {
-	return &PeerExpressRouteCircuitConnectionsServerTransport{srv: srv}
+	return &PeerExpressRouteCircuitConnectionsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.PeerExpressRouteCircuitConnectionsClientListResponse]](),
+	}
 }
 
 // PeerExpressRouteCircuitConnectionsServerTransport connects instances of armnetwork.PeerExpressRouteCircuitConnectionsClient to instances of PeerExpressRouteCircuitConnectionsServer.
 // Don't use this type directly, use NewPeerExpressRouteCircuitConnectionsServerTransport instead.
 type PeerExpressRouteCircuitConnectionsServerTransport struct {
 	srv          *PeerExpressRouteCircuitConnectionsServer
-	newListPager *azfake.PagerResponder[armnetwork.PeerExpressRouteCircuitConnectionsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.PeerExpressRouteCircuitConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PeerExpressRouteCircuitConnectionsServerTransport.
@@ -119,7 +122,8 @@ func (p *PeerExpressRouteCircuitConnectionsServerTransport) dispatchNewListPager
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -139,20 +143,22 @@ func (p *PeerExpressRouteCircuitConnectionsServerTransport) dispatchNewListPager
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, circuitNameUnescaped, peeringNameUnescaped, nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.PeerExpressRouteCircuitConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PeerExpressRouteCircuitConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

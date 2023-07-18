@@ -42,19 +42,24 @@ type NatRulesServer struct {
 }
 
 // NewNatRulesServerTransport creates a new instance of NatRulesServerTransport with the provided implementation.
-// The returned NatRulesServerTransport instance is connected to an instance of armnetwork.NatRulesClient by way of the
-// undefined.Transporter field.
+// The returned NatRulesServerTransport instance is connected to an instance of armnetwork.NatRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewNatRulesServerTransport(srv *NatRulesServer) *NatRulesServerTransport {
-	return &NatRulesServerTransport{srv: srv}
+	return &NatRulesServerTransport{
+		srv:                      srv,
+		beginCreateOrUpdate:      newTracker[azfake.PollerResponder[armnetwork.NatRulesClientCreateOrUpdateResponse]](),
+		beginDelete:              newTracker[azfake.PollerResponder[armnetwork.NatRulesClientDeleteResponse]](),
+		newListByVPNGatewayPager: newTracker[azfake.PagerResponder[armnetwork.NatRulesClientListByVPNGatewayResponse]](),
+	}
 }
 
 // NatRulesServerTransport connects instances of armnetwork.NatRulesClient to instances of NatRulesServer.
 // Don't use this type directly, use NewNatRulesServerTransport instead.
 type NatRulesServerTransport struct {
 	srv                      *NatRulesServer
-	beginCreateOrUpdate      *azfake.PollerResponder[armnetwork.NatRulesClientCreateOrUpdateResponse]
-	beginDelete              *azfake.PollerResponder[armnetwork.NatRulesClientDeleteResponse]
-	newListByVPNGatewayPager *azfake.PagerResponder[armnetwork.NatRulesClientListByVPNGatewayResponse]
+	beginCreateOrUpdate      *tracker[azfake.PollerResponder[armnetwork.NatRulesClientCreateOrUpdateResponse]]
+	beginDelete              *tracker[azfake.PollerResponder[armnetwork.NatRulesClientDeleteResponse]]
+	newListByVPNGatewayPager *tracker[azfake.PagerResponder[armnetwork.NatRulesClientListByVPNGatewayResponse]]
 }
 
 // Do implements the policy.Transporter interface for NatRulesServerTransport.
@@ -92,7 +97,8 @@ func (n *NatRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	if n.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if n.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := n.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (n *NatRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		n.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		n.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(n.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		n.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(n.beginCreateOrUpdate) {
-		n.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		n.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (n *NatRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if n.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if n.beginDelete == nil {
+	beginDelete := n.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (n *NatRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		n.beginDelete = &respr
+		beginDelete = &respr
+		n.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(n.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(n.beginDelete) {
-		n.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		n.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (n *NatRulesServerTransport) dispatchNewListByVPNGatewayPager(req *http.Req
 	if n.srv.NewListByVPNGatewayPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNGatewayPager not implemented")}
 	}
-	if n.newListByVPNGatewayPager == nil {
+	newListByVPNGatewayPager := n.newListByVPNGatewayPager.get(req)
+	if newListByVPNGatewayPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (n *NatRulesServerTransport) dispatchNewListByVPNGatewayPager(req *http.Req
 			return nil, err
 		}
 		resp := n.srv.NewListByVPNGatewayPager(resourceGroupNameUnescaped, gatewayNameUnescaped, nil)
-		n.newListByVPNGatewayPager = &resp
-		server.PagerResponderInjectNextLinks(n.newListByVPNGatewayPager, req, func(page *armnetwork.NatRulesClientListByVPNGatewayResponse, createLink func() string) {
+		newListByVPNGatewayPager = &resp
+		n.newListByVPNGatewayPager.add(req, newListByVPNGatewayPager)
+		server.PagerResponderInjectNextLinks(newListByVPNGatewayPager, req, func(page *armnetwork.NatRulesClientListByVPNGatewayResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(n.newListByVPNGatewayPager, req)
+	resp, err := server.PagerResponderNext(newListByVPNGatewayPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByVPNGatewayPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(n.newListByVPNGatewayPager) {
-		n.newListByVPNGatewayPager = nil
+	if !server.PagerResponderMore(newListByVPNGatewayPager) {
+		n.newListByVPNGatewayPager.remove(req)
 	}
 	return resp, nil
 }

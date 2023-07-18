@@ -42,19 +42,24 @@ type ConfigurationPolicyGroupsServer struct {
 }
 
 // NewConfigurationPolicyGroupsServerTransport creates a new instance of ConfigurationPolicyGroupsServerTransport with the provided implementation.
-// The returned ConfigurationPolicyGroupsServerTransport instance is connected to an instance of armnetwork.ConfigurationPolicyGroupsClient by way of the
-// undefined.Transporter field.
+// The returned ConfigurationPolicyGroupsServerTransport instance is connected to an instance of armnetwork.ConfigurationPolicyGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConfigurationPolicyGroupsServerTransport(srv *ConfigurationPolicyGroupsServer) *ConfigurationPolicyGroupsServerTransport {
-	return &ConfigurationPolicyGroupsServerTransport{srv: srv}
+	return &ConfigurationPolicyGroupsServerTransport{
+		srv:                                  srv,
+		beginCreateOrUpdate:                  newTracker[azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientCreateOrUpdateResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientDeleteResponse]](),
+		newListByVPNServerConfigurationPager: newTracker[azfake.PagerResponder[armnetwork.ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]](),
+	}
 }
 
 // ConfigurationPolicyGroupsServerTransport connects instances of armnetwork.ConfigurationPolicyGroupsClient to instances of ConfigurationPolicyGroupsServer.
 // Don't use this type directly, use NewConfigurationPolicyGroupsServerTransport instead.
 type ConfigurationPolicyGroupsServerTransport struct {
 	srv                                  *ConfigurationPolicyGroupsServer
-	beginCreateOrUpdate                  *azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientCreateOrUpdateResponse]
-	beginDelete                          *azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientDeleteResponse]
-	newListByVPNServerConfigurationPager *azfake.PagerResponder[armnetwork.ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]
+	beginCreateOrUpdate                  *tracker[azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientCreateOrUpdateResponse]]
+	beginDelete                          *tracker[azfake.PollerResponder[armnetwork.ConfigurationPolicyGroupsClientDeleteResponse]]
+	newListByVPNServerConfigurationPager *tracker[azfake.PagerResponder[armnetwork.ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationPolicyGroupsServerTransport.
@@ -92,7 +97,8 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchBeginCreateOrUpdate(r
 	if c.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if c.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnServerConfigurations/(?P<vpnServerConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurationPolicyGroups/(?P<configurationPolicyGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchBeginCreateOrUpdate(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginCreateOrUpdate) {
-		c.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		c.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchBeginDelete(req *http
 	if c.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if c.beginDelete == nil {
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnServerConfigurations/(?P<vpnServerConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurationPolicyGroups/(?P<configurationPolicyGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchBeginDelete(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginDelete = &respr
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginDelete) {
-		c.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchNewListByVPNServerCon
 	if c.srv.NewListByVPNServerConfigurationPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNServerConfigurationPager not implemented")}
 	}
-	if c.newListByVPNServerConfigurationPager == nil {
+	newListByVPNServerConfigurationPager := c.newListByVPNServerConfigurationPager.get(req)
+	if newListByVPNServerConfigurationPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnServerConfigurations/(?P<vpnServerConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurationPolicyGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (c *ConfigurationPolicyGroupsServerTransport) dispatchNewListByVPNServerCon
 			return nil, err
 		}
 		resp := c.srv.NewListByVPNServerConfigurationPager(resourceGroupNameUnescaped, vpnServerConfigurationNameUnescaped, nil)
-		c.newListByVPNServerConfigurationPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListByVPNServerConfigurationPager, req, func(page *armnetwork.ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse, createLink func() string) {
+		newListByVPNServerConfigurationPager = &resp
+		c.newListByVPNServerConfigurationPager.add(req, newListByVPNServerConfigurationPager)
+		server.PagerResponderInjectNextLinks(newListByVPNServerConfigurationPager, req, func(page *armnetwork.ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListByVPNServerConfigurationPager, req)
+	resp, err := server.PagerResponderNext(newListByVPNServerConfigurationPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByVPNServerConfigurationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListByVPNServerConfigurationPager) {
-		c.newListByVPNServerConfigurationPager = nil
+	if !server.PagerResponderMore(newListByVPNServerConfigurationPager) {
+		c.newListByVPNServerConfigurationPager.remove(req)
 	}
 	return resp, nil
 }

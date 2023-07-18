@@ -37,18 +37,22 @@ type VirtualHubBgpConnectionServer struct {
 }
 
 // NewVirtualHubBgpConnectionServerTransport creates a new instance of VirtualHubBgpConnectionServerTransport with the provided implementation.
-// The returned VirtualHubBgpConnectionServerTransport instance is connected to an instance of armnetwork.VirtualHubBgpConnectionClient by way of the
-// undefined.Transporter field.
+// The returned VirtualHubBgpConnectionServerTransport instance is connected to an instance of armnetwork.VirtualHubBgpConnectionClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualHubBgpConnectionServerTransport(srv *VirtualHubBgpConnectionServer) *VirtualHubBgpConnectionServerTransport {
-	return &VirtualHubBgpConnectionServerTransport{srv: srv}
+	return &VirtualHubBgpConnectionServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientDeleteResponse]](),
+	}
 }
 
 // VirtualHubBgpConnectionServerTransport connects instances of armnetwork.VirtualHubBgpConnectionClient to instances of VirtualHubBgpConnectionServer.
 // Don't use this type directly, use NewVirtualHubBgpConnectionServerTransport instead.
 type VirtualHubBgpConnectionServerTransport struct {
 	srv                 *VirtualHubBgpConnectionServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientDeleteResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.VirtualHubBgpConnectionClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHubBgpConnectionServerTransport.
@@ -84,7 +88,8 @@ func (v *VirtualHubBgpConnectionServerTransport) dispatchBeginCreateOrUpdate(req
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -111,19 +116,21 @@ func (v *VirtualHubBgpConnectionServerTransport) dispatchBeginCreateOrUpdate(req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -133,7 +140,8 @@ func (v *VirtualHubBgpConnectionServerTransport) dispatchBeginDelete(req *http.R
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bgpConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -156,19 +164,21 @@ func (v *VirtualHubBgpConnectionServerTransport) dispatchBeginDelete(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil

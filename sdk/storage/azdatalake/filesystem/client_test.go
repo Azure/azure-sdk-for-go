@@ -63,7 +63,7 @@ func validateFilesystemDeleted(_require *require.Assertions, filesystemClient *f
 	_, err := filesystemClient.GetAccessPolicy(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystem() {
@@ -158,7 +158,7 @@ func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidResourceName)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidResourceName)
 }
 
 func (s *RecordedTestSuite) TestFilesystemCreateNameCollision() {
@@ -175,7 +175,7 @@ func (s *RecordedTestSuite) TestFilesystemCreateNameCollision() {
 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.FilesystemAlreadyExists)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemAlreadyExists)
 }
 
 func (s *RecordedTestSuite) TestFilesystemGetProperties() {
@@ -224,7 +224,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteNonExistent() {
 	_, err = fsClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
@@ -275,7 +275,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceFalse() {
 	}
 	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceTrue() {
@@ -328,7 +328,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceFalse() {
 	_, err = fsClient.Delete(context.Background(), &deleteFilesystemOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetMetadataNonEmpty() {
@@ -432,7 +432,7 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	_, err = fsClient.SetMetadata(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
 }
 
 func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
@@ -731,7 +731,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
@@ -940,7 +940,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong(
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceTrue() {
@@ -992,7 +992,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceFalse() {
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceTrue() {
@@ -1044,7 +1044,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse()
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.ConditionNotMet)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
 func (s *RecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
@@ -1134,7 +1134,7 @@ func (s *RecordedTestSuite) TestSetAccessPolicyWithNullId() {
 	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
 	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 
 	resp1, err := fsClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)

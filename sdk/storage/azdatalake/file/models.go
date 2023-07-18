@@ -7,9 +7,13 @@
 package file
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"net/http"
+	"strconv"
+	"time"
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
@@ -19,12 +23,14 @@ type CreateOptions struct {
 	// Metadata is a map of name-value pairs to associate with the file storage object.
 	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
-	CPKInfo CPKInfo
+	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
-	HTTPHeaders HTTPHeaders
+	HTTPHeaders *HTTPHeaders
 	// Expiry specifies the type and time of expiry for the file.
-	Expiry ExpiryType
-	// LeaseDuration specifies the duration of the lease.
+	Expiry CreationExpiryType
+	// LeaseDuration specifies the duration of the lease, in seconds, or negative one
+	// (-1) for a lease that never expires. A non-infinite lease can be
+	// between 15 and 60 seconds.
 	LeaseDuration *int64
 	// ProposedLeaseID specifies the proposed lease ID for the file.
 	ProposedLeaseID *string
@@ -42,29 +48,41 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
 	resource := generated.PathResourceTypeFile
+	createOpts := &generated.PathClientCreateOptions{
+		Resource: &resource,
+	}
 	if o == nil {
-		o = &CreateOptions{}
+		return nil, nil, nil, createOpts, nil
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	expOpts, expireOnOpts := o.Expiry.Format(&exported.SetExpiryOptions{})
-
-	createOpts := &generated.PathClientCreateOptions{
-		ACL:             o.ACL,
-		Group:           o.Group,
-		Owner:           o.Owner,
-		Umask:           o.Umask,
-		Permissions:     o.Permissions,
-		ProposedLeaseID: o.ProposedLeaseID,
-		LeaseDuration:   o.LeaseDuration,
-		ExpiryOptions:   (*generated.PathExpiryOptions)(&expOpts),
-		ExpiresOn:       expireOnOpts.ExpiresOn,
-		Resource:        &resource,
+	if o.Expiry == nil {
+		createOpts.ExpiryOptions = nil
+		createOpts.ExpiresOn = nil
+	} else {
+		expOpts, expiresOn := o.Expiry.Format()
+		createOpts.ExpiryOptions = (*generated.PathExpiryOptions)(&expOpts)
+		createOpts.ExpiresOn = expiresOn
 	}
-	httpHeaders := o.HTTPHeaders.formatPathHTTPHeaders()
-	cpkOpts := &generated.CPKInfo{
-		EncryptionAlgorithm: (*generated.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
-		EncryptionKey:       o.CPKInfo.EncryptionKey,
-		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+	createOpts.ACL = o.ACL
+	createOpts.Group = o.Group
+	createOpts.Owner = o.Owner
+	createOpts.Umask = o.Umask
+	createOpts.Permissions = o.Permissions
+	createOpts.ProposedLeaseID = o.ProposedLeaseID
+	createOpts.LeaseDuration = o.LeaseDuration
+
+	var httpHeaders *generated.PathHTTPHeaders
+	var cpkOpts *generated.CPKInfo
+
+	if o.HTTPHeaders != nil {
+		httpHeaders = o.HTTPHeaders.formatPathHTTPHeaders()
+	}
+	if o.CPKInfo != nil {
+		cpkOpts = &generated.CPKInfo{
+			EncryptionAlgorithm: (*generated.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		}
 	}
 	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
@@ -80,7 +98,9 @@ func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	deleteOpts := &generated.PathClientDeleteOptions{
 		Recursive: &recursive,
 	}
-
+	if o == nil {
+		return nil, nil, deleteOpts
+	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
 }
@@ -97,24 +117,27 @@ func (o *RenameOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
 	resource := generated.PathResourceTypeFile
+	createOpts := &generated.PathClientCreateOptions{
+		Mode:     &mode,
+		Resource: &resource,
+	}
 	if o == nil {
-		o = &RenameOptions{}
+		return nil, nil, nil, createOpts
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	sourceModifiedAccessConditon := &generated.SourceModifiedAccessConditions{
-		SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
-		SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
-		SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
-		SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+	if o.SourceAccessConditions != nil {
+		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
+			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
+				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
+				SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
+				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
+				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+			}
+			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
+			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
+		}
 	}
-
-	createOpts := &generated.PathClientCreateOptions{
-		Mode:          &mode,
-		Resource:      &resource,
-		SourceLeaseID: o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID,
-	}
-
-	return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditon, createOpts
+	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
@@ -320,6 +343,42 @@ type CPKInfo struct {
 	EncryptionKeySHA256 *string
 }
 
+// CreationExpiryType defines values for Create() ExpiryType
+type CreationExpiryType interface {
+	Format() (generated.ExpiryOptions, *string)
+	notPubliclyImplementable()
+}
+
+// CreationExpiryTypeAbsolute defines the absolute time for the blob expiry
+type CreationExpiryTypeAbsolute time.Time
+
+// CreationExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry
+type CreationExpiryTypeRelativeToNow time.Duration
+
+// CreationExpiryTypeNever defines that the blob will be set to never expire
+type CreationExpiryTypeNever struct {
+	// empty struct since NeverExpire expiry type does not require expiry time
+}
+
+func (e CreationExpiryTypeAbsolute) Format() (generated.ExpiryOptions, *string) {
+	return generated.ExpiryOptionsAbsolute, to.Ptr(time.Time(e).UTC().Format(http.TimeFormat))
+
+}
+
+func (e CreationExpiryTypeAbsolute) notPubliclyImplementable() {}
+
+func (e CreationExpiryTypeRelativeToNow) Format() (generated.ExpiryOptions, *string) {
+	return generated.ExpiryOptionsRelativeToNow, to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10))
+}
+
+func (e CreationExpiryTypeRelativeToNow) notPubliclyImplementable() {}
+
+func (e CreationExpiryTypeNever) Format() (generated.ExpiryOptions, *string) {
+	return generated.ExpiryOptionsNeverExpire, nil
+}
+
+func (e CreationExpiryTypeNever) notPubliclyImplementable() {}
+
 // ACLFailedEntry contains the failed ACL entry (response model).
 type ACLFailedEntry = generated.ACLFailedEntry
 
@@ -329,20 +388,20 @@ type CPKScopeInfo blob.CPKScopeInfo
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
-// ExpiryType defines values for ExpiryType.
-type ExpiryType = exported.ExpiryType
+// SetExpiryType defines values for ExpiryType.
+type SetExpiryType = exported.SetExpiryType
 
-// ExpiryTypeAbsolute defines the absolute time for the expiry.
-type ExpiryTypeAbsolute = exported.ExpiryTypeAbsolute
+// SetExpiryTypeAbsolute defines the absolute time for the expiry.
+type SetExpiryTypeAbsolute = exported.SetExpiryTypeAbsolute
 
-// ExpiryTypeRelativeToNow defines the duration relative to now for the expiry.
-type ExpiryTypeRelativeToNow = exported.ExpiryTypeRelativeToNow
+// SetExpiryTypeRelativeToNow defines the duration relative to now for the expiry.
+type SetExpiryTypeRelativeToNow = exported.SetExpiryTypeRelativeToNow
 
-// ExpiryTypeRelativeToCreation defines the duration relative to creation for the expiry.
-type ExpiryTypeRelativeToCreation = exported.ExpiryTypeRelativeToCreation
+// SetExpiryTypeRelativeToCreation defines the duration relative to creation for the expiry.
+type SetExpiryTypeRelativeToCreation = exported.SetExpiryTypeRelativeToCreation
 
-// ExpiryTypeNever defines that will be set to never expire.
-type ExpiryTypeNever = exported.ExpiryTypeNever
+// SetExpiryTypeNever defines that will be set to never expire.
+type SetExpiryTypeNever = exported.SetExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions

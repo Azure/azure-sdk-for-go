@@ -187,7 +187,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
-	// TODO: format response
+	// TODO: format response + add acls, owner, group, permissions to it
 	return f.blobClient().GetProperties(ctx, opts)
 }
 
@@ -211,7 +211,7 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 }
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).
-func (f *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
+func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	expMode, opts := expiryType.Format(o)
 	return f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
 }

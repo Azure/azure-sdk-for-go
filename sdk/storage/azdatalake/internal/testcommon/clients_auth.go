@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
@@ -32,6 +33,23 @@ const (
 )
 
 var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
+
+var (
+	DatalakeContentType        = "my_type"
+	DatalakeContentDisposition = "my_disposition"
+	DatalakeCacheControl       = "control"
+	DatalakeContentLanguage    = "my_language"
+	DatalakeContentEncoding    = "my_encoding"
+)
+
+var BasicHeaders = file.HTTPHeaders{
+	ContentType:        &DatalakeContentType,
+	ContentDisposition: &DatalakeContentDisposition,
+	CacheControl:       &DatalakeCacheControl,
+	ContentMD5:         nil,
+	ContentLanguage:    &DatalakeContentLanguage,
+	ContentEncoding:    &DatalakeContentEncoding,
+}
 
 type TestAccountType string
 
@@ -105,12 +123,34 @@ func GetFilesystemClient(fsName string, t *testing.T, accountType TestAccountTyp
 	return filesystemClient, err
 }
 
+func GetFileClient(fsName, fName string, t *testing.T, accountType TestAccountType, options *file.ClientOptions) (*file.Client, error) {
+	if options == nil {
+		options = &file.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	cred, err := GetGenericSharedKeyCredential(accountType)
+	if err != nil {
+		return nil, err
+	}
+
+	fileClient, err := file.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".dfs.core.windows.net/"+fsName+"/"+fName, cred, options)
+
+	return fileClient, err
+}
+
 func ServiceGetFilesystemClient(filesystemName string, s *service.Client) *filesystem.Client {
 	return s.NewFilesystemClient(filesystemName)
 }
 
 func DeleteFilesystem(ctx context.Context, _require *require.Assertions, filesystemClient *filesystem.Client) {
 	_, err := filesystemClient.Delete(ctx, nil)
+	_require.Nil(err)
+}
+
+func DeleteFile(ctx context.Context, _require *require.Assertions, fileClient *file.Client) {
+	_, err := fileClient.Delete(ctx, nil)
 	_require.Nil(err)
 }
 

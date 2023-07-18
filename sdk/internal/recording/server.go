@@ -327,6 +327,9 @@ func StartTestProxy(options *RecordingOptions) (*TestProxyInstance, error) {
 	return &TestProxyInstance{Cmd: cmd, Options: options}, nil
 }
 
+// NOTE: The process will be killed if the user hits ctrl-c mid-way through tests, as go will
+// kill child processes when the main process does not exit cleanly. No os.Interrupt handlers
+// need to be added after starting the proxy server in tests.
 func StopTestProxy(proxyInstance *TestProxyInstance) error {
 	if proxyInstance == nil || proxyInstance.Cmd == nil || proxyInstance.Cmd.Process == nil {
 		return nil

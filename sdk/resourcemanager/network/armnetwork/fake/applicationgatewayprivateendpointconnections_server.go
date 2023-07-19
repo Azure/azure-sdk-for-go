@@ -42,19 +42,24 @@ type ApplicationGatewayPrivateEndpointConnectionsServer struct {
 }
 
 // NewApplicationGatewayPrivateEndpointConnectionsServerTransport creates a new instance of ApplicationGatewayPrivateEndpointConnectionsServerTransport with the provided implementation.
-// The returned ApplicationGatewayPrivateEndpointConnectionsServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayPrivateEndpointConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned ApplicationGatewayPrivateEndpointConnectionsServerTransport instance is connected to an instance of armnetwork.ApplicationGatewayPrivateEndpointConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewApplicationGatewayPrivateEndpointConnectionsServerTransport(srv *ApplicationGatewayPrivateEndpointConnectionsServer) *ApplicationGatewayPrivateEndpointConnectionsServerTransport {
-	return &ApplicationGatewayPrivateEndpointConnectionsServerTransport{srv: srv}
+	return &ApplicationGatewayPrivateEndpointConnectionsServerTransport{
+		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse]](),
+	}
 }
 
 // ApplicationGatewayPrivateEndpointConnectionsServerTransport connects instances of armnetwork.ApplicationGatewayPrivateEndpointConnectionsClient to instances of ApplicationGatewayPrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewApplicationGatewayPrivateEndpointConnectionsServerTransport instead.
 type ApplicationGatewayPrivateEndpointConnectionsServerTransport struct {
 	srv          *ApplicationGatewayPrivateEndpointConnectionsServer
-	beginDelete  *azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientListResponse]
-	beginUpdate  *azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse]
+	beginDelete  *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationGatewayPrivateEndpointConnectionsServerTransport.
@@ -92,7 +97,8 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchBe
 	if a.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if a.beginDelete == nil {
+	beginDelete := a.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -115,19 +121,21 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchBe
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginDelete = &respr
+		beginDelete = &respr
+		a.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginDelete) {
-		a.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		a.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -174,7 +182,8 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchNe
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if a.newListPager == nil {
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -190,20 +199,22 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchNe
 			return nil, err
 		}
 		resp := a.srv.NewListPager(resourceGroupNameUnescaped, applicationGatewayNameUnescaped, nil)
-		a.newListPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ApplicationGatewayPrivateEndpointConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListPager) {
-		a.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -212,7 +223,8 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchBe
 	if a.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if a.beginUpdate == nil {
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/applicationGateways/(?P<applicationGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,19 +251,21 @@ func (a *ApplicationGatewayPrivateEndpointConnectionsServerTransport) dispatchBe
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginUpdate = &respr
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginUpdate) {
-		a.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
 	}
 
 	return resp, nil

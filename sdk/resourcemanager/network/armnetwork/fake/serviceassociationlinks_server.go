@@ -29,8 +29,8 @@ type ServiceAssociationLinksServer struct {
 }
 
 // NewServiceAssociationLinksServerTransport creates a new instance of ServiceAssociationLinksServerTransport with the provided implementation.
-// The returned ServiceAssociationLinksServerTransport instance is connected to an instance of armnetwork.ServiceAssociationLinksClient by way of the
-// undefined.Transporter field.
+// The returned ServiceAssociationLinksServerTransport instance is connected to an instance of armnetwork.ServiceAssociationLinksClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServiceAssociationLinksServerTransport(srv *ServiceAssociationLinksServer) *ServiceAssociationLinksServerTransport {
 	return &ServiceAssociationLinksServerTransport{srv: srv}
 }

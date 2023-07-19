@@ -46,20 +46,26 @@ type DscpConfigurationServer struct {
 }
 
 // NewDscpConfigurationServerTransport creates a new instance of DscpConfigurationServerTransport with the provided implementation.
-// The returned DscpConfigurationServerTransport instance is connected to an instance of armnetwork.DscpConfigurationClient by way of the
-// undefined.Transporter field.
+// The returned DscpConfigurationServerTransport instance is connected to an instance of armnetwork.DscpConfigurationClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDscpConfigurationServerTransport(srv *DscpConfigurationServer) *DscpConfigurationServerTransport {
-	return &DscpConfigurationServerTransport{srv: srv}
+	return &DscpConfigurationServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]](),
+		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse]](),
+	}
 }
 
 // DscpConfigurationServerTransport connects instances of armnetwork.DscpConfigurationClient to instances of DscpConfigurationServer.
 // Don't use this type directly, use NewDscpConfigurationServerTransport instead.
 type DscpConfigurationServerTransport struct {
 	srv                 *DscpConfigurationServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.DscpConfigurationClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.DscpConfigurationClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]
-	newListAllPager     *azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]]
+	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for DscpConfigurationServerTransport.
@@ -99,7 +105,8 @@ func (d *DscpConfigurationServerTransport) dispatchBeginCreateOrUpdate(req *http
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/dscpConfigurations/(?P<dscpConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -122,19 +129,21 @@ func (d *DscpConfigurationServerTransport) dispatchBeginCreateOrUpdate(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -144,7 +153,8 @@ func (d *DscpConfigurationServerTransport) dispatchBeginDelete(req *http.Request
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/dscpConfigurations/(?P<dscpConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -163,19 +173,21 @@ func (d *DscpConfigurationServerTransport) dispatchBeginDelete(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -218,7 +230,8 @@ func (d *DscpConfigurationServerTransport) dispatchNewListPager(req *http.Reques
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/dscpConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -230,20 +243,22 @@ func (d *DscpConfigurationServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, err
 		}
 		resp := d.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armnetwork.DscpConfigurationClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.DscpConfigurationClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -252,7 +267,8 @@ func (d *DscpConfigurationServerTransport) dispatchNewListAllPager(req *http.Req
 	if d.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if d.newListAllPager == nil {
+	newListAllPager := d.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/dscpConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -260,20 +276,22 @@ func (d *DscpConfigurationServerTransport) dispatchNewListAllPager(req *http.Req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListAllPager(nil)
-		d.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAllPager, req, func(page *armnetwork.DscpConfigurationClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		d.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.DscpConfigurationClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAllPager) {
-		d.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		d.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

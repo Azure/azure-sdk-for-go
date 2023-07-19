@@ -52,7 +52,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			key := struct{}{}
 			ctx := context.WithValue(context.Background(), key, true)
-			srv := mockSTS{tokenRequestCallback: func(r *http.Request) {
+			srv := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
 				if c := r.Context(); c == nil {
 					t.Fatal("AcquireTokenOnBehalfOf received no Context")
 				} else if v := c.Value(key); v == nil || !v.(bool) {
@@ -70,6 +70,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 				if test.sendX5C {
 					validateX5C(t, certs)(r)
 				}
+				return nil
 			}}
 			cred, err := test.ctor(&srv)
 			if err != nil {

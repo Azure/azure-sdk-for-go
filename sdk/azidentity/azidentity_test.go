@@ -462,10 +462,11 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 				sts := mockSTS{
 					tenant: test.tenant,
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if actual := strings.Split(r.URL.Path, "/")[1]; actual != test.expected {
 							t.Fatalf("expected tenant %q, got %q", test.expected, actual)
 						}
+						return nil
 					},
 				}
 				c, err := subtest.ctor(policy.ClientOptions{Transport: &sts})
@@ -598,7 +599,7 @@ func TestClaims(t *testing.T) {
 				disableCP1 = d
 				reqs := 0
 				sts := mockSTS{
-					tokenRequestCallback: func(r *http.Request) {
+					tokenRequestCallback: func(r *http.Request) *http.Response {
 						if err := r.ParseForm(); err != nil {
 							t.Error(err)
 						}
@@ -615,6 +616,7 @@ func TestClaims(t *testing.T) {
 								t.Fatalf(`unexpected claims "%v"`, actual)
 							}
 						}
+						return nil
 					},
 				}
 				o := azcore.ClientOptions{Transport: &sts}

@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* One invocation of `AzureCLICredential.GetToken()` and `OnBehalfOfCredential.GetToken()`
+  can no longer make two authentication attempts
 
 ### Other Changes
 

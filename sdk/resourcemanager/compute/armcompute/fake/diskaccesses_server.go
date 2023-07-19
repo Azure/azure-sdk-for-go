@@ -70,24 +70,34 @@ type DiskAccessesServer struct {
 }
 
 // NewDiskAccessesServerTransport creates a new instance of DiskAccessesServerTransport with the provided implementation.
-// The returned DiskAccessesServerTransport instance is connected to an instance of armcompute.DiskAccessesClient by way of the
-// undefined.Transporter field.
+// The returned DiskAccessesServerTransport instance is connected to an instance of armcompute.DiskAccessesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskAccessesServerTransport(srv *DiskAccessesServer) *DiskAccessesServerTransport {
-	return &DiskAccessesServerTransport{srv: srv}
+	return &DiskAccessesServerTransport{
+		srv:                                    srv,
+		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]](),
+		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]](),
+		beginDeleteAPrivateEndpointConnection:  newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]](),
+		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]](),
+		newListPrivateEndpointConnectionsPager: newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]](),
+		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]](),
+		beginUpdateAPrivateEndpointConnection:  newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]](),
+	}
 }
 
 // DiskAccessesServerTransport connects instances of armcompute.DiskAccessesClient to instances of DiskAccessesServer.
 // Don't use this type directly, use NewDiskAccessesServerTransport instead.
 type DiskAccessesServerTransport struct {
 	srv                                    *DiskAccessesServer
-	beginCreateOrUpdate                    *azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]
-	beginDelete                            *azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]
-	beginDeleteAPrivateEndpointConnection  *azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]
-	newListPager                           *azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]
-	newListByResourceGroupPager            *azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]
-	newListPrivateEndpointConnectionsPager *azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]
-	beginUpdate                            *azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]
-	beginUpdateAPrivateEndpointConnection  *azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]
+	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]]
+	beginDelete                            *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]]
+	beginDeleteAPrivateEndpointConnection  *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]]
+	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]]
+	newListPrivateEndpointConnectionsPager *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]]
+	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]]
+	beginUpdateAPrivateEndpointConnection  *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskAccessesServerTransport.
@@ -139,7 +149,8 @@ func (d *DiskAccessesServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -162,19 +173,21 @@ func (d *DiskAccessesServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -184,7 +197,8 @@ func (d *DiskAccessesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -203,19 +217,21 @@ func (d *DiskAccessesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -225,7 +241,8 @@ func (d *DiskAccessesServerTransport) dispatchBeginDeleteAPrivateEndpointConnect
 	if d.srv.BeginDeleteAPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAPrivateEndpointConnection not implemented")}
 	}
-	if d.beginDeleteAPrivateEndpointConnection == nil {
+	beginDeleteAPrivateEndpointConnection := d.beginDeleteAPrivateEndpointConnection.get(req)
+	if beginDeleteAPrivateEndpointConnection == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,19 +265,21 @@ func (d *DiskAccessesServerTransport) dispatchBeginDeleteAPrivateEndpointConnect
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDeleteAPrivateEndpointConnection = &respr
+		beginDeleteAPrivateEndpointConnection = &respr
+		d.beginDeleteAPrivateEndpointConnection.add(req, beginDeleteAPrivateEndpointConnection)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDeleteAPrivateEndpointConnection, req)
+	resp, err := server.PollerResponderNext(beginDeleteAPrivateEndpointConnection, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDeleteAPrivateEndpointConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDeleteAPrivateEndpointConnection) {
-		d.beginDeleteAPrivateEndpointConnection = nil
+	if !server.PollerResponderMore(beginDeleteAPrivateEndpointConnection) {
+		d.beginDeleteAPrivateEndpointConnection.remove(req)
 	}
 
 	return resp, nil
@@ -373,7 +392,8 @@ func (d *DiskAccessesServerTransport) dispatchNewListPager(req *http.Request) (*
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -381,20 +401,22 @@ func (d *DiskAccessesServerTransport) dispatchNewListPager(req *http.Request) (*
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListPager(nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armcompute.DiskAccessesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.DiskAccessesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -403,7 +425,8 @@ func (d *DiskAccessesServerTransport) dispatchNewListByResourceGroupPager(req *h
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if d.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -415,20 +438,22 @@ func (d *DiskAccessesServerTransport) dispatchNewListByResourceGroupPager(req *h
 			return nil, err
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		d.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourceGroupPager, req, func(page *armcompute.DiskAccessesClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.DiskAccessesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourceGroupPager) {
-		d.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -437,7 +462,8 @@ func (d *DiskAccessesServerTransport) dispatchNewListPrivateEndpointConnectionsP
 	if d.srv.NewListPrivateEndpointConnectionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateEndpointConnectionsPager not implemented")}
 	}
-	if d.newListPrivateEndpointConnectionsPager == nil {
+	newListPrivateEndpointConnectionsPager := d.newListPrivateEndpointConnectionsPager.get(req)
+	if newListPrivateEndpointConnectionsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -453,20 +479,22 @@ func (d *DiskAccessesServerTransport) dispatchNewListPrivateEndpointConnectionsP
 			return nil, err
 		}
 		resp := d.srv.NewListPrivateEndpointConnectionsPager(resourceGroupNameUnescaped, diskAccessNameUnescaped, nil)
-		d.newListPrivateEndpointConnectionsPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPrivateEndpointConnectionsPager, req, func(page *armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse, createLink func() string) {
+		newListPrivateEndpointConnectionsPager = &resp
+		d.newListPrivateEndpointConnectionsPager.add(req, newListPrivateEndpointConnectionsPager)
+		server.PagerResponderInjectNextLinks(newListPrivateEndpointConnectionsPager, req, func(page *armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPrivateEndpointConnectionsPager, req)
+	resp, err := server.PagerResponderNext(newListPrivateEndpointConnectionsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPrivateEndpointConnectionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPrivateEndpointConnectionsPager) {
-		d.newListPrivateEndpointConnectionsPager = nil
+	if !server.PagerResponderMore(newListPrivateEndpointConnectionsPager) {
+		d.newListPrivateEndpointConnectionsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -475,7 +503,8 @@ func (d *DiskAccessesServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	if d.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if d.beginUpdate == nil {
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -498,19 +527,21 @@ func (d *DiskAccessesServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginUpdate = &respr
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginUpdate) {
-		d.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -520,7 +551,8 @@ func (d *DiskAccessesServerTransport) dispatchBeginUpdateAPrivateEndpointConnect
 	if d.srv.BeginUpdateAPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAPrivateEndpointConnection not implemented")}
 	}
-	if d.beginUpdateAPrivateEndpointConnection == nil {
+	beginUpdateAPrivateEndpointConnection := d.beginUpdateAPrivateEndpointConnection.get(req)
+	if beginUpdateAPrivateEndpointConnection == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskAccesses/(?P<diskAccessName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -547,19 +579,21 @@ func (d *DiskAccessesServerTransport) dispatchBeginUpdateAPrivateEndpointConnect
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginUpdateAPrivateEndpointConnection = &respr
+		beginUpdateAPrivateEndpointConnection = &respr
+		d.beginUpdateAPrivateEndpointConnection.add(req, beginUpdateAPrivateEndpointConnection)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginUpdateAPrivateEndpointConnection, req)
+	resp, err := server.PollerResponderNext(beginUpdateAPrivateEndpointConnection, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdateAPrivateEndpointConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginUpdateAPrivateEndpointConnection) {
-		d.beginUpdateAPrivateEndpointConnection = nil
+	if !server.PollerResponderMore(beginUpdateAPrivateEndpointConnection) {
+		d.beginUpdateAPrivateEndpointConnection.remove(req)
 	}
 
 	return resp, nil

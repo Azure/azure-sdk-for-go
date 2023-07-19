@@ -29,17 +29,20 @@ type GallerySharingProfileServer struct {
 }
 
 // NewGallerySharingProfileServerTransport creates a new instance of GallerySharingProfileServerTransport with the provided implementation.
-// The returned GallerySharingProfileServerTransport instance is connected to an instance of armcompute.GallerySharingProfileClient by way of the
-// undefined.Transporter field.
+// The returned GallerySharingProfileServerTransport instance is connected to an instance of armcompute.GallerySharingProfileClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGallerySharingProfileServerTransport(srv *GallerySharingProfileServer) *GallerySharingProfileServerTransport {
-	return &GallerySharingProfileServerTransport{srv: srv}
+	return &GallerySharingProfileServerTransport{
+		srv:         srv,
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]](),
+	}
 }
 
 // GallerySharingProfileServerTransport connects instances of armcompute.GallerySharingProfileClient to instances of GallerySharingProfileServer.
 // Don't use this type directly, use NewGallerySharingProfileServerTransport instead.
 type GallerySharingProfileServerTransport struct {
 	srv         *GallerySharingProfileServer
-	beginUpdate *azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GallerySharingProfileServerTransport.
@@ -71,7 +74,8 @@ func (g *GallerySharingProfileServerTransport) dispatchBeginUpdate(req *http.Req
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if g.beginUpdate == nil {
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/share`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -94,19 +98,21 @@ func (g *GallerySharingProfileServerTransport) dispatchBeginUpdate(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginUpdate = &respr
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginUpdate) {
-		g.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
 	}
 
 	return resp, nil

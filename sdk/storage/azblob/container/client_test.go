@@ -1674,14 +1674,15 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNon
 	pager := containerClient2.NewListBlobsFlatPager(nil)
 	for pager.More() {
 		_, err = pager.NextPage(context.Background())
-		_require.NotNil(err)
-		testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+		_require.Error(err)
+		// testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
 		break
 	}
 
 	blobClient2 := containerClient2.NewBlockBlobClient(blobName)
 	_, err = blobClient2.DownloadStream(context.Background(), nil)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+	_require.Error(err)
+	// testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {

@@ -109,13 +109,6 @@ func ExampleClient_GetChatCompletions_functions() {
 		// TODO: handle error
 	}
 
-	// some JSON schema keys
-	const jsonSchemaType = "type"
-	const jsonSchemaDesc = "description"
-	const jsonSchemaEnum = "enum"
-	const jsonSchemaRequired = "required"
-	const jsonSchemaProps = "properties"
-
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Model: &modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
@@ -133,16 +126,16 @@ func ExampleClient_GetChatCompletions_functions() {
 				Description: to.Ptr("Get the current weather in a given location"),
 
 				Parameters: map[string]any{
-					jsonSchemaRequired: []string{"location"},
-					jsonSchemaType:     "object",
-					jsonSchemaProps: map[string]any{
+					"required": []string{"location"},
+					"type":     "object",
+					"properties": map[string]any{
 						"location": map[string]any{
-							jsonSchemaType: "string",
-							jsonSchemaDesc: "The city and state, e.g. San Francisco, CA",
+							"type":        "string",
+							"description": "The city and state, e.g. San Francisco, CA",
 						},
 						"unit": map[string]any{
-							jsonSchemaType: "string",
-							jsonSchemaEnum: []string{"celsius", "fahrenheit"},
+							"type": "string",
+							"enum": []string{"celsius", "fahrenheit"},
 						},
 					},
 				},

@@ -34,16 +34,17 @@ func ExampleClient_GetCompletions() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
+		Prompt:       []string{"What is Azure OpenAI, in 20 words or less"},
+		MaxTokens:    to.Ptr(int32(2048)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -77,16 +78,17 @@ func ExampleClient_GetCompletionsStream() {
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less?"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
+		Prompt:       []string{"What is Azure OpenAI, in 20 words or less?"},
+		MaxTokens:    to.Ptr(int32(2048)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

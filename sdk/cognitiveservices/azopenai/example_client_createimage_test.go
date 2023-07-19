@@ -33,7 +33,7 @@ func ExampleClient_CreateImage() {
 		// TODO: handle error
 	}
 
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, "", nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error

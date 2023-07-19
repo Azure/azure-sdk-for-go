@@ -67,7 +67,7 @@ func (client *Client) azureBatchImageGenerationInternal(ctx context.Context, bod
 // azureBatchImageGenerationInternalCreateRequest creates the AzureBatchImageGenerationInternal request.
 func (client *Client) azureBatchImageGenerationInternalCreateRequest(ctx context.Context, body ImageGenerationOptions, options *beginAzureBatchImageGenerationOptions) (*policy.Request, error) {
 	urlPath := "/images/generations:submit"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeploymentID(body)))
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
 func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeploymentID(body)))
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +158,7 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 // getCompletionsCreateRequest creates the GetCompletions request.
 func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeploymentID(body)))
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +207,7 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeploymentID(body)))
 	if err != nil {
 		return nil, err
 	}

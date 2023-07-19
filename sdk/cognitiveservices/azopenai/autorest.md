@@ -172,7 +172,9 @@ directive:
   # allow interception of formatting the URL path
   - from: client.go
     where: $
-    transform: return $.replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath)");
+    transform: |
+      return $
+        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeploymentID(body))");
 
   # Some ImageGenerations hackery to represent the ImageLocation/ImagePayload polymorphism.
   # - Remove the auto-generated ImageGenerationsDataItem.
@@ -276,4 +278,20 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/runtime\.NewResponseError/sg, "client.newError");
+
+  #
+  # rename `Model` to `DeploymentID`
+  #
+  - from: models.go
+    where: $
+    transform: |
+      return $
+        .replace(/\/\/ The model name.*?Model \*string/sg, "// DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeploymentID string");
+
+  - from: models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/populate\(objectMap, "model", (c|e).Model\)/g, 'populate(objectMap, "model", &$1.DeploymentID)')
+        .replace(/err = unpopulate\(val, "Model", &(c|e).Model\)/g, 'err = unpopulate(val, "Model", &$1.DeploymentID)');
 ```

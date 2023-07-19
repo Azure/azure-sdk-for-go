@@ -9,14 +9,14 @@ import (
 )
 
 func ExampleNewClientForOpenAI() {
-	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
-	// To connect to an Azure OpenAI endpoint, use azopenai.NewClient() or azopenai.NewClientWithyKeyCredential.
 	keyCredential, err := azopenai.NewKeyCredential("<OpenAI-APIKey>")
 
 	if err != nil {
 		// TODO: handle error
 	}
 
+	// NOTE: this constructor creates a client that connects to the public OpenAI endpoint.
+	// To connect to an Azure OpenAI endpoint, use azopenai.NewClient() or azopenai.NewClientWithyKeyCredential.
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
 
 	if err != nil {
@@ -27,8 +27,6 @@ func ExampleNewClientForOpenAI() {
 }
 
 func ExampleNewClient() {
-	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
-	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
@@ -36,6 +34,9 @@ func ExampleNewClient() {
 	}
 
 	modelDeploymentID := "model deployment ID"
+
+	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
+	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, modelDeploymentID, nil)
 
 	if err != nil {
@@ -46,8 +47,6 @@ func ExampleNewClient() {
 }
 
 func ExampleNewClientWithKeyCredential() {
-	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
-	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	keyCredential, err := azopenai.NewKeyCredential("<Azure-OpenAI-APIKey>")
 
 	if err != nil {
@@ -57,6 +56,9 @@ func ExampleNewClientWithKeyCredential() {
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
 	modelDeploymentID := "model deployment ID"
+
+	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
+	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
 	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, modelDeploymentID, nil)
 
 	if err != nil {

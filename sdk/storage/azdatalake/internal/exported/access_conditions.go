@@ -12,11 +12,20 @@ type AccessConditions struct {
 	LeaseAccessConditions    *LeaseAccessConditions
 }
 
+// SourceAccessConditions identifies container-specific access conditions which you optionally set.
+type SourceAccessConditions struct {
+	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	SourceLeaseAccessConditions    *LeaseAccessConditions
+}
+
 // LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = generated.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = generated.ModifiedAccessConditions
+
+// SourceModifiedAccessConditions contains a group of parameters for specifying access conditions of a source.
+type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatContainerAccessConditions(b *AccessConditions) *container.AccessConditions {

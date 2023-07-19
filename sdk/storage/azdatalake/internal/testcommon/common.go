@@ -23,6 +23,10 @@ func GenerateFilesystemName(testName string) string {
 	return FilesystemPrefix + GenerateEntityName(testName)
 }
 
+func GenerateFileName(testName string) string {
+	return FilePrefix + GenerateEntityName(testName)
+}
+
 func GenerateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
@@ -62,7 +66,7 @@ func GetRequiredEnv(name string) (string, error) {
 	}
 }
 
-func ValidateBlobErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
+func ValidateErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
 	_require.NotNil(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)

@@ -15,23 +15,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
-// ExpiryType defines values for ExpiryType
-type ExpiryType interface {
+// SetExpiryType defines values for ExpiryType
+type SetExpiryType interface {
 	Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions)
 	notPubliclyImplementable()
 }
 
-// ExpiryTypeAbsolute defines the absolute time for the blob expiry
-type ExpiryTypeAbsolute time.Time
+// SetExpiryTypeAbsolute defines the absolute time for the blob expiry
+type SetExpiryTypeAbsolute time.Time
 
-// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry
-type ExpiryTypeRelativeToNow time.Duration
+// SetExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry
+type SetExpiryTypeRelativeToNow time.Duration
 
-// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry
-type ExpiryTypeRelativeToCreation time.Duration
+// SetExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry
+type SetExpiryTypeRelativeToCreation time.Duration
 
-// ExpiryTypeNever defines that the blob will be set to never expire
-type ExpiryTypeNever struct {
+// SetExpiryTypeNever defines that the blob will be set to never expire
+type SetExpiryTypeNever struct {
 	// empty struct since NeverExpire expiry type does not require expiry time
 }
 
@@ -40,32 +40,32 @@ type SetExpiryOptions struct {
 	// placeholder for future options
 }
 
-func (e ExpiryTypeAbsolute) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
+func (e SetExpiryTypeAbsolute) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
 	return generated.ExpiryOptionsAbsolute, &generated.PathClientSetExpiryOptions{
 		ExpiresOn: to.Ptr(time.Time(e).UTC().Format(http.TimeFormat)),
 	}
 }
 
-func (e ExpiryTypeAbsolute) notPubliclyImplementable() {}
+func (e SetExpiryTypeAbsolute) notPubliclyImplementable() {}
 
-func (e ExpiryTypeRelativeToNow) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
+func (e SetExpiryTypeRelativeToNow) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
 	return generated.ExpiryOptionsRelativeToNow, &generated.PathClientSetExpiryOptions{
 		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
 	}
 }
 
-func (e ExpiryTypeRelativeToNow) notPubliclyImplementable() {}
+func (e SetExpiryTypeRelativeToNow) notPubliclyImplementable() {}
 
-func (e ExpiryTypeRelativeToCreation) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
+func (e SetExpiryTypeRelativeToCreation) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
 	return generated.ExpiryOptionsRelativeToCreation, &generated.PathClientSetExpiryOptions{
 		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
 	}
 }
 
-func (e ExpiryTypeRelativeToCreation) notPubliclyImplementable() {}
+func (e SetExpiryTypeRelativeToCreation) notPubliclyImplementable() {}
 
-func (e ExpiryTypeNever) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
-	return generated.ExpiryOptionsNeverExpire, nil
+func (e SetExpiryTypeNever) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.PathClientSetExpiryOptions) {
+	return generated.ExpiryOptionsNeverExpire, &generated.PathClientSetExpiryOptions{}
 }
 
-func (e ExpiryTypeNever) notPubliclyImplementable() {}
+func (e SetExpiryTypeNever) notPubliclyImplementable() {}

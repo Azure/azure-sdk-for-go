@@ -307,7 +307,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge
 		_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled, Days: &days}})
 		_require.NotNil(err)
 
-		testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+		testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 	}
 }
 
@@ -321,7 +321,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &enabled}})
 	_require.NotNil(err)
 
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
@@ -495,7 +495,7 @@ func (s *ServiceRecordedTestsSuite) TestSASFilesystemClient() {
 
 	_, err = fsClient2.Create(context.Background(), &filesystem.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.AuthorizationFailure)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSASFilesystem2() {
@@ -526,7 +526,7 @@ func (s *ServiceRecordedTestsSuite) TestSASFilesystem2() {
 	// filesystem metadata and properties can't be read or written with SAS auth
 	_, err = fsClient1.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.AuthorizationFailure)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 
 	start = time.Now().Add(-5 * time.Minute).UTC()
 	opts = filesystem.GetSASURLOptions{StartTime: &start}
@@ -540,7 +540,7 @@ func (s *ServiceRecordedTestsSuite) TestSASFilesystem2() {
 	// filesystems can't be created, deleted, or listed with SAS auth
 	_, err = fsClient2.Create(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, datalakeerror.AuthorizationFailure)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
 func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {

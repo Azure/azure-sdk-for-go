@@ -8,31 +8,7 @@ package file
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-)
-
-type ResourceType = generated.PathResourceType
-
-// TODO: consider the possibility of not exposing this and just pass it under the hood
-const (
-	ResourceTypeFile      ResourceType = generated.PathResourceTypeFile
-	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
-)
-
-type RenameMode = generated.PathRenameMode
-
-// TODO: consider the possibility of not exposing this and just pass it under the hood
-const (
-	RenameModeLegacy RenameMode = generated.PathRenameModeLegacy
-	RenameModePosix  RenameMode = generated.PathRenameModePosix
-)
-
-type SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveMode
-
-const (
-	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeSet
-	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeModify
-	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeRemove
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 )
 
 type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
@@ -40,4 +16,47 @@ type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
 const (
 	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
 	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
+)
+
+// responses models:
+
+type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode
+
+const (
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeLocked
+)
+
+type CopyStatusType = blob.CopyStatusType
+
+const (
+	CopyStatusTypePending CopyStatusType = blob.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = blob.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = blob.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = blob.CopyStatusTypeFailed
+)
+
+type LeaseDurationType = lease.DurationType
+
+const (
+	LeaseDurationTypeInfinite LeaseDurationType = lease.DurationTypeInfinite
+	LeaseDurationTypeFixed    LeaseDurationType = lease.DurationTypeFixed
+)
+
+type LeaseStateType = lease.StateType
+
+const (
+	LeaseStateTypeAvailable LeaseStateType = lease.StateTypeAvailable
+	LeaseStateTypeLeased    LeaseStateType = lease.StateTypeLeased
+	LeaseStateTypeExpired   LeaseStateType = lease.StateTypeExpired
+	LeaseStateTypeBreaking  LeaseStateType = lease.StateTypeBreaking
+	LeaseStateTypeBroken    LeaseStateType = lease.StateTypeBroken
+)
+
+type LeaseStatusType = lease.StatusType
+
+const (
+	LeaseStatusTypeLocked   LeaseStatusType = lease.StatusTypeLocked
+	LeaseStatusTypeUnlocked LeaseStatusType = lease.StatusTypeUnlocked
 )

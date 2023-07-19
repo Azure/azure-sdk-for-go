@@ -55,13 +55,7 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
-	//Make sure the permission characters are in the correct order
-	perms, err := parseBlobPermissions(v.Permissions)
-	if err != nil {
-		return QueryParameters{}, err
-	}
-	v.Permissions = perms.String()
-
+	// Parse the resource
 	resource := "c"
 	if !v.SnapshotTime.IsZero() {
 		resource = "bs"
@@ -74,6 +68,21 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		// do nothing
 	} else {
 		resource = "b"
+	}
+
+	// make sure the permission characters are in the correct order
+	if resource == "c" {
+		perms, err := parseContainerPermissions(v.Permissions)
+		if err != nil {
+			return QueryParameters{}, err
+		}
+		v.Permissions = perms.String()
+	} else {
+		perms, err := parseBlobPermissions(v.Permissions)
+		if err != nil {
+			return QueryParameters{}, err
+		}
+		v.Permissions = perms.String()
 	}
 
 	if v.Version == "" {

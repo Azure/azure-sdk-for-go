@@ -422,11 +422,9 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	}, nil
 }
 
-// FilterBlobs operation finds all blobs in the storage account whose tags match a given search expression.
-// Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
+// FilterBlobs operation finds all blobs in the container whose tags match a given search expression.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
-// To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (c *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
 	containerClientFilterBlobsOptions := o.format()
 	resp, err := c.generated().FilterBlobs(ctx, where, containerClientFilterBlobsOptions)

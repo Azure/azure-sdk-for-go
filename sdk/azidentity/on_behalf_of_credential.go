@@ -82,7 +82,8 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 		return nil, err
 	}
 	obo := OnBehalfOfCredential{assertion: userAssertion, client: c}
-	obo.s = newSyncer(credNameOBO, tenantID, obo.requestToken, obo.requestToken, syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants})
+	// this credential doesn't have a silent auth method because MSAL implements that in AcquireTokenOnBehalfOf; GetToken should just call that method, once
+	obo.s = newSyncer(credNameOBO, tenantID, obo.requestToken, nil, syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants})
 	return &obo, nil
 }
 

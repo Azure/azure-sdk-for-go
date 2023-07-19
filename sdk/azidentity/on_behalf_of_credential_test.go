@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -90,5 +91,30 @@ func TestOnBehalfOfCredential(t *testing.T) {
 				t.Error("ExpiresOn isn't UTC")
 			}
 		})
+	}
+}
+
+func TestOnBehalfOfCredential_Error(t *testing.T) {
+	// GetToken shouldn't send a second token request after the first fails
+	tokenReqs := 0
+	cred, err := NewOnBehalfOfCredentialWithSecret("tenant", "clientID", "assertion", "secret", &OnBehalfOfCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(*http.Request) *http.Response {
+					tokenReqs++
+					return &http.Response{Body: io.NopCloser(strings.NewReader("")), StatusCode: 400}
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), testTRO)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if tokenReqs != 1 {
+		t.Fatalf("expected 1 token request, got %d", tokenReqs)
 	}
 }

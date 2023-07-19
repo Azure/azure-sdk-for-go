@@ -46,21 +46,24 @@ func newSyncer(name, tenant string, reqToken, silentAuth authFn, opts syncerOpti
 
 // GetToken ensures that only one goroutine authenticates at a time
 func (s *syncer) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	at := azcore.AccessToken{}
 	if len(opts.Scopes) == 0 {
-		return azcore.AccessToken{}, errors.New(s.name + ".GetToken() requires at least one scope")
+		return at, errors.New(s.name + ".GetToken() requires at least one scope")
 	}
 	// we don't resolve the tenant for managed identities because they can acquire tokens only from their home tenants
 	if s.name != credNameManagedIdentity {
 		tenant, err := s.resolveTenant(opts.TenantID)
 		if err != nil {
-			return azcore.AccessToken{}, err
+			return at, err
 		}
 		opts.TenantID = tenant
 	}
-	at, err := s.silent(ctx, opts)
-	if err != nil {
+	var err error
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.silent == nil {
+		at, err = s.reqToken(ctx, opts)
+	} else if at, err = s.silent(ctx, opts); err != nil {
 		// cache miss; request a new token
 		at, err = s.reqToken(ctx, opts)
 	}

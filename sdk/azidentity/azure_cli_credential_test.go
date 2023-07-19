@@ -29,6 +29,28 @@ var (
 	}
 )
 
+func TestAzureCLICredential_Error(t *testing.T) {
+	// GetToken shouldn't invoke the CLI a second time after a failure
+	authNs := 0
+	o := AzureCLICredentialOptions{
+		tokenProvider: func(context.Context, string, string) ([]byte, error) {
+			authNs++
+			return nil, errors.New("it didn't work")
+		},
+	}
+	cred, err := NewAzureCLICredential(&o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), testTRO)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if authNs != 1 {
+		t.Fatalf("expected 1 authN, got %d", authNs)
+	}
+}
+
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	options := AzureCLICredentialOptions{}
 	options.tokenProvider = mockCLITokenProviderSuccess

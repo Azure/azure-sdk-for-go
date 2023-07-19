@@ -69,7 +69,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 		credNameAzureCLI,
 		cp.TenantID,
 		c.requestToken,
-		c.requestToken,
+		nil, // this credential doesn't have a silent auth method because the CLI handles caching
 		syncerOptions{AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants},
 	)
 	return &c, nil

@@ -88,11 +88,13 @@ const fakeAPIKey = "redacted"
 
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
+		azureOpenAI.Azure = true
 		azureOpenAI.Endpoint = fakeEndpoint
 		azureOpenAI.APIKey = fakeAPIKey
 		openAI.APIKey = fakeAPIKey
 		openAI.Endpoint = fakeEndpoint
 
+		azureOpenAICanary.Azure = true
 		azureOpenAICanary.Endpoint = fakeEndpoint
 		azureOpenAICanary.APIKey = fakeAPIKey
 		azureOpenAICanary.Completions = ""
@@ -102,10 +104,10 @@ func initEnvVars() {
 		openAI.Completions = "text-davinci-003"
 
 		azureOpenAI.ChatCompletions = "gpt-4-0613"
-		openAI.ChatCompletions = "gpt-4"
+		openAI.ChatCompletions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-similarity-curie-001"
-		azureOpenAI.Embeddings = "embeddings"
+		azureOpenAI.Embeddings = "embedding"
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)

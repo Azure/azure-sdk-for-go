@@ -50,18 +50,22 @@ type ScheduledQueryRulesServer struct {
 }
 
 // NewScheduledQueryRulesServerTransport creates a new instance of ScheduledQueryRulesServerTransport with the provided implementation.
-// The returned ScheduledQueryRulesServerTransport instance is connected to an instance of armmonitor.ScheduledQueryRulesClient by way of the
-// undefined.Transporter field.
+// The returned ScheduledQueryRulesServerTransport instance is connected to an instance of armmonitor.ScheduledQueryRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScheduledQueryRulesServerTransport(srv *ScheduledQueryRulesServer) *ScheduledQueryRulesServerTransport {
-	return &ScheduledQueryRulesServerTransport{srv: srv}
+	return &ScheduledQueryRulesServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]](),
+	}
 }
 
 // ScheduledQueryRulesServerTransport connects instances of armmonitor.ScheduledQueryRulesClient to instances of ScheduledQueryRulesServer.
 // Don't use this type directly, use NewScheduledQueryRulesServerTransport instead.
 type ScheduledQueryRulesServerTransport struct {
 	srv                         *ScheduledQueryRulesServer
-	newListByResourceGroupPager *azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScheduledQueryRulesServerTransport.
@@ -206,7 +210,8 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListByResourceGroupPager
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if s.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -218,20 +223,22 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListByResourceGroupPager
 			return nil, err
 		}
 		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		s.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListByResourceGroupPager, req, func(page *armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.ScheduledQueryRulesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListByResourceGroupPager) {
-		s.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -240,7 +247,8 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListBySubscriptionPager(
 	if s.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if s.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/scheduledQueryRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,20 +256,22 @@ func (s *ScheduledQueryRulesServerTransport) dispatchNewListBySubscriptionPager(
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := s.srv.NewListBySubscriptionPager(nil)
-		s.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListBySubscriptionPager, req, func(page *armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.ScheduledQueryRulesClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListBySubscriptionPager) {
-		s.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

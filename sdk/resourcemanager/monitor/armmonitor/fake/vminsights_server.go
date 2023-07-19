@@ -29,8 +29,8 @@ type VMInsightsServer struct {
 }
 
 // NewVMInsightsServerTransport creates a new instance of VMInsightsServerTransport with the provided implementation.
-// The returned VMInsightsServerTransport instance is connected to an instance of armmonitor.VMInsightsClient by way of the
-// undefined.Transporter field.
+// The returned VMInsightsServerTransport instance is connected to an instance of armmonitor.VMInsightsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVMInsightsServerTransport(srv *VMInsightsServer) *VMInsightsServerTransport {
 	return &VMInsightsServerTransport{srv: srv}
 }

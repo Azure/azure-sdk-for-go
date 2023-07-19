@@ -49,18 +49,22 @@ type AlertRulesServer struct {
 }
 
 // NewAlertRulesServerTransport creates a new instance of AlertRulesServerTransport with the provided implementation.
-// The returned AlertRulesServerTransport instance is connected to an instance of armmonitor.AlertRulesClient by way of the
-// undefined.Transporter field.
+// The returned AlertRulesServerTransport instance is connected to an instance of armmonitor.AlertRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAlertRulesServerTransport(srv *AlertRulesServer) *AlertRulesServerTransport {
-	return &AlertRulesServerTransport{srv: srv}
+	return &AlertRulesServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.AlertRulesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.AlertRulesClientListBySubscriptionResponse]](),
+	}
 }
 
 // AlertRulesServerTransport connects instances of armmonitor.AlertRulesClient to instances of AlertRulesServer.
 // Don't use this type directly, use NewAlertRulesServerTransport instead.
 type AlertRulesServerTransport struct {
 	srv                         *AlertRulesServer
-	newListByResourceGroupPager *azfake.PagerResponder[armmonitor.AlertRulesClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armmonitor.AlertRulesClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.AlertRulesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.AlertRulesClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AlertRulesServerTransport.
@@ -205,7 +209,8 @@ func (a *AlertRulesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/alertrules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -217,17 +222,19 @@ func (a *AlertRulesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -236,7 +243,8 @@ func (a *AlertRulesServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if a.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if a.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/alertrules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -244,17 +252,19 @@ func (a *AlertRulesServerTransport) dispatchNewListBySubscriptionPager(req *http
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
-		a.newListBySubscriptionPager = &resp
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 	}
-	resp, err := server.PagerResponderNext(a.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListBySubscriptionPager) {
-		a.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

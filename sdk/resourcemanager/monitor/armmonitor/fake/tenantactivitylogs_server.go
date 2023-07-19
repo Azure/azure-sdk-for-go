@@ -28,17 +28,20 @@ type TenantActivityLogsServer struct {
 }
 
 // NewTenantActivityLogsServerTransport creates a new instance of TenantActivityLogsServerTransport with the provided implementation.
-// The returned TenantActivityLogsServerTransport instance is connected to an instance of armmonitor.TenantActivityLogsClient by way of the
-// undefined.Transporter field.
+// The returned TenantActivityLogsServerTransport instance is connected to an instance of armmonitor.TenantActivityLogsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTenantActivityLogsServerTransport(srv *TenantActivityLogsServer) *TenantActivityLogsServerTransport {
-	return &TenantActivityLogsServerTransport{srv: srv}
+	return &TenantActivityLogsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse]](),
+	}
 }
 
 // TenantActivityLogsServerTransport connects instances of armmonitor.TenantActivityLogsClient to instances of TenantActivityLogsServer.
 // Don't use this type directly, use NewTenantActivityLogsServerTransport instead.
 type TenantActivityLogsServerTransport struct {
 	srv          *TenantActivityLogsServer
-	newListPager *azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.TenantActivityLogsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TenantActivityLogsServerTransport.
@@ -70,7 +73,8 @@ func (t *TenantActivityLogsServerTransport) dispatchNewListPager(req *http.Reque
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		qp := req.URL.Query()
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
@@ -90,20 +94,22 @@ func (t *TenantActivityLogsServerTransport) dispatchNewListPager(req *http.Reque
 			}
 		}
 		resp := t.srv.NewListPager(options)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armmonitor.TenantActivityLogsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.TenantActivityLogsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -29,17 +29,20 @@ type TrustedAccessRolesServer struct {
 }
 
 // NewTrustedAccessRolesServerTransport creates a new instance of TrustedAccessRolesServerTransport with the provided implementation.
-// The returned TrustedAccessRolesServerTransport instance is connected to an instance of armcontainerservice.TrustedAccessRolesClient by way of the
-// undefined.Transporter field.
+// The returned TrustedAccessRolesServerTransport instance is connected to an instance of armcontainerservice.TrustedAccessRolesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTrustedAccessRolesServerTransport(srv *TrustedAccessRolesServer) *TrustedAccessRolesServerTransport {
-	return &TrustedAccessRolesServerTransport{srv: srv}
+	return &TrustedAccessRolesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRolesClientListResponse]](),
+	}
 }
 
 // TrustedAccessRolesServerTransport connects instances of armcontainerservice.TrustedAccessRolesClient to instances of TrustedAccessRolesServer.
 // Don't use this type directly, use NewTrustedAccessRolesServerTransport instead.
 type TrustedAccessRolesServerTransport struct {
 	srv          *TrustedAccessRolesServer
-	newListPager *azfake.PagerResponder[armcontainerservice.TrustedAccessRolesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcontainerservice.TrustedAccessRolesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TrustedAccessRolesServerTransport.
@@ -71,7 +74,8 @@ func (t *TrustedAccessRolesServerTransport) dispatchNewListPager(req *http.Reque
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -83,20 +87,22 @@ func (t *TrustedAccessRolesServerTransport) dispatchNewListPager(req *http.Reque
 			return nil, err
 		}
 		resp := t.srv.NewListPager(locationUnescaped, nil)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armcontainerservice.TrustedAccessRolesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.TrustedAccessRolesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

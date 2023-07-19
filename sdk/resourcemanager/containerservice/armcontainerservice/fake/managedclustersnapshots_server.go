@@ -50,18 +50,22 @@ type ManagedClusterSnapshotsServer struct {
 }
 
 // NewManagedClusterSnapshotsServerTransport creates a new instance of ManagedClusterSnapshotsServerTransport with the provided implementation.
-// The returned ManagedClusterSnapshotsServerTransport instance is connected to an instance of armcontainerservice.ManagedClusterSnapshotsClient by way of the
-// undefined.Transporter field.
+// The returned ManagedClusterSnapshotsServerTransport instance is connected to an instance of armcontainerservice.ManagedClusterSnapshotsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagedClusterSnapshotsServerTransport(srv *ManagedClusterSnapshotsServer) *ManagedClusterSnapshotsServerTransport {
-	return &ManagedClusterSnapshotsServerTransport{srv: srv}
+	return &ManagedClusterSnapshotsServerTransport{
+		srv:                         srv,
+		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse]](),
+	}
 }
 
 // ManagedClusterSnapshotsServerTransport connects instances of armcontainerservice.ManagedClusterSnapshotsClient to instances of ManagedClusterSnapshotsServer.
 // Don't use this type directly, use NewManagedClusterSnapshotsServerTransport instead.
 type ManagedClusterSnapshotsServerTransport struct {
 	srv                         *ManagedClusterSnapshotsServer
-	newListPager                *azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse]
+	newListPager                *tracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedClusterSnapshotsServerTransport.
@@ -206,7 +210,8 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListPager(req *http.
 	if m.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if m.newListPager == nil {
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedclustersnapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -214,20 +219,22 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListPager(req *http.
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := m.srv.NewListPager(nil)
-		m.newListPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListPager) {
-		m.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -236,7 +243,8 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListByResourceGroupP
 	if m.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if m.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedclustersnapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,20 +256,22 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListByResourceGroupP
 			return nil, err
 		}
 		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		m.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(m.newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(m.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(m.newListByResourceGroupPager) {
-		m.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		m.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

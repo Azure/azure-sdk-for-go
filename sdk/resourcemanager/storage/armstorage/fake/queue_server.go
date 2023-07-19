@@ -46,17 +46,20 @@ type QueueServer struct {
 }
 
 // NewQueueServerTransport creates a new instance of QueueServerTransport with the provided implementation.
-// The returned QueueServerTransport instance is connected to an instance of armstorage.QueueClient by way of the
-// undefined.Transporter field.
+// The returned QueueServerTransport instance is connected to an instance of armstorage.QueueClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewQueueServerTransport(srv *QueueServer) *QueueServerTransport {
-	return &QueueServerTransport{srv: srv}
+	return &QueueServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.QueueClientListResponse]](),
+	}
 }
 
 // QueueServerTransport connects instances of armstorage.QueueClient to instances of QueueServer.
 // Don't use this type directly, use NewQueueServerTransport instead.
 type QueueServerTransport struct {
 	srv          *QueueServer
-	newListPager *azfake.PagerResponder[armstorage.QueueClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.QueueClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for QueueServerTransport.
@@ -211,7 +214,8 @@ func (q *QueueServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	if q.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if q.newListPager == nil {
+	newListPager := q.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queueServices/default/queues`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -245,20 +249,22 @@ func (q *QueueServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 			}
 		}
 		resp := q.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, options)
-		q.newListPager = &resp
-		server.PagerResponderInjectNextLinks(q.newListPager, req, func(page *armstorage.QueueClientListResponse, createLink func() string) {
+		newListPager = &resp
+		q.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.QueueClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(q.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		q.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(q.newListPager) {
-		q.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		q.newListPager.remove(req)
 	}
 	return resp, nil
 }

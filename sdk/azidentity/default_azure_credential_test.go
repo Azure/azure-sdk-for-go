@@ -159,10 +159,11 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 				ClientOptions: policy.ClientOptions{
 					Transport: &mockSTS{
 						tenant: expected,
-						tokenRequestCallback: func(r *http.Request) {
+						tokenRequestCallback: func(r *http.Request) *http.Response {
 							if actual := strings.Split(r.URL.Path, "/")[1]; actual != expected {
 								t.Fatalf("expected tenant %q, got %q", expected, actual)
 							}
+							return nil
 						},
 					},
 				},

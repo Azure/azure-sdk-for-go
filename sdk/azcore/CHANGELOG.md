@@ -4,11 +4,14 @@
 
 ### Features Added
 
+* Added function `SanitizePagerPollerPath` to the `server` package to centralize sanitization and formalize the contract.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 * Enable TLS renegotiation in the default transport policy.
+* Propagate any query parameters when constructing a fake poller and/or injecting next links.
 
 ### Other Changes
 

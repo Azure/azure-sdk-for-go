@@ -12,6 +12,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -120,6 +121,9 @@ func TestPagerResponder(t *testing.T) {
 			page, err := unmarshal[widgets](resp)
 			require.NoError(t, err)
 			require.NotNil(t, page.NextPage)
+			sanitizedNextPage := SanitizePagerPath(*page.NextPage)
+			require.NotEqualValues(t, sanitizedNextPage, *page.NextPage)
+			require.True(t, strings.HasPrefix(*page.NextPage, sanitizedNextPage))
 			require.Equal(t, []widget{{Name: "foo"}, {Name: "bar"}}, page.Widgets)
 		case 2:
 			require.Error(t, err)

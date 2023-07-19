@@ -186,7 +186,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, errors.New("destination path must not be empty")
 	}
 
-	opts, srcLease, destLease, smbInfo := options.format()
+	opts, destLease, smbInfo := options.format()
 
 	urlParts, err := sas.ParseURL(d.URL())
 	if err != nil {
@@ -209,7 +209,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 
 	destDirClient := (*Client)(base.NewDirectoryClient(destURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
 
-	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts, srcLease, destLease, smbInfo)
+	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts, nil, destLease, smbInfo)
 	return RenameResponse{
 		DirectoryClientRenameResponse: resp,
 		Client:                        destDirClient,

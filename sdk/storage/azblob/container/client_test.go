@@ -1660,10 +1660,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNon
 	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
-	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
+	svcClient2, err := testcommon.GetServiceClientNoCredential(s.T(), svcClient.URL(), nil)
 	_require.Nil(err)
 
-	containerClient2 := bsu2.NewContainerClient(containerName)
+	containerClient2 := svcClient2.NewContainerClient(containerName)
 
 	// Get permissions via the original container URL so the request succeeds
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)

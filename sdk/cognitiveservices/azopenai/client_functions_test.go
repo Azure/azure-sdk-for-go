@@ -25,32 +25,23 @@ type ParamProperty struct {
 	Enum        []string `json:"enum,omitempty"`
 }
 
-func getClientForFunctionsTest(t *testing.T, azure bool) *azopenai.Client {
-	if azure {
-		cred, err := azopenai.NewKeyCredential(apiKey)
-		require.NoError(t, err)
+func TestGetChatCompletions_usingFunctions(t *testing.T) {
+	// https://platform.openai.com/docs/guides/gpt/function-calling
 
-		chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, chatCompletionsModelDeployment, newClientOptionsForTest(t))
-		require.NoError(t, err)
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testChatCompletionsFunctions(t, chatClient)
+	})
 
-		return chatClient
-	} else {
-		cred, err := azopenai.NewKeyCredential(openAIKey)
-		require.NoError(t, err)
-
-		chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
-		require.NoError(t, err)
-
-		return chatClient
-	}
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newAzureOpenAIClientForTest(t, chatCompletionsModelDeployment, false)
+		testChatCompletionsFunctions(t, chatClient)
+	})
 }
 
-func TestFunctions(t *testing.T) {
-	// https://platform.openai.com/docs/guides/gpt/function-calling#:~:text=For%20example%2C%20you%20can%3A%201%20Create%20chatbots%20that,...%203%20Extract%20structured%20data%20from%20text%20
-	chatClient := getClientForFunctionsTest(t, false)
-
+func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client) {
 	resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Model: to.Ptr("gpt-3.5-turbo-0613"),
+		Model: to.Ptr("gpt-4-0613"),
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),

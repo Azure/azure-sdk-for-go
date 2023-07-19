@@ -48,6 +48,8 @@ func getVars(suffix string) (endpoint, apiKey, completionsModelDeployment, chatC
 
 	apiKey = os.Getenv("AOAI_API_KEY" + suffix)
 	completionsModelDeployment = os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
+
+	// ex: gpt-4-0613
 	chatCompletionsModelDeployment = os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT" + suffix)
 
 	return
@@ -56,7 +58,7 @@ func getVars(suffix string) (endpoint, apiKey, completionsModelDeployment, chatC
 const fakeEndpoint = "https://recordedhost/"
 const fakeAPIKey = "redacted"
 
-func init() {
+func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		endpoint = fakeEndpoint
 		apiKey = fakeAPIKey
@@ -71,7 +73,7 @@ func init() {
 		completionsModelDeployment = "text-davinci-003"
 		openAICompletionsModel = "text-davinci-003"
 
-		chatCompletionsModelDeployment = "gpt-4"
+		chatCompletionsModelDeployment = "gpt-4-0613"
 		openAIChatCompletionsModel = "gpt-4"
 	} else {
 		if err := godotenv.Load(); err != nil {
@@ -85,7 +87,7 @@ func init() {
 		openAIKey = os.Getenv("OPENAI_API_KEY")
 		openAIEndpoint = os.Getenv("OPENAI_ENDPOINT")
 		openAICompletionsModel = os.Getenv("OPENAI_COMPLETIONS_MODEL")
-		openAIChatCompletionsModel = os.Getenv("OPENAI_CHAT_COMPLETIONS_MODEL")
+		openAIChatCompletionsModel = os.Getenv("OPENAI_CHAT_COMPLETIONS_MODEL") // ex: gpt-4-0613
 
 		if openAIEndpoint != "" && !strings.HasSuffix(openAIEndpoint, "/") {
 			// (this just makes recording replacement easier)

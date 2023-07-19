@@ -206,6 +206,7 @@ func (s *Client) BlobURL() string {
 func (s *Client) CreateFilesystem(ctx context.Context, filesystem string, options *CreateFilesystemOptions) (CreateFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
 	resp, err := filesystemClient.Create(ctx, options)
+	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
 
@@ -213,19 +214,24 @@ func (s *Client) CreateFilesystem(ctx context.Context, filesystem string, option
 func (s *Client) DeleteFilesystem(ctx context.Context, filesystem string, options *DeleteFilesystemOptions) (DeleteFilesystemResponse, error) {
 	filesystemClient := s.NewFilesystemClient(filesystem)
 	resp, err := filesystemClient.Delete(ctx, options)
+	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
 
 // SetProperties sets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	opts := options.format()
-	return s.serviceClient().SetProperties(ctx, opts)
+	resp, err := s.serviceClient().SetProperties(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetProperties gets properties for a storage account's File service endpoint. (blob3)
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
-	return s.serviceClient().GetProperties(ctx, opts)
+	resp, err := s.serviceClient().GetProperties(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 
 }
 
@@ -244,6 +250,7 @@ func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runti
 			}
 			newPage := ListFilesystemsResponse{}
 			currPage, err := page.blobPager.NextPage(context.TODO())
+			err = exported.ConvertToDFSError(err)
 			if err != nil {
 				return newPage, err
 			}
@@ -265,7 +272,9 @@ func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runti
 func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	// format all options to blob service options
 	res, perms, opts := o.format(resources, permissions)
-	return s.serviceClient().GetSASURL(res, perms, expiry, opts)
+	resp, err := s.serviceClient().GetSASURL(res, perms, expiry, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // TODO: Figure out how we can convert from blob delegation key to one defined in datalake

@@ -173,13 +173,17 @@ func (fs *Client) BlobURL() string {
 // Create creates a new filesystem under the specified account. (blob3).
 func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format()
-	return fs.containerClient().Create(ctx, opts)
+	resp, err := fs.containerClient().Create(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // Delete deletes the specified filesystem and any files or directories it contains. (blob3).
 func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts := options.format()
-	return fs.containerClient().Delete(ctx, opts)
+	resp, err := fs.containerClient().Delete(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem. (blob3).
@@ -189,19 +193,24 @@ func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptio
 	resp, err := fs.containerClient().GetProperties(ctx, opts)
 	// TODO: find a cleaner way to not use lease from blob package
 	formatFilesystemProperties(&newResp, &resp)
+	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 
 // SetMetadata sets one or more user-defined name-value pairs for the specified filesystem. (blob3).
 func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts := options.format()
-	return fs.containerClient().SetMetadata(ctx, opts)
+	resp, err := fs.containerClient().SetMetadata(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it. (blob3).
 func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	opts := options.format()
-	return fs.containerClient().SetAccessPolicy(ctx, opts)
+	resp, err := fs.containerClient().SetAccessPolicy(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it. (blob3).
@@ -210,6 +219,7 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 	newResp := GetAccessPolicyResponse{}
 	resp, err := fs.containerClient().GetAccessPolicy(ctx, opts)
 	formatGetAccessPolicyResponse(&newResp, &resp)
+	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 
@@ -229,14 +239,17 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 			var err error
 			if page == nil {
 				req, err = fs.generatedFSClientWithDFS().ListPathsCreateRequest(ctx, recursive, &listOptions)
+				err = exported.ConvertToDFSError(err)
 			} else {
 				listOptions.Continuation = page.Continuation
 				req, err = fs.generatedFSClientWithDFS().ListPathsCreateRequest(ctx, recursive, &listOptions)
+				err = exported.ConvertToDFSError(err)
 			}
 			if err != nil {
 				return ListPathsSegmentResponse{}, err
 			}
 			resp, err := fs.generatedFSClientWithDFS().InternalClient().Pipeline().Do(req)
+			err = exported.ConvertToDFSError(err)
 			if err != nil {
 				return ListPathsSegmentResponse{}, err
 			}
@@ -261,14 +274,17 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			var err error
 			if page == nil {
 				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				err = exported.ConvertToDFSError(err)
 			} else {
 				listOptions.Marker = page.NextMarker
 				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				err = exported.ConvertToDFSError(err)
 			}
 			if err != nil {
 				return ListDeletedPathsSegmentResponse{}, err
 			}
 			resp, err := fs.generatedFSClientWithDFS().InternalClient().Pipeline().Do(req)
+			err = exported.ConvertToDFSError(err)
 			if err != nil {
 				return ListDeletedPathsSegmentResponse{}, err
 			}
@@ -288,6 +304,7 @@ func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.T
 	}
 	st := o.format()
 	urlParts, err := azdatalake.ParseURL(fs.BlobURL())
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}
@@ -299,6 +316,7 @@ func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.T
 		StartTime:      st,
 		ExpiryTime:     expiry.UTC(),
 	}.SignWithSharedKey(fs.sharedKey())
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}

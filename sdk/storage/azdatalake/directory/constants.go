@@ -7,37 +7,12 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-type ResourceType = generated.PathResourceType
-
-// TODO: consider the possibility of not exposing this and just pass it under the hood
-const (
-	ResourceTypeFile      ResourceType = generated.PathResourceTypeFile
-	ResourceTypeDirectory ResourceType = generated.PathResourceTypeDirectory
-)
-
-type RenameMode = generated.PathRenameMode
-
-// TODO: consider the possibility of not exposing this and just pass it under the hood
-const (
-	RenameModeLegacy RenameMode = generated.PathRenameModeLegacy
-	RenameModePosix  RenameMode = generated.PathRenameModePosix
-)
-
-type SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveMode
+type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (
-	SetAccessControlRecursiveModeSet    SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeSet
-	SetAccessControlRecursiveModeModify SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeModify
-	SetAccessControlRecursiveModeRemove SetAccessControlRecursiveMode = generated.PathSetAccessControlRecursiveModeRemove
-)
-
-type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
-
-const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
 )

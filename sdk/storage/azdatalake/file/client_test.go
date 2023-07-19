@@ -64,7 +64,7 @@ func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) 
 	_, err := fileClient.GetAccessControl(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFileAndDelete() {
@@ -518,7 +518,7 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 
 	time.Sleep(time.Second * 10)
 	_, err = fClient.GetProperties(context.Background(), nil)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithNeverExpire() {

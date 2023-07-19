@@ -9,16 +9,17 @@ package file
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
+type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
 )
 
-// responses models:
+// response models:
 
 type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode
 

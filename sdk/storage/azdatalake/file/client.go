@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"time"
@@ -177,20 +178,26 @@ func (f *Client) BlobURL() string {
 // Create creates a new file (dfs1).
 func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
-	return f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	resp, err := f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // Delete deletes a file (dfs1).
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := options.format()
-	return f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts := options.format()
+	opts := path.FormatGetPropertiesOptions(options)
 	// TODO: format response + add acls, owner, group, permissions to it
-	return f.blobClient().GetProperties(ctx, opts)
+	resp, err := f.blobClient().GetProperties(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // TODO: implement below
@@ -220,7 +227,9 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // SetExpiry operation sets an expiry time on an existing file (blob2).
 func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	expMode, opts := expiryType.Format(o)
-	return f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
+	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 //// Upload uploads data to a file.
@@ -245,43 +254,54 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 
 // SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
-	opts, lac, mac, err := options.format()
+	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
 	if err != nil {
 		return SetAccessControlResponse{}, err
 	}
-	return f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // UpdateAccessControl updates the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
-	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
-	opts, lac, mac := options.format()
-	return f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	opts, lac, mac := path.FormatGetAccessControlOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // RemoveAccessControl removes the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
-	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // SetMetadata sets the metadata for a file or directory (blob3).
 func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts, metadata := options.format()
-	return f.blobClient().SetMetadata(ctx, metadata, opts)
+	opts, metadata := path.FormatSetMetadataOptions(options)
+	resp, err := f.blobClient().SetMetadata(ctx, metadata, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
 func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	opts, blobHTTPHeaders := options.format(httpHeaders)
+	opts, blobHTTPHeaders := path.FormatSetHTTPHeadersOptions(options, httpHeaders)
 	resp, err := f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
 	newResp := SetHTTPHeadersResponse{}
-	formatSetHTTPHeadersResponse(&newResp, &resp)
+	path.FormatSetHTTPHeadersResponse(&newResp, &resp)
+	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 
@@ -293,11 +313,12 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	}
 
 	urlParts, err := sas.ParseURL(f.BlobURL())
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}
 
-	st := o.format()
+	st := path.FormatGetSASURLOptions(o)
 
 	qps, err := sas.DatalakeSignatureValues{
 		FilePath:       urlParts.PathName,
@@ -308,6 +329,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		ExpiryTime:     expiry.UTC(),
 	}.SignWithSharedKey(f.sharedKey())
 
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}

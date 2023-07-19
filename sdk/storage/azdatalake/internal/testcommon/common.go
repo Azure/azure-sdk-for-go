@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
@@ -66,7 +66,7 @@ func GetRequiredEnv(name string) (string, error) {
 	}
 }
 
-func ValidateErrorCode(_require *require.Assertions, err error, code bloberror.Code) {
+func ValidateErrorCode(_require *require.Assertions, err error, code datalakeerror.StorageErrorCode) {
 	_require.NotNil(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)

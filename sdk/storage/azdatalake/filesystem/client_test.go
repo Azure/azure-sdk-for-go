@@ -63,7 +63,7 @@ func validateFilesystemDeleted(_require *require.Assertions, filesystemClient *f
 	_, err := filesystemClient.GetAccessPolicy(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystem() {
@@ -224,7 +224,7 @@ func (s *RecordedTestSuite) TestFilesystemDeleteNonExistent() {
 	_, err = fsClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
@@ -432,7 +432,7 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	_, err = fsClient.SetMetadata(context.Background(), nil)
 	_require.NotNil(err)
 
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.ContainerNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
 }
 
 func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {

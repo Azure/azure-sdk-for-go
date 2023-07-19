@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armre
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.0-beta.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 )
 

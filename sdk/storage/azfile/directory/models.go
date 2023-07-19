@@ -22,9 +22,6 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
-// SourceLeaseAccessConditions contains optional parameters to access the source directory.
-type SourceLeaseAccessConditions = generated.SourceLeaseAccessConditions
-
 // DestinationLeaseAccessConditions contains optional parameters to access the destination directory.
 type DestinationLeaseAccessConditions = generated.DestinationLeaseAccessConditions
 
@@ -91,15 +88,13 @@ type RenameOptions struct {
 	// the request will not overwrite the destination file.
 	// If provided and the destination file does not exist, rename will succeed.
 	ReplaceIfExists *bool
-	// SourceLeaseAccessConditions contains optional parameters to access the source directory.
-	SourceLeaseAccessConditions *SourceLeaseAccessConditions
 	// DestinationLeaseAccessConditions contains optional parameters to access the destination directory.
 	DestinationLeaseAccessConditions *DestinationLeaseAccessConditions
 }
 
-func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *generated.SourceLeaseAccessConditions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo) {
+func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := o.FileSMBProperties.Format(true)
@@ -121,7 +116,7 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 		FileLastWriteTime: fileLastWriteTime,
 	}
 
-	return renameOpts, o.SourceLeaseAccessConditions, o.DestinationLeaseAccessConditions, smbInfo
+	return renameOpts, o.DestinationLeaseAccessConditions, smbInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -19,6 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -53,7 +55,7 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -81,7 +83,7 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClientWithNoCredential(blobURL, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -116,7 +118,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 		return nil, err
 	}
 	blobClient, _ := blockblob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, cred, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -161,6 +163,10 @@ func (f *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
 
+func (f *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+}
+
 func (f *Client) getClientOptions() *base.ClientOptions {
 	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
@@ -200,29 +206,38 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return resp, err
 }
 
-// TODO: implement below
-//// Rename renames a file (dfs1). TODO: look into returning a new client possibly or changing the url
-//func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-//	path, err := url.Parse(f.DFSURL())
-//	if err != nil {
-//		return RenameResponse{}, err
-//	}
-//	lac, mac, smac, createOpts := options.format(path.Path)
-//	fileURL := runtime.JoinPaths(f.generatedFileClientWithDFS().Endpoint(), newName)
-//	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-//	clOpts := f.getClientOptions()
-//	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-//	if err != nil {
-//		if log.Should(exported.EventError) {
-//			log.Writef(exported.EventError, err.Error())
-//		}
-//		return RenameResponse{}, err
-//	}
-//	blobURL, fileURL := shared.GetURLs(fileURL)
-//	tempFileClient := (*Client)(base.NewPathClient(fileURL, blobURL, nil, azClient, f.sharedKey(), clOpts))
-//	// this tempClient does not have a blobClient
-//	return tempFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
-//}
+func (f *Client) renamePathInURL(newName string) (string, string, string) {
+	endpoint := f.DFSURL()
+	separator := "/"
+	// Find the index of the last occurrence of the separator
+	lastIndex := strings.LastIndex(endpoint, separator)
+	// Split the string based on the last occurrence of the separator
+	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
+	newPathURL, newBlobURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
+	parsedNewURL, _ := url.Parse(f.DFSURL())
+	return parsedNewURL.Path, newPathURL, newBlobURL
+}
+
+// Rename renames a file (dfs1)
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+	newPathWithoutURL, newBlobURL, newPathURL := f.renamePathInURL(newName)
+	lac, mac, smac, createOpts := options.format(newPathWithoutURL)
+	var newBlobClient *blockblob.Client
+	if f.identityCredential() != nil {
+		newBlobClient, _ = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
+	} else if f.sharedKey() != nil {
+		blobSharedKey, _ := f.sharedKey().ConvertToBlobSharedKey()
+		newBlobClient, _ = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+	} else {
+		newBlobClient, _ = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+	}
+	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
+	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	return RenameResponse{
+		Response:      resp,
+		NewFileClient: newFileClient,
+	}, err
+}
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).
 func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {

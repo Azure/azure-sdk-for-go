@@ -2033,30 +2033,31 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-//func (s *RecordedTestSuite) TestRenameNoOptions() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	resp, err = fClient.Rename(context.Background(), "newName", nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//}
+func (s *RecordedTestSuite) TestRenameNoOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := fClient.Rename(context.Background(), "newName", nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+}
+
 //
 //func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 //	_require := require.New(s.T())

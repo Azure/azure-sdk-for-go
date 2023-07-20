@@ -27,7 +27,10 @@ type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursive
 type RemoveAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 
 // RenameResponse contains the response fields for the Create operation.
-type RenameResponse = generated.PathClientCreateResponse
+type RenameResponse struct {
+	Response      generated.PathClientCreateResponse
+	NewFileClient *Client
+}
 
 // ========================================== path imports ===========================================================
 

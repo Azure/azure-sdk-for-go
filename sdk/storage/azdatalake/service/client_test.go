@@ -464,6 +464,28 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 
 }
 
+func (s *ServiceRecordedTestsSuite) TestGetFilesystemClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	fsName := testcommon.GenerateFilesystemName(testName + "1")
+	fsClient := serviceClient.NewFilesystemClient(fsName)
+
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *ServiceRecordedTestsSuite) TestSASFilesystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -553,7 +575,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	}
 
 	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := testcommon.ServiceGetFilesystemClient(fsName, svcClient)
+	fsClient := svcClient.NewFilesystemClient(fsName)
 	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md})
 	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
 		_, err := fsClient.Delete(ctx, options)

@@ -14,6 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -54,7 +56,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -81,7 +83,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClientWithNoCredential(containerURL, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -115,7 +117,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 		return nil, err
 	}
 	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKey, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -151,9 +153,17 @@ func (fs *Client) generatedFSClientWithBlob() *generated.FileSystemClient {
 	return fsClientWithBlob
 }
 
+func (fs *Client) getClientOptions() *base.ClientOptions {
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
+}
+
 func (fs *Client) containerClient() *container.Client {
 	_, _, containerClient := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
 	return containerClient
+}
+
+func (f *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(f))
 }
 
 func (fs *Client) sharedKey() *exported.SharedKeyCredential {
@@ -168,6 +178,22 @@ func (fs *Client) DFSURL() string {
 // BlobURL returns the URL endpoint used by the Client object.
 func (fs *Client) BlobURL() string {
 	return fs.generatedFSClientWithBlob().Endpoint()
+}
+
+// NewDirectoryClient creates a new directory.Client object by concatenating directory path to the end of this Client's URL.
+// The new directory.Client uses the same request policy pipeline as the Client.
+func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
+	dirURL, blobURL := shared.GetURLs(dirURL)
+	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
+}
+
+// NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
+// The new file.Client uses the same request policy pipeline as the Client.
+func (fs *Client) NewFileClient(filePath string) *file.Client {
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
+	fileURL, blobURL := shared.GetURLs(filePath)
+	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
 // Create creates a new filesystem under the specified account. (blob3).

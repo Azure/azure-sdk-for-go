@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
@@ -55,7 +54,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		ClientOptions: options.ClientOptions,
 	}
 	blobSvcClient, _ := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
-	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil
 }
@@ -81,7 +80,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 		ClientOptions: options.ClientOptions,
 	}
 	blobSvcClient, _ := service.NewClientWithNoCredential(blobServiceURL, &blobServiceClientOpts)
-	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil
 }
@@ -115,7 +114,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 		return nil, err
 	}
 	blobSvcClient, _ := service.NewClientWithSharedKeyCredential(blobServiceURL, blobSharedKey, &blobServiceClientOpts)
-	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, cred, (*base.ClientOptions)(conOptions))
+	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil
 }
@@ -144,21 +143,12 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 }
 
-// NewFilesystemClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
-// The new share.Client uses the same request policy pipeline as the Client.
+// NewFilesystemClient creates a new filesystem.Client object by concatenating filesystemName to the end of this Client's URL.
+// The new filesystem.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
 	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
-	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-	clOpts := s.getClientOptions()
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-	if err != nil {
-		if log.Should(exported.EventError) {
-			log.Writef(exported.EventError, err.Error())
-		}
-		return nil
-	}
 	filesystemURL, containerURL := shared.GetURLs(filesystemURL)
-	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), azClient, s.sharedKey(), clOpts))
+	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FilesystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
 }
 
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
@@ -178,20 +168,6 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
-// NewDirectoryClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
-// The new share.Client uses the same request policy pipeline as the Client.
-func (s *Client) NewDirectoryClient(directoryName string) *filesystem.Client {
-	// TODO: implement once dir client is implemented
-	return nil
-}
-
-// NewFileClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
-// The new share.Client uses the same request policy pipeline as the Client.
-func (s *Client) NewFileClient(fileName string) *filesystem.Client {
-	// TODO: implement once file client is implemented
-	return nil
-}
-
 func (s *Client) generatedServiceClientWithDFS() *generated.ServiceClient {
 	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 	return svcClientWithDFS
@@ -209,6 +185,10 @@ func (s *Client) serviceClient() *service.Client {
 
 func (s *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+}
+
+func (s *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.

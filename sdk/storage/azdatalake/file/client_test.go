@@ -2056,258 +2056,245 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	resp1, err := fClient.Rename(context.Background(), "newName", nil)
 	_require.Nil(err)
 	_require.NotNil(resp1)
+	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
-//
-//func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	renameFileOpts := &file.RenameOptions{
-//		AccessConditions: nil,
-//	}
-//
-//	resp, err = fClient.Rename(context.Background(), "new"+fileName, renameFileOpts)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfModifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfModifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.NotNil(err)
-//	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfUnmodifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfUnmodifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.NotNil(err)
-//
-//	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	etag := resp.ETag
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfMatch: etag,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//}
-//
-//func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//
-//	filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	_, err = fsClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	fileName := testcommon.GenerateFileName(testName)
-//	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//
-//	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-//
-//	resp, err := fClient.Create(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp)
-//
-//	etag := resp.ETag
-//
-//	createFileOpts := &file.CreateOptions{
-//		AccessConditions: &file.AccessConditions{
-//			ModifiedAccessConditions: &file.ModifiedAccessConditions{
-//				IfNoneMatch: etag,
-//			},
-//		},
-//	}
-//
-//	resp, err = fClient.Create(context.Background(), createFileOpts)
-//	_require.NotNil(err)
-//
-//	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
-//}
+func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	renameFileOpts := &file.RenameOptions{
+		AccessConditions: nil,
+	}
+
+	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfModifiedSince: &currentTime,
+			},
+		},
+	}
+	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfModifiedSince: &currentTime,
+			},
+		},
+	}
+
+	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NotNil(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+
+	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NotNil(resp1)
+	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+
+	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NotNil(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	etag := resp.ETag
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfMatch: etag,
+			},
+		},
+	}
+
+	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NotNil(resp1)
+	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+}
+
+func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	etag := resp.ETag
+
+	renameFileOpts := &file.RenameOptions{
+		SourceAccessConditions: &file.SourceAccessConditions{
+			SourceModifiedAccessConditions: &file.SourceModifiedAccessConditions{
+				SourceIfNoneMatch: etag,
+			},
+		},
+	}
+
+	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NotNil(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
+}

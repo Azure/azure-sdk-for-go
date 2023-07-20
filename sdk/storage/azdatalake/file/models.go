@@ -125,6 +125,9 @@ func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	if o.SourceAccessConditions != nil {
+		if o.SourceAccessConditions.SourceLeaseAccessConditions != nil {
+			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
+		}
 		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
 			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
 				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
@@ -132,7 +135,6 @@ func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *
 				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
 				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
 			}
-			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
 			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
 		}
 	}

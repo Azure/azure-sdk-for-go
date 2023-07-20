@@ -236,7 +236,7 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	return RenameResponse{
 		Response:      resp,
 		NewFileClient: newFileClient,
-	}, err
+	}, exported.ConvertToDFSError(err)
 }
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).

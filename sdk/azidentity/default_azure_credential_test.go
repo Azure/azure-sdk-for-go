@@ -212,7 +212,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
 		t.Fatalf(`failed to write temporary file "%s": %v`, tempFile, err)
 	}
-	pred := func(req *http.Request) bool {
+	sts := mockSTS{tokenRequestCallback: func(req *http.Request) *http.Response {
 		if err := req.ParseForm(); err != nil {
 			t.Fatal(err)
 		}
@@ -225,14 +225,8 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
 			t.Fatalf(`unexpected tenant "%s"`, actual)
 		}
-		return true
-	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
+		return nil
+	}}
 	for k, v := range map[string]string{
 		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
 		azureClientID:           fakeClientID,
@@ -241,7 +235,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	} {
 		t.Setenv(k, v)
 	}
-	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}})
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,17 +260,13 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
-
 	timeout := 100 * time.Millisecond
 	dp := delayPolicy{2 * timeout}
 	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{&dp},
 			Retry:           policy.RetryOptions{MaxRetries: -1},
-			Transport:       srv,
+			Transport:       &mockSTS{},
 		},
 	})
 	if err != nil {

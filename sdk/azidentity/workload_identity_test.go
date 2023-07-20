@@ -27,7 +27,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func getAssertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
+func assertion(cert *x509.Certificate, key crypto.PrivateKey) (string, error) {
 	j := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"aud": fmt.Sprintf("https://login.microsoftonline.com/%s/oauth2/v2.0/token", liveSP.tenantID),
 		"exp": json.Number(strconv.FormatInt(time.Now().Add(10*time.Minute).Unix(), 10)),
@@ -54,7 +54,7 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a, err := getAssertion(certs[0], key)
+	a, err := assertion(certs[0], key)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -16,9 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
 
-type SharedKeyCredentials interface {
-}
-
 // BlobSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // For more information on creating user delegation sas, see https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas

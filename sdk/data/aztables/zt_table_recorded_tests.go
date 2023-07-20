@@ -67,7 +67,7 @@ type complexTestEntity struct {
 }
 
 func createSimpleEntity(count int, pk string) basicTestEntity {
-	return createSimpleEntityWithRowKey(count, fmt.Sprint(count), pk)
+	return createSimpleEntityWithRowKey(count, pk, fmt.Sprint(count))
 }
 
 func createSimpleEntityWithRowKey(count int, pk string, rk string) basicTestEntity {

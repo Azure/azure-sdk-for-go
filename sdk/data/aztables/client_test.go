@@ -175,6 +175,7 @@ func TestMergeEntity(t *testing.T) {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
 			}
+			require.NotEmpty(t, qResp.Entities)
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)

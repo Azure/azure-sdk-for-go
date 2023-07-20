@@ -369,13 +369,11 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 //
 // Generated from API version 2022-11-02
 //   - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
-//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-//     for directory. ‘None’ can also be specified as default.
 //   - options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, options, shareFileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, fileContentLength, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
@@ -390,7 +388,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, f
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -437,7 +435,9 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
 	if options != nil && options.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
 	}
@@ -1494,13 +1494,11 @@ func (client *FileClient) renameHandleResponse(resp *http.Response) (FileClientR
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-11-02
-//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-//     for directory. ‘None’ can also be specified as default.
 //   - options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
-	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, options, shareFileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) SetHTTPHeaders(ctx context.Context, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
+	req, err := client.setHTTPHeadersCreateRequest(ctx, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
 	}
@@ -1515,7 +1513,7 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1554,7 +1552,9 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	if options != nil && options.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*options.FileAttributes}
+	}
 	if options != nil && options.FileCreationTime != nil {
 		req.Raw().Header["x-ms-file-creation-time"] = []string{*options.FileCreationTime}
 	}

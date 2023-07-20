@@ -67,10 +67,14 @@ type complexTestEntity struct {
 }
 
 func createSimpleEntity(count int, pk string) basicTestEntity {
+	return createSimpleEntityWithRowKey(count, pk, fmt.Sprint(count))
+}
+
+func createSimpleEntityWithRowKey(count int, pk string, rk string) basicTestEntity {
 	return basicTestEntity{
 		Entity: Entity{
 			PartitionKey: pk,
-			RowKey:       fmt.Sprint(count),
+			RowKey:       rk,
 		},
 		String:  fmt.Sprintf("some string %d", count),
 		Integer: int32(count),

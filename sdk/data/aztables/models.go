@@ -4,7 +4,6 @@
 package aztables
 
 import (
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -349,9 +348,4 @@ func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicatio
 		return to.Ptr(GeoReplicationStatusUnavailable)
 	}
 	return nil
-}
-
-func prepareKey(key string) string {
-	// escape any single-quotes
-	return strings.ReplaceAll(key, "'", "''")
 }

@@ -202,3 +202,8 @@ func (e *EDMDateTime) UnmarshalText(data []byte) error {
 	*e = EDMDateTime(t)
 	return nil
 }
+
+func prepareKey(key string) string {
+	// escape any single-quotes
+	return strings.ReplaceAll(key, "'", "''")
+}

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Escape single-quote characters in partition and row keys.
 
 ### Other Changes
 

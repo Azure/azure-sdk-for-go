@@ -34,7 +34,7 @@ type EDMEntity struct {
 // MarshalJSON implements the json.Marshal method
 func (e EDMEntity) MarshalJSON() ([]byte, error) {
 	entity := map[string]interface{}{}
-	entity["PartitionKey"], entity["RowKey"] = e.PartitionKey, e.RowKey
+	entity["PartitionKey"], entity["RowKey"] = prepareKey(e.PartitionKey), prepareKey(e.RowKey)
 
 	for propName, propValue := range e.Properties {
 		entity[propName] = propValue

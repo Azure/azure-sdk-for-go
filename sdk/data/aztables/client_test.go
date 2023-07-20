@@ -216,7 +216,7 @@ func TestInsertEntity(t *testing.T) {
 			defer delete()
 
 			// 1. Create Basic Entity
-			entityToCreate := createSimpleEntity(1, "partition")
+			entityToCreate := createSimpleEntityWithRowKey(1, "parti'tion", "one'")
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 

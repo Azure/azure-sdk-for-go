@@ -298,7 +298,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	}
 
 	genOptions, queryOptions := options.toGenerated()
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, genOptions, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, prepareKey(partitionKey), prepareKey(rowKey), genOptions, queryOptions)
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
@@ -375,7 +375,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 		nilEtag := azcore.ETag("*")
 		options.IfMatch = &nilEtag
 	}
-	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, prepareKey(partitionKey), prepareKey(rowKey), string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
 		return DeleteEntityResponse{}, err
 	}
@@ -477,8 +477,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			partKey,
-			rowkey,
+			prepareKey(partKey),
+			prepareKey(rowkey),
 			options.toGeneratedMergeEntity(mapEntity),
 			&generated.QueryOptions{},
 		)
@@ -491,8 +491,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			partKey,
-			rowkey,
+			prepareKey(partKey),
+			prepareKey(rowkey),
 			options.toGeneratedUpdateEntity(mapEntity),
 			&generated.QueryOptions{},
 		)
@@ -580,8 +580,8 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			partKey,
-			rowkey,
+			prepareKey(partKey),
+			prepareKey(rowkey),
 			&generated.TableClientMergeEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
@@ -594,8 +594,8 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			partKey,
-			rowkey,
+			prepareKey(partKey),
+			prepareKey(rowkey),
 			&generated.TableClientUpdateEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)

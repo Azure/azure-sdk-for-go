@@ -16,6 +16,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
 
+type SharedKeyCredentials interface {
+}
+
 // BlobSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // For more information on creating user delegation sas, see https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas
@@ -51,7 +54,7 @@ func getDirectoryDepth(path string) string {
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+	if v.Identifier == "" && (v.ExpiryTime.IsZero() || v.Permissions == "") {
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 

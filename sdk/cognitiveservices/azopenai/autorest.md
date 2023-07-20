@@ -286,7 +286,7 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/\/\/ The model name.*?Model \*string/sg, "// DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeploymentID string");
+        .replace(/\/\/ The model name.*?Model \*string/sg, "// REQUIRED: DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeploymentID string");
 
   - from: models_serde.go
     where: $

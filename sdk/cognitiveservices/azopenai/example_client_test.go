@@ -33,11 +33,9 @@ func ExampleNewClient() {
 		// TODO: handle error
 	}
 
-	modelDeploymentID := "model deployment ID"
-
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
 	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
-	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, modelDeploymentID, nil)
+	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, nil)
 
 	if err != nil {
 		// TODO: handle error
@@ -53,13 +51,9 @@ func ExampleNewClientWithKeyCredential() {
 		// TODO: handle error
 	}
 
-	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
-	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
-	modelDeploymentID := "model deployment ID"
-
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
 	// To connect to the public OpenAI endpoint, use azopenai.NewClientForOpenAI
-	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, modelDeploymentID, nil)
+	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, nil)
 
 	if err != nil {
 		// TODO: handle error

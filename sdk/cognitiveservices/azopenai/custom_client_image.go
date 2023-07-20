@@ -54,7 +54,7 @@ func generateImageWithAzure(client *Client, ctx context.Context, body ImageGener
 
 func generateImageWithOpenAI(ctx context.Context, client *Client, body ImageGenerationOptions) (CreateImageResponse, error) {
 	urlPath := "/images/generations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, ""))
 	if err != nil {
 		return CreateImageResponse{}, err
 	}

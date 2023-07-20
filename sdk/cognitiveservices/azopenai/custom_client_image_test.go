@@ -26,10 +26,10 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		t.Skipf("Ignoring poller-based test")
 	}
 
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, "", newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
@@ -49,7 +49,7 @@ func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
 		t.Skip()
 	}
 
-	client := newBogusAzureOpenAIClient(t, "")
+	client := newBogusAzureOpenAIClient(t)
 	testImageGenerationFailure(t, client)
 }
 

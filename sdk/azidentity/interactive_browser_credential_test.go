@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -88,7 +89,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("LoginHint", func(t *testing.T) {
 		upn := "test@pass"
-		t.Logf("consider this test passing when %q appears in the login prompt", upn)
+		fmt.Printf("\t%s: consider this test passing when %q appears in the login prompt", t.Name(), upn)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{LoginHint: upn})
 		if err != nil {
 			t.Fatal(err)
@@ -97,7 +98,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("RedirectURL", func(t *testing.T) {
 		url := "http://localhost:8180"
-		t.Logf("consider this test passing when AAD redirects to %s", url)
+		fmt.Printf("\t%s: consider this test passing when AAD redirects to %s", t.Name(), url)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: url})
 		if err != nil {
 			t.Fatal(err)

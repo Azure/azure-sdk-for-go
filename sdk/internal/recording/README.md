@@ -31,7 +31,7 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 
-	recording.StopTestProxy(proxy)
+	err = recording.StopTestProxy(proxy)
 	if err != nil {
 		panic(err)
 	}

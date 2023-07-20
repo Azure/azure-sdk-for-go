@@ -218,4 +218,5 @@ func TestPrepareKey(t *testing.T) {
 	require.EqualValues(t, "''quoted''", prepareKey("'quoted'"))
 	require.EqualValues(t, "d''''ouble", prepareKey("d''ouble"))
 	require.EqualValues(t, "''", prepareKey("'"))
+	require.EqualValues(t, "", prepareKey(""))
 }

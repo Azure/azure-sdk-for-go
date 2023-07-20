@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -106,19 +105,6 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	_require.Equal(resp1.Logging.Delete, enabled)
 	_require.Equal(resp1.Logging.RetentionPolicy.Days, days)
 	_require.Equal(resp1.Logging.RetentionPolicy.Enabled, enabled)
-}
-
-func (s *ServiceRecordedTestsSuite) TestUDK() {
-	_require := require.New(s.T())
-	_, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	v := "1.0"
-	key := service.UserDelegationKey{
-		SignedVersion: &v,
-	}
-	udk := exported.NewUserDelegationCredential("random", key)
-	exported.ConvertToBlobUDC1(udk)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {

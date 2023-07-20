@@ -23,7 +23,6 @@ type Client struct {
 	service *ServiceClient
 	cred    *SharedKeyCredential
 	name    string
-	con     *generated.Connection
 }
 
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
@@ -393,7 +392,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 		return &generated.TableClientMergeEntityOptions{}
 	}
 	return &generated.TableClientMergeEntityOptions{
-		IfMatch:               to.Ptr(string(*u.IfMatch)),
+		IfMatch:               (*string)(u.IfMatch),
 		TableEntityProperties: m,
 	}
 }
@@ -403,7 +402,7 @@ func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) 
 		return &generated.TableClientUpdateEntityOptions{}
 	}
 	return &generated.TableClientUpdateEntityOptions{
-		IfMatch:               to.Ptr(string(*u.IfMatch)),
+		IfMatch:               (*string)(u.IfMatch),
 		TableEntityProperties: m,
 	}
 }
@@ -710,7 +709,7 @@ func (t Client) GetTableSASURL(permissions SASPermissions, start time.Time, expi
 		return "", err
 	}
 
-	serviceURL := t.con.Endpoint()
+	serviceURL := t.client.Endpoint()
 	if !strings.Contains(serviceURL, "/") {
 		serviceURL += "/"
 	}

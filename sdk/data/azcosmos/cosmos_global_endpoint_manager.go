@@ -38,9 +38,7 @@ func newGlobalEndpointManager(client *Client, preferredRegions []string, refresh
 	if err != nil {
 		return nil, err
 	}
-	gem.stopBackgroundRefresh()
 	gem.startBackgroundRefresh(refreshInterval)
-	defer gem.stopBackgroundRefresh()
 
 	return gem, nil
 }
@@ -64,17 +62,17 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 
 	path, err := generatePathForNameBased(resourceTypeDatabaseAccount, "", false)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %w", err)
+		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
 	}
 
 	azResponse, err := gem.client.sendGetRequest(path, context.Background(), operationContext, nil, nil)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to send GET request: %w", err)
+		return accountProperties{}, fmt.Errorf("failed to send GET request: %v", err)
 	}
 
 	properties, err := newAccountProperties(azResponse)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to parse account properties: %w", err)
+		return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
 	}
 
 	return properties, nil
@@ -109,64 +107,43 @@ func (gem *globalEndpointManager) MarkEndpointUnavailableForWrite(endpoint url.U
 func (gem *globalEndpointManager) Update() error {
 	accountProperties, err := gem.GetAccountProperties()
 	if err != nil {
-		return fmt.Errorf("failed to retrieve account properties: %w", err)
+		return fmt.Errorf("failed to retrieve account properties: %v", err)
 	}
 
 	if err := gem.locationCache.update(accountProperties.WriteRegions, accountProperties.ReadRegions, gem.preferredRegions, &accountProperties.EnableMultipleWriteLocations); err != nil {
-		return fmt.Errorf("failed to update location cache: %w", err)
+		return fmt.Errorf("failed to update location cache: %v", err)
 	}
 	return nil
 }
 
 func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Duration) {
-	gem.Lock()
-	defer gem.Unlock()
+	errChan := make(chan error)
 
-	if gem.refreshTicker != nil {
-		// Background refresh already running, stop it first
-		gem.refreshTicker.Stop()
-		close(gem.refreshDone)
-	}
+	ctx, cancel := context.WithCancel(context.Background())
 
-	gem.refreshTicker = time.NewTicker(refreshInterval)
-	gem.refreshDone = make(chan struct{})
-	accountProperties, err := gem.GetAccountProperties()
-	if err != nil {
-		log.Write(azlog.EventResponse, fmt.Sprintf("Background refresh error: %v", err))
-		return
-	}
 	go func() {
 		for {
 			select {
-			case <-gem.refreshTicker.C:
-				err := gem.locationCache.update(accountProperties.WriteRegions, accountProperties.ReadRegions, gem.preferredRegions, &accountProperties.EnableMultipleWriteLocations)
+			case <-ctx.Done():
+				err := gem.Update()
 				if err != nil {
-					log.Write(azlog.EventResponse, fmt.Sprintf("Background refresh error: %v", err))
+					return
 				}
-			case <-gem.refreshDone:
-				gem.refreshTicker.Stop()
-				close(gem.refreshDone)
+				return
+			case <-time.After(refreshInterval):
+				err := gem.Update()
+				if err != nil {
+					log.Write(azlog.EventResponse, fmt.Sprintf("Failed to update location cache: %v", err))
+					return
+				}
 				return
 			}
 		}
 	}()
-}
+	cancel()
 
-func (gem *globalEndpointManager) stopBackgroundRefresh() {
-	gem.Lock()
-	defer gem.Unlock()
-
-	if gem.refreshTicker != nil {
-		gem.refreshTicker.Stop()
-		close(gem.refreshDone)
-		gem.refreshTicker = nil
-		gem.refreshDone = nil
-
-		err := gem.Update()
-		if err != nil {
-			log.Write(azlog.EventResponse, fmt.Sprintf("Failed to update location cache: %v", err))
-			return
-		}
+	if err := <-errChan; err != nil {
+		panic(err)
 	}
 }
 

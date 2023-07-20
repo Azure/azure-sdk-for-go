@@ -35,3 +35,15 @@ const (
 func PossibleShareRootSquashValues() []ShareRootSquash {
 	return generated.PossibleShareRootSquashValues()
 }
+
+// ShareTokenIntent defines values for ShareTokenIntent
+type ShareTokenIntent = generated.ShareTokenIntent
+
+const (
+	ShareTokenIntentBackup ShareTokenIntent = generated.ShareTokenIntentBackup
+)
+
+// PossibleShareTokenIntentValues returns the possible values for the ShareTokenIntent const type.
+func PossibleShareTokenIntentValues() []ShareTokenIntent {
+	return generated.PossibleShareTokenIntentValues()
+}

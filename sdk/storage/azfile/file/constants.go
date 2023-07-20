@@ -76,3 +76,15 @@ type TransferValidationType = exported.TransferValidationType
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// ShareTokenIntent defines values for ShareTokenIntent
+type ShareTokenIntent = generated.ShareTokenIntent
+
+const (
+	ShareTokenIntentBackup ShareTokenIntent = generated.ShareTokenIntentBackup
+)
+
+// PossibleShareTokenIntentValues returns the possible values for the ShareTokenIntent const type.
+func PossibleShareTokenIntentValues() []ShareTokenIntent {
+	return generated.PossibleShareTokenIntentValues()
+}

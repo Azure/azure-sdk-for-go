@@ -1,5 +1,20 @@
 # Release History
 
+## 0.2.0 (Unreleased)
+
+### Features Added
+
+* Updated service version to STG 87(2022-11-02).
+* Added OAuth support.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+* Updated version of azcore to 1.6.1 and azidentity to 1.3.0.
+
 ## 1.0.1 (Unreleased)
 
 ### Features Added

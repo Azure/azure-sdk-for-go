@@ -452,3 +452,67 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 	}
 	_require.Equal(sharesCnt, 1)
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceOAuthNegative() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	// service-level operations are not supported using token credential authentication.
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+
+	_, err = svcClient.SetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+
+	pager := svcClient.NewListSharesPager(nil)
+	_, err = pager.NextPage(context.Background())
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementApiRestrictedToSrp)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// create service client using token credential
+	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClientOAuth, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	dirClient := svcClientOAuth.NewShareClient(shareName).NewDirectoryClient(testcommon.GenerateDirectoryName(testName))
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+}

@@ -14,4 +14,7 @@ import (
 const (
 	// EventUpload is used when we compute number of chunks to upload and size of each chunk.
 	EventUpload log.Event = "azfile.Upload"
+
+	// EventError is used for logging errors.
+	EventError log.Event = "azfile.Error"
 )

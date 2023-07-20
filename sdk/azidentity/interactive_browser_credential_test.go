@@ -77,7 +77,7 @@ func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, 
 
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
@@ -122,7 +122,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")

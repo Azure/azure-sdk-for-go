@@ -51,7 +51,7 @@ const (
 	SourcePathIsBeingDeleted               StorageErrorCode = "SourcePathIsBeingDeleted"
 )
 
-// blob errors
+// (converted) blob errors - these errors are what we expect after we do a replace on the error string using the ConvertBlobError function
 const (
 	AccountAlreadyExists                              StorageErrorCode = "AccountAlreadyExists"
 	AccountBeingCreated                               StorageErrorCode = "AccountBeingCreated"

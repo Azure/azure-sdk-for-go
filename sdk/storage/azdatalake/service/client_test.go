@@ -14,9 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
@@ -106,6 +106,19 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	_require.Equal(resp1.Logging.Delete, enabled)
 	_require.Equal(resp1.Logging.RetentionPolicy.Days, days)
 	_require.Equal(resp1.Logging.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestUDK() {
+	_require := require.New(s.T())
+	_, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	v := "1.0"
+	key := service.UserDelegationKey{
+		SignedVersion: &v,
+	}
+	udk := exported.NewUserDelegationCredential("random", key)
+	exported.ConvertToBlobUDC1(udk)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {
@@ -578,8 +591,8 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, azdatalake.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, azdatalake.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -639,8 +652,8 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, azdatalake.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, azdatalake.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)

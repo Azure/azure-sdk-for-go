@@ -13,12 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"strings"
 	"time"
 )
 
@@ -157,6 +159,23 @@ func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
 	}
 	filesystemURL, containerURL := shared.GetURLs(filesystemURL)
 	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), azClient, s.sharedKey(), clOpts))
+}
+
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+	url, err := azdatalake.ParseURL(s.BlobURL())
+	if err != nil {
+		return nil, err
+	}
+
+	getUserDelegationKeyOptions := o.format()
+	udk, err := s.generatedServiceClientWithBlob().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
 // NewDirectoryClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.

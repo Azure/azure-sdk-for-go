@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"time"
 )
@@ -44,11 +45,17 @@ type StaticWebsite = service.StaticWebsite
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
-// GetUserDelegationCredentialOptions contains the optional parameters for the Client.GetUserDelegationCredential method.
-type GetUserDelegationCredentialOptions = service.GetUserDelegationCredentialOptions
+// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
+type GetUserDelegationCredentialOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+	return nil
+}
 
 // KeyInfo contains KeyInfo struct.
-type KeyInfo = service.KeyInfo
+type KeyInfo = generated.KeyInfo
 
 // UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential = exported.UserDelegationCredential

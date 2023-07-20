@@ -25,10 +25,6 @@ type GetPropertiesResponse = blob.GetPropertiesResponse
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = blob.SetMetadataResponse
 
-//// SetHTTPHeadersResponse contains the response fields for the SetHTTPHeaders operation.
-//type SetHTTPHeadersResponse = blob.SetHTTPHeadersResponse
-// we need to remove the blob sequence number from the response
-
 // SetHTTPHeadersResponse contains the response from method Client.SetHTTPHeaders.
 type SetHTTPHeadersResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
@@ -49,6 +45,8 @@ type SetHTTPHeadersResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
+
+// removes blob sequence number from response
 
 func FormatSetHTTPHeadersResponse(r *SetHTTPHeadersResponse, blobResp *blob.SetHTTPHeadersResponse) {
 	r.ClientRequestID = blobResp.ClientRequestID

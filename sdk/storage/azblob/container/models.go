@@ -400,7 +400,7 @@ func (o *SubmitBatchOptions) format() *generated.ContainerClientSubmitBatchOptio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// FilterBlobsOptions provides set of options for Client.FindBlobsByTags.
+// FilterBlobsOptions provides set of options for Client.FilterBlobs.
 type FilterBlobsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing

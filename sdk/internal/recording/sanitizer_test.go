@@ -38,7 +38,7 @@ func TestRecordingSanitizer(t *testing.T) {
 }
 
 func (s *sanitizerTests) SetupSuite() {
-	proxy, err := StartTestProxy(nil)
+	proxy, err := StartTestProxy("", nil)
 	s.proxy = proxy
 	require.NoError(s.T(), err)
 }

@@ -10,6 +10,7 @@ import (
 	"archive/zip"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -24,6 +25,11 @@ func TestServer(t *testing.T) {
 	suite.Run(t, new(serverTests))
 }
 
+func (s *serverTests) SetupSuite() {
+	// Ignore manual start in pipeline tests, we always want to exercise install
+	os.Setenv(ProxyManualStartEnv, "false")
+}
+
 func (s *serverTests) TestProxyDownloadFile() {
 	file, err := getTestProxyDownloadFile()
 	require.NoError(s.T(), err)
@@ -33,11 +39,11 @@ func (s *serverTests) TestProxyDownloadFile() {
 func (s *serverTests) TestExtractTestProxyZip() {
 	zipFile, err := os.CreateTemp("", "test-extract-*.zip")
 	require.NoError(s.T(), err)
-    defer zipFile.Close()
+	defer zipFile.Close()
 
-    // Create a new zip archive
-    zipWriter := zip.NewWriter(zipFile)
-    defer zipWriter.Close()
+	// Create a new zip archive
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
 }
 
 func (s *serverTests) TestEnsureTestProxyInstalled() {
@@ -55,17 +61,20 @@ func (s *serverTests) TestEnsureTestProxyInstalled() {
 	err = os.MkdirAll(proxyDir, 0755)
 	require.NoError(s.T(), err)
 
-    proxyPath := filepath.Join(proxyDir, "Azure.Sdk.Tools.TestProxy")
+	proxyPath := filepath.Join(proxyDir, "Azure.Sdk.Tools.TestProxy")
+	if runtime.GOOS == "windows" {
+		proxyPath += ".exe"
+	}
 
 	// Test download proxy
-	ensureTestProxyInstalled(proxyVersion, proxyPath, proxyDir)
+	err = ensureTestProxyInstalled(proxyVersion, proxyPath, proxyDir, "")
 	require.NoError(s.T(), err)
 
 	stat1, err := os.Stat(proxyPath)
 	require.NoError(s.T(), err)
 
 	// Test cached proxy
-	ensureTestProxyInstalled(proxyVersion, proxyPath, proxyDir)
+	err = ensureTestProxyInstalled(proxyVersion, proxyPath, proxyDir, "")
 	require.NoError(s.T(), err)
 
 	stat2, err := os.Stat(proxyPath)

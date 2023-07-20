@@ -4,20 +4,37 @@
 package perf
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestRecordingHTTPClient_Do(t *testing.T) {
+	// Ignore manual start in pipeline tests, we always want to exercise install
+	os.Setenv(recording.ProxyManualStartEnv, "false")
+
+	proxy, err := recording.StartTestProxy("", nil)
+	require.NoError(t, err)
+	defer func() {
+		err := recording.StopTestProxy(proxy)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	req, err := http.NewRequest("POST", "https://www.bing.com", nil)
 	require.NoError(t, err)
 
+	proxyURL := fmt.Sprintf("https://localhost:%d", proxy.Options.ProxyPort)
 	client := NewProxyTransport(&TransportOptions{
 		TestName: t.Name(),
-		proxyURL: "https://localhost:5001/",
+		proxyURL: proxyURL,
 	})
 	require.NotNil(t, client)
 
@@ -32,7 +49,7 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 	require.NoError(t, err)
 	resp, err = client.Do(req)
 	require.NoError(t, err)
-	require.Equal(t, "https://localhost:5001", resp.Request.URL.String())
+	require.Equal(t, proxyURL, resp.Request.URL.String())
 	require.Contains(t, resp.Request.Header.Get(upstreamURIHeader), "https://www.bing.com")
 	require.Equal(t, resp.Request.Header.Get(modeHeader), "record")
 	require.Equal(t, resp.Request.Header.Get(idHeader), client.recID)
@@ -42,7 +59,7 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 	require.NoError(t, err)
 	resp, err = client.Do(req)
 	require.NoError(t, err)
-	require.Equal(t, "https://localhost:5001", resp.Request.URL.String())
+	require.Equal(t, proxyURL, resp.Request.URL.String())
 	require.Contains(t, resp.Request.Header.Get(upstreamURIHeader), "https://www.bing.com")
 	require.Equal(t, resp.Request.Header.Get(modeHeader), "playback")
 	require.Equal(t, resp.Request.Header.Get(idHeader), client.recID)

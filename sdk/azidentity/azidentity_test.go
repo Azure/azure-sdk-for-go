@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -21,9 +22,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/stretchr/testify/require"
 )
 
 // constants used throughout this package
@@ -75,6 +78,149 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *h
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 	for k, v := range vars {
 		t.Setenv(k, v)
+	}
+}
+
+type tokenRequestCountingPolicy struct {
+	count int
+}
+
+func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if strings.HasSuffix(req.Raw().URL.Path, "/oauth2/v2.0/token") {
+		t.count++
+	}
+	return req.Next()
+}
+
+func TestUserAuthentication(t *testing.T) {
+	type authenticater interface {
+		azcore.TokenCredential
+		Authenticate(context.Context, *policy.TokenRequestOptions) (AuthenticationRecord, error)
+	}
+	for _, credential := range []struct {
+		name                    string
+		interactive, recordable bool
+		new                     func(*testing.T, azcore.ClientOptions, AuthenticationRecord, bool) (authenticater, error)
+	}{
+		{
+			name: credNameBrowser,
+			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+					AuthenticationRecord:           ar,
+					ClientOptions:                  co,
+					DisableAutomaticAuthentication: disableAutoAuth,
+				})
+			},
+			interactive: true,
+		},
+		{
+			name: credNameDeviceCode,
+			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				o := DeviceCodeCredentialOptions{
+					AuthenticationRecord:           ar,
+					ClientOptions:                  co,
+					DisableAutomaticAuthentication: disableAutoAuth,
+				}
+				if recording.GetRecordMode() == recording.PlaybackMode {
+					o.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
+				}
+				return NewDeviceCodeCredential(&o)
+			},
+			interactive: true,
+			recordable:  true,
+		},
+		{
+			name: credNameUserPassword,
+			new: func(t *testing.T, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				opts := UsernamePasswordCredentialOptions{
+					AuthenticationRecord: ar,
+					ClientOptions:        co,
+				}
+				return NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
+			},
+			recordable: true,
+		},
+	} {
+		t.Run("AuthenticateDefaultScope/"+credential.name, func(t *testing.T) {
+			if credential.name == credNameBrowser {
+				t.Skip("the mock STS used in this test can't complete the interactive auth flow")
+			}
+			t.Setenv(azureAuthorityHost, "")
+			customCloud := cloud.Configuration{
+				ActiveDirectoryAuthorityHost: fmt.Sprintf("%s/%s", testHost, fakeTenantID),
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					cloud.ResourceManager: {Audience: "https://localhost"},
+				},
+			}
+			for _, cc := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic, customCloud} {
+				sts := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
+					require.Contains(t, r.FormValue("scope"), cc.Services[cloud.ResourceManager].Audience+defaultSuffix)
+					return nil
+				}}
+
+				co := azcore.ClientOptions{Cloud: cc, Transport: &sts}
+				cred, err := credential.new(t, co, AuthenticationRecord{}, false)
+				require.NoError(t, err)
+				_, err = cred.Authenticate(context.Background(), nil)
+				require.NoError(t, err)
+
+				os.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
+				cred, err = credential.new(t, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
+				require.NoError(t, err)
+				_, err = cred.Authenticate(context.Background(), nil)
+				if cc.ActiveDirectoryAuthorityHost == customCloud.ActiveDirectoryAuthorityHost {
+					// Authenticate should return an error because it can't map an unknown host to a default scope
+					require.ErrorIs(t, err, errScopeRequired)
+				} else {
+					require.NoError(t, err)
+				}
+			}
+		})
+
+		t.Run("Authenticate_Live_"+credential.name, func(t *testing.T) {
+			reqCounter := tokenRequestCountingPolicy{}
+			co := azcore.ClientOptions{PerCallPolicies: []policy.Policy{&reqCounter}}
+			if credential.name == credNameBrowser {
+				if !runManualTests {
+					t.Skipf("set %s to run this test", azidentityRunManualTests)
+				}
+			} else {
+				var stop func()
+				co, stop = initRecording(t)
+				defer stop()
+			}
+
+			cred, err := credential.new(t, co, AuthenticationRecord{}, false)
+			require.NoError(t, err)
+			ar, err := cred.Authenticate(context.Background(), &testTRO)
+			require.NoError(t, err)
+
+			// some fields of the returned AuthenticationRecord should have specific values
+			require.Equal(t, ar.ClientID, developerSignOnClientID)
+			require.Equal(t, ar.Version, supportedAuthRecordVersions[0])
+			// all others should have nonempty values
+			v := reflect.Indirect(reflect.ValueOf(&ar))
+			for _, f := range reflect.VisibleFields(reflect.TypeOf(ar)) {
+				s := v.FieldByIndex(f.Index).Addr().Interface().(*string)
+				require.NotEmpty(t, *s)
+			}
+		})
+
+		if credential.interactive {
+			t.Run("DisableAutomaticAuthentication/"+credential.name, func(t *testing.T) {
+				cred, err := credential.new(t, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
+				require.NoError(t, err)
+				_, err = cred.GetToken(context.Background(), testTRO)
+				require.ErrorIs(t, err, ErrAuthenticationRequired)
+				if credential.name != credNameBrowser || runManualTests {
+					_, err = cred.Authenticate(context.Background(), &testTRO)
+					require.NoError(t, err)
+					// silent auth should succeed this time
+					_, err = cred.GetToken(context.Background(), testTRO)
+					require.NoError(t, err)
+				}
+			})
+		}
 	}
 }
 

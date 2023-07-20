@@ -295,10 +295,3 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 	err = exported.ConvertToDFSError(err)
 	return resp, err
 }
-
-// TODO: Figure out how we can convert from blob delegation key to one defined in datalake
-//// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
-//// OAuth is required for this call, as well as any role that can delegate access to the storage account.
-//func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
-//	return s.serviceClient().GetUserDelegationCredential(ctx, info, o)
-//}

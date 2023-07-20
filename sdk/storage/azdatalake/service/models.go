@@ -7,7 +7,6 @@
 package service
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -16,6 +15,9 @@ import (
 	"time"
 )
 import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+
+// KeyInfo contains KeyInfo struct.
+type KeyInfo = generated.KeyInfo
 
 type CreateFilesystemOptions = filesystem.CreateOptions
 
@@ -45,6 +47,9 @@ type StaticWebsite = service.StaticWebsite
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// PublicAccessType defines values for AccessType - private (default) or file or filesystem.
+type PublicAccessType = filesystem.PublicAccessType
+
 // GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
@@ -53,9 +58,6 @@ type GetUserDelegationCredentialOptions struct {
 func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
 	return nil
 }
-
-// KeyInfo contains KeyInfo struct.
-type KeyInfo = generated.KeyInfo
 
 // UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential = exported.UserDelegationCredential
@@ -186,14 +188,3 @@ func (o *GetSASURLOptions) format(resources sas.AccountResourceTypes, permission
 		StartTime: o.StartTime,
 	}
 }
-
-// listing response models
-// TODO: find another way to import these
-
-type LeaseDurationType = lease.DurationType
-
-type LeaseStateType = lease.StateType
-
-type LeaseStatusType = lease.StatusType
-
-type PublicAccessType = filesystem.PublicAccessType

@@ -262,7 +262,7 @@ func TestGetDirectoryDepth(t *testing.T) {
 }
 
 func TestBlobSignatureValues_SignWithSharedKey(t *testing.T) {
-	validSharedKeyCredential, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
 	require.Nil(t, err, "error creating valid shared key credentials.")
 
 	expiryDate, err := time.Parse("2006-01-02", "2023-07-20")
@@ -270,37 +270,32 @@ func TestBlobSignatureValues_SignWithSharedKey(t *testing.T) {
 
 	testdata := []struct {
 		object        BlobSignatureValues
-		input         *SharedKeyCredential
 		expected      QueryParameters
 		expectedError error
 	}{
 		{
 			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: expiryDate},
-			input:         validSharedKeyCredential,
-			expected:      QueryParameters{version: "2020-02-10", permissions: "a", expiryTime: expiryDate, resource: "c"},
+			expected:      QueryParameters{version: Version, permissions: "a", expiryTime: expiryDate, resource: "c"},
 			expectedError: nil,
 		},
 		{
 			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: expiryDate},
-			input:         validSharedKeyCredential,
 			expected:      QueryParameters{},
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
 			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: *new(time.Time)},
-			input:         validSharedKeyCredential,
 			expected:      QueryParameters{},
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
 			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
-			input:         validSharedKeyCredential,
-			expected:      QueryParameters{version: "2020-02-10", resource: "c", identifier: "fakepolicyname"},
+			expected:      QueryParameters{version: Version, resource: "c", identifier: "fakepolicyname"},
 			expectedError: nil,
 		},
 	}
 	for _, c := range testdata {
-		act, err := c.object.SignWithSharedKey(c.input)
+		act, err := c.object.SignWithSharedKey(cred)
 		// ignore signature value
 		act.signature = ""
 		require.Equal(t, c.expected, act)

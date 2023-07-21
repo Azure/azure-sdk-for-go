@@ -46,51 +46,59 @@ const (
 
 var (
 	// capability CP1 indicates the client application is capable of handling CAE claims challenges
-	cp1 = []string{"CP1"}
-	// CP1 is disabled until CAE support is added back
-	disableCP1 = true
+	cp1        = []string{"CP1"}
+	disableCP1 = strings.ToLower(os.Getenv("AZURE_IDENTITY_DISABLE_CP1")) == "true"
 )
 
-var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidentialClient, error) {
+type msalClientOptions struct {
+	azcore.ClientOptions
+
+	DisableInstanceDiscovery bool
+	// SendX5C applies only to confidential clients authenticating with a cert
+	SendX5C bool
+}
+
+var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, opts msalClientOptions) (confidentialClient, error) {
 	if !validTenantID(tenantID) {
 		return confidential.Client{}, errors.New(tenantIDValidationErr)
 	}
-	authorityHost, err := setAuthorityHost(co.Cloud)
+	authorityHost, err := setAuthorityHost(opts.Cloud)
 	if err != nil {
 		return confidential.Client{}, err
 	}
 	authority := runtime.JoinPaths(authorityHost, tenantID)
 	o := []confidential.Option{
 		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
-		confidential.WithHTTPClient(newPipelineAdapter(co)),
+		confidential.WithHTTPClient(newPipelineAdapter(&opts.ClientOptions)),
 	}
 	if !disableCP1 {
 		o = append(o, confidential.WithClientCapabilities(cp1))
 	}
-	o = append(o, additionalOpts...)
-	if strings.ToLower(tenantID) == "adfs" {
+	if opts.SendX5C {
+		o = append(o, confidential.WithX5C())
+	}
+	if opts.DisableInstanceDiscovery || strings.ToLower(tenantID) == "adfs" {
 		o = append(o, confidential.WithInstanceDiscovery(false))
 	}
 	return confidential.New(authority, clientID, cred, o...)
 }
 
-var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
+var getPublicClient = func(clientID, tenantID string, opts msalClientOptions) (public.Client, error) {
 	if !validTenantID(tenantID) {
 		return public.Client{}, errors.New(tenantIDValidationErr)
 	}
-	authorityHost, err := setAuthorityHost(co.Cloud)
+	authorityHost, err := setAuthorityHost(opts.Cloud)
 	if err != nil {
 		return public.Client{}, err
 	}
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		public.WithHTTPClient(newPipelineAdapter(co)),
+		public.WithHTTPClient(newPipelineAdapter(&opts.ClientOptions)),
 	}
 	if !disableCP1 {
 		o = append(o, public.WithClientCapabilities(cp1))
 	}
-	o = append(o, additionalOpts...)
-	if strings.ToLower(tenantID) == "adfs" {
+	if opts.DisableInstanceDiscovery || strings.ToLower(tenantID) == "adfs" {
 		o = append(o, public.WithInstanceDiscovery(false))
 	}
 	return public.New(clientID, o...)

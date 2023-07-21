@@ -57,10 +57,9 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - options - OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
-func (client *OrganizationsClient) GetAPIKey(ctx context.Context, resourceGroupName string, options *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error) {
-	req, err := client.getAPIKeyCreateRequest(ctx, resourceGroupName, options)
+func (client *OrganizationsClient) GetAPIKey(ctx context.Context, options *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error) {
+	req, err := client.getAPIKeyCreateRequest(ctx, options)
 	if err != nil {
 		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
@@ -75,16 +74,12 @@ func (client *OrganizationsClient) GetAPIKey(ctx context.Context, resourceGroupN
 }
 
 // getAPIKeyCreateRequest creates the GetAPIKey request.
-func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, options *OrganizationsClientGetAPIKeyOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/getOrganizationApiKey"
+func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, options *OrganizationsClientGetAPIKeyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/getOrganizationApiKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

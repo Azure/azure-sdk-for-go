@@ -69,12 +69,24 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		cp = *options
 	}
 	cp.init()
-	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableInstanceDiscovery))
+	msalOpts := msalClientOptions{
+		ClientOptions:            cp.ClientOptions,
+		DisableInstanceDiscovery: cp.DisableInstanceDiscovery,
+	}
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, msalOpts)
 	if err != nil {
 		return nil, err
 	}
 	ibc := InteractiveBrowserCredential{client: c, options: cp}
-	ibc.s = newSyncer(credNameBrowser, cp.TenantID, cp.AdditionallyAllowedTenants, ibc.requestToken, ibc.silentAuth)
+	ibc.s = newSyncer(
+		credNameBrowser,
+		cp.TenantID,
+		ibc.requestToken,
+		ibc.silentAuth,
+		syncerOptions{
+			AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants,
+		},
+	)
 	return &ibc, nil
 }
 
@@ -85,6 +97,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 
 func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenInteractive(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithLoginHint(c.options.LoginHint),
 		public.WithRedirectURI(c.options.RedirectURL),
 		public.WithTenantID(opts.TenantID),
@@ -97,6 +110,7 @@ func (c *InteractiveBrowserCredential) requestToken(ctx context.Context, opts po
 
 func (c *InteractiveBrowserCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithSilentAccount(c.account),
 		public.WithTenantID(opts.TenantID),
 	)

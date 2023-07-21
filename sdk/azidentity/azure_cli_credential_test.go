@@ -11,8 +11,6 @@ import (
 	"errors"
 	"testing"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 var (
@@ -31,6 +29,32 @@ var (
 	}
 )
 
+func TestAzureCLICredential_Error(t *testing.T) {
+	// GetToken shouldn't invoke the CLI a second time after a failure
+	authNs := 0
+	expected := newCredentialUnavailableError(credNameAzureCLI, "it didn't work")
+	o := AzureCLICredentialOptions{
+		tokenProvider: func(context.Context, string, string) ([]byte, error) {
+			authNs++
+			return nil, expected
+		},
+	}
+	cred, err := NewAzureCLICredential(&o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), testTRO)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if err != expected {
+		t.Fatalf("expected %v, got %v", expected, err)
+	}
+	if authNs != 1 {
+		t.Fatalf("expected 1 authN, got %d", authNs)
+	}
+}
+
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	options := AzureCLICredentialOptions{}
 	options.tokenProvider = mockCLITokenProviderSuccess
@@ -38,7 +62,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	at, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	at, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +82,7 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -81,7 +105,7 @@ func TestAzureCLICredential_TenantID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

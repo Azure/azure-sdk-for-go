@@ -48,7 +48,7 @@ func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential a
 // Get - Gets an allowed environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - environmentTypeName - The name of the environment type.
@@ -93,7 +93,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) getHandleResponse(resp *http
 
 // NewListPager - Lists allowed environment types for a project.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - projectName - The name of the project.
 //   - options - ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.NewListPager
@@ -163,7 +163,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

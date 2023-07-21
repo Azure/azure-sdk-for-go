@@ -46,14 +46,22 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if err != nil {
 		return nil, err
 	}
-	c, err := getConfidentialClient(
-		clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery),
-	)
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	}
+	c, err := getConfidentialClient(clientID, tenantID, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}
 	csc := ClientSecretCredential{client: c}
-	csc.s = newSyncer(credNameSecret, tenantID, options.AdditionallyAllowedTenants, csc.requestToken, csc.silentAuth)
+	csc.s = newSyncer(
+		credNameSecret,
+		tenantID,
+		csc.requestToken,
+		csc.silentAuth,
+		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
+	)
 	return &csc, nil
 }
 
@@ -63,12 +71,12 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.Token
 }
 
 func (c *ClientSecretCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 func (c *ClientSecretCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

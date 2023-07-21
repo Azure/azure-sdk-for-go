@@ -1,6 +1,35 @@
 # Release History
 
-## 1.0.0 (2023-05-11)
+## 1.0.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-07-17)
+
+### Features Added
+* first stable release of `azsecrets` module
+
+### Breaking Changes
+* changed type of `KID` from string to type `ID`
+
+## 0.14.0 (2023-06-08)
+
+### Breaking Changes
+* Renamed `Client.ListSecrets` to `Client.ListSecretProperties`
+* Renamed `Client.ListSecretVersions` to `Client.ListSecretPropertiesVersions`
+* Renamed `SecretBundle` to `Secret`
+* Renamed `DeletedSecretBundle` to `DeletedSecret`
+* Renamed `SecretItem` to `SecretProperties`
+* Renamed `DeletedSecretItem` to `DeletedSecretProperties`
+* Renamed `Kid` to `KID`
+* Removed `DeletionRecoveryLevel` type
+* Remove `MaxResults` option
 
 ### Other Changes
 * Updated dependencies

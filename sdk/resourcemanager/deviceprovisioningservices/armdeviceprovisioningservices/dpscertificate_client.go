@@ -50,7 +50,7 @@ func NewDpsCertificateClient(subscriptionID string, credential azcore.TokenCrede
 // CreateOrUpdate - Add new certificate or update an existing certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - Resource group identifier.
 //   - provisioningServiceName - The name of the provisioning service.
 //   - certificateName - The name of the certificate create or update.
@@ -96,7 +96,7 @@ func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -117,7 +117,7 @@ func (client *DpsCertificateClient) createOrUpdateHandleResponse(resp *http.Resp
 // Delete - Deletes the specified certificate associated with the Provisioning Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - Resource group identifier.
 //   - ifMatch - ETag of the certificate
 //   - provisioningServiceName - The name of the provisioning service.
@@ -187,7 +187,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -197,7 +197,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 // GenerateVerificationCode - Generate verification code for Proof of Possession.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - certificateName - The mandatory logical name of the certificate, that the provisioning service uses to access.
 //   - ifMatch - ETag of the certificate. This is required to update an existing certificate, and ignored while creating a brand
 //     new certificate.
@@ -268,7 +268,7 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -287,7 +287,7 @@ func (client *DpsCertificateClient) generateVerificationCodeHandleResponse(resp 
 // Get - Get the certificate from the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - certificateName - Name of the certificate to retrieve.
 //   - resourceGroupName - Resource group identifier.
 //   - provisioningServiceName - Name of the provisioning service the certificate is associated with.
@@ -331,7 +331,7 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certif
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -352,7 +352,7 @@ func (client *DpsCertificateClient) getHandleResponse(resp *http.Response) (DpsC
 // List - Get all the certificates tied to the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - resourceGroupName - Name of resource group.
 //   - provisioningServiceName - Name of provisioning service to retrieve certificates for.
 //   - options - DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
@@ -391,7 +391,7 @@ func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,7 +410,7 @@ func (client *DpsCertificateClient) listHandleResponse(resp *http.Response) (Dps
 // pre uploaded certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-05
+// Generated from API version 2023-03-01-preview
 //   - certificateName - The mandatory logical name of the certificate, that the provisioning service uses to access.
 //   - ifMatch - ETag of the certificate.
 //   - resourceGroupName - Resource group name.
@@ -481,7 +481,7 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2022-02-05")
+	reqQP.Set("api-version", "2023-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}

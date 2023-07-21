@@ -48,7 +48,7 @@ func NewGalleriesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Creates or updates a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -72,7 +72,7 @@ func (client *GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Creates or updates a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 func (client *GalleriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, body Gallery, options *GalleriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, body, options)
 	if err != nil {
@@ -112,7 +112,7 @@ func (client *GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -121,7 +121,7 @@ func (client *GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Deletes a gallery resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -143,7 +143,7 @@ func (client *GalleriesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes a gallery resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 func (client *GalleriesClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, options *GalleriesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, options)
 	if err != nil {
@@ -183,7 +183,7 @@ func (client *GalleriesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,7 +192,7 @@ func (client *GalleriesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets a gallery
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -236,7 +236,7 @@ func (client *GalleriesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *GalleriesClient) getHandleResponse(resp *http.Response) (Galleries
 
 // NewListByDevCenterPager - Lists galleries for a devcenter.
 //
-// Generated from API version 2022-11-11-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - GalleriesClientListByDevCenterOptions contains the optional parameters for the GalleriesClient.NewListByDevCenterPager
@@ -306,7 +306,7 @@ func (client *GalleriesClient) listByDevCenterCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-11-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

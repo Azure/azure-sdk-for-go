@@ -209,3 +209,14 @@ func TestEntityUnicode(t *testing.T) {
 		})
 	}
 }
+
+func TestPrepareKey(t *testing.T) {
+	require.EqualValues(t, "unchanged", prepareKey("unchanged"))
+	require.EqualValues(t, "sin''gle", prepareKey("sin'gle"))
+	require.EqualValues(t, "''beginning", prepareKey("'beginning"))
+	require.EqualValues(t, "end''", prepareKey("end'"))
+	require.EqualValues(t, "''quoted''", prepareKey("'quoted'"))
+	require.EqualValues(t, "d''''ouble", prepareKey("d''ouble"))
+	require.EqualValues(t, "''", prepareKey("'"))
+	require.EqualValues(t, "", prepareKey(""))
+}

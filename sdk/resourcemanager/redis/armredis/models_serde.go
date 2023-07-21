@@ -96,6 +96,7 @@ func (c CommonPropertiesRedisConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "rdb-backup-frequency", c.RdbBackupFrequency)
 	populate(objectMap, "rdb-backup-max-snapshot-count", c.RdbBackupMaxSnapshotCount)
 	populate(objectMap, "rdb-storage-connection-string", c.RdbStorageConnectionString)
+	populate(objectMap, "storage-subscription-id", c.StorageSubscriptionID)
 	populate(objectMap, "zonal-configuration", c.ZonalConfiguration)
 	if c.AdditionalProperties != nil {
 		for key, val := range c.AdditionalProperties {
@@ -158,6 +159,9 @@ func (c *CommonPropertiesRedisConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "rdb-storage-connection-string":
 			err = unpopulate(val, "RdbStorageConnectionString", &c.RdbStorageConnectionString)
+			delete(rawMsg, key)
+		case "storage-subscription-id":
+			err = unpopulate(val, "StorageSubscriptionID", &c.StorageSubscriptionID)
 			delete(rawMsg, key)
 		case "zonal-configuration":
 			err = unpopulate(val, "ZonalConfiguration", &c.ZonalConfiguration)
@@ -375,6 +379,7 @@ func (e ExportRDBParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "format", e.Format)
 	populate(objectMap, "preferred-data-archive-auth-method", e.PreferredDataArchiveAuthMethod)
 	populate(objectMap, "prefix", e.Prefix)
+	populate(objectMap, "storage-subscription-id", e.StorageSubscriptionID)
 	return json.Marshal(objectMap)
 }
 
@@ -398,6 +403,9 @@ func (e *ExportRDBParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "prefix":
 			err = unpopulate(val, "Prefix", &e.Prefix)
+			delete(rawMsg, key)
+		case "storage-subscription-id":
+			err = unpopulate(val, "StorageSubscriptionID", &e.StorageSubscriptionID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -541,6 +549,7 @@ func (i ImportRDBParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "files", i.Files)
 	populate(objectMap, "format", i.Format)
 	populate(objectMap, "preferred-data-archive-auth-method", i.PreferredDataArchiveAuthMethod)
+	populate(objectMap, "storage-subscription-id", i.StorageSubscriptionID)
 	return json.Marshal(objectMap)
 }
 
@@ -561,6 +570,9 @@ func (i *ImportRDBParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "preferred-data-archive-auth-method":
 			err = unpopulate(val, "PreferredDataArchiveAuthMethod", &i.PreferredDataArchiveAuthMethod)
+			delete(rawMsg, key)
+		case "storage-subscription-id":
+			err = unpopulate(val, "StorageSubscriptionID", &i.StorageSubscriptionID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

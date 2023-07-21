@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.1 (Unreleased)
 
 ### Features Added
 
@@ -8,11 +8,32 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.1.0 (2023-07-13)
+
+### Features Added
+
+* Added [Blob Batch API](https://learn.microsoft.com/rest/api/storageservices/blob-batch).
+* Added support for bearer challenge for identity based managed disks.
+* Added support for GetAccountInfo to container and blob level clients.
+* Added [UploadBlobFromURL API](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url).
+* Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
+* Added support for tag permission in Container SAS.
+
+### Bugs Fixed
+
+* Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
+* Fixed an issue where passing a blob tags map of length 0 would result in the x-ms-tags header to be sent to the service with an empty string as value.
+
 * Fixed block size and number of blocks calculation in `UploadBuffer` and `UploadFile`. Fixes [#20735](https://github.com/Azure/azure-sdk-for-go/issues/20735).
 
 ### Other Changes
 
 * Updated the "Uploading a blob" example in the README.md
+
+* Add `dragonfly` to the list of build constraints for `blockblob`.
+* Updating version of azcore to 1.6.0 and azidentity to 1.3.0
 
 ## 1.1.0-beta.1 (2023-05-09)
 

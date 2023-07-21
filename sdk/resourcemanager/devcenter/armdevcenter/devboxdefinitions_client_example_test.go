@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_ListByDevCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_ListByDevCenter.json
 func ExampleDevBoxDefinitionsClient_NewListByDevCenterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,6 @@ func ExampleDevBoxDefinitionsClient_NewListByDevCenterPager() {
 		// 				ImageReference: &armdevcenter.ImageReference{
 		// 					ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 		// 				},
-		// 				OSStorageType: to.Ptr("SSD_1024"),
 		// 				SKU: &armdevcenter.SKU{
 		// 					Name: to.Ptr("Preview"),
 		// 				},
@@ -71,7 +70,7 @@ func ExampleDevBoxDefinitionsClient_NewListByDevCenterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Get.json
 func ExampleDevBoxDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +106,6 @@ func ExampleDevBoxDefinitionsClient_Get() {
 	// 		ImageReference: &armdevcenter.ImageReference{
 	// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 	// 		},
-	// 		OSStorageType: to.Ptr("SSD_1024"),
 	// 		SKU: &armdevcenter.SKU{
 	// 			Name: to.Ptr("Preview"),
 	// 		},
@@ -116,7 +114,7 @@ func ExampleDevBoxDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Create.json
 func ExampleDevBoxDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +132,6 @@ func ExampleDevBoxDefinitionsClient_BeginCreateOrUpdate() {
 			ImageReference: &armdevcenter.ImageReference{
 				ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 			},
-			OSStorageType: to.Ptr("SSD_1024"),
 			SKU: &armdevcenter.SKU{
 				Name: to.Ptr("Preview"),
 			},
@@ -168,7 +165,6 @@ func ExampleDevBoxDefinitionsClient_BeginCreateOrUpdate() {
 	// 		ImageReference: &armdevcenter.ImageReference{
 	// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 	// 		},
-	// 		OSStorageType: to.Ptr("SSD_1024"),
 	// 		SKU: &armdevcenter.SKU{
 	// 			Name: to.Ptr("Preview"),
 	// 		},
@@ -177,7 +173,7 @@ func ExampleDevBoxDefinitionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Patch.json
 func ExampleDevBoxDefinitionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +219,6 @@ func ExampleDevBoxDefinitionsClient_BeginUpdate() {
 	// 		ImageReference: &armdevcenter.ImageReference{
 	// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/2.0.0"),
 	// 		},
-	// 		OSStorageType: to.Ptr("SSD_1024"),
 	// 		SKU: &armdevcenter.SKU{
 	// 			Name: to.Ptr("Preview"),
 	// 		},
@@ -232,7 +227,7 @@ func ExampleDevBoxDefinitionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Delete.json
 func ExampleDevBoxDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +248,7 @@ func ExampleDevBoxDefinitionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_ListByProject.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_ListByProject.json
 func ExampleDevBoxDefinitionsClient_NewListByProjectPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +290,6 @@ func ExampleDevBoxDefinitionsClient_NewListByProjectPager() {
 		// 				ImageReference: &armdevcenter.ImageReference{
 		// 					ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 		// 				},
-		// 				OSStorageType: to.Ptr("SSD_1024"),
 		// 				SKU: &armdevcenter.SKU{
 		// 					Name: to.Ptr("Preview"),
 		// 				},
@@ -306,7 +300,7 @@ func ExampleDevBoxDefinitionsClient_NewListByProjectPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c583b05741fadfdca116be3b9ccb1c4be8a73258/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_GetByProject.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_GetByProject.json
 func ExampleDevBoxDefinitionsClient_GetByProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +336,6 @@ func ExampleDevBoxDefinitionsClient_GetByProject() {
 	// 		ImageReference: &armdevcenter.ImageReference{
 	// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/Example/providers/Microsoft.DevCenter/devcenters/Contoso/galleries/contosogallery/images/exampleImage/version/1.0.0"),
 	// 		},
-	// 		OSStorageType: to.Ptr("SSD_1024"),
 	// 		SKU: &armdevcenter.SKU{
 	// 			Name: to.Ptr("Preview"),
 	// 		},

@@ -17,8 +17,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -84,7 +82,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 			cred.client = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -101,7 +99,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 			cred.client = fakeConfidentialClient{}
-			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			_, err = cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -112,19 +110,12 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 	for _, test := range allCertTests {
 		t.Run(test.name, func(t *testing.T) {
-			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-			srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody(accessTokenRespSuccess))
-			srv.AppendResponse()
-
-			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
+			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}}, SendCertificateChain: true}
 			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatal(err)
 			}
-			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			tk, err := cred.GetToken(context.Background(), testTRO)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -142,7 +133,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 	cred.client = fakeConfidentialClient{}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	_, err = cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -166,14 +157,8 @@ func TestClientCertificateCredential_NoCertificate(t *testing.T) {
 
 func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	test := allCertTests[0]
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
-	options := ClientCertificateCredentialOptions{}
-	options.Cloud.ActiveDirectoryAuthorityHost = srv.URL()
-	options.Transport = srv
 	var key crypto.PrivateKey
-	_, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, key, &options)
+	_, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, key, nil)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
@@ -283,7 +268,7 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}
@@ -312,6 +297,12 @@ func TestClientCertificateCredential_Regional(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	// regional STS returns an error for CP1
+	before := disableCP1
+	defer func() { disableCP1 = before }()
+	disableCP1 = true
+
 	cred, err := NewClientCertificateCredential(
 		liveSP.tenantID, liveSP.clientID, cert, key, &ClientCertificateCredentialOptions{SendCertificateChain: true, ClientOptions: opts},
 	)

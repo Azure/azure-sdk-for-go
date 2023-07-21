@@ -8,6 +8,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -41,7 +42,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 			ExpiresOn:   time.Now().Add(1 * time.Hour),
 		},
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -77,7 +78,7 @@ func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, 
 
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
@@ -88,7 +89,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("LoginHint", func(t *testing.T) {
 		upn := "test@pass"
-		t.Logf("consider this test passing when %q appears in the login prompt", upn)
+		fmt.Printf("\t%s: consider this test passing when %q appears in the login prompt", t.Name(), upn)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{LoginHint: upn})
 		if err != nil {
 			t.Fatal(err)
@@ -97,7 +98,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	})
 	t.Run("RedirectURL", func(t *testing.T) {
 		url := "http://localhost:8180"
-		t.Logf("consider this test passing when AAD redirects to %s", url)
+		fmt.Printf("\t%s: consider this test passing when AAD redirects to %s", t.Name(), url)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: url})
 		if err != nil {
 			t.Fatal(err)
@@ -122,12 +123,11 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	if !runManualTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+		t.Skipf("set %s to run this test", azidentityRunManualTests)
 	}
 	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")
 	}
-	//Redirect URL is necessary
 	url := adfsLiveSP.redirectURL
 
 	cloudConfig := cloud.Configuration{ActiveDirectoryAuthorityHost: adfsAuthority}

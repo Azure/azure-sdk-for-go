@@ -1484,6 +1484,34 @@ type DppResource struct {
 	Type *string
 }
 
+// DppResourceGuardProxyClientCreateOrUpdateOptions contains the optional parameters for the DppResourceGuardProxyClient.CreateOrUpdate
+// method.
+type DppResourceGuardProxyClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DppResourceGuardProxyClientDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.Delete method.
+type DppResourceGuardProxyClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DppResourceGuardProxyClientGetOptions contains the optional parameters for the DppResourceGuardProxyClient.Get method.
+type DppResourceGuardProxyClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.NewListPager
+// method.
+type DppResourceGuardProxyClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DppResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.UnlockDelete
+// method.
+type DppResourceGuardProxyClientUnlockDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DppResourceList - ListResource
 type DppResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
@@ -2182,6 +2210,47 @@ type ResourceGuardOperation struct {
 	VaultCriticalOperation *string
 }
 
+// ResourceGuardOperationDetail - VaultCritical Operation protected by a resource guard
+type ResourceGuardOperationDetail struct {
+	DefaultResourceRequest *string
+	VaultCriticalOperation *string
+}
+
+// ResourceGuardProxyBase object, used in ResourceGuardProxyBaseResource
+type ResourceGuardProxyBase struct {
+	Description                   *string
+	LastUpdatedTime               *string
+	ResourceGuardOperationDetails []*ResourceGuardOperationDetail
+	ResourceGuardResourceID       *string
+}
+
+// ResourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
+type ResourceGuardProxyBaseResource struct {
+	// ResourceGuardProxyBaseResource properties
+	Properties *ResourceGuardProxyBase
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string
+}
+
+// ResourceGuardProxyBaseResourceList - List of ResourceGuardProxyBase resources
+type ResourceGuardProxyBaseResourceList struct {
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string
+
+	// List of resources.
+	Value []*ResourceGuardProxyBaseResource
+}
+
 type ResourceGuardResource struct {
 	// Optional ETag.
 	ETag *string
@@ -2668,6 +2737,18 @@ type TriggerContext struct {
 
 // GetTriggerContext implements the TriggerContextClassification interface for type TriggerContext.
 func (t *TriggerContext) GetTriggerContext() *TriggerContext { return t }
+
+// UnlockDeleteRequest - Request body of unlock delete API.
+type UnlockDeleteRequest struct {
+	ResourceGuardOperationRequests []*string
+	ResourceToBeDeleted            *string
+}
+
+// UnlockDeleteResponse - Response of Unlock Delete API.
+type UnlockDeleteResponse struct {
+	// This is the time when unlock delete privileges will get expired.
+	UnlockDeleteExpiryTime *string
+}
 
 // UserFacingError - Error object used by layers that have access to localized content, and propagate that to user
 type UserFacingError struct {

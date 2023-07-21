@@ -57,12 +57,14 @@ var liveUser = struct {
 }
 
 const (
-	fakeClientID      = "fake-client-id"
-	fakeResourceID    = "/fake/resource/ID"
-	fakeTenantID      = "fake-tenant"
-	fakeUsername      = "fake@user"
-	fakeAdfsAuthority = "fake.adfs.local"
-	fakeAdfsScope     = "fake.adfs.local/fake-scope/.default"
+	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
+	fakeClientID             = "fake-client-id"
+	fakeResourceID           = "/fake/resource/ID"
+	fakeTenantID             = "fake-tenant"
+	fakeUsername             = "fake@user"
+	fakeAdfsAuthority        = "fake.adfs.local"
+	fakeAdfsScope            = "fake.adfs.local/fake-scope/.default"
+	liveTestScope            = "https://management.core.windows.net//.default"
 )
 
 var adfsLiveSP = struct {
@@ -90,35 +92,37 @@ var adfsLiveUser = struct {
 var (
 	adfsAuthority     = os.Getenv("ADFS_AUTHORITY_HOST")
 	adfsScope         = os.Getenv("ADFS_SCOPE")
-	liveTestScope     = "https://management.core.windows.net//.default"
-	_, runManualTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_TESTS")
+	_, runManualTests = os.LookupEnv(azidentityRunManualTests)
 )
 
-func init() {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		liveManagedIdentity.clientID = fakeClientID
-		liveManagedIdentity.resourceID = fakeResourceID
-		liveSP.secret = "fake-secret"
-		liveSP.clientID = fakeClientID
-		liveSP.tenantID = fakeTenantID
-		liveSP.pemPath = "testdata/certificate.pem"
-		liveSP.pfxPath = "testdata/certificate.pfx"
-		liveSP.sniPath = "testdata/certificate-with-chain.pem"
-		liveUser.tenantID = fakeTenantID
-		liveUser.username = fakeUsername
-		liveUser.password = "fake-password"
-		adfsLiveSP.secret = "fake-secret"
-		adfsLiveSP.clientID = fakeClientID
-		adfsLiveSP.certPath = "testdata/certificate.pem"
-		adfsLiveUser.username = fakeUsername
-		adfsLiveUser.password = "fake-password"
-		adfsLiveUser.clientID = fakeClientID
-		adfsScope = "https://" + fakeAdfsScope
-		adfsAuthority = "https://" + fakeAdfsAuthority
-	}
+func setFakeValues() {
+	liveManagedIdentity.clientID = fakeClientID
+	liveManagedIdentity.resourceID = fakeResourceID
+	liveSP.secret = "fake-secret"
+	liveSP.clientID = fakeClientID
+	liveSP.tenantID = fakeTenantID
+	liveSP.pemPath = "testdata/certificate.pem"
+	liveSP.pfxPath = "testdata/certificate.pfx"
+	liveSP.sniPath = "testdata/certificate-with-chain.pem"
+	liveUser.tenantID = fakeTenantID
+	liveUser.username = fakeUsername
+	liveUser.password = "fake-password"
+	adfsLiveSP.secret = "fake-secret"
+	adfsLiveSP.clientID = fakeClientID
+	adfsLiveSP.certPath = "testdata/certificate.pem"
+	adfsLiveUser.username = fakeUsername
+	adfsLiveUser.password = "fake-password"
+	adfsLiveUser.clientID = fakeClientID
+	adfsScope = "https://" + fakeAdfsScope
+	adfsAuthority = "https://" + fakeAdfsAuthority
 }
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		// Start from a fresh proxy
 		err := recording.ResetProxy(nil)
@@ -137,6 +141,7 @@ func TestMain(m *testing.M) {
 
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
+		setFakeValues()
 		err := recording.SetBodilessMatcher(nil, nil)
 		if err != nil {
 			panic(err)
@@ -185,9 +190,7 @@ func TestMain(m *testing.M) {
 			}
 		}
 	}
-	val := m.Run()
-
-	os.Exit(val)
+	return m.Run()
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {

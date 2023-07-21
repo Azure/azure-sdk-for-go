@@ -109,6 +109,18 @@ type FirewallRulesClientListByServerResponse struct {
 	FirewallRuleListResult
 }
 
+// FlexibleServerClientStartLtrBackupResponse contains the response from method FlexibleServerClient.BeginStartLtrBackup.
+type FlexibleServerClientStartLtrBackupResponse struct {
+	LtrBackupResponse
+}
+
+// FlexibleServerClientTriggerLtrPreBackupResponse contains the response from method FlexibleServerClient.TriggerLtrPreBackup.
+type FlexibleServerClientTriggerLtrPreBackupResponse struct {
+	LtrPreBackupResponse
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+}
+
 // GetPrivateDNSZoneSuffixClientExecuteResponse contains the response from method GetPrivateDNSZoneSuffixClient.Execute.
 type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
 	// Represents a resource name availability.
@@ -120,14 +132,64 @@ type LocationBasedCapabilitiesClientExecuteResponse struct {
 	CapabilitiesListResult
 }
 
+// LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
+type LogFilesClientListByServerResponse struct {
+	LogFileListResult
+}
+
+// LtrBackupOperationsClientGetResponse contains the response from method LtrBackupOperationsClient.Get.
+type LtrBackupOperationsClientGetResponse struct {
+	LtrServerBackupOperation
+}
+
+// LtrBackupOperationsClientListByServerResponse contains the response from method LtrBackupOperationsClient.NewListByServerPager.
+type LtrBackupOperationsClientListByServerResponse struct {
+	LtrServerBackupOperationList
+}
+
+// MigrationsClientCreateResponse contains the response from method MigrationsClient.Create.
+type MigrationsClientCreateResponse struct {
+	MigrationResource
+}
+
+// MigrationsClientDeleteResponse contains the response from method MigrationsClient.Delete.
+type MigrationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationsClientGetResponse contains the response from method MigrationsClient.Get.
+type MigrationsClientGetResponse struct {
+	MigrationResource
+}
+
+// MigrationsClientListByTargetServerResponse contains the response from method MigrationsClient.NewListByTargetServerPager.
+type MigrationsClientListByTargetServerResponse struct {
+	MigrationResourceListResult
+}
+
+// MigrationsClientUpdateResponse contains the response from method MigrationsClient.Update.
+type MigrationsClientUpdateResponse struct {
+	MigrationResource
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLManagementClient.CheckMigrationNameAvailability.
+type PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse struct {
+	MigrationNameAvailabilityResource
+}
+
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.
 type ReplicasClientListByServerResponse struct {
 	ServerListResult
+}
+
+// ServerCapabilitiesClientListResponse contains the response from method ServerCapabilitiesClient.NewListPager.
+type ServerCapabilitiesClientListResponse struct {
+	CapabilitiesListResult
 }
 
 // ServersClientCreateResponse contains the response from method ServersClient.BeginCreate.

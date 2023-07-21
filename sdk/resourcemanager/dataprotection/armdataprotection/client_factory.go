@@ -122,3 +122,8 @@ func (c *ClientFactory) NewResourceGuardsClient() *ResourceGuardsClient {
 	subClient, _ := NewResourceGuardsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewDppResourceGuardProxyClient() *DppResourceGuardProxyClient {
+	subClient, _ := NewDppResourceGuardProxyClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

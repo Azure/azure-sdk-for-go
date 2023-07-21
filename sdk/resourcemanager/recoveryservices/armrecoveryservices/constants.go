@@ -11,7 +11,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v1.3.1"
+	moduleVersion = "v1.4.0"
 )
 
 type AlertsState string
@@ -102,6 +102,23 @@ func PossibleCrossRegionRestoreValues() []CrossRegionRestore {
 	return []CrossRegionRestore{
 		CrossRegionRestoreDisabled,
 		CrossRegionRestoreEnabled,
+	}
+}
+
+type CrossSubscriptionRestoreState string
+
+const (
+	CrossSubscriptionRestoreStateDisabled            CrossSubscriptionRestoreState = "Disabled"
+	CrossSubscriptionRestoreStateEnabled             CrossSubscriptionRestoreState = "Enabled"
+	CrossSubscriptionRestoreStatePermanentlyDisabled CrossSubscriptionRestoreState = "PermanentlyDisabled"
+)
+
+// PossibleCrossSubscriptionRestoreStateValues returns the possible values for the CrossSubscriptionRestoreState const type.
+func PossibleCrossSubscriptionRestoreStateValues() []CrossSubscriptionRestoreState {
+	return []CrossSubscriptionRestoreState{
+		CrossSubscriptionRestoreStateDisabled,
+		CrossSubscriptionRestoreStateEnabled,
+		CrossSubscriptionRestoreStatePermanentlyDisabled,
 	}
 }
 

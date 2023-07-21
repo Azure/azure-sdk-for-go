@@ -1,6 +1,25 @@
 # Release History
 
-## 3.1.0-beta.1 (2023-04-28)
+## 4.1.0-beta.4 (2023-07-19)
+
+### Bug Fixes
+
+- Fixed a potential panic in faked paged and long-running operations.
+
+## 4.1.0-beta.3 (2023-06-23)
+### Features Added
+
+- New struct `NetworkMonitoring`
+- New field `Monitoring` in struct `NetworkProfile`
+
+
+## 4.1.0-beta.2 (2023-06-12)
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+## 4.1.0-beta.1 (2023-05-26)
 ### Features Added
 
 - New value `OSSKUMariner` added to enum type `OSSKU`
@@ -88,6 +107,16 @@
 - New field `VerticalPodAutoscaler` in struct `ManagedClusterWorkloadAutoScalerProfile`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `KubeProxyConfig` in struct `NetworkProfile`
+
+
+## 4.0.0 (2023-05-26)
+### Breaking Changes
+
+- Field `DockerBridgeCidr` of struct `NetworkProfile` has been removed
+
+### Features Added
+
+- New value `OSSKUAzureLinux` added to enum type `OSSKU`
 
 
 ## 3.0.0 (2023-04-28)

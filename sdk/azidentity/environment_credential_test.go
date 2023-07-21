@@ -15,8 +15,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -205,13 +203,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	resetEnvironmentVarsForTest()
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-
+	sts := mockSTS{tokenRequestCallback: validateX5C(t, certs)}
 	vars := map[string]string{
 		azureClientID:              liveSP.clientID,
 		azureClientCertificatePath: liveSP.pfxPath,
@@ -219,11 +211,11 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		envVarSendCertChain:        "true",
 	}
 	setEnvironmentVariables(t, vars)
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -297,7 +289,7 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}
@@ -381,7 +373,7 @@ func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if !reflect.ValueOf(tk).IsZero() {
 		t.Fatal("expected a zero value AccessToken")
 	}

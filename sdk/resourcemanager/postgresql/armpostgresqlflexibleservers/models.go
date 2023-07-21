@@ -35,6 +35,15 @@ type ActiveDirectoryAdministratorAdd struct {
 	Properties *AdministratorPropertiesForAdd
 }
 
+// AdminCredentials - Server admin credentials.
+type AdminCredentials struct {
+	// REQUIRED; Password for source server.
+	SourceServerPassword *string
+
+	// REQUIRED; Password for target server.
+	TargetServerPassword *string
+}
+
 // AdministratorListResult - A list of active directory administrators.
 type AdministratorListResult struct {
 	// The link used to get the next page of active directory.
@@ -118,6 +127,18 @@ type Backup struct {
 	EarliestRestoreDate *time.Time
 }
 
+// BackupSettings - The settings for the long term backup.
+type BackupSettings struct {
+	// REQUIRED; Backup Name for the current backup
+	BackupName *string
+}
+
+// BackupStoreDetails - Details about the target where the backup content will be stored.
+type BackupStoreDetails struct {
+	// REQUIRED; List of SAS uri of storage containers where backup data is to be streamed/copied.
+	SasURIList []*string
+}
+
 // BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
 type BackupsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -128,46 +149,13 @@ type BackupsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapabilitiesListResult - location capability
+// CapabilitiesListResult - Capability for the PostgreSQL server
 type CapabilitiesListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
 	NextLink *string
 
 	// READ-ONLY; A list of supported capabilities.
-	Value []*CapabilityProperties
-}
-
-// CapabilityProperties - Location capabilities.
-type CapabilityProperties struct {
-	// READ-ONLY; A value indicating whether fast provisioning is supported in this region.
-	FastProvisioningSupported *bool
-
-	// READ-ONLY; A value indicating whether a new server in this region can have geo-backups to paired region.
-	GeoBackupSupported *bool
-
-	// READ-ONLY; The status
-	Status *string
-
-	// READ-ONLY
-	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability
-
-	// READ-ONLY
-	SupportedFlexibleServerEditions []*FlexibleServerEditionCapability
-
-	// READ-ONLY; Supported high availability mode
-	SupportedHAMode []*string
-
-	// READ-ONLY
-	SupportedHyperscaleNodeEditions []*HyperscaleNodeEditionCapability
-
-	// READ-ONLY; zone name
-	Zone *string
-
-	// READ-ONLY; A value indicating whether a new server in this region can have geo-backups to paired region.
-	ZoneRedundantHaAndGeoBackupSupported *bool
-
-	// READ-ONLY; A value indicating whether a new server in this region can support multi zone HA.
-	ZoneRedundantHaSupported *bool
+	Value []*FlexibleServerCapability
 }
 
 // CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
@@ -285,10 +273,22 @@ type ConfigurationsClientListByServerOptions struct {
 
 // DataEncryption - Data encryption properties of a server
 type DataEncryption struct {
-	// URI for the key for data encryption for primary server.
+	// Geo-backup encryption key status for Data encryption enabled server.
+	GeoBackupEncryptionKeyStatus *KeyStatusEnum
+
+	// URI for the key in keyvault for data encryption for geo-backup of server.
+	GeoBackupKeyURI *string
+
+	// Resource Id for the User assigned identity to be used for data encryption for geo-backup of server.
+	GeoBackupUserAssignedIdentityID *string
+
+	// Primary encryption key status for Data encryption enabled server.
+	PrimaryEncryptionKeyStatus *KeyStatusEnum
+
+	// URI for the key in keyvault for data encryption of the primary server.
 	PrimaryKeyURI *string
 
-	// Resource Id for the User assigned identity to be used for data encryption for primary server.
+	// Resource Id for the User assigned identity to be used for data encryption of the primary server.
 	PrimaryUserAssignedIdentityID *string
 
 	// Data encryption type to depict if it is System Managed vs Azure Key vault.
@@ -353,6 +353,21 @@ type DatabasesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DbServerMetadata - Database server metadata.
+type DbServerMetadata struct {
+	// SKU for the database server
+	SKU *ServerSKU
+
+	// Storage size in MB for database server
+	StorageMb *int32
+
+	// Version for database engine
+	Version *string
+
+	// READ-ONLY; Location of database server
+	Location *string
+}
+
 // DelegatedSubnetUsage - Delegated subnet usage data.
 type DelegatedSubnetUsage struct {
 	// READ-ONLY; Name of the delegated subnet for which IP addresses are in use
@@ -362,7 +377,17 @@ type DelegatedSubnetUsage struct {
 	Usage *int64
 }
 
+// FastProvisioningEditionCapability - Represents capability of a fast provisioning edition
 type FastProvisioningEditionCapability struct {
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
+
+	// READ-ONLY; Count of servers in cache matching the spec
+	ServerCount *int32
+
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
 	// READ-ONLY; Fast provisioning supported sku name
 	SupportedSKU *string
 
@@ -370,7 +395,10 @@ type FastProvisioningEditionCapability struct {
 	SupportedServerVersions *string
 
 	// READ-ONLY; Fast provisioning supported storage in Gb
-	SupportedStorageGb *int64
+	SupportedStorageGb *int32
+
+	// READ-ONLY; Fast provisioning supported tier name
+	SupportedTier *string
 }
 
 // FirewallRule - Represents a server firewall rule.
@@ -433,16 +461,86 @@ type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FlexibleServerCapability - Capability for the PostgreSQL server
+type FlexibleServerCapability struct {
+	// Name of flexible servers capability
+	Name *string
+
+	// READ-ONLY; Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
+	// "Disabled" stands for fast provisioning is not supported.
+	FastProvisioningSupported *FastProvisioningSupportedEnum
+
+	// READ-ONLY; Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands
+	// for geo-back is not supported.
+	GeoBackupSupported *GeoBackupSupportedEnum
+
+	// READ-ONLY; A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means
+	// storage online resize is supported. "Disabled" means storage online resize is not
+	// supported.
+	OnlineResizeSupported *OnlineResizeSupportedEnum
+
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
+
+	// READ-ONLY; A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands
+	// for region is not restricted.
+	Restricted *RestrictedEnum
+
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow
+	// is supported. "Disabled" stands for storage auto-grow is not supported.
+	StorageAutoGrowthSupported *StorageAutoGrowthSupportedEnum
+
+	// READ-ONLY; List of supported server editions for fast provisioning
+	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability
+
+	// READ-ONLY; List of supported flexible server editions
+	SupportedServerEditions []*FlexibleServerEditionCapability
+
+	// READ-ONLY; The list of server versions supported for this capability.
+	SupportedServerVersions []*ServerVersionCapability
+
+	// READ-ONLY; A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
+	// redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and
+	// geo-backup is not supported.
+	ZoneRedundantHaAndGeoBackupSupported *ZoneRedundantHaAndGeoBackupSupportedEnum
+
+	// READ-ONLY; A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA
+	// is supported. "Disabled" stands for zone redundant HA is not supported.
+	ZoneRedundantHaSupported *ZoneRedundantHaSupportedEnum
+}
+
+// FlexibleServerClientBeginStartLtrBackupOptions contains the optional parameters for the FlexibleServerClient.BeginStartLtrBackup
+// method.
+type FlexibleServerClientBeginStartLtrBackupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FlexibleServerClientTriggerLtrPreBackupOptions contains the optional parameters for the FlexibleServerClient.TriggerLtrPreBackup
+// method.
+type FlexibleServerClientTriggerLtrPreBackupOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FlexibleServerEditionCapability - Flexible server edition capabilities.
 type FlexibleServerEditionCapability struct {
+	// READ-ONLY; Default sku name for the server edition
+	DefaultSKUName *string
+
 	// READ-ONLY; Server edition name
 	Name *string
 
-	// READ-ONLY; The status
-	Status *string
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
 
-	// READ-ONLY; The list of server versions supported by this server edition.
-	SupportedServerVersions []*ServerVersionCapability
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; List of supported server SKUs.
+	SupportedServerSKUs []*ServerSKUCapability
 
 	// READ-ONLY; The list of editions supported by this server edition.
 	SupportedStorageEditions []*StorageEditionCapability
@@ -466,28 +564,166 @@ type HighAvailability struct {
 	State *ServerHAState
 }
 
-// HyperscaleNodeEditionCapability - Hyperscale node edition capabilities.
-type HyperscaleNodeEditionCapability struct {
-	// READ-ONLY; Server edition name
-	Name *string
-
-	// READ-ONLY; The status
-	Status *string
-
-	// READ-ONLY; The list of Node Types supported by this server edition.
-	SupportedNodeTypes []*NodeTypeCapability
-
-	// READ-ONLY; The list of server versions supported by this server edition.
-	SupportedServerVersions []*ServerVersionCapability
-
-	// READ-ONLY; The list of editions supported by this server edition.
-	SupportedStorageEditions []*StorageEditionCapability
-}
-
 // LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewExecutePager
 // method.
 type LocationBasedCapabilitiesClientExecuteOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LogFile - Represents a logFile.
+type LogFile struct {
+	// The properties of a logFile.
+	Properties *LogFileProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LogFileListResult - A List of logFiles.
+type LogFileListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of logFiles in a server
+	Value []*LogFile
+}
+
+// LogFileProperties - The properties of a logFile.
+type LogFileProperties struct {
+	// Creation timestamp of the log file.
+	CreatedTime *time.Time
+
+	// Last modified timestamp of the log file.
+	LastModifiedTime *time.Time
+
+	// The size in kb of the logFile.
+	SizeInKb *int64
+
+	// Type of the log file.
+	Type *string
+
+	// The url to download the log file from.
+	URL *string
+}
+
+// LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager method.
+type LogFilesClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LtrBackupOperationResponseProperties - Response for the backup request.
+type LtrBackupOperationResponseProperties struct {
+	// REQUIRED; Start time of the operation.
+	StartTime *time.Time
+
+	// REQUIRED; Service-set extensible enum indicating the status of operation
+	Status *ExecutionStatus
+
+	// Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this Recovery
+	// point. e.g. Versions, DataFormat etc
+	BackupMetadata *string
+
+	// Name of Backup operation
+	BackupName *string
+
+	// Data transferred in bytes
+	DataTransferredInBytes *int64
+
+	// Size of datasource in bytes
+	DatasourceSizeInBytes *int64
+
+	// End time of the operation.
+	EndTime *time.Time
+
+	// PercentageCompleted
+	PercentComplete *float64
+
+	// READ-ONLY; The error code.
+	ErrorCode *string
+
+	// READ-ONLY; The error message.
+	ErrorMessage *string
+}
+
+// LtrBackupOperationsClientGetOptions contains the optional parameters for the LtrBackupOperationsClient.Get method.
+type LtrBackupOperationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
+// method.
+type LtrBackupOperationsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LtrBackupRequest - The request that is made for a long term retention backup.
+type LtrBackupRequest struct {
+	// REQUIRED; Backup Settings
+	BackupSettings *BackupSettings
+
+	// REQUIRED; Backup store detail for target server
+	TargetDetails *BackupStoreDetails
+}
+
+// LtrBackupResponse - Response for the LTR backup API call
+type LtrBackupResponse struct {
+	// Long Term Retention Backup Operation Resource Properties
+	Properties *LtrBackupOperationResponseProperties
+}
+
+// LtrPreBackupRequest - A request that is made for pre-backup.
+type LtrPreBackupRequest struct {
+	// REQUIRED; Backup Settings
+	BackupSettings *BackupSettings
+}
+
+// LtrPreBackupResponse - Response for the LTR pre-backup API call
+type LtrPreBackupResponse struct {
+	// REQUIRED; Additional Properties for the pre backup response
+	Properties *LtrPreBackupResponseProperties
+}
+
+// LtrPreBackupResponseProperties - Response for the pre-backup request.
+type LtrPreBackupResponseProperties struct {
+	// REQUIRED; Number of storage containers the plugin will use during backup. More than one containers may be used for size
+	// limitations, parallelism, or redundancy etc.
+	NumberOfContainers *int32
+}
+
+// LtrServerBackupOperation - Response for the LTR backup Operation API call
+type LtrServerBackupOperation struct {
+	// Long Term Retention Backup Operation Resource Properties
+	Properties *LtrBackupOperationResponseProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LtrServerBackupOperationList - A list of long term retention backup operations for server.
+type LtrServerBackupOperationList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of long term retention server backup operations
+	Value []*LtrServerBackupOperation
 }
 
 // MaintenanceWindow - Maintenance window properties of a server.
@@ -503,6 +739,239 @@ type MaintenanceWindow struct {
 
 	// start minute for maintenance window
 	StartMinute *int32
+}
+
+// MigrationNameAvailabilityResource - Represents a migration name's availability.
+type MigrationNameAvailabilityResource struct {
+	// REQUIRED; The resource name to verify.
+	Name *string
+
+	// REQUIRED; The type of the resource.
+	Type *string
+
+	// READ-ONLY; Migration name availability message.
+	Message *string
+
+	// READ-ONLY; Indicates whether the resource name is available.
+	NameAvailable *bool
+
+	// READ-ONLY; Migration name availability reason
+	Reason *MigrationNameAvailabilityReason
+}
+
+// MigrationResource - Represents a migration resource.
+type MigrationResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Migration resource properties.
+	Properties *MigrationResourceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MigrationResourceForPatch - Represents a migration resource for patch.
+type MigrationResourceForPatch struct {
+	// Migration resource properties.
+	Properties *MigrationResourcePropertiesForPatch
+
+	// Application-specific metadata in the form of key-value pairs.
+	Tags map[string]*string
+}
+
+// MigrationResourceListResult - A list of migration resources.
+type MigrationResourceListResult struct {
+	// READ-ONLY; The link used to get the next page of migrations.
+	NextLink *string
+
+	// READ-ONLY; A list of migration resources.
+	Value []*MigrationResource
+}
+
+// MigrationResourceProperties - Migration resource properties.
+type MigrationResourceProperties struct {
+	// To trigger cancel for entire migration we need to send this flag as True
+	Cancel *CancelEnum
+
+	// When you want to trigger cancel for specific databases send cancel flag as True and database names in this array
+	DbsToCancelMigrationOn []*string
+
+	// Number of databases to migrate
+	DbsToMigrate []*string
+
+	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
+	DbsToTriggerCutoverOn []*string
+
+	// There are two types of migration modes Online and Offline
+	MigrationMode *MigrationMode
+
+	// End time in UTC for migration window
+	MigrationWindowEndTimeInUTC *time.Time
+
+	// Start time in UTC for migration window
+	MigrationWindowStartTimeInUTC *time.Time
+
+	// Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration
+	// workflow will wait for a confirmation, if it detects that the database
+	// already exists.
+	OverwriteDbsInTarget *OverwriteDbsInTargetEnum
+
+	// Migration secret parameters
+	SecretParameters *MigrationSecretParameters
+
+	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
+	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
+
+	// Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
+	// for connection
+	SourceDbServerFullyQualifiedDomainName *string
+
+	// ResourceId of the source database server
+	SourceDbServerResourceID *string
+
+	// Indicates whether the data migration should start right away
+	StartDataMigration *StartDataMigrationEnum
+
+	// Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
+	// for connection
+	TargetDbServerFullyQualifiedDomainName *string
+
+	// To trigger cutover for entire migration we need to send this flag as True
+	TriggerCutover *TriggerCutoverEnum
+
+	// READ-ONLY; Current status of migration
+	CurrentStatus *MigrationStatus
+
+	// READ-ONLY; ID for migration, a GUID.
+	MigrationID *string
+
+	// READ-ONLY; Metadata of the source database server
+	SourceDbServerMetadata *DbServerMetadata
+
+	// READ-ONLY; Metadata of the target database server
+	TargetDbServerMetadata *DbServerMetadata
+
+	// READ-ONLY; ResourceId of the source database server
+	TargetDbServerResourceID *string
+}
+
+// MigrationResourcePropertiesForPatch - Migration resource properties for patch.
+type MigrationResourcePropertiesForPatch struct {
+	// To trigger cancel for entire migration we need to send this flag as True
+	Cancel *CancelEnum
+
+	// When you want to trigger cancel for specific databases send cancel flag as True and database names in this array
+	DbsToCancelMigrationOn []*string
+
+	// Number of databases to migrate
+	DbsToMigrate []*string
+
+	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
+	DbsToTriggerCutoverOn []*string
+
+	// There are two types of migration modes Online and Offline
+	MigrationMode *MigrationMode
+
+	// Start time in UTC for migration window
+	MigrationWindowStartTimeInUTC *time.Time
+
+	// Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration
+	// workflow will wait for a confirmation, if it detects that the database
+	// already exists.
+	OverwriteDbsInTarget *OverwriteDbsInTargetEnum
+
+	// Migration secret parameters
+	SecretParameters *MigrationSecretParameters
+
+	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
+	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
+
+	// Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
+	// for connection
+	SourceDbServerFullyQualifiedDomainName *string
+
+	// ResourceId of the source database server
+	SourceDbServerResourceID *string
+
+	// Indicates whether the data migration should start right away
+	StartDataMigration *StartDataMigrationEnum
+
+	// Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
+	// for connection
+	TargetDbServerFullyQualifiedDomainName *string
+
+	// To trigger cutover for entire migration we need to send this flag as True
+	TriggerCutover *TriggerCutoverEnum
+}
+
+// MigrationSecretParameters - Migration secret parameters.
+type MigrationSecretParameters struct {
+	// REQUIRED; Admin credentials for source and target servers
+	AdminCredentials *AdminCredentials
+
+	// Gets or sets the username for the source server. This user need not be an admin.
+	SourceServerUsername *string
+
+	// Gets or sets the username for the target server. This user need not be an admin.
+	TargetServerUsername *string
+}
+
+// MigrationStatus - Migration status.
+type MigrationStatus struct {
+	// READ-ONLY; Current Migration sub state details.
+	CurrentSubStateDetails *MigrationSubStateDetails
+
+	// READ-ONLY; Error message, if any, for the migration state
+	Error *string
+
+	// READ-ONLY; State of migration
+	State *MigrationState
+}
+
+// MigrationSubStateDetails - Migration sub state details.
+type MigrationSubStateDetails struct {
+	// READ-ONLY; Migration sub state.
+	CurrentSubState *MigrationSubState
+}
+
+// MigrationsClientCreateOptions contains the optional parameters for the MigrationsClient.Create method.
+type MigrationsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MigrationsClientDeleteOptions contains the optional parameters for the MigrationsClient.Delete method.
+type MigrationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MigrationsClientGetOptions contains the optional parameters for the MigrationsClient.Get method.
+type MigrationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MigrationsClientListByTargetServerOptions contains the optional parameters for the MigrationsClient.NewListByTargetServerPager
+// method.
+type MigrationsClientListByTargetServerOptions struct {
+	// Migration list filter. Retrieves either active migrations or all migrations.
+	MigrationListFilter *MigrationListFilter
+}
+
+// MigrationsClientUpdateOptions contains the optional parameters for the MigrationsClient.Update method.
+type MigrationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // NameAvailability - Represents a resource name availability.
@@ -523,28 +992,20 @@ type NameAvailability struct {
 	Type *string
 }
 
-// Network properties of a server
+// Network properties of a server.
 type Network struct {
-	// delegated subnet arm resource id.
+	// Delegated subnet arm resource id. This is required to be passed during create, in case we want the server to be VNET injected,
+	// i.e. Private access server. During update, pass this only if we want to
+	// update the value for Private DNS zone.
 	DelegatedSubnetResourceID *string
 
-	// private dns zone arm resource id.
+	// Private dns zone arm resource id. This is required to be passed during create, in case we want the server to be VNET injected,
+	// i.e. Private access server. During update, pass this only if we want to
+	// update the value for Private DNS zone.
 	PrivateDNSZoneArmResourceID *string
 
 	// READ-ONLY; public network access is enabled or not
 	PublicNetworkAccess *ServerPublicNetworkAccessState
-}
-
-// NodeTypeCapability - node type capability
-type NodeTypeCapability struct {
-	// READ-ONLY; note type name
-	Name *string
-
-	// READ-ONLY; note type
-	NodeType *string
-
-	// READ-ONLY; The status
-	Status *string
 }
 
 // Operation - REST API operation definition.
@@ -591,6 +1052,12 @@ type OperationListResult struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLManagementClient.CheckMigrationNameAvailability
+// method.
+type PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -686,6 +1153,11 @@ type ServerBackupProperties struct {
 	Source *string
 }
 
+// ServerCapabilitiesClientListOptions contains the optional parameters for the ServerCapabilitiesClient.NewListPager method.
+type ServerCapabilitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ServerForUpdate - Represents a server to be updated.
 type ServerForUpdate struct {
 	// Describes the identity of the application.
@@ -740,21 +1212,20 @@ type ServerProperties struct {
 	// Maintenance window properties of a server.
 	MaintenanceWindow *MaintenanceWindow
 
-	// Network properties of a server.
+	// Network properties of a server. This Network property is required to be passed only in case you want the server to be Private
+	// access server.
 	Network *Network
 
 	// Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore'
-	// or 'GeoRestore'.
+	// or 'GeoRestore' or 'ReviveDropped'.
 	PointInTimeUTC *time.Time
-
-	// Replicas allowed for a server.
-	ReplicaCapacity *int32
 
 	// Replication role of the server
 	ReplicationRole *ReplicationRole
 
 	// The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'
-	// or 'Replica'.
+	// or 'Replica' or 'ReviveDropped'. This property is returned only for Replica
+	// server
 	SourceServerResourceID *string
 
 	// Storage properties of a server.
@@ -768,6 +1239,9 @@ type ServerProperties struct {
 
 	// READ-ONLY; The minor version of the server.
 	MinorVersion *string
+
+	// READ-ONLY; Replicas allowed for a server.
+	ReplicaCapacity *int32
 
 	// READ-ONLY; A state of a server that is visible to user.
 	State *ServerState
@@ -795,6 +1269,9 @@ type ServerPropertiesForUpdate struct {
 	// Maintenance window properties of a server.
 	MaintenanceWindow *MaintenanceWindow
 
+	// Network properties of a server. These are required to be passed only in case if server is a private access server.
+	Network *Network
+
 	// Replication role of the server
 	ReplicationRole *ReplicationRole
 
@@ -805,16 +1282,52 @@ type ServerPropertiesForUpdate struct {
 	Version *ServerVersion
 }
 
-// ServerVersionCapability - Server version capabilities.
-type ServerVersionCapability struct {
-	// READ-ONLY; server version
+// ServerSKU - Sku information related properties of a server.
+type ServerSKU struct {
+	// REQUIRED; The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
 	Name *string
 
-	// READ-ONLY; The status
-	Status *string
+	// REQUIRED; The tier of the particular SKU, e.g. Burstable.
+	Tier *SKUTier
+}
 
-	// READ-ONLY
-	SupportedVcores []*VcoreCapability
+// ServerSKUCapability - Sku capability
+type ServerSKUCapability struct {
+	// READ-ONLY; Sku name
+	Name *string
+
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
+
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; Supported high availability mode
+	SupportedHaMode []*HaMode
+
+	// READ-ONLY; Supported IOPS
+	SupportedIops *int32
+
+	// READ-ONLY; Supported memory per vCore in MB
+	SupportedMemoryPerVcoreMb *int64
+
+	// READ-ONLY; List of supported Availability Zones. E.g. "1", "2", "3"
+	SupportedZones []*string
+
+	// READ-ONLY; Supported vCores
+	VCores *int32
+}
+
+// ServerVersionCapability - Server version capabilities.
+type ServerVersionCapability struct {
+	// READ-ONLY; Server version
+	Name *string
+
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
+
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
 
 	// READ-ONLY; Supported servers versions to upgrade
 	SupportedVersionsToUpgrade []*string
@@ -876,55 +1389,71 @@ type ServersClientListOptions struct {
 
 // Storage properties of a server
 type Storage struct {
+	// Flag to enable / disable Storage Auto grow for flexible server.
+	AutoGrow *StorageAutoGrow
+
+	// Name of storage tier for IOPS.
+	IopsTier *AzureManagedDiskPerformanceTiers
+
 	// Max storage allowed for a server.
 	StorageSizeGB *int32
+
+	// READ-ONLY; Storage tier IOPS quantity.
+	Iops *int32
 }
 
-// StorageEditionCapability - storage edition capability
+// StorageEditionCapability - Storage edition capability
 type StorageEditionCapability struct {
-	// READ-ONLY; storage edition name
+	// READ-ONLY; Default storage size in MB for storage edition
+	DefaultStorageSizeMb *int64
+
+	// READ-ONLY; Storage edition name
 	Name *string
 
-	// READ-ONLY; The status
-	Status *string
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
 
-	// READ-ONLY
-	SupportedStorageMB []*StorageMBCapability
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; Flexible server supported storage range in MB
+	SupportedStorageMb []*StorageMbCapability
 }
 
-// StorageMBCapability - storage size in MB capability
-type StorageMBCapability struct {
-	// READ-ONLY; storage MB name
-	Name *string
+// StorageMbCapability - storage size in MB capability
+type StorageMbCapability struct {
+	// READ-ONLY; Default tier for IOPS
+	DefaultIopsTier *string
 
-	// READ-ONLY; The status
-	Status *string
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
 
-	// READ-ONLY; storage size in MB
-	StorageSizeMB *int64
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
 
-	// READ-ONLY; supported IOPS
-	SupportedIops *int64
+	// READ-ONLY; Storage size in MB
+	StorageSizeMb *int64
 
-	// READ-ONLY
-	SupportedUpgradableTierList []*StorageTierCapability
+	// READ-ONLY; Supported IOPS
+	SupportedIops *int32
+
+	// READ-ONLY; List of available options to upgrade the storage performance
+	SupportedIopsTiers []*StorageTierCapability
 }
 
+// StorageTierCapability - Represents capability of a storage tier
 type StorageTierCapability struct {
 	// READ-ONLY; Supported IOPS for this storage tier
-	Iops *int64
-
-	// READ-ONLY; Indicates if this is a baseline storage tier or not
-	IsBaseline *bool
+	Iops *int32
 
 	// READ-ONLY; Name to represent Storage tier capability
 	Name *string
 
-	// READ-ONLY; Status os this storage tier
-	Status *string
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
 
-	// READ-ONLY; Storage tier name
-	TierName *string
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -950,11 +1479,14 @@ type SystemData struct {
 
 // UserAssignedIdentity - Information describing the identities associated with this application.
 type UserAssignedIdentity struct {
-	// REQUIRED; the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+	// REQUIRED; the types of identities associated with this resource; currently restricted to 'None and UserAssigned'
 	Type *IdentityType
 
 	// represents user assigned identities map.
 	UserAssignedIdentities map[string]*UserIdentity
+
+	// READ-ONLY; Tenant id of the server.
+	TenantID *string
 }
 
 // UserIdentity - Describes a single user-assigned identity associated with the application.
@@ -964,24 +1496,6 @@ type UserIdentity struct {
 
 	// the object identifier of the Service Principal which this identity represents.
 	PrincipalID *string
-}
-
-// VcoreCapability - Vcores capability
-type VcoreCapability struct {
-	// READ-ONLY; vCore name
-	Name *string
-
-	// READ-ONLY; The status
-	Status *string
-
-	// READ-ONLY; supported IOPS
-	SupportedIops *int64
-
-	// READ-ONLY; supported memory per vCore in MB
-	SupportedMemoryPerVcoreMB *int64
-
-	// READ-ONLY; supported vCores
-	VCores *int64
 }
 
 // VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute

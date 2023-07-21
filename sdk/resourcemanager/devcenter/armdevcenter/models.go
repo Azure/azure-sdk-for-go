@@ -464,6 +464,24 @@ type DevCentersClientListBySubscriptionOptions struct {
 	Top *int32
 }
 
+// EndpointDependency - A domain name and connection details used to access a dependency.
+type EndpointDependency struct {
+	// READ-ONLY; Human-readable supplemental information about the dependency and when it is applicable.
+	Description *string
+
+	// READ-ONLY; The domain name of the dependency. Domain names may be fully qualified or may contain a * wildcard.
+	DomainName *string
+
+	// READ-ONLY; The list of connection details for this endpoint.
+	EndpointDetails []*EndpointDetail
+}
+
+// EndpointDetail - Details about the connection between the Batch service and the endpoint.
+type EndpointDetail struct {
+	// READ-ONLY; The port an endpoint is connected to.
+	Port *int32
+}
+
 // EnvironmentRole - A role that can be assigned to a user.
 type EnvironmentRole struct {
 	// READ-ONLY; This is a description of the Role Assignment.
@@ -710,6 +728,15 @@ type HealthCheckStatusDetailsProperties struct {
 	StartDateTime *time.Time
 }
 
+// HealthStatusDetail - Pool health status detail.
+type HealthStatusDetail struct {
+	// READ-ONLY; An identifier for the issue.
+	Code *string
+
+	// READ-ONLY; A message describing the issue, intended to be suitable for display in a user interface
+	Message *string
+}
+
 // Image - Represents an image.
 type Image struct {
 	// Image properties.
@@ -742,6 +769,10 @@ type ImageProperties struct {
 	// READ-ONLY; The description of the image.
 	Description *string
 
+	// READ-ONLY; Indicates whether this image has hibernate enabled. Not all images are capable of supporting hibernation. To
+	// find out more see https://aka.ms/devbox/hibernate
+	HibernateSupport *HibernateSupport
+
 	// READ-ONLY; The name of the image offer.
 	Offer *string
 
@@ -762,15 +793,6 @@ type ImageProperties struct {
 type ImageReference struct {
 	// Image ID, or Image version ID. When Image ID is provided, its latest version will be used.
 	ID *string
-
-	// The image offer.
-	Offer *string
-
-	// The image publisher.
-	Publisher *string
-
-	// The image sku.
-	SKU *string
 
 	// READ-ONLY; The actual version of the image after use. When id references a gallery image latest version, this will indicate
 	// the actual version in use.
@@ -1023,6 +1045,13 @@ type NetworkConnectionsClientListHealthDetailsOptions struct {
 	Top *int32
 }
 
+// NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager
+// method.
+type NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
 // NetworkProperties - Network properties
 type NetworkProperties struct {
 	// REQUIRED; AAD Join type.
@@ -1174,6 +1203,25 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OutboundEnvironmentEndpoint - A collection of related endpoints from the same service for which the agent requires outbound
+// access.
+type OutboundEnvironmentEndpoint struct {
+	// READ-ONLY; The type of service that the agent connects to.
+	Category *string
+
+	// READ-ONLY; The endpoints for this service for which the agent requires outbound access.
+	Endpoints []*EndpointDependency
+}
+
+// OutboundEnvironmentEndpointCollection - Values returned by the List operation.
+type OutboundEnvironmentEndpointCollection struct {
+	// The continuation token.
+	NextLink *string
+
+	// READ-ONLY; The collection of outbound network dependency endpoints returned by the listing operation.
+	Value []*OutboundEnvironmentEndpoint
+}
+
 // Pool - A pool of Virtual Machines.
 type Pool struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -1221,6 +1269,16 @@ type PoolProperties struct {
 	// Name of a Network Connection in parent Project of this Pool
 	NetworkConnectionName *string
 
+	// Stop on disconnect configuration settings for Dev Boxes created in this pool.
+	StopOnDisconnect *StopOnDisconnectConfiguration
+
+	// READ-ONLY; Overall health status of the Pool. Indicates whether or not the Pool is available to create Dev Boxes.
+	HealthStatus *HealthStatus
+
+	// READ-ONLY; Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates
+	// the pool is in a non-healthy state
+	HealthStatusDetails []*HealthStatusDetail
+
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
@@ -1250,6 +1308,9 @@ type PoolUpdateProperties struct {
 
 	// Name of a Network Connection in parent Project of this Pool
 	NetworkConnectionName *string
+
+	// Stop on disconnect configuration settings for Dev Boxes created in this pool.
+	StopOnDisconnect *StopOnDisconnectConfiguration
 }
 
 // PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate method.
@@ -1260,6 +1321,12 @@ type PoolsClientBeginCreateOrUpdateOptions struct {
 
 // PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
 type PoolsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginRunHealthChecksOptions contains the optional parameters for the PoolsClient.BeginRunHealthChecks method.
+type PoolsClientBeginRunHealthChecksOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1364,7 +1431,7 @@ type ProjectEnvironmentTypeProperties struct {
 	DeploymentTargetID *string
 
 	// Defines whether this Environment Type can be used in this Project.
-	Status *EnableStatus
+	Status *EnvironmentTypeEnableStatus
 
 	// Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role
 	// definition IDs.
@@ -1398,7 +1465,7 @@ type ProjectEnvironmentTypeUpdateProperties struct {
 	DeploymentTargetID *string
 
 	// Defines whether this Environment Type can be used in this Project.
-	Status *EnableStatus
+	Status *EnvironmentTypeEnableStatus
 
 	// Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role
 	// definition IDs.
@@ -1459,7 +1526,11 @@ type ProjectProperties struct {
 	// Resource Id of an associated DevCenter
 	DevCenterID *string
 
-	// READ-ONLY; The URI of the resource.
+	// When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project. This will
+	// have no effect on existing Dev Boxes when reduced.
+	MaxDevBoxesPerUser *int32
+
+	// READ-ONLY; The URI of the Dev Center resource this project is associated with.
 	DevCenterURI *string
 
 	// READ-ONLY; The provisioning state of the resource.
@@ -1485,6 +1556,10 @@ type ProjectUpdateProperties struct {
 
 	// Resource Id of an associated DevCenter
 	DevCenterID *string
+
+	// When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project. This will
+	// have no effect on existing Dev Boxes when reduced.
+	MaxDevBoxesPerUser *int32
 }
 
 // ProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.BeginCreateOrUpdate method.
@@ -1526,7 +1601,7 @@ type ProjectsClientListBySubscriptionOptions struct {
 
 // Properties of the devcenter.
 type Properties struct {
-	// READ-ONLY; The URI of the resource.
+	// READ-ONLY; The URI of the Dev Center.
 	DevCenterURI *string
 
 	// READ-ONLY; The provisioning state of the resource.
@@ -1648,7 +1723,7 @@ type ScheduleProperties struct {
 	Frequency *ScheduledFrequency
 
 	// Indicates whether or not this scheduled task is enabled.
-	State *EnableStatus
+	State *ScheduleEnableStatus
 
 	// The target time to trigger the action. The format is HH:MM.
 	Time *string
@@ -1682,7 +1757,7 @@ type ScheduleUpdateProperties struct {
 	Frequency *ScheduledFrequency
 
 	// Indicates whether or not this scheduled task is enabled.
-	State *EnableStatus
+	State *ScheduleEnableStatus
 
 	// The target time to trigger the action. The format is HH:MM.
 	Time *string
@@ -1729,6 +1804,15 @@ type SchedulesClientGetOptions struct {
 type SchedulesClientListByPoolOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
+}
+
+// StopOnDisconnectConfiguration - Stop on disconnect configuration settings for Dev Boxes created in this pool.
+type StopOnDisconnectConfiguration struct {
+	// The specified time in minutes to wait before stopping a Dev Box once disconnect is detected.
+	GracePeriodMinutes *int32
+
+	// Whether the feature to stop the Dev Box on disconnect once the grace period has lapsed is enabled.
+	Status *StopOnDisconnectEnableStatus
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

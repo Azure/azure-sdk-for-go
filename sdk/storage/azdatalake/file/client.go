@@ -223,13 +223,17 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	newPathWithoutURL, newBlobURL, newPathURL := f.renamePathInURL(newName)
 	lac, mac, smac, createOpts := options.format(newPathWithoutURL)
 	var newBlobClient *blockblob.Client
+	var err error
 	if f.identityCredential() != nil {
-		newBlobClient, _ = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
 	} else if f.sharedKey() != nil {
 		blobSharedKey, _ := f.sharedKey().ConvertToBlobSharedKey()
-		newBlobClient, _ = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
 	} else {
-		newBlobClient, _ = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+	}
+	if err != nil {
+		return RenameResponse{}, err
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
 	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)

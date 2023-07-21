@@ -573,7 +573,7 @@
 # ServiceLabel: %SecurityInsights
 #/<NotInRepo>/          @amirkeren
 
-# ServiceLabel: %IoT/CLI
+# ServiceLabel: %IoT - CLI
 #/<NotInRepo>/          @Azure/azure-iot-cli-triage
 
 # ServiceLabel: %Communication

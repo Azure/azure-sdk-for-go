@@ -16,6 +16,7 @@ openapi-type: "data-plane"
 output-folder: ../azeventgrid
 override-client-name: Client
 security: "AADToken"
+use: "@autorest/go@4.0.0-preview.52"
 version: "^3.0.0"
 slice-elements-byval: true
 remove-non-reference-schema: true

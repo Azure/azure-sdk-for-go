@@ -19,6 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
+use: "@autorest/go@4.0.0-preview.45"
 ```
 
 ### Remove QueueName from parameter list since it is not needed

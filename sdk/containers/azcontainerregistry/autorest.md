@@ -12,6 +12,7 @@ clear-output-folder: false
 export-clients: true
 openapi-type: "data-plane"
 output-folder: ../azcontainerregistry
+use: "@autorest/go@4.0.0-preview.45"
 honor-body-placement: true
 remove-unreferenced-types: true
 ```

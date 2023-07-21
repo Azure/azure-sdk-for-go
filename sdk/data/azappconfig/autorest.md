@@ -13,6 +13,7 @@ clear-output-folder: true
 output-folder: internal/generated
 openapi-type: "data-plane"
 security: "AADToken"
+use: "@autorest/go@4.0.0-preview.44"
 export-clients: true
 ```
 

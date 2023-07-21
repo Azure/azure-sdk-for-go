@@ -160,7 +160,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestListContainersSystem() {
+func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)

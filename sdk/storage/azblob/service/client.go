@@ -194,6 +194,9 @@ func (s *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 		if o.Include.Metadata {
 			listOptions.Include = append(listOptions.Include, generated.ListContainersIncludeTypeMetadata)
 		}
+		if o.Include.System {
+			listOptions.Include = append(listOptions.Include, generated.ListContainersIncludeTypeSystem)
+		}
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix

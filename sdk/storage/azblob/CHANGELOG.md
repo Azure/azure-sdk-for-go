@@ -4,7 +4,8 @@
 
 ### Features Added
 * Added support for [Cold tier](https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview?tabs=azure-portal).
-* Added CopySourceTag option for UploadBlobFromURLOptions
+* Added `CopySourceTag` option for `UploadBlobFromURLOptions`
+* Added `System` option to `ListContainersInculde` to allow listing of system containers. 
 
 ### Breaking Changes
 

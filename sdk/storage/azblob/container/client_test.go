@@ -1548,7 +1548,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerGetPermissionsPublicAccessNot
 	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeBlob)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNone() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsPublicAccessNone() {
 	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
 	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
 	_require := require.New(s.T())

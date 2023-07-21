@@ -13,7 +13,6 @@ module: github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
-use: "@autorest/go@4.0.0-preview.52"
 title: "OpenAI"
 slice-elements-byval: true
 # can't use this since it removes an innererror type that we want ()

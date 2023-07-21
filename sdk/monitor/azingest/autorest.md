@@ -15,7 +15,6 @@ openapi-type: "data-plane"
 output-folder: ../azingest
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 rawjson-as-bytes: true
 

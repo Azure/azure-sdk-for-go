@@ -12,7 +12,6 @@ output-folder: ../settings
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 
 directive:

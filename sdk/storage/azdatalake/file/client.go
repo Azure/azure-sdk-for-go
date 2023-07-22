@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"net/http"
 	"net/url"
 	"strings"
 	"time"
@@ -200,10 +201,12 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
-	// TODO: format response + add acls, owner, group, permissions to it
-	resp, err := f.blobClient().GetProperties(ctx, opts)
+	var respFromCtx *http.Response
+	ctxWithResp := runtime.WithCaptureResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().GetProperties(ctxWithResp, opts)
+	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
 	err = exported.ConvertToDFSError(err)
-	return resp, err
+	return newResp, err
 }
 
 func (f *Client) renamePathInURL(newName string) (string, string, string) {

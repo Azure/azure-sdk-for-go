@@ -7,7 +7,6 @@
 package file
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -20,10 +19,20 @@ const (
 
 // response models:
 
-type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode
+type ImmutabilityPolicyMode = path.ImmutabilityPolicyMode
 
 const (
-	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeMutable
-	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeUnlocked
-	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeLocked
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = path.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = path.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = path.ImmutabilityPolicyModeLocked
+)
+
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = path.CopyStatusType
+
+const (
+	CopyStatusTypePending CopyStatusType = path.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = path.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = path.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = path.CopyStatusTypeFailed
 )

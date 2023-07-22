@@ -15,3 +15,21 @@ const (
 	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
 	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
 )
+
+type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode
+
+const (
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeLocked
+)
+
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = blob.CopyStatusType
+
+const (
+	CopyStatusTypePending CopyStatusType = blob.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = blob.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = blob.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = blob.CopyStatusTypeFailed
+)

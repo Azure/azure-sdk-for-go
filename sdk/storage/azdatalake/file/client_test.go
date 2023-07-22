@@ -593,10 +593,12 @@ func (s *RecordedTestSuite) TestCreateFileWithPermissions() {
 	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 	perms := "0777"
+	umask := "0000"
 	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
 	createFileOpts := &file.CreateOptions{
 		Permissions: &perms,
+		Umask:       &umask,
 	}
 
 	_, err = fsClient.Create(context.Background(), nil)
@@ -610,7 +612,10 @@ func (s *RecordedTestSuite) TestCreateFileWithPermissions() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	//TODO: GetProperties() when you figured out how to add permissions into response
+	resp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp2)
+	_require.Equal("rwxrwxrwx", *resp2.Permissions)
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithOwnerGroupACLUmask() {

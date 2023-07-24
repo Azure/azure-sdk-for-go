@@ -1,8 +1,10 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+
+* Enabled spans for distributed tracing.
 
 ### Breaking Changes
 

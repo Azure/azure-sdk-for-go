@@ -5,7 +5,7 @@ go 1.18
 replace github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys => ../..
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.8.0-beta.3
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.0.0

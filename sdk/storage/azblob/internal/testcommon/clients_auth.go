@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
@@ -275,6 +276,18 @@ func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions
 		_require.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
 	}
 	return
+}
+
+func GetAppendBlobClient(appendBlobName string, containerClient *container.Client) *appendblob.Client {
+	return containerClient.NewAppendBlobClient(appendBlobName)
+}
+
+func CreateNewAppendBlob(ctx context.Context, _require *require.Assertions, appendBlobName string, containerClient *container.Client) *appendblob.Client {
+	abClient := GetAppendBlobClient(appendBlobName, containerClient)
+
+	_, err := abClient.Create(ctx, nil)
+	_require.Nil(err)
+	return abClient
 }
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.

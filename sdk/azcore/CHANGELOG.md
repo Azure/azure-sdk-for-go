@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Suppress creating spans for nested SDK API calls. The HTTP span will be a child of the outer API span.
+
 ### Other Changes
 
 ## 1.8.0-beta.2 (2023-08-14)

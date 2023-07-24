@@ -65,7 +65,13 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 		return nil, err
 	}
 	cac := ClientAssertionCredential{client: c}
-	cac.s = newSyncer(credNameAssertion, tenantID, options.AdditionallyAllowedTenants, cac.requestToken, cac.silentAuth)
+	cac.s = newSyncer(
+		credNameAssertion,
+		tenantID,
+		cac.requestToken,
+		cac.silentAuth,
+		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
+	)
 	return &cac, nil
 }
 

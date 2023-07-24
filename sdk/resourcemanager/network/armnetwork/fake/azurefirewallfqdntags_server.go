@@ -28,17 +28,20 @@ type AzureFirewallFqdnTagsServer struct {
 }
 
 // NewAzureFirewallFqdnTagsServerTransport creates a new instance of AzureFirewallFqdnTagsServerTransport with the provided implementation.
-// The returned AzureFirewallFqdnTagsServerTransport instance is connected to an instance of armnetwork.AzureFirewallFqdnTagsClient by way of the
-// undefined.Transporter field.
+// The returned AzureFirewallFqdnTagsServerTransport instance is connected to an instance of armnetwork.AzureFirewallFqdnTagsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAzureFirewallFqdnTagsServerTransport(srv *AzureFirewallFqdnTagsServer) *AzureFirewallFqdnTagsServerTransport {
-	return &AzureFirewallFqdnTagsServerTransport{srv: srv}
+	return &AzureFirewallFqdnTagsServerTransport{
+		srv:             srv,
+		newListAllPager: newTracker[azfake.PagerResponder[armnetwork.AzureFirewallFqdnTagsClientListAllResponse]](),
+	}
 }
 
 // AzureFirewallFqdnTagsServerTransport connects instances of armnetwork.AzureFirewallFqdnTagsClient to instances of AzureFirewallFqdnTagsServer.
 // Don't use this type directly, use NewAzureFirewallFqdnTagsServerTransport instead.
 type AzureFirewallFqdnTagsServerTransport struct {
 	srv             *AzureFirewallFqdnTagsServer
-	newListAllPager *azfake.PagerResponder[armnetwork.AzureFirewallFqdnTagsClientListAllResponse]
+	newListAllPager *tracker[azfake.PagerResponder[armnetwork.AzureFirewallFqdnTagsClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureFirewallFqdnTagsServerTransport.
@@ -70,7 +73,8 @@ func (a *AzureFirewallFqdnTagsServerTransport) dispatchNewListAllPager(req *http
 	if a.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if a.newListAllPager == nil {
+	newListAllPager := a.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/azureFirewallFqdnTags`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -78,20 +82,22 @@ func (a *AzureFirewallFqdnTagsServerTransport) dispatchNewListAllPager(req *http
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListAllPager(nil)
-		a.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListAllPager, req, func(page *armnetwork.AzureFirewallFqdnTagsClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		a.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.AzureFirewallFqdnTagsClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListAllPager) {
-		a.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		a.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

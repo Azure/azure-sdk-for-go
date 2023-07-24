@@ -50,20 +50,26 @@ type IPAllocationsServer struct {
 }
 
 // NewIPAllocationsServerTransport creates a new instance of IPAllocationsServerTransport with the provided implementation.
-// The returned IPAllocationsServerTransport instance is connected to an instance of armnetwork.IPAllocationsClient by way of the
-// undefined.Transporter field.
+// The returned IPAllocationsServerTransport instance is connected to an instance of armnetwork.IPAllocationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewIPAllocationsServerTransport(srv *IPAllocationsServer) *IPAllocationsServerTransport {
-	return &IPAllocationsServerTransport{srv: srv}
+	return &IPAllocationsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.IPAllocationsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.IPAllocationsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse]](),
+	}
 }
 
 // IPAllocationsServerTransport connects instances of armnetwork.IPAllocationsClient to instances of IPAllocationsServer.
 // Don't use this type directly, use NewIPAllocationsServerTransport instead.
 type IPAllocationsServerTransport struct {
 	srv                         *IPAllocationsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.IPAllocationsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.IPAllocationsClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.IPAllocationsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.IPAllocationsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for IPAllocationsServerTransport.
@@ -105,7 +111,8 @@ func (i *IPAllocationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	if i.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if i.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/IpAllocations/(?P<ipAllocationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -128,19 +135,21 @@ func (i *IPAllocationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		i.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginCreateOrUpdate) {
-		i.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		i.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -150,7 +159,8 @@ func (i *IPAllocationsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	if i.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if i.beginDelete == nil {
+	beginDelete := i.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/IpAllocations/(?P<ipAllocationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -169,19 +179,21 @@ func (i *IPAllocationsServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginDelete = &respr
+		beginDelete = &respr
+		i.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		i.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginDelete) {
-		i.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		i.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -236,7 +248,8 @@ func (i *IPAllocationsServerTransport) dispatchNewListPager(req *http.Request) (
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if i.newListPager == nil {
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/IpAllocations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -244,20 +257,22 @@ func (i *IPAllocationsServerTransport) dispatchNewListPager(req *http.Request) (
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := i.srv.NewListPager(nil)
-		i.newListPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListPager, req, func(page *armnetwork.IPAllocationsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.IPAllocationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListPager) {
-		i.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -266,7 +281,8 @@ func (i *IPAllocationsServerTransport) dispatchNewListByResourceGroupPager(req *
 	if i.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if i.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/IpAllocations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -278,20 +294,22 @@ func (i *IPAllocationsServerTransport) dispatchNewListByResourceGroupPager(req *
 			return nil, err
 		}
 		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		i.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListByResourceGroupPager, req, func(page *armnetwork.IPAllocationsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.IPAllocationsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListByResourceGroupPager) {
-		i.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		i.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

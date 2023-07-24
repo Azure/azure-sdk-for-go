@@ -37,8 +37,8 @@ type FileServicesServer struct {
 }
 
 // NewFileServicesServerTransport creates a new instance of FileServicesServerTransport with the provided implementation.
-// The returned FileServicesServerTransport instance is connected to an instance of armstorage.FileServicesClient by way of the
-// undefined.Transporter field.
+// The returned FileServicesServerTransport instance is connected to an instance of armstorage.FileServicesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFileServicesServerTransport(srv *FileServicesServer) *FileServicesServerTransport {
 	return &FileServicesServerTransport{srv: srv}
 }

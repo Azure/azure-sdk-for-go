@@ -27,17 +27,20 @@ type TenantsServer struct {
 }
 
 // NewTenantsServerTransport creates a new instance of TenantsServerTransport with the provided implementation.
-// The returned TenantsServerTransport instance is connected to an instance of armsubscriptions.TenantsClient by way of the
-// undefined.Transporter field.
+// The returned TenantsServerTransport instance is connected to an instance of armsubscriptions.TenantsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTenantsServerTransport(srv *TenantsServer) *TenantsServerTransport {
-	return &TenantsServerTransport{srv: srv}
+	return &TenantsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armsubscriptions.TenantsClientListResponse]](),
+	}
 }
 
 // TenantsServerTransport connects instances of armsubscriptions.TenantsClient to instances of TenantsServer.
 // Don't use this type directly, use NewTenantsServerTransport instead.
 type TenantsServerTransport struct {
 	srv          *TenantsServer
-	newListPager *azfake.PagerResponder[armsubscriptions.TenantsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armsubscriptions.TenantsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TenantsServerTransport.
@@ -69,22 +72,25 @@ func (t *TenantsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		resp := t.srv.NewListPager(nil)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armsubscriptions.TenantsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsubscriptions.TenantsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -44,7 +44,7 @@ func NewFqdnListGlobalRulestackClient(credential azcore.TokenCredential, options
 // BeginCreateOrUpdate - Create a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - fqdn list name
 //   - resource - Resource create parameters.
@@ -67,7 +67,7 @@ func (client *FqdnListGlobalRulestackClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Create a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *FqdnListGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource FqdnListGlobalRulestackResource, options *FqdnListGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, globalRulestackName, name, resource, options)
 	if err != nil {
@@ -99,7 +99,7 @@ func (client *FqdnListGlobalRulestackClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -108,7 +108,7 @@ func (client *FqdnListGlobalRulestackClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - Delete a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - fqdn list name
 //   - options - FqdnListGlobalRulestackClientBeginDeleteOptions contains the optional parameters for the FqdnListGlobalRulestackClient.BeginDelete
@@ -130,7 +130,7 @@ func (client *FqdnListGlobalRulestackClient) BeginDelete(ctx context.Context, gl
 // Delete - Delete a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *FqdnListGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *FqdnListGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, globalRulestackName, name, options)
 	if err != nil {
@@ -162,7 +162,7 @@ func (client *FqdnListGlobalRulestackClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *FqdnListGlobalRulestackClient) deleteCreateRequest(ctx context.Con
 // Get - Get a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - fqdn list name
 //   - options - FqdnListGlobalRulestackClientGetOptions contains the optional parameters for the FqdnListGlobalRulestackClient.Get
@@ -207,7 +207,7 @@ func (client *FqdnListGlobalRulestackClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,7 +224,7 @@ func (client *FqdnListGlobalRulestackClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - List FqdnListGlobalRulestackResource resources by Tenant
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - FqdnListGlobalRulestackClientListOptions contains the optional parameters for the FqdnListGlobalRulestackClient.NewListPager
 //     method.
@@ -268,7 +268,7 @@ func (client *FqdnListGlobalRulestackClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

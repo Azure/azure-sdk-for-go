@@ -33,8 +33,8 @@ type MetricAlertsStatusServer struct {
 }
 
 // NewMetricAlertsStatusServerTransport creates a new instance of MetricAlertsStatusServerTransport with the provided implementation.
-// The returned MetricAlertsStatusServerTransport instance is connected to an instance of armmonitor.MetricAlertsStatusClient by way of the
-// undefined.Transporter field.
+// The returned MetricAlertsStatusServerTransport instance is connected to an instance of armmonitor.MetricAlertsStatusClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricAlertsStatusServerTransport(srv *MetricAlertsStatusServer) *MetricAlertsStatusServerTransport {
 	return &MetricAlertsStatusServerTransport{srv: srv}
 }

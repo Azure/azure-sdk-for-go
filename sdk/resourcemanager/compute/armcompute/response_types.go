@@ -12,6 +12,12 @@ import "io"
 
 // AvailabilitySetsClientCreateOrUpdateResponse contains the response from method AvailabilitySetsClient.CreateOrUpdate.
 type AvailabilitySetsClientCreateOrUpdateResponse struct {
+	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified
+	// in the same availability set are allocated to different nodes to maximize availability. For more information about availability
+	// sets, see [Availability sets overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For
+	// more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates).
+	// Currently, a VM can only be added to an availability set at creation time. An existing VM cannot be added to an availability
+	// set.
 	AvailabilitySet
 }
 
@@ -22,31 +28,49 @@ type AvailabilitySetsClientDeleteResponse struct {
 
 // AvailabilitySetsClientGetResponse contains the response from method AvailabilitySetsClient.Get.
 type AvailabilitySetsClientGetResponse struct {
+	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified
+	// in the same availability set are allocated to different nodes to maximize availability. For more information about availability
+	// sets, see [Availability sets overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For
+	// more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates).
+	// Currently, a VM can only be added to an availability set at creation time. An existing VM cannot be added to an availability
+	// set.
 	AvailabilitySet
 }
 
 // AvailabilitySetsClientListAvailableSizesResponse contains the response from method AvailabilitySetsClient.NewListAvailableSizesPager.
 type AvailabilitySetsClientListAvailableSizesResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineSizeListResult
 }
 
 // AvailabilitySetsClientListBySubscriptionResponse contains the response from method AvailabilitySetsClient.NewListBySubscriptionPager.
 type AvailabilitySetsClientListBySubscriptionResponse struct {
+	// The List Availability Set operation response.
 	AvailabilitySetListResult
 }
 
 // AvailabilitySetsClientListResponse contains the response from method AvailabilitySetsClient.NewListPager.
 type AvailabilitySetsClientListResponse struct {
+	// The List Availability Set operation response.
 	AvailabilitySetListResult
 }
 
 // AvailabilitySetsClientUpdateResponse contains the response from method AvailabilitySetsClient.Update.
 type AvailabilitySetsClientUpdateResponse struct {
+	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified
+	// in the same availability set are allocated to different nodes to maximize availability. For more information about availability
+	// sets, see [Availability sets overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For
+	// more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates).
+	// Currently, a VM can only be added to an availability set at creation time. An existing VM cannot be added to an availability
+	// set.
 	AvailabilitySet
 }
 
 // CapacityReservationGroupsClientCreateOrUpdateResponse contains the response from method CapacityReservationGroupsClient.CreateOrUpdate.
 type CapacityReservationGroupsClientCreateOrUpdateResponse struct {
+	// Specifies information about the capacity reservation group that the capacity reservations should be assigned to. Currently,
+	// a capacity reservation can only be added to a capacity reservation group at creation time. An existing capacity reservation
+	// cannot be added or moved to another capacity reservation group.
 	CapacityReservationGroup
 }
 
@@ -57,26 +81,35 @@ type CapacityReservationGroupsClientDeleteResponse struct {
 
 // CapacityReservationGroupsClientGetResponse contains the response from method CapacityReservationGroupsClient.Get.
 type CapacityReservationGroupsClientGetResponse struct {
+	// Specifies information about the capacity reservation group that the capacity reservations should be assigned to. Currently,
+	// a capacity reservation can only be added to a capacity reservation group at creation time. An existing capacity reservation
+	// cannot be added or moved to another capacity reservation group.
 	CapacityReservationGroup
 }
 
 // CapacityReservationGroupsClientListByResourceGroupResponse contains the response from method CapacityReservationGroupsClient.NewListByResourceGroupPager.
 type CapacityReservationGroupsClientListByResourceGroupResponse struct {
+	// The List capacity reservation group with resource group response.
 	CapacityReservationGroupListResult
 }
 
 // CapacityReservationGroupsClientListBySubscriptionResponse contains the response from method CapacityReservationGroupsClient.NewListBySubscriptionPager.
 type CapacityReservationGroupsClientListBySubscriptionResponse struct {
+	// The List capacity reservation group with resource group response.
 	CapacityReservationGroupListResult
 }
 
 // CapacityReservationGroupsClientUpdateResponse contains the response from method CapacityReservationGroupsClient.Update.
 type CapacityReservationGroupsClientUpdateResponse struct {
+	// Specifies information about the capacity reservation group that the capacity reservations should be assigned to. Currently,
+	// a capacity reservation can only be added to a capacity reservation group at creation time. An existing capacity reservation
+	// cannot be added or moved to another capacity reservation group.
 	CapacityReservationGroup
 }
 
 // CapacityReservationsClientCreateOrUpdateResponse contains the response from method CapacityReservationsClient.BeginCreateOrUpdate.
 type CapacityReservationsClientCreateOrUpdateResponse struct {
+	// Specifies information about the capacity reservation.
 	CapacityReservation
 }
 
@@ -87,36 +120,43 @@ type CapacityReservationsClientDeleteResponse struct {
 
 // CapacityReservationsClientGetResponse contains the response from method CapacityReservationsClient.Get.
 type CapacityReservationsClientGetResponse struct {
+	// Specifies information about the capacity reservation.
 	CapacityReservation
 }
 
 // CapacityReservationsClientListByCapacityReservationGroupResponse contains the response from method CapacityReservationsClient.NewListByCapacityReservationGroupPager.
 type CapacityReservationsClientListByCapacityReservationGroupResponse struct {
+	// The list capacity reservation operation response.
 	CapacityReservationListResult
 }
 
 // CapacityReservationsClientUpdateResponse contains the response from method CapacityReservationsClient.BeginUpdate.
 type CapacityReservationsClientUpdateResponse struct {
+	// Specifies information about the capacity reservation.
 	CapacityReservation
 }
 
 // CloudServiceOperatingSystemsClientGetOSFamilyResponse contains the response from method CloudServiceOperatingSystemsClient.GetOSFamily.
 type CloudServiceOperatingSystemsClientGetOSFamilyResponse struct {
+	// Describes a cloud service OS family.
 	OSFamily
 }
 
 // CloudServiceOperatingSystemsClientGetOSVersionResponse contains the response from method CloudServiceOperatingSystemsClient.GetOSVersion.
 type CloudServiceOperatingSystemsClientGetOSVersionResponse struct {
+	// Describes a cloud service OS version.
 	OSVersion
 }
 
 // CloudServiceOperatingSystemsClientListOSFamiliesResponse contains the response from method CloudServiceOperatingSystemsClient.NewListOSFamiliesPager.
 type CloudServiceOperatingSystemsClientListOSFamiliesResponse struct {
+	// The list operation result.
 	OSFamilyListResult
 }
 
 // CloudServiceOperatingSystemsClientListOSVersionsResponse contains the response from method CloudServiceOperatingSystemsClient.NewListOSVersionsPager.
 type CloudServiceOperatingSystemsClientListOSVersionsResponse struct {
+	// The list operation result.
 	OSVersionListResult
 }
 
@@ -127,6 +167,7 @@ type CloudServiceRoleInstancesClientDeleteResponse struct {
 
 // CloudServiceRoleInstancesClientGetInstanceViewResponse contains the response from method CloudServiceRoleInstancesClient.GetInstanceView.
 type CloudServiceRoleInstancesClientGetInstanceViewResponse struct {
+	// The instance view of the role instance.
 	RoleInstanceView
 }
 
@@ -138,11 +179,13 @@ type CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse struct {
 
 // CloudServiceRoleInstancesClientGetResponse contains the response from method CloudServiceRoleInstancesClient.Get.
 type CloudServiceRoleInstancesClientGetResponse struct {
+	// Describes the cloud service role instance.
 	RoleInstance
 }
 
 // CloudServiceRoleInstancesClientListResponse contains the response from method CloudServiceRoleInstancesClient.NewListPager.
 type CloudServiceRoleInstancesClientListResponse struct {
+	// The list operation result.
 	RoleInstanceListResult
 }
 
@@ -163,16 +206,19 @@ type CloudServiceRoleInstancesClientRestartResponse struct {
 
 // CloudServiceRolesClientGetResponse contains the response from method CloudServiceRolesClient.Get.
 type CloudServiceRolesClientGetResponse struct {
+	// Describes a role of the cloud service.
 	CloudServiceRole
 }
 
 // CloudServiceRolesClientListResponse contains the response from method CloudServiceRolesClient.NewListPager.
 type CloudServiceRolesClientListResponse struct {
+	// The list operation result.
 	CloudServiceRoleListResult
 }
 
 // CloudServicesClientCreateOrUpdateResponse contains the response from method CloudServicesClient.BeginCreateOrUpdate.
 type CloudServicesClientCreateOrUpdateResponse struct {
+	// Describes the cloud service.
 	CloudService
 }
 
@@ -188,21 +234,25 @@ type CloudServicesClientDeleteResponse struct {
 
 // CloudServicesClientGetInstanceViewResponse contains the response from method CloudServicesClient.GetInstanceView.
 type CloudServicesClientGetInstanceViewResponse struct {
+	// InstanceView of CloudService as a whole
 	CloudServiceInstanceView
 }
 
 // CloudServicesClientGetResponse contains the response from method CloudServicesClient.Get.
 type CloudServicesClientGetResponse struct {
+	// Describes the cloud service.
 	CloudService
 }
 
 // CloudServicesClientListAllResponse contains the response from method CloudServicesClient.NewListAllPager.
 type CloudServicesClientListAllResponse struct {
+	// The list operation result.
 	CloudServiceListResult
 }
 
 // CloudServicesClientListResponse contains the response from method CloudServicesClient.NewListPager.
 type CloudServicesClientListResponse struct {
+	// The list operation result.
 	CloudServiceListResult
 }
 
@@ -233,16 +283,19 @@ type CloudServicesClientStartResponse struct {
 
 // CloudServicesClientUpdateResponse contains the response from method CloudServicesClient.BeginUpdate.
 type CloudServicesClientUpdateResponse struct {
+	// Describes the cloud service.
 	CloudService
 }
 
 // CloudServicesUpdateDomainClientGetUpdateDomainResponse contains the response from method CloudServicesUpdateDomainClient.GetUpdateDomain.
 type CloudServicesUpdateDomainClientGetUpdateDomainResponse struct {
+	// Defines an update domain for the cloud service.
 	UpdateDomain
 }
 
 // CloudServicesUpdateDomainClientListUpdateDomainsResponse contains the response from method CloudServicesUpdateDomainClient.NewListUpdateDomainsPager.
 type CloudServicesUpdateDomainClientListUpdateDomainsResponse struct {
+	// The list operation result.
 	UpdateDomainListResult
 }
 
@@ -253,31 +306,39 @@ type CloudServicesUpdateDomainClientWalkUpdateDomainResponse struct {
 
 // CommunityGalleriesClientGetResponse contains the response from method CommunityGalleriesClient.Get.
 type CommunityGalleriesClientGetResponse struct {
+	// Specifies information about the Community Gallery that you want to create or update.
 	CommunityGallery
 }
 
 // CommunityGalleryImageVersionsClientGetResponse contains the response from method CommunityGalleryImageVersionsClient.Get.
 type CommunityGalleryImageVersionsClientGetResponse struct {
+	// Specifies information about the gallery image version that you want to create or update.
 	CommunityGalleryImageVersion
 }
 
 // CommunityGalleryImageVersionsClientListResponse contains the response from method CommunityGalleryImageVersionsClient.NewListPager.
 type CommunityGalleryImageVersionsClientListResponse struct {
+	// The List Community Gallery Image versions operation response.
 	CommunityGalleryImageVersionList
 }
 
 // CommunityGalleryImagesClientGetResponse contains the response from method CommunityGalleryImagesClient.Get.
 type CommunityGalleryImagesClientGetResponse struct {
+	// Specifies information about the gallery image definition that you want to create or update.
 	CommunityGalleryImage
 }
 
 // CommunityGalleryImagesClientListResponse contains the response from method CommunityGalleryImagesClient.NewListPager.
 type CommunityGalleryImagesClientListResponse struct {
+	// The List Community Gallery Images operation response.
 	CommunityGalleryImageList
 }
 
 // DedicatedHostGroupsClientCreateOrUpdateResponse contains the response from method DedicatedHostGroupsClient.CreateOrUpdate.
 type DedicatedHostGroupsClientCreateOrUpdateResponse struct {
+	// Specifies information about the dedicated host group that the dedicated hosts should be assigned to. Currently, a dedicated
+	// host can only be added to a dedicated host group at creation time. An existing dedicated host cannot be added to another
+	// dedicated host group.
 	DedicatedHostGroup
 }
 
@@ -288,26 +349,35 @@ type DedicatedHostGroupsClientDeleteResponse struct {
 
 // DedicatedHostGroupsClientGetResponse contains the response from method DedicatedHostGroupsClient.Get.
 type DedicatedHostGroupsClientGetResponse struct {
+	// Specifies information about the dedicated host group that the dedicated hosts should be assigned to. Currently, a dedicated
+	// host can only be added to a dedicated host group at creation time. An existing dedicated host cannot be added to another
+	// dedicated host group.
 	DedicatedHostGroup
 }
 
 // DedicatedHostGroupsClientListByResourceGroupResponse contains the response from method DedicatedHostGroupsClient.NewListByResourceGroupPager.
 type DedicatedHostGroupsClientListByResourceGroupResponse struct {
+	// The List Dedicated Host Group with resource group response.
 	DedicatedHostGroupListResult
 }
 
 // DedicatedHostGroupsClientListBySubscriptionResponse contains the response from method DedicatedHostGroupsClient.NewListBySubscriptionPager.
 type DedicatedHostGroupsClientListBySubscriptionResponse struct {
+	// The List Dedicated Host Group with resource group response.
 	DedicatedHostGroupListResult
 }
 
 // DedicatedHostGroupsClientUpdateResponse contains the response from method DedicatedHostGroupsClient.Update.
 type DedicatedHostGroupsClientUpdateResponse struct {
+	// Specifies information about the dedicated host group that the dedicated hosts should be assigned to. Currently, a dedicated
+	// host can only be added to a dedicated host group at creation time. An existing dedicated host cannot be added to another
+	// dedicated host group.
 	DedicatedHostGroup
 }
 
 // DedicatedHostsClientCreateOrUpdateResponse contains the response from method DedicatedHostsClient.BeginCreateOrUpdate.
 type DedicatedHostsClientCreateOrUpdateResponse struct {
+	// Specifies information about the Dedicated host.
 	DedicatedHost
 }
 
@@ -318,16 +388,19 @@ type DedicatedHostsClientDeleteResponse struct {
 
 // DedicatedHostsClientGetResponse contains the response from method DedicatedHostsClient.Get.
 type DedicatedHostsClientGetResponse struct {
+	// Specifies information about the Dedicated host.
 	DedicatedHost
 }
 
 // DedicatedHostsClientListAvailableSizesResponse contains the response from method DedicatedHostsClient.NewListAvailableSizesPager.
 type DedicatedHostsClientListAvailableSizesResponse struct {
+	// The List Dedicated Host sizes operation response.
 	DedicatedHostSizeListResult
 }
 
 // DedicatedHostsClientListByHostGroupResponse contains the response from method DedicatedHostsClient.NewListByHostGroupPager.
 type DedicatedHostsClientListByHostGroupResponse struct {
+	// The list dedicated host operation response.
 	DedicatedHostListResult
 }
 
@@ -338,11 +411,13 @@ type DedicatedHostsClientRestartResponse struct {
 
 // DedicatedHostsClientUpdateResponse contains the response from method DedicatedHostsClient.BeginUpdate.
 type DedicatedHostsClientUpdateResponse struct {
+	// Specifies information about the Dedicated host.
 	DedicatedHost
 }
 
 // DiskAccessesClientCreateOrUpdateResponse contains the response from method DiskAccessesClient.BeginCreateOrUpdate.
 type DiskAccessesClientCreateOrUpdateResponse struct {
+	// disk access resource.
 	DiskAccess
 }
 
@@ -358,46 +433,55 @@ type DiskAccessesClientDeleteResponse struct {
 
 // DiskAccessesClientGetAPrivateEndpointConnectionResponse contains the response from method DiskAccessesClient.GetAPrivateEndpointConnection.
 type DiskAccessesClientGetAPrivateEndpointConnectionResponse struct {
+	// The Private Endpoint Connection resource.
 	PrivateEndpointConnection
 }
 
 // DiskAccessesClientGetPrivateLinkResourcesResponse contains the response from method DiskAccessesClient.GetPrivateLinkResources.
 type DiskAccessesClientGetPrivateLinkResourcesResponse struct {
+	// A list of private link resources
 	PrivateLinkResourceListResult
 }
 
 // DiskAccessesClientGetResponse contains the response from method DiskAccessesClient.Get.
 type DiskAccessesClientGetResponse struct {
+	// disk access resource.
 	DiskAccess
 }
 
 // DiskAccessesClientListByResourceGroupResponse contains the response from method DiskAccessesClient.NewListByResourceGroupPager.
 type DiskAccessesClientListByResourceGroupResponse struct {
+	// The List disk access operation response.
 	DiskAccessList
 }
 
 // DiskAccessesClientListPrivateEndpointConnectionsResponse contains the response from method DiskAccessesClient.NewListPrivateEndpointConnectionsPager.
 type DiskAccessesClientListPrivateEndpointConnectionsResponse struct {
+	// A list of private link resources
 	PrivateEndpointConnectionListResult
 }
 
 // DiskAccessesClientListResponse contains the response from method DiskAccessesClient.NewListPager.
 type DiskAccessesClientListResponse struct {
+	// The List disk access operation response.
 	DiskAccessList
 }
 
 // DiskAccessesClientUpdateAPrivateEndpointConnectionResponse contains the response from method DiskAccessesClient.BeginUpdateAPrivateEndpointConnection.
 type DiskAccessesClientUpdateAPrivateEndpointConnectionResponse struct {
+	// The Private Endpoint Connection resource.
 	PrivateEndpointConnection
 }
 
 // DiskAccessesClientUpdateResponse contains the response from method DiskAccessesClient.BeginUpdate.
 type DiskAccessesClientUpdateResponse struct {
+	// disk access resource.
 	DiskAccess
 }
 
 // DiskEncryptionSetsClientCreateOrUpdateResponse contains the response from method DiskEncryptionSetsClient.BeginCreateOrUpdate.
 type DiskEncryptionSetsClientCreateOrUpdateResponse struct {
+	// disk encryption set resource.
 	DiskEncryptionSet
 }
 
@@ -408,41 +492,49 @@ type DiskEncryptionSetsClientDeleteResponse struct {
 
 // DiskEncryptionSetsClientGetResponse contains the response from method DiskEncryptionSetsClient.Get.
 type DiskEncryptionSetsClientGetResponse struct {
+	// disk encryption set resource.
 	DiskEncryptionSet
 }
 
 // DiskEncryptionSetsClientListAssociatedResourcesResponse contains the response from method DiskEncryptionSetsClient.NewListAssociatedResourcesPager.
 type DiskEncryptionSetsClientListAssociatedResourcesResponse struct {
+	// The List resources which are encrypted with the disk encryption set.
 	ResourceURIList
 }
 
 // DiskEncryptionSetsClientListByResourceGroupResponse contains the response from method DiskEncryptionSetsClient.NewListByResourceGroupPager.
 type DiskEncryptionSetsClientListByResourceGroupResponse struct {
+	// The List disk encryption set operation response.
 	DiskEncryptionSetList
 }
 
 // DiskEncryptionSetsClientListResponse contains the response from method DiskEncryptionSetsClient.NewListPager.
 type DiskEncryptionSetsClientListResponse struct {
+	// The List disk encryption set operation response.
 	DiskEncryptionSetList
 }
 
 // DiskEncryptionSetsClientUpdateResponse contains the response from method DiskEncryptionSetsClient.BeginUpdate.
 type DiskEncryptionSetsClientUpdateResponse struct {
+	// disk encryption set resource.
 	DiskEncryptionSet
 }
 
 // DiskRestorePointClientGetResponse contains the response from method DiskRestorePointClient.Get.
 type DiskRestorePointClientGetResponse struct {
+	// Properties of disk restore point
 	DiskRestorePoint
 }
 
 // DiskRestorePointClientGrantAccessResponse contains the response from method DiskRestorePointClient.BeginGrantAccess.
 type DiskRestorePointClientGrantAccessResponse struct {
+	// A disk access SAS uri.
 	AccessURI
 }
 
 // DiskRestorePointClientListByRestorePointResponse contains the response from method DiskRestorePointClient.NewListByRestorePointPager.
 type DiskRestorePointClientListByRestorePointResponse struct {
+	// The List Disk Restore Points operation response.
 	DiskRestorePointList
 }
 
@@ -453,6 +545,7 @@ type DiskRestorePointClientRevokeAccessResponse struct {
 
 // DisksClientCreateOrUpdateResponse contains the response from method DisksClient.BeginCreateOrUpdate.
 type DisksClientCreateOrUpdateResponse struct {
+	// Disk resource.
 	Disk
 }
 
@@ -463,21 +556,25 @@ type DisksClientDeleteResponse struct {
 
 // DisksClientGetResponse contains the response from method DisksClient.Get.
 type DisksClientGetResponse struct {
+	// Disk resource.
 	Disk
 }
 
 // DisksClientGrantAccessResponse contains the response from method DisksClient.BeginGrantAccess.
 type DisksClientGrantAccessResponse struct {
+	// A disk access SAS uri.
 	AccessURI
 }
 
 // DisksClientListByResourceGroupResponse contains the response from method DisksClient.NewListByResourceGroupPager.
 type DisksClientListByResourceGroupResponse struct {
+	// The List Disks operation response.
 	DiskList
 }
 
 // DisksClientListResponse contains the response from method DisksClient.NewListPager.
 type DisksClientListResponse struct {
+	// The List Disks operation response.
 	DiskList
 }
 
@@ -488,11 +585,13 @@ type DisksClientRevokeAccessResponse struct {
 
 // DisksClientUpdateResponse contains the response from method DisksClient.BeginUpdate.
 type DisksClientUpdateResponse struct {
+	// Disk resource.
 	Disk
 }
 
 // GalleriesClientCreateOrUpdateResponse contains the response from method GalleriesClient.BeginCreateOrUpdate.
 type GalleriesClientCreateOrUpdateResponse struct {
+	// Specifies information about the Shared Image Gallery that you want to create or update.
 	Gallery
 }
 
@@ -503,26 +602,31 @@ type GalleriesClientDeleteResponse struct {
 
 // GalleriesClientGetResponse contains the response from method GalleriesClient.Get.
 type GalleriesClientGetResponse struct {
+	// Specifies information about the Shared Image Gallery that you want to create or update.
 	Gallery
 }
 
 // GalleriesClientListByResourceGroupResponse contains the response from method GalleriesClient.NewListByResourceGroupPager.
 type GalleriesClientListByResourceGroupResponse struct {
+	// The List Galleries operation response.
 	GalleryList
 }
 
 // GalleriesClientListResponse contains the response from method GalleriesClient.NewListPager.
 type GalleriesClientListResponse struct {
+	// The List Galleries operation response.
 	GalleryList
 }
 
 // GalleriesClientUpdateResponse contains the response from method GalleriesClient.BeginUpdate.
 type GalleriesClientUpdateResponse struct {
+	// Specifies information about the Shared Image Gallery that you want to create or update.
 	Gallery
 }
 
 // GalleryApplicationVersionsClientCreateOrUpdateResponse contains the response from method GalleryApplicationVersionsClient.BeginCreateOrUpdate.
 type GalleryApplicationVersionsClientCreateOrUpdateResponse struct {
+	// Specifies information about the gallery Application Version that you want to create or update.
 	GalleryApplicationVersion
 }
 
@@ -533,21 +637,25 @@ type GalleryApplicationVersionsClientDeleteResponse struct {
 
 // GalleryApplicationVersionsClientGetResponse contains the response from method GalleryApplicationVersionsClient.Get.
 type GalleryApplicationVersionsClientGetResponse struct {
+	// Specifies information about the gallery Application Version that you want to create or update.
 	GalleryApplicationVersion
 }
 
 // GalleryApplicationVersionsClientListByGalleryApplicationResponse contains the response from method GalleryApplicationVersionsClient.NewListByGalleryApplicationPager.
 type GalleryApplicationVersionsClientListByGalleryApplicationResponse struct {
+	// The List Gallery Application version operation response.
 	GalleryApplicationVersionList
 }
 
 // GalleryApplicationVersionsClientUpdateResponse contains the response from method GalleryApplicationVersionsClient.BeginUpdate.
 type GalleryApplicationVersionsClientUpdateResponse struct {
+	// Specifies information about the gallery Application Version that you want to create or update.
 	GalleryApplicationVersion
 }
 
 // GalleryApplicationsClientCreateOrUpdateResponse contains the response from method GalleryApplicationsClient.BeginCreateOrUpdate.
 type GalleryApplicationsClientCreateOrUpdateResponse struct {
+	// Specifies information about the gallery Application Definition that you want to create or update.
 	GalleryApplication
 }
 
@@ -558,21 +666,25 @@ type GalleryApplicationsClientDeleteResponse struct {
 
 // GalleryApplicationsClientGetResponse contains the response from method GalleryApplicationsClient.Get.
 type GalleryApplicationsClientGetResponse struct {
+	// Specifies information about the gallery Application Definition that you want to create or update.
 	GalleryApplication
 }
 
 // GalleryApplicationsClientListByGalleryResponse contains the response from method GalleryApplicationsClient.NewListByGalleryPager.
 type GalleryApplicationsClientListByGalleryResponse struct {
+	// The List Gallery Applications operation response.
 	GalleryApplicationList
 }
 
 // GalleryApplicationsClientUpdateResponse contains the response from method GalleryApplicationsClient.BeginUpdate.
 type GalleryApplicationsClientUpdateResponse struct {
+	// Specifies information about the gallery Application Definition that you want to create or update.
 	GalleryApplication
 }
 
 // GalleryImageVersionsClientCreateOrUpdateResponse contains the response from method GalleryImageVersionsClient.BeginCreateOrUpdate.
 type GalleryImageVersionsClientCreateOrUpdateResponse struct {
+	// Specifies information about the gallery image version that you want to create or update.
 	GalleryImageVersion
 }
 
@@ -583,21 +695,25 @@ type GalleryImageVersionsClientDeleteResponse struct {
 
 // GalleryImageVersionsClientGetResponse contains the response from method GalleryImageVersionsClient.Get.
 type GalleryImageVersionsClientGetResponse struct {
+	// Specifies information about the gallery image version that you want to create or update.
 	GalleryImageVersion
 }
 
 // GalleryImageVersionsClientListByGalleryImageResponse contains the response from method GalleryImageVersionsClient.NewListByGalleryImagePager.
 type GalleryImageVersionsClientListByGalleryImageResponse struct {
+	// The List Gallery Image version operation response.
 	GalleryImageVersionList
 }
 
 // GalleryImageVersionsClientUpdateResponse contains the response from method GalleryImageVersionsClient.BeginUpdate.
 type GalleryImageVersionsClientUpdateResponse struct {
+	// Specifies information about the gallery image version that you want to create or update.
 	GalleryImageVersion
 }
 
 // GalleryImagesClientCreateOrUpdateResponse contains the response from method GalleryImagesClient.BeginCreateOrUpdate.
 type GalleryImagesClientCreateOrUpdateResponse struct {
+	// Specifies information about the gallery image definition that you want to create or update.
 	GalleryImage
 }
 
@@ -608,26 +724,32 @@ type GalleryImagesClientDeleteResponse struct {
 
 // GalleryImagesClientGetResponse contains the response from method GalleryImagesClient.Get.
 type GalleryImagesClientGetResponse struct {
+	// Specifies information about the gallery image definition that you want to create or update.
 	GalleryImage
 }
 
 // GalleryImagesClientListByGalleryResponse contains the response from method GalleryImagesClient.NewListByGalleryPager.
 type GalleryImagesClientListByGalleryResponse struct {
+	// The List Gallery Images operation response.
 	GalleryImageList
 }
 
 // GalleryImagesClientUpdateResponse contains the response from method GalleryImagesClient.BeginUpdate.
 type GalleryImagesClientUpdateResponse struct {
+	// Specifies information about the gallery image definition that you want to create or update.
 	GalleryImage
 }
 
 // GallerySharingProfileClientUpdateResponse contains the response from method GallerySharingProfileClient.BeginUpdate.
 type GallerySharingProfileClientUpdateResponse struct {
+	// Specifies information about the gallery sharing profile update.
 	SharingUpdate
 }
 
 // ImagesClientCreateOrUpdateResponse contains the response from method ImagesClient.BeginCreateOrUpdate.
 type ImagesClientCreateOrUpdateResponse struct {
+	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
+	// If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image
 }
 
@@ -638,41 +760,51 @@ type ImagesClientDeleteResponse struct {
 
 // ImagesClientGetResponse contains the response from method ImagesClient.Get.
 type ImagesClientGetResponse struct {
+	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
+	// If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image
 }
 
 // ImagesClientListByResourceGroupResponse contains the response from method ImagesClient.NewListByResourceGroupPager.
 type ImagesClientListByResourceGroupResponse struct {
+	// The List Image operation response.
 	ImageListResult
 }
 
 // ImagesClientListResponse contains the response from method ImagesClient.NewListPager.
 type ImagesClientListResponse struct {
+	// The List Image operation response.
 	ImageListResult
 }
 
 // ImagesClientUpdateResponse contains the response from method ImagesClient.BeginUpdate.
 type ImagesClientUpdateResponse struct {
+	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
+	// If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image
 }
 
 // LogAnalyticsClientExportRequestRateByIntervalResponse contains the response from method LogAnalyticsClient.BeginExportRequestRateByInterval.
 type LogAnalyticsClientExportRequestRateByIntervalResponse struct {
+	// LogAnalytics operation status response
 	LogAnalyticsOperationResult
 }
 
 // LogAnalyticsClientExportThrottledRequestsResponse contains the response from method LogAnalyticsClient.BeginExportThrottledRequests.
 type LogAnalyticsClientExportThrottledRequestsResponse struct {
+	// LogAnalytics operation status response
 	LogAnalyticsOperationResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
+	// The List Compute Operation operation response.
 	OperationListResult
 }
 
 // ProximityPlacementGroupsClientCreateOrUpdateResponse contains the response from method ProximityPlacementGroupsClient.CreateOrUpdate.
 type ProximityPlacementGroupsClientCreateOrUpdateResponse struct {
+	// Specifies information about the proximity placement group.
 	ProximityPlacementGroup
 }
 
@@ -683,31 +815,37 @@ type ProximityPlacementGroupsClientDeleteResponse struct {
 
 // ProximityPlacementGroupsClientGetResponse contains the response from method ProximityPlacementGroupsClient.Get.
 type ProximityPlacementGroupsClientGetResponse struct {
+	// Specifies information about the proximity placement group.
 	ProximityPlacementGroup
 }
 
 // ProximityPlacementGroupsClientListByResourceGroupResponse contains the response from method ProximityPlacementGroupsClient.NewListByResourceGroupPager.
 type ProximityPlacementGroupsClientListByResourceGroupResponse struct {
+	// The List Proximity Placement Group operation response.
 	ProximityPlacementGroupListResult
 }
 
 // ProximityPlacementGroupsClientListBySubscriptionResponse contains the response from method ProximityPlacementGroupsClient.NewListBySubscriptionPager.
 type ProximityPlacementGroupsClientListBySubscriptionResponse struct {
+	// The List Proximity Placement Group operation response.
 	ProximityPlacementGroupListResult
 }
 
 // ProximityPlacementGroupsClientUpdateResponse contains the response from method ProximityPlacementGroupsClient.Update.
 type ProximityPlacementGroupsClientUpdateResponse struct {
+	// Specifies information about the proximity placement group.
 	ProximityPlacementGroup
 }
 
 // ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.NewListPager.
 type ResourceSKUsClientListResponse struct {
+	// The List Resource Skus operation response.
 	ResourceSKUsResult
 }
 
 // RestorePointCollectionsClientCreateOrUpdateResponse contains the response from method RestorePointCollectionsClient.CreateOrUpdate.
 type RestorePointCollectionsClientCreateOrUpdateResponse struct {
+	// Create or update Restore Point collection parameters.
 	RestorePointCollection
 }
 
@@ -718,26 +856,31 @@ type RestorePointCollectionsClientDeleteResponse struct {
 
 // RestorePointCollectionsClientGetResponse contains the response from method RestorePointCollectionsClient.Get.
 type RestorePointCollectionsClientGetResponse struct {
+	// Create or update Restore Point collection parameters.
 	RestorePointCollection
 }
 
 // RestorePointCollectionsClientListAllResponse contains the response from method RestorePointCollectionsClient.NewListAllPager.
 type RestorePointCollectionsClientListAllResponse struct {
+	// The List restore point collection operation response.
 	RestorePointCollectionListResult
 }
 
 // RestorePointCollectionsClientListResponse contains the response from method RestorePointCollectionsClient.NewListPager.
 type RestorePointCollectionsClientListResponse struct {
+	// The List restore point collection operation response.
 	RestorePointCollectionListResult
 }
 
 // RestorePointCollectionsClientUpdateResponse contains the response from method RestorePointCollectionsClient.Update.
 type RestorePointCollectionsClientUpdateResponse struct {
+	// Create or update Restore Point collection parameters.
 	RestorePointCollection
 }
 
 // RestorePointsClientCreateResponse contains the response from method RestorePointsClient.BeginCreate.
 type RestorePointsClientCreateResponse struct {
+	// Restore Point details.
 	RestorePoint
 }
 
@@ -748,11 +891,13 @@ type RestorePointsClientDeleteResponse struct {
 
 // RestorePointsClientGetResponse contains the response from method RestorePointsClient.Get.
 type RestorePointsClientGetResponse struct {
+	// Restore Point details.
 	RestorePoint
 }
 
 // SSHPublicKeysClientCreateResponse contains the response from method SSHPublicKeysClient.Create.
 type SSHPublicKeysClientCreateResponse struct {
+	// Specifies information about the SSH public key.
 	SSHPublicKeyResource
 }
 
@@ -763,61 +908,73 @@ type SSHPublicKeysClientDeleteResponse struct {
 
 // SSHPublicKeysClientGenerateKeyPairResponse contains the response from method SSHPublicKeysClient.GenerateKeyPair.
 type SSHPublicKeysClientGenerateKeyPairResponse struct {
+	// Response from generation of an SSH key pair.
 	SSHPublicKeyGenerateKeyPairResult
 }
 
 // SSHPublicKeysClientGetResponse contains the response from method SSHPublicKeysClient.Get.
 type SSHPublicKeysClientGetResponse struct {
+	// Specifies information about the SSH public key.
 	SSHPublicKeyResource
 }
 
 // SSHPublicKeysClientListByResourceGroupResponse contains the response from method SSHPublicKeysClient.NewListByResourceGroupPager.
 type SSHPublicKeysClientListByResourceGroupResponse struct {
+	// The list SSH public keys operation response.
 	SSHPublicKeysGroupListResult
 }
 
 // SSHPublicKeysClientListBySubscriptionResponse contains the response from method SSHPublicKeysClient.NewListBySubscriptionPager.
 type SSHPublicKeysClientListBySubscriptionResponse struct {
+	// The list SSH public keys operation response.
 	SSHPublicKeysGroupListResult
 }
 
 // SSHPublicKeysClientUpdateResponse contains the response from method SSHPublicKeysClient.Update.
 type SSHPublicKeysClientUpdateResponse struct {
+	// Specifies information about the SSH public key.
 	SSHPublicKeyResource
 }
 
 // SharedGalleriesClientGetResponse contains the response from method SharedGalleriesClient.Get.
 type SharedGalleriesClientGetResponse struct {
+	// Specifies information about the Shared Gallery that you want to create or update.
 	SharedGallery
 }
 
 // SharedGalleriesClientListResponse contains the response from method SharedGalleriesClient.NewListPager.
 type SharedGalleriesClientListResponse struct {
+	// The List Shared Galleries operation response.
 	SharedGalleryList
 }
 
 // SharedGalleryImageVersionsClientGetResponse contains the response from method SharedGalleryImageVersionsClient.Get.
 type SharedGalleryImageVersionsClientGetResponse struct {
+	// Specifies information about the gallery image version that you want to create or update.
 	SharedGalleryImageVersion
 }
 
 // SharedGalleryImageVersionsClientListResponse contains the response from method SharedGalleryImageVersionsClient.NewListPager.
 type SharedGalleryImageVersionsClientListResponse struct {
+	// The List Shared Gallery Image versions operation response.
 	SharedGalleryImageVersionList
 }
 
 // SharedGalleryImagesClientGetResponse contains the response from method SharedGalleryImagesClient.Get.
 type SharedGalleryImagesClientGetResponse struct {
+	// Specifies information about the gallery image definition that you want to create or update.
 	SharedGalleryImage
 }
 
 // SharedGalleryImagesClientListResponse contains the response from method SharedGalleryImagesClient.NewListPager.
 type SharedGalleryImagesClientListResponse struct {
+	// The List Shared Gallery Images operation response.
 	SharedGalleryImageList
 }
 
 // SnapshotsClientCreateOrUpdateResponse contains the response from method SnapshotsClient.BeginCreateOrUpdate.
 type SnapshotsClientCreateOrUpdateResponse struct {
+	// Snapshot resource.
 	Snapshot
 }
 
@@ -828,21 +985,25 @@ type SnapshotsClientDeleteResponse struct {
 
 // SnapshotsClientGetResponse contains the response from method SnapshotsClient.Get.
 type SnapshotsClientGetResponse struct {
+	// Snapshot resource.
 	Snapshot
 }
 
 // SnapshotsClientGrantAccessResponse contains the response from method SnapshotsClient.BeginGrantAccess.
 type SnapshotsClientGrantAccessResponse struct {
+	// A disk access SAS uri.
 	AccessURI
 }
 
 // SnapshotsClientListByResourceGroupResponse contains the response from method SnapshotsClient.NewListByResourceGroupPager.
 type SnapshotsClientListByResourceGroupResponse struct {
+	// The List Snapshots operation response.
 	SnapshotList
 }
 
 // SnapshotsClientListResponse contains the response from method SnapshotsClient.NewListPager.
 type SnapshotsClientListResponse struct {
+	// The List Snapshots operation response.
 	SnapshotList
 }
 
@@ -853,16 +1014,19 @@ type SnapshotsClientRevokeAccessResponse struct {
 
 // SnapshotsClientUpdateResponse contains the response from method SnapshotsClient.BeginUpdate.
 type SnapshotsClientUpdateResponse struct {
+	// Snapshot resource.
 	Snapshot
 }
 
 // UsageClientListResponse contains the response from method UsageClient.NewListPager.
 type UsageClientListResponse struct {
+	// The List Usages operation response.
 	ListUsagesResult
 }
 
 // VirtualMachineExtensionImagesClientGetResponse contains the response from method VirtualMachineExtensionImagesClient.Get.
 type VirtualMachineExtensionImagesClientGetResponse struct {
+	// Describes a Virtual Machine Extension Image.
 	VirtualMachineExtensionImage
 }
 
@@ -880,6 +1044,7 @@ type VirtualMachineExtensionImagesClientListVersionsResponse struct {
 
 // VirtualMachineExtensionsClientCreateOrUpdateResponse contains the response from method VirtualMachineExtensionsClient.BeginCreateOrUpdate.
 type VirtualMachineExtensionsClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine Extension.
 	VirtualMachineExtension
 }
 
@@ -890,26 +1055,31 @@ type VirtualMachineExtensionsClientDeleteResponse struct {
 
 // VirtualMachineExtensionsClientGetResponse contains the response from method VirtualMachineExtensionsClient.Get.
 type VirtualMachineExtensionsClientGetResponse struct {
+	// Describes a Virtual Machine Extension.
 	VirtualMachineExtension
 }
 
 // VirtualMachineExtensionsClientListResponse contains the response from method VirtualMachineExtensionsClient.List.
 type VirtualMachineExtensionsClientListResponse struct {
+	// The List Extension operation response
 	VirtualMachineExtensionsListResult
 }
 
 // VirtualMachineExtensionsClientUpdateResponse contains the response from method VirtualMachineExtensionsClient.BeginUpdate.
 type VirtualMachineExtensionsClientUpdateResponse struct {
+	// Describes a Virtual Machine Extension.
 	VirtualMachineExtension
 }
 
 // VirtualMachineImagesClientGetResponse contains the response from method VirtualMachineImagesClient.Get.
 type VirtualMachineImagesClientGetResponse struct {
+	// Describes a Virtual Machine Image.
 	VirtualMachineImage
 }
 
 // VirtualMachineImagesClientListByEdgeZoneResponse contains the response from method VirtualMachineImagesClient.ListByEdgeZone.
 type VirtualMachineImagesClientListByEdgeZoneResponse struct {
+	// The List VmImages in EdgeZone operation response.
 	VMImagesInEdgeZoneListResult
 }
 
@@ -939,6 +1109,7 @@ type VirtualMachineImagesClientListSKUsResponse struct {
 
 // VirtualMachineImagesEdgeZoneClientGetResponse contains the response from method VirtualMachineImagesEdgeZoneClient.Get.
 type VirtualMachineImagesEdgeZoneClientGetResponse struct {
+	// Describes a Virtual Machine Image.
 	VirtualMachineImage
 }
 
@@ -968,6 +1139,7 @@ type VirtualMachineImagesEdgeZoneClientListSKUsResponse struct {
 
 // VirtualMachineRunCommandsClientCreateOrUpdateResponse contains the response from method VirtualMachineRunCommandsClient.BeginCreateOrUpdate.
 type VirtualMachineRunCommandsClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
@@ -978,31 +1150,37 @@ type VirtualMachineRunCommandsClientDeleteResponse struct {
 
 // VirtualMachineRunCommandsClientGetByVirtualMachineResponse contains the response from method VirtualMachineRunCommandsClient.GetByVirtualMachine.
 type VirtualMachineRunCommandsClientGetByVirtualMachineResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
 // VirtualMachineRunCommandsClientGetResponse contains the response from method VirtualMachineRunCommandsClient.Get.
 type VirtualMachineRunCommandsClientGetResponse struct {
+	// Describes the properties of a Run Command.
 	RunCommandDocument
 }
 
 // VirtualMachineRunCommandsClientListByVirtualMachineResponse contains the response from method VirtualMachineRunCommandsClient.NewListByVirtualMachinePager.
 type VirtualMachineRunCommandsClientListByVirtualMachineResponse struct {
+	// The List run command operation response
 	VirtualMachineRunCommandsListResult
 }
 
 // VirtualMachineRunCommandsClientListResponse contains the response from method VirtualMachineRunCommandsClient.NewListPager.
 type VirtualMachineRunCommandsClientListResponse struct {
+	// The List Virtual Machine operation response.
 	RunCommandListResult
 }
 
 // VirtualMachineRunCommandsClientUpdateResponse contains the response from method VirtualMachineRunCommandsClient.BeginUpdate.
 type VirtualMachineRunCommandsClientUpdateResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
 // VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate.
 type VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine Scale Set Extension.
 	VirtualMachineScaleSetExtension
 }
 
@@ -1013,16 +1191,19 @@ type VirtualMachineScaleSetExtensionsClientDeleteResponse struct {
 
 // VirtualMachineScaleSetExtensionsClientGetResponse contains the response from method VirtualMachineScaleSetExtensionsClient.Get.
 type VirtualMachineScaleSetExtensionsClientGetResponse struct {
+	// Describes a Virtual Machine Scale Set Extension.
 	VirtualMachineScaleSetExtension
 }
 
 // VirtualMachineScaleSetExtensionsClientListResponse contains the response from method VirtualMachineScaleSetExtensionsClient.NewListPager.
 type VirtualMachineScaleSetExtensionsClientListResponse struct {
+	// The List VM scale set extension operation response.
 	VirtualMachineScaleSetExtensionListResult
 }
 
 // VirtualMachineScaleSetExtensionsClientUpdateResponse contains the response from method VirtualMachineScaleSetExtensionsClient.BeginUpdate.
 type VirtualMachineScaleSetExtensionsClientUpdateResponse struct {
+	// Describes a Virtual Machine Scale Set Extension.
 	VirtualMachineScaleSetExtension
 }
 
@@ -1033,6 +1214,7 @@ type VirtualMachineScaleSetRollingUpgradesClientCancelResponse struct {
 
 // VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse contains the response from method VirtualMachineScaleSetRollingUpgradesClient.GetLatest.
 type VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse struct {
+	// The status of the latest virtual machine scale set rolling upgrade.
 	RollingUpgradeStatusInfo
 }
 
@@ -1048,6 +1230,7 @@ type VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse struct {
 
 // VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate.
 type VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse struct {
+	// Describes a VMSS VM Extension.
 	VirtualMachineScaleSetVMExtension
 }
 
@@ -1058,21 +1241,25 @@ type VirtualMachineScaleSetVMExtensionsClientDeleteResponse struct {
 
 // VirtualMachineScaleSetVMExtensionsClientGetResponse contains the response from method VirtualMachineScaleSetVMExtensionsClient.Get.
 type VirtualMachineScaleSetVMExtensionsClientGetResponse struct {
+	// Describes a VMSS VM Extension.
 	VirtualMachineScaleSetVMExtension
 }
 
 // VirtualMachineScaleSetVMExtensionsClientListResponse contains the response from method VirtualMachineScaleSetVMExtensionsClient.List.
 type VirtualMachineScaleSetVMExtensionsClientListResponse struct {
+	// The List VMSS VM Extension operation response
 	VirtualMachineScaleSetVMExtensionsListResult
 }
 
 // VirtualMachineScaleSetVMExtensionsClientUpdateResponse contains the response from method VirtualMachineScaleSetVMExtensionsClient.BeginUpdate.
 type VirtualMachineScaleSetVMExtensionsClientUpdateResponse struct {
+	// Describes a VMSS VM Extension.
 	VirtualMachineScaleSetVMExtension
 }
 
 // VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate.
 type VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
@@ -1083,16 +1270,19 @@ type VirtualMachineScaleSetVMRunCommandsClientDeleteResponse struct {
 
 // VirtualMachineScaleSetVMRunCommandsClientGetResponse contains the response from method VirtualMachineScaleSetVMRunCommandsClient.Get.
 type VirtualMachineScaleSetVMRunCommandsClientGetResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
 // VirtualMachineScaleSetVMRunCommandsClientListResponse contains the response from method VirtualMachineScaleSetVMRunCommandsClient.NewListPager.
 type VirtualMachineScaleSetVMRunCommandsClientListResponse struct {
+	// The List run command operation response
 	VirtualMachineRunCommandsListResult
 }
 
 // VirtualMachineScaleSetVMRunCommandsClientUpdateResponse contains the response from method VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate.
 type VirtualMachineScaleSetVMRunCommandsClientUpdateResponse struct {
+	// Describes a Virtual Machine run command.
 	VirtualMachineRunCommand
 }
 
@@ -1108,16 +1298,19 @@ type VirtualMachineScaleSetVMsClientDeleteResponse struct {
 
 // VirtualMachineScaleSetVMsClientGetInstanceViewResponse contains the response from method VirtualMachineScaleSetVMsClient.GetInstanceView.
 type VirtualMachineScaleSetVMsClientGetInstanceViewResponse struct {
+	// The instance view of a virtual machine scale set VM.
 	VirtualMachineScaleSetVMInstanceView
 }
 
 // VirtualMachineScaleSetVMsClientGetResponse contains the response from method VirtualMachineScaleSetVMsClient.Get.
 type VirtualMachineScaleSetVMsClientGetResponse struct {
+	// Describes a virtual machine scale set virtual machine.
 	VirtualMachineScaleSetVM
 }
 
 // VirtualMachineScaleSetVMsClientListResponse contains the response from method VirtualMachineScaleSetVMsClient.NewListPager.
 type VirtualMachineScaleSetVMsClientListResponse struct {
+	// The List Virtual Machine Scale Set VMs operation response.
 	VirtualMachineScaleSetVMListResult
 }
 
@@ -1153,6 +1346,7 @@ type VirtualMachineScaleSetVMsClientRestartResponse struct {
 
 // VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse contains the response from method VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData.
 type VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse struct {
+	// The SAS URIs of the console screenshot and serial log blobs.
 	RetrieveBootDiagnosticsDataResult
 }
 
@@ -1173,6 +1367,7 @@ type VirtualMachineScaleSetVMsClientStartResponse struct {
 
 // VirtualMachineScaleSetVMsClientUpdateResponse contains the response from method VirtualMachineScaleSetVMsClient.BeginUpdate.
 type VirtualMachineScaleSetVMsClientUpdateResponse struct {
+	// Describes a virtual machine scale set virtual machine.
 	VirtualMachineScaleSetVM
 }
 
@@ -1183,6 +1378,7 @@ type VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse struct {
 
 // VirtualMachineScaleSetsClientCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetsClient.BeginCreateOrUpdate.
 type VirtualMachineScaleSetsClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine Scale Set.
 	VirtualMachineScaleSet
 }
 
@@ -1204,41 +1400,49 @@ type VirtualMachineScaleSetsClientDeleteResponse struct {
 // VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse contains the response from method
 // VirtualMachineScaleSetsClient.ForceRecoveryServiceFabricPlatformUpdateDomainWalk.
 type VirtualMachineScaleSetsClientForceRecoveryServiceFabricPlatformUpdateDomainWalkResponse struct {
+	// Response after calling a manual recovery walk
 	RecoveryWalkResponse
 }
 
 // VirtualMachineScaleSetsClientGetInstanceViewResponse contains the response from method VirtualMachineScaleSetsClient.GetInstanceView.
 type VirtualMachineScaleSetsClientGetInstanceViewResponse struct {
+	// The instance view of a virtual machine scale set.
 	VirtualMachineScaleSetInstanceView
 }
 
 // VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse contains the response from method VirtualMachineScaleSetsClient.NewGetOSUpgradeHistoryPager.
 type VirtualMachineScaleSetsClientGetOSUpgradeHistoryResponse struct {
+	// List of Virtual Machine Scale Set OS Upgrade History operation response.
 	VirtualMachineScaleSetListOSUpgradeHistory
 }
 
 // VirtualMachineScaleSetsClientGetResponse contains the response from method VirtualMachineScaleSetsClient.Get.
 type VirtualMachineScaleSetsClientGetResponse struct {
+	// Describes a Virtual Machine Scale Set.
 	VirtualMachineScaleSet
 }
 
 // VirtualMachineScaleSetsClientListAllResponse contains the response from method VirtualMachineScaleSetsClient.NewListAllPager.
 type VirtualMachineScaleSetsClientListAllResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineScaleSetListWithLinkResult
 }
 
 // VirtualMachineScaleSetsClientListByLocationResponse contains the response from method VirtualMachineScaleSetsClient.NewListByLocationPager.
 type VirtualMachineScaleSetsClientListByLocationResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineScaleSetListResult
 }
 
 // VirtualMachineScaleSetsClientListResponse contains the response from method VirtualMachineScaleSetsClient.NewListPager.
 type VirtualMachineScaleSetsClientListResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineScaleSetListResult
 }
 
 // VirtualMachineScaleSetsClientListSKUsResponse contains the response from method VirtualMachineScaleSetsClient.NewListSKUsPager.
 type VirtualMachineScaleSetsClientListSKUsResponse struct {
+	// The Virtual Machine Scale Set List Skus operation response.
 	VirtualMachineScaleSetListSKUsResult
 }
 
@@ -1294,21 +1498,25 @@ type VirtualMachineScaleSetsClientUpdateInstancesResponse struct {
 
 // VirtualMachineScaleSetsClientUpdateResponse contains the response from method VirtualMachineScaleSetsClient.BeginUpdate.
 type VirtualMachineScaleSetsClientUpdateResponse struct {
+	// Describes a Virtual Machine Scale Set.
 	VirtualMachineScaleSet
 }
 
 // VirtualMachineSizesClientListResponse contains the response from method VirtualMachineSizesClient.NewListPager.
 type VirtualMachineSizesClientListResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineSizeListResult
 }
 
 // VirtualMachinesClientAssessPatchesResponse contains the response from method VirtualMachinesClient.BeginAssessPatches.
 type VirtualMachinesClientAssessPatchesResponse struct {
+	// Describes the properties of an AssessPatches result.
 	VirtualMachineAssessPatchesResult
 }
 
 // VirtualMachinesClientCaptureResponse contains the response from method VirtualMachinesClient.BeginCapture.
 type VirtualMachinesClientCaptureResponse struct {
+	// Output of virtual machine capture operation.
 	VirtualMachineCaptureResult
 }
 
@@ -1319,6 +1527,7 @@ type VirtualMachinesClientConvertToManagedDisksResponse struct {
 
 // VirtualMachinesClientCreateOrUpdateResponse contains the response from method VirtualMachinesClient.BeginCreateOrUpdate.
 type VirtualMachinesClientCreateOrUpdateResponse struct {
+	// Describes a Virtual Machine.
 	VirtualMachine
 }
 
@@ -1339,36 +1548,43 @@ type VirtualMachinesClientGeneralizeResponse struct {
 
 // VirtualMachinesClientGetResponse contains the response from method VirtualMachinesClient.Get.
 type VirtualMachinesClientGetResponse struct {
+	// Describes a Virtual Machine.
 	VirtualMachine
 }
 
 // VirtualMachinesClientInstallPatchesResponse contains the response from method VirtualMachinesClient.BeginInstallPatches.
 type VirtualMachinesClientInstallPatchesResponse struct {
+	// The result summary of an installation operation.
 	VirtualMachineInstallPatchesResult
 }
 
 // VirtualMachinesClientInstanceViewResponse contains the response from method VirtualMachinesClient.InstanceView.
 type VirtualMachinesClientInstanceViewResponse struct {
+	// The instance view of a virtual machine.
 	VirtualMachineInstanceView
 }
 
 // VirtualMachinesClientListAllResponse contains the response from method VirtualMachinesClient.NewListAllPager.
 type VirtualMachinesClientListAllResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineListResult
 }
 
 // VirtualMachinesClientListAvailableSizesResponse contains the response from method VirtualMachinesClient.NewListAvailableSizesPager.
 type VirtualMachinesClientListAvailableSizesResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineSizeListResult
 }
 
 // VirtualMachinesClientListByLocationResponse contains the response from method VirtualMachinesClient.NewListByLocationPager.
 type VirtualMachinesClientListByLocationResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineListResult
 }
 
 // VirtualMachinesClientListResponse contains the response from method VirtualMachinesClient.NewListPager.
 type VirtualMachinesClientListResponse struct {
+	// The List Virtual Machine operation response.
 	VirtualMachineListResult
 }
 
@@ -1404,6 +1620,7 @@ type VirtualMachinesClientRestartResponse struct {
 
 // VirtualMachinesClientRetrieveBootDiagnosticsDataResponse contains the response from method VirtualMachinesClient.RetrieveBootDiagnosticsData.
 type VirtualMachinesClientRetrieveBootDiagnosticsDataResponse struct {
+	// The SAS URIs of the console screenshot and serial log blobs.
 	RetrieveBootDiagnosticsDataResult
 }
 
@@ -1424,5 +1641,6 @@ type VirtualMachinesClientStartResponse struct {
 
 // VirtualMachinesClientUpdateResponse contains the response from method VirtualMachinesClient.BeginUpdate.
 type VirtualMachinesClientUpdateResponse struct {
+	// Describes a Virtual Machine.
 	VirtualMachine
 }

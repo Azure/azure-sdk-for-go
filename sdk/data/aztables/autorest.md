@@ -12,7 +12,7 @@ output-folder: internal
 tag: package-2019-02
 credential-scope: none
 use: "@autorest/go@4.0.0-preview.40"
-module-version: 1.0.1
+module-version: 1.0.2
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 modelerfour:

@@ -14,10 +14,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_OpenAI_InvalidModel(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode || testing.Short() {
+		t.Skip()
+	}
+
 	chatClient := newOpenAIClientForTest(t)
 
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
@@ -27,25 +32,11 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 				Content: to.Ptr("hello"),
 			},
 		},
-		Model: to.Ptr("non-existent-model"),
+		DeploymentID: "non-existent-model",
 	}, nil)
 
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 	require.Contains(t, respErr.Error(), "The model `non-existent-model` does not exist")
-}
-
-func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	if openAIKey == "" {
-		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
-	}
-
-	cred, err := azopenai.NewKeyCredential(openAIKey)
-	require.NoError(t, err)
-
-	chatClient, err := azopenai.NewClientForOpenAI(openAIEndpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	return chatClient
 }

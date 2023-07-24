@@ -46,20 +46,26 @@ type CapacityReservationsServer struct {
 }
 
 // NewCapacityReservationsServerTransport creates a new instance of CapacityReservationsServerTransport with the provided implementation.
-// The returned CapacityReservationsServerTransport instance is connected to an instance of armcompute.CapacityReservationsClient by way of the
-// undefined.Transporter field.
+// The returned CapacityReservationsServerTransport instance is connected to an instance of armcompute.CapacityReservationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCapacityReservationsServerTransport(srv *CapacityReservationsServer) *CapacityReservationsServerTransport {
-	return &CapacityReservationsServerTransport{srv: srv}
+	return &CapacityReservationsServerTransport{
+		srv:                                    srv,
+		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
+		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
+		newListByCapacityReservationGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
+		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
+	}
 }
 
 // CapacityReservationsServerTransport connects instances of armcompute.CapacityReservationsClient to instances of CapacityReservationsServer.
 // Don't use this type directly, use NewCapacityReservationsServerTransport instead.
 type CapacityReservationsServerTransport struct {
 	srv                                    *CapacityReservationsServer
-	beginCreateOrUpdate                    *azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]
-	beginDelete                            *azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]
-	newListByCapacityReservationGroupPager *azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]
-	beginUpdate                            *azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]
+	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
+	beginDelete                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
+	newListByCapacityReservationGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
+	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationsServerTransport.
@@ -99,7 +105,8 @@ func (c *CapacityReservationsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	if c.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if c.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -126,19 +133,21 @@ func (c *CapacityReservationsServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginCreateOrUpdate) {
-		c.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		c.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -148,7 +157,8 @@ func (c *CapacityReservationsServerTransport) dispatchBeginDelete(req *http.Requ
 	if c.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if c.beginDelete == nil {
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +181,21 @@ func (c *CapacityReservationsServerTransport) dispatchBeginDelete(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginDelete = &respr
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginDelete) {
-		c.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -242,7 +254,8 @@ func (c *CapacityReservationsServerTransport) dispatchNewListByCapacityReservati
 	if c.srv.NewListByCapacityReservationGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByCapacityReservationGroupPager not implemented")}
 	}
-	if c.newListByCapacityReservationGroupPager == nil {
+	newListByCapacityReservationGroupPager := c.newListByCapacityReservationGroupPager.get(req)
+	if newListByCapacityReservationGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -258,20 +271,22 @@ func (c *CapacityReservationsServerTransport) dispatchNewListByCapacityReservati
 			return nil, err
 		}
 		resp := c.srv.NewListByCapacityReservationGroupPager(resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, nil)
-		c.newListByCapacityReservationGroupPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListByCapacityReservationGroupPager, req, func(page *armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse, createLink func() string) {
+		newListByCapacityReservationGroupPager = &resp
+		c.newListByCapacityReservationGroupPager.add(req, newListByCapacityReservationGroupPager)
+		server.PagerResponderInjectNextLinks(newListByCapacityReservationGroupPager, req, func(page *armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListByCapacityReservationGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByCapacityReservationGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByCapacityReservationGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListByCapacityReservationGroupPager) {
-		c.newListByCapacityReservationGroupPager = nil
+	if !server.PagerResponderMore(newListByCapacityReservationGroupPager) {
+		c.newListByCapacityReservationGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -280,7 +295,8 @@ func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Requ
 	if c.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if c.beginUpdate == nil {
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -307,19 +323,21 @@ func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginUpdate = &respr
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginUpdate) {
-		c.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil

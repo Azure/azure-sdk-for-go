@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_ListByResourceGroup.json
-func ExampleMetricsConfigurationsClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_ListByCluster.json
+func ExampleMetricsConfigurationsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleMetricsConfigurationsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMetricsConfigurationsClient().NewListByResourceGroupPager("resourceGroupName", "clusterName", nil)
+	pager := clientFactory.NewMetricsConfigurationsClient().NewListByClusterPager("resourceGroupName", "clusterName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +45,7 @@ func ExampleMetricsConfigurationsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,7 +60,7 @@ func ExampleMetricsConfigurationsClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
@@ -80,7 +80,7 @@ func ExampleMetricsConfigurationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_Get.json
 func ExampleMetricsConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleMetricsConfigurationsClient_Get() {
 	// res.ClusterMetricsConfiguration = armnetworkcloud.ClusterMetricsConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -116,7 +116,7 @@ func ExampleMetricsConfigurationsClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
@@ -134,7 +134,7 @@ func ExampleMetricsConfigurationsClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_Create.json
 func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
@@ -175,7 +175,7 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	// res.ClusterMetricsConfiguration = armnetworkcloud.ClusterMetricsConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -190,7 +190,7 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
@@ -208,7 +208,7 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_Delete.json
 func ExampleMetricsConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleMetricsConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_Patch.json
 func ExampleMetricsConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleMetricsConfigurationsClient_BeginUpdate() {
 	// res.ClusterMetricsConfiguration = armnetworkcloud.ClusterMetricsConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -280,7 +280,7 @@ func ExampleMetricsConfigurationsClient_BeginUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{

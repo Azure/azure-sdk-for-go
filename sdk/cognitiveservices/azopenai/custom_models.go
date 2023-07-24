@@ -6,6 +6,14 @@
 
 package azopenai
 
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+)
+
 // Models for methods that return streaming response
 
 // GetCompletionsStreamOptions contains the optional parameters for the [Client.GetCompletionsStream] method.
@@ -42,4 +50,48 @@ type ImageGenerationsDataItem struct {
 	// URL is the address of a generated image if [ImageGenerationOptions.ResponseFormat] was set
 	// to [ImageGenerationResponseFormatURL].
 	URL *string `json:"url"`
+}
+
+// ContentFilterResponseError is an error as a result of a request being filtered.
+type ContentFilterResponseError struct {
+	azcore.ResponseError
+
+	// ContentFilterResults contains Information about the content filtering category, if it has been detected.
+	ContentFilterResults *ContentFilterResults
+}
+
+// Unwrap returns the inner error for this error.
+func (e *ContentFilterResponseError) Unwrap() error {
+	return &e.ResponseError
+}
+
+func newContentFilterResponseError(resp *http.Response) error {
+	respErr := runtime.NewResponseError(resp).(*azcore.ResponseError)
+
+	if respErr.ErrorCode != "content_filter" {
+		return respErr
+	}
+
+	body, err := runtime.Payload(resp)
+
+	if err != nil {
+		return err
+	}
+
+	var envelope *struct {
+		Error struct {
+			InnerError struct {
+				FilterResult *ContentFilterResults `json:"content_filter_result"`
+			} `json:"innererror"`
+		}
+	}
+
+	if err := json.Unmarshal(body, &envelope); err != nil {
+		return err
+	}
+
+	return &ContentFilterResponseError{
+		ResponseError:        *respErr,
+		ContentFilterResults: envelope.Error.InnerError.FilterResult,
+	}
 }

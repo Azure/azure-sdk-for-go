@@ -43,18 +43,22 @@ type Server struct {
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
-// The returned ServerTransport instance is connected to an instance of armsubscriptions.Client by way of the
-// undefined.Transporter field.
+// The returned ServerTransport instance is connected to an instance of armsubscriptions.Client via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
-	return &ServerTransport{srv: srv}
+	return &ServerTransport{
+		srv:                   srv,
+		newListPager:          newTracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]](),
+		newListLocationsPager: newTracker[azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse]](),
+	}
 }
 
 // ServerTransport connects instances of armsubscriptions.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                   *Server
-	newListPager          *azfake.PagerResponder[armsubscriptions.ClientListResponse]
-	newListLocationsPager *azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse]
+	newListPager          *tracker[azfake.PagerResponder[armsubscriptions.ClientListResponse]]
+	newListLocationsPager *tracker[azfake.PagerResponder[armsubscriptions.ClientListLocationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -154,22 +158,25 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		resp := s.srv.NewListPager(nil)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armsubscriptions.ClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsubscriptions.ClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -178,7 +185,8 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 	if s.srv.NewListLocationsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListLocationsPager not implemented")}
 	}
-	if s.newListLocationsPager == nil {
+	newListLocationsPager := s.newListLocationsPager.get(req)
+	if newListLocationsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -205,17 +213,19 @@ func (s *ServerTransport) dispatchNewListLocationsPager(req *http.Request) (*htt
 			}
 		}
 		resp := s.srv.NewListLocationsPager(subscriptionIDUnescaped, options)
-		s.newListLocationsPager = &resp
+		newListLocationsPager = &resp
+		s.newListLocationsPager.add(req, newListLocationsPager)
 	}
-	resp, err := server.PagerResponderNext(s.newListLocationsPager, req)
+	resp, err := server.PagerResponderNext(newListLocationsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListLocationsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListLocationsPager) {
-		s.newListLocationsPager = nil
+	if !server.PagerResponderMore(newListLocationsPager) {
+		s.newListLocationsPager.remove(req)
 	}
 	return resp, nil
 }

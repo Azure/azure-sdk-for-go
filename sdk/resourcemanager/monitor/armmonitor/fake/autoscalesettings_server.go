@@ -50,18 +50,22 @@ type AutoscaleSettingsServer struct {
 }
 
 // NewAutoscaleSettingsServerTransport creates a new instance of AutoscaleSettingsServerTransport with the provided implementation.
-// The returned AutoscaleSettingsServerTransport instance is connected to an instance of armmonitor.AutoscaleSettingsClient by way of the
-// undefined.Transporter field.
+// The returned AutoscaleSettingsServerTransport instance is connected to an instance of armmonitor.AutoscaleSettingsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAutoscaleSettingsServerTransport(srv *AutoscaleSettingsServer) *AutoscaleSettingsServerTransport {
-	return &AutoscaleSettingsServerTransport{srv: srv}
+	return &AutoscaleSettingsServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]](),
+	}
 }
 
 // AutoscaleSettingsServerTransport connects instances of armmonitor.AutoscaleSettingsClient to instances of AutoscaleSettingsServer.
 // Don't use this type directly, use NewAutoscaleSettingsServerTransport instead.
 type AutoscaleSettingsServerTransport struct {
 	srv                         *AutoscaleSettingsServer
-	newListByResourceGroupPager *azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmonitor.AutoscaleSettingsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AutoscaleSettingsServerTransport.
@@ -206,7 +210,8 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListByResourceGroupPager(r
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -218,20 +223,22 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListByResourceGroupPager(r
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListByResourceGroupPager, req, func(page *armmonitor.AutoscaleSettingsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.AutoscaleSettingsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -240,7 +247,8 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListBySubscriptionPager(re
 	if a.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if a.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -248,20 +256,22 @@ func (a *AutoscaleSettingsServerTransport) dispatchNewListBySubscriptionPager(re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionPager(nil)
-		a.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListBySubscriptionPager, req, func(page *armmonitor.AutoscaleSettingsClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armmonitor.AutoscaleSettingsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListBySubscriptionPager) {
-		a.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

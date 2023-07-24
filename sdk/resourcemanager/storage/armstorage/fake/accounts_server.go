@@ -90,23 +90,32 @@ type AccountsServer struct {
 }
 
 // NewAccountsServerTransport creates a new instance of AccountsServerTransport with the provided implementation.
-// The returned AccountsServerTransport instance is connected to an instance of armstorage.AccountsClient by way of the
-// undefined.Transporter field.
+// The returned AccountsServerTransport instance is connected to an instance of armstorage.AccountsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
-	return &AccountsServerTransport{srv: srv}
+	return &AccountsServerTransport{
+		srv:                                      srv,
+		beginAbortHierarchicalNamespaceMigration: newTracker[azfake.PollerResponder[armstorage.AccountsClientAbortHierarchicalNamespaceMigrationResponse]](),
+		beginCreate:                              newTracker[azfake.PollerResponder[armstorage.AccountsClientCreateResponse]](),
+		beginFailover:                            newTracker[azfake.PollerResponder[armstorage.AccountsClientFailoverResponse]](),
+		beginHierarchicalNamespaceMigration:      newTracker[azfake.PollerResponder[armstorage.AccountsClientHierarchicalNamespaceMigrationResponse]](),
+		newListPager:                             newTracker[azfake.PagerResponder[armstorage.AccountsClientListResponse]](),
+		newListByResourceGroupPager:              newTracker[azfake.PagerResponder[armstorage.AccountsClientListByResourceGroupResponse]](),
+		beginRestoreBlobRanges:                   newTracker[azfake.PollerResponder[armstorage.AccountsClientRestoreBlobRangesResponse]](),
+	}
 }
 
 // AccountsServerTransport connects instances of armstorage.AccountsClient to instances of AccountsServer.
 // Don't use this type directly, use NewAccountsServerTransport instead.
 type AccountsServerTransport struct {
 	srv                                      *AccountsServer
-	beginAbortHierarchicalNamespaceMigration *azfake.PollerResponder[armstorage.AccountsClientAbortHierarchicalNamespaceMigrationResponse]
-	beginCreate                              *azfake.PollerResponder[armstorage.AccountsClientCreateResponse]
-	beginFailover                            *azfake.PollerResponder[armstorage.AccountsClientFailoverResponse]
-	beginHierarchicalNamespaceMigration      *azfake.PollerResponder[armstorage.AccountsClientHierarchicalNamespaceMigrationResponse]
-	newListPager                             *azfake.PagerResponder[armstorage.AccountsClientListResponse]
-	newListByResourceGroupPager              *azfake.PagerResponder[armstorage.AccountsClientListByResourceGroupResponse]
-	beginRestoreBlobRanges                   *azfake.PollerResponder[armstorage.AccountsClientRestoreBlobRangesResponse]
+	beginAbortHierarchicalNamespaceMigration *tracker[azfake.PollerResponder[armstorage.AccountsClientAbortHierarchicalNamespaceMigrationResponse]]
+	beginCreate                              *tracker[azfake.PollerResponder[armstorage.AccountsClientCreateResponse]]
+	beginFailover                            *tracker[azfake.PollerResponder[armstorage.AccountsClientFailoverResponse]]
+	beginHierarchicalNamespaceMigration      *tracker[azfake.PollerResponder[armstorage.AccountsClientHierarchicalNamespaceMigrationResponse]]
+	newListPager                             *tracker[azfake.PagerResponder[armstorage.AccountsClientListResponse]]
+	newListByResourceGroupPager              *tracker[azfake.PagerResponder[armstorage.AccountsClientListByResourceGroupResponse]]
+	beginRestoreBlobRanges                   *tracker[azfake.PollerResponder[armstorage.AccountsClientRestoreBlobRangesResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountsServerTransport.
@@ -168,7 +177,8 @@ func (a *AccountsServerTransport) dispatchBeginAbortHierarchicalNamespaceMigrati
 	if a.srv.BeginAbortHierarchicalNamespaceMigration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginAbortHierarchicalNamespaceMigration not implemented")}
 	}
-	if a.beginAbortHierarchicalNamespaceMigration == nil {
+	beginAbortHierarchicalNamespaceMigration := a.beginAbortHierarchicalNamespaceMigration.get(req)
+	if beginAbortHierarchicalNamespaceMigration == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/aborthnsonmigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -187,19 +197,21 @@ func (a *AccountsServerTransport) dispatchBeginAbortHierarchicalNamespaceMigrati
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginAbortHierarchicalNamespaceMigration = &respr
+		beginAbortHierarchicalNamespaceMigration = &respr
+		a.beginAbortHierarchicalNamespaceMigration.add(req, beginAbortHierarchicalNamespaceMigration)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginAbortHierarchicalNamespaceMigration, req)
+	resp, err := server.PollerResponderNext(beginAbortHierarchicalNamespaceMigration, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginAbortHierarchicalNamespaceMigration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginAbortHierarchicalNamespaceMigration) {
-		a.beginAbortHierarchicalNamespaceMigration = nil
+	if !server.PollerResponderMore(beginAbortHierarchicalNamespaceMigration) {
+		a.beginAbortHierarchicalNamespaceMigration.remove(req)
 	}
 
 	return resp, nil
@@ -238,7 +250,8 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	if a.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if a.beginCreate == nil {
+	beginCreate := a.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -261,19 +274,21 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginCreate = &respr
+		beginCreate = &respr
+		a.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginCreate) {
-		a.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		a.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -316,7 +331,8 @@ func (a *AccountsServerTransport) dispatchBeginFailover(req *http.Request) (*htt
 	if a.srv.BeginFailover == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
 	}
-	if a.beginFailover == nil {
+	beginFailover := a.beginFailover.get(req)
+	if beginFailover == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -347,19 +363,21 @@ func (a *AccountsServerTransport) dispatchBeginFailover(req *http.Request) (*htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginFailover = &respr
+		beginFailover = &respr
+		a.beginFailover.add(req, beginFailover)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginFailover, req)
+	resp, err := server.PollerResponderNext(beginFailover, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginFailover.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginFailover) {
-		a.beginFailover = nil
+	if !server.PollerResponderMore(beginFailover) {
+		a.beginFailover.remove(req)
 	}
 
 	return resp, nil
@@ -414,7 +432,8 @@ func (a *AccountsServerTransport) dispatchBeginHierarchicalNamespaceMigration(re
 	if a.srv.BeginHierarchicalNamespaceMigration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginHierarchicalNamespaceMigration not implemented")}
 	}
-	if a.beginHierarchicalNamespaceMigration == nil {
+	beginHierarchicalNamespaceMigration := a.beginHierarchicalNamespaceMigration.get(req)
+	if beginHierarchicalNamespaceMigration == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hnsonmigration`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -438,19 +457,21 @@ func (a *AccountsServerTransport) dispatchBeginHierarchicalNamespaceMigration(re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginHierarchicalNamespaceMigration = &respr
+		beginHierarchicalNamespaceMigration = &respr
+		a.beginHierarchicalNamespaceMigration.add(req, beginHierarchicalNamespaceMigration)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginHierarchicalNamespaceMigration, req)
+	resp, err := server.PollerResponderNext(beginHierarchicalNamespaceMigration, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginHierarchicalNamespaceMigration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginHierarchicalNamespaceMigration) {
-		a.beginHierarchicalNamespaceMigration = nil
+	if !server.PollerResponderMore(beginHierarchicalNamespaceMigration) {
+		a.beginHierarchicalNamespaceMigration.remove(req)
 	}
 
 	return resp, nil
@@ -460,7 +481,8 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if a.newListPager == nil {
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -468,20 +490,22 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListPager(nil)
-		a.newListPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armstorage.AccountsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.AccountsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListPager) {
-		a.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -527,7 +551,8 @@ func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -539,20 +564,22 @@ func (a *AccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListByResourceGroupPager, req, func(page *armstorage.AccountsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armstorage.AccountsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -680,7 +707,8 @@ func (a *AccountsServerTransport) dispatchBeginRestoreBlobRanges(req *http.Reque
 	if a.srv.BeginRestoreBlobRanges == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreBlobRanges not implemented")}
 	}
-	if a.beginRestoreBlobRanges == nil {
+	beginRestoreBlobRanges := a.beginRestoreBlobRanges.get(req)
+	if beginRestoreBlobRanges == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restoreBlobRanges`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -703,19 +731,21 @@ func (a *AccountsServerTransport) dispatchBeginRestoreBlobRanges(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginRestoreBlobRanges = &respr
+		beginRestoreBlobRanges = &respr
+		a.beginRestoreBlobRanges.add(req, beginRestoreBlobRanges)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginRestoreBlobRanges, req)
+	resp, err := server.PollerResponderNext(beginRestoreBlobRanges, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginRestoreBlobRanges.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginRestoreBlobRanges) {
-		a.beginRestoreBlobRanges = nil
+	if !server.PollerResponderMore(beginRestoreBlobRanges) {
+		a.beginRestoreBlobRanges.remove(req)
 	}
 
 	return resp, nil

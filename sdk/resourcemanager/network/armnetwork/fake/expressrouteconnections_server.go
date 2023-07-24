@@ -41,18 +41,22 @@ type ExpressRouteConnectionsServer struct {
 }
 
 // NewExpressRouteConnectionsServerTransport creates a new instance of ExpressRouteConnectionsServerTransport with the provided implementation.
-// The returned ExpressRouteConnectionsServerTransport instance is connected to an instance of armnetwork.ExpressRouteConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRouteConnectionsServerTransport instance is connected to an instance of armnetwork.ExpressRouteConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteConnectionsServerTransport(srv *ExpressRouteConnectionsServer) *ExpressRouteConnectionsServerTransport {
-	return &ExpressRouteConnectionsServerTransport{srv: srv}
+	return &ExpressRouteConnectionsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientDeleteResponse]](),
+	}
 }
 
 // ExpressRouteConnectionsServerTransport connects instances of armnetwork.ExpressRouteConnectionsClient to instances of ExpressRouteConnectionsServer.
 // Don't use this type directly, use NewExpressRouteConnectionsServerTransport instead.
 type ExpressRouteConnectionsServerTransport struct {
 	srv                 *ExpressRouteConnectionsServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientDeleteResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteConnectionsClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteConnectionsServerTransport.
@@ -90,7 +94,8 @@ func (e *ExpressRouteConnectionsServerTransport) dispatchBeginCreateOrUpdate(req
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if e.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/expressRouteConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -117,19 +122,21 @@ func (e *ExpressRouteConnectionsServerTransport) dispatchBeginCreateOrUpdate(req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginCreateOrUpdate) {
-		e.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -139,7 +146,8 @@ func (e *ExpressRouteConnectionsServerTransport) dispatchBeginDelete(req *http.R
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if e.beginDelete == nil {
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/expressRouteConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -162,19 +170,21 @@ func (e *ExpressRouteConnectionsServerTransport) dispatchBeginDelete(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginDelete = &respr
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginDelete) {
-		e.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
 
 	return resp, nil

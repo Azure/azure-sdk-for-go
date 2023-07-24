@@ -28,17 +28,20 @@ type VirtualMachineSizesServer struct {
 }
 
 // NewVirtualMachineSizesServerTransport creates a new instance of VirtualMachineSizesServerTransport with the provided implementation.
-// The returned VirtualMachineSizesServerTransport instance is connected to an instance of armcompute.VirtualMachineSizesClient by way of the
-// undefined.Transporter field.
+// The returned VirtualMachineSizesServerTransport instance is connected to an instance of armcompute.VirtualMachineSizesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineSizesServerTransport(srv *VirtualMachineSizesServer) *VirtualMachineSizesServerTransport {
-	return &VirtualMachineSizesServerTransport{srv: srv}
+	return &VirtualMachineSizesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]](),
+	}
 }
 
 // VirtualMachineSizesServerTransport connects instances of armcompute.VirtualMachineSizesClient to instances of VirtualMachineSizesServer.
 // Don't use this type directly, use NewVirtualMachineSizesServerTransport instead.
 type VirtualMachineSizesServerTransport struct {
 	srv          *VirtualMachineSizesServer
-	newListPager *azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineSizesServerTransport.
@@ -70,7 +73,8 @@ func (v *VirtualMachineSizesServerTransport) dispatchNewListPager(req *http.Requ
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -82,17 +86,19 @@ func (v *VirtualMachineSizesServerTransport) dispatchNewListPager(req *http.Requ
 			return nil, err
 		}
 		resp := v.srv.NewListPager(locationUnescaped, nil)
-		v.newListPager = &resp
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

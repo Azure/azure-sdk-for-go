@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -179,6 +180,9 @@ type pageindex[T any] struct {
 	page pageResp[T]
 }
 
+// nextLinkURLSuffix is the URL path suffix for a faked next page followed by one or more digits.
+const nextLinkURLSuffix = "/fake_page_"
+
 // InjectNextLinks is used to populate the nextLink field.
 // The inject callback is executed for every T in the sequence except for the last one.
 // This function is called by the fake server internals.
@@ -201,8 +205,14 @@ func (p *PagerResponder[T]) InjectNextLinks(req *http.Request, inject func(page 
 			break
 		}
 
+		qp := ""
+		if req.URL.RawQuery != "" {
+			qp = "?" + req.URL.RawQuery
+		}
+
 		inject(&pages[i].page.entry, func() string {
-			return fmt.Sprintf("%s://%s%s/page_%d", req.URL.Scheme, req.URL.Host, req.URL.Path, i+1)
+			// NOTE: any changes to this path format MUST be reflected in SanitizePagerPath()
+			return fmt.Sprintf("%s://%s%s%s%d%s", req.URL.Scheme, req.URL.Host, req.URL.Path, nextLinkURLSuffix, i+1, qp)
 		})
 
 		// update the original slice with the modified page
@@ -382,6 +392,13 @@ func NewResponse(content ResponseContent, req *http.Request) (*http.Response, er
 		Status:     fmt.Sprintf("%d %s", content.HTTPStatus, http.StatusText(content.HTTPStatus)),
 		StatusCode: content.HTTPStatus,
 	}, nil
+}
+
+var pageSuffixRegex = regexp.MustCompile(nextLinkURLSuffix + `\d+$`)
+
+// SanitizePagerPath removes any fake-appended suffix from a URL's path.
+func SanitizePagerPath(path string) string {
+	return pageSuffixRegex.ReplaceAllLiteralString(path, "")
 }
 
 func newErrorResponse(statusCode int, errorCode string, req *http.Request) (*http.Response, error) {

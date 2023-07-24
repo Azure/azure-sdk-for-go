@@ -50,21 +50,28 @@ type GalleriesServer struct {
 }
 
 // NewGalleriesServerTransport creates a new instance of GalleriesServerTransport with the provided implementation.
-// The returned GalleriesServerTransport instance is connected to an instance of armcompute.GalleriesClient by way of the
-// undefined.Transporter field.
+// The returned GalleriesServerTransport instance is connected to an instance of armcompute.GalleriesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleriesServerTransport(srv *GalleriesServer) *GalleriesServerTransport {
-	return &GalleriesServerTransport{srv: srv}
+	return &GalleriesServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]](),
+	}
 }
 
 // GalleriesServerTransport connects instances of armcompute.GalleriesClient to instances of GalleriesServer.
 // Don't use this type directly, use NewGalleriesServerTransport instead.
 type GalleriesServerTransport struct {
 	srv                         *GalleriesServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armcompute.GalleriesClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]
-	beginUpdate                 *azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleriesServerTransport.
@@ -106,7 +113,8 @@ func (g *GalleriesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	if g.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if g.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -129,19 +137,21 @@ func (g *GalleriesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		g.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginCreateOrUpdate) {
-		g.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		g.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -151,7 +161,8 @@ func (g *GalleriesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	if g.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if g.beginDelete == nil {
+	beginDelete := g.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -170,19 +181,21 @@ func (g *GalleriesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginDelete = &respr
+		beginDelete = &respr
+		g.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		g.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginDelete) {
-		g.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		g.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -243,7 +256,8 @@ func (g *GalleriesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if g.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if g.newListPager == nil {
+	newListPager := g.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -251,20 +265,22 @@ func (g *GalleriesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := g.srv.NewListPager(nil)
-		g.newListPager = &resp
-		server.PagerResponderInjectNextLinks(g.newListPager, req, func(page *armcompute.GalleriesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		g.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.GalleriesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(g.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(g.newListPager) {
-		g.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		g.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -273,7 +289,8 @@ func (g *GalleriesServerTransport) dispatchNewListByResourceGroupPager(req *http
 	if g.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if g.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -285,20 +302,22 @@ func (g *GalleriesServerTransport) dispatchNewListByResourceGroupPager(req *http
 			return nil, err
 		}
 		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		g.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(g.newListByResourceGroupPager, req, func(page *armcompute.GalleriesClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.GalleriesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(g.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(g.newListByResourceGroupPager) {
-		g.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		g.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -307,7 +326,8 @@ func (g *GalleriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if g.beginUpdate == nil {
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -330,19 +350,21 @@ func (g *GalleriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginUpdate = &respr
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginUpdate) {
-		g.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
 	}
 
 	return resp, nil

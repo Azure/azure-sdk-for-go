@@ -46,20 +46,26 @@ type CredentialSetsServer struct {
 }
 
 // NewCredentialSetsServerTransport creates a new instance of CredentialSetsServerTransport with the provided implementation.
-// The returned CredentialSetsServerTransport instance is connected to an instance of armcontainerregistry.CredentialSetsClient by way of the
-// undefined.Transporter field.
+// The returned CredentialSetsServerTransport instance is connected to an instance of armcontainerregistry.CredentialSetsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCredentialSetsServerTransport(srv *CredentialSetsServer) *CredentialSetsServerTransport {
-	return &CredentialSetsServerTransport{srv: srv}
+	return &CredentialSetsServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]](),
+	}
 }
 
 // CredentialSetsServerTransport connects instances of armcontainerregistry.CredentialSetsClient to instances of CredentialSetsServer.
 // Don't use this type directly, use NewCredentialSetsServerTransport instead.
 type CredentialSetsServerTransport struct {
 	srv          *CredentialSetsServer
-	beginCreate  *azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]
-	beginDelete  *azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]
-	beginUpdate  *azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CredentialSetsServerTransport.
@@ -99,7 +105,8 @@ func (c *CredentialSetsServerTransport) dispatchBeginCreate(req *http.Request) (
 	if c.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if c.beginCreate == nil {
+	beginCreate := c.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -126,19 +133,21 @@ func (c *CredentialSetsServerTransport) dispatchBeginCreate(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginCreate = &respr
+		beginCreate = &respr
+		c.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginCreate) {
-		c.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		c.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -148,7 +157,8 @@ func (c *CredentialSetsServerTransport) dispatchBeginDelete(req *http.Request) (
 	if c.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if c.beginDelete == nil {
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +181,21 @@ func (c *CredentialSetsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginDelete = &respr
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginDelete) {
-		c.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -230,7 +242,8 @@ func (c *CredentialSetsServerTransport) dispatchNewListPager(req *http.Request) 
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if c.newListPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -246,20 +259,22 @@ func (c *CredentialSetsServerTransport) dispatchNewListPager(req *http.Request) 
 			return nil, err
 		}
 		resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		c.newListPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armcontainerregistry.CredentialSetsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.CredentialSetsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListPager) {
-		c.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -268,7 +283,8 @@ func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	if c.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if c.beginUpdate == nil {
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/credentialSets/(?P<credentialSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -295,19 +311,21 @@ func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginUpdate = &respr
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginUpdate) {
-		c.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil

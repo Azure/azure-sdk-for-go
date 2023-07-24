@@ -29,17 +29,20 @@ type ActivityLogsServer struct {
 }
 
 // NewActivityLogsServerTransport creates a new instance of ActivityLogsServerTransport with the provided implementation.
-// The returned ActivityLogsServerTransport instance is connected to an instance of armmonitor.ActivityLogsClient by way of the
-// undefined.Transporter field.
+// The returned ActivityLogsServerTransport instance is connected to an instance of armmonitor.ActivityLogsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewActivityLogsServerTransport(srv *ActivityLogsServer) *ActivityLogsServerTransport {
-	return &ActivityLogsServerTransport{srv: srv}
+	return &ActivityLogsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse]](),
+	}
 }
 
 // ActivityLogsServerTransport connects instances of armmonitor.ActivityLogsClient to instances of ActivityLogsServer.
 // Don't use this type directly, use NewActivityLogsServerTransport instead.
 type ActivityLogsServerTransport struct {
 	srv          *ActivityLogsServer
-	newListPager *azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.ActivityLogsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ActivityLogsServerTransport.
@@ -71,7 +74,8 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if a.newListPager == nil {
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/eventtypes/management/values`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -95,20 +99,22 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 			}
 		}
 		resp := a.srv.NewListPager(filterUnescaped, options)
-		a.newListPager = &resp
-		server.PagerResponderInjectNextLinks(a.newListPager, req, func(page *armmonitor.ActivityLogsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.ActivityLogsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(a.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListPager) {
-		a.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

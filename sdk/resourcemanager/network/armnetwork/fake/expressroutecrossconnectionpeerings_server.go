@@ -42,19 +42,24 @@ type ExpressRouteCrossConnectionPeeringsServer struct {
 }
 
 // NewExpressRouteCrossConnectionPeeringsServerTransport creates a new instance of ExpressRouteCrossConnectionPeeringsServerTransport with the provided implementation.
-// The returned ExpressRouteCrossConnectionPeeringsServerTransport instance is connected to an instance of armnetwork.ExpressRouteCrossConnectionPeeringsClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRouteCrossConnectionPeeringsServerTransport instance is connected to an instance of armnetwork.ExpressRouteCrossConnectionPeeringsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteCrossConnectionPeeringsServerTransport(srv *ExpressRouteCrossConnectionPeeringsServer) *ExpressRouteCrossConnectionPeeringsServerTransport {
-	return &ExpressRouteCrossConnectionPeeringsServerTransport{srv: srv}
+	return &ExpressRouteCrossConnectionPeeringsServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientListResponse]](),
+	}
 }
 
 // ExpressRouteCrossConnectionPeeringsServerTransport connects instances of armnetwork.ExpressRouteCrossConnectionPeeringsClient to instances of ExpressRouteCrossConnectionPeeringsServer.
 // Don't use this type directly, use NewExpressRouteCrossConnectionPeeringsServerTransport instead.
 type ExpressRouteCrossConnectionPeeringsServerTransport struct {
 	srv                 *ExpressRouteCrossConnectionPeeringsServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientDeleteResponse]
-	newListPager        *azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientListResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionPeeringsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteCrossConnectionPeeringsServerTransport.
@@ -92,7 +97,8 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchBeginCreate
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if e.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchBeginCreate
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginCreateOrUpdate) {
-		e.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchBeginDelete
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if e.beginDelete == nil {
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchBeginDelete
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginDelete = &respr
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginDelete) {
-		e.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchNewListPage
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCrossConnections/(?P<crossConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (e *ExpressRouteCrossConnectionPeeringsServerTransport) dispatchNewListPage
 			return nil, err
 		}
 		resp := e.srv.NewListPager(resourceGroupNameUnescaped, crossConnectionNameUnescaped, nil)
-		e.newListPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armnetwork.ExpressRouteCrossConnectionPeeringsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCrossConnectionPeeringsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }

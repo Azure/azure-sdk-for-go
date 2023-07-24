@@ -29,7 +29,7 @@ type RacksClient struct {
 }
 
 // NewRacksClient creates a new instance of RacksClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RacksClient, error) {
@@ -48,7 +48,7 @@ func NewRacksClient(subscriptionID string, credential azcore.TokenCredential, op
 // be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - rackParameters - The request body.
@@ -72,7 +72,7 @@ func (client *RacksClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *RacksClient) createOrUpdate(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, rackName, rackParameters, options)
 	if err != nil {
@@ -91,9 +91,6 @@ func (client *RacksClient) createOrUpdate(ctx context.Context, resourceGroupName
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -108,7 +105,7 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, rackParameters)
@@ -118,7 +115,7 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - options - RacksClientBeginDeleteOptions contains the optional parameters for the RacksClient.BeginDelete method.
@@ -140,7 +137,7 @@ func (client *RacksClient) BeginDelete(ctx context.Context, resourceGroupName st
 // is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *RacksClient) deleteOperation(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, rackName, options)
 	if err != nil {
@@ -159,9 +156,6 @@ func (client *RacksClient) deleteOperation(ctx context.Context, resourceGroupNam
 // deleteCreateRequest creates the Delete request.
 func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +170,7 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +179,7 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // Get - Get properties of the provided rack.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - options - RacksClientGetOptions contains the optional parameters for the RacksClient.Get method.
@@ -207,9 +201,6 @@ func (client *RacksClient) Get(ctx context.Context, resourceGroupName string, ra
 // getCreateRequest creates the Get request.
 func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -224,7 +215,7 @@ func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +232,7 @@ func (client *RacksClient) getHandleResponse(resp *http.Response) (RacksClientGe
 
 // NewListByResourceGroupPager - Get a list of racks in the provided resource group.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RacksClientListByResourceGroupOptions contains the optional parameters for the RacksClient.NewListByResourceGroupPager
 //     method.
@@ -276,9 +267,6 @@ func (client *RacksClient) NewListByResourceGroupPager(resourceGroupName string,
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *RacksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RacksClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -289,7 +277,7 @@ func (client *RacksClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,7 +294,7 @@ func (client *RacksClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // NewListBySubscriptionPager - Get a list of racks in the provided subscription.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - options - RacksClientListBySubscriptionOptions contains the optional parameters for the RacksClient.NewListBySubscriptionPager
 //     method.
 func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBySubscriptionOptions) *runtime.Pager[RacksClientListBySubscriptionResponse] {
@@ -340,16 +328,13 @@ func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBy
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *RacksClient) listBySubscriptionCreateRequest(ctx context.Context, options *RacksClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/racks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,7 +353,7 @@ func (client *RacksClient) listBySubscriptionHandleResponse(resp *http.Response)
 // can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - rackUpdateParameters - The request body.
@@ -380,7 +365,7 @@ func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RacksClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[RacksClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -391,7 +376,7 @@ func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *RacksClient) update(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, rackName, rackUpdateParameters, options)
 	if err != nil {
@@ -410,9 +395,6 @@ func (client *RacksClient) update(ctx context.Context, resourceGroupName string,
 // updateCreateRequest creates the Update request.
 func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/racks/{rackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -427,7 +409,7 @@ func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, rackUpdateParameters)

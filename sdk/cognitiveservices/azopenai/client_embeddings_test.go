@@ -13,13 +13,15 @@ import (
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(endpoint, cred, "thisdoesntexist", newClientOptionsForTest(t))
+	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	_, err = chatClient.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{}, nil)
+	_, err = chatClient.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
+		DeploymentID: "thisdoesntexist",
+	}, nil)
 
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -27,22 +29,22 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 }
 
 func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
-	modelID := "text-similarity-curie-001"
-	testGetEmbeddings(t, client, modelID)
+	testGetEmbeddings(t, client, openAI.Embeddings)
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {
-	// model deployment points to `text-similarity-curie-001`
-	deploymentID := "embedding"
-
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, deploymentID, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	testGetEmbeddings(t, client, deploymentID)
+	testGetEmbeddings(t, client, azureOpenAI.Embeddings)
 }
 
 func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentID string) {
@@ -67,8 +69,8 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input: []string{"\"Your text string goes here\""},
-					Model: &modelOrDeploymentID,
+					Input:        []string{"\"Your text string goes here\""},
+					DeploymentID: modelOrDeploymentID,
 				},
 				options: nil,
 			},

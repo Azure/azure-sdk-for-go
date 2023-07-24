@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
@@ -46,6 +47,9 @@ type Poller[T any] struct {
 	FakeStatus string `json:"status"`
 }
 
+// lroStatusURLSuffix is the URL path suffix for a faked LRO.
+const lroStatusURLSuffix = "/get/fake/status"
+
 // New creates a new Poller from the provided initial response.
 // Pass nil for response to create an empty Poller for rehydration.
 func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
@@ -70,11 +74,17 @@ func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
 		return nil, fmt.Errorf("expected string for CtxAPINameKey, the type was %T", ctxVal)
 	}
 
+	qp := ""
+	if resp.Request.URL.RawQuery != "" {
+		qp = "?" + resp.Request.URL.RawQuery
+	}
+
 	p := &Poller[T]{
-		pl:         pl,
-		resp:       resp,
-		APIName:    apiName,
-		FakeURL:    fmt.Sprintf("%s://%s%s/get/fake/status", resp.Request.URL.Scheme, resp.Request.URL.Host, resp.Request.URL.Path),
+		pl:      pl,
+		resp:    resp,
+		APIName: apiName,
+		// NOTE: any changes to this path format MUST be reflected in SanitizePollerPath()
+		FakeURL:    fmt.Sprintf("%s://%s%s%s%s", resp.Request.URL.Scheme, resp.Request.URL.Host, resp.Request.URL.Path, lroStatusURLSuffix, qp),
 		FakeStatus: fakeStatus,
 	}
 	return p, nil
@@ -115,4 +125,9 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	}
 
 	return pollers.ResultHelper(p.resp, poller.Failed(p.FakeStatus), out)
+}
+
+// SanitizePollerPath removes any fake-appended suffix from a URL's path.
+func SanitizePollerPath(path string) string {
+	return strings.TrimSuffix(path, lroStatusURLSuffix)
 }

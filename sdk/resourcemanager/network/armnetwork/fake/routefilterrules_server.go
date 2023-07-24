@@ -42,19 +42,24 @@ type RouteFilterRulesServer struct {
 }
 
 // NewRouteFilterRulesServerTransport creates a new instance of RouteFilterRulesServerTransport with the provided implementation.
-// The returned RouteFilterRulesServerTransport instance is connected to an instance of armnetwork.RouteFilterRulesClient by way of the
-// undefined.Transporter field.
+// The returned RouteFilterRulesServerTransport instance is connected to an instance of armnetwork.RouteFilterRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRouteFilterRulesServerTransport(srv *RouteFilterRulesServer) *RouteFilterRulesServerTransport {
-	return &RouteFilterRulesServerTransport{srv: srv}
+	return &RouteFilterRulesServerTransport{
+		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armnetwork.RouteFilterRulesClientCreateOrUpdateResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armnetwork.RouteFilterRulesClientDeleteResponse]](),
+		newListByRouteFilterPager: newTracker[azfake.PagerResponder[armnetwork.RouteFilterRulesClientListByRouteFilterResponse]](),
+	}
 }
 
 // RouteFilterRulesServerTransport connects instances of armnetwork.RouteFilterRulesClient to instances of RouteFilterRulesServer.
 // Don't use this type directly, use NewRouteFilterRulesServerTransport instead.
 type RouteFilterRulesServerTransport struct {
 	srv                       *RouteFilterRulesServer
-	beginCreateOrUpdate       *azfake.PollerResponder[armnetwork.RouteFilterRulesClientCreateOrUpdateResponse]
-	beginDelete               *azfake.PollerResponder[armnetwork.RouteFilterRulesClientDeleteResponse]
-	newListByRouteFilterPager *azfake.PagerResponder[armnetwork.RouteFilterRulesClientListByRouteFilterResponse]
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armnetwork.RouteFilterRulesClientCreateOrUpdateResponse]]
+	beginDelete               *tracker[azfake.PollerResponder[armnetwork.RouteFilterRulesClientDeleteResponse]]
+	newListByRouteFilterPager *tracker[azfake.PagerResponder[armnetwork.RouteFilterRulesClientListByRouteFilterResponse]]
 }
 
 // Do implements the policy.Transporter interface for RouteFilterRulesServerTransport.
@@ -92,7 +97,8 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	if r.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if r.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := r.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		r.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginCreateOrUpdate) {
-		r.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		r.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginDelete(req *http.Request)
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if r.beginDelete == nil {
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (r *RouteFilterRulesServerTransport) dispatchBeginDelete(req *http.Request)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginDelete = &respr
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginDelete) {
-		r.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (r *RouteFilterRulesServerTransport) dispatchNewListByRouteFilterPager(req 
 	if r.srv.NewListByRouteFilterPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByRouteFilterPager not implemented")}
 	}
-	if r.newListByRouteFilterPager == nil {
+	newListByRouteFilterPager := r.newListByRouteFilterPager.get(req)
+	if newListByRouteFilterPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/routeFilters/(?P<routeFilterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeFilterRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (r *RouteFilterRulesServerTransport) dispatchNewListByRouteFilterPager(req 
 			return nil, err
 		}
 		resp := r.srv.NewListByRouteFilterPager(resourceGroupNameUnescaped, routeFilterNameUnescaped, nil)
-		r.newListByRouteFilterPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListByRouteFilterPager, req, func(page *armnetwork.RouteFilterRulesClientListByRouteFilterResponse, createLink func() string) {
+		newListByRouteFilterPager = &resp
+		r.newListByRouteFilterPager.add(req, newListByRouteFilterPager)
+		server.PagerResponderInjectNextLinks(newListByRouteFilterPager, req, func(page *armnetwork.RouteFilterRulesClientListByRouteFilterResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListByRouteFilterPager, req)
+	resp, err := server.PagerResponderNext(newListByRouteFilterPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByRouteFilterPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListByRouteFilterPager) {
-		r.newListByRouteFilterPager = nil
+	if !server.PagerResponderMore(newListByRouteFilterPager) {
+		r.newListByRouteFilterPager.remove(req)
 	}
 	return resp, nil
 }

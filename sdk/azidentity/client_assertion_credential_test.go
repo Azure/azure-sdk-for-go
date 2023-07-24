@@ -14,16 +14,9 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestClientAssertionCredential(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
-
 	key := struct{}{}
 	calls := 0
 	getAssertion := func(c context.Context) (string, error) {
@@ -34,7 +27,7 @@ func TestClientAssertionCredential(t *testing.T) {
 		return "assertion", nil
 	}
 	cred, err := NewClientAssertionCredential("tenant", "clientID", getAssertion, &ClientAssertionCredentialOptions{
-		ClientOptions: azcore.ClientOptions{Transport: srv},
+		ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -58,16 +51,10 @@ func TestClientAssertionCredential(t *testing.T) {
 }
 
 func TestClientAssertionCredentialCallbackError(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
-
 	expectedError := errors.New("it didn't work")
 	getAssertion := func(c context.Context) (string, error) { return "", expectedError }
 	cred, err := NewClientAssertionCredential("tenant", "clientID", getAssertion, &ClientAssertionCredentialOptions{
-		ClientOptions: azcore.ClientOptions{Transport: srv},
+		ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -97,7 +84,7 @@ func TestClientAssertionCredential_Live(t *testing.T) {
 			defer stop()
 			cred, err := NewClientAssertionCredential(liveSP.tenantID, liveSP.clientID,
 				func(context.Context) (string, error) {
-					return getAssertion(certs[0], key)
+					return assertion(certs[0], key)
 				},
 				&ClientAssertionCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: d},
 			)

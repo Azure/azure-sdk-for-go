@@ -123,7 +123,7 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
 		return CreateTableResponse{}, err
 	}
@@ -241,7 +241,7 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 				partKey = listOptions.NextPartitionKey
 				rowKey = listOptions.NextRowKey
 			}
-			resp, err := t.client.QueryEntities(ctx, generated.Enum1Three0, t.name, &generated.TableClientQueryEntitiesOptions{
+			resp, err := t.client.QueryEntities(ctx, t.name, &generated.TableClientQueryEntitiesOptions{
 				NextPartitionKey: partKey,
 				NextRowKey:       rowKey,
 			}, listOptions.toQueryOptions())
@@ -297,7 +297,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	}
 
 	genOptions, queryOptions := options.toGenerated()
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, prepareKey(partitionKey), prepareKey(rowKey), genOptions, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), genOptions, queryOptions)
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
@@ -338,7 +338,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
+	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
@@ -374,7 +374,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 		nilEtag := azcore.ETag("*")
 		options.IfMatch = &nilEtag
 	}
-	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, prepareKey(partitionKey), prepareKey(rowKey), string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.DeleteEntity(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
 		return DeleteEntityResponse{}, err
 	}
@@ -474,7 +474,6 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	case UpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			prepareKey(partKey),
 			prepareKey(rowkey),
@@ -488,7 +487,6 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			prepareKey(partKey),
 			prepareKey(rowkey),
@@ -577,7 +575,6 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 	case UpdateModeMerge:
 		resp, err := t.client.MergeEntity(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			prepareKey(partKey),
 			prepareKey(rowkey),
@@ -591,7 +588,6 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 	case UpdateModeReplace:
 		resp, err := t.client.UpdateEntity(
 			ctx,
-			generated.Enum1Three0,
 			t.name,
 			prepareKey(partKey),
 			prepareKey(rowkey),
@@ -641,7 +637,7 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolic
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
-	resp, err := t.client.GetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
+	resp, err := t.client.GetAccessPolicy(ctx, t.name, options.toGenerated())
 	if err != nil {
 		return GetAccessPolicyResponse{}, err
 	}
@@ -679,7 +675,7 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 	if options == nil {
 		options = &SetAccessPolicyOptions{}
 	}
-	response, err := t.client.SetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
+	response, err := t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
 	if err != nil && len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
 	}

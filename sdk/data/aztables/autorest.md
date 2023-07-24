@@ -19,6 +19,7 @@ security-scopes: "https://storage.azure.com/.default"
 honor-body-placement: true
 modelerfour:
   group-parameters: false
+  seal-single-value-enum-by-default: true
 
 directive:
   - from: source-file-go

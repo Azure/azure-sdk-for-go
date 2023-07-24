@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
@@ -51,7 +52,8 @@ func tryAccessor() error {
 	if err != nil {
 		return err
 	}
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
 	err = a.Write(ctx, []byte("test"))
 	if err != nil {
 		return err

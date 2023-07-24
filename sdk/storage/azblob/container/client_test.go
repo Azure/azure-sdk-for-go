@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"net/url"
 	"os"
@@ -2299,6 +2300,149 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	// Create container client with sasUrl
 	_, err = container.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:         true,
+		Add:          true,
+		Write:        true,
+		Create:       true,
+		Delete:       true,
+		Tag:          true,
+		FilterByTags: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.BasicBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+	where := "\"azure\"='blob'"
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
+	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+		Tag:    true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.BasicBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+	where := "\"azure\"='blob'"
+	_, err = containerSasClient.FilterBlobs(context.Background(), where, nil)
+	_require.Error(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsOnContainer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"1", svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobTagsMap1 := map[string]string{
+		"tag2": "tagsecond",
+		"tag3": "tagthird",
+	}
+	blobTagsMap2 := map[string]string{
+		"tag1": "firsttag",
+		"tag2": "secondtag",
+		"tag3": "thirdtag",
+	}
+
+	blobName1 := testcommon.GenerateBlobName(testName) + "1"
+	blobClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName1, containerClient)
+	_, err = blobClient1.SetTags(context.Background(), blobTagsMap1, nil)
+	_require.Nil(err)
+
+	blobName2 := testcommon.GenerateBlobName(testName) + "2"
+	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
+	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
+	_require.Nil(err)
+	time.Sleep(10 * time.Second)
+
+	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
+	_require.Nil(err)
+	blobTagsSet := blobTagsResp.BlobTagSet
+	_require.NotNil(blobTagsSet)
+
+	// Test invalid tag
+	where := "\"tag4\"='fourthtag'"
+	lResp, err := containerClient.FilterBlobs(context.Background(), where, nil)
+	_require.Nil(err)
+	_require.Equal(len(lResp.Blobs), 0)
+
+	// Test multiple valid tags
+	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
+	lResp, err = containerClient.FilterBlobs(context.Background(), where, nil)
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[1])
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {

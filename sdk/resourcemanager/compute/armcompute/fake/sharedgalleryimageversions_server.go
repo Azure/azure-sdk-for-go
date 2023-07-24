@@ -34,17 +34,20 @@ type SharedGalleryImageVersionsServer struct {
 }
 
 // NewSharedGalleryImageVersionsServerTransport creates a new instance of SharedGalleryImageVersionsServerTransport with the provided implementation.
-// The returned SharedGalleryImageVersionsServerTransport instance is connected to an instance of armcompute.SharedGalleryImageVersionsClient by way of the
-// undefined.Transporter field.
+// The returned SharedGalleryImageVersionsServerTransport instance is connected to an instance of armcompute.SharedGalleryImageVersionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSharedGalleryImageVersionsServerTransport(srv *SharedGalleryImageVersionsServer) *SharedGalleryImageVersionsServerTransport {
-	return &SharedGalleryImageVersionsServerTransport{srv: srv}
+	return &SharedGalleryImageVersionsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.SharedGalleryImageVersionsClientListResponse]](),
+	}
 }
 
 // SharedGalleryImageVersionsServerTransport connects instances of armcompute.SharedGalleryImageVersionsClient to instances of SharedGalleryImageVersionsServer.
 // Don't use this type directly, use NewSharedGalleryImageVersionsServerTransport instead.
 type SharedGalleryImageVersionsServerTransport struct {
 	srv          *SharedGalleryImageVersionsServer
-	newListPager *azfake.PagerResponder[armcompute.SharedGalleryImageVersionsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.SharedGalleryImageVersionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SharedGalleryImageVersionsServerTransport.
@@ -119,7 +122,8 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchNewListPager(req *ht
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<galleryUniqueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -151,20 +155,22 @@ func (s *SharedGalleryImageVersionsServerTransport) dispatchNewListPager(req *ht
 			}
 		}
 		resp := s.srv.NewListPager(locationUnescaped, galleryUniqueNameUnescaped, galleryImageNameUnescaped, options)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armcompute.SharedGalleryImageVersionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SharedGalleryImageVersionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

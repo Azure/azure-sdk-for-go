@@ -53,6 +53,11 @@ func (c *ClientFactory) NewResourceSKUsClient() *ResourceSKUsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewUsagesClient() *UsagesClient {
+	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
@@ -65,6 +70,11 @@ func (c *ClientFactory) NewManagementClient() *ManagementClient {
 
 func (c *ClientFactory) NewCommitmentTiersClient() *CommitmentTiersClient {
 	subClient, _ := NewCommitmentTiersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewModelsClient() *ModelsClient {
+	subClient, _ := NewModelsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

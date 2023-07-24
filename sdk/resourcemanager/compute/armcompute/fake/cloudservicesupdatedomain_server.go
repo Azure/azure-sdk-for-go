@@ -39,18 +39,22 @@ type CloudServicesUpdateDomainServer struct {
 }
 
 // NewCloudServicesUpdateDomainServerTransport creates a new instance of CloudServicesUpdateDomainServerTransport with the provided implementation.
-// The returned CloudServicesUpdateDomainServerTransport instance is connected to an instance of armcompute.CloudServicesUpdateDomainClient by way of the
-// undefined.Transporter field.
+// The returned CloudServicesUpdateDomainServerTransport instance is connected to an instance of armcompute.CloudServicesUpdateDomainClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServicesUpdateDomainServerTransport(srv *CloudServicesUpdateDomainServer) *CloudServicesUpdateDomainServerTransport {
-	return &CloudServicesUpdateDomainServerTransport{srv: srv}
+	return &CloudServicesUpdateDomainServerTransport{
+		srv:                       srv,
+		newListUpdateDomainsPager: newTracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]](),
+		beginWalkUpdateDomain:     newTracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]](),
+	}
 }
 
 // CloudServicesUpdateDomainServerTransport connects instances of armcompute.CloudServicesUpdateDomainClient to instances of CloudServicesUpdateDomainServer.
 // Don't use this type directly, use NewCloudServicesUpdateDomainServerTransport instead.
 type CloudServicesUpdateDomainServerTransport struct {
 	srv                       *CloudServicesUpdateDomainServer
-	newListUpdateDomainsPager *azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]
-	beginWalkUpdateDomain     *azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]
+	newListUpdateDomainsPager *tracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]]
+	beginWalkUpdateDomain     *tracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServicesUpdateDomainServerTransport.
@@ -133,7 +137,8 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchNewListUpdateDomainsP
 	if c.srv.NewListUpdateDomainsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListUpdateDomainsPager not implemented")}
 	}
-	if c.newListUpdateDomainsPager == nil {
+	newListUpdateDomainsPager := c.newListUpdateDomainsPager.get(req)
+	if newListUpdateDomainsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDomains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -149,20 +154,22 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchNewListUpdateDomainsP
 			return nil, err
 		}
 		resp := c.srv.NewListUpdateDomainsPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		c.newListUpdateDomainsPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListUpdateDomainsPager, req, func(page *armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse, createLink func() string) {
+		newListUpdateDomainsPager = &resp
+		c.newListUpdateDomainsPager.add(req, newListUpdateDomainsPager)
+		server.PagerResponderInjectNextLinks(newListUpdateDomainsPager, req, func(page *armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListUpdateDomainsPager, req)
+	resp, err := server.PagerResponderNext(newListUpdateDomainsPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListUpdateDomainsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListUpdateDomainsPager) {
-		c.newListUpdateDomainsPager = nil
+	if !server.PagerResponderMore(newListUpdateDomainsPager) {
+		c.newListUpdateDomainsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -171,7 +178,8 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchBeginWalkUpdateDomain
 	if c.srv.BeginWalkUpdateDomain == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWalkUpdateDomain not implemented")}
 	}
-	if c.beginWalkUpdateDomain == nil {
+	beginWalkUpdateDomain := c.beginWalkUpdateDomain.get(req)
+	if beginWalkUpdateDomain == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDomains/(?P<updateDomain>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -208,19 +216,21 @@ func (c *CloudServicesUpdateDomainServerTransport) dispatchBeginWalkUpdateDomain
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginWalkUpdateDomain = &respr
+		beginWalkUpdateDomain = &respr
+		c.beginWalkUpdateDomain.add(req, beginWalkUpdateDomain)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginWalkUpdateDomain, req)
+	resp, err := server.PollerResponderNext(beginWalkUpdateDomain, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginWalkUpdateDomain.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginWalkUpdateDomain) {
-		c.beginWalkUpdateDomain = nil
+	if !server.PollerResponderMore(beginWalkUpdateDomain) {
+		c.beginWalkUpdateDomain.remove(req)
 	}
 
 	return resp, nil

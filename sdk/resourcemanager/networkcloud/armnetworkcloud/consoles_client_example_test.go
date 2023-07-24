@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Consoles_ListByResourceGroup.json
-func ExampleConsolesClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_ListByVirtualMachine.json
+func ExampleConsolesClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleConsolesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewConsolesClient().NewListByResourceGroupPager("resourceGroupName", "virtualMachineName", nil)
+	pager := clientFactory.NewConsolesClient().NewListByVirtualMachinePager("resourceGroupName", "virtualMachineName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleConsolesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/virtualMachines/consoles"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -62,7 +62,7 @@ func ExampleConsolesClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.ConsoleProperties{
@@ -70,7 +70,7 @@ func ExampleConsolesClient_NewListByResourceGroupPager() {
 		// 				DetailedStatusMessage: to.Ptr("Console is ready for use"),
 		// 				Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
 		// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
-		// 				PrivateLinkServiceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
+		// 				PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 		// 				SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 		// 					KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
@@ -82,7 +82,7 @@ func ExampleConsolesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Consoles_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_Get.json
 func ExampleConsolesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleConsolesClient_Get() {
 	// res.Console = armnetworkcloud.Console{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/virtualMachines/consoles"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -118,7 +118,7 @@ func ExampleConsolesClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ConsoleProperties{
@@ -126,7 +126,7 @@ func ExampleConsolesClient_Get() {
 	// 		DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 		Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
-	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
+	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 		SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 			KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
@@ -136,7 +136,7 @@ func ExampleConsolesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Consoles_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_Create.json
 func ExampleConsolesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.ConsoleProperties{
@@ -178,7 +178,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// res.Console = armnetworkcloud.Console{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/virtualMachines/consoles"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -193,7 +193,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ConsoleProperties{
@@ -201,7 +201,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// 		DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 		Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
-	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
+	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 		SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 			KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
@@ -211,7 +211,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Consoles_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_Delete.json
 func ExampleConsolesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleConsolesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Consoles_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_Patch.json
 func ExampleConsolesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleConsolesClient_BeginUpdate() {
 	// res.Console = armnetworkcloud.Console{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/virtualMachines/consoles"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName/consoles/default"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -284,7 +284,7 @@ func ExampleConsolesClient_BeginUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ConsoleProperties{
@@ -292,7 +292,7 @@ func ExampleConsolesClient_BeginUpdate() {
 	// 		DetailedStatusMessage: to.Ptr("Console is ready for use"),
 	// 		Enabled: to.Ptr(armnetworkcloud.ConsoleEnabledTrue),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-01T01:27:03.008Z"); return t}()),
-	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
+	// 		PrivateLinkServiceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Network/privateLinkServices/console-pls"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ConsoleProvisioningStateSucceeded),
 	// 		SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 			KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),

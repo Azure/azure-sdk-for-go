@@ -54,22 +54,30 @@ type DiskEncryptionSetsServer struct {
 }
 
 // NewDiskEncryptionSetsServerTransport creates a new instance of DiskEncryptionSetsServerTransport with the provided implementation.
-// The returned DiskEncryptionSetsServerTransport instance is connected to an instance of armcompute.DiskEncryptionSetsClient by way of the
-// undefined.Transporter field.
+// The returned DiskEncryptionSetsServerTransport instance is connected to an instance of armcompute.DiskEncryptionSetsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskEncryptionSetsServerTransport(srv *DiskEncryptionSetsServer) *DiskEncryptionSetsServerTransport {
-	return &DiskEncryptionSetsServerTransport{srv: srv}
+	return &DiskEncryptionSetsServerTransport{
+		srv:                             srv,
+		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]](),
+		beginDelete:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]](),
+		newListAssociatedResourcesPager: newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]](),
+		newListByResourceGroupPager:     newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]](),
+		beginUpdate:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]](),
+	}
 }
 
 // DiskEncryptionSetsServerTransport connects instances of armcompute.DiskEncryptionSetsClient to instances of DiskEncryptionSetsServer.
 // Don't use this type directly, use NewDiskEncryptionSetsServerTransport instead.
 type DiskEncryptionSetsServerTransport struct {
 	srv                             *DiskEncryptionSetsServer
-	beginCreateOrUpdate             *azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]
-	beginDelete                     *azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]
-	newListPager                    *azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]
-	newListAssociatedResourcesPager *azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]
-	newListByResourceGroupPager     *azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]
-	beginUpdate                     *azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]
+	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]]
+	beginDelete                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]]
+	newListAssociatedResourcesPager *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]]
+	newListByResourceGroupPager     *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]]
+	beginUpdate                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskEncryptionSetsServerTransport.
@@ -113,7 +121,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if d.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -136,19 +145,21 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginCreateOrUpdate) {
-		d.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -158,7 +169,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginDelete(req *http.Reques
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if d.beginDelete == nil {
+	beginDelete := d.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -177,19 +189,21 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginDelete(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginDelete = &respr
+		beginDelete = &respr
+		d.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginDelete) {
-		d.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -232,7 +246,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListPager(req *http.Reque
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -240,20 +255,22 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListPager(req *http.Reque
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListPager(nil)
-		d.newListPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListPager, req, func(page *armcompute.DiskEncryptionSetsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.DiskEncryptionSetsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -262,7 +279,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListAssociatedResourcesPa
 	if d.srv.NewListAssociatedResourcesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAssociatedResourcesPager not implemented")}
 	}
-	if d.newListAssociatedResourcesPager == nil {
+	newListAssociatedResourcesPager := d.newListAssociatedResourcesPager.get(req)
+	if newListAssociatedResourcesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -278,20 +296,22 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListAssociatedResourcesPa
 			return nil, err
 		}
 		resp := d.srv.NewListAssociatedResourcesPager(resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, nil)
-		d.newListAssociatedResourcesPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListAssociatedResourcesPager, req, func(page *armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse, createLink func() string) {
+		newListAssociatedResourcesPager = &resp
+		d.newListAssociatedResourcesPager.add(req, newListAssociatedResourcesPager)
+		server.PagerResponderInjectNextLinks(newListAssociatedResourcesPager, req, func(page *armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListAssociatedResourcesPager, req)
+	resp, err := server.PagerResponderNext(newListAssociatedResourcesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAssociatedResourcesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListAssociatedResourcesPager) {
-		d.newListAssociatedResourcesPager = nil
+	if !server.PagerResponderMore(newListAssociatedResourcesPager) {
+		d.newListAssociatedResourcesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -300,7 +320,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListByResourceGroupPager(
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if d.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -312,20 +333,22 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListByResourceGroupPager(
 			return nil, err
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		d.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourceGroupPager, req, func(page *armcompute.DiskEncryptionSetsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.DiskEncryptionSetsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourceGroupPager) {
-		d.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -334,7 +357,8 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginUpdate(req *http.Reques
 	if d.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if d.beginUpdate == nil {
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -357,19 +381,21 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginUpdate(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		d.beginUpdate = &respr
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(d.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(d.beginUpdate) {
-		d.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
 	}
 
 	return resp, nil

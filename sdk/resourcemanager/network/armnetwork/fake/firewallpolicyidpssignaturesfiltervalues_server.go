@@ -29,8 +29,8 @@ type FirewallPolicyIdpsSignaturesFilterValuesServer struct {
 }
 
 // NewFirewallPolicyIdpsSignaturesFilterValuesServerTransport creates a new instance of FirewallPolicyIdpsSignaturesFilterValuesServerTransport with the provided implementation.
-// The returned FirewallPolicyIdpsSignaturesFilterValuesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesFilterValuesClient by way of the
-// undefined.Transporter field.
+// The returned FirewallPolicyIdpsSignaturesFilterValuesServerTransport instance is connected to an instance of armnetwork.FirewallPolicyIdpsSignaturesFilterValuesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallPolicyIdpsSignaturesFilterValuesServerTransport(srv *FirewallPolicyIdpsSignaturesFilterValuesServer) *FirewallPolicyIdpsSignaturesFilterValuesServerTransport {
 	return &FirewallPolicyIdpsSignaturesFilterValuesServerTransport{srv: srv}
 }

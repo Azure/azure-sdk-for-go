@@ -55,7 +55,13 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		return nil, err
 	}
 	csc := ClientSecretCredential{client: c}
-	csc.s = newSyncer(credNameSecret, tenantID, options.AdditionallyAllowedTenants, csc.requestToken, csc.silentAuth)
+	csc.s = newSyncer(
+		credNameSecret,
+		tenantID,
+		csc.requestToken,
+		csc.silentAuth,
+		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
+	)
 	return &csc, nil
 }
 

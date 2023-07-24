@@ -58,21 +58,28 @@ type CloudServiceRoleInstancesServer struct {
 }
 
 // NewCloudServiceRoleInstancesServerTransport creates a new instance of CloudServiceRoleInstancesServerTransport with the provided implementation.
-// The returned CloudServiceRoleInstancesServerTransport instance is connected to an instance of armcompute.CloudServiceRoleInstancesClient by way of the
-// undefined.Transporter field.
+// The returned CloudServiceRoleInstancesServerTransport instance is connected to an instance of armcompute.CloudServiceRoleInstancesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRoleInstancesServerTransport(srv *CloudServiceRoleInstancesServer) *CloudServiceRoleInstancesServerTransport {
-	return &CloudServiceRoleInstancesServerTransport{srv: srv}
+	return &CloudServiceRoleInstancesServerTransport{
+		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]](),
+		beginRebuild: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]](),
+		beginReimage: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]](),
+		beginRestart: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]](),
+	}
 }
 
 // CloudServiceRoleInstancesServerTransport connects instances of armcompute.CloudServiceRoleInstancesClient to instances of CloudServiceRoleInstancesServer.
 // Don't use this type directly, use NewCloudServiceRoleInstancesServerTransport instead.
 type CloudServiceRoleInstancesServerTransport struct {
 	srv          *CloudServiceRoleInstancesServer
-	beginDelete  *azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]
-	beginRebuild *azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]
-	beginReimage *azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]
-	beginRestart *azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]
+	beginDelete  *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]]
+	beginRebuild *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]]
+	beginReimage *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]]
+	beginRestart *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceRoleInstancesServerTransport.
@@ -118,7 +125,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginDelete(req *http
 	if c.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if c.beginDelete == nil {
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -141,19 +149,21 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginDelete(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginDelete = &respr
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginDelete) {
-		c.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -289,7 +299,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchNewListPager(req *htt
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if c.newListPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -317,20 +328,22 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchNewListPager(req *htt
 			}
 		}
 		resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
-		c.newListPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armcompute.CloudServiceRoleInstancesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CloudServiceRoleInstancesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListPager) {
-		c.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -339,7 +352,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRebuild(req *htt
 	if c.srv.BeginRebuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRebuild not implemented")}
 	}
-	if c.beginRebuild == nil {
+	beginRebuild := c.beginRebuild.get(req)
+	if beginRebuild == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebuild`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -362,19 +376,21 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRebuild(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginRebuild = &respr
+		beginRebuild = &respr
+		c.beginRebuild.add(req, beginRebuild)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginRebuild, req)
+	resp, err := server.PollerResponderNext(beginRebuild, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginRebuild.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginRebuild) {
-		c.beginRebuild = nil
+	if !server.PollerResponderMore(beginRebuild) {
+		c.beginRebuild.remove(req)
 	}
 
 	return resp, nil
@@ -384,7 +400,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginReimage(req *htt
 	if c.srv.BeginReimage == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReimage not implemented")}
 	}
-	if c.beginReimage == nil {
+	beginReimage := c.beginReimage.get(req)
+	if beginReimage == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -407,19 +424,21 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginReimage(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginReimage = &respr
+		beginReimage = &respr
+		c.beginReimage.add(req, beginReimage)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginReimage, req)
+	resp, err := server.PollerResponderNext(beginReimage, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginReimage.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginReimage) {
-		c.beginReimage = nil
+	if !server.PollerResponderMore(beginReimage) {
+		c.beginReimage.remove(req)
 	}
 
 	return resp, nil
@@ -429,7 +448,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRestart(req *htt
 	if c.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
-	if c.beginRestart == nil {
+	beginRestart := c.beginRestart.get(req)
+	if beginRestart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -452,19 +472,21 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRestart(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		c.beginRestart = &respr
+		beginRestart = &respr
+		c.beginRestart.add(req, beginRestart)
 	}
 
-	resp, err := server.PollerResponderNext(c.beginRestart, req)
+	resp, err := server.PollerResponderNext(beginRestart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginRestart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(c.beginRestart) {
-		c.beginRestart = nil
+	if !server.PollerResponderMore(beginRestart) {
+		c.beginRestart.remove(req)
 	}
 
 	return resp, nil

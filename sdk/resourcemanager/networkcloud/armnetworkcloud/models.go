@@ -11,6 +11,12 @@ package armnetworkcloud
 
 import "time"
 
+// AADConfiguration - AadConfiguration represents the Azure Active Directory Integration properties.
+type AADConfiguration struct {
+	// REQUIRED; The list of Azure Active Directory group object IDs that will have an administrative role on the Kubernetes cluster.
+	AdminGroupObjectIDs []*string
+}
+
 // AdministrativeCredentials represents the admin credentials for the device requiring password-based authentication.
 type AdministrativeCredentials struct {
 	// REQUIRED; The password of the administrator of the device used during initialization.
@@ -18,6 +24,189 @@ type AdministrativeCredentials struct {
 
 	// REQUIRED; The username of the administrator of the device used during initialization.
 	Username *string
+}
+
+// AdministratorConfiguration represents the administrative credentials that will be applied to the control plane and agent
+// pool nodes in Kubernetes clusters.
+type AdministratorConfiguration struct {
+	// The user name for the administrator that will be applied to the operating systems that run Kubernetes nodes. If not supplied,
+	// a user name will be chosen by the service.
+	AdminUsername *string
+
+	// The SSH configuration for the operating systems that run the nodes in the Kubernetes cluster. In some cases, specification
+	// of public keys may be required to produce a working environment.
+	SSHPublicKeys []*SSHPublicKey
+}
+
+// AgentOptions are configurations that will be applied to each agent in an agent pool.
+type AgentOptions struct {
+	// REQUIRED; The number of hugepages to allocate.
+	HugepagesCount *int64
+
+	// The size of the hugepages to allocate.
+	HugepagesSize *HugepagesSize
+}
+
+// AgentPool represents the agent pool of Kubernetes cluster.
+type AgentPool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The list of the resource properties.
+	Properties *AgentPoolProperties
+
+	// The extended location of the cluster associated with the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentPoolList represents a list of Kubernetes cluster agent pools.
+type AgentPoolList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of agent pools.
+	Value []*AgentPool
+}
+
+// AgentPoolPatchParameters represents the body of the request to patch the Kubernetes cluster agent pool.
+type AgentPoolPatchParameters struct {
+	// The list of the resource properties.
+	Properties *AgentPoolPatchProperties
+
+	// The Azure resource tags that will replace the existing ones.
+	Tags map[string]*string
+}
+
+// AgentPoolPatchProperties represents the properties of an agent pool that can be modified.
+type AgentPoolPatchProperties struct {
+	// The number of virtual machines that use this configuration.
+	Count *int64
+
+	// The configuration of the agent pool.
+	UpgradeSettings *AgentPoolUpgradeSettings
+}
+
+// AgentPoolProperties represents the properties of the Kubernetes cluster agent pool.
+type AgentPoolProperties struct {
+	// REQUIRED; The number of virtual machines that use this configuration.
+	Count *int64
+
+	// REQUIRED; The selection of how this agent pool is utilized, either as a system pool or a user pool. System pools run the
+	// features and critical services for the Kubernetes Cluster, while user pools are dedicated
+	// to user workloads. Every Kubernetes cluster must contain at least one system node pool with at least one node.
+	Mode *AgentPoolMode
+
+	// REQUIRED; The name of the VM SKU that determines the size of resources allocated for node VMs.
+	VMSKUName *string
+
+	// The administrator credentials to be used for the nodes in this agent pool.
+	AdministratorConfiguration *AdministratorConfiguration
+
+	// The configurations that will be applied to each agent in this agent pool.
+	AgentOptions *AgentOptions
+
+	// The configuration of networks being attached to the agent pool for use by the workloads that run on this Kubernetes cluster.
+	AttachedNetworkConfiguration *AttachedNetworkConfiguration
+
+	// The list of availability zones of the Network Cloud cluster used for the provisioning of nodes in this agent pool. If not
+	// specified, all availability zones will be used.
+	AvailabilityZones []*string
+
+	// The labels applied to the nodes in this agent pool.
+	Labels []*KubernetesLabel
+
+	// The taints applied to the nodes in this agent pool.
+	Taints []*KubernetesLabel
+
+	// The configuration of the agent pool.
+	UpgradeSettings *AgentPoolUpgradeSettings
+
+	// READ-ONLY; The current status of the agent pool.
+	DetailedStatus *AgentPoolDetailedStatus
+
+	// READ-ONLY; The descriptive message about the current detailed status.
+	DetailedStatusMessage *string
+
+	// READ-ONLY; The Kubernetes version running in this agent pool.
+	KubernetesVersion *string
+
+	// READ-ONLY; The provisioning state of the agent pool.
+	ProvisioningState *AgentPoolProvisioningState
+}
+
+// AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
+type AgentPoolUpgradeSettings struct {
+	// The maximum number or percentage of nodes that are surged during upgrade. This can either be set to an integer (e.g. '5')
+	// or a percentage (e.g. '50%'). If a percentage is specified, it is the
+	// percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If
+	// not specified, the default is 1.
+	MaxSurge *string
+}
+
+// AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
+// method.
+type AgentPoolsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
+type AgentPoolsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
+type AgentPoolsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
+type AgentPoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentPoolsClientListByKubernetesClusterOptions contains the optional parameters for the AgentPoolsClient.NewListByKubernetesClusterPager
+// method.
+type AgentPoolsClientListByKubernetesClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttachedNetworkConfiguration represents the set of workload networks to attach to a resource.
+type AttachedNetworkConfiguration struct {
+	// The list of Layer 2 Networks and related configuration for attachment.
+	L2Networks []*L2NetworkAttachmentConfiguration
+
+	// The list of Layer 3 Networks and related configuration for attachment.
+	L3Networks []*L3NetworkAttachmentConfiguration
+
+	// The list of Trunked Networks and related configuration for attachment.
+	TrunkedNetworks []*TrunkedNetworkAttachmentConfiguration
+}
+
+// AvailableUpgrade represents an upgrade available for a Kubernetes cluster.
+type AvailableUpgrade struct {
+	// READ-ONLY; The version lifecycle indicator.
+	AvailabilityLifecycle *AvailabilityLifecycle
+
+	// READ-ONLY; The version available for upgrading.
+	Version *string
 }
 
 // BareMetalMachine represents the physical machine in the rack.
@@ -34,7 +223,7 @@ type BareMetalMachine struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -104,7 +293,7 @@ type BareMetalMachineKeySet struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -211,9 +400,9 @@ type BareMetalMachineKeySetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BareMetalMachineKeySetsClientListByResourceGroupOptions contains the optional parameters for the BareMetalMachineKeySetsClient.NewListByResourceGroupPager
+// BareMetalMachineKeySetsClientListByClusterOptions contains the optional parameters for the BareMetalMachineKeySetsClient.NewListByClusterPager
 // method.
-type BareMetalMachineKeySetsClientListByResourceGroupOptions struct {
+type BareMetalMachineKeySetsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -281,6 +470,9 @@ type BareMetalMachineProperties struct {
 	// REQUIRED; The serial number of the bare metal machine.
 	SerialNumber *string
 
+	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+	AssociatedResourceIDs []*string
+
 	// READ-ONLY; The resource ID of the cluster this bare metal machine is associated with.
 	ClusterID *string
 
@@ -299,7 +491,8 @@ type BareMetalMachineProperties struct {
 	// READ-ONLY; The details of the latest hardware validation performed for this bare metal machine.
 	HardwareValidationStatus *HardwareValidationStatus
 
-	// READ-ONLY; The list of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of the resource IDs for the HybridAksClusters
+	// that have nodes hosted on this bare metal machine.
 	HybridAksClustersAssociatedIDs []*string
 
 	// READ-ONLY; The name of this machine represented by the host object in the Cluster's Kubernetes control plane.
@@ -329,7 +522,8 @@ type BareMetalMachineProperties struct {
 	// READ-ONLY; The discovered value of the machine's service tag.
 	ServiceTag *string
 
-	// READ-ONLY; The list of the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of the resource IDs for the VirtualMachines that
+	// are hosted on this bare metal machine.
 	VirtualMachinesAssociatedIDs []*string
 }
 
@@ -516,18 +710,37 @@ type BareMetalMachinesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BgpPeer represents the IP address and ASN(Autonomous System Number) to peer with Hybrid AKS cluster.
-type BgpPeer struct {
-	// REQUIRED; The ASN (Autonomous System Number) of the BGP peer.
-	AsNumber *int64
+// BgpAdvertisement represents the association of IP address pools to the communities and peers.
+type BgpAdvertisement struct {
+	// REQUIRED; The names of the IP address pools associated with this announcement.
+	IPAddressPools []*string
 
-	// REQUIRED; The IPv4 or IPv6 address to peer with the associated CNI Network. The IP version type will drive a peering with
-	// the same version type from the Default CNI Network. For example, IPv4 to IPv4 or IPv6 to
-	// IPv6.
-	PeerIP *string
+	// The indicator of if this advertisement is also made to the network fabric associated with the Network Cloud Cluster. This
+	// field is ignored if fabricPeeringEnabled is set to False.
+	AdvertiseToFabric *AdvertiseToFabric
 
-	// The password for this peering neighbor. It defaults to no password if not specified.
-	Password *string
+	// The names of the BGP communities to be associated with the announcement, utilizing a BGP community string in 1234:1234
+	// format.
+	Communities []*string
+
+	// The names of the BGP peers to limit this advertisement to. If no values are specified, all BGP peers will receive this
+	// advertisement.
+	Peers []*string
+}
+
+// BgpServiceLoadBalancerConfiguration represents the configuration of a BGP service load balancer.
+type BgpServiceLoadBalancerConfiguration struct {
+	// The association of IP address pools to the communities and peers, allowing for announcement of IPs.
+	BgpAdvertisements []*BgpAdvertisement
+
+	// The list of additional BgpPeer entities that the Kubernetes cluster will peer with. All peering must be explicitly defined.
+	BgpPeers []*ServiceLoadBalancerBgpPeer
+
+	// The indicator to specify if the load balancer peers with the network fabric.
+	FabricPeeringEnabled *FabricPeeringEnabled
+
+	// The list of pools of IP addresses that can be allocated to Load Balancer services.
+	IPAddressPools []*IPAddressPool
 }
 
 // BmcKeySet represents the baseboard management controller key set.
@@ -544,7 +757,7 @@ type BmcKeySet struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -639,9 +852,8 @@ type BmcKeySetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BmcKeySetsClientListByResourceGroupOptions contains the optional parameters for the BmcKeySetsClient.NewListByResourceGroupPager
-// method.
-type BmcKeySetsClientListByResourceGroupOptions struct {
+// BmcKeySetsClientListByClusterOptions contains the optional parameters for the BmcKeySetsClient.NewListByClusterPager method.
+type BmcKeySetsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -662,7 +874,7 @@ type CloudServicesNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -711,6 +923,9 @@ type CloudServicesNetworkProperties struct {
 	// The indicator of whether the platform default endpoints are allowed for the egress traffic.
 	EnableDefaultEgressEndpoints *CloudServicesNetworkEnableDefaultEgressEndpoints
 
+	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+	AssociatedResourceIDs []*string
+
 	// READ-ONLY; The resource ID of the Network Cloud cluster this cloud services network is associated with.
 	ClusterID *string
 
@@ -723,7 +938,8 @@ type CloudServicesNetworkProperties struct {
 	// READ-ONLY; The full list of additional and default egress endpoints that are currently enabled.
 	EnabledEgressEndpoints []*EgressEndpoint
 
-	// READ-ONLY; The list of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource IDs that are associated
+	// with this cloud services network.
 	HybridAksClustersAssociatedIDs []*string
 
 	// READ-ONLY; The name of the interface that will be present in the virtual machine to represent this network.
@@ -732,8 +948,8 @@ type CloudServicesNetworkProperties struct {
 	// READ-ONLY; The provisioning state of the cloud services network.
 	ProvisioningState *CloudServicesNetworkProvisioningState
 
-	// READ-ONLY; The list of virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using
-	// this cloud services network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
+	// Hybrid AKS virtual machines, that are currently using this cloud services network.
 	VirtualMachinesAssociatedIDs []*string
 }
 
@@ -789,7 +1005,7 @@ type Cluster struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -885,7 +1101,7 @@ type ClusterManager struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1001,7 +1217,7 @@ type ClusterMetricsConfiguration struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1096,9 +1312,6 @@ type ClusterProperties struct {
 	// rack in a multi-rack cluster.
 	AggregatorOrSingleRackDefinition *RackDefinition
 
-	// REQUIRED; The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
-	AnalyticsWorkspaceID *string
-
 	// REQUIRED; The type of rack configuration for the cluster.
 	ClusterType *ClusterType
 
@@ -1107,6 +1320,9 @@ type ClusterProperties struct {
 
 	// REQUIRED; The resource ID of the Network Fabric associated with the cluster.
 	NetworkFabricID *string
+
+	// The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
+	AnalyticsWorkspaceID *string
 
 	// The customer-provided location information to identify where the cluster resides.
 	ClusterLocation *string
@@ -1150,8 +1366,9 @@ type ClusterProperties struct {
 	// READ-ONLY; The descriptive message about the detailed status.
 	DetailedStatusMessage *string
 
-	// READ-ONLY; The extended location (custom location) that represents the Hybrid AKS control plane location. This extended
-	// location is used when creating provisioned clusters (Hybrid AKS clusters).
+	// READ-ONLY; Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom location)
+	// that represents the Hybrid AKS control plane location. This extended location is used
+	// when creating provisioned clusters (Hybrid AKS clusters).
 	HybridAksExtendedLocation *ExtendedLocation
 
 	// READ-ONLY; The count of Manual Action Taken (MAT) events that have not been validated.
@@ -1222,36 +1439,6 @@ type ClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CniBgpConfiguration represents the Calico BGP configuration.
-type CniBgpConfiguration struct {
-	// The list of BgpPeer entities that the Hybrid AKS cluster will peer with in addition to peering that occurs automatically
-	// with the switch fabric.
-	BgpPeers []*BgpPeer
-
-	// The list of prefix community advertisement properties. Each prefix community specifies a prefix, and the communities that
-	// should be associated with that prefix when it is announced.
-	CommunityAdvertisements []*CommunityAdvertisement
-
-	// The password of the Calico node mesh. It defaults to a randomly-generated string when not provided.
-	NodeMeshPassword *string
-
-	// The subnet blocks in CIDR format for Kubernetes service external IPs to be advertised over BGP.
-	ServiceExternalPrefixes []*string
-
-	// The subnet blocks in CIDR format for Kubernetes load balancers. Load balancer IPs will only be advertised if they are within
-	// one of these blocks.
-	ServiceLoadBalancerPrefixes []*string
-}
-
-// CommunityAdvertisement represents the prefix and the communities that should be associated with that prefix.
-type CommunityAdvertisement struct {
-	// REQUIRED; The list of community strings to announce with this prefix.
-	Communities []*string
-
-	// REQUIRED; The subnet in CIDR format for which properties should be advertised.
-	SubnetPrefix *string
-}
-
 // Console represents the console of an on-premises Network Cloud virtual machine.
 type Console struct {
 	// REQUIRED; The extended location of the cluster manager associated with the cluster this virtual machine is created on.
@@ -1266,7 +1453,7 @@ type Console struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1361,136 +1548,34 @@ type ConsolesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConsolesClientListByResourceGroupOptions contains the optional parameters for the ConsolesClient.NewListByResourceGroupPager
+// ConsolesClientListByVirtualMachineOptions contains the optional parameters for the ConsolesClient.NewListByVirtualMachinePager
 // method.
-type ConsolesClientListByResourceGroupOptions struct {
+type ConsolesClientListByVirtualMachineOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefaultCniNetwork represents the user-managed portions of the default CNI (pod) network that is created in support of a
-// Hybrid AKS Cluster.
-type DefaultCniNetwork struct {
-	// REQUIRED; The extended location of the cluster associated with the resource.
-	ExtendedLocation *ExtendedLocation
+// ControlPlaneNodeConfiguration represents the selection of virtual machines and size of the control plane for a Kubernetes
+// cluster.
+type ControlPlaneNodeConfiguration struct {
+	// REQUIRED; The number of virtual machines that use this configuration.
+	Count *int64
 
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+	// REQUIRED; The name of the VM SKU supplied during creation.
+	VMSKUName *string
 
-	// REQUIRED; The list of the resource properties.
-	Properties *DefaultCniNetworkProperties
+	// The administrator credentials to be used for the nodes in the control plane.
+	AdministratorConfiguration *AdministratorConfiguration
 
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// The list of availability zones of the Network Cloud cluster to be used for the provisioning of nodes in the control plane.
+	// If not specified, all availability zones will be used.
+	AvailabilityZones []*string
 }
 
-// DefaultCniNetworkList represents a list of default CNI networks.
-type DefaultCniNetworkList struct {
-	// The link used to get the next page of operations.
-	NextLink *string
-
-	// The list of default CNI networks.
-	Value []*DefaultCniNetwork
-}
-
-// DefaultCniNetworkPatchParameters represents the body of the request to patch the Default CNI network.
-type DefaultCniNetworkPatchParameters struct {
-	// The Azure resource tags that will replace the existing ones.
-	Tags map[string]*string
-}
-
-// DefaultCniNetworkProperties represents properties of the default CNI network.
-type DefaultCniNetworkProperties struct {
-	// REQUIRED; The resource ID of the Network Fabric l3IsolationDomain.
-	L3IsolationDomainID *string
-
-	// REQUIRED; The VLAN from the l3IsolationDomain that is used for this network.
-	Vlan *int64
-
-	// The Calico BGP configuration.
-	CniBgpConfiguration *CniBgpConfiguration
-
-	// The type of the IP address allocation.
-	IPAllocationType *IPAllocationType
-
-	// The IPV4 prefix (CIDR) assigned to this default CNI network. It is required when the IP allocation type is IPV4 or DualStack.
-	IPv4ConnectedPrefix *string
-
-	// The IPV6 prefix (CIDR) assigned to this default CNI network. It is required when the IP allocation type is IPV6 or DualStack.
-	IPv6ConnectedPrefix *string
-
-	// READ-ONLY; The resource ID of the Network Cloud cluster this default CNI network is associated with.
-	ClusterID *string
-
-	// READ-ONLY; The autonomous system number that the fabric expects to peer with, derived from the associated L3 isolation
-	// domain.
-	CniAsNumber *int64
-
-	// READ-ONLY; The more detailed status of the default CNI network.
-	DetailedStatus *DefaultCniNetworkDetailedStatus
-
-	// READ-ONLY; The descriptive message about the current detailed status.
-	DetailedStatusMessage *string
-
-	// READ-ONLY; The L3 isolation fabric BGP peering connectivity information necessary for BGP peering the Hybrid AKS Cluster
-	// with the switch fabric.
-	FabricBgpPeers []*BgpPeer
-
-	// READ-ONLY; The list of Hybrid AKS cluster resource ID(s) that are associated with this default CNI network.
-	HybridAksClustersAssociatedIDs []*string
-
-	// READ-ONLY; The name of the interface that will be present in the virtual machine to represent this network.
-	InterfaceName *string
-
-	// READ-ONLY; The provisioning state of the default CNI network.
-	ProvisioningState *DefaultCniNetworkProvisioningState
-}
-
-// DefaultCniNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the DefaultCniNetworksClient.BeginCreateOrUpdate
-// method.
-type DefaultCniNetworksClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// DefaultCniNetworksClientBeginDeleteOptions contains the optional parameters for the DefaultCniNetworksClient.BeginDelete
-// method.
-type DefaultCniNetworksClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// DefaultCniNetworksClientGetOptions contains the optional parameters for the DefaultCniNetworksClient.Get method.
-type DefaultCniNetworksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DefaultCniNetworksClientListByResourceGroupOptions contains the optional parameters for the DefaultCniNetworksClient.NewListByResourceGroupPager
-// method.
-type DefaultCniNetworksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DefaultCniNetworksClientListBySubscriptionOptions contains the optional parameters for the DefaultCniNetworksClient.NewListBySubscriptionPager
-// method.
-type DefaultCniNetworksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DefaultCniNetworksClientUpdateOptions contains the optional parameters for the DefaultCniNetworksClient.Update method.
-type DefaultCniNetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+// ControlPlaneNodePatchConfiguration represents the properties of the control plane that can be patched for this Kubernetes
+// cluster.
+type ControlPlaneNodePatchConfiguration struct {
+	// The number of virtual machines that use this configuration.
+	Count *int64
 }
 
 // EgressEndpoint represents the connection from a cloud services network to the specified endpoint for a common purpose.
@@ -1520,6 +1605,21 @@ type ExtendedLocation struct {
 
 	// REQUIRED; The extended location type, for example, CustomLocation.
 	Type *string
+}
+
+// FeatureStatus contains information regarding a Kubernetes cluster feature.
+type FeatureStatus struct {
+	// READ-ONLY; The status representing the state of this feature.
+	DetailedStatus *FeatureDetailedStatus
+
+	// READ-ONLY; The descriptive message about the current detailed status.
+	DetailedStatusMessage *string
+
+	// READ-ONLY; The name of the feature.
+	Name *string
+
+	// READ-ONLY; The version of the feature.
+	Version *string
 }
 
 // HardwareInventory represents the hardware configuration of this machine as exposed to the customer, including information
@@ -1562,141 +1662,21 @@ type HardwareValidationStatus struct {
 	Result *BareMetalMachineHardwareValidationResult
 }
 
-// HybridAksCluster - The details are specific to the Network Cloud use of the Hybrid AKS cluster.
-type HybridAksCluster struct {
-	// REQUIRED; The extended location of the cluster associated with the resource.
-	ExtendedLocation *ExtendedLocation
+// IPAddressPool - IpAddressPool represents a pool of IP addresses that can be allocated to a service.
+type IPAddressPool struct {
+	// REQUIRED; The list of IP address ranges. Each range can be a either a subnet in CIDR format or an explicit start-end range
+	// of IP addresses.
+	Addresses []*string
 
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; The list of the resource properties.
-	Properties *HybridAksClusterProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
+	// REQUIRED; The name used to identify this IP address pool for association with a BGP advertisement.
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	// The indicator to determine if automatic allocation from the pool should occur.
+	AutoAssign *BfdEnabled
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// HybridAksClusterList represents a list of Hybrid AKS clusters.
-type HybridAksClusterList struct {
-	// The link used to get the next page of operations.
-	NextLink *string
-
-	// The list of additional details related to Hybrid AKS clusters.
-	Value []*HybridAksCluster
-}
-
-// HybridAksClusterPatchParameters represents the body of the request to patch the Hybrid AKS cluster.
-type HybridAksClusterPatchParameters struct {
-	// The Azure resource tags that will replace the existing ones.
-	Tags map[string]*string
-}
-
-// HybridAksClusterProperties represents the properties of Hybrid AKS cluster resource.
-type HybridAksClusterProperties struct {
-	// REQUIRED; The list of resource IDs for the workload networks associated with the Hybrid AKS cluster. It can be any of l2Networks,
-	// l3Networks, or trunkedNetworks resources. This field will also contain one
-	// cloudServicesNetwork and one defaultCniNetwork.
-	AssociatedNetworkIDs []*string
-
-	// REQUIRED; The number of control plane node VMs.
-	ControlPlaneCount *int64
-
-	// REQUIRED; The resource ID of the Hybrid AKS cluster that this additional information is for.
-	HybridAksProvisionedClusterID *string
-
-	// REQUIRED; The number of worker node VMs.
-	WorkerCount *int64
-
-	// READ-ONLY; The resource ID of the associated cloud services network.
-	CloudServicesNetworkID *string
-
-	// READ-ONLY; The resource ID of the Network Cloud cluster hosting the Hybrid AKS cluster.
-	ClusterID *string
-
-	// READ-ONLY; The list of node configurations detailing associated VMs that are part of the control plane nodes of this Hybrid
-	// AKS cluster.
-	ControlPlaneNodes []*NodeConfiguration
-
-	// READ-ONLY; The resource ID of the associated default CNI network.
-	DefaultCniNetworkID *string
-
-	// READ-ONLY; The more detailed status of this Hybrid AKS cluster.
-	DetailedStatus *HybridAksClusterDetailedStatus
-
-	// READ-ONLY; The descriptive message about the current detailed status.
-	DetailedStatusMessage *string
-
-	// READ-ONLY; The provisioning state of the Hybrid AKS cluster resource.
-	ProvisioningState *HybridAksClusterProvisioningState
-
-	// READ-ONLY; The resource IDs of volumes that are attached to the Hybrid AKS cluster.
-	Volumes []*string
-
-	// READ-ONLY; The list of node configurations detailing associated VMs that are part of the worker nodes of this Hybrid AKS
-	// cluster.
-	WorkerNodes []*NodeConfiguration
-}
-
-// HybridAksClusterRestartNodeParameters represents the body of the request to restart the node of a Hybrid AKS cluster.
-type HybridAksClusterRestartNodeParameters struct {
-	// REQUIRED; The name of the node to restart.
-	NodeName *string
-}
-
-// HybridAksClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the HybridAksClustersClient.BeginCreateOrUpdate
-// method.
-type HybridAksClustersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// HybridAksClustersClientBeginDeleteOptions contains the optional parameters for the HybridAksClustersClient.BeginDelete
-// method.
-type HybridAksClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// HybridAksClustersClientBeginRestartNodeOptions contains the optional parameters for the HybridAksClustersClient.BeginRestartNode
-// method.
-type HybridAksClustersClientBeginRestartNodeOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// HybridAksClustersClientGetOptions contains the optional parameters for the HybridAksClustersClient.Get method.
-type HybridAksClustersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridAksClustersClientListByResourceGroupOptions contains the optional parameters for the HybridAksClustersClient.NewListByResourceGroupPager
-// method.
-type HybridAksClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridAksClustersClientListBySubscriptionOptions contains the optional parameters for the HybridAksClustersClient.NewListBySubscriptionPager
-// method.
-type HybridAksClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridAksClustersClientUpdateOptions contains the optional parameters for the HybridAksClustersClient.Update method.
-type HybridAksClustersClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The indicator to prevent the use of IP addresses ending with .0 and .255 for this pool. Enabling this option will only
+	// use IP addresses between .1 and .254 inclusive.
+	OnlyUseHostIPs *BfdEnabled
 }
 
 // ImageRepositoryCredentials represents the credentials used to login to the image repository.
@@ -1711,12 +1691,53 @@ type ImageRepositoryCredentials struct {
 	Username *string
 }
 
+// InitialAgentPoolConfiguration specifies the configuration of a pool of virtual machines that are initially defined with
+// a Kubernetes cluster.
+type InitialAgentPoolConfiguration struct {
+	// REQUIRED; The number of virtual machines that use this configuration.
+	Count *int64
+
+	// REQUIRED; The selection of how this agent pool is utilized, either as a system pool or a user pool. System pools run the
+	// features and critical services for the Kubernetes Cluster, while user pools are dedicated
+	// to user workloads. Every Kubernetes cluster must contain at least one system node pool with at least one node.
+	Mode *AgentPoolMode
+
+	// REQUIRED; The name that will be used for the agent pool resource representing this agent pool.
+	Name *string
+
+	// REQUIRED; The name of the VM SKU that determines the size of resources allocated for node VMs.
+	VMSKUName *string
+
+	// The administrator credentials to be used for the nodes in this agent pool.
+	AdministratorConfiguration *AdministratorConfiguration
+
+	// The configurations that will be applied to each agent in this agent pool.
+	AgentOptions *AgentOptions
+
+	// The configuration of networks being attached to the agent pool for use by the workloads that run on this Kubernetes cluster.
+	AttachedNetworkConfiguration *AttachedNetworkConfiguration
+
+	// The list of availability zones of the Network Cloud cluster used for the provisioning of nodes in this agent pool. If not
+	// specified, all availability zones will be used.
+	AvailabilityZones []*string
+
+	// The labels applied to the nodes in this agent pool.
+	Labels []*KubernetesLabel
+
+	// The taints applied to the nodes in this agent pool.
+	Taints []*KubernetesLabel
+
+	// The configuration of the agent pool.
+	UpgradeSettings *AgentPoolUpgradeSettings
+}
+
 // KeySetUser represents the properties of the user in the key set.
 type KeySetUser struct {
-	// REQUIRED; The Azure Active Directory user name (email name).
+	// REQUIRED; The user name that will be used for access.
 	AzureUserName *string
 
-	// REQUIRED; The SSH public key for this user.
+	// REQUIRED; The SSH public key that will be provisioned for user access. The user is expected to have the corresponding SSH
+	// private key for logging in.
 	SSHPublicKey *SSHPublicKey
 
 	// The free-form description for this user.
@@ -1725,7 +1746,7 @@ type KeySetUser struct {
 
 // KeySetUserStatus represents the status of the key set user.
 type KeySetUserStatus struct {
-	// READ-ONLY; The Azure Active Directory user name (email name).
+	// READ-ONLY; The user name that will be used for access.
 	AzureUserName *string
 
 	// READ-ONLY; The indicator of whether the user is currently deployed for access.
@@ -1733,6 +1754,239 @@ type KeySetUserStatus struct {
 
 	// READ-ONLY; The additional information describing the current status of this user, if any available.
 	StatusMessage *string
+}
+
+// KubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
+type KubernetesCluster struct {
+	// REQUIRED; The extended location of the cluster associated with the resource.
+	ExtendedLocation *ExtendedLocation
+
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The list of the resource properties.
+	Properties *KubernetesClusterProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// KubernetesClusterList represents a list of Kubernetes clusters.
+type KubernetesClusterList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of additional details related to Kubernetes clusters.
+	Value []*KubernetesCluster
+}
+
+// KubernetesClusterNode represents the details of a node in a Kubernetes cluster.
+type KubernetesClusterNode struct {
+	// READ-ONLY; The resource ID of the agent pool that this node belongs to. This value is not represented on control plane
+	// nodes.
+	AgentPoolID *string
+
+	// READ-ONLY; The availability zone this node is running within.
+	AvailabilityZone *string
+
+	// READ-ONLY; The resource ID of the bare metal machine that hosts this node.
+	BareMetalMachineID *string
+
+	// READ-ONLY; The number of CPU cores configured for this node, derived from the VM SKU specified.
+	CPUCores *int64
+
+	// READ-ONLY; The detailed state of this node.
+	DetailedStatus *KubernetesClusterNodeDetailedStatus
+
+	// READ-ONLY; The descriptive message about the current detailed status.
+	DetailedStatusMessage *string
+
+	// READ-ONLY; The size of the disk configured for this node.
+	DiskSizeGB *int64
+
+	// READ-ONLY; The machine image used to deploy this node.
+	Image *string
+
+	// READ-ONLY; The currently running version of Kubernetes and bundled features running on this node.
+	KubernetesVersion *string
+
+	// READ-ONLY; The list of labels on this node that have been assigned to the agent pool containing this node.
+	Labels []*KubernetesLabel
+
+	// READ-ONLY; The amount of memory configured for this node, derived from the vm SKU specified.
+	MemorySizeGB *int64
+
+	// READ-ONLY; The mode of the agent pool containing this node. Not applicable for control plane nodes.
+	Mode *AgentPoolMode
+
+	// READ-ONLY; The name of this node, as realized in the Kubernetes cluster.
+	Name *string
+
+	// READ-ONLY; The NetworkAttachments made to this node.
+	NetworkAttachments []*NetworkAttachment
+
+	// READ-ONLY; The power state of this node.
+	PowerState *KubernetesNodePowerState
+
+	// READ-ONLY; The role of this node in the cluster.
+	Role *KubernetesNodeRole
+
+	// READ-ONLY; The list of taints that have been assigned to the agent pool containing this node.
+	Taints []*KubernetesLabel
+
+	// READ-ONLY; The VM SKU name that was used to create this cluster node.
+	VMSKUName *string
+}
+
+// KubernetesClusterPatchParameters represents the body of the request to patch the Hybrid AKS cluster.
+type KubernetesClusterPatchParameters struct {
+	// The list of the resource properties.
+	Properties *KubernetesClusterPatchProperties
+
+	// The Azure resource tags that will replace the existing ones.
+	Tags map[string]*string
+}
+
+// KubernetesClusterPatchProperties represents the properties of the Kubernetes cluster that can be patched.
+type KubernetesClusterPatchProperties struct {
+	// The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
+	ControlPlaneNodeConfiguration *ControlPlaneNodePatchConfiguration
+
+	// The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used will be resolved
+	// into this field after creation or update.
+	KubernetesVersion *string
+}
+
+// KubernetesClusterProperties represents the properties of Kubernetes cluster resource.
+type KubernetesClusterProperties struct {
+	// REQUIRED; The defining characteristics of the control plane for this Kubernetes Cluster.
+	ControlPlaneNodeConfiguration *ControlPlaneNodeConfiguration
+
+	// REQUIRED; The agent pools that are created with this Kubernetes cluster for running critical system services and workloads.
+	// This data in this field is only used during creation, and the field will be empty
+	// following the creation of the Kubernetes Cluster. After creation, the management of agent pools is done using the agentPools
+	// sub-resource.
+	InitialAgentPoolConfigurations []*InitialAgentPoolConfiguration
+
+	// REQUIRED; The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used
+	// will be resolved into this field after creation or update.
+	KubernetesVersion *string
+
+	// REQUIRED; The configuration of the Kubernetes cluster networking, including the attachment of networks that span the cluster.
+	NetworkConfiguration *NetworkConfiguration
+
+	// The Azure Active Directory Integration properties.
+	AADConfiguration *AADConfiguration
+
+	// The administrative credentials that will be applied to the control plane and agent pool nodes that do not specify their
+	// own values.
+	AdministratorConfiguration *AdministratorConfiguration
+
+	// The configuration of the managed resource group associated with the resource.
+	ManagedResourceGroupConfiguration *ManagedResourceGroupConfiguration
+
+	// READ-ONLY; The full list of network resource IDs that are attached to this cluster, including those attached only to specific
+	// agent pools.
+	AttachedNetworkIDs []*string
+
+	// READ-ONLY; The list of versions that this Kubernetes cluster can be upgraded to.
+	AvailableUpgrades []*AvailableUpgrade
+
+	// READ-ONLY; The resource ID of the Network Cloud cluster.
+	ClusterID *string
+
+	// READ-ONLY; The resource ID of the connected cluster set up when this Kubernetes cluster is created.
+	ConnectedClusterID *string
+
+	// READ-ONLY; The current running version of Kubernetes on the control plane.
+	ControlPlaneKubernetesVersion *string
+
+	// READ-ONLY; The current status of the Kubernetes cluster.
+	DetailedStatus *KubernetesClusterDetailedStatus
+
+	// READ-ONLY; The descriptive message about the current detailed status.
+	DetailedStatusMessage *string
+
+	// READ-ONLY; The current feature settings.
+	FeatureStatuses []*FeatureStatus
+
+	// READ-ONLY; The details of the nodes in this cluster.
+	Nodes []*KubernetesClusterNode
+
+	// READ-ONLY; The provisioning state of the Kubernetes cluster resource.
+	ProvisioningState *KubernetesClusterProvisioningState
+}
+
+// KubernetesClusterRestartNodeParameters represents the body of the request to restart the node of a Kubernetes cluster.
+type KubernetesClusterRestartNodeParameters struct {
+	// REQUIRED; The name of the node to restart.
+	NodeName *string
+}
+
+// KubernetesClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginCreateOrUpdate
+// method.
+type KubernetesClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClustersClientBeginDeleteOptions contains the optional parameters for the KubernetesClustersClient.BeginDelete
+// method.
+type KubernetesClustersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClustersClientBeginRestartNodeOptions contains the optional parameters for the KubernetesClustersClient.BeginRestartNode
+// method.
+type KubernetesClustersClientBeginRestartNodeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
+// method.
+type KubernetesClustersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClustersClientGetOptions contains the optional parameters for the KubernetesClustersClient.Get method.
+type KubernetesClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesClustersClientListByResourceGroupOptions contains the optional parameters for the KubernetesClustersClient.NewListByResourceGroupPager
+// method.
+type KubernetesClustersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesClustersClientListBySubscriptionOptions contains the optional parameters for the KubernetesClustersClient.NewListBySubscriptionPager
+// method.
+type KubernetesClustersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesLabel represents a single entry for a Kubernetes label or taint such as those used on a node or pod.
+type KubernetesLabel struct {
+	// REQUIRED; The name of the label or taint.
+	Key *string
+
+	// REQUIRED; The value of the label or taint.
+	Value *string
 }
 
 // L2Network represents a network that utilizes a single isolation domain set up for layer-2 resources.
@@ -1749,7 +2003,7 @@ type L2Network struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1760,6 +2014,15 @@ type L2Network struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// L2NetworkAttachmentConfiguration represents the configuration of the attachment of a Layer 2 network.
+type L2NetworkAttachmentConfiguration struct {
+	// REQUIRED; The resource ID of the network that is being configured for attachment.
+	NetworkID *string
+
+	// The indicator of how this network will be utilized by the Kubernetes cluster.
+	PluginType *KubernetesPluginType
 }
 
 // L2NetworkList represents a list of L2 networks.
@@ -1782,12 +2045,16 @@ type L2NetworkProperties struct {
 	// REQUIRED; The resource ID of the Network Fabric l2IsolationDomain.
 	L2IsolationDomainID *string
 
-	// The network plugin type for Hybrid AKS.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The network
+	// plugin type for Hybrid AKS.
 	HybridAksPluginType *HybridAksPluginType
 
 	// The default interface name for this L2 network in the virtual machine. This name can be overridden by the name supplied
 	// in the network attachment configuration of that virtual machine.
 	InterfaceName *string
+
+	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+	AssociatedResourceIDs []*string
 
 	// READ-ONLY; The resource ID of the Network Cloud cluster this L2 network is associated with.
 	ClusterID *string
@@ -1798,14 +2065,15 @@ type L2NetworkProperties struct {
 	// READ-ONLY; The descriptive message about the current detailed status.
 	DetailedStatusMessage *string
 
-	// READ-ONLY; The list of Hybrid AKS cluster resource ID(s) that are associated with this L2 network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource ID(s) that are
+	// associated with this L2 network.
 	HybridAksClustersAssociatedIDs []*string
 
 	// READ-ONLY; The provisioning state of the L2 network.
 	ProvisioningState *L2NetworkProvisioningState
 
-	// READ-ONLY; The list of virtual machine resource ID(s), excluding any Hybrid AKS virtual machines, that are currently using
-	// this L2 network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource ID(s), excluding
+	// any Hybrid AKS virtual machines, that are currently using this L2 network.
 	VirtualMachinesAssociatedIDs []*string
 }
 
@@ -1858,7 +2126,7 @@ type L3Network struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1869,6 +2137,18 @@ type L3Network struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// L3NetworkAttachmentConfiguration represents the configuration of the attachment of a Layer 3 network.
+type L3NetworkAttachmentConfiguration struct {
+	// REQUIRED; The resource ID of the network that is being configured for attachment.
+	NetworkID *string
+
+	// The indication of whether this network will or will not perform IP address management and allocate IP addresses when attached.
+	IpamEnabled *L3NetworkConfigurationIpamEnabled
+
+	// The indicator of how this network will be utilized by the Kubernetes cluster.
+	PluginType *KubernetesPluginType
 }
 
 // L3NetworkList represents a list of L3 networks.
@@ -1894,11 +2174,13 @@ type L3NetworkProperties struct {
 	// REQUIRED; The VLAN from the l3IsolationDomain that is used for this network.
 	Vlan *int64
 
-	// The indicator of whether or not to disable IPAM allocation on the network attachment definition injected into the Hybrid
-	// AKS Cluster.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The indicator
+	// of whether or not to disable IPAM allocation on the network attachment
+	// definition injected into the Hybrid AKS Cluster.
 	HybridAksIpamEnabled *HybridAksIpamEnabled
 
-	// The network plugin type for Hybrid AKS.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The network
+	// plugin type for Hybrid AKS.
 	HybridAksPluginType *HybridAksPluginType
 
 	// The type of the IP address allocation, defaulted to "DualStack".
@@ -1914,6 +2196,9 @@ type L3NetworkProperties struct {
 	// in the network attachment configuration of that virtual machine.
 	InterfaceName *string
 
+	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+	AssociatedResourceIDs []*string
+
 	// READ-ONLY; The resource ID of the Network Cloud cluster this L3 network is associated with.
 	ClusterID *string
 
@@ -1923,14 +2208,15 @@ type L3NetworkProperties struct {
 	// READ-ONLY; The descriptive message about the current detailed status.
 	DetailedStatusMessage *string
 
-	// READ-ONLY; The list of Hybrid AKS cluster resource IDs that are associated with this L3 network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource IDs that are associated
+	// with this L3 network.
 	HybridAksClustersAssociatedIDs []*string
 
 	// READ-ONLY; The provisioning state of the L3 network.
 	ProvisioningState *L3NetworkProvisioningState
 
-	// READ-ONLY; The list of virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using
-	// this L3 network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
+	// Hybrid AKS virtual machines, that are currently using this L3 network.
 	VirtualMachinesAssociatedIDs []*string
 }
 
@@ -2077,9 +2363,9 @@ type MetricsConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetricsConfigurationsClientListByResourceGroupOptions contains the optional parameters for the MetricsConfigurationsClient.NewListByResourceGroupPager
+// MetricsConfigurationsClientListByClusterOptions contains the optional parameters for the MetricsConfigurationsClient.NewListByClusterPager
 // method.
-type MetricsConfigurationsClientListByResourceGroupOptions struct {
+type MetricsConfigurationsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2121,6 +2407,34 @@ type NetworkAttachment struct {
 	MacAddress *string
 }
 
+// NetworkConfiguration specifies the Kubernetes cluster network related configuration.
+type NetworkConfiguration struct {
+	// REQUIRED; The resource ID of the associated Cloud Services network.
+	CloudServicesNetworkID *string
+
+	// REQUIRED; The resource ID of the Layer 3 network that is used for creation of the Container Networking Interface network.
+	CniNetworkID *string
+
+	// The configuration of networks being attached to the cluster for use by the workloads that run on this Kubernetes cluster.
+	AttachedNetworkConfiguration *AttachedNetworkConfiguration
+
+	// The configuration of the BGP service load balancer for this Kubernetes cluster.
+	BgpServiceLoadBalancerConfiguration *BgpServiceLoadBalancerConfiguration
+
+	// The IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
+	// in service CIDR.
+	DNSServiceIP *string
+
+	// The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking. Two CIDRs,
+	// one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
+	PodCidrs []*string
+
+	// The CIDR notation IP ranges from which to assign service IPs. One IPv4 CIDR is expected for single-stack networking. Two
+	// CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+	// networking.
+	ServiceCidrs []*string
+}
+
 // NetworkInterface represents properties of the network interface.
 type NetworkInterface struct {
 	// READ-ONLY; The partial address of Peripheral Component Interconnect (PCI).
@@ -2155,55 +2469,6 @@ type Nic struct {
 
 	// READ-ONLY; The name of the NIC/interface.
 	Name *string
-}
-
-// Node denotes the list of node that utilizes configuration.
-type Node struct {
-	// READ-ONLY; The resource ID of the bare metal machine that hosts this node.
-	BareMetalMachineID *string
-
-	// READ-ONLY; The machine image last used to deploy this node.
-	ImageID *string
-
-	// READ-ONLY; The list of network attachments to the virtual machine.
-	NetworkAttachments []*NetworkAttachment
-
-	// READ-ONLY; The name of this node, as realized in the Hybrid AKS cluster.
-	NodeName *string
-
-	// READ-ONLY; The power state (On | Off) of the node.
-	PowerState *HybridAksClusterMachinePowerState
-}
-
-// NodeConfiguration contains configuration for a VM associated with a node.
-type NodeConfiguration struct {
-	// READ-ONLY; The resource ID of the agent pool that contains the nodes in this configuration.
-	AgentPoolID *string
-
-	// READ-ONLY; The name of the agent pool that contains the nodes in this configuration.
-	AgentPoolName *string
-
-	// READ-ONLY; The number of CPU cores in the virtual machine.
-	CPUCores *int64
-
-	// READ-ONLY; The root disk size of the virtual machine in GB.
-	DiskSizeGB *int64
-
-	// READ-ONLY; The memory size of the virtual machine in GB.
-	MemorySizeGB *int64
-
-	// READ-ONLY; Field deprecated, use agentPoolName instead. This field will be removed in a future version but will reflect
-	// the name of the agent pool that contains the nodes in this configuration.
-	NodePoolName *string
-
-	// READ-ONLY; The list of nodes that utilize this configuration.
-	Nodes []*Node
-
-	// READ-ONLY; The number of virtual machines that use this configuration.
-	VMCount *int64
-
-	// READ-ONLY; The name of the VM size supplied during the creation of the cluster.
-	VMSize *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -2286,7 +2551,7 @@ type Rack struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2311,7 +2576,7 @@ type RackDefinition struct {
 	// than a serial number may be provided if desired.
 	RackSerialNumber *string
 
-	// The zone name used for this rack when created.
+	// The zone name used for this rack when created. Availability zones are used for workload placement.
 	AvailabilityZone *string
 
 	// The unordered list of bare metal machine configuration.
@@ -2376,7 +2641,7 @@ type RackSKU struct {
 	// REQUIRED; The list of the resource properties.
 	Properties *RackSKUProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2481,10 +2746,43 @@ type RacksPatchProperties struct {
 	RackSerialNumber *string
 }
 
-// SSHPublicKey - SshPublicKey represents the public key used to authenticate with the virtual machine through SSH.
+// SSHPublicKey - SshPublicKey represents the public key used to authenticate with a resource through SSH.
 type SSHPublicKey struct {
-	// REQUIRED; The public ssh key of the user.
+	// REQUIRED; The SSH public key data.
 	KeyData *string
+}
+
+// ServiceLoadBalancerBgpPeer represents the configuration of the BGP service load balancer for the Kubernetes cluster.
+type ServiceLoadBalancerBgpPeer struct {
+	// REQUIRED; The name used to identify this BGP peer for association with a BGP advertisement.
+	Name *string
+
+	// REQUIRED; The IPv4 or IPv6 address used to connect this BGP session.
+	PeerAddress *string
+
+	// REQUIRED; The autonomous system number expected from the remote end of the BGP session.
+	PeerAsn *int64
+
+	// The indicator of BFD enablement for this BgpPeer.
+	BfdEnabled *BfdEnabled
+
+	// The indicator to enable multi-hop peering support.
+	BgpMultiHop *BgpMultiHop
+
+	// The requested BGP hold time value. This field uses ISO 8601 duration format, for example P1H.
+	HoldTime *string
+
+	// The requested BGP keepalive time value. This field uses ISO 8601 duration format, for example P1H.
+	KeepAliveTime *string
+
+	// The autonomous system number used for the local end of the BGP session.
+	MyAsn *int64
+
+	// The authentication password for routers enforcing TCP MD5 authenticated sessions.
+	Password *string
+
+	// The port used to connect this BGP session.
+	PeerPort *int64
 }
 
 // ServicePrincipalInformation represents the details of the service principal to be used by the cluster during Arc Appliance
@@ -2517,7 +2815,7 @@ type StorageAppliance struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2664,13 +2962,6 @@ type StorageApplianceSKUSlot struct {
 	RackSlot *int64
 }
 
-// StorageApplianceValidateHardwareParameters represents the body of the request to validate the physical hardware of a storage
-// appliance.
-type StorageApplianceValidateHardwareParameters struct {
-	// REQUIRED; The category of hardware validation to perform.
-	ValidationCategory *StorageApplianceHardwareValidationCategory
-}
-
 // StorageAppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginCreateOrUpdate
 // method.
 type StorageAppliancesClientBeginCreateOrUpdateOptions struct {
@@ -2711,13 +3002,6 @@ type StorageAppliancesClientBeginRunReadCommandsOptions struct {
 // StorageAppliancesClientBeginUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginUpdate
 // method.
 type StorageAppliancesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// StorageAppliancesClientBeginValidateHardwareOptions contains the optional parameters for the StorageAppliancesClient.BeginValidateHardware
-// method.
-type StorageAppliancesClientBeginValidateHardwareOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2783,7 +3067,7 @@ type TrunkedNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2794,6 +3078,15 @@ type TrunkedNetwork struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// TrunkedNetworkAttachmentConfiguration represents the configuration of the attachment of a trunked network.
+type TrunkedNetworkAttachmentConfiguration struct {
+	// REQUIRED; The resource ID of the network that is being configured for attachment.
+	NetworkID *string
+
+	// The indicator of how this network will be utilized by the Kubernetes cluster.
+	PluginType *KubernetesPluginType
 }
 
 // TrunkedNetworkList represents a list of trunked networks.
@@ -2820,12 +3113,16 @@ type TrunkedNetworkProperties struct {
 	// REQUIRED; The list of vlans that are selected from the isolation domains for trunking.
 	Vlans []*int64
 
-	// The network plugin type for Hybrid AKS.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The network
+	// plugin type for Hybrid AKS.
 	HybridAksPluginType *HybridAksPluginType
 
 	// The default interface name for this trunked network in the virtual machine. This name can be overridden by the name supplied
 	// in the network attachment configuration of that virtual machine.
 	InterfaceName *string
+
+	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+	AssociatedResourceIDs []*string
 
 	// READ-ONLY; The resource ID of the Network Cloud cluster this trunked network is associated with.
 	ClusterID *string
@@ -2836,14 +3133,15 @@ type TrunkedNetworkProperties struct {
 	// READ-ONLY; The descriptive message about the current detailed status.
 	DetailedStatusMessage *string
 
-	// READ-ONLY; The list of Hybrid AKS cluster resource IDs that are associated with this trunked network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource IDs that are associated
+	// with this trunked network.
 	HybridAksClustersAssociatedIDs []*string
 
 	// READ-ONLY; The provisioning state of the trunked network.
 	ProvisioningState *TrunkedNetworkProvisioningState
 
-	// READ-ONLY; The list of virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using
-	// this trunked network.
+	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
+	// Hybrid AKS virtual machines, that are currently using this trunked network.
 	VirtualMachinesAssociatedIDs []*string
 }
 
@@ -2908,7 +3206,7 @@ type VirtualMachine struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -3020,6 +3318,9 @@ type VirtualMachineProperties struct {
 
 	// Field Deprecated, use virtualizationModel instead. The type of the virtio interface.
 	VirtioInterface *VirtualMachineVirtioInterfaceType
+
+	// READ-ONLY; The cluster availability zone containing this virtual machine.
+	AvailabilityZone *string
 
 	// READ-ONLY; The resource ID of the bare metal machine the virtual machine has landed to.
 	BareMetalMachineID *string
@@ -3141,7 +3442,7 @@ type Volume struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

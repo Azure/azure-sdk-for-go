@@ -33,17 +33,20 @@ type AlertRuleIncidentsServer struct {
 }
 
 // NewAlertRuleIncidentsServerTransport creates a new instance of AlertRuleIncidentsServerTransport with the provided implementation.
-// The returned AlertRuleIncidentsServerTransport instance is connected to an instance of armmonitor.AlertRuleIncidentsClient by way of the
-// undefined.Transporter field.
+// The returned AlertRuleIncidentsServerTransport instance is connected to an instance of armmonitor.AlertRuleIncidentsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAlertRuleIncidentsServerTransport(srv *AlertRuleIncidentsServer) *AlertRuleIncidentsServerTransport {
-	return &AlertRuleIncidentsServerTransport{srv: srv}
+	return &AlertRuleIncidentsServerTransport{
+		srv:                     srv,
+		newListByAlertRulePager: newTracker[azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse]](),
+	}
 }
 
 // AlertRuleIncidentsServerTransport connects instances of armmonitor.AlertRuleIncidentsClient to instances of AlertRuleIncidentsServer.
 // Don't use this type directly, use NewAlertRuleIncidentsServerTransport instead.
 type AlertRuleIncidentsServerTransport struct {
 	srv                     *AlertRuleIncidentsServer
-	newListByAlertRulePager *azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse]
+	newListByAlertRulePager *tracker[azfake.PagerResponder[armmonitor.AlertRuleIncidentsClientListByAlertRuleResponse]]
 }
 
 // Do implements the policy.Transporter interface for AlertRuleIncidentsServerTransport.
@@ -114,7 +117,8 @@ func (a *AlertRuleIncidentsServerTransport) dispatchNewListByAlertRulePager(req 
 	if a.srv.NewListByAlertRulePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByAlertRulePager not implemented")}
 	}
-	if a.newListByAlertRulePager == nil {
+	newListByAlertRulePager := a.newListByAlertRulePager.get(req)
+	if newListByAlertRulePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -130,17 +134,19 @@ func (a *AlertRuleIncidentsServerTransport) dispatchNewListByAlertRulePager(req 
 			return nil, err
 		}
 		resp := a.srv.NewListByAlertRulePager(resourceGroupNameUnescaped, ruleNameUnescaped, nil)
-		a.newListByAlertRulePager = &resp
+		newListByAlertRulePager = &resp
+		a.newListByAlertRulePager.add(req, newListByAlertRulePager)
 	}
-	resp, err := server.PagerResponderNext(a.newListByAlertRulePager, req)
+	resp, err := server.PagerResponderNext(newListByAlertRulePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByAlertRulePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByAlertRulePager) {
-		a.newListByAlertRulePager = nil
+	if !server.PagerResponderMore(newListByAlertRulePager) {
+		a.newListByAlertRulePager.remove(req)
 	}
 	return resp, nil
 }

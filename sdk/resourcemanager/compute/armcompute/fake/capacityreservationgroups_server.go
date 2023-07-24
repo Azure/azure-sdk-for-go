@@ -50,18 +50,22 @@ type CapacityReservationGroupsServer struct {
 }
 
 // NewCapacityReservationGroupsServerTransport creates a new instance of CapacityReservationGroupsServerTransport with the provided implementation.
-// The returned CapacityReservationGroupsServerTransport instance is connected to an instance of armcompute.CapacityReservationGroupsClient by way of the
-// undefined.Transporter field.
+// The returned CapacityReservationGroupsServerTransport instance is connected to an instance of armcompute.CapacityReservationGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCapacityReservationGroupsServerTransport(srv *CapacityReservationGroupsServer) *CapacityReservationGroupsServerTransport {
-	return &CapacityReservationGroupsServerTransport{srv: srv}
+	return &CapacityReservationGroupsServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]](),
+	}
 }
 
 // CapacityReservationGroupsServerTransport connects instances of armcompute.CapacityReservationGroupsClient to instances of CapacityReservationGroupsServer.
 // Don't use this type directly, use NewCapacityReservationGroupsServerTransport instead.
 type CapacityReservationGroupsServerTransport struct {
 	srv                         *CapacityReservationGroupsServer
-	newListByResourceGroupPager *azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationGroupsServerTransport.
@@ -218,7 +222,8 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListByResourceGrou
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if c.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -242,20 +247,22 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListByResourceGrou
 			}
 		}
 		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, options)
-		c.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListByResourceGroupPager, req, func(page *armcompute.CapacityReservationGroupsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.CapacityReservationGroupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListByResourceGroupPager) {
-		c.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -264,7 +271,8 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListBySubscription
 	if c.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if c.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -284,20 +292,22 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListBySubscription
 			}
 		}
 		resp := c.srv.NewListBySubscriptionPager(options)
-		c.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListBySubscriptionPager, req, func(page *armcompute.CapacityReservationGroupsClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.CapacityReservationGroupsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListBySubscriptionPager) {
-		c.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		c.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

@@ -1,14 +1,22 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.4.0-beta.3 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* One invocation of `AzureCLICredential.GetToken()` and `OnBehalfOfCredential.GetToken()`
+  can no longer make two authentication attempts
 
 ### Other Changes
+
+## 1.4.0-beta.2 (2023-07-14)
+
+### Other Changes
+* `DefaultAzureCredentialOptions.TenantID` applies to workload identity authentication
+* Upgraded dependencies
 
 ## 1.4.0-beta.1 (2023-06-06)
 

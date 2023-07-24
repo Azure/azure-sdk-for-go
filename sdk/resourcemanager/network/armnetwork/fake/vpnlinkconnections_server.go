@@ -38,19 +38,24 @@ type VPNLinkConnectionsServer struct {
 }
 
 // NewVPNLinkConnectionsServerTransport creates a new instance of VPNLinkConnectionsServerTransport with the provided implementation.
-// The returned VPNLinkConnectionsServerTransport instance is connected to an instance of armnetwork.VPNLinkConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned VPNLinkConnectionsServerTransport instance is connected to an instance of armnetwork.VPNLinkConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVPNLinkConnectionsServerTransport(srv *VPNLinkConnectionsServer) *VPNLinkConnectionsServerTransport {
-	return &VPNLinkConnectionsServerTransport{srv: srv}
+	return &VPNLinkConnectionsServerTransport{
+		srv:                         srv,
+		beginGetIkeSas:              newTracker[azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientGetIkeSasResponse]](),
+		newListByVPNConnectionPager: newTracker[azfake.PagerResponder[armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse]](),
+		beginResetConnection:        newTracker[azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientResetConnectionResponse]](),
+	}
 }
 
 // VPNLinkConnectionsServerTransport connects instances of armnetwork.VPNLinkConnectionsClient to instances of VPNLinkConnectionsServer.
 // Don't use this type directly, use NewVPNLinkConnectionsServerTransport instead.
 type VPNLinkConnectionsServerTransport struct {
 	srv                         *VPNLinkConnectionsServer
-	beginGetIkeSas              *azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientGetIkeSasResponse]
-	newListByVPNConnectionPager *azfake.PagerResponder[armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse]
-	beginResetConnection        *azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientResetConnectionResponse]
+	beginGetIkeSas              *tracker[azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientGetIkeSasResponse]]
+	newListByVPNConnectionPager *tracker[azfake.PagerResponder[armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse]]
+	beginResetConnection        *tracker[azfake.PollerResponder[armnetwork.VPNLinkConnectionsClientResetConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNLinkConnectionsServerTransport.
@@ -86,7 +91,8 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Req
 	if v.srv.BeginGetIkeSas == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetIkeSas not implemented")}
 	}
-	if v.beginGetIkeSas == nil {
+	beginGetIkeSas := v.beginGetIkeSas.get(req)
+	if beginGetIkeSas == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getikesas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -113,19 +119,21 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginGetIkeSas = &respr
+		beginGetIkeSas = &respr
+		v.beginGetIkeSas.add(req, beginGetIkeSas)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginGetIkeSas, req)
+	resp, err := server.PollerResponderNext(beginGetIkeSas, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetIkeSas.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginGetIkeSas) {
-		v.beginGetIkeSas = nil
+	if !server.PollerResponderMore(beginGetIkeSas) {
+		v.beginGetIkeSas.remove(req)
 	}
 
 	return resp, nil
@@ -135,7 +143,8 @@ func (v *VPNLinkConnectionsServerTransport) dispatchNewListByVPNConnectionPager(
 	if v.srv.NewListByVPNConnectionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNConnectionPager not implemented")}
 	}
-	if v.newListByVPNConnectionPager == nil {
+	newListByVPNConnectionPager := v.newListByVPNConnectionPager.get(req)
+	if newListByVPNConnectionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -155,20 +164,22 @@ func (v *VPNLinkConnectionsServerTransport) dispatchNewListByVPNConnectionPager(
 			return nil, err
 		}
 		resp := v.srv.NewListByVPNConnectionPager(resourceGroupNameUnescaped, gatewayNameUnescaped, connectionNameUnescaped, nil)
-		v.newListByVPNConnectionPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByVPNConnectionPager, req, func(page *armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse, createLink func() string) {
+		newListByVPNConnectionPager = &resp
+		v.newListByVPNConnectionPager.add(req, newListByVPNConnectionPager)
+		server.PagerResponderInjectNextLinks(newListByVPNConnectionPager, req, func(page *armnetwork.VPNLinkConnectionsClientListByVPNConnectionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByVPNConnectionPager, req)
+	resp, err := server.PagerResponderNext(newListByVPNConnectionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVPNConnectionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByVPNConnectionPager) {
-		v.newListByVPNConnectionPager = nil
+	if !server.PagerResponderMore(newListByVPNConnectionPager) {
+		v.newListByVPNConnectionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -177,7 +188,8 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginResetConnection(req *ht
 	if v.srv.BeginResetConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetConnection not implemented")}
 	}
-	if v.beginResetConnection == nil {
+	beginResetConnection := v.beginResetConnection.get(req)
+	if beginResetConnection == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetconnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -204,19 +216,21 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginResetConnection(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginResetConnection = &respr
+		beginResetConnection = &respr
+		v.beginResetConnection.add(req, beginResetConnection)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginResetConnection, req)
+	resp, err := server.PollerResponderNext(beginResetConnection, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginResetConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginResetConnection) {
-		v.beginResetConnection = nil
+	if !server.PollerResponderMore(beginResetConnection) {
+		v.beginResetConnection.remove(req)
 	}
 
 	return resp, nil

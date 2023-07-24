@@ -49,19 +49,24 @@ type ExpressRouteGatewaysServer struct {
 }
 
 // NewExpressRouteGatewaysServerTransport creates a new instance of ExpressRouteGatewaysServerTransport with the provided implementation.
-// The returned ExpressRouteGatewaysServerTransport instance is connected to an instance of armnetwork.ExpressRouteGatewaysClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRouteGatewaysServerTransport instance is connected to an instance of armnetwork.ExpressRouteGatewaysClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteGatewaysServerTransport(srv *ExpressRouteGatewaysServer) *ExpressRouteGatewaysServerTransport {
-	return &ExpressRouteGatewaysServerTransport{srv: srv}
+	return &ExpressRouteGatewaysServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientDeleteResponse]](),
+		beginUpdateTags:     newTracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientUpdateTagsResponse]](),
+	}
 }
 
 // ExpressRouteGatewaysServerTransport connects instances of armnetwork.ExpressRouteGatewaysClient to instances of ExpressRouteGatewaysServer.
 // Don't use this type directly, use NewExpressRouteGatewaysServerTransport instead.
 type ExpressRouteGatewaysServerTransport struct {
 	srv                 *ExpressRouteGatewaysServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientCreateOrUpdateResponse]
-	beginDelete         *azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientDeleteResponse]
-	beginUpdateTags     *azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientUpdateTagsResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientDeleteResponse]]
+	beginUpdateTags     *tracker[azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteGatewaysServerTransport.
@@ -103,7 +108,8 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *h
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if e.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -126,19 +132,21 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginCreateOrUpdate) {
-		e.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -148,7 +156,8 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Requ
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if e.beginDelete == nil {
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -167,19 +176,21 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginDelete = &respr
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginDelete) {
-		e.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -276,7 +287,8 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.
 	if e.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
-	if e.beginUpdateTags == nil {
+	beginUpdateTags := e.beginUpdateTags.get(req)
+	if beginUpdateTags == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -299,19 +311,21 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginUpdateTags = &respr
+		beginUpdateTags = &respr
+		e.beginUpdateTags.add(req, beginUpdateTags)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginUpdateTags, req)
+	resp, err := server.PollerResponderNext(beginUpdateTags, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdateTags.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginUpdateTags) {
-		e.beginUpdateTags = nil
+	if !server.PollerResponderMore(beginUpdateTags) {
+		e.beginUpdateTags.remove(req)
 	}
 
 	return resp, nil

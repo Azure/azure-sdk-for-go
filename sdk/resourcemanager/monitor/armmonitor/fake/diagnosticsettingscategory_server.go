@@ -33,17 +33,20 @@ type DiagnosticSettingsCategoryServer struct {
 }
 
 // NewDiagnosticSettingsCategoryServerTransport creates a new instance of DiagnosticSettingsCategoryServerTransport with the provided implementation.
-// The returned DiagnosticSettingsCategoryServerTransport instance is connected to an instance of armmonitor.DiagnosticSettingsCategoryClient by way of the
-// undefined.Transporter field.
+// The returned DiagnosticSettingsCategoryServerTransport instance is connected to an instance of armmonitor.DiagnosticSettingsCategoryClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiagnosticSettingsCategoryServerTransport(srv *DiagnosticSettingsCategoryServer) *DiagnosticSettingsCategoryServerTransport {
-	return &DiagnosticSettingsCategoryServerTransport{srv: srv}
+	return &DiagnosticSettingsCategoryServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse]](),
+	}
 }
 
 // DiagnosticSettingsCategoryServerTransport connects instances of armmonitor.DiagnosticSettingsCategoryClient to instances of DiagnosticSettingsCategoryServer.
 // Don't use this type directly, use NewDiagnosticSettingsCategoryServerTransport instead.
 type DiagnosticSettingsCategoryServerTransport struct {
 	srv          *DiagnosticSettingsCategoryServer
-	newListPager *azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmonitor.DiagnosticSettingsCategoryClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiagnosticSettingsCategoryServerTransport.
@@ -110,7 +113,8 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchNewListPager(req *ht
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if d.newListPager == nil {
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettingsCategories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -122,17 +126,19 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchNewListPager(req *ht
 			return nil, err
 		}
 		resp := d.srv.NewListPager(resourceURIUnescaped, nil)
-		d.newListPager = &resp
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(d.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListPager) {
-		d.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

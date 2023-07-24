@@ -29,7 +29,7 @@ type ConsolesClient struct {
 }
 
 // NewConsolesClient creates a new instance of ConsolesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConsolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConsolesClient, error) {
@@ -47,7 +47,7 @@ func NewConsolesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create a new virtual machine console or update the properties of the existing virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -71,7 +71,7 @@ func (client *ConsolesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a new virtual machine console or update the properties of the existing virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ConsolesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleParameters Console, options *ConsolesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualMachineName, consoleName, consoleParameters, options)
 	if err != nil {
@@ -90,9 +90,6 @@ func (client *ConsolesClient) createOrUpdate(ctx context.Context, resourceGroupN
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConsolesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleParameters Console, options *ConsolesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,7 +108,7 @@ func (client *ConsolesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, consoleParameters)
@@ -120,7 +117,7 @@ func (client *ConsolesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -142,7 +139,7 @@ func (client *ConsolesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ConsolesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *ConsolesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineName, consoleName, options)
 	if err != nil {
@@ -161,9 +158,6 @@ func (client *ConsolesClient) deleteOperation(ctx context.Context, resourceGroup
 // deleteCreateRequest creates the Delete request.
 func (client *ConsolesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *ConsolesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,7 +176,7 @@ func (client *ConsolesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -191,7 +185,7 @@ func (client *ConsolesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get properties of the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -214,9 +208,6 @@ func (client *ConsolesClient) Get(ctx context.Context, resourceGroupName string,
 // getCreateRequest creates the Get request.
 func (client *ConsolesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *ConsolesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -235,7 +226,7 @@ func (client *ConsolesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,47 +241,44 @@ func (client *ConsolesClient) getHandleResponse(resp *http.Response) (ConsolesCl
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Get a list of virtual machine consoles in the provided resource group.
+// NewListByVirtualMachinePager - Get a list of consoles for the provided virtual machine.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
-//   - options - ConsolesClientListByResourceGroupOptions contains the optional parameters for the ConsolesClient.NewListByResourceGroupPager
+//   - options - ConsolesClientListByVirtualMachineOptions contains the optional parameters for the ConsolesClient.NewListByVirtualMachinePager
 //     method.
-func (client *ConsolesClient) NewListByResourceGroupPager(resourceGroupName string, virtualMachineName string, options *ConsolesClientListByResourceGroupOptions) *runtime.Pager[ConsolesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ConsolesClientListByResourceGroupResponse]{
-		More: func(page ConsolesClientListByResourceGroupResponse) bool {
+func (client *ConsolesClient) NewListByVirtualMachinePager(resourceGroupName string, virtualMachineName string, options *ConsolesClientListByVirtualMachineOptions) *runtime.Pager[ConsolesClientListByVirtualMachineResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConsolesClientListByVirtualMachineResponse]{
+		More: func(page ConsolesClientListByVirtualMachineResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ConsolesClientListByResourceGroupResponse) (ConsolesClientListByResourceGroupResponse, error) {
+		Fetcher: func(ctx context.Context, page *ConsolesClientListByVirtualMachineResponse) (ConsolesClientListByVirtualMachineResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
+				req, err = client.listByVirtualMachineCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ConsolesClientListByResourceGroupResponse{}, err
+				return ConsolesClientListByVirtualMachineResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ConsolesClientListByResourceGroupResponse{}, err
+				return ConsolesClientListByVirtualMachineResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ConsolesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+				return ConsolesClientListByVirtualMachineResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			return client.listByVirtualMachineHandleResponse(resp)
 		},
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConsolesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *ConsolesClientListByResourceGroupOptions) (*policy.Request, error) {
+// listByVirtualMachineCreateRequest creates the ListByVirtualMachine request.
+func (client *ConsolesClient) listByVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *ConsolesClientListByVirtualMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,17 +293,17 @@ func (client *ConsolesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ConsolesClient) listByResourceGroupHandleResponse(resp *http.Response) (ConsolesClientListByResourceGroupResponse, error) {
-	result := ConsolesClientListByResourceGroupResponse{}
+// listByVirtualMachineHandleResponse handles the ListByVirtualMachine response.
+func (client *ConsolesClient) listByVirtualMachineHandleResponse(resp *http.Response) (ConsolesClientListByVirtualMachineResponse, error) {
+	result := ConsolesClientListByVirtualMachineResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsoleList); err != nil {
-		return ConsolesClientListByResourceGroupResponse{}, err
+		return ConsolesClientListByVirtualMachineResponse{}, err
 	}
 	return result, nil
 }
@@ -324,7 +312,7 @@ func (client *ConsolesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // machine console. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -337,7 +325,7 @@ func (client *ConsolesClient) BeginUpdate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConsolesClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ConsolesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -348,7 +336,7 @@ func (client *ConsolesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // console. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ConsolesClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleUpdateParameters ConsolePatchParameters, options *ConsolesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualMachineName, consoleName, consoleUpdateParameters, options)
 	if err != nil {
@@ -367,9 +355,6 @@ func (client *ConsolesClient) update(ctx context.Context, resourceGroupName stri
 // updateCreateRequest creates the Update request.
 func (client *ConsolesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleUpdateParameters ConsolePatchParameters, options *ConsolesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/consoles/{consoleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -388,7 +373,7 @@ func (client *ConsolesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, consoleUpdateParameters)

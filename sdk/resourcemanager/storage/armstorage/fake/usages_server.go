@@ -28,17 +28,20 @@ type UsagesServer struct {
 }
 
 // NewUsagesServerTransport creates a new instance of UsagesServerTransport with the provided implementation.
-// The returned UsagesServerTransport instance is connected to an instance of armstorage.UsagesClient by way of the
-// undefined.Transporter field.
+// The returned UsagesServerTransport instance is connected to an instance of armstorage.UsagesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsagesServerTransport(srv *UsagesServer) *UsagesServerTransport {
-	return &UsagesServerTransport{srv: srv}
+	return &UsagesServerTransport{
+		srv:                    srv,
+		newListByLocationPager: newTracker[azfake.PagerResponder[armstorage.UsagesClientListByLocationResponse]](),
+	}
 }
 
 // UsagesServerTransport connects instances of armstorage.UsagesClient to instances of UsagesServer.
 // Don't use this type directly, use NewUsagesServerTransport instead.
 type UsagesServerTransport struct {
 	srv                    *UsagesServer
-	newListByLocationPager *azfake.PagerResponder[armstorage.UsagesClientListByLocationResponse]
+	newListByLocationPager *tracker[azfake.PagerResponder[armstorage.UsagesClientListByLocationResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsagesServerTransport.
@@ -70,7 +73,8 @@ func (u *UsagesServerTransport) dispatchNewListByLocationPager(req *http.Request
 	if u.srv.NewListByLocationPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByLocationPager not implemented")}
 	}
-	if u.newListByLocationPager == nil {
+	newListByLocationPager := u.newListByLocationPager.get(req)
+	if newListByLocationPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -82,17 +86,19 @@ func (u *UsagesServerTransport) dispatchNewListByLocationPager(req *http.Request
 			return nil, err
 		}
 		resp := u.srv.NewListByLocationPager(locationUnescaped, nil)
-		u.newListByLocationPager = &resp
+		newListByLocationPager = &resp
+		u.newListByLocationPager.add(req, newListByLocationPager)
 	}
-	resp, err := server.PagerResponderNext(u.newListByLocationPager, req)
+	resp, err := server.PagerResponderNext(newListByLocationPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		u.newListByLocationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(u.newListByLocationPager) {
-		u.newListByLocationPager = nil
+	if !server.PagerResponderMore(newListByLocationPager) {
+		u.newListByLocationPager.remove(req)
 	}
 	return resp, nil
 }

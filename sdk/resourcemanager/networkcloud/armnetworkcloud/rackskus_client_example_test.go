@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/RackSkus_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/RackSkus_ListBySubscription.json
 func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("rackSkuName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/rackSkus"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -134,7 +134,7 @@ func ExampleRackSKUsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/RackSkus_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/RackSkus_Get.json
 func ExampleRackSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleRackSKUsClient_Get() {
 	// res.RackSKU = armnetworkcloud.RackSKU{
 	// 	Name: to.Ptr("rackSkuName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/rackSkus"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),

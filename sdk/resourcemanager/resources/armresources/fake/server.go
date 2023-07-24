@@ -83,26 +83,38 @@ type Server struct {
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
-// The returned ServerTransport instance is connected to an instance of armresources.Client by way of the
-// undefined.Transporter field.
+// The returned ServerTransport instance is connected to an instance of armresources.Client via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
-	return &ServerTransport{srv: srv}
+	return &ServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateByID:     newTracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateByIDResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armresources.ClientDeleteResponse]](),
+		beginDeleteByID:             newTracker[azfake.PollerResponder[armresources.ClientDeleteByIDResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armresources.ClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]](),
+		beginMoveResources:          newTracker[azfake.PollerResponder[armresources.ClientMoveResourcesResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armresources.ClientUpdateResponse]](),
+		beginUpdateByID:             newTracker[azfake.PollerResponder[armresources.ClientUpdateByIDResponse]](),
+		beginValidateMoveResources:  newTracker[azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse]](),
+	}
 }
 
 // ServerTransport connects instances of armresources.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                         *Server
-	beginCreateOrUpdate         *azfake.PollerResponder[armresources.ClientCreateOrUpdateResponse]
-	beginCreateOrUpdateByID     *azfake.PollerResponder[armresources.ClientCreateOrUpdateByIDResponse]
-	beginDelete                 *azfake.PollerResponder[armresources.ClientDeleteResponse]
-	beginDeleteByID             *azfake.PollerResponder[armresources.ClientDeleteByIDResponse]
-	newListPager                *azfake.PagerResponder[armresources.ClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]
-	beginMoveResources          *azfake.PollerResponder[armresources.ClientMoveResourcesResponse]
-	beginUpdate                 *azfake.PollerResponder[armresources.ClientUpdateResponse]
-	beginUpdateByID             *azfake.PollerResponder[armresources.ClientUpdateByIDResponse]
-	beginValidateMoveResources  *azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateResponse]]
+	beginCreateOrUpdateByID     *tracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateByIDResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armresources.ClientDeleteResponse]]
+	beginDeleteByID             *tracker[azfake.PollerResponder[armresources.ClientDeleteByIDResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armresources.ClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]]
+	beginMoveResources          *tracker[azfake.PollerResponder[armresources.ClientMoveResourcesResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armresources.ClientUpdateResponse]]
+	beginUpdateByID             *tracker[azfake.PollerResponder[armresources.ClientUpdateByIDResponse]]
+	beginValidateMoveResources  *tracker[azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -244,7 +256,8 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 	if s.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if s.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -284,19 +297,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		s.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginCreateOrUpdate) {
-		s.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		s.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -306,7 +321,8 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateByID(req *http.Request) (*h
 	if s.srv.BeginCreateOrUpdateByID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByID not implemented")}
 	}
-	if s.beginCreateOrUpdateByID == nil {
+	beginCreateOrUpdateByID := s.beginCreateOrUpdateByID.get(req)
+	if beginCreateOrUpdateByID == nil {
 		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -330,19 +346,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateByID(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginCreateOrUpdateByID = &respr
+		beginCreateOrUpdateByID = &respr
+		s.beginCreateOrUpdateByID.add(req, beginCreateOrUpdateByID)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginCreateOrUpdateByID, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByID, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		s.beginCreateOrUpdateByID.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginCreateOrUpdateByID) {
-		s.beginCreateOrUpdateByID = nil
+	if !server.PollerResponderMore(beginCreateOrUpdateByID) {
+		s.beginCreateOrUpdateByID.remove(req)
 	}
 
 	return resp, nil
@@ -352,7 +370,8 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if s.beginDelete == nil {
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -388,19 +407,21 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDelete = &respr
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDelete) {
-		s.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -410,7 +431,8 @@ func (s *ServerTransport) dispatchBeginDeleteByID(req *http.Request) (*http.Resp
 	if s.srv.BeginDeleteByID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteByID not implemented")}
 	}
-	if s.beginDeleteByID == nil {
+	beginDeleteByID := s.beginDeleteByID.get(req)
+	if beginDeleteByID == nil {
 		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -430,19 +452,21 @@ func (s *ServerTransport) dispatchBeginDeleteByID(req *http.Request) (*http.Resp
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDeleteByID = &respr
+		beginDeleteByID = &respr
+		s.beginDeleteByID.add(req, beginDeleteByID)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDeleteByID, req)
+	resp, err := server.PollerResponderNext(beginDeleteByID, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDeleteByID.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDeleteByID) {
-		s.beginDeleteByID = nil
+	if !server.PollerResponderMore(beginDeleteByID) {
+		s.beginDeleteByID.remove(req)
 	}
 
 	return resp, nil
@@ -536,7 +560,8 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -577,20 +602,22 @@ func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Respons
 			}
 		}
 		resp := s.srv.NewListPager(options)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armresources.ClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.ClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -599,7 +626,8 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if s.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -644,20 +672,22 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 			}
 		}
 		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, options)
-		s.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListByResourceGroupPager, req, func(page *armresources.ClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresources.ClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListByResourceGroupPager) {
-		s.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -666,7 +696,8 @@ func (s *ServerTransport) dispatchBeginMoveResources(req *http.Request) (*http.R
 	if s.srv.BeginMoveResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMoveResources not implemented")}
 	}
-	if s.beginMoveResources == nil {
+	beginMoveResources := s.beginMoveResources.get(req)
+	if beginMoveResources == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<sourceResourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/moveResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -685,19 +716,21 @@ func (s *ServerTransport) dispatchBeginMoveResources(req *http.Request) (*http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginMoveResources = &respr
+		beginMoveResources = &respr
+		s.beginMoveResources.add(req, beginMoveResources)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginMoveResources, req)
+	resp, err := server.PollerResponderNext(beginMoveResources, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginMoveResources.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginMoveResources) {
-		s.beginMoveResources = nil
+	if !server.PollerResponderMore(beginMoveResources) {
+		s.beginMoveResources.remove(req)
 	}
 
 	return resp, nil
@@ -707,7 +740,8 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if s.beginUpdate == nil {
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -747,19 +781,21 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginUpdate = &respr
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginUpdate) {
-		s.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -769,7 +805,8 @@ func (s *ServerTransport) dispatchBeginUpdateByID(req *http.Request) (*http.Resp
 	if s.srv.BeginUpdateByID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateByID not implemented")}
 	}
-	if s.beginUpdateByID == nil {
+	beginUpdateByID := s.beginUpdateByID.get(req)
+	if beginUpdateByID == nil {
 		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -793,19 +830,21 @@ func (s *ServerTransport) dispatchBeginUpdateByID(req *http.Request) (*http.Resp
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginUpdateByID = &respr
+		beginUpdateByID = &respr
+		s.beginUpdateByID.add(req, beginUpdateByID)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginUpdateByID, req)
+	resp, err := server.PollerResponderNext(beginUpdateByID, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdateByID.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginUpdateByID) {
-		s.beginUpdateByID = nil
+	if !server.PollerResponderMore(beginUpdateByID) {
+		s.beginUpdateByID.remove(req)
 	}
 
 	return resp, nil
@@ -815,7 +854,8 @@ func (s *ServerTransport) dispatchBeginValidateMoveResources(req *http.Request) 
 	if s.srv.BeginValidateMoveResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateMoveResources not implemented")}
 	}
-	if s.beginValidateMoveResources == nil {
+	beginValidateMoveResources := s.beginValidateMoveResources.get(req)
+	if beginValidateMoveResources == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<sourceResourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -834,19 +874,21 @@ func (s *ServerTransport) dispatchBeginValidateMoveResources(req *http.Request) 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginValidateMoveResources = &respr
+		beginValidateMoveResources = &respr
+		s.beginValidateMoveResources.add(req, beginValidateMoveResources)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginValidateMoveResources, req)
+	resp, err := server.PollerResponderNext(beginValidateMoveResources, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginValidateMoveResources.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginValidateMoveResources) {
-		s.beginValidateMoveResources = nil
+	if !server.PollerResponderMore(beginValidateMoveResources) {
+		s.beginValidateMoveResources.remove(req)
 	}
 
 	return resp, nil

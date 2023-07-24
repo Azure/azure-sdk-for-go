@@ -46,20 +46,26 @@ type GalleryImageVersionsServer struct {
 }
 
 // NewGalleryImageVersionsServerTransport creates a new instance of GalleryImageVersionsServerTransport with the provided implementation.
-// The returned GalleryImageVersionsServerTransport instance is connected to an instance of armcompute.GalleryImageVersionsClient by way of the
-// undefined.Transporter field.
+// The returned GalleryImageVersionsServerTransport instance is connected to an instance of armcompute.GalleryImageVersionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleryImageVersionsServerTransport(srv *GalleryImageVersionsServer) *GalleryImageVersionsServerTransport {
-	return &GalleryImageVersionsServerTransport{srv: srv}
+	return &GalleryImageVersionsServerTransport{
+		srv:                        srv,
+		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientCreateOrUpdateResponse]](),
+		beginDelete:                newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse]](),
+		newListByGalleryImagePager: newTracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]](),
+		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse]](),
+	}
 }
 
 // GalleryImageVersionsServerTransport connects instances of armcompute.GalleryImageVersionsClient to instances of GalleryImageVersionsServer.
 // Don't use this type directly, use NewGalleryImageVersionsServerTransport instead.
 type GalleryImageVersionsServerTransport struct {
 	srv                        *GalleryImageVersionsServer
-	beginCreateOrUpdate        *azfake.PollerResponder[armcompute.GalleryImageVersionsClientCreateOrUpdateResponse]
-	beginDelete                *azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse]
-	newListByGalleryImagePager *azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]
-	beginUpdate                *azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse]
+	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientCreateOrUpdateResponse]]
+	beginDelete                *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientDeleteResponse]]
+	newListByGalleryImagePager *tracker[azfake.PagerResponder[armcompute.GalleryImageVersionsClientListByGalleryImageResponse]]
+	beginUpdate                *tracker[azfake.PollerResponder[armcompute.GalleryImageVersionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryImageVersionsServerTransport.
@@ -99,7 +105,8 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	if g.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if g.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryImageVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -130,19 +137,21 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		g.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginCreateOrUpdate) {
-		g.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		g.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -152,7 +161,8 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 	if g.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if g.beginDelete == nil {
+	beginDelete := g.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryImageVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -179,19 +189,21 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginDelete = &respr
+		beginDelete = &respr
+		g.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		g.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginDelete) {
-		g.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		g.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -254,7 +266,8 @@ func (g *GalleryImageVersionsServerTransport) dispatchNewListByGalleryImagePager
 	if g.srv.NewListByGalleryImagePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByGalleryImagePager not implemented")}
 	}
-	if g.newListByGalleryImagePager == nil {
+	newListByGalleryImagePager := g.newListByGalleryImagePager.get(req)
+	if newListByGalleryImagePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -274,20 +287,22 @@ func (g *GalleryImageVersionsServerTransport) dispatchNewListByGalleryImagePager
 			return nil, err
 		}
 		resp := g.srv.NewListByGalleryImagePager(resourceGroupNameUnescaped, galleryNameUnescaped, galleryImageNameUnescaped, nil)
-		g.newListByGalleryImagePager = &resp
-		server.PagerResponderInjectNextLinks(g.newListByGalleryImagePager, req, func(page *armcompute.GalleryImageVersionsClientListByGalleryImageResponse, createLink func() string) {
+		newListByGalleryImagePager = &resp
+		g.newListByGalleryImagePager.add(req, newListByGalleryImagePager)
+		server.PagerResponderInjectNextLinks(newListByGalleryImagePager, req, func(page *armcompute.GalleryImageVersionsClientListByGalleryImageResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(g.newListByGalleryImagePager, req)
+	resp, err := server.PagerResponderNext(newListByGalleryImagePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByGalleryImagePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(g.newListByGalleryImagePager) {
-		g.newListByGalleryImagePager = nil
+	if !server.PagerResponderMore(newListByGalleryImagePager) {
+		g.newListByGalleryImagePager.remove(req)
 	}
 	return resp, nil
 }
@@ -296,7 +311,8 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginUpdate(req *http.Requ
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if g.beginUpdate == nil {
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<galleryImageVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -327,19 +343,21 @@ func (g *GalleryImageVersionsServerTransport) dispatchBeginUpdate(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		g.beginUpdate = &respr
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(g.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(g.beginUpdate) {
-		g.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
 	}
 
 	return resp, nil

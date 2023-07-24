@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListBySubscription_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,9 +43,9 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// page.FirewallResourceListResult = armpanngfw.FirewallResourceListResult{
 		// 	Value: []*armpanngfw.FirewallResource{
 		// 		{
-		// 			Name: to.Ptr("aaaaaaaaaaaaa"),
+		// 			Name: to.Ptr("armid1"),
 		// 			Type: to.Ptr("aaaaaa"),
-		// 			ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
 		// 			SystemData: &armpanngfw.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 		// 				CreatedBy: to.Ptr("praval"),
@@ -185,7 +185,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListBySubscription_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// page.FirewallResourceListResult = armpanngfw.FirewallResourceListResult{
 		// 	Value: []*armpanngfw.FirewallResource{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall"),
+		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpanngfw.FirewallDeploymentProperties{
 		// 				DNSSettings: &armpanngfw.DNSSettings{
@@ -238,7 +238,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +458,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Get_MaximumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +479,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -617,7 +617,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Get_MinimumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +662,7 @@ func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +803,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("armid1"),
 	// 	Type: to.Ptr("firewalls"),
-	// 	ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/firewalls/armid1"),
+	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -941,7 +941,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1012,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Update_MaximumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1147,7 +1147,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -1285,7 +1285,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Update_MinimumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1329,7 +1329,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Delete_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1350,7 +1350,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Delete_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1371,7 +1371,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1394,7 +1394,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1417,7 +1417,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getLogProfile_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1529,7 +1529,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getLogProfile_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1551,7 +1551,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getSupportInfo_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getSupportInfo_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1585,7 +1585,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_getSupportInfo_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getSupportInfo_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1607,7 +1607,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1716,7 +1716,7 @@ func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

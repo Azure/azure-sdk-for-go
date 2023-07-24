@@ -30,8 +30,8 @@ type ManagerDeploymentStatusServer struct {
 }
 
 // NewManagerDeploymentStatusServerTransport creates a new instance of ManagerDeploymentStatusServerTransport with the provided implementation.
-// The returned ManagerDeploymentStatusServerTransport instance is connected to an instance of armnetwork.ManagerDeploymentStatusClient by way of the
-// undefined.Transporter field.
+// The returned ManagerDeploymentStatusServerTransport instance is connected to an instance of armnetwork.ManagerDeploymentStatusClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagerDeploymentStatusServerTransport(srv *ManagerDeploymentStatusServer) *ManagerDeploymentStatusServerTransport {
 	return &ManagerDeploymentStatusServerTransport{srv: srv}
 }

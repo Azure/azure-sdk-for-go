@@ -11,7 +11,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v4.1.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -440,23 +440,35 @@ func PossibleQosTypeValues() []QosType {
 type RegionStorageToNetworkProximity string
 
 const (
+	// RegionStorageToNetworkProximityAcrossT2 - Standard AcrossT2 network connectivity.
+	RegionStorageToNetworkProximityAcrossT2 RegionStorageToNetworkProximity = "AcrossT2"
 	// RegionStorageToNetworkProximityDefault - Basic network connectivity.
 	RegionStorageToNetworkProximityDefault RegionStorageToNetworkProximity = "Default"
 	// RegionStorageToNetworkProximityT1 - Standard T1 network connectivity.
 	RegionStorageToNetworkProximityT1 RegionStorageToNetworkProximity = "T1"
+	// RegionStorageToNetworkProximityT1AndAcrossT2 - Standard T1 and AcrossT2 network connectivity.
+	RegionStorageToNetworkProximityT1AndAcrossT2 RegionStorageToNetworkProximity = "T1AndAcrossT2"
 	// RegionStorageToNetworkProximityT1AndT2 - Standard T1 and T2 network connectivity.
 	RegionStorageToNetworkProximityT1AndT2 RegionStorageToNetworkProximity = "T1AndT2"
+	// RegionStorageToNetworkProximityT1AndT2AndAcrossT2 - Standard T1, T2 and AcrossT2 network connectivity.
+	RegionStorageToNetworkProximityT1AndT2AndAcrossT2 RegionStorageToNetworkProximity = "T1AndT2AndAcrossT2"
 	// RegionStorageToNetworkProximityT2 - Standard T2 network connectivity.
 	RegionStorageToNetworkProximityT2 RegionStorageToNetworkProximity = "T2"
+	// RegionStorageToNetworkProximityT2AndAcrossT2 - Standard T2 and AcrossT2 network connectivity.
+	RegionStorageToNetworkProximityT2AndAcrossT2 RegionStorageToNetworkProximity = "T2AndAcrossT2"
 )
 
 // PossibleRegionStorageToNetworkProximityValues returns the possible values for the RegionStorageToNetworkProximity const type.
 func PossibleRegionStorageToNetworkProximityValues() []RegionStorageToNetworkProximity {
 	return []RegionStorageToNetworkProximity{
+		RegionStorageToNetworkProximityAcrossT2,
 		RegionStorageToNetworkProximityDefault,
 		RegionStorageToNetworkProximityT1,
+		RegionStorageToNetworkProximityT1AndAcrossT2,
 		RegionStorageToNetworkProximityT1AndT2,
+		RegionStorageToNetworkProximityT1AndT2AndAcrossT2,
 		RegionStorageToNetworkProximityT2,
+		RegionStorageToNetworkProximityT2AndAcrossT2,
 	}
 }
 
@@ -599,6 +611,8 @@ func PossibleTypeValues() []Type {
 type VolumeStorageToNetworkProximity string
 
 const (
+	// VolumeStorageToNetworkProximityAcrossT2 - Standard AcrossT2 storage to network connectivity.
+	VolumeStorageToNetworkProximityAcrossT2 VolumeStorageToNetworkProximity = "AcrossT2"
 	// VolumeStorageToNetworkProximityDefault - Basic storage to network connectivity.
 	VolumeStorageToNetworkProximityDefault VolumeStorageToNetworkProximity = "Default"
 	// VolumeStorageToNetworkProximityT1 - Standard T1 storage to network connectivity.
@@ -610,6 +624,7 @@ const (
 // PossibleVolumeStorageToNetworkProximityValues returns the possible values for the VolumeStorageToNetworkProximity const type.
 func PossibleVolumeStorageToNetworkProximityValues() []VolumeStorageToNetworkProximity {
 	return []VolumeStorageToNetworkProximity{
+		VolumeStorageToNetworkProximityAcrossT2,
 		VolumeStorageToNetworkProximityDefault,
 		VolumeStorageToNetworkProximityT1,
 		VolumeStorageToNetworkProximityT2,

@@ -29,7 +29,7 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
@@ -47,7 +47,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create a new cluster or update the properties of the cluster if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - clusterParameters - The request body.
@@ -70,7 +70,7 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a new cluster or update the properties of the cluster if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, clusterParameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, clusterParameters, options)
 	if err != nil {
@@ -89,9 +89,6 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, clusterParameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -106,7 +103,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, clusterParameters)
@@ -115,7 +112,7 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
@@ -136,7 +133,7 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
@@ -155,9 +152,6 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 // deleteCreateRequest creates the Delete request.
 func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -172,7 +166,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +175,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 // BeginDeploy - Deploy the cluster to the provided rack.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientBeginDeployOptions contains the optional parameters for the ClustersClient.BeginDeploy method.
@@ -202,7 +196,7 @@ func (client *ClustersClient) BeginDeploy(ctx context.Context, resourceGroupName
 // Deploy - Deploy the cluster to the provided rack.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ClustersClient) deploy(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeployOptions) (*http.Response, error) {
 	req, err := client.deployCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
@@ -221,9 +215,6 @@ func (client *ClustersClient) deploy(ctx context.Context, resourceGroupName stri
 // deployCreateRequest creates the Deploy request.
 func (client *ClustersClient) deployCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/deploy"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +229,7 @@ func (client *ClustersClient) deployCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClusterDeployParameters != nil {
@@ -250,7 +241,7 @@ func (client *ClustersClient) deployCreateRequest(ctx context.Context, resourceG
 // Get - Get properties of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
@@ -272,9 +263,6 @@ func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string,
 // getCreateRequest creates the Get request.
 func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -289,7 +277,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,7 +294,7 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 
 // NewListByResourceGroupPager - Get a list of clusters in the provided resource group.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 //     method.
@@ -341,9 +329,6 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClustersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -354,7 +339,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -371,7 +356,7 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Get a list of clusters in the provided subscription.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
 //     method.
 func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
@@ -405,16 +390,13 @@ func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClient
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *ClustersClient) listBySubscriptionCreateRequest(ctx context.Context, options *ClustersClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/clusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -433,7 +415,7 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - clusterUpdateParameters - The request body.
@@ -445,7 +427,7 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -456,7 +438,7 @@ func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName
 // updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateParameters ClusterPatchParameters, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, clusterUpdateParameters, options)
 	if err != nil {
@@ -475,9 +457,6 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 // updateCreateRequest creates the Update request.
 func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateParameters ClusterPatchParameters, options *ClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -492,7 +471,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, clusterUpdateParameters)
@@ -501,7 +480,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 // BeginUpdateVersion - Update the version of the provided cluster to one of the available supported versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - clusterUpdateVersionParameters - The request body.
@@ -524,7 +503,7 @@ func (client *ClustersClient) BeginUpdateVersion(ctx context.Context, resourceGr
 // UpdateVersion - Update the version of the provided cluster to one of the available supported versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 func (client *ClustersClient) updateVersion(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateVersionParameters ClusterUpdateVersionParameters, options *ClustersClientBeginUpdateVersionOptions) (*http.Response, error) {
 	req, err := client.updateVersionCreateRequest(ctx, resourceGroupName, clusterName, clusterUpdateVersionParameters, options)
 	if err != nil {
@@ -543,9 +522,6 @@ func (client *ClustersClient) updateVersion(ctx context.Context, resourceGroupNa
 // updateVersionCreateRequest creates the UpdateVersion request.
 func (client *ClustersClient) updateVersionCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, clusterUpdateVersionParameters ClusterUpdateVersionParameters, options *ClustersClientBeginUpdateVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/updateVersion"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -560,7 +536,7 @@ func (client *ClustersClient) updateVersionCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, clusterUpdateVersionParameters)

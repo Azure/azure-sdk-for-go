@@ -50,19 +50,24 @@ type PrivateLinkScopesServer struct {
 }
 
 // NewPrivateLinkScopesServerTransport creates a new instance of PrivateLinkScopesServerTransport with the provided implementation.
-// The returned PrivateLinkScopesServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopesClient by way of the
-// undefined.Transporter field.
+// The returned PrivateLinkScopesServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkScopesServerTransport(srv *PrivateLinkScopesServer) *PrivateLinkScopesServerTransport {
-	return &PrivateLinkScopesServerTransport{srv: srv}
+	return &PrivateLinkScopesServerTransport{
+		srv:                         srv,
+		beginDelete:                 newTracker[azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse]](),
+	}
 }
 
 // PrivateLinkScopesServerTransport connects instances of armmonitor.PrivateLinkScopesClient to instances of PrivateLinkScopesServer.
 // Don't use this type directly, use NewPrivateLinkScopesServerTransport instead.
 type PrivateLinkScopesServerTransport struct {
 	srv                         *PrivateLinkScopesServer
-	beginDelete                 *azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse]
+	beginDelete                 *tracker[azfake.PollerResponder[armmonitor.PrivateLinkScopesClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmonitor.PrivateLinkScopesClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinkScopesServerTransport.
@@ -141,7 +146,8 @@ func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -160,19 +166,21 @@ func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -215,7 +223,8 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Reques
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/privateLinkScopes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -223,20 +232,22 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListPager(nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armmonitor.PrivateLinkScopesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.PrivateLinkScopesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -245,7 +256,8 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(r
 	if p.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if p.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/privateLinkScopes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -257,20 +269,22 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(r
 			return nil, err
 		}
 		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		p.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListByResourceGroupPager, req, func(page *armmonitor.PrivateLinkScopesClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.PrivateLinkScopesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListByResourceGroupPager) {
-		p.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

@@ -75,26 +75,38 @@ type VirtualNetworkGatewayConnectionsServer struct {
 }
 
 // NewVirtualNetworkGatewayConnectionsServerTransport creates a new instance of VirtualNetworkGatewayConnectionsServerTransport with the provided implementation.
-// The returned VirtualNetworkGatewayConnectionsServerTransport instance is connected to an instance of armnetwork.VirtualNetworkGatewayConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualNetworkGatewayConnectionsServerTransport instance is connected to an instance of armnetwork.VirtualNetworkGatewayConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualNetworkGatewayConnectionsServerTransport(srv *VirtualNetworkGatewayConnectionsServer) *VirtualNetworkGatewayConnectionsServerTransport {
-	return &VirtualNetworkGatewayConnectionsServerTransport{srv: srv}
+	return &VirtualNetworkGatewayConnectionsServerTransport{
+		srv:                     srv,
+		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse]](),
+		beginGetIkeSas:          newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]](),
+		beginResetConnection:    newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetConnectionResponse]](),
+		beginResetSharedKey:     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]](),
+		beginSetSharedKey:       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]](),
+		beginStartPacketCapture: newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]](),
+		beginStopPacketCapture:  newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]](),
+		beginUpdateTags:         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]](),
+	}
 }
 
 // VirtualNetworkGatewayConnectionsServerTransport connects instances of armnetwork.VirtualNetworkGatewayConnectionsClient to instances of VirtualNetworkGatewayConnectionsServer.
 // Don't use this type directly, use NewVirtualNetworkGatewayConnectionsServerTransport instead.
 type VirtualNetworkGatewayConnectionsServerTransport struct {
 	srv                     *VirtualNetworkGatewayConnectionsServer
-	beginCreateOrUpdate     *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]
-	beginDelete             *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse]
-	beginGetIkeSas          *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]
-	newListPager            *azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]
-	beginResetConnection    *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetConnectionResponse]
-	beginResetSharedKey     *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]
-	beginSetSharedKey       *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]
-	beginStartPacketCapture *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]
-	beginStopPacketCapture  *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]
-	beginUpdateTags         *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]
+	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientDeleteResponse]]
+	beginGetIkeSas          *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientGetIkeSasResponse]]
+	newListPager            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientListResponse]]
+	beginResetConnection    *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetConnectionResponse]]
+	beginResetSharedKey     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse]]
+	beginSetSharedKey       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse]]
+	beginStartPacketCapture *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse]]
+	beginStopPacketCapture  *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse]]
+	beginUpdateTags         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayConnectionsClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkGatewayConnectionsServerTransport.
@@ -148,7 +160,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginCreateOrU
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +184,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginCreateOrU
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -193,7 +208,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginDelete(re
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -212,19 +228,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginDelete(re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -267,7 +285,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginGetIkeSas
 	if v.srv.BeginGetIkeSas == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetIkeSas not implemented")}
 	}
-	if v.beginGetIkeSas == nil {
+	beginGetIkeSas := v.beginGetIkeSas.get(req)
+	if beginGetIkeSas == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getikesas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -286,19 +305,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginGetIkeSas
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginGetIkeSas = &respr
+		beginGetIkeSas = &respr
+		v.beginGetIkeSas.add(req, beginGetIkeSas)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginGetIkeSas, req)
+	resp, err := server.PollerResponderNext(beginGetIkeSas, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetIkeSas.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginGetIkeSas) {
-		v.beginGetIkeSas = nil
+	if !server.PollerResponderMore(beginGetIkeSas) {
+		v.beginGetIkeSas.remove(req)
 	}
 
 	return resp, nil
@@ -341,7 +362,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchNewListPager(r
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -353,20 +375,22 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchNewListPager(r
 			return nil, err
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualNetworkGatewayConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworkGatewayConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -375,7 +399,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetConn
 	if v.srv.BeginResetConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetConnection not implemented")}
 	}
-	if v.beginResetConnection == nil {
+	beginResetConnection := v.beginResetConnection.get(req)
+	if beginResetConnection == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetconnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -394,19 +419,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetConn
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginResetConnection = &respr
+		beginResetConnection = &respr
+		v.beginResetConnection.add(req, beginResetConnection)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginResetConnection, req)
+	resp, err := server.PollerResponderNext(beginResetConnection, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginResetConnection.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginResetConnection) {
-		v.beginResetConnection = nil
+	if !server.PollerResponderMore(beginResetConnection) {
+		v.beginResetConnection.remove(req)
 	}
 
 	return resp, nil
@@ -416,7 +443,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetShar
 	if v.srv.BeginResetSharedKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResetSharedKey not implemented")}
 	}
-	if v.beginResetSharedKey == nil {
+	beginResetSharedKey := v.beginResetSharedKey.get(req)
+	if beginResetSharedKey == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedkey/reset`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -439,19 +467,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginResetShar
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginResetSharedKey = &respr
+		beginResetSharedKey = &respr
+		v.beginResetSharedKey.add(req, beginResetSharedKey)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginResetSharedKey, req)
+	resp, err := server.PollerResponderNext(beginResetSharedKey, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginResetSharedKey.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginResetSharedKey) {
-		v.beginResetSharedKey = nil
+	if !server.PollerResponderMore(beginResetSharedKey) {
+		v.beginResetSharedKey.remove(req)
 	}
 
 	return resp, nil
@@ -461,7 +491,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginSetShared
 	if v.srv.BeginSetSharedKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSetSharedKey not implemented")}
 	}
-	if v.beginSetSharedKey == nil {
+	beginSetSharedKey := v.beginSetSharedKey.get(req)
+	if beginSetSharedKey == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedkey`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -484,19 +515,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginSetShared
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginSetSharedKey = &respr
+		beginSetSharedKey = &respr
+		v.beginSetSharedKey.add(req, beginSetSharedKey)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginSetSharedKey, req)
+	resp, err := server.PollerResponderNext(beginSetSharedKey, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginSetSharedKey.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginSetSharedKey) {
-		v.beginSetSharedKey = nil
+	if !server.PollerResponderMore(beginSetSharedKey) {
+		v.beginSetSharedKey.remove(req)
 	}
 
 	return resp, nil
@@ -506,7 +539,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStartPack
 	if v.srv.BeginStartPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartPacketCapture not implemented")}
 	}
-	if v.beginStartPacketCapture == nil {
+	beginStartPacketCapture := v.beginStartPacketCapture.get(req)
+	if beginStartPacketCapture == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -535,19 +569,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStartPack
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginStartPacketCapture = &respr
+		beginStartPacketCapture = &respr
+		v.beginStartPacketCapture.add(req, beginStartPacketCapture)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginStartPacketCapture, req)
+	resp, err := server.PollerResponderNext(beginStartPacketCapture, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginStartPacketCapture.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginStartPacketCapture) {
-		v.beginStartPacketCapture = nil
+	if !server.PollerResponderMore(beginStartPacketCapture) {
+		v.beginStartPacketCapture.remove(req)
 	}
 
 	return resp, nil
@@ -557,7 +593,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStopPacke
 	if v.srv.BeginStopPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStopPacketCapture not implemented")}
 	}
-	if v.beginStopPacketCapture == nil {
+	beginStopPacketCapture := v.beginStopPacketCapture.get(req)
+	if beginStopPacketCapture == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopPacketCapture`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -580,19 +617,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginStopPacke
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginStopPacketCapture = &respr
+		beginStopPacketCapture = &respr
+		v.beginStopPacketCapture.add(req, beginStopPacketCapture)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginStopPacketCapture, req)
+	resp, err := server.PollerResponderNext(beginStopPacketCapture, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginStopPacketCapture.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginStopPacketCapture) {
-		v.beginStopPacketCapture = nil
+	if !server.PollerResponderMore(beginStopPacketCapture) {
+		v.beginStopPacketCapture.remove(req)
 	}
 
 	return resp, nil
@@ -602,7 +641,8 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginUpdateTag
 	if v.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
-	if v.beginUpdateTags == nil {
+	beginUpdateTags := v.beginUpdateTags.get(req)
+	if beginUpdateTags == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/connections/(?P<virtualNetworkGatewayConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -625,19 +665,21 @@ func (v *VirtualNetworkGatewayConnectionsServerTransport) dispatchBeginUpdateTag
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginUpdateTags = &respr
+		beginUpdateTags = &respr
+		v.beginUpdateTags.add(req, beginUpdateTags)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginUpdateTags, req)
+	resp, err := server.PollerResponderNext(beginUpdateTags, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdateTags.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginUpdateTags) {
-		v.beginUpdateTags = nil
+	if !server.PollerResponderMore(beginUpdateTags) {
+		v.beginUpdateTags.remove(req)
 	}
 
 	return resp, nil

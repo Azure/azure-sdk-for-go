@@ -26,21 +26,47 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		t.Skipf("Ignoring poller-based test")
 	}
 
-	cred, err := azopenai.NewKeyCredential(apiKey)
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(endpoint, cred, "", newClientOptionsForTest(t))
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
 }
 
+func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
+	}
+
+	client := newBogusAzureOpenAIClient(t)
+	testImageGenerationFailure(t, client)
+}
+
+func TestImageGeneration_OpenAI_WithError(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
+	client := newBogusOpenAIClient(t)
+	testImageGenerationFailure(t, client)
+}
+
 func TestImageGeneration_OpenAI_Base64(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
+	}
+
 	client := newOpenAIClientForTest(t)
 	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
 }
@@ -75,4 +101,18 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 			require.NoError(t, err)
 		}
 	}
+}
+
+func testImageGenerationFailure(t *testing.T, bogusClient *azopenai.Client) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	resp, err := bogusClient.CreateImage(ctx, azopenai.ImageGenerationOptions{
+		Prompt:         to.Ptr("a cat"),
+		Size:           to.Ptr(azopenai.ImageSize256x256),
+		ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+	}, nil)
+	require.Empty(t, resp)
+
+	assertResponseIsError(t, err)
 }

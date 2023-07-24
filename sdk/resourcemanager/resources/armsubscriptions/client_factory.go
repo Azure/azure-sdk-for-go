@@ -35,22 +35,22 @@ func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOpti
 	}, nil
 }
 
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewClient() *Client {
 	subClient, _ := NewClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewTenantsClient() *TenantsClient {
-	subClient, _ := NewTenantsClient(c.credential, c.options)
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewSubscriptionClient() *SubscriptionClient {
 	subClient, _ := NewSubscriptionClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTenantsClient() *TenantsClient {
+	subClient, _ := NewTenantsClient(c.credential, c.options)
 	return subClient
 }

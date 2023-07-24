@@ -29,17 +29,20 @@ type UsageServer struct {
 }
 
 // NewUsageServerTransport creates a new instance of UsageServerTransport with the provided implementation.
-// The returned UsageServerTransport instance is connected to an instance of armcompute.UsageClient by way of the
-// undefined.Transporter field.
+// The returned UsageServerTransport instance is connected to an instance of armcompute.UsageClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsageServerTransport(srv *UsageServer) *UsageServerTransport {
-	return &UsageServerTransport{srv: srv}
+	return &UsageServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.UsageClientListResponse]](),
+	}
 }
 
 // UsageServerTransport connects instances of armcompute.UsageClient to instances of UsageServer.
 // Don't use this type directly, use NewUsageServerTransport instead.
 type UsageServerTransport struct {
 	srv          *UsageServer
-	newListPager *azfake.PagerResponder[armcompute.UsageClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.UsageClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsageServerTransport.
@@ -71,7 +74,8 @@ func (u *UsageServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	if u.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if u.newListPager == nil {
+	newListPager := u.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -83,20 +87,22 @@ func (u *UsageServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 			return nil, err
 		}
 		resp := u.srv.NewListPager(locationUnescaped, nil)
-		u.newListPager = &resp
-		server.PagerResponderInjectNextLinks(u.newListPager, req, func(page *armcompute.UsageClientListResponse, createLink func() string) {
+		newListPager = &resp
+		u.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.UsageClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(u.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(u.newListPager) {
-		u.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		u.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -11,8 +11,24 @@ package armcognitiveservices
 
 const (
 	moduleName    = "armcognitiveservices"
-	moduleVersion = "v1.4.1"
+	moduleVersion = "v1.5.0"
 )
+
+// AbusePenaltyAction - The action of AbusePenalty.
+type AbusePenaltyAction string
+
+const (
+	AbusePenaltyActionBlock    AbusePenaltyAction = "Block"
+	AbusePenaltyActionThrottle AbusePenaltyAction = "Throttle"
+)
+
+// PossibleAbusePenaltyActionValues returns the possible values for the AbusePenaltyAction const type.
+func PossibleAbusePenaltyActionValues() []AbusePenaltyAction {
+	return []AbusePenaltyAction{
+		AbusePenaltyActionBlock,
+		AbusePenaltyActionThrottle,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -74,13 +90,33 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DeploymentModelVersionUpgradeOption - Deployment model version upgrade option.
+type DeploymentModelVersionUpgradeOption string
+
+const (
+	DeploymentModelVersionUpgradeOptionNoAutoUpgrade                  DeploymentModelVersionUpgradeOption = "NoAutoUpgrade"
+	DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired      DeploymentModelVersionUpgradeOption = "OnceCurrentVersionExpired"
+	DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable DeploymentModelVersionUpgradeOption = "OnceNewDefaultVersionAvailable"
+)
+
+// PossibleDeploymentModelVersionUpgradeOptionValues returns the possible values for the DeploymentModelVersionUpgradeOption const type.
+func PossibleDeploymentModelVersionUpgradeOptionValues() []DeploymentModelVersionUpgradeOption {
+	return []DeploymentModelVersionUpgradeOption{
+		DeploymentModelVersionUpgradeOptionNoAutoUpgrade,
+		DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired,
+		DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable,
+	}
+}
+
 // DeploymentProvisioningState - Gets the status of the resource at the time the operation was called.
 type DeploymentProvisioningState string
 
 const (
 	DeploymentProvisioningStateAccepted  DeploymentProvisioningState = "Accepted"
+	DeploymentProvisioningStateCanceled  DeploymentProvisioningState = "Canceled"
 	DeploymentProvisioningStateCreating  DeploymentProvisioningState = "Creating"
 	DeploymentProvisioningStateDeleting  DeploymentProvisioningState = "Deleting"
+	DeploymentProvisioningStateDisabled  DeploymentProvisioningState = "Disabled"
 	DeploymentProvisioningStateFailed    DeploymentProvisioningState = "Failed"
 	DeploymentProvisioningStateMoving    DeploymentProvisioningState = "Moving"
 	DeploymentProvisioningStateSucceeded DeploymentProvisioningState = "Succeeded"
@@ -90,8 +126,10 @@ const (
 func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
 	return []DeploymentProvisioningState{
 		DeploymentProvisioningStateAccepted,
+		DeploymentProvisioningStateCanceled,
 		DeploymentProvisioningStateCreating,
 		DeploymentProvisioningStateDeleting,
+		DeploymentProvisioningStateDisabled,
 		DeploymentProvisioningStateFailed,
 		DeploymentProvisioningStateMoving,
 		DeploymentProvisioningStateSucceeded,
@@ -120,6 +158,7 @@ type HostingModel string
 const (
 	HostingModelConnectedContainer    HostingModel = "ConnectedContainer"
 	HostingModelDisconnectedContainer HostingModel = "DisconnectedContainer"
+	HostingModelProvisionedWeb        HostingModel = "ProvisionedWeb"
 	HostingModelWeb                   HostingModel = "Web"
 )
 
@@ -128,6 +167,7 @@ func PossibleHostingModelValues() []HostingModel {
 	return []HostingModel{
 		HostingModelConnectedContainer,
 		HostingModelDisconnectedContainer,
+		HostingModelProvisionedWeb,
 		HostingModelWeb,
 	}
 }

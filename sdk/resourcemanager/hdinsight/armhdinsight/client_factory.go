@@ -39,18 +39,13 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewClustersClient() *ClustersClient {
-	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewApplicationsClient() *ApplicationsClient {
 	subClient, _ := NewApplicationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewLocationsClient() *LocationsClient {
-	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewClustersClient() *ClustersClient {
+	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -64,23 +59,13 @@ func (c *ClientFactory) NewExtensionsClient() *ExtensionsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewScriptActionsClient() *ScriptActionsClient {
-	subClient, _ := NewScriptActionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewScriptExecutionHistoryClient() *ScriptExecutionHistoryClient {
-	subClient, _ := NewScriptExecutionHistoryClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewLocationsClient() *LocationsClient {
+	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
-	subClient, _ := NewVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -91,5 +76,20 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewScriptActionsClient() *ScriptActionsClient {
+	subClient, _ := NewScriptActionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewScriptExecutionHistoryClient() *ScriptExecutionHistoryClient {
+	subClient, _ := NewScriptExecutionHistoryClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
+	subClient, _ := NewVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

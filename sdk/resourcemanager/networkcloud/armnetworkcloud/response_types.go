@@ -9,6 +9,31 @@
 
 package armnetworkcloud
 
+// AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.BeginCreateOrUpdate.
+type AgentPoolsClientCreateOrUpdateResponse struct {
+	AgentPool
+}
+
+// AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.BeginDelete.
+type AgentPoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AgentPoolsClientGetResponse contains the response from method AgentPoolsClient.Get.
+type AgentPoolsClientGetResponse struct {
+	AgentPool
+}
+
+// AgentPoolsClientListByKubernetesClusterResponse contains the response from method AgentPoolsClient.NewListByKubernetesClusterPager.
+type AgentPoolsClientListByKubernetesClusterResponse struct {
+	AgentPoolList
+}
+
+// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
+type AgentPoolsClientUpdateResponse struct {
+	AgentPool
+}
+
 // BareMetalMachineKeySetsClientCreateOrUpdateResponse contains the response from method BareMetalMachineKeySetsClient.BeginCreateOrUpdate.
 type BareMetalMachineKeySetsClientCreateOrUpdateResponse struct {
 	BareMetalMachineKeySet
@@ -24,8 +49,8 @@ type BareMetalMachineKeySetsClientGetResponse struct {
 	BareMetalMachineKeySet
 }
 
-// BareMetalMachineKeySetsClientListByResourceGroupResponse contains the response from method BareMetalMachineKeySetsClient.NewListByResourceGroupPager.
-type BareMetalMachineKeySetsClientListByResourceGroupResponse struct {
+// BareMetalMachineKeySetsClientListByClusterResponse contains the response from method BareMetalMachineKeySetsClient.NewListByClusterPager.
+type BareMetalMachineKeySetsClientListByClusterResponse struct {
 	BareMetalMachineKeySetList
 }
 
@@ -134,8 +159,8 @@ type BmcKeySetsClientGetResponse struct {
 	BmcKeySet
 }
 
-// BmcKeySetsClientListByResourceGroupResponse contains the response from method BmcKeySetsClient.NewListByResourceGroupPager.
-type BmcKeySetsClientListByResourceGroupResponse struct {
+// BmcKeySetsClientListByClusterResponse contains the response from method BmcKeySetsClient.NewListByClusterPager.
+type BmcKeySetsClientListByClusterResponse struct {
 	BmcKeySetList
 }
 
@@ -259,8 +284,8 @@ type ConsolesClientGetResponse struct {
 	Console
 }
 
-// ConsolesClientListByResourceGroupResponse contains the response from method ConsolesClient.NewListByResourceGroupPager.
-type ConsolesClientListByResourceGroupResponse struct {
+// ConsolesClientListByVirtualMachineResponse contains the response from method ConsolesClient.NewListByVirtualMachinePager.
+type ConsolesClientListByVirtualMachineResponse struct {
 	ConsoleList
 }
 
@@ -269,69 +294,39 @@ type ConsolesClientUpdateResponse struct {
 	Console
 }
 
-// DefaultCniNetworksClientCreateOrUpdateResponse contains the response from method DefaultCniNetworksClient.BeginCreateOrUpdate.
-type DefaultCniNetworksClientCreateOrUpdateResponse struct {
-	DefaultCniNetwork
+// KubernetesClustersClientCreateOrUpdateResponse contains the response from method KubernetesClustersClient.BeginCreateOrUpdate.
+type KubernetesClustersClientCreateOrUpdateResponse struct {
+	KubernetesCluster
 }
 
-// DefaultCniNetworksClientDeleteResponse contains the response from method DefaultCniNetworksClient.BeginDelete.
-type DefaultCniNetworksClientDeleteResponse struct {
+// KubernetesClustersClientDeleteResponse contains the response from method KubernetesClustersClient.BeginDelete.
+type KubernetesClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DefaultCniNetworksClientGetResponse contains the response from method DefaultCniNetworksClient.Get.
-type DefaultCniNetworksClientGetResponse struct {
-	DefaultCniNetwork
+// KubernetesClustersClientGetResponse contains the response from method KubernetesClustersClient.Get.
+type KubernetesClustersClientGetResponse struct {
+	KubernetesCluster
 }
 
-// DefaultCniNetworksClientListByResourceGroupResponse contains the response from method DefaultCniNetworksClient.NewListByResourceGroupPager.
-type DefaultCniNetworksClientListByResourceGroupResponse struct {
-	DefaultCniNetworkList
+// KubernetesClustersClientListByResourceGroupResponse contains the response from method KubernetesClustersClient.NewListByResourceGroupPager.
+type KubernetesClustersClientListByResourceGroupResponse struct {
+	KubernetesClusterList
 }
 
-// DefaultCniNetworksClientListBySubscriptionResponse contains the response from method DefaultCniNetworksClient.NewListBySubscriptionPager.
-type DefaultCniNetworksClientListBySubscriptionResponse struct {
-	DefaultCniNetworkList
+// KubernetesClustersClientListBySubscriptionResponse contains the response from method KubernetesClustersClient.NewListBySubscriptionPager.
+type KubernetesClustersClientListBySubscriptionResponse struct {
+	KubernetesClusterList
 }
 
-// DefaultCniNetworksClientUpdateResponse contains the response from method DefaultCniNetworksClient.Update.
-type DefaultCniNetworksClientUpdateResponse struct {
-	DefaultCniNetwork
-}
-
-// HybridAksClustersClientCreateOrUpdateResponse contains the response from method HybridAksClustersClient.BeginCreateOrUpdate.
-type HybridAksClustersClientCreateOrUpdateResponse struct {
-	HybridAksCluster
-}
-
-// HybridAksClustersClientDeleteResponse contains the response from method HybridAksClustersClient.BeginDelete.
-type HybridAksClustersClientDeleteResponse struct {
+// KubernetesClustersClientRestartNodeResponse contains the response from method KubernetesClustersClient.BeginRestartNode.
+type KubernetesClustersClientRestartNodeResponse struct {
 	// placeholder for future response values
 }
 
-// HybridAksClustersClientGetResponse contains the response from method HybridAksClustersClient.Get.
-type HybridAksClustersClientGetResponse struct {
-	HybridAksCluster
-}
-
-// HybridAksClustersClientListByResourceGroupResponse contains the response from method HybridAksClustersClient.NewListByResourceGroupPager.
-type HybridAksClustersClientListByResourceGroupResponse struct {
-	HybridAksClusterList
-}
-
-// HybridAksClustersClientListBySubscriptionResponse contains the response from method HybridAksClustersClient.NewListBySubscriptionPager.
-type HybridAksClustersClientListBySubscriptionResponse struct {
-	HybridAksClusterList
-}
-
-// HybridAksClustersClientRestartNodeResponse contains the response from method HybridAksClustersClient.BeginRestartNode.
-type HybridAksClustersClientRestartNodeResponse struct {
-	// placeholder for future response values
-}
-
-// HybridAksClustersClientUpdateResponse contains the response from method HybridAksClustersClient.Update.
-type HybridAksClustersClientUpdateResponse struct {
-	HybridAksCluster
+// KubernetesClustersClientUpdateResponse contains the response from method KubernetesClustersClient.BeginUpdate.
+type KubernetesClustersClientUpdateResponse struct {
+	KubernetesCluster
 }
 
 // L2NetworksClientCreateOrUpdateResponse contains the response from method L2NetworksClient.BeginCreateOrUpdate.
@@ -409,8 +404,8 @@ type MetricsConfigurationsClientGetResponse struct {
 	ClusterMetricsConfiguration
 }
 
-// MetricsConfigurationsClientListByResourceGroupResponse contains the response from method MetricsConfigurationsClient.NewListByResourceGroupPager.
-type MetricsConfigurationsClientListByResourceGroupResponse struct {
+// MetricsConfigurationsClientListByClusterResponse contains the response from method MetricsConfigurationsClient.NewListByClusterPager.
+type MetricsConfigurationsClientListByClusterResponse struct {
 	ClusterMetricsConfigurationList
 }
 
@@ -507,11 +502,6 @@ type StorageAppliancesClientRunReadCommandsResponse struct {
 // StorageAppliancesClientUpdateResponse contains the response from method StorageAppliancesClient.BeginUpdate.
 type StorageAppliancesClientUpdateResponse struct {
 	StorageAppliance
-}
-
-// StorageAppliancesClientValidateHardwareResponse contains the response from method StorageAppliancesClient.BeginValidateHardware.
-type StorageAppliancesClientValidateHardwareResponse struct {
-	// placeholder for future response values
 }
 
 // TrunkedNetworksClientCreateOrUpdateResponse contains the response from method TrunkedNetworksClient.BeginCreateOrUpdate.

@@ -49,8 +49,8 @@ type MarketplaceAgreementsServer struct {
 }
 
 // NewMarketplaceAgreementsServerTransport creates a new instance of MarketplaceAgreementsServerTransport with the provided implementation.
-// The returned MarketplaceAgreementsServerTransport instance is connected to an instance of armmarketplaceordering.MarketplaceAgreementsClient by way of the
-// undefined.Transporter field.
+// The returned MarketplaceAgreementsServerTransport instance is connected to an instance of armmarketplaceordering.MarketplaceAgreementsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMarketplaceAgreementsServerTransport(srv *MarketplaceAgreementsServer) *MarketplaceAgreementsServerTransport {
 	return &MarketplaceAgreementsServerTransport{srv: srv}
 }

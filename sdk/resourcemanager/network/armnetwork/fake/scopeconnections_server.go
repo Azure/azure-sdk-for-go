@@ -43,17 +43,20 @@ type ScopeConnectionsServer struct {
 }
 
 // NewScopeConnectionsServerTransport creates a new instance of ScopeConnectionsServerTransport with the provided implementation.
-// The returned ScopeConnectionsServerTransport instance is connected to an instance of armnetwork.ScopeConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned ScopeConnectionsServerTransport instance is connected to an instance of armnetwork.ScopeConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScopeConnectionsServerTransport(srv *ScopeConnectionsServer) *ScopeConnectionsServerTransport {
-	return &ScopeConnectionsServerTransport{srv: srv}
+	return &ScopeConnectionsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ScopeConnectionsClientListResponse]](),
+	}
 }
 
 // ScopeConnectionsServerTransport connects instances of armnetwork.ScopeConnectionsClient to instances of ScopeConnectionsServer.
 // Don't use this type directly, use NewScopeConnectionsServerTransport instead.
 type ScopeConnectionsServerTransport struct {
 	srv          *ScopeConnectionsServer
-	newListPager *azfake.PagerResponder[armnetwork.ScopeConnectionsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.ScopeConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScopeConnectionsServerTransport.
@@ -206,7 +209,8 @@ func (s *ScopeConnectionsServerTransport) dispatchNewListPager(req *http.Request
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -249,20 +253,22 @@ func (s *ScopeConnectionsServerTransport) dispatchNewListPager(req *http.Request
 			}
 		}
 		resp := s.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.ScopeConnectionsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ScopeConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

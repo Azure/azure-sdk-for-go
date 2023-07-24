@@ -63,22 +63,30 @@ type VirtualNetworksServer struct {
 }
 
 // NewVirtualNetworksServerTransport creates a new instance of VirtualNetworksServerTransport with the provided implementation.
-// The returned VirtualNetworksServerTransport instance is connected to an instance of armnetwork.VirtualNetworksClient by way of the
-// undefined.Transporter field.
+// The returned VirtualNetworksServerTransport instance is connected to an instance of armnetwork.VirtualNetworksClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualNetworksServerTransport(srv *VirtualNetworksServer) *VirtualNetworksServerTransport {
-	return &VirtualNetworksServerTransport{srv: srv}
+	return &VirtualNetworksServerTransport{
+		srv:                           srv,
+		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientCreateOrUpdateResponse]](),
+		beginDelete:                   newTracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientDeleteResponse]](),
+		newListPager:                  newTracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListResponse]](),
+		newListAllPager:               newTracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListAllResponse]](),
+		beginListDdosProtectionStatus: newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse]]](),
+		newListUsagePager:             newTracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse]](),
+	}
 }
 
 // VirtualNetworksServerTransport connects instances of armnetwork.VirtualNetworksClient to instances of VirtualNetworksServer.
 // Don't use this type directly, use NewVirtualNetworksServerTransport instead.
 type VirtualNetworksServerTransport struct {
 	srv                           *VirtualNetworksServer
-	beginCreateOrUpdate           *azfake.PollerResponder[armnetwork.VirtualNetworksClientCreateOrUpdateResponse]
-	beginDelete                   *azfake.PollerResponder[armnetwork.VirtualNetworksClientDeleteResponse]
-	newListPager                  *azfake.PagerResponder[armnetwork.VirtualNetworksClientListResponse]
-	newListAllPager               *azfake.PagerResponder[armnetwork.VirtualNetworksClientListAllResponse]
-	beginListDdosProtectionStatus *azfake.PollerResponder[azfake.PagerResponder[armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse]]
-	newListUsagePager             *azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse]
+	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientCreateOrUpdateResponse]]
+	beginDelete                   *tracker[azfake.PollerResponder[armnetwork.VirtualNetworksClientDeleteResponse]]
+	newListPager                  *tracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListResponse]]
+	newListAllPager               *tracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListAllResponse]]
+	beginListDdosProtectionStatus *tracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse]]]
+	newListUsagePager             *tracker[azfake.PagerResponder[armnetwork.VirtualNetworksClientListUsageResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworksServerTransport.
@@ -164,7 +172,8 @@ func (v *VirtualNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -187,19 +196,21 @@ func (v *VirtualNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -209,7 +220,8 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -228,19 +240,21 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -295,7 +309,8 @@ func (v *VirtualNetworksServerTransport) dispatchNewListPager(req *http.Request)
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -307,20 +322,22 @@ func (v *VirtualNetworksServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, err
 		}
 		resp := v.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualNetworksClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualNetworksClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -329,7 +346,8 @@ func (v *VirtualNetworksServerTransport) dispatchNewListAllPager(req *http.Reque
 	if v.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if v.newListAllPager == nil {
+	newListAllPager := v.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -337,20 +355,22 @@ func (v *VirtualNetworksServerTransport) dispatchNewListAllPager(req *http.Reque
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := v.srv.NewListAllPager(nil)
-		v.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListAllPager, req, func(page *armnetwork.VirtualNetworksClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		v.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.VirtualNetworksClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListAllPager) {
-		v.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		v.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -359,7 +379,8 @@ func (v *VirtualNetworksServerTransport) dispatchBeginListDdosProtectionStatus(r
 	if v.srv.BeginListDdosProtectionStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListDdosProtectionStatus not implemented")}
 	}
-	if v.beginListDdosProtectionStatus == nil {
+	beginListDdosProtectionStatus := v.beginListDdosProtectionStatus.get(req)
+	if beginListDdosProtectionStatus == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ddosProtectionStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -405,19 +426,21 @@ func (v *VirtualNetworksServerTransport) dispatchBeginListDdosProtectionStatus(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginListDdosProtectionStatus = &respr
+		beginListDdosProtectionStatus = &respr
+		v.beginListDdosProtectionStatus.add(req, beginListDdosProtectionStatus)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginListDdosProtectionStatus, req)
+	resp, err := server.PollerResponderNext(beginListDdosProtectionStatus, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginListDdosProtectionStatus.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginListDdosProtectionStatus) {
-		v.beginListDdosProtectionStatus = nil
+	if !server.PollerResponderMore(beginListDdosProtectionStatus) {
+		v.beginListDdosProtectionStatus.remove(req)
 	}
 
 	return resp, nil
@@ -427,7 +450,8 @@ func (v *VirtualNetworksServerTransport) dispatchNewListUsagePager(req *http.Req
 	if v.srv.NewListUsagePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListUsagePager not implemented")}
 	}
-	if v.newListUsagePager == nil {
+	newListUsagePager := v.newListUsagePager.get(req)
+	if newListUsagePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -443,20 +467,22 @@ func (v *VirtualNetworksServerTransport) dispatchNewListUsagePager(req *http.Req
 			return nil, err
 		}
 		resp := v.srv.NewListUsagePager(resourceGroupNameUnescaped, virtualNetworkNameUnescaped, nil)
-		v.newListUsagePager = &resp
-		server.PagerResponderInjectNextLinks(v.newListUsagePager, req, func(page *armnetwork.VirtualNetworksClientListUsageResponse, createLink func() string) {
+		newListUsagePager = &resp
+		v.newListUsagePager.add(req, newListUsagePager)
+		server.PagerResponderInjectNextLinks(newListUsagePager, req, func(page *armnetwork.VirtualNetworksClientListUsageResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListUsagePager, req)
+	resp, err := server.PagerResponderNext(newListUsagePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListUsagePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListUsagePager) {
-		v.newListUsagePager = nil
+	if !server.PagerResponderMore(newListUsagePager) {
+		v.newListUsagePager.remove(req)
 	}
 	return resp, nil
 }

@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 type userAgentValidatingPolicy struct {
@@ -42,13 +41,9 @@ func TestIMDSEndpointParse(t *testing.T) {
 }
 
 func TestManagedIdentityClient_UserAgent(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: srv, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
+			Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
 		},
 	}
 	client, err := newManagedIdentityClient(&options)
@@ -59,20 +54,13 @@ func TestManagedIdentityClient_UserAgent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if count := srv.Requests(); count != 1 {
-		t.Fatalf("expected 1 token request, got %d", count)
-	}
 }
 
 func TestManagedIdentityClient_ApplicationID(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	appID := "customvalue"
 	options := ManagedIdentityCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: srv, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t, appID: appID}},
+			Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t, appID: appID}},
 		},
 	}
 	options.Telemetry.ApplicationID = appID
@@ -83,8 +71,5 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
 	if err != nil {
 		t.Fatal(err)
-	}
-	if count := srv.Requests(); count != 1 {
-		t.Fatalf("expected 1 token request, got %d", count)
 	}
 }

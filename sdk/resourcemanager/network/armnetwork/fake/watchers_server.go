@@ -97,30 +97,46 @@ type WatchersServer struct {
 }
 
 // NewWatchersServerTransport creates a new instance of WatchersServerTransport with the provided implementation.
-// The returned WatchersServerTransport instance is connected to an instance of armnetwork.WatchersClient by way of the
-// undefined.Transporter field.
+// The returned WatchersServerTransport instance is connected to an instance of armnetwork.WatchersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
-	return &WatchersServerTransport{srv: srv}
+	return &WatchersServerTransport{
+		srv:                                    srv,
+		beginCheckConnectivity:                 newTracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]](),
+		beginDelete:                            newTracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]](),
+		beginGetAzureReachabilityReport:        newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]](),
+		beginGetFlowLogStatus:                  newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetFlowLogStatusResponse]](),
+		beginGetNetworkConfigurationDiagnostic: newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetNetworkConfigurationDiagnosticResponse]](),
+		beginGetNextHop:                        newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetNextHopResponse]](),
+		beginGetTroubleshooting:                newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse]](),
+		beginGetTroubleshootingResult:          newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResultResponse]](),
+		beginGetVMSecurityRules:                newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]](),
+		newListAllPager:                        newTracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]](),
+		beginListAvailableProviders:            newTracker[azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse]](),
+		beginSetFlowLogConfiguration:           newTracker[azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse]](),
+		beginVerifyIPFlow:                      newTracker[azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse]](),
+	}
 }
 
 // WatchersServerTransport connects instances of armnetwork.WatchersClient to instances of WatchersServer.
 // Don't use this type directly, use NewWatchersServerTransport instead.
 type WatchersServerTransport struct {
 	srv                                    *WatchersServer
-	beginCheckConnectivity                 *azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]
-	beginDelete                            *azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]
-	beginGetAzureReachabilityReport        *azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]
-	beginGetFlowLogStatus                  *azfake.PollerResponder[armnetwork.WatchersClientGetFlowLogStatusResponse]
-	beginGetNetworkConfigurationDiagnostic *azfake.PollerResponder[armnetwork.WatchersClientGetNetworkConfigurationDiagnosticResponse]
-	beginGetNextHop                        *azfake.PollerResponder[armnetwork.WatchersClientGetNextHopResponse]
-	beginGetTroubleshooting                *azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse]
-	beginGetTroubleshootingResult          *azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResultResponse]
-	beginGetVMSecurityRules                *azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse]
-	newListPager                           *azfake.PagerResponder[armnetwork.WatchersClientListResponse]
-	newListAllPager                        *azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]
-	beginListAvailableProviders            *azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse]
-	beginSetFlowLogConfiguration           *azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse]
-	beginVerifyIPFlow                      *azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse]
+	beginCheckConnectivity                 *tracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]]
+	beginDelete                            *tracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]]
+	beginGetAzureReachabilityReport        *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]]
+	beginGetFlowLogStatus                  *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetFlowLogStatusResponse]]
+	beginGetNetworkConfigurationDiagnostic *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetNetworkConfigurationDiagnosticResponse]]
+	beginGetNextHop                        *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetNextHopResponse]]
+	beginGetTroubleshooting                *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse]]
+	beginGetTroubleshootingResult          *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResultResponse]]
+	beginGetVMSecurityRules                *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]]
+	newListAllPager                        *tracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]]
+	beginListAvailableProviders            *tracker[azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse]]
+	beginSetFlowLogConfiguration           *tracker[azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse]]
+	beginVerifyIPFlow                      *tracker[azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse]]
 }
 
 // Do implements the policy.Transporter interface for WatchersServerTransport.
@@ -186,7 +202,8 @@ func (w *WatchersServerTransport) dispatchBeginCheckConnectivity(req *http.Reque
 	if w.srv.BeginCheckConnectivity == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCheckConnectivity not implemented")}
 	}
-	if w.beginCheckConnectivity == nil {
+	beginCheckConnectivity := w.beginCheckConnectivity.get(req)
+	if beginCheckConnectivity == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectivityCheck`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -209,19 +226,21 @@ func (w *WatchersServerTransport) dispatchBeginCheckConnectivity(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginCheckConnectivity = &respr
+		beginCheckConnectivity = &respr
+		w.beginCheckConnectivity.add(req, beginCheckConnectivity)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginCheckConnectivity, req)
+	resp, err := server.PollerResponderNext(beginCheckConnectivity, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginCheckConnectivity.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginCheckConnectivity) {
-		w.beginCheckConnectivity = nil
+	if !server.PollerResponderMore(beginCheckConnectivity) {
+		w.beginCheckConnectivity.remove(req)
 	}
 
 	return resp, nil
@@ -268,7 +287,8 @@ func (w *WatchersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if w.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if w.beginDelete == nil {
+	beginDelete := w.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -287,19 +307,21 @@ func (w *WatchersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginDelete = &respr
+		beginDelete = &respr
+		w.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginDelete) {
-		w.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		w.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -342,7 +364,8 @@ func (w *WatchersServerTransport) dispatchBeginGetAzureReachabilityReport(req *h
 	if w.srv.BeginGetAzureReachabilityReport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetAzureReachabilityReport not implemented")}
 	}
-	if w.beginGetAzureReachabilityReport == nil {
+	beginGetAzureReachabilityReport := w.beginGetAzureReachabilityReport.get(req)
+	if beginGetAzureReachabilityReport == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/azureReachabilityReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -365,19 +388,21 @@ func (w *WatchersServerTransport) dispatchBeginGetAzureReachabilityReport(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetAzureReachabilityReport = &respr
+		beginGetAzureReachabilityReport = &respr
+		w.beginGetAzureReachabilityReport.add(req, beginGetAzureReachabilityReport)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetAzureReachabilityReport, req)
+	resp, err := server.PollerResponderNext(beginGetAzureReachabilityReport, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetAzureReachabilityReport.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetAzureReachabilityReport) {
-		w.beginGetAzureReachabilityReport = nil
+	if !server.PollerResponderMore(beginGetAzureReachabilityReport) {
+		w.beginGetAzureReachabilityReport.remove(req)
 	}
 
 	return resp, nil
@@ -387,7 +412,8 @@ func (w *WatchersServerTransport) dispatchBeginGetFlowLogStatus(req *http.Reques
 	if w.srv.BeginGetFlowLogStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetFlowLogStatus not implemented")}
 	}
-	if w.beginGetFlowLogStatus == nil {
+	beginGetFlowLogStatus := w.beginGetFlowLogStatus.get(req)
+	if beginGetFlowLogStatus == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryFlowLogStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -410,19 +436,21 @@ func (w *WatchersServerTransport) dispatchBeginGetFlowLogStatus(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetFlowLogStatus = &respr
+		beginGetFlowLogStatus = &respr
+		w.beginGetFlowLogStatus.add(req, beginGetFlowLogStatus)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetFlowLogStatus, req)
+	resp, err := server.PollerResponderNext(beginGetFlowLogStatus, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetFlowLogStatus.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetFlowLogStatus) {
-		w.beginGetFlowLogStatus = nil
+	if !server.PollerResponderMore(beginGetFlowLogStatus) {
+		w.beginGetFlowLogStatus.remove(req)
 	}
 
 	return resp, nil
@@ -432,7 +460,8 @@ func (w *WatchersServerTransport) dispatchBeginGetNetworkConfigurationDiagnostic
 	if w.srv.BeginGetNetworkConfigurationDiagnostic == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetNetworkConfigurationDiagnostic not implemented")}
 	}
-	if w.beginGetNetworkConfigurationDiagnostic == nil {
+	beginGetNetworkConfigurationDiagnostic := w.beginGetNetworkConfigurationDiagnostic.get(req)
+	if beginGetNetworkConfigurationDiagnostic == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkConfigurationDiagnostic`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -455,19 +484,21 @@ func (w *WatchersServerTransport) dispatchBeginGetNetworkConfigurationDiagnostic
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetNetworkConfigurationDiagnostic = &respr
+		beginGetNetworkConfigurationDiagnostic = &respr
+		w.beginGetNetworkConfigurationDiagnostic.add(req, beginGetNetworkConfigurationDiagnostic)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetNetworkConfigurationDiagnostic, req)
+	resp, err := server.PollerResponderNext(beginGetNetworkConfigurationDiagnostic, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetNetworkConfigurationDiagnostic.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetNetworkConfigurationDiagnostic) {
-		w.beginGetNetworkConfigurationDiagnostic = nil
+	if !server.PollerResponderMore(beginGetNetworkConfigurationDiagnostic) {
+		w.beginGetNetworkConfigurationDiagnostic.remove(req)
 	}
 
 	return resp, nil
@@ -477,7 +508,8 @@ func (w *WatchersServerTransport) dispatchBeginGetNextHop(req *http.Request) (*h
 	if w.srv.BeginGetNextHop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetNextHop not implemented")}
 	}
-	if w.beginGetNextHop == nil {
+	beginGetNextHop := w.beginGetNextHop.get(req)
+	if beginGetNextHop == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nextHop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -500,19 +532,21 @@ func (w *WatchersServerTransport) dispatchBeginGetNextHop(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetNextHop = &respr
+		beginGetNextHop = &respr
+		w.beginGetNextHop.add(req, beginGetNextHop)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetNextHop, req)
+	resp, err := server.PollerResponderNext(beginGetNextHop, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetNextHop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetNextHop) {
-		w.beginGetNextHop = nil
+	if !server.PollerResponderMore(beginGetNextHop) {
+		w.beginGetNextHop.remove(req)
 	}
 
 	return resp, nil
@@ -559,7 +593,8 @@ func (w *WatchersServerTransport) dispatchBeginGetTroubleshooting(req *http.Requ
 	if w.srv.BeginGetTroubleshooting == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetTroubleshooting not implemented")}
 	}
-	if w.beginGetTroubleshooting == nil {
+	beginGetTroubleshooting := w.beginGetTroubleshooting.get(req)
+	if beginGetTroubleshooting == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/troubleshoot`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -582,19 +617,21 @@ func (w *WatchersServerTransport) dispatchBeginGetTroubleshooting(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetTroubleshooting = &respr
+		beginGetTroubleshooting = &respr
+		w.beginGetTroubleshooting.add(req, beginGetTroubleshooting)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetTroubleshooting, req)
+	resp, err := server.PollerResponderNext(beginGetTroubleshooting, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetTroubleshooting.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetTroubleshooting) {
-		w.beginGetTroubleshooting = nil
+	if !server.PollerResponderMore(beginGetTroubleshooting) {
+		w.beginGetTroubleshooting.remove(req)
 	}
 
 	return resp, nil
@@ -604,7 +641,8 @@ func (w *WatchersServerTransport) dispatchBeginGetTroubleshootingResult(req *htt
 	if w.srv.BeginGetTroubleshootingResult == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetTroubleshootingResult not implemented")}
 	}
-	if w.beginGetTroubleshootingResult == nil {
+	beginGetTroubleshootingResult := w.beginGetTroubleshootingResult.get(req)
+	if beginGetTroubleshootingResult == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryTroubleshootResult`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -627,19 +665,21 @@ func (w *WatchersServerTransport) dispatchBeginGetTroubleshootingResult(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetTroubleshootingResult = &respr
+		beginGetTroubleshootingResult = &respr
+		w.beginGetTroubleshootingResult.add(req, beginGetTroubleshootingResult)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetTroubleshootingResult, req)
+	resp, err := server.PollerResponderNext(beginGetTroubleshootingResult, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetTroubleshootingResult.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetTroubleshootingResult) {
-		w.beginGetTroubleshootingResult = nil
+	if !server.PollerResponderMore(beginGetTroubleshootingResult) {
+		w.beginGetTroubleshootingResult.remove(req)
 	}
 
 	return resp, nil
@@ -649,7 +689,8 @@ func (w *WatchersServerTransport) dispatchBeginGetVMSecurityRules(req *http.Requ
 	if w.srv.BeginGetVMSecurityRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetVMSecurityRules not implemented")}
 	}
-	if w.beginGetVMSecurityRules == nil {
+	beginGetVMSecurityRules := w.beginGetVMSecurityRules.get(req)
+	if beginGetVMSecurityRules == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityGroupView`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -672,19 +713,21 @@ func (w *WatchersServerTransport) dispatchBeginGetVMSecurityRules(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginGetVMSecurityRules = &respr
+		beginGetVMSecurityRules = &respr
+		w.beginGetVMSecurityRules.add(req, beginGetVMSecurityRules)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginGetVMSecurityRules, req)
+	resp, err := server.PollerResponderNext(beginGetVMSecurityRules, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginGetVMSecurityRules.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginGetVMSecurityRules) {
-		w.beginGetVMSecurityRules = nil
+	if !server.PollerResponderMore(beginGetVMSecurityRules) {
+		w.beginGetVMSecurityRules.remove(req)
 	}
 
 	return resp, nil
@@ -694,7 +737,8 @@ func (w *WatchersServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if w.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if w.newListPager == nil {
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -706,17 +750,19 @@ func (w *WatchersServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, err
 		}
 		resp := w.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		w.newListPager = &resp
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(w.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListPager) {
-		w.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -725,7 +771,8 @@ func (w *WatchersServerTransport) dispatchNewListAllPager(req *http.Request) (*h
 	if w.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if w.newListAllPager == nil {
+	newListAllPager := w.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -733,17 +780,19 @@ func (w *WatchersServerTransport) dispatchNewListAllPager(req *http.Request) (*h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListAllPager(nil)
-		w.newListAllPager = &resp
+		newListAllPager = &resp
+		w.newListAllPager.add(req, newListAllPager)
 	}
-	resp, err := server.PagerResponderNext(w.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListAllPager) {
-		w.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		w.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -752,7 +801,8 @@ func (w *WatchersServerTransport) dispatchBeginListAvailableProviders(req *http.
 	if w.srv.BeginListAvailableProviders == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListAvailableProviders not implemented")}
 	}
-	if w.beginListAvailableProviders == nil {
+	beginListAvailableProviders := w.beginListAvailableProviders.get(req)
+	if beginListAvailableProviders == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableProvidersList`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -775,19 +825,21 @@ func (w *WatchersServerTransport) dispatchBeginListAvailableProviders(req *http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginListAvailableProviders = &respr
+		beginListAvailableProviders = &respr
+		w.beginListAvailableProviders.add(req, beginListAvailableProviders)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginListAvailableProviders, req)
+	resp, err := server.PollerResponderNext(beginListAvailableProviders, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginListAvailableProviders.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginListAvailableProviders) {
-		w.beginListAvailableProviders = nil
+	if !server.PollerResponderMore(beginListAvailableProviders) {
+		w.beginListAvailableProviders.remove(req)
 	}
 
 	return resp, nil
@@ -797,7 +849,8 @@ func (w *WatchersServerTransport) dispatchBeginSetFlowLogConfiguration(req *http
 	if w.srv.BeginSetFlowLogConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginSetFlowLogConfiguration not implemented")}
 	}
-	if w.beginSetFlowLogConfiguration == nil {
+	beginSetFlowLogConfiguration := w.beginSetFlowLogConfiguration.get(req)
+	if beginSetFlowLogConfiguration == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configureFlowLog`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -820,19 +873,21 @@ func (w *WatchersServerTransport) dispatchBeginSetFlowLogConfiguration(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginSetFlowLogConfiguration = &respr
+		beginSetFlowLogConfiguration = &respr
+		w.beginSetFlowLogConfiguration.add(req, beginSetFlowLogConfiguration)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginSetFlowLogConfiguration, req)
+	resp, err := server.PollerResponderNext(beginSetFlowLogConfiguration, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginSetFlowLogConfiguration.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginSetFlowLogConfiguration) {
-		w.beginSetFlowLogConfiguration = nil
+	if !server.PollerResponderMore(beginSetFlowLogConfiguration) {
+		w.beginSetFlowLogConfiguration.remove(req)
 	}
 
 	return resp, nil
@@ -879,7 +934,8 @@ func (w *WatchersServerTransport) dispatchBeginVerifyIPFlow(req *http.Request) (
 	if w.srv.BeginVerifyIPFlow == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginVerifyIPFlow not implemented")}
 	}
-	if w.beginVerifyIPFlow == nil {
+	beginVerifyIPFlow := w.beginVerifyIPFlow.get(req)
+	if beginVerifyIPFlow == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipFlowVerify`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -902,19 +958,21 @@ func (w *WatchersServerTransport) dispatchBeginVerifyIPFlow(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginVerifyIPFlow = &respr
+		beginVerifyIPFlow = &respr
+		w.beginVerifyIPFlow.add(req, beginVerifyIPFlow)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginVerifyIPFlow, req)
+	resp, err := server.PollerResponderNext(beginVerifyIPFlow, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginVerifyIPFlow.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginVerifyIPFlow) {
-		w.beginVerifyIPFlow = nil
+	if !server.PollerResponderMore(beginVerifyIPFlow) {
+		w.beginVerifyIPFlow.remove(req)
 	}
 
 	return resp, nil

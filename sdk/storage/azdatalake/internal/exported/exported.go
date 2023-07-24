@@ -7,8 +7,11 @@
 package exported
 
 import (
+	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"strconv"
+	"strings"
 )
 
 const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
@@ -32,4 +35,20 @@ func FormatHTTPRange(r HTTPRange) *string {
 	}
 	dataRange := fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset)
 	return &dataRange
+}
+
+func ConvertToDFSError(err error) error {
+	if err == nil {
+		return nil
+	}
+	var responseErr *azcore.ResponseError
+	isRespErr := errors.As(err, &responseErr)
+	if isRespErr {
+		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "blob", "path", -1)
+		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Blob", "Path", -1)
+		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "container", "filesystem", -1)
+		responseErr.ErrorCode = strings.Replace(responseErr.ErrorCode, "Container", "Filesystem", -1)
+		return responseErr
+	}
+	return err
 }

@@ -7,56 +7,32 @@
 package file
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
+type EncryptionAlgorithmType = path.EncryptionAlgorithmType
 
 const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = path.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = path.EncryptionAlgorithmTypeAES256
 )
 
-// responses models:
+// response models:
 
-type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode
+type ImmutabilityPolicyMode = path.ImmutabilityPolicyMode
 
 const (
-	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeMutable
-	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeUnlocked
-	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = blob.ImmutabilityPolicyModeLocked
+	ImmutabilityPolicyModeMutable  ImmutabilityPolicyMode = path.ImmutabilityPolicyModeMutable
+	ImmutabilityPolicyModeUnlocked ImmutabilityPolicyMode = path.ImmutabilityPolicyModeUnlocked
+	ImmutabilityPolicyModeLocked   ImmutabilityPolicyMode = path.ImmutabilityPolicyModeLocked
 )
 
-type CopyStatusType = blob.CopyStatusType
+// CopyStatusType defines values for CopyStatusType
+type CopyStatusType = path.CopyStatusType
 
 const (
-	CopyStatusTypePending CopyStatusType = blob.CopyStatusTypePending
-	CopyStatusTypeSuccess CopyStatusType = blob.CopyStatusTypeSuccess
-	CopyStatusTypeAborted CopyStatusType = blob.CopyStatusTypeAborted
-	CopyStatusTypeFailed  CopyStatusType = blob.CopyStatusTypeFailed
-)
-
-type LeaseDurationType = lease.DurationType
-
-const (
-	LeaseDurationTypeInfinite LeaseDurationType = lease.DurationTypeInfinite
-	LeaseDurationTypeFixed    LeaseDurationType = lease.DurationTypeFixed
-)
-
-type LeaseStateType = lease.StateType
-
-const (
-	LeaseStateTypeAvailable LeaseStateType = lease.StateTypeAvailable
-	LeaseStateTypeLeased    LeaseStateType = lease.StateTypeLeased
-	LeaseStateTypeExpired   LeaseStateType = lease.StateTypeExpired
-	LeaseStateTypeBreaking  LeaseStateType = lease.StateTypeBreaking
-	LeaseStateTypeBroken    LeaseStateType = lease.StateTypeBroken
-)
-
-type LeaseStatusType = lease.StatusType
-
-const (
-	LeaseStatusTypeLocked   LeaseStatusType = lease.StatusTypeLocked
-	LeaseStatusTypeUnlocked LeaseStatusType = lease.StatusTypeUnlocked
+	CopyStatusTypePending CopyStatusType = path.CopyStatusTypePending
+	CopyStatusTypeSuccess CopyStatusType = path.CopyStatusTypeSuccess
+	CopyStatusTypeAborted CopyStatusType = path.CopyStatusTypeAborted
+	CopyStatusTypeFailed  CopyStatusType = path.CopyStatusTypeFailed
 )

@@ -2382,7 +2382,8 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 
 	// Use container client to filter blobs by tag
 	where := "\"azure\"='blob'"
-	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, nil)
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
+	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")

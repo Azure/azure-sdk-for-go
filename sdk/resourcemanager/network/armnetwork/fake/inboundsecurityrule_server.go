@@ -29,17 +29,20 @@ type InboundSecurityRuleServer struct {
 }
 
 // NewInboundSecurityRuleServerTransport creates a new instance of InboundSecurityRuleServerTransport with the provided implementation.
-// The returned InboundSecurityRuleServerTransport instance is connected to an instance of armnetwork.InboundSecurityRuleClient by way of the
-// undefined.Transporter field.
+// The returned InboundSecurityRuleServerTransport instance is connected to an instance of armnetwork.InboundSecurityRuleClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewInboundSecurityRuleServerTransport(srv *InboundSecurityRuleServer) *InboundSecurityRuleServerTransport {
-	return &InboundSecurityRuleServerTransport{srv: srv}
+	return &InboundSecurityRuleServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.InboundSecurityRuleClientCreateOrUpdateResponse]](),
+	}
 }
 
 // InboundSecurityRuleServerTransport connects instances of armnetwork.InboundSecurityRuleClient to instances of InboundSecurityRuleServer.
 // Don't use this type directly, use NewInboundSecurityRuleServerTransport instead.
 type InboundSecurityRuleServerTransport struct {
 	srv                 *InboundSecurityRuleServer
-	beginCreateOrUpdate *azfake.PollerResponder[armnetwork.InboundSecurityRuleClientCreateOrUpdateResponse]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.InboundSecurityRuleClientCreateOrUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for InboundSecurityRuleServerTransport.
@@ -71,7 +74,8 @@ func (i *InboundSecurityRuleServerTransport) dispatchBeginCreateOrUpdate(req *ht
 	if i.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if i.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inboundSecurityRules/(?P<ruleCollectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -98,19 +102,21 @@ func (i *InboundSecurityRuleServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		i.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(i.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		i.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(i.beginCreateOrUpdate) {
-		i.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		i.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil

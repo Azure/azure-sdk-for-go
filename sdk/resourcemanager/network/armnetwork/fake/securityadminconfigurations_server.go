@@ -43,18 +43,22 @@ type SecurityAdminConfigurationsServer struct {
 }
 
 // NewSecurityAdminConfigurationsServerTransport creates a new instance of SecurityAdminConfigurationsServerTransport with the provided implementation.
-// The returned SecurityAdminConfigurationsServerTransport instance is connected to an instance of armnetwork.SecurityAdminConfigurationsClient by way of the
-// undefined.Transporter field.
+// The returned SecurityAdminConfigurationsServerTransport instance is connected to an instance of armnetwork.SecurityAdminConfigurationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSecurityAdminConfigurationsServerTransport(srv *SecurityAdminConfigurationsServer) *SecurityAdminConfigurationsServerTransport {
-	return &SecurityAdminConfigurationsServerTransport{srv: srv}
+	return &SecurityAdminConfigurationsServerTransport{
+		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armnetwork.SecurityAdminConfigurationsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.SecurityAdminConfigurationsClientListResponse]](),
+	}
 }
 
 // SecurityAdminConfigurationsServerTransport connects instances of armnetwork.SecurityAdminConfigurationsClient to instances of SecurityAdminConfigurationsServer.
 // Don't use this type directly, use NewSecurityAdminConfigurationsServerTransport instead.
 type SecurityAdminConfigurationsServerTransport struct {
 	srv          *SecurityAdminConfigurationsServer
-	beginDelete  *azfake.PollerResponder[armnetwork.SecurityAdminConfigurationsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armnetwork.SecurityAdminConfigurationsClientListResponse]
+	beginDelete  *tracker[azfake.PollerResponder[armnetwork.SecurityAdminConfigurationsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.SecurityAdminConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecurityAdminConfigurationsServerTransport.
@@ -133,7 +137,8 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchBeginDelete(req *ht
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if s.beginDelete == nil {
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +176,21 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchBeginDelete(req *ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDelete = &respr
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDelete) {
-		s.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -230,7 +237,8 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchNewListPager(req *h
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkManagers/(?P<networkManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityAdminConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -273,20 +281,22 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchNewListPager(req *h
 			}
 		}
 		resp := s.srv.NewListPager(resourceGroupNameUnescaped, networkManagerNameUnescaped, options)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armnetwork.SecurityAdminConfigurationsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.SecurityAdminConfigurationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

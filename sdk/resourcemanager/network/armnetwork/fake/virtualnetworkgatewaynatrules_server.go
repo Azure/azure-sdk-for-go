@@ -42,19 +42,24 @@ type VirtualNetworkGatewayNatRulesServer struct {
 }
 
 // NewVirtualNetworkGatewayNatRulesServerTransport creates a new instance of VirtualNetworkGatewayNatRulesServerTransport with the provided implementation.
-// The returned VirtualNetworkGatewayNatRulesServerTransport instance is connected to an instance of armnetwork.VirtualNetworkGatewayNatRulesClient by way of the
-// undefined.Transporter field.
+// The returned VirtualNetworkGatewayNatRulesServerTransport instance is connected to an instance of armnetwork.VirtualNetworkGatewayNatRulesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualNetworkGatewayNatRulesServerTransport(srv *VirtualNetworkGatewayNatRulesServer) *VirtualNetworkGatewayNatRulesServerTransport {
-	return &VirtualNetworkGatewayNatRulesServerTransport{srv: srv}
+	return &VirtualNetworkGatewayNatRulesServerTransport{
+		srv:                                 srv,
+		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse]](),
+		beginDelete:                         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientDeleteResponse]](),
+		newListByVirtualNetworkGatewayPager: newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]](),
+	}
 }
 
 // VirtualNetworkGatewayNatRulesServerTransport connects instances of armnetwork.VirtualNetworkGatewayNatRulesClient to instances of VirtualNetworkGatewayNatRulesServer.
 // Don't use this type directly, use NewVirtualNetworkGatewayNatRulesServerTransport instead.
 type VirtualNetworkGatewayNatRulesServerTransport struct {
 	srv                                 *VirtualNetworkGatewayNatRulesServer
-	beginCreateOrUpdate                 *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse]
-	beginDelete                         *azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientDeleteResponse]
-	newListByVirtualNetworkGatewayPager *azfake.PagerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]
+	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse]]
+	beginDelete                         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientDeleteResponse]]
+	newListByVirtualNetworkGatewayPager *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkGatewayNatRulesServerTransport.
@@ -92,7 +97,8 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginCreateOrUpda
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginCreateOrUpda
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginDelete(req *
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules/(?P<natRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchBeginDelete(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchNewListByVirtualN
 	if v.srv.NewListByVirtualNetworkGatewayPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVirtualNetworkGatewayPager not implemented")}
 	}
-	if v.newListByVirtualNetworkGatewayPager == nil {
+	newListByVirtualNetworkGatewayPager := v.newListByVirtualNetworkGatewayPager.get(req)
+	if newListByVirtualNetworkGatewayPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/natRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (v *VirtualNetworkGatewayNatRulesServerTransport) dispatchNewListByVirtualN
 			return nil, err
 		}
 		resp := v.srv.NewListByVirtualNetworkGatewayPager(resourceGroupNameUnescaped, virtualNetworkGatewayNameUnescaped, nil)
-		v.newListByVirtualNetworkGatewayPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByVirtualNetworkGatewayPager, req, func(page *armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, createLink func() string) {
+		newListByVirtualNetworkGatewayPager = &resp
+		v.newListByVirtualNetworkGatewayPager.add(req, newListByVirtualNetworkGatewayPager)
+		server.PagerResponderInjectNextLinks(newListByVirtualNetworkGatewayPager, req, func(page *armnetwork.VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByVirtualNetworkGatewayPager, req)
+	resp, err := server.PagerResponderNext(newListByVirtualNetworkGatewayPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVirtualNetworkGatewayPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByVirtualNetworkGatewayPager) {
-		v.newListByVirtualNetworkGatewayPager = nil
+	if !server.PagerResponderMore(newListByVirtualNetworkGatewayPager) {
+		v.newListByVirtualNetworkGatewayPager.remove(req)
 	}
 	return resp, nil
 }

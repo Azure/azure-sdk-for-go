@@ -37,13 +37,8 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
-	subClient, _ := NewManagedClustersClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
+	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -52,8 +47,18 @@ func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigu
 	return subClient
 }
 
-func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
-	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
+	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
+	subClient, _ := NewManagedClustersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
@@ -77,17 +82,12 @@ func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
-	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient {
+	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
 	subClient, _ := NewTrustedAccessRolesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient {
-	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

@@ -25,7 +25,6 @@ func TestEventReader_InvalidType(t *testing.T) {
 	firstEvent, err := eventReader.Read()
 	require.Empty(t, firstEvent)
 	require.EqualError(t, err, "Unexpected event type: invaliddata")
-
 }
 
 type badReader struct{}

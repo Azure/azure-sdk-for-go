@@ -50,19 +50,24 @@ type ProfilesServer struct {
 }
 
 // NewProfilesServerTransport creates a new instance of ProfilesServerTransport with the provided implementation.
-// The returned ProfilesServerTransport instance is connected to an instance of armnetwork.ProfilesClient by way of the
-// undefined.Transporter field.
+// The returned ProfilesServerTransport instance is connected to an instance of armnetwork.ProfilesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProfilesServerTransport(srv *ProfilesServer) *ProfilesServerTransport {
-	return &ProfilesServerTransport{srv: srv}
+	return &ProfilesServerTransport{
+		srv:             srv,
+		beginDelete:     newTracker[azfake.PollerResponder[armnetwork.ProfilesClientDeleteResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armnetwork.ProfilesClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armnetwork.ProfilesClientListAllResponse]](),
+	}
 }
 
 // ProfilesServerTransport connects instances of armnetwork.ProfilesClient to instances of ProfilesServer.
 // Don't use this type directly, use NewProfilesServerTransport instead.
 type ProfilesServerTransport struct {
 	srv             *ProfilesServer
-	beginDelete     *azfake.PollerResponder[armnetwork.ProfilesClientDeleteResponse]
-	newListPager    *azfake.PagerResponder[armnetwork.ProfilesClientListResponse]
-	newListAllPager *azfake.PagerResponder[armnetwork.ProfilesClientListAllResponse]
+	beginDelete     *tracker[azfake.PollerResponder[armnetwork.ProfilesClientDeleteResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armnetwork.ProfilesClientListResponse]]
+	newListAllPager *tracker[azfake.PagerResponder[armnetwork.ProfilesClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProfilesServerTransport.
@@ -141,7 +146,8 @@ func (p *ProfilesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkProfiles/(?P<networkProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -160,19 +166,21 @@ func (p *ProfilesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -227,7 +235,8 @@ func (p *ProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkProfiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +248,22 @@ func (p *ProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.ProfilesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ProfilesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -261,7 +272,8 @@ func (p *ProfilesServerTransport) dispatchNewListAllPager(req *http.Request) (*h
 	if p.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if p.newListAllPager == nil {
+	newListAllPager := p.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkProfiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -269,20 +281,22 @@ func (p *ProfilesServerTransport) dispatchNewListAllPager(req *http.Request) (*h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListAllPager(nil)
-		p.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListAllPager, req, func(page *armnetwork.ProfilesClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		p.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ProfilesClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListAllPager) {
-		p.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		p.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

@@ -59,18 +59,22 @@ type ProvidersServer struct {
 }
 
 // NewProvidersServerTransport creates a new instance of ProvidersServerTransport with the provided implementation.
-// The returned ProvidersServerTransport instance is connected to an instance of armresources.ProvidersClient by way of the
-// undefined.Transporter field.
+// The returned ProvidersServerTransport instance is connected to an instance of armresources.ProvidersClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProvidersServerTransport(srv *ProvidersServer) *ProvidersServerTransport {
-	return &ProvidersServerTransport{srv: srv}
+	return &ProvidersServerTransport{
+		srv:                       srv,
+		newListPager:              newTracker[azfake.PagerResponder[armresources.ProvidersClientListResponse]](),
+		newListAtTenantScopePager: newTracker[azfake.PagerResponder[armresources.ProvidersClientListAtTenantScopeResponse]](),
+	}
 }
 
 // ProvidersServerTransport connects instances of armresources.ProvidersClient to instances of ProvidersServer.
 // Don't use this type directly, use NewProvidersServerTransport instead.
 type ProvidersServerTransport struct {
 	srv                       *ProvidersServer
-	newListPager              *azfake.PagerResponder[armresources.ProvidersClientListResponse]
-	newListAtTenantScopePager *azfake.PagerResponder[armresources.ProvidersClientListAtTenantScopeResponse]
+	newListPager              *tracker[azfake.PagerResponder[armresources.ProvidersClientListResponse]]
+	newListAtTenantScopePager *tracker[azfake.PagerResponder[armresources.ProvidersClientListAtTenantScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProvidersServerTransport.
@@ -198,7 +202,8 @@ func (p *ProvidersServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -218,20 +223,22 @@ func (p *ProvidersServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			}
 		}
 		resp := p.srv.NewListPager(options)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armresources.ProvidersClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.ProvidersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -240,7 +247,8 @@ func (p *ProvidersServerTransport) dispatchNewListAtTenantScopePager(req *http.R
 	if p.srv.NewListAtTenantScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
 	}
-	if p.newListAtTenantScopePager == nil {
+	newListAtTenantScopePager := p.newListAtTenantScopePager.get(req)
+	if newListAtTenantScopePager == nil {
 		qp := req.URL.Query()
 		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
 		if err != nil {
@@ -254,20 +262,22 @@ func (p *ProvidersServerTransport) dispatchNewListAtTenantScopePager(req *http.R
 			}
 		}
 		resp := p.srv.NewListAtTenantScopePager(options)
-		p.newListAtTenantScopePager = &resp
-		server.PagerResponderInjectNextLinks(p.newListAtTenantScopePager, req, func(page *armresources.ProvidersClientListAtTenantScopeResponse, createLink func() string) {
+		newListAtTenantScopePager = &resp
+		p.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
+		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armresources.ProvidersClientListAtTenantScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListAtTenantScopePager, req)
+	resp, err := server.PagerResponderNext(newListAtTenantScopePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAtTenantScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListAtTenantScopePager) {
-		p.newListAtTenantScopePager = nil
+	if !server.PagerResponderMore(newListAtTenantScopePager) {
+		p.newListAtTenantScopePager.remove(req)
 	}
 	return resp, nil
 }

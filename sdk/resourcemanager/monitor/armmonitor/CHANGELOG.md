@@ -1,5 +1,11 @@
 # Release History
 
+## 0.10.1 (2023-07-19)
+
+### Bug Fixes
+
+- Fixed a potential panic in faked paged and long-running operations.
+
 ## 0.10.0 (2023-06-13)
 
 ### Features Added

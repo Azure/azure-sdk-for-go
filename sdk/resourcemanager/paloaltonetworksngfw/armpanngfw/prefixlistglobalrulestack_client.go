@@ -44,7 +44,7 @@ func NewPrefixListGlobalRulestackClient(credential azcore.TokenCredential, optio
 // BeginCreateOrUpdate - Create a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - Local Rule priority
 //   - resource - Resource create parameters.
@@ -67,7 +67,7 @@ func (client *PrefixListGlobalRulestackClient) BeginCreateOrUpdate(ctx context.C
 // CreateOrUpdate - Create a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PrefixListGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource PrefixListGlobalRulestackResource, options *PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, globalRulestackName, name, resource, options)
 	if err != nil {
@@ -99,7 +99,7 @@ func (client *PrefixListGlobalRulestackClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -108,7 +108,7 @@ func (client *PrefixListGlobalRulestackClient) createOrUpdateCreateRequest(ctx c
 // BeginDelete - Delete a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - Local Rule priority
 //   - options - PrefixListGlobalRulestackClientBeginDeleteOptions contains the optional parameters for the PrefixListGlobalRulestackClient.BeginDelete
@@ -130,7 +130,7 @@ func (client *PrefixListGlobalRulestackClient) BeginDelete(ctx context.Context, 
 // Delete - Delete a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *PrefixListGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *PrefixListGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, globalRulestackName, name, options)
 	if err != nil {
@@ -162,7 +162,7 @@ func (client *PrefixListGlobalRulestackClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *PrefixListGlobalRulestackClient) deleteCreateRequest(ctx context.C
 // Get - Get a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - Local Rule priority
 //   - options - PrefixListGlobalRulestackClientGetOptions contains the optional parameters for the PrefixListGlobalRulestackClient.Get
@@ -207,7 +207,7 @@ func (client *PrefixListGlobalRulestackClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,7 +224,7 @@ func (client *PrefixListGlobalRulestackClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List PrefixListGlobalRulestackResource resources by Tenant
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - PrefixListGlobalRulestackClientListOptions contains the optional parameters for the PrefixListGlobalRulestackClient.NewListPager
 //     method.
@@ -268,7 +268,7 @@ func (client *PrefixListGlobalRulestackClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

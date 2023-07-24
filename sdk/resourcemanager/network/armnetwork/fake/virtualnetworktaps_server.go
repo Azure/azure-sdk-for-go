@@ -50,20 +50,26 @@ type VirtualNetworkTapsServer struct {
 }
 
 // NewVirtualNetworkTapsServerTransport creates a new instance of VirtualNetworkTapsServerTransport with the provided implementation.
-// The returned VirtualNetworkTapsServerTransport instance is connected to an instance of armnetwork.VirtualNetworkTapsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualNetworkTapsServerTransport instance is connected to an instance of armnetwork.VirtualNetworkTapsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualNetworkTapsServerTransport(srv *VirtualNetworkTapsServer) *VirtualNetworkTapsServerTransport {
-	return &VirtualNetworkTapsServerTransport{srv: srv}
+	return &VirtualNetworkTapsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientDeleteResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListAllResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListByResourceGroupResponse]](),
+	}
 }
 
 // VirtualNetworkTapsServerTransport connects instances of armnetwork.VirtualNetworkTapsClient to instances of VirtualNetworkTapsServer.
 // Don't use this type directly, use NewVirtualNetworkTapsServerTransport instead.
 type VirtualNetworkTapsServerTransport struct {
 	srv                         *VirtualNetworkTapsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientDeleteResponse]
-	newListAllPager             *azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListAllResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListByResourceGroupResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkTapsClientDeleteResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListAllResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkTapsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkTapsServerTransport.
@@ -105,7 +111,8 @@ func (v *VirtualNetworkTapsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkTaps/(?P<tapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -128,19 +135,21 @@ func (v *VirtualNetworkTapsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -150,7 +159,8 @@ func (v *VirtualNetworkTapsServerTransport) dispatchBeginDelete(req *http.Reques
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkTaps/(?P<tapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -169,19 +179,21 @@ func (v *VirtualNetworkTapsServerTransport) dispatchBeginDelete(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -224,7 +236,8 @@ func (v *VirtualNetworkTapsServerTransport) dispatchNewListAllPager(req *http.Re
 	if v.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if v.newListAllPager == nil {
+	newListAllPager := v.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkTaps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -232,20 +245,22 @@ func (v *VirtualNetworkTapsServerTransport) dispatchNewListAllPager(req *http.Re
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := v.srv.NewListAllPager(nil)
-		v.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListAllPager, req, func(page *armnetwork.VirtualNetworkTapsClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		v.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.VirtualNetworkTapsClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListAllPager) {
-		v.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		v.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -254,7 +269,8 @@ func (v *VirtualNetworkTapsServerTransport) dispatchNewListByResourceGroupPager(
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if v.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualNetworkTaps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -266,20 +282,22 @@ func (v *VirtualNetworkTapsServerTransport) dispatchNewListByResourceGroupPager(
 			return nil, err
 		}
 		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		v.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByResourceGroupPager, req, func(page *armnetwork.VirtualNetworkTapsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.VirtualNetworkTapsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByResourceGroupPager) {
-		v.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

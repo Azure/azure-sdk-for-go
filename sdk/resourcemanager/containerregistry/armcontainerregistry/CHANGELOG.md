@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.0-beta.3 (2023-07-19)
+
+### Bug Fixes
+
+- Fixed a potential panic in faked paged and long-running operations.
+
 ## 1.1.0-beta.2 (2023-06-12)
 
 ### Features Added

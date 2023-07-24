@@ -61,19 +61,24 @@ type ActionGroupsServer struct {
 }
 
 // NewActionGroupsServerTransport creates a new instance of ActionGroupsServerTransport with the provided implementation.
-// The returned ActionGroupsServerTransport instance is connected to an instance of armmonitor.ActionGroupsClient by way of the
-// undefined.Transporter field.
+// The returned ActionGroupsServerTransport instance is connected to an instance of armmonitor.ActionGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewActionGroupsServerTransport(srv *ActionGroupsServer) *ActionGroupsServerTransport {
-	return &ActionGroupsServerTransport{srv: srv}
+	return &ActionGroupsServerTransport{
+		srv: srv,
+		beginCreateNotificationsAtActionGroupResourceLevel: newTracker[azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]](),
+		newListByResourceGroupPager:                        newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionIDPager:                       newTracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]](),
+	}
 }
 
 // ActionGroupsServerTransport connects instances of armmonitor.ActionGroupsClient to instances of ActionGroupsServer.
 // Don't use this type directly, use NewActionGroupsServerTransport instead.
 type ActionGroupsServerTransport struct {
 	srv                                                *ActionGroupsServer
-	beginCreateNotificationsAtActionGroupResourceLevel *azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]
-	newListByResourceGroupPager                        *azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]
-	newListBySubscriptionIDPager                       *azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]
+	beginCreateNotificationsAtActionGroupResourceLevel *tracker[azfake.PollerResponder[armmonitor.ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]]
+	newListByResourceGroupPager                        *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionIDPager                       *tracker[azfake.PagerResponder[armmonitor.ActionGroupsClientListBySubscriptionIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for ActionGroupsServerTransport.
@@ -121,7 +126,8 @@ func (a *ActionGroupsServerTransport) dispatchBeginCreateNotificationsAtActionGr
 	if a.srv.BeginCreateNotificationsAtActionGroupResourceLevel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateNotificationsAtActionGroupResourceLevel not implemented")}
 	}
-	if a.beginCreateNotificationsAtActionGroupResourceLevel == nil {
+	beginCreateNotificationsAtActionGroupResourceLevel := a.beginCreateNotificationsAtActionGroupResourceLevel.get(req)
+	if beginCreateNotificationsAtActionGroupResourceLevel == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups/(?P<actionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createNotifications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -144,19 +150,21 @@ func (a *ActionGroupsServerTransport) dispatchBeginCreateNotificationsAtActionGr
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		a.beginCreateNotificationsAtActionGroupResourceLevel = &respr
+		beginCreateNotificationsAtActionGroupResourceLevel = &respr
+		a.beginCreateNotificationsAtActionGroupResourceLevel.add(req, beginCreateNotificationsAtActionGroupResourceLevel)
 	}
 
-	resp, err := server.PollerResponderNext(a.beginCreateNotificationsAtActionGroupResourceLevel, req)
+	resp, err := server.PollerResponderNext(beginCreateNotificationsAtActionGroupResourceLevel, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginCreateNotificationsAtActionGroupResourceLevel.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(a.beginCreateNotificationsAtActionGroupResourceLevel) {
-		a.beginCreateNotificationsAtActionGroupResourceLevel = nil
+	if !server.PollerResponderMore(beginCreateNotificationsAtActionGroupResourceLevel) {
+		a.beginCreateNotificationsAtActionGroupResourceLevel.remove(req)
 	}
 
 	return resp, nil
@@ -343,7 +351,8 @@ func (a *ActionGroupsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if a.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -355,17 +364,19 @@ func (a *ActionGroupsServerTransport) dispatchNewListByResourceGroupPager(req *h
 			return nil, err
 		}
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		a.newListByResourceGroupPager = &resp
+		newListByResourceGroupPager = &resp
+		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 	}
-	resp, err := server.PagerResponderNext(a.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListByResourceGroupPager) {
-		a.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		a.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -374,7 +385,8 @@ func (a *ActionGroupsServerTransport) dispatchNewListBySubscriptionIDPager(req *
 	if a.srv.NewListBySubscriptionIDPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionIDPager not implemented")}
 	}
-	if a.newListBySubscriptionIDPager == nil {
+	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
+	if newListBySubscriptionIDPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/actionGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -382,17 +394,19 @@ func (a *ActionGroupsServerTransport) dispatchNewListBySubscriptionIDPager(req *
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := a.srv.NewListBySubscriptionIDPager(nil)
-		a.newListBySubscriptionIDPager = &resp
+		newListBySubscriptionIDPager = &resp
+		a.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
 	}
-	resp, err := server.PagerResponderNext(a.newListBySubscriptionIDPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionIDPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionIDPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(a.newListBySubscriptionIDPager) {
-		a.newListBySubscriptionIDPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionIDPager) {
+		a.newListBySubscriptionIDPager.remove(req)
 	}
 	return resp, nil
 }

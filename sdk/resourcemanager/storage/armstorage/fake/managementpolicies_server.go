@@ -37,8 +37,8 @@ type ManagementPoliciesServer struct {
 }
 
 // NewManagementPoliciesServerTransport creates a new instance of ManagementPoliciesServerTransport with the provided implementation.
-// The returned ManagementPoliciesServerTransport instance is connected to an instance of armstorage.ManagementPoliciesClient by way of the
-// undefined.Transporter field.
+// The returned ManagementPoliciesServerTransport instance is connected to an instance of armstorage.ManagementPoliciesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagementPoliciesServerTransport(srv *ManagementPoliciesServer) *ManagementPoliciesServerTransport {
 	return &ManagementPoliciesServerTransport{srv: srv}
 }

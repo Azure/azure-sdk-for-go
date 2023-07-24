@@ -29,8 +29,8 @@ type PrivateLinkResourcesServer struct {
 }
 
 // NewPrivateLinkResourcesServerTransport creates a new instance of PrivateLinkResourcesServerTransport with the provided implementation.
-// The returned PrivateLinkResourcesServerTransport instance is connected to an instance of armcontainerservice.PrivateLinkResourcesClient by way of the
-// undefined.Transporter field.
+// The returned PrivateLinkResourcesServerTransport instance is connected to an instance of armcontainerservice.PrivateLinkResourcesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkResourcesServerTransport(srv *PrivateLinkResourcesServer) *PrivateLinkResourcesServerTransport {
 	return &PrivateLinkResourcesServerTransport{srv: srv}
 }

@@ -29,17 +29,20 @@ type LoadBalancerNetworkInterfacesServer struct {
 }
 
 // NewLoadBalancerNetworkInterfacesServerTransport creates a new instance of LoadBalancerNetworkInterfacesServerTransport with the provided implementation.
-// The returned LoadBalancerNetworkInterfacesServerTransport instance is connected to an instance of armnetwork.LoadBalancerNetworkInterfacesClient by way of the
-// undefined.Transporter field.
+// The returned LoadBalancerNetworkInterfacesServerTransport instance is connected to an instance of armnetwork.LoadBalancerNetworkInterfacesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLoadBalancerNetworkInterfacesServerTransport(srv *LoadBalancerNetworkInterfacesServer) *LoadBalancerNetworkInterfacesServerTransport {
-	return &LoadBalancerNetworkInterfacesServerTransport{srv: srv}
+	return &LoadBalancerNetworkInterfacesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.LoadBalancerNetworkInterfacesClientListResponse]](),
+	}
 }
 
 // LoadBalancerNetworkInterfacesServerTransport connects instances of armnetwork.LoadBalancerNetworkInterfacesClient to instances of LoadBalancerNetworkInterfacesServer.
 // Don't use this type directly, use NewLoadBalancerNetworkInterfacesServerTransport instead.
 type LoadBalancerNetworkInterfacesServerTransport struct {
 	srv          *LoadBalancerNetworkInterfacesServer
-	newListPager *azfake.PagerResponder[armnetwork.LoadBalancerNetworkInterfacesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.LoadBalancerNetworkInterfacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LoadBalancerNetworkInterfacesServerTransport.
@@ -71,7 +74,8 @@ func (l *LoadBalancerNetworkInterfacesServerTransport) dispatchNewListPager(req 
 	if l.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if l.newListPager == nil {
+	newListPager := l.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -87,20 +91,22 @@ func (l *LoadBalancerNetworkInterfacesServerTransport) dispatchNewListPager(req 
 			return nil, err
 		}
 		resp := l.srv.NewListPager(resourceGroupNameUnescaped, loadBalancerNameUnescaped, nil)
-		l.newListPager = &resp
-		server.PagerResponderInjectNextLinks(l.newListPager, req, func(page *armnetwork.LoadBalancerNetworkInterfacesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		l.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.LoadBalancerNetworkInterfacesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(l.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(l.newListPager) {
-		l.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		l.newListPager.remove(req)
 	}
 	return resp, nil
 }

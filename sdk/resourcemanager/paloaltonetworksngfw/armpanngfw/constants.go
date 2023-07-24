@@ -11,7 +11,7 @@ package armpanngfw
 
 const (
 	moduleName    = "armpanngfw"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 type ActionEnum string

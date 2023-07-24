@@ -15,7 +15,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -204,13 +203,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	resetEnvironmentVarsForTest()
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-
+	sts := mockSTS{tokenRequestCallback: validateX5C(t, certs)}
 	vars := map[string]string{
 		azureClientID:              liveSP.clientID,
 		azureClientCertificatePath: liveSP.pfxPath,
@@ -218,7 +211,7 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 		envVarSendCertChain:        "true",
 	}
 	setEnvironmentVariables(t, vars)
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -34,17 +34,20 @@ type InterfaceIPConfigurationsServer struct {
 }
 
 // NewInterfaceIPConfigurationsServerTransport creates a new instance of InterfaceIPConfigurationsServerTransport with the provided implementation.
-// The returned InterfaceIPConfigurationsServerTransport instance is connected to an instance of armnetwork.InterfaceIPConfigurationsClient by way of the
-// undefined.Transporter field.
+// The returned InterfaceIPConfigurationsServerTransport instance is connected to an instance of armnetwork.InterfaceIPConfigurationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewInterfaceIPConfigurationsServerTransport(srv *InterfaceIPConfigurationsServer) *InterfaceIPConfigurationsServerTransport {
-	return &InterfaceIPConfigurationsServerTransport{srv: srv}
+	return &InterfaceIPConfigurationsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.InterfaceIPConfigurationsClientListResponse]](),
+	}
 }
 
 // InterfaceIPConfigurationsServerTransport connects instances of armnetwork.InterfaceIPConfigurationsClient to instances of InterfaceIPConfigurationsServer.
 // Don't use this type directly, use NewInterfaceIPConfigurationsServerTransport instead.
 type InterfaceIPConfigurationsServerTransport struct {
 	srv          *InterfaceIPConfigurationsServer
-	newListPager *azfake.PagerResponder[armnetwork.InterfaceIPConfigurationsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armnetwork.InterfaceIPConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for InterfaceIPConfigurationsServerTransport.
@@ -115,7 +118,8 @@ func (i *InterfaceIPConfigurationsServerTransport) dispatchNewListPager(req *htt
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if i.newListPager == nil {
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (i *InterfaceIPConfigurationsServerTransport) dispatchNewListPager(req *htt
 			return nil, err
 		}
 		resp := i.srv.NewListPager(resourceGroupNameUnescaped, networkInterfaceNameUnescaped, nil)
-		i.newListPager = &resp
-		server.PagerResponderInjectNextLinks(i.newListPager, req, func(page *armnetwork.InterfaceIPConfigurationsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.InterfaceIPConfigurationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(i.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(i.newListPager) {
-		i.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

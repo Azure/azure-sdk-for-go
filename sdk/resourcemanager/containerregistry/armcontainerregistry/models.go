@@ -105,39 +105,6 @@ type AgentPoolUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
-type AgentPoolsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
-type AgentPoolsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
-type AgentPoolsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
-type AgentPoolsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AgentPoolsClientGetQueueStatusOptions contains the optional parameters for the AgentPoolsClient.GetQueueStatus method.
-type AgentPoolsClientGetQueueStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
-type AgentPoolsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AgentProperties - The properties that determine the run agent configuration.
 type AgentProperties struct {
 	// The CPU configuration in terms of number of cores required for the run.
@@ -315,34 +282,6 @@ type CacheRuleUpdateProperties struct {
 	CredentialSetResourceID *string
 }
 
-// CacheRulesClientBeginCreateOptions contains the optional parameters for the CacheRulesClient.BeginCreate method.
-type CacheRulesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientBeginDeleteOptions contains the optional parameters for the CacheRulesClient.BeginDelete method.
-type CacheRulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientBeginUpdateOptions contains the optional parameters for the CacheRulesClient.BeginUpdate method.
-type CacheRulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CacheRulesClientGetOptions contains the optional parameters for the CacheRulesClient.Get method.
-type CacheRulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheRulesClientListOptions contains the optional parameters for the CacheRulesClient.NewListPager method.
-type CacheRulesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CacheRulesListResult - The result of a request to list cache rules for a container registry.
 type CacheRulesListResult struct {
 	// If provided, client must use NextLink URI to request next list of cache rules.
@@ -359,47 +298,6 @@ type CallbackConfig struct {
 
 	// Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string
-}
-
-// ConnectedRegistriesClientBeginCreateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginCreate
-// method.
-type ConnectedRegistriesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeactivateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDeactivate
-// method.
-type ConnectedRegistriesClientBeginDeactivateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginDeleteOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDelete
-// method.
-type ConnectedRegistriesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientBeginUpdateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginUpdate
-// method.
-type ConnectedRegistriesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ConnectedRegistriesClientGetOptions contains the optional parameters for the ConnectedRegistriesClient.Get method.
-type ConnectedRegistriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager method.
-type ConnectedRegistriesClientListOptions struct {
-	// An OData filter expression that describes a subset of connectedRegistries to return. The parameters that can be filtered
-	// are parent.id (the resource id of the connectedRegistry parent), mode, and
-	// connectionState. The supported operator is eq.
-	Filter *string
 }
 
 // ConnectedRegistry - An object that represents a connected registry for a container registry.
@@ -563,34 +461,6 @@ type CredentialSetUpdateProperties struct {
 	AuthCredentials []*AuthCredential
 }
 
-// CredentialSetsClientBeginCreateOptions contains the optional parameters for the CredentialSetsClient.BeginCreate method.
-type CredentialSetsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientBeginDeleteOptions contains the optional parameters for the CredentialSetsClient.BeginDelete method.
-type CredentialSetsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientBeginUpdateOptions contains the optional parameters for the CredentialSetsClient.BeginUpdate method.
-type CredentialSetsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// CredentialSetsClientGetOptions contains the optional parameters for the CredentialSetsClient.Get method.
-type CredentialSetsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CredentialSetsClientListOptions contains the optional parameters for the CredentialSetsClient.NewListPager method.
-type CredentialSetsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Credentials - The parameters that describes a set of credentials that will be used when a run is invoked.
 type Credentials struct {
 	// Describes the credential parameters for accessing other custom registries. The key for the dictionary item will be the
@@ -671,10 +541,10 @@ type DockerBuildRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type DockerBuildRequest.
 func (d *DockerBuildRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		Type:             d.Type,
-		IsArchiveEnabled: d.IsArchiveEnabled,
 		AgentPoolName:    d.AgentPoolName,
+		IsArchiveEnabled: d.IsArchiveEnabled,
 		LogTemplate:      d.LogTemplate,
+		Type:             d.Type,
 	}
 }
 
@@ -714,10 +584,10 @@ type DockerBuildStep struct {
 // GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type DockerBuildStep.
 func (d *DockerBuildStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
-		Type:                  d.Type,
 		BaseImageDependencies: d.BaseImageDependencies,
-		ContextPath:           d.ContextPath,
 		ContextAccessToken:    d.ContextAccessToken,
+		ContextPath:           d.ContextPath,
+		Type:                  d.Type,
 	}
 }
 
@@ -754,9 +624,9 @@ type DockerBuildStepUpdateParameters struct {
 // GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type DockerBuildStepUpdateParameters.
 func (d *DockerBuildStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
-		Type:               d.Type,
-		ContextPath:        d.ContextPath,
 		ContextAccessToken: d.ContextAccessToken,
+		ContextPath:        d.ContextPath,
+		Type:               d.Type,
 	}
 }
 
@@ -803,10 +673,10 @@ type EncodedTaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type EncodedTaskRunRequest.
 func (e *EncodedTaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		Type:             e.Type,
-		IsArchiveEnabled: e.IsArchiveEnabled,
 		AgentPoolName:    e.AgentPoolName,
+		IsArchiveEnabled: e.IsArchiveEnabled,
 		LogTemplate:      e.LogTemplate,
+		Type:             e.Type,
 	}
 }
 
@@ -837,10 +707,10 @@ type EncodedTaskStep struct {
 // GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type EncodedTaskStep.
 func (e *EncodedTaskStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
-		Type:                  e.Type,
 		BaseImageDependencies: e.BaseImageDependencies,
-		ContextPath:           e.ContextPath,
 		ContextAccessToken:    e.ContextAccessToken,
+		ContextPath:           e.ContextPath,
+		Type:                  e.Type,
 	}
 }
 
@@ -868,9 +738,9 @@ type EncodedTaskStepUpdateParameters struct {
 // GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type EncodedTaskStepUpdateParameters.
 func (e *EncodedTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
-		Type:               e.Type,
-		ContextPath:        e.ContextPath,
 		ContextAccessToken: e.ContextAccessToken,
+		ContextPath:        e.ContextPath,
+		Type:               e.Type,
 	}
 }
 
@@ -1051,28 +921,6 @@ type ExportPipelineTargetProperties struct {
 	URI *string
 }
 
-// ExportPipelinesClientBeginCreateOptions contains the optional parameters for the ExportPipelinesClient.BeginCreate method.
-type ExportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientBeginDeleteOptions contains the optional parameters for the ExportPipelinesClient.BeginDelete method.
-type ExportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
-type ExportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager method.
-type ExportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ExportPolicy - The export policy for a container registry.
 type ExportPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
@@ -1122,10 +970,10 @@ type FileTaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type FileTaskRunRequest.
 func (f *FileTaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		Type:             f.Type,
-		IsArchiveEnabled: f.IsArchiveEnabled,
 		AgentPoolName:    f.AgentPoolName,
+		IsArchiveEnabled: f.IsArchiveEnabled,
 		LogTemplate:      f.LogTemplate,
+		Type:             f.Type,
 	}
 }
 
@@ -1156,10 +1004,10 @@ type FileTaskStep struct {
 // GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type FileTaskStep.
 func (f *FileTaskStep) GetTaskStepProperties() *TaskStepProperties {
 	return &TaskStepProperties{
-		Type:                  f.Type,
 		BaseImageDependencies: f.BaseImageDependencies,
-		ContextPath:           f.ContextPath,
 		ContextAccessToken:    f.ContextAccessToken,
+		ContextPath:           f.ContextPath,
+		Type:                  f.Type,
 	}
 }
 
@@ -1187,9 +1035,9 @@ type FileTaskStepUpdateParameters struct {
 // GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type FileTaskStepUpdateParameters.
 func (f *FileTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
 	return &TaskStepUpdateParameters{
-		Type:               f.Type,
-		ContextPath:        f.ContextPath,
 		ContextAccessToken: f.ContextAccessToken,
+		ContextPath:        f.ContextPath,
+		Type:               f.Type,
 	}
 }
 
@@ -1345,28 +1193,6 @@ type ImportPipelineSourceProperties struct {
 	// When 'AzureStorageBlobContainer':
 	// "https://accountName.blob.core.windows.net/containerName"
 	URI *string
-}
-
-// ImportPipelinesClientBeginCreateOptions contains the optional parameters for the ImportPipelinesClient.BeginCreate method.
-type ImportPipelinesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientBeginDeleteOptions contains the optional parameters for the ImportPipelinesClient.BeginDelete method.
-type ImportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
-type ImportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.NewListPager method.
-type ImportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 type ImportSource struct {
@@ -1540,11 +1366,6 @@ type OperationServiceSpecificationDefinition struct {
 	MetricSpecifications []*OperationMetricSpecificationDefinition
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 type OverrideTaskStepProperties struct {
 	// Gets or sets the collection of override arguments to be used when executing a build step.
 	Arguments []*Argument
@@ -1695,28 +1516,6 @@ type PipelineRunTargetProperties struct {
 	Type *PipelineRunTargetType
 }
 
-// PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate method.
-type PipelineRunsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete method.
-type PipelineRunsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
-type PipelineRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.NewListPager method.
-type PipelineRunsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 type PipelineSourceTriggerDescriptor struct {
 	// The timestamp when the source update happened.
 	Timestamp *time.Time
@@ -1828,32 +1627,6 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
-// method.
-type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
-// method.
-type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
-// method.
-type PrivateEndpointConnectionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
-// method.
-type PrivateEndpointConnectionsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateLinkResource - A resource that supports private link capabilities.
 type PrivateLinkResource struct {
 	// The resource ID.
@@ -1934,99 +1707,6 @@ type QuarantinePolicy struct {
 type RegenerateCredentialParameters struct {
 	// REQUIRED; Specifies name of the password which should be regenerated -- password or password2.
 	Name *PasswordName
-}
-
-// RegistriesClientBeginCreateOptions contains the optional parameters for the RegistriesClient.BeginCreate method.
-type RegistriesClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientBeginDeleteOptions contains the optional parameters for the RegistriesClient.BeginDelete method.
-type RegistriesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientBeginGenerateCredentialsOptions contains the optional parameters for the RegistriesClient.BeginGenerateCredentials
-// method.
-type RegistriesClientBeginGenerateCredentialsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientBeginImportImageOptions contains the optional parameters for the RegistriesClient.BeginImportImage method.
-type RegistriesClientBeginImportImageOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientBeginScheduleRunOptions contains the optional parameters for the RegistriesClient.BeginScheduleRun method.
-type RegistriesClientBeginScheduleRunOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientBeginUpdateOptions contains the optional parameters for the RegistriesClient.BeginUpdate method.
-type RegistriesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RegistriesClientCheckNameAvailabilityOptions contains the optional parameters for the RegistriesClient.CheckNameAvailability
-// method.
-type RegistriesClientCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientGetBuildSourceUploadURLOptions contains the optional parameters for the RegistriesClient.GetBuildSourceUploadURL
-// method.
-type RegistriesClientGetBuildSourceUploadURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientGetOptions contains the optional parameters for the RegistriesClient.Get method.
-type RegistriesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientGetPrivateLinkResourceOptions contains the optional parameters for the RegistriesClient.GetPrivateLinkResource
-// method.
-type RegistriesClientGetPrivateLinkResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.NewListByResourceGroupPager
-// method.
-type RegistriesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientListCredentialsOptions contains the optional parameters for the RegistriesClient.ListCredentials method.
-type RegistriesClientListCredentialsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientListOptions contains the optional parameters for the RegistriesClient.NewListPager method.
-type RegistriesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientListPrivateLinkResourcesOptions contains the optional parameters for the RegistriesClient.NewListPrivateLinkResourcesPager
-// method.
-type RegistriesClientListPrivateLinkResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientListUsagesOptions contains the optional parameters for the RegistriesClient.ListUsages method.
-type RegistriesClientListUsagesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RegistriesClientRegenerateCredentialOptions contains the optional parameters for the RegistriesClient.RegenerateCredential
-// method.
-type RegistriesClientRegenerateCredentialOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Registry - An object that represents a container registry.
@@ -2287,34 +1967,6 @@ type ReplicationUpdateParametersProperties struct {
 	RegionEndpointEnabled *bool
 }
 
-// ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate method.
-type ReplicationsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ReplicationsClientBeginDeleteOptions contains the optional parameters for the ReplicationsClient.BeginDelete method.
-type ReplicationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ReplicationsClientBeginUpdateOptions contains the optional parameters for the ReplicationsClient.BeginUpdate method.
-type ReplicationsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
-type ReplicationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.NewListPager method.
-type ReplicationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Request - The request that generated the event.
 type Request struct {
 	// The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the
@@ -2503,15 +2155,6 @@ type RunProperties struct {
 	RunErrorMessage *string
 }
 
-// RunRequestClassification provides polymorphic access to related types.
-// Call the interface's GetRunRequest() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DockerBuildRequest, *EncodedTaskRunRequest, *FileTaskRunRequest, *RunRequest, *TaskRunRequest
-type RunRequestClassification interface {
-	// GetRunRequest returns the RunRequest content of the underlying type.
-	GetRunRequest() *RunRequest
-}
-
 // RunRequest - The request parameters for scheduling a run.
 type RunRequest struct {
 	// REQUIRED; The type of the run request.
@@ -2534,37 +2177,6 @@ func (r *RunRequest) GetRunRequest() *RunRequest { return r }
 type RunUpdateParameters struct {
 	// The value that indicates whether archiving is enabled or not.
 	IsArchiveEnabled *bool
-}
-
-// RunsClientBeginCancelOptions contains the optional parameters for the RunsClient.BeginCancel method.
-type RunsClientBeginCancelOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RunsClientBeginUpdateOptions contains the optional parameters for the RunsClient.BeginUpdate method.
-type RunsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
-type RunsClientGetLogSasURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunsClientGetOptions contains the optional parameters for the RunsClient.Get method.
-type RunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
-type RunsClientListOptions struct {
-	// The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'.
-	// All logical operators except 'Not', 'Has', 'All' are allowed.
-	Filter *string
-	// $top is supported for get list of runs, which limits the maximum number of runs to return.
-	Top *int32
 }
 
 // SKU - The SKU of a container registry.
@@ -2635,34 +2247,6 @@ type ScopeMapPropertiesUpdateParameters struct {
 type ScopeMapUpdateParameters struct {
 	// The update parameters for scope map properties.
 	Properties *ScopeMapPropertiesUpdateParameters
-}
-
-// ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
-type ScopeMapsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ScopeMapsClientBeginDeleteOptions contains the optional parameters for the ScopeMapsClient.BeginDelete method.
-type ScopeMapsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
-type ScopeMapsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ScopeMapsClientGetOptions contains the optional parameters for the ScopeMapsClient.Get method.
-type ScopeMapsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.NewListPager method.
-type ScopeMapsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SecretObject - Describes the properties of a secret object value.
@@ -3141,10 +2725,10 @@ type TaskRunRequest struct {
 // GetRunRequest implements the RunRequestClassification interface for type TaskRunRequest.
 func (t *TaskRunRequest) GetRunRequest() *RunRequest {
 	return &RunRequest{
-		Type:             t.Type,
-		IsArchiveEnabled: t.IsArchiveEnabled,
 		AgentPoolName:    t.AgentPoolName,
+		IsArchiveEnabled: t.IsArchiveEnabled,
 		LogTemplate:      t.LogTemplate,
+		Type:             t.Type,
 	}
 }
 
@@ -3161,48 +2745,6 @@ type TaskRunUpdateParameters struct {
 
 	// The ARM resource tags.
 	Tags map[string]*string
-}
-
-// TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
-type TaskRunsClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
-type TaskRunsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
-type TaskRunsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
-type TaskRunsClientGetDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientGetOptions contains the optional parameters for the TaskRunsClient.Get method.
-type TaskRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.NewListPager method.
-type TaskRunsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskStepPropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetTaskStepProperties() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DockerBuildStep, *EncodedTaskStep, *FileTaskStep, *TaskStepProperties
-type TaskStepPropertiesClassification interface {
-	// GetTaskStepProperties returns the TaskStepProperties content of the underlying type.
-	GetTaskStepProperties() *TaskStepProperties
 }
 
 // TaskStepProperties - Base properties for any task step.
@@ -3222,15 +2764,6 @@ type TaskStepProperties struct {
 
 // GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type TaskStepProperties.
 func (t *TaskStepProperties) GetTaskStepProperties() *TaskStepProperties { return t }
-
-// TaskStepUpdateParametersClassification provides polymorphic access to related types.
-// Call the interface's GetTaskStepUpdateParameters() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DockerBuildStepUpdateParameters, *EncodedTaskStepUpdateParameters, *FileTaskStepUpdateParameters, *TaskStepUpdateParameters
-type TaskStepUpdateParametersClassification interface {
-	// GetTaskStepUpdateParameters returns the TaskStepUpdateParameters content of the underlying type.
-	GetTaskStepUpdateParameters() *TaskStepUpdateParameters
-}
 
 // TaskStepUpdateParameters - Base properties for updating any task step.
 type TaskStepUpdateParameters struct {
@@ -3257,39 +2790,6 @@ type TaskUpdateParameters struct {
 
 	// The ARM resource tags.
 	Tags map[string]*string
-}
-
-// TasksClientBeginCreateOptions contains the optional parameters for the TasksClient.BeginCreate method.
-type TasksClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TasksClientBeginDeleteOptions contains the optional parameters for the TasksClient.BeginDelete method.
-type TasksClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TasksClientBeginUpdateOptions contains the optional parameters for the TasksClient.BeginUpdate method.
-type TasksClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TasksClientGetDetailsOptions contains the optional parameters for the TasksClient.GetDetails method.
-type TasksClientGetDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientGetOptions contains the optional parameters for the TasksClient.Get method.
-type TasksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
-type TasksClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // TimerTrigger - The properties of a timer trigger.
@@ -3419,34 +2919,6 @@ type TokenUpdateProperties struct {
 
 	// The status of the token example enabled or disabled.
 	Status *TokenStatus
-}
-
-// TokensClientBeginCreateOptions contains the optional parameters for the TokensClient.BeginCreate method.
-type TokensClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TokensClientBeginDeleteOptions contains the optional parameters for the TokensClient.BeginDelete method.
-type TokensClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TokensClientBeginUpdateOptions contains the optional parameters for the TokensClient.BeginUpdate method.
-type TokensClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// TokensClientGetOptions contains the optional parameters for the TokensClient.Get method.
-type TokensClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TokensClientListOptions contains the optional parameters for the TokensClient.NewListPager method.
-type TokensClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // TriggerProperties - The properties of a trigger.
@@ -3600,47 +3072,4 @@ type WebhookUpdateParameters struct {
 
 	// The tags for the webhook.
 	Tags map[string]*string
-}
-
-// WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
-type WebhooksClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
-type WebhooksClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
-type WebhooksClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// WebhooksClientGetCallbackConfigOptions contains the optional parameters for the WebhooksClient.GetCallbackConfig method.
-type WebhooksClientGetCallbackConfigOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhooksClientGetOptions contains the optional parameters for the WebhooksClient.Get method.
-type WebhooksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.NewListEventsPager method.
-type WebhooksClientListEventsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhooksClientListOptions contains the optional parameters for the WebhooksClient.NewListPager method.
-type WebhooksClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
-type WebhooksClientPingOptions struct {
-	// placeholder for future optional parameters
 }

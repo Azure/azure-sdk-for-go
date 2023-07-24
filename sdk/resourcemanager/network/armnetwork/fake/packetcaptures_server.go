@@ -49,21 +49,28 @@ type PacketCapturesServer struct {
 }
 
 // NewPacketCapturesServerTransport creates a new instance of PacketCapturesServerTransport with the provided implementation.
-// The returned PacketCapturesServerTransport instance is connected to an instance of armnetwork.PacketCapturesClient by way of the
-// undefined.Transporter field.
+// The returned PacketCapturesServerTransport instance is connected to an instance of armnetwork.PacketCapturesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPacketCapturesServerTransport(srv *PacketCapturesServer) *PacketCapturesServerTransport {
-	return &PacketCapturesServerTransport{srv: srv}
+	return &PacketCapturesServerTransport{
+		srv:            srv,
+		beginCreate:    newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientCreateResponse]](),
+		beginDelete:    newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse]](),
+		beginGetStatus: newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse]](),
+		newListPager:   newTracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]](),
+		beginStop:      newTracker[azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse]](),
+	}
 }
 
 // PacketCapturesServerTransport connects instances of armnetwork.PacketCapturesClient to instances of PacketCapturesServer.
 // Don't use this type directly, use NewPacketCapturesServerTransport instead.
 type PacketCapturesServerTransport struct {
 	srv            *PacketCapturesServer
-	beginCreate    *azfake.PollerResponder[armnetwork.PacketCapturesClientCreateResponse]
-	beginDelete    *azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse]
-	beginGetStatus *azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse]
-	newListPager   *azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]
-	beginStop      *azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse]
+	beginCreate    *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientCreateResponse]]
+	beginDelete    *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientDeleteResponse]]
+	beginGetStatus *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientGetStatusResponse]]
+	newListPager   *tracker[azfake.PagerResponder[armnetwork.PacketCapturesClientListResponse]]
+	beginStop      *tracker[azfake.PollerResponder[armnetwork.PacketCapturesClientStopResponse]]
 }
 
 // Do implements the policy.Transporter interface for PacketCapturesServerTransport.
@@ -105,7 +112,8 @@ func (p *PacketCapturesServerTransport) dispatchBeginCreate(req *http.Request) (
 	if p.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if p.beginCreate == nil {
+	beginCreate := p.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -132,19 +140,21 @@ func (p *PacketCapturesServerTransport) dispatchBeginCreate(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreate = &respr
+		beginCreate = &respr
+		p.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusCreated}, resp.StatusCode) {
+		p.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreate) {
-		p.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		p.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -154,7 +164,8 @@ func (p *PacketCapturesServerTransport) dispatchBeginDelete(req *http.Request) (
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -177,19 +188,21 @@ func (p *PacketCapturesServerTransport) dispatchBeginDelete(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -236,7 +249,8 @@ func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request
 	if p.srv.BeginGetStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetStatus not implemented")}
 	}
-	if p.beginGetStatus == nil {
+	beginGetStatus := p.beginGetStatus.get(req)
+	if beginGetStatus == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -259,19 +273,21 @@ func (p *PacketCapturesServerTransport) dispatchBeginGetStatus(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginGetStatus = &respr
+		beginGetStatus = &respr
+		p.beginGetStatus.add(req, beginGetStatus)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginGetStatus, req)
+	resp, err := server.PollerResponderNext(beginGetStatus, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginGetStatus.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginGetStatus) {
-		p.beginGetStatus = nil
+	if !server.PollerResponderMore(beginGetStatus) {
+		p.beginGetStatus.remove(req)
 	}
 
 	return resp, nil
@@ -281,7 +297,8 @@ func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) 
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -297,17 +314,19 @@ func (p *PacketCapturesServerTransport) dispatchNewListPager(req *http.Request) 
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, networkWatcherNameUnescaped, nil)
-		p.newListPager = &resp
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -316,7 +335,8 @@ func (p *PacketCapturesServerTransport) dispatchBeginStop(req *http.Request) (*h
 	if p.srv.BeginStop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
-	if p.beginStop == nil {
+	beginStop := p.beginStop.get(req)
+	if beginStop == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packetCaptures/(?P<packetCaptureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -339,19 +359,21 @@ func (p *PacketCapturesServerTransport) dispatchBeginStop(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginStop = &respr
+		beginStop = &respr
+		p.beginStop.add(req, beginStop)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginStop, req)
+	resp, err := server.PollerResponderNext(beginStop, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginStop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginStop) {
-		p.beginStop = nil
+	if !server.PollerResponderMore(beginStop) {
+		p.beginStop.remove(req)
 	}
 
 	return resp, nil

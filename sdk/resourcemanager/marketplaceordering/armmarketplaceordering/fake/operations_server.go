@@ -27,17 +27,20 @@ type OperationsServer struct {
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
-// The returned OperationsServerTransport instance is connected to an instance of armmarketplaceordering.OperationsClient by way of the
-// undefined.Transporter field.
+// The returned OperationsServerTransport instance is connected to an instance of armmarketplaceordering.OperationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransport {
-	return &OperationsServerTransport{srv: srv}
+	return &OperationsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmarketplaceordering.OperationsClientListResponse]](),
+	}
 }
 
 // OperationsServerTransport connects instances of armmarketplaceordering.OperationsClient to instances of OperationsServer.
 // Don't use this type directly, use NewOperationsServerTransport instead.
 type OperationsServerTransport struct {
 	srv          *OperationsServer
-	newListPager *azfake.PagerResponder[armmarketplaceordering.OperationsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armmarketplaceordering.OperationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OperationsServerTransport.
@@ -69,22 +72,25 @@ func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if o.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if o.newListPager == nil {
+	newListPager := o.newListPager.get(req)
+	if newListPager == nil {
 		resp := o.srv.NewListPager(nil)
-		o.newListPager = &resp
-		server.PagerResponderInjectNextLinks(o.newListPager, req, func(page *armmarketplaceordering.OperationsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		o.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmarketplaceordering.OperationsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(o.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(o.newListPager) {
-		o.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		o.newListPager.remove(req)
 	}
 	return resp, nil
 }

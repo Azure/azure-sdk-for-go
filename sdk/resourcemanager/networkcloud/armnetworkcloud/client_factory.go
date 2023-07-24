@@ -24,7 +24,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -63,13 +63,8 @@ func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewDefaultCniNetworksClient() *DefaultCniNetworksClient {
-	subClient, _ := NewDefaultCniNetworksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewHybridAksClustersClient() *HybridAksClustersClient {
-	subClient, _ := NewHybridAksClustersClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewKubernetesClustersClient() *KubernetesClustersClient {
+	subClient, _ := NewKubernetesClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -125,6 +120,11 @@ func (c *ClientFactory) NewBmcKeySetsClient() *BmcKeySetsClient {
 
 func (c *ClientFactory) NewMetricsConfigurationsClient() *MetricsConfigurationsClient {
 	subClient, _ := NewMetricsConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
+	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

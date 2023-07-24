@@ -28,8 +28,8 @@ type SubscriptionServer struct {
 }
 
 // NewSubscriptionServerTransport creates a new instance of SubscriptionServerTransport with the provided implementation.
-// The returned SubscriptionServerTransport instance is connected to an instance of armsubscriptions.SubscriptionClient by way of the
-// undefined.Transporter field.
+// The returned SubscriptionServerTransport instance is connected to an instance of armsubscriptions.SubscriptionClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSubscriptionServerTransport(srv *SubscriptionServer) *SubscriptionServerTransport {
 	return &SubscriptionServerTransport{srv: srv}
 }

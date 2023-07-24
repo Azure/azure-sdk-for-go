@@ -21,55 +21,56 @@ import (
 	"strings"
 )
 
-// ResourceSKUsClient contains the methods for the ResourceSKUs group.
-// Don't use this type directly, use NewResourceSKUsClient() instead.
-type ResourceSKUsClient struct {
+// ModelsClient contains the methods for the Models group.
+// Don't use this type directly, use NewModelsClient() instead.
+type ModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
+// NewModelsClient creates a new instance of ModelsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceSKUsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceSKUsClient", moduleVersion, credential, options)
+func NewModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelsClient, error) {
+	cl, err := arm.NewClient(moduleName+".ModelsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceSKUsClient{
+	client := &ModelsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListPager - Gets the list of Microsoft.CognitiveServices SKUs available for your Subscription.
+// NewListPager - List Models.
 //
 // Generated from API version 2023-05-01
-//   - options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
-func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceSKUsClientListResponse]{
-		More: func(page ResourceSKUsClientListResponse) bool {
+//   - location - Resource location.
+//   - options - ModelsClientListOptions contains the optional parameters for the ModelsClient.NewListPager method.
+func (client *ModelsClient) NewListPager(location string, options *ModelsClientListOptions) *runtime.Pager[ModelsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ModelsClientListResponse]{
+		More: func(page ModelsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceSKUsClientListResponse) (ResourceSKUsClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *ModelsClientListResponse) (ModelsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, location, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ResourceSKUsClientListResponse{}, err
+				return ModelsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ResourceSKUsClientListResponse{}, err
+				return ModelsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceSKUsClientListResponse{}, runtime.NewResponseError(resp)
+				return ModelsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -77,12 +78,16 @@ func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOp
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options *ResourceSKUsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus"
+func (client *ModelsClient) listCreateRequest(ctx context.Context, location string, options *ModelsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/models"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -95,10 +100,10 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (ResourceSKUsClientListResponse, error) {
-	result := ResourceSKUsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUListResult); err != nil {
-		return ResourceSKUsClientListResponse{}, err
+func (client *ModelsClient) listHandleResponse(resp *http.Response) (ModelsClientListResponse, error) {
+	result := ModelsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ModelListResult); err != nil {
+		return ModelsClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListCommitmentTiers.json
-func ExampleCommitmentTiersClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListUsages.json
+func ExampleUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +28,7 @@ func ExampleCommitmentTiersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCommitmentTiersClient().NewListPager("location", nil)
+	pager := clientFactory.NewUsagesClient().NewListPager("WestUS", &armcognitiveservices.UsagesClientListOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,20 +39,16 @@ func ExampleCommitmentTiersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.CommitmentTierListResult = armcognitiveservices.CommitmentTierListResult{
-		// 	Value: []*armcognitiveservices.CommitmentTier{
+		// page.UsageListResult = armcognitiveservices.UsageListResult{
+		// 	Value: []*armcognitiveservices.Usage{
 		// 		{
-		// 			Cost: &armcognitiveservices.CommitmentCost{
+		// 			Name: &armcognitiveservices.MetricName{
+		// 				LocalizedValue: to.Ptr("Cognitive Services total account limit"),
+		// 				Value: to.Ptr("AccountCount"),
 		// 			},
-		// 			HostingModel: to.Ptr(armcognitiveservices.HostingModelWeb),
-		// 			Kind: to.Ptr("TextAnalytics"),
-		// 			PlanType: to.Ptr("TA"),
-		// 			Quota: &armcognitiveservices.CommitmentQuota{
-		// 				Quantity: to.Ptr[int64](1000000),
-		// 				Unit: to.Ptr("Transaction"),
-		// 			},
-		// 			SKUName: to.Ptr("S"),
-		// 			Tier: to.Ptr("T1"),
+		// 			CurrentValue: to.Ptr[float64](3),
+		// 			Limit: to.Ptr[float64](200),
+		// 			Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
 		// 	}},
 		// }
 	}

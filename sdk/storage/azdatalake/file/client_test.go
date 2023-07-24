@@ -649,7 +649,6 @@ func (s *RecordedTestSuite) TestCreateFileWithOwnerGroupACLUmask() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	//TODO: GetProperties() when you figured out how to add o,g, ACL into response
 }
 
 func (s *RecordedTestSuite) TestDeleteFileWithNilAccessConditions() {

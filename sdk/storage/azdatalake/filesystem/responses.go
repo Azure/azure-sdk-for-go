@@ -9,6 +9,7 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"time"
 )
@@ -98,13 +99,13 @@ type GetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *DurationType
+	LeaseDuration *azdatalake.DurationType
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *StateType
+	LeaseState *azdatalake.StateType
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *StatusType
+	LeaseStatus *azdatalake.StatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
@@ -116,6 +117,7 @@ type GetPropertiesResponse struct {
 	Version *string
 }
 
+// removes the blob prefix in access type
 func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.GetPropertiesResponse) {
 	r.PublicAccess = contResp.BlobPublicAccess
 	r.ClientRequestID = contResp.ClientRequestID

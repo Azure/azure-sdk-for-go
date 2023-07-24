@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"time"
 )
@@ -86,9 +87,9 @@ type FilesystemProperties struct {
 
 	// Indicates if version level worm is enabled on this container.
 	IsImmutableStorageWithVersioningEnabled *bool
-	LeaseDuration                           *LeaseDurationType
-	LeaseState                              *LeaseStateType
-	LeaseStatus                             *LeaseStatusType
+	LeaseDuration                           *azdatalake.DurationType
+	LeaseState                              *azdatalake.StateType
+	LeaseStatus                             *azdatalake.StatusType
 	PreventEncryptionScopeOverride          *bool
 	PublicAccess                            *PublicAccessType
 	RemainingRetentionDays                  *int32

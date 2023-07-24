@@ -16,8 +16,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"net/http"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -52,7 +56,7 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -80,7 +84,7 @@ func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client,
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClientWithNoCredential(blobURL, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -115,7 +119,7 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 		return nil, err
 	}
 	blobClient, _ := blockblob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
-	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, cred, (*base.ClientOptions)(conOptions))
+	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
 }
@@ -160,6 +164,10 @@ func (f *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
 
+func (f *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+}
+
 func (f *Client) getClientOptions() *base.ClientOptions {
 	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
 }
@@ -177,50 +185,73 @@ func (f *Client) BlobURL() string {
 // Create creates a new file (dfs1).
 func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
-	return f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	resp, err := f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // Delete deletes a file (dfs1).
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := options.format()
-	return f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetProperties gets the properties of a file (blob3)
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts := options.format()
-	// TODO: format response + add acls, owner, group, permissions to it
-	return f.blobClient().GetProperties(ctx, opts)
+	opts := path.FormatGetPropertiesOptions(options)
+	var respFromCtx *http.Response
+	ctxWithResp := runtime.WithCaptureResponse(ctx, &respFromCtx)
+	resp, err := f.blobClient().GetProperties(ctxWithResp, opts)
+	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
+	err = exported.ConvertToDFSError(err)
+	return newResp, err
 }
 
-// TODO: implement below
-//// Rename renames a file (dfs1). TODO: look into returning a new client possibly or changing the url
-//func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-//	path, err := url.Parse(f.DFSURL())
-//	if err != nil {
-//		return RenameResponse{}, err
-//	}
-//	lac, mac, smac, createOpts := options.format(path.Path)
-//	fileURL := runtime.JoinPaths(f.generatedFileClientWithDFS().Endpoint(), newName)
-//	// TODO: remove new azcore.Client creation after the API for shallow copying with new client name is implemented
-//	clOpts := f.getClientOptions()
-//	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, *(base.GetPipelineOptions(clOpts)), &(clOpts.ClientOptions))
-//	if err != nil {
-//		if log.Should(exported.EventError) {
-//			log.Writef(exported.EventError, err.Error())
-//		}
-//		return RenameResponse{}, err
-//	}
-//	blobURL, fileURL := shared.GetURLs(fileURL)
-//	tempFileClient := (*Client)(base.NewPathClient(fileURL, blobURL, nil, azClient, f.sharedKey(), clOpts))
-//	// this tempClient does not have a blobClient
-//	return tempFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
-//}
+func (f *Client) renamePathInURL(newName string) (string, string, string) {
+	endpoint := f.DFSURL()
+	separator := "/"
+	// Find the index of the last occurrence of the separator
+	lastIndex := strings.LastIndex(endpoint, separator)
+	// Split the string based on the last occurrence of the separator
+	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
+	newPathURL, newBlobURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
+	parsedNewURL, _ := url.Parse(f.DFSURL())
+	return parsedNewURL.Path, newPathURL, newBlobURL
+}
+
+// Rename renames a file (dfs1)
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+	newPathWithoutURL, newBlobURL, newPathURL := f.renamePathInURL(newName)
+	lac, mac, smac, createOpts := options.format(newPathWithoutURL)
+	var newBlobClient *blockblob.Client
+	var err error
+	if f.identityCredential() != nil {
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
+	} else if f.sharedKey() != nil {
+		blobSharedKey, _ := f.sharedKey().ConvertToBlobSharedKey()
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+	} else {
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+	}
+	if err != nil {
+		return RenameResponse{}, err
+	}
+	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
+	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	return RenameResponse{
+		Response:      resp,
+		NewFileClient: newFileClient,
+	}, exported.ConvertToDFSError(err)
+}
 
 // SetExpiry operation sets an expiry time on an existing file (blob2).
 func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	expMode, opts := expiryType.Format(o)
-	return f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
+	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 //// Upload uploads data to a file.
@@ -245,43 +276,54 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 
 // SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
-	opts, lac, mac, err := options.format()
+	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
 	if err != nil {
 		return SetAccessControlResponse{}, err
 	}
-	return f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControl(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // UpdateAccessControl updates the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
-	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
-	opts, lac, mac := options.format()
-	return f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	opts, lac, mac := path.FormatGetAccessControlOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // RemoveAccessControl removes the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
-	return f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // SetMetadata sets the metadata for a file or directory (blob3).
 func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts, metadata := options.format()
-	return f.blobClient().SetMetadata(ctx, metadata, opts)
+	opts, metadata := path.FormatSetMetadataOptions(options)
+	resp, err := f.blobClient().SetMetadata(ctx, metadata, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
 func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	opts, blobHTTPHeaders := options.format(httpHeaders)
+	opts, blobHTTPHeaders := path.FormatSetHTTPHeadersOptions(options, httpHeaders)
 	resp, err := f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
 	newResp := SetHTTPHeadersResponse{}
-	formatSetHTTPHeadersResponse(&newResp, &resp)
+	path.FormatSetHTTPHeadersResponse(&newResp, &resp)
+	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 
@@ -293,11 +335,12 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	}
 
 	urlParts, err := sas.ParseURL(f.BlobURL())
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}
 
-	st := o.format()
+	st := path.FormatGetSASURLOptions(o)
 
 	qps, err := sas.DatalakeSignatureValues{
 		FilePath:       urlParts.PathName,
@@ -308,6 +351,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		ExpiryTime:     expiry.UTC(),
 	}.SignWithSharedKey(f.sharedKey())
 
+	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}

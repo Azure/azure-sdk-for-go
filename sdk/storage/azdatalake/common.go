@@ -7,6 +7,7 @@
 package azdatalake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 )
@@ -34,3 +35,47 @@ func ParseURL(u string) (URLParts, error) {
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
 // which has an offset but no zero value count indicates from the offset to the resource's end.
 type HTTPRange = exported.HTTPRange
+
+// ===================================== LEASE CONSTANTS ============================================================
+
+// StatusType defines values for StatusType
+type StatusType = lease.StatusType
+
+const (
+	StatusTypeLocked   StatusType = lease.StatusTypeLocked
+	StatusTypeUnlocked StatusType = lease.StatusTypeUnlocked
+)
+
+// PossibleStatusTypeValues returns the possible values for the StatusType const type.
+func PossibleStatusTypeValues() []StatusType {
+	return lease.PossibleStatusTypeValues()
+}
+
+// DurationType defines values for DurationType
+type DurationType = lease.DurationType
+
+const (
+	DurationTypeInfinite DurationType = lease.DurationTypeInfinite
+	DurationTypeFixed    DurationType = lease.DurationTypeFixed
+)
+
+// PossibleDurationTypeValues returns the possible values for the DurationType const type.
+func PossibleDurationTypeValues() []DurationType {
+	return lease.PossibleDurationTypeValues()
+}
+
+// StateType defines values for StateType
+type StateType = lease.StateType
+
+const (
+	StateTypeAvailable StateType = lease.StateTypeAvailable
+	StateTypeLeased    StateType = lease.StateTypeLeased
+	StateTypeExpired   StateType = lease.StateTypeExpired
+	StateTypeBreaking  StateType = lease.StateTypeBreaking
+	StateTypeBroken    StateType = lease.StateTypeBroken
+)
+
+// PossibleStateTypeValues returns the possible values for the StateType const type.
+func PossibleStateTypeValues() []StateType {
+	return lease.PossibleStateTypeValues()
+}

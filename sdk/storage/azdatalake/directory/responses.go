@@ -7,8 +7,8 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
 // CreateResponse contains the response fields for the Create operation.
@@ -20,9 +20,6 @@ type DeleteResponse = generated.PathClientDeleteResponse
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse = generated.PathClientCreateResponse
 
-// SetAccessControlResponse contains the response fields for the SetAccessControl operation.
-type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
-
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
 
@@ -32,17 +29,19 @@ type UpdateAccessControlRecursiveResponse = generated.PathClientSetAccessControl
 // RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
 type RemoveAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
 
+// ========================================== path imports ===========================================================
+
+// SetAccessControlResponse contains the response fields for the SetAccessControl operation.
+type SetAccessControlResponse = path.SetAccessControlResponse
+
+// SetHTTPHeadersResponse contains the response from method Client.SetHTTPHeaders.
+type SetHTTPHeadersResponse = path.SetHTTPHeadersResponse
+
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
-type GetAccessControlResponse = generated.PathClientGetPropertiesResponse
+type GetAccessControlResponse = path.GetAccessControlResponse
 
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
-type GetPropertiesResponse = generated.PathClientGetPropertiesResponse
+type GetPropertiesResponse = path.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
-type SetMetadataResponse = blob.SetMetadataResponse
-
-// SetHTTPHeadersResponse contains the response fields for the SetHTTPHeaders operation.
-type SetHTTPHeadersResponse = blob.SetHTTPHeadersResponse
-
-// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
-type UndeletePathResponse = generated.PathClientUndeleteResponse
+type SetMetadataResponse = path.SetMetadataResponse

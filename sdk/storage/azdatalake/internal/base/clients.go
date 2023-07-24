@@ -36,9 +36,10 @@ type CompositeClient[T, K, U any] struct {
 	// generated client with blob
 	innerK *K
 	// blob client
-	innerU    *U
-	sharedKey *exported.SharedKeyCredential
-	options   *ClientOptions
+	innerU       *U
+	sharedKey    *exported.SharedKeyCredential
+	identityCred *azcore.TokenCredential
+	options      *ClientOptions
 }
 
 func InnerClients[T, K, U any](client *CompositeClient[T, K, U]) (*T, *K, *U) {
@@ -49,33 +50,40 @@ func SharedKeyComposite[T, K, U any](client *CompositeClient[T, K, U]) *exported
 	return client.sharedKey
 }
 
-func NewFilesystemClient(fsURL string, fsURLWithBlobEndpoint string, client *container.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client] {
+func IdentityCredentialComposite[T, K, U any](client *CompositeClient[T, K, U]) *azcore.TokenCredential {
+	return client.identityCred
+}
+
+func NewFilesystemClient(fsURL string, fsURLWithBlobEndpoint string, client *container.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client] {
 	return &CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client]{
-		innerT:    generated.NewFilesystemClient(fsURL, azClient),
-		innerK:    generated.NewFilesystemClient(fsURLWithBlobEndpoint, azClient),
-		sharedKey: sharedKey,
-		innerU:    client,
-		options:   options,
+		innerT:       generated.NewFilesystemClient(fsURL, azClient),
+		innerK:       generated.NewFilesystemClient(fsURLWithBlobEndpoint, azClient),
+		sharedKey:    sharedKey,
+		identityCred: identityCred,
+		innerU:       client,
+		options:      options,
 	}
 }
 
-func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, client *service.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client] {
+func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, client *service.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client] {
 	return &CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]{
-		innerT:    generated.NewServiceClient(serviceURL, azClient),
-		innerK:    generated.NewServiceClient(serviceURLWithBlobEndpoint, azClient),
-		sharedKey: sharedKey,
-		innerU:    client,
-		options:   options,
+		innerT:       generated.NewServiceClient(serviceURL, azClient),
+		innerK:       generated.NewServiceClient(serviceURLWithBlobEndpoint, azClient),
+		sharedKey:    sharedKey,
+		identityCred: identityCred,
+		innerU:       client,
+		options:      options,
 	}
 }
 
-func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client] {
+func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client] {
 	return &CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]{
-		innerT:    generated.NewPathClient(pathURL, azClient),
-		innerK:    generated.NewPathClient(pathURLWithBlobEndpoint, azClient),
-		sharedKey: sharedKey,
-		innerU:    client,
-		options:   options,
+		innerT:       generated.NewPathClient(pathURL, azClient),
+		innerK:       generated.NewPathClient(pathURLWithBlobEndpoint, azClient),
+		sharedKey:    sharedKey,
+		identityCred: identityCred,
+		innerU:       client,
+		options:      options,
 	}
 }
 

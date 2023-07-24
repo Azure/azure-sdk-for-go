@@ -50,7 +50,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
-	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil
 }
@@ -78,7 +78,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 		ClientOptions: options.ClientOptions,
 	}
 	blobClient, _ := blockblob.NewClientWithNoCredential(blobURL, &blobClientOpts)
-	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, (*base.ClientOptions)(conOptions))
+	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil
 }
@@ -113,7 +113,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 		return nil, err
 	}
 	blobClient, _ := blockblob.NewClientWithSharedKeyCredential(blobURL, blobSharedKey, &blobClientOpts)
-	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, cred, (*base.ClientOptions)(conOptions))
+	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil
 }
@@ -158,6 +158,10 @@ func (d *Client) sharedKey() *exported.SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
 }
 
+func (d *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+}
+
 // DFSURL returns the URL endpoint used by the Client object.
 func (d *Client) DFSURL() string {
 	return d.generatedDirClientWithDFS().Endpoint()
@@ -167,6 +171,8 @@ func (d *Client) DFSURL() string {
 func (d *Client) BlobURL() string {
 	return d.generatedDirClientWithBlob().Endpoint()
 }
+
+//TODO: create method to get file client - this will require block blob to have a method to get another block blob
 
 // Create creates a new directory (dfs1).
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
@@ -229,9 +235,4 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	// TODO: call formatBlobHTTPHeaders() since we want to add the blob prefix to our options before calling into blob
 	// TODO: call into blob
 	return SetHTTPHeadersResponse{}, nil
-}
-
-// UndeletePath restores the specified path that was previously deleted. (dfs op/blob2).
-func (d *Client) UndeletePath(ctx context.Context, path string, options *UndeletePathOptions) (UndeletePathResponse, error) {
-	return UndeletePathResponse{}, nil
 }

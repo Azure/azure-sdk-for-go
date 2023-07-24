@@ -7,12 +7,10 @@
 package file
 
 import (
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"net/http"
 	"strconv"
 	"time"
@@ -77,7 +75,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	var cpkOpts *generated.CPKInfo
 
 	if o.HTTPHeaders != nil {
-		httpHeaders = o.HTTPHeaders.formatPathHTTPHeaders()
+		httpHeaders = path.FormatPathHTTPHeaders(o.HTTPHeaders)
 	}
 	if o.CPKInfo != nil {
 		cpkOpts = &generated.CPKInfo{
@@ -127,6 +125,9 @@ func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	if o.SourceAccessConditions != nil {
+		if o.SourceAccessConditions.SourceLeaseAccessConditions != nil {
+			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
+		}
 		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
 			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
 				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
@@ -134,89 +135,13 @@ func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *
 				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
 				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
 			}
-			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
 			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
 		}
 	}
 	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
 }
 
-// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
-type GetPropertiesOptions struct {
-	AccessConditions *AccessConditions
-	CPKInfo          *CPKInfo
-}
-
-func (o *GetPropertiesOptions) format() *blob.GetPropertiesOptions {
-	if o == nil {
-		return nil
-	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &blob.GetPropertiesOptions{
-		AccessConditions: accessConditions,
-		CPKInfo: &blob.CPKInfo{
-			EncryptionKey:       o.CPKInfo.EncryptionKey,
-			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
-			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		},
-	}
-}
-
 // ===================================== PATH IMPORTS ===========================================
-
-// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
-type SetAccessControlOptions struct {
-	// Owner is the owner of the path.
-	Owner *string
-	// Group is the owning group of the path.
-	Group *string
-	// ACL is the access control list for the path.
-	ACL *string
-	// Permissions is the octal representation of the permissions for user, group and mask.
-	Permissions *string
-	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *AccessConditions
-}
-
-func (o *SetAccessControlOptions) format() (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
-	if o == nil {
-		return nil, nil, nil, datalakeerror.MissingParameters
-	}
-	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	if o.Owner == nil && o.Group == nil && o.ACL == nil && o.Permissions == nil {
-		return nil, nil, nil, errors.New("at least one parameter should be set for SetAccessControl API")
-	}
-	return &generated.PathClientSetAccessControlOptions{
-		Owner:       o.Owner,
-		Group:       o.Group,
-		ACL:         o.ACL,
-		Permissions: o.Permissions,
-	}, leaseAccessConditions, modifiedAccessConditions, nil
-}
-
-// GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
-type GetAccessControlOptions struct {
-	// UPN is the user principal name.
-	UPN *bool
-	// AccessConditions contains parameters for accessing the path.
-	AccessConditions *AccessConditions
-}
-
-func (o *GetAccessControlOptions) format() (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
-	action := generated.PathGetPropertiesActionGetAccessControl
-	if o == nil {
-		return &generated.PathClientGetPropertiesOptions{
-			Action: &action,
-		}, nil, nil
-	}
-	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return &generated.PathClientGetPropertiesOptions{
-		Upn:    o.UPN,
-		Action: &action,
-	}, leaseAccessConditions, modifiedAccessConditions
-}
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
@@ -240,133 +165,6 @@ func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSe
 	return &generated.PathClientSetAccessControlRecursiveOptions{
 		ACL: &ACL,
 	}, mode
-}
-
-// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
-type SetHTTPHeadersOptions struct {
-	AccessConditions *AccessConditions
-}
-
-func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) (*blob.SetHTTPHeadersOptions, blob.HTTPHeaders) {
-	httpHeaderOpts := blob.HTTPHeaders{
-		BlobCacheControl:       httpHeaders.CacheControl,
-		BlobContentDisposition: httpHeaders.ContentDisposition,
-		BlobContentEncoding:    httpHeaders.ContentEncoding,
-		BlobContentLanguage:    httpHeaders.ContentLanguage,
-		BlobContentMD5:         httpHeaders.ContentMD5,
-		BlobContentType:        httpHeaders.ContentType,
-	}
-	if o == nil {
-		return nil, httpHeaderOpts
-	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &blob.SetHTTPHeadersOptions{
-		AccessConditions: accessConditions,
-	}, httpHeaderOpts
-}
-
-// HTTPHeaders contains the HTTP headers for path operations.
-type HTTPHeaders struct {
-	// Optional. Sets the path's cache control. If specified, this property is stored with the path and returned with a read request.
-	CacheControl *string
-	// Optional. Sets the path's Content-Disposition header.
-	ContentDisposition *string
-	// Optional. Sets the path's content encoding. If specified, this property is stored with the blobpath and returned with a read
-	// request.
-	ContentEncoding *string
-	// Optional. Set the path's content language. If specified, this property is stored with the path and returned with a read
-	// request.
-	ContentLanguage *string
-	// Specify the transactional md5 for the body, to be validated by the service.
-	ContentMD5 []byte
-	// Optional. Sets the path's content type. If specified, this property is stored with the path and returned with a read request.
-	ContentType *string
-}
-
-//
-//func (o HTTPHeaders) formatBlobHTTPHeaders() blob.HTTPHeaders {
-//
-//	opts := blob.HTTPHeaders{
-//		BlobCacheControl:       o.CacheControl,
-//		BlobContentDisposition: o.ContentDisposition,
-//		BlobContentEncoding:    o.ContentEncoding,
-//		BlobContentLanguage:    o.ContentLanguage,
-//		BlobContentMD5:         o.ContentMD5,
-//		BlobContentType:        o.ContentType,
-//	}
-//	return opts
-//}
-
-func (o *HTTPHeaders) formatPathHTTPHeaders() *generated.PathHTTPHeaders {
-	// TODO: will be used for file related ops, like append
-	if o == nil {
-		return nil
-	}
-	opts := generated.PathHTTPHeaders{
-		CacheControl:             o.CacheControl,
-		ContentDisposition:       o.ContentDisposition,
-		ContentEncoding:          o.ContentEncoding,
-		ContentLanguage:          o.ContentLanguage,
-		ContentMD5:               o.ContentMD5,
-		ContentType:              o.ContentType,
-		TransactionalContentHash: o.ContentMD5,
-	}
-	return &opts
-}
-
-// SetMetadataOptions provides set of configurations for Set Metadata on path operation
-type SetMetadataOptions struct {
-	Metadata         map[string]*string
-	AccessConditions *AccessConditions
-	CPKInfo          *CPKInfo
-	CPKScopeInfo     *CPKScopeInfo
-}
-
-func (o *SetMetadataOptions) format() (*blob.SetMetadataOptions, map[string]*string) {
-	if o == nil {
-		return nil, nil
-	}
-	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	opts := &blob.SetMetadataOptions{
-		AccessConditions: accessConditions,
-	}
-	if o.CPKInfo != nil {
-		opts.CPKInfo = &blob.CPKInfo{
-			EncryptionKey:       o.CPKInfo.EncryptionKey,
-			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
-			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		}
-	}
-	if o.CPKScopeInfo != nil {
-		opts.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
-	}
-	return opts, o.Metadata
-}
-
-// CPKInfo contains a group of parameters for the PathClient.Download method.
-type CPKInfo struct {
-	EncryptionAlgorithm *EncryptionAlgorithmType
-	EncryptionKey       *string
-	EncryptionKeySHA256 *string
-}
-
-// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
-type GetSASURLOptions struct {
-	StartTime *time.Time
-}
-
-func (o *GetSASURLOptions) format() time.Time {
-	if o == nil {
-		return time.Time{}
-	}
-
-	var st time.Time
-	if o.StartTime != nil {
-		st = o.StartTime.UTC()
-	} else {
-		st = time.Time{}
-	}
-	return st
 }
 
 // CreationExpiryType defines values for Create() ExpiryType
@@ -411,12 +209,6 @@ type ACLFailedEntry = generated.ACLFailedEntry
 // SetAccessControlRecursiveResponse contains part of the response data returned by the []OP_AccessControl operations.
 type SetAccessControlRecursiveResponse = generated.SetAccessControlRecursiveResponse
 
-// CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
-type CPKScopeInfo blob.CPKScopeInfo
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-type SharedKeyCredential = exported.SharedKeyCredential
-
 // SetExpiryType defines values for ExpiryType.
 type SetExpiryType = exported.SetExpiryType
 
@@ -435,17 +227,49 @@ type SetExpiryTypeNever = exported.SetExpiryTypeNever
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions
 
+// ================================= path imports ==================================
+
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
+type GetPropertiesOptions = path.GetPropertiesOptions
+
+// SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation. dfs endpoint
+type SetAccessControlOptions = path.SetAccessControlOptions
+
+// GetAccessControlOptions contains the optional parameters when calling the GetAccessControl operation.
+type GetAccessControlOptions = path.GetAccessControlOptions
+
+// CPKInfo contains a group of parameters for the PathClient.Download method.
+type CPKInfo = path.CPKInfo
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions = path.GetSASURLOptions
+
+// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
+type SetHTTPHeadersOptions = path.SetHTTPHeadersOptions
+
+// HTTPHeaders contains the HTTP headers for path operations.
+type HTTPHeaders = path.HTTPHeaders
+
+// SetMetadataOptions provides set of configurations for Set Metadata on path operation
+type SetMetadataOptions = path.SetMetadataOptions
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = path.SharedKeyCredential
+
 // AccessConditions identifies blob-specific access conditions which you optionally set.
-type AccessConditions = exported.AccessConditions
+type AccessConditions = path.AccessConditions
 
 // SourceAccessConditions identifies blob-specific access conditions which you optionally set.
-type SourceAccessConditions = exported.SourceAccessConditions
+type SourceAccessConditions = path.SourceAccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
-type LeaseAccessConditions = exported.LeaseAccessConditions
+type LeaseAccessConditions = path.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type ModifiedAccessConditions = exported.ModifiedAccessConditions
+type ModifiedAccessConditions = path.ModifiedAccessConditions
 
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions.
-type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions
+type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
+
+// CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
+type CPKScopeInfo path.CPKScopeInfo

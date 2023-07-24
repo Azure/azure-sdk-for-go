@@ -49,7 +49,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // Please consider using List configurations API instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -93,7 +93,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 // List - Gets all configuration information for an HDI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
@@ -150,7 +150,7 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +169,7 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 // in cluster endpoint instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
@@ -194,7 +194,7 @@ func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGro
 // in cluster endpoint instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string, options *ConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
 	if err != nil {
@@ -234,7 +234,7 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

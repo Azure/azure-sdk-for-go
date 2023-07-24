@@ -4,8 +4,9 @@
 
 ### Features Added
 * Added support for [Cold tier](https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview?tabs=azure-portal).
-* Added CopySourceTag option for UploadBlobFromURLOptions.
+* Added `CopySourceTag` option for `UploadBlobFromURLOptions`
 * Added [FilterBlobs](https://learn.microsoft.com/rest/api/storageservices/find-blobs-by-tags-container) by tags API for container client.
+* Added `System` option to `ListContainersInclude` to allow listing of system containers. 
 
 ### Breaking Changes
 

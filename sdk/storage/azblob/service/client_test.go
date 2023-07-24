@@ -161,6 +161,33 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceRecordedTestsSuite) TestListContainersSystem() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	listOptions := service.ListContainersOptions{Include: service.ListContainersInclude{System: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, c := range resp.ContainerItems {
+			_require.NotNil(c.Name)
+			if strings.Contains(*c.Name, "$") {
+				count += 1
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Nil(err)
+	_require.GreaterOrEqual(count, 1) // every account will always have one system container, i.e. '$logs'
+}
+
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

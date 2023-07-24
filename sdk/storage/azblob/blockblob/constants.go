@@ -45,3 +45,8 @@ const (
 	BlobCopySourceTagsCopy    = generated.BlobCopySourceTagsCOPY
 	BlobCopySourceTagsReplace = generated.BlobCopySourceTagsREPLACE
 )
+
+// PossibleBlobCopySourceTagsValues returns the possible values for the BlobCopySourceTags const type.
+func PossibleBlobCopySourceTagsValues() []BlobCopySourceTags {
+	return generated.PossibleBlobCopySourceTagsValues()
+}

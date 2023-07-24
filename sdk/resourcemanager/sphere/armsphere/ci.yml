@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/resourcemanager/azuresphere/armazuresphere/
+    - sdk/resourcemanager/sphere/armsphere/
 
 pr:
   branches:
@@ -19,10 +19,10 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/resourcemanager/azuresphere/armazuresphere/
+    - sdk/resourcemanager/sphere/armsphere/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     IncludeRelease: true
-    ServiceDirectory: 'resourcemanager/azuresphere/armazuresphere'
+    ServiceDirectory: 'resourcemanager/sphere/armsphere'

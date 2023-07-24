@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuresphere/armazuresphere
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sphere/armsphere
 
 go 1.18
 

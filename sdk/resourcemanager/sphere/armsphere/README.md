@@ -1,10 +1,10 @@
-# Azure Azuresphere Module for Go
+# Azure Sphere Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuresphere/armazuresphere)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuresphere/armazuresphere)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sphere/armsphere)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sphere/armsphere)
 
-The `armazuresphere` module provides operations for working with Azure Azuresphere.
+The `armsphere` module provides operations for working with Azure Sphere.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/azuresphere/armazuresphere)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/sphere/armsphere)
 
 # Getting started
 
@@ -17,15 +17,15 @@ The `armazuresphere` module provides operations for working with Azure Azuresphe
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Azuresphere module:
+Install the Azure Sphere module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuresphere/armazuresphere
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sphere/armsphere
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Azuresphere.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Sphere.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,10 +35,10 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Azuresphere module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Sphere module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-clientFactory, err := armazuresphere.NewClientFactory(<subscription ID>, cred, nil)
+clientFactory, err := armsphere.NewClientFactory(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -49,7 +49,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armazuresphere.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armsphere.NewClientFactory(<subscription ID>, cred, &options)
 ```
 
 ## Clients
@@ -57,13 +57,13 @@ client, err := armazuresphere.NewClientFactory(<subscription ID>, cred, &options
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewDeviceGroupsClient()
+client := clientFactory.NewCatalogsClient()
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azuresphere` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Sphere` label.
 
 # Contributing
 

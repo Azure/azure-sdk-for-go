@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.0.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.2 (2023-07-20)
+
+### Bugs Fixed
+* Escape single-quote characters in partition and row keys.
+
+### Other Changes
+* Update dependencies.
 
 ## 1.0.1 (2022-06-16)
 

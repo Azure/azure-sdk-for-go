@@ -42,19 +42,24 @@ type PipelineRunsServer struct {
 }
 
 // NewPipelineRunsServerTransport creates a new instance of PipelineRunsServerTransport with the provided implementation.
-// The returned PipelineRunsServerTransport instance is connected to an instance of armcontainerregistry.PipelineRunsClient by way of the
-// undefined.Transporter field.
+// The returned PipelineRunsServerTransport instance is connected to an instance of armcontainerregistry.PipelineRunsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPipelineRunsServerTransport(srv *PipelineRunsServer) *PipelineRunsServerTransport {
-	return &PipelineRunsServerTransport{srv: srv}
+	return &PipelineRunsServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.PipelineRunsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.PipelineRunsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.PipelineRunsClientListResponse]](),
+	}
 }
 
 // PipelineRunsServerTransport connects instances of armcontainerregistry.PipelineRunsClient to instances of PipelineRunsServer.
 // Don't use this type directly, use NewPipelineRunsServerTransport instead.
 type PipelineRunsServerTransport struct {
 	srv          *PipelineRunsServer
-	beginCreate  *azfake.PollerResponder[armcontainerregistry.PipelineRunsClientCreateResponse]
-	beginDelete  *azfake.PollerResponder[armcontainerregistry.PipelineRunsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.PipelineRunsClientListResponse]
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.PipelineRunsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.PipelineRunsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.PipelineRunsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PipelineRunsServerTransport.
@@ -92,7 +97,8 @@ func (p *PipelineRunsServerTransport) dispatchBeginCreate(req *http.Request) (*h
 	if p.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if p.beginCreate == nil {
+	beginCreate := p.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pipelineRuns/(?P<pipelineRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -119,19 +125,21 @@ func (p *PipelineRunsServerTransport) dispatchBeginCreate(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreate = &respr
+		beginCreate = &respr
+		p.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreate) {
-		p.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		p.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -141,7 +149,8 @@ func (p *PipelineRunsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pipelineRuns/(?P<pipelineRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +173,21 @@ func (p *PipelineRunsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -223,7 +234,8 @@ func (p *PipelineRunsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pipelineRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -239,20 +251,22 @@ func (p *PipelineRunsServerTransport) dispatchNewListPager(req *http.Request) (*
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armcontainerregistry.PipelineRunsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.PipelineRunsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

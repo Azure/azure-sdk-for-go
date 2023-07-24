@@ -34,17 +34,20 @@ type CommunityGalleryImagesServer struct {
 }
 
 // NewCommunityGalleryImagesServerTransport creates a new instance of CommunityGalleryImagesServerTransport with the provided implementation.
-// The returned CommunityGalleryImagesServerTransport instance is connected to an instance of armcompute.CommunityGalleryImagesClient by way of the
-// undefined.Transporter field.
+// The returned CommunityGalleryImagesServerTransport instance is connected to an instance of armcompute.CommunityGalleryImagesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCommunityGalleryImagesServerTransport(srv *CommunityGalleryImagesServer) *CommunityGalleryImagesServerTransport {
-	return &CommunityGalleryImagesServerTransport{srv: srv}
+	return &CommunityGalleryImagesServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]](),
+	}
 }
 
 // CommunityGalleryImagesServerTransport connects instances of armcompute.CommunityGalleryImagesClient to instances of CommunityGalleryImagesServer.
 // Don't use this type directly, use NewCommunityGalleryImagesServerTransport instead.
 type CommunityGalleryImagesServerTransport struct {
 	srv          *CommunityGalleryImagesServer
-	newListPager *azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CommunityGalleryImagesServerTransport.
@@ -115,7 +118,8 @@ func (c *CommunityGalleryImagesServerTransport) dispatchNewListPager(req *http.R
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if c.newListPager == nil {
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communityGalleries/(?P<publicGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -131,20 +135,22 @@ func (c *CommunityGalleryImagesServerTransport) dispatchNewListPager(req *http.R
 			return nil, err
 		}
 		resp := c.srv.NewListPager(locationUnescaped, publicGalleryNameUnescaped, nil)
-		c.newListPager = &resp
-		server.PagerResponderInjectNextLinks(c.newListPager, req, func(page *armcompute.CommunityGalleryImagesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CommunityGalleryImagesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(c.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(c.newListPager) {
-		c.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
 	}
 	return resp, nil
 }

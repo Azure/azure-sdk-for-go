@@ -37,8 +37,8 @@ type QueueServicesServer struct {
 }
 
 // NewQueueServicesServerTransport creates a new instance of QueueServicesServerTransport with the provided implementation.
-// The returned QueueServicesServerTransport instance is connected to an instance of armstorage.QueueServicesClient by way of the
-// undefined.Transporter field.
+// The returned QueueServicesServerTransport instance is connected to an instance of armstorage.QueueServicesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewQueueServicesServerTransport(srv *QueueServicesServer) *QueueServicesServerTransport {
 	return &QueueServicesServerTransport{srv: srv}
 }

@@ -45,7 +45,7 @@ func NewGlobalRulestackClient(credential azcore.TokenCredential, options *arm.Cl
 // BeginCommit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientBeginCommitOptions contains the optional parameters for the GlobalRulestackClient.BeginCommit
 //     method.
@@ -66,7 +66,7 @@ func (client *GlobalRulestackClient) BeginCommit(ctx context.Context, globalRule
 // Commit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginCommitOptions) (*http.Response, error) {
 	req, err := client.commitCreateRequest(ctx, globalRulestackName, options)
 	if err != nil {
@@ -94,7 +94,7 @@ func (client *GlobalRulestackClient) commitCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *GlobalRulestackClient) commitCreateRequest(ctx context.Context, gl
 // BeginCreateOrUpdate - Create a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - resource - Resource create parameters.
 //   - options - GlobalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the GlobalRulestackClient.BeginCreateOrUpdate
@@ -125,7 +125,7 @@ func (client *GlobalRulestackClient) BeginCreateOrUpdate(ctx context.Context, gl
 // CreateOrUpdate - Create a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, resource GlobalRulestackResource, options *GlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, globalRulestackName, resource, options)
 	if err != nil {
@@ -153,7 +153,7 @@ func (client *GlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -162,7 +162,7 @@ func (client *GlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientBeginDeleteOptions contains the optional parameters for the GlobalRulestackClient.BeginDelete
 //     method.
@@ -183,7 +183,7 @@ func (client *GlobalRulestackClient) BeginDelete(ctx context.Context, globalRule
 // Delete - Delete a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, globalRulestackName, options)
 	if err != nil {
@@ -211,7 +211,7 @@ func (client *GlobalRulestackClient) deleteCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +220,7 @@ func (client *GlobalRulestackClient) deleteCreateRequest(ctx context.Context, gl
 // Get - Get a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientGetOptions contains the optional parameters for the GlobalRulestackClient.Get method.
 func (client *GlobalRulestackClient) Get(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientGetOptions) (GlobalRulestackClientGetResponse, error) {
@@ -250,7 +250,7 @@ func (client *GlobalRulestackClient) getCreateRequest(ctx context.Context, globa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,7 +268,7 @@ func (client *GlobalRulestackClient) getHandleResponse(resp *http.Response) (Glo
 // GetChangeLog - Get changelog
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientGetChangeLogOptions contains the optional parameters for the GlobalRulestackClient.GetChangeLog
 //     method.
@@ -299,7 +299,7 @@ func (client *GlobalRulestackClient) getChangeLogCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,7 +316,7 @@ func (client *GlobalRulestackClient) getChangeLogHandleResponse(resp *http.Respo
 
 // NewListPager - List GlobalRulestackResource resources by Tenant
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - options - GlobalRulestackClientListOptions contains the optional parameters for the GlobalRulestackClient.NewListPager
 //     method.
 func (client *GlobalRulestackClient) NewListPager(options *GlobalRulestackClientListOptions) *runtime.Pager[GlobalRulestackClientListResponse] {
@@ -355,7 +355,7 @@ func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -373,7 +373,7 @@ func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response) (Gl
 // ListAdvancedSecurityObjects - Get the list of advanced security objects
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListAdvancedSecurityObjectsOptions contains the optional parameters for the GlobalRulestackClient.ListAdvancedSecurityObjects
 //     method.
@@ -404,7 +404,7 @@ func (client *GlobalRulestackClient) listAdvancedSecurityObjectsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -429,7 +429,7 @@ func (client *GlobalRulestackClient) listAdvancedSecurityObjectsHandleResponse(r
 // ListAppIDs - List of AppIds for GlobalRulestack ApiVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListAppIDsOptions contains the optional parameters for the GlobalRulestackClient.ListAppIDs
 //     method.
@@ -460,7 +460,7 @@ func (client *GlobalRulestackClient) listAppIDsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.AppIDVersion != nil {
 		reqQP.Set("appIdVersion", *options.AppIDVersion)
 	}
@@ -490,7 +490,7 @@ func (client *GlobalRulestackClient) listAppIDsHandleResponse(resp *http.Respons
 // ListCountries - List of countries for Rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListCountriesOptions contains the optional parameters for the GlobalRulestackClient.ListCountries
 //     method.
@@ -521,7 +521,7 @@ func (client *GlobalRulestackClient) listCountriesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -545,7 +545,7 @@ func (client *GlobalRulestackClient) listCountriesHandleResponse(resp *http.Resp
 // ListFirewalls - List of Firewalls associated with Rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListFirewallsOptions contains the optional parameters for the GlobalRulestackClient.ListFirewalls
 //     method.
@@ -576,7 +576,7 @@ func (client *GlobalRulestackClient) listFirewallsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -594,7 +594,7 @@ func (client *GlobalRulestackClient) listFirewallsHandleResponse(resp *http.Resp
 // ListPredefinedURLCategories - List predefined URL categories for rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListPredefinedURLCategoriesOptions contains the optional parameters for the GlobalRulestackClient.ListPredefinedURLCategories
 //     method.
@@ -625,7 +625,7 @@ func (client *GlobalRulestackClient) listPredefinedURLCategoriesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -649,7 +649,7 @@ func (client *GlobalRulestackClient) listPredefinedURLCategoriesHandleResponse(r
 // ListSecurityServices - List the security services for rulestack
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientListSecurityServicesOptions contains the optional parameters for the GlobalRulestackClient.ListSecurityServices
 //     method.
@@ -680,7 +680,7 @@ func (client *GlobalRulestackClient) listSecurityServicesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -705,7 +705,7 @@ func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *ht
 // Revert - Revert rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - GlobalRulestackClientRevertOptions contains the optional parameters for the GlobalRulestackClient.Revert method.
 func (client *GlobalRulestackClient) Revert(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientRevertOptions) (GlobalRulestackClientRevertResponse, error) {
@@ -735,7 +735,7 @@ func (client *GlobalRulestackClient) revertCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -744,7 +744,7 @@ func (client *GlobalRulestackClient) revertCreateRequest(ctx context.Context, gl
 // Update - Update a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-29-preview
+// Generated from API version 2022-08-29
 //   - globalRulestackName - GlobalRulestack resource name
 //   - properties - The resource properties to be updated.
 //   - options - GlobalRulestackClientUpdateOptions contains the optional parameters for the GlobalRulestackClient.Update method.
@@ -775,7 +775,7 @@ func (client *GlobalRulestackClient) updateCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-29-preview")
+	reqQP.Set("api-version", "2022-08-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

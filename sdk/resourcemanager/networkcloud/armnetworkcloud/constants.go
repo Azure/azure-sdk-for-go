@@ -11,7 +11,7 @@ package armnetworkcloud
 
 const (
 	moduleName    = "armnetworkcloud"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,6 +25,103 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AdvertiseToFabric - The indicator of if this advertisement is also made to the network fabric associated with the Network
+// Cloud Cluster. This field is ignored if fabricPeeringEnabled is set to False.
+type AdvertiseToFabric string
+
+const (
+	AdvertiseToFabricFalse AdvertiseToFabric = "False"
+	AdvertiseToFabricTrue  AdvertiseToFabric = "True"
+)
+
+// PossibleAdvertiseToFabricValues returns the possible values for the AdvertiseToFabric const type.
+func PossibleAdvertiseToFabricValues() []AdvertiseToFabric {
+	return []AdvertiseToFabric{
+		AdvertiseToFabricFalse,
+		AdvertiseToFabricTrue,
+	}
+}
+
+// AgentPoolDetailedStatus - The current status of the agent pool.
+type AgentPoolDetailedStatus string
+
+const (
+	AgentPoolDetailedStatusAvailable    AgentPoolDetailedStatus = "Available"
+	AgentPoolDetailedStatusError        AgentPoolDetailedStatus = "Error"
+	AgentPoolDetailedStatusProvisioning AgentPoolDetailedStatus = "Provisioning"
+)
+
+// PossibleAgentPoolDetailedStatusValues returns the possible values for the AgentPoolDetailedStatus const type.
+func PossibleAgentPoolDetailedStatusValues() []AgentPoolDetailedStatus {
+	return []AgentPoolDetailedStatus{
+		AgentPoolDetailedStatusAvailable,
+		AgentPoolDetailedStatusError,
+		AgentPoolDetailedStatusProvisioning,
+	}
+}
+
+// AgentPoolMode - The selection of how this agent pool is utilized, either as a system pool or a user pool. System pools
+// run the features and critical services for the Kubernetes Cluster, while user pools are dedicated
+// to user workloads. Every Kubernetes cluster must contain at least one system node pool with at least one node.
+type AgentPoolMode string
+
+const (
+	AgentPoolModeNotApplicable AgentPoolMode = "NotApplicable"
+	AgentPoolModeSystem        AgentPoolMode = "System"
+	AgentPoolModeUser          AgentPoolMode = "User"
+)
+
+// PossibleAgentPoolModeValues returns the possible values for the AgentPoolMode const type.
+func PossibleAgentPoolModeValues() []AgentPoolMode {
+	return []AgentPoolMode{
+		AgentPoolModeNotApplicable,
+		AgentPoolModeSystem,
+		AgentPoolModeUser,
+	}
+}
+
+// AgentPoolProvisioningState - The provisioning state of the agent pool.
+type AgentPoolProvisioningState string
+
+const (
+	AgentPoolProvisioningStateAccepted   AgentPoolProvisioningState = "Accepted"
+	AgentPoolProvisioningStateCanceled   AgentPoolProvisioningState = "Canceled"
+	AgentPoolProvisioningStateDeleting   AgentPoolProvisioningState = "Deleting"
+	AgentPoolProvisioningStateFailed     AgentPoolProvisioningState = "Failed"
+	AgentPoolProvisioningStateInProgress AgentPoolProvisioningState = "InProgress"
+	AgentPoolProvisioningStateSucceeded  AgentPoolProvisioningState = "Succeeded"
+	AgentPoolProvisioningStateUpdating   AgentPoolProvisioningState = "Updating"
+)
+
+// PossibleAgentPoolProvisioningStateValues returns the possible values for the AgentPoolProvisioningState const type.
+func PossibleAgentPoolProvisioningStateValues() []AgentPoolProvisioningState {
+	return []AgentPoolProvisioningState{
+		AgentPoolProvisioningStateAccepted,
+		AgentPoolProvisioningStateCanceled,
+		AgentPoolProvisioningStateDeleting,
+		AgentPoolProvisioningStateFailed,
+		AgentPoolProvisioningStateInProgress,
+		AgentPoolProvisioningStateSucceeded,
+		AgentPoolProvisioningStateUpdating,
+	}
+}
+
+// AvailabilityLifecycle - The version lifecycle indicator.
+type AvailabilityLifecycle string
+
+const (
+	AvailabilityLifecycleGenerallyAvailable AvailabilityLifecycle = "GenerallyAvailable"
+	AvailabilityLifecyclePreview            AvailabilityLifecycle = "Preview"
+)
+
+// PossibleAvailabilityLifecycleValues returns the possible values for the AvailabilityLifecycle const type.
+func PossibleAvailabilityLifecycleValues() []AvailabilityLifecycle {
+	return []AvailabilityLifecycle{
+		AvailabilityLifecycleGenerallyAvailable,
+		AvailabilityLifecyclePreview,
 	}
 }
 
@@ -256,6 +353,38 @@ func PossibleBareMetalMachineSkipShutdownValues() []BareMetalMachineSkipShutdown
 	return []BareMetalMachineSkipShutdown{
 		BareMetalMachineSkipShutdownFalse,
 		BareMetalMachineSkipShutdownTrue,
+	}
+}
+
+// BfdEnabled - The indicator to determine if automatic allocation from the pool should occur.
+type BfdEnabled string
+
+const (
+	BfdEnabledFalse BfdEnabled = "False"
+	BfdEnabledTrue  BfdEnabled = "True"
+)
+
+// PossibleBfdEnabledValues returns the possible values for the BfdEnabled const type.
+func PossibleBfdEnabledValues() []BfdEnabled {
+	return []BfdEnabled{
+		BfdEnabledFalse,
+		BfdEnabledTrue,
+	}
+}
+
+// BgpMultiHop - The indicator to enable multi-hop peering support.
+type BgpMultiHop string
+
+const (
+	BgpMultiHopFalse BgpMultiHop = "False"
+	BgpMultiHopTrue  BgpMultiHop = "True"
+)
+
+// PossibleBgpMultiHopValues returns the possible values for the BgpMultiHop const type.
+func PossibleBgpMultiHopValues() []BgpMultiHop {
+	return []BgpMultiHop{
+		BgpMultiHopFalse,
+		BgpMultiHopTrue,
 	}
 }
 
@@ -668,46 +797,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DefaultCniNetworkDetailedStatus - The more detailed status of the default CNI network.
-type DefaultCniNetworkDetailedStatus string
-
-const (
-	DefaultCniNetworkDetailedStatusAvailable    DefaultCniNetworkDetailedStatus = "Available"
-	DefaultCniNetworkDetailedStatusError        DefaultCniNetworkDetailedStatus = "Error"
-	DefaultCniNetworkDetailedStatusProvisioning DefaultCniNetworkDetailedStatus = "Provisioning"
-)
-
-// PossibleDefaultCniNetworkDetailedStatusValues returns the possible values for the DefaultCniNetworkDetailedStatus const type.
-func PossibleDefaultCniNetworkDetailedStatusValues() []DefaultCniNetworkDetailedStatus {
-	return []DefaultCniNetworkDetailedStatus{
-		DefaultCniNetworkDetailedStatusAvailable,
-		DefaultCniNetworkDetailedStatusError,
-		DefaultCniNetworkDetailedStatusProvisioning,
-	}
-}
-
-// DefaultCniNetworkProvisioningState - The provisioning state of the default CNI network.
-type DefaultCniNetworkProvisioningState string
-
-const (
-	DefaultCniNetworkProvisioningStateAccepted     DefaultCniNetworkProvisioningState = "Accepted"
-	DefaultCniNetworkProvisioningStateCanceled     DefaultCniNetworkProvisioningState = "Canceled"
-	DefaultCniNetworkProvisioningStateFailed       DefaultCniNetworkProvisioningState = "Failed"
-	DefaultCniNetworkProvisioningStateProvisioning DefaultCniNetworkProvisioningState = "Provisioning"
-	DefaultCniNetworkProvisioningStateSucceeded    DefaultCniNetworkProvisioningState = "Succeeded"
-)
-
-// PossibleDefaultCniNetworkProvisioningStateValues returns the possible values for the DefaultCniNetworkProvisioningState const type.
-func PossibleDefaultCniNetworkProvisioningStateValues() []DefaultCniNetworkProvisioningState {
-	return []DefaultCniNetworkProvisioningState{
-		DefaultCniNetworkProvisioningStateAccepted,
-		DefaultCniNetworkProvisioningStateCanceled,
-		DefaultCniNetworkProvisioningStateFailed,
-		DefaultCniNetworkProvisioningStateProvisioning,
-		DefaultCniNetworkProvisioningStateSucceeded,
-	}
-}
-
 // DefaultGateway - The indicator of whether this is the default gateway. Only one of the attached networks (including the
 // CloudServicesNetwork attachment) for a single machine may be specified as True.
 type DefaultGateway string
@@ -755,60 +844,59 @@ func PossibleDiskTypeValues() []DiskType {
 	}
 }
 
-// HybridAksClusterDetailedStatus - The more detailed status of this Hybrid AKS cluster.
-type HybridAksClusterDetailedStatus string
+// FabricPeeringEnabled - The indicator to specify if the load balancer peers with the network fabric.
+type FabricPeeringEnabled string
 
 const (
-	HybridAksClusterDetailedStatusAvailable    HybridAksClusterDetailedStatus = "Available"
-	HybridAksClusterDetailedStatusError        HybridAksClusterDetailedStatus = "Error"
-	HybridAksClusterDetailedStatusProvisioning HybridAksClusterDetailedStatus = "Provisioning"
+	FabricPeeringEnabledFalse FabricPeeringEnabled = "False"
+	FabricPeeringEnabledTrue  FabricPeeringEnabled = "True"
 )
 
-// PossibleHybridAksClusterDetailedStatusValues returns the possible values for the HybridAksClusterDetailedStatus const type.
-func PossibleHybridAksClusterDetailedStatusValues() []HybridAksClusterDetailedStatus {
-	return []HybridAksClusterDetailedStatus{
-		HybridAksClusterDetailedStatusAvailable,
-		HybridAksClusterDetailedStatusError,
-		HybridAksClusterDetailedStatusProvisioning,
+// PossibleFabricPeeringEnabledValues returns the possible values for the FabricPeeringEnabled const type.
+func PossibleFabricPeeringEnabledValues() []FabricPeeringEnabled {
+	return []FabricPeeringEnabled{
+		FabricPeeringEnabledFalse,
+		FabricPeeringEnabledTrue,
 	}
 }
 
-// HybridAksClusterMachinePowerState - The power state (On | Off) of the node.
-type HybridAksClusterMachinePowerState string
+// FeatureDetailedStatus - The status representing the state of this feature.
+type FeatureDetailedStatus string
 
 const (
-	HybridAksClusterMachinePowerStateOff HybridAksClusterMachinePowerState = "Off"
-	HybridAksClusterMachinePowerStateOn  HybridAksClusterMachinePowerState = "On"
+	FeatureDetailedStatusFailed  FeatureDetailedStatus = "Failed"
+	FeatureDetailedStatusRunning FeatureDetailedStatus = "Running"
+	FeatureDetailedStatusUnknown FeatureDetailedStatus = "Unknown"
 )
 
-// PossibleHybridAksClusterMachinePowerStateValues returns the possible values for the HybridAksClusterMachinePowerState const type.
-func PossibleHybridAksClusterMachinePowerStateValues() []HybridAksClusterMachinePowerState {
-	return []HybridAksClusterMachinePowerState{
-		HybridAksClusterMachinePowerStateOff,
-		HybridAksClusterMachinePowerStateOn,
+// PossibleFeatureDetailedStatusValues returns the possible values for the FeatureDetailedStatus const type.
+func PossibleFeatureDetailedStatusValues() []FeatureDetailedStatus {
+	return []FeatureDetailedStatus{
+		FeatureDetailedStatusFailed,
+		FeatureDetailedStatusRunning,
+		FeatureDetailedStatusUnknown,
 	}
 }
 
-// HybridAksClusterProvisioningState - The provisioning state of the Hybrid AKS cluster resource.
-type HybridAksClusterProvisioningState string
+// HugepagesSize - The size of the hugepages to allocate.
+type HugepagesSize string
 
 const (
-	HybridAksClusterProvisioningStateCanceled  HybridAksClusterProvisioningState = "Canceled"
-	HybridAksClusterProvisioningStateFailed    HybridAksClusterProvisioningState = "Failed"
-	HybridAksClusterProvisioningStateSucceeded HybridAksClusterProvisioningState = "Succeeded"
+	HugepagesSizeOneG HugepagesSize = "1G"
+	HugepagesSizeTwoM HugepagesSize = "2M"
 )
 
-// PossibleHybridAksClusterProvisioningStateValues returns the possible values for the HybridAksClusterProvisioningState const type.
-func PossibleHybridAksClusterProvisioningStateValues() []HybridAksClusterProvisioningState {
-	return []HybridAksClusterProvisioningState{
-		HybridAksClusterProvisioningStateCanceled,
-		HybridAksClusterProvisioningStateFailed,
-		HybridAksClusterProvisioningStateSucceeded,
+// PossibleHugepagesSizeValues returns the possible values for the HugepagesSize const type.
+func PossibleHugepagesSizeValues() []HugepagesSize {
+	return []HugepagesSize{
+		HugepagesSizeOneG,
+		HugepagesSizeTwoM,
 	}
 }
 
-// HybridAksIpamEnabled - The indicator of whether or not to disable IPAM allocation on the network attachment definition
-// injected into the Hybrid AKS Cluster.
+// HybridAksIpamEnabled - Field Deprecated. The field was previously optional, now it will have no defined behavior and will
+// be ignored. The indicator of whether or not to disable IPAM allocation on the network attachment
+// definition injected into the Hybrid AKS Cluster.
 type HybridAksIpamEnabled string
 
 const (
@@ -824,7 +912,8 @@ func PossibleHybridAksIpamEnabledValues() []HybridAksIpamEnabled {
 	}
 }
 
-// HybridAksPluginType - The network plugin type for Hybrid AKS.
+// HybridAksPluginType - Field Deprecated. The field was previously optional, now it will have no defined behavior and will
+// be ignored. The network plugin type for Hybrid AKS.
 type HybridAksPluginType string
 
 const (
@@ -842,7 +931,7 @@ func PossibleHybridAksPluginTypeValues() []HybridAksPluginType {
 	}
 }
 
-// IPAllocationType - The type of the IP address allocation.
+// IPAllocationType - The type of the IP address allocation, defaulted to "DualStack".
 type IPAllocationType string
 
 const (
@@ -857,6 +946,136 @@ func PossibleIPAllocationTypeValues() []IPAllocationType {
 		IPAllocationTypeDualStack,
 		IPAllocationTypeIPV4,
 		IPAllocationTypeIPV6,
+	}
+}
+
+// KubernetesClusterDetailedStatus - The current status of the Kubernetes cluster.
+type KubernetesClusterDetailedStatus string
+
+const (
+	KubernetesClusterDetailedStatusAvailable    KubernetesClusterDetailedStatus = "Available"
+	KubernetesClusterDetailedStatusError        KubernetesClusterDetailedStatus = "Error"
+	KubernetesClusterDetailedStatusProvisioning KubernetesClusterDetailedStatus = "Provisioning"
+)
+
+// PossibleKubernetesClusterDetailedStatusValues returns the possible values for the KubernetesClusterDetailedStatus const type.
+func PossibleKubernetesClusterDetailedStatusValues() []KubernetesClusterDetailedStatus {
+	return []KubernetesClusterDetailedStatus{
+		KubernetesClusterDetailedStatusAvailable,
+		KubernetesClusterDetailedStatusError,
+		KubernetesClusterDetailedStatusProvisioning,
+	}
+}
+
+// KubernetesClusterNodeDetailedStatus - The detailed state of this node.
+type KubernetesClusterNodeDetailedStatus string
+
+const (
+	KubernetesClusterNodeDetailedStatusAvailable    KubernetesClusterNodeDetailedStatus = "Available"
+	KubernetesClusterNodeDetailedStatusError        KubernetesClusterNodeDetailedStatus = "Error"
+	KubernetesClusterNodeDetailedStatusProvisioning KubernetesClusterNodeDetailedStatus = "Provisioning"
+	KubernetesClusterNodeDetailedStatusRunning      KubernetesClusterNodeDetailedStatus = "Running"
+	KubernetesClusterNodeDetailedStatusScheduling   KubernetesClusterNodeDetailedStatus = "Scheduling"
+	KubernetesClusterNodeDetailedStatusStopped      KubernetesClusterNodeDetailedStatus = "Stopped"
+	KubernetesClusterNodeDetailedStatusTerminating  KubernetesClusterNodeDetailedStatus = "Terminating"
+	KubernetesClusterNodeDetailedStatusUnknown      KubernetesClusterNodeDetailedStatus = "Unknown"
+)
+
+// PossibleKubernetesClusterNodeDetailedStatusValues returns the possible values for the KubernetesClusterNodeDetailedStatus const type.
+func PossibleKubernetesClusterNodeDetailedStatusValues() []KubernetesClusterNodeDetailedStatus {
+	return []KubernetesClusterNodeDetailedStatus{
+		KubernetesClusterNodeDetailedStatusAvailable,
+		KubernetesClusterNodeDetailedStatusError,
+		KubernetesClusterNodeDetailedStatusProvisioning,
+		KubernetesClusterNodeDetailedStatusRunning,
+		KubernetesClusterNodeDetailedStatusScheduling,
+		KubernetesClusterNodeDetailedStatusStopped,
+		KubernetesClusterNodeDetailedStatusTerminating,
+		KubernetesClusterNodeDetailedStatusUnknown,
+	}
+}
+
+// KubernetesClusterProvisioningState - The provisioning state of the Kubernetes cluster resource.
+type KubernetesClusterProvisioningState string
+
+const (
+	KubernetesClusterProvisioningStateAccepted   KubernetesClusterProvisioningState = "Accepted"
+	KubernetesClusterProvisioningStateCanceled   KubernetesClusterProvisioningState = "Canceled"
+	KubernetesClusterProvisioningStateCreated    KubernetesClusterProvisioningState = "Created"
+	KubernetesClusterProvisioningStateDeleting   KubernetesClusterProvisioningState = "Deleting"
+	KubernetesClusterProvisioningStateFailed     KubernetesClusterProvisioningState = "Failed"
+	KubernetesClusterProvisioningStateInProgress KubernetesClusterProvisioningState = "InProgress"
+	KubernetesClusterProvisioningStateSucceeded  KubernetesClusterProvisioningState = "Succeeded"
+	KubernetesClusterProvisioningStateUpdating   KubernetesClusterProvisioningState = "Updating"
+)
+
+// PossibleKubernetesClusterProvisioningStateValues returns the possible values for the KubernetesClusterProvisioningState const type.
+func PossibleKubernetesClusterProvisioningStateValues() []KubernetesClusterProvisioningState {
+	return []KubernetesClusterProvisioningState{
+		KubernetesClusterProvisioningStateAccepted,
+		KubernetesClusterProvisioningStateCanceled,
+		KubernetesClusterProvisioningStateCreated,
+		KubernetesClusterProvisioningStateDeleting,
+		KubernetesClusterProvisioningStateFailed,
+		KubernetesClusterProvisioningStateInProgress,
+		KubernetesClusterProvisioningStateSucceeded,
+		KubernetesClusterProvisioningStateUpdating,
+	}
+}
+
+// KubernetesNodePowerState - The power state of this node.
+type KubernetesNodePowerState string
+
+const (
+	KubernetesNodePowerStateOff     KubernetesNodePowerState = "Off"
+	KubernetesNodePowerStateOn      KubernetesNodePowerState = "On"
+	KubernetesNodePowerStateUnknown KubernetesNodePowerState = "Unknown"
+)
+
+// PossibleKubernetesNodePowerStateValues returns the possible values for the KubernetesNodePowerState const type.
+func PossibleKubernetesNodePowerStateValues() []KubernetesNodePowerState {
+	return []KubernetesNodePowerState{
+		KubernetesNodePowerStateOff,
+		KubernetesNodePowerStateOn,
+		KubernetesNodePowerStateUnknown,
+	}
+}
+
+// KubernetesNodeRole - The role of this node in the cluster.
+type KubernetesNodeRole string
+
+const (
+	KubernetesNodeRoleControlPlane KubernetesNodeRole = "ControlPlane"
+	KubernetesNodeRoleWorker       KubernetesNodeRole = "Worker"
+)
+
+// PossibleKubernetesNodeRoleValues returns the possible values for the KubernetesNodeRole const type.
+func PossibleKubernetesNodeRoleValues() []KubernetesNodeRole {
+	return []KubernetesNodeRole{
+		KubernetesNodeRoleControlPlane,
+		KubernetesNodeRoleWorker,
+	}
+}
+
+// KubernetesPluginType - The indicator of how this network will be utilized by the Kubernetes cluster.
+type KubernetesPluginType string
+
+const (
+	KubernetesPluginTypeDPDK     KubernetesPluginType = "DPDK"
+	KubernetesPluginTypeIPVLAN   KubernetesPluginType = "IPVLAN"
+	KubernetesPluginTypeMACVLAN  KubernetesPluginType = "MACVLAN"
+	KubernetesPluginTypeOSDevice KubernetesPluginType = "OSDevice"
+	KubernetesPluginTypeSRIOV    KubernetesPluginType = "SRIOV"
+)
+
+// PossibleKubernetesPluginTypeValues returns the possible values for the KubernetesPluginType const type.
+func PossibleKubernetesPluginTypeValues() []KubernetesPluginType {
+	return []KubernetesPluginType{
+		KubernetesPluginTypeDPDK,
+		KubernetesPluginTypeIPVLAN,
+		KubernetesPluginTypeMACVLAN,
+		KubernetesPluginTypeOSDevice,
+		KubernetesPluginTypeSRIOV,
 	}
 }
 
@@ -897,6 +1116,23 @@ func PossibleL2NetworkProvisioningStateValues() []L2NetworkProvisioningState {
 		L2NetworkProvisioningStateFailed,
 		L2NetworkProvisioningStateProvisioning,
 		L2NetworkProvisioningStateSucceeded,
+	}
+}
+
+// L3NetworkConfigurationIpamEnabled - The indication of whether this network will or will not perform IP address management
+// and allocate IP addresses when attached.
+type L3NetworkConfigurationIpamEnabled string
+
+const (
+	L3NetworkConfigurationIpamEnabledFalse L3NetworkConfigurationIpamEnabled = "False"
+	L3NetworkConfigurationIpamEnabledTrue  L3NetworkConfigurationIpamEnabled = "True"
+)
+
+// PossibleL3NetworkConfigurationIpamEnabledValues returns the possible values for the L3NetworkConfigurationIpamEnabled const type.
+func PossibleL3NetworkConfigurationIpamEnabledValues() []L3NetworkConfigurationIpamEnabled {
+	return []L3NetworkConfigurationIpamEnabled{
+		L3NetworkConfigurationIpamEnabledFalse,
+		L3NetworkConfigurationIpamEnabledTrue,
 	}
 }
 
@@ -1148,20 +1384,6 @@ func PossibleStorageApplianceDetailedStatusValues() []StorageApplianceDetailedSt
 	}
 }
 
-// StorageApplianceHardwareValidationCategory - The category of hardware validation to perform.
-type StorageApplianceHardwareValidationCategory string
-
-const (
-	StorageApplianceHardwareValidationCategoryBasicValidation StorageApplianceHardwareValidationCategory = "BasicValidation"
-)
-
-// PossibleStorageApplianceHardwareValidationCategoryValues returns the possible values for the StorageApplianceHardwareValidationCategory const type.
-func PossibleStorageApplianceHardwareValidationCategoryValues() []StorageApplianceHardwareValidationCategory {
-	return []StorageApplianceHardwareValidationCategory{
-		StorageApplianceHardwareValidationCategoryBasicValidation,
-	}
-}
-
 // StorageApplianceProvisioningState - The provisioning state of the storage appliance.
 type StorageApplianceProvisioningState string
 
@@ -1279,6 +1501,11 @@ const (
 	VirtualMachineDetailedStatusAvailable    VirtualMachineDetailedStatus = "Available"
 	VirtualMachineDetailedStatusError        VirtualMachineDetailedStatus = "Error"
 	VirtualMachineDetailedStatusProvisioning VirtualMachineDetailedStatus = "Provisioning"
+	VirtualMachineDetailedStatusRunning      VirtualMachineDetailedStatus = "Running"
+	VirtualMachineDetailedStatusScheduling   VirtualMachineDetailedStatus = "Scheduling"
+	VirtualMachineDetailedStatusStopped      VirtualMachineDetailedStatus = "Stopped"
+	VirtualMachineDetailedStatusTerminating  VirtualMachineDetailedStatus = "Terminating"
+	VirtualMachineDetailedStatusUnknown      VirtualMachineDetailedStatus = "Unknown"
 )
 
 // PossibleVirtualMachineDetailedStatusValues returns the possible values for the VirtualMachineDetailedStatus const type.
@@ -1287,6 +1514,11 @@ func PossibleVirtualMachineDetailedStatusValues() []VirtualMachineDetailedStatus
 		VirtualMachineDetailedStatusAvailable,
 		VirtualMachineDetailedStatusError,
 		VirtualMachineDetailedStatusProvisioning,
+		VirtualMachineDetailedStatusRunning,
+		VirtualMachineDetailedStatusScheduling,
+		VirtualMachineDetailedStatusStopped,
+		VirtualMachineDetailedStatusTerminating,
+		VirtualMachineDetailedStatusUnknown,
 	}
 }
 
@@ -1380,8 +1612,9 @@ func PossibleVirtualMachinePlacementHintTypeValues() []VirtualMachinePlacementHi
 type VirtualMachinePowerState string
 
 const (
-	VirtualMachinePowerStateOff VirtualMachinePowerState = "Off"
-	VirtualMachinePowerStateOn  VirtualMachinePowerState = "On"
+	VirtualMachinePowerStateOff     VirtualMachinePowerState = "Off"
+	VirtualMachinePowerStateOn      VirtualMachinePowerState = "On"
+	VirtualMachinePowerStateUnknown VirtualMachinePowerState = "Unknown"
 )
 
 // PossibleVirtualMachinePowerStateValues returns the possible values for the VirtualMachinePowerState const type.
@@ -1389,6 +1622,7 @@ func PossibleVirtualMachinePowerStateValues() []VirtualMachinePowerState {
 	return []VirtualMachinePowerState{
 		VirtualMachinePowerStateOff,
 		VirtualMachinePowerStateOn,
+		VirtualMachinePowerStateUnknown,
 	}
 }
 

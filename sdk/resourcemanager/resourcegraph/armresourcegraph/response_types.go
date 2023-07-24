@@ -16,10 +16,13 @@ type ClientResourcesHistoryResponse struct {
 
 // ClientResourcesResponse contains the response from method Client.Resources.
 type ClientResourcesResponse struct {
+	// Query result.
 	QueryResponse
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
+	// Result of the request to list Resource Graph operations. It contains a list of operations and a URL link to get the next
+	// set of results.
 	OperationListResult
 }

@@ -57,7 +57,15 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		return nil, err
 	}
 	upc := UsernamePasswordCredential{client: c, password: password, username: username}
-	upc.s = newSyncer(credNameUserPassword, tenantID, options.AdditionallyAllowedTenants, upc.requestToken, upc.silentAuth)
+	upc.s = newSyncer(
+		credNameUserPassword,
+		tenantID,
+		upc.requestToken,
+		upc.silentAuth,
+		syncerOptions{
+			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		},
+	)
 	return &upc, nil
 }
 

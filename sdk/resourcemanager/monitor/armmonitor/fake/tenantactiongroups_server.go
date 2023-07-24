@@ -45,17 +45,20 @@ type TenantActionGroupsServer struct {
 }
 
 // NewTenantActionGroupsServerTransport creates a new instance of TenantActionGroupsServerTransport with the provided implementation.
-// The returned TenantActionGroupsServerTransport instance is connected to an instance of armmonitor.TenantActionGroupsClient by way of the
-// undefined.Transporter field.
+// The returned TenantActionGroupsServerTransport instance is connected to an instance of armmonitor.TenantActionGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTenantActionGroupsServerTransport(srv *TenantActionGroupsServer) *TenantActionGroupsServerTransport {
-	return &TenantActionGroupsServerTransport{srv: srv}
+	return &TenantActionGroupsServerTransport{
+		srv:                             srv,
+		newListByManagementGroupIDPager: newTracker[azfake.PagerResponder[armmonitor.TenantActionGroupsClientListByManagementGroupIDResponse]](),
+	}
 }
 
 // TenantActionGroupsServerTransport connects instances of armmonitor.TenantActionGroupsClient to instances of TenantActionGroupsServer.
 // Don't use this type directly, use NewTenantActionGroupsServerTransport instead.
 type TenantActionGroupsServerTransport struct {
 	srv                             *TenantActionGroupsServer
-	newListByManagementGroupIDPager *azfake.PagerResponder[armmonitor.TenantActionGroupsClientListByManagementGroupIDResponse]
+	newListByManagementGroupIDPager *tracker[azfake.PagerResponder[armmonitor.TenantActionGroupsClientListByManagementGroupIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for TenantActionGroupsServerTransport.
@@ -198,7 +201,8 @@ func (t *TenantActionGroupsServerTransport) dispatchNewListByManagementGroupIDPa
 	if t.srv.NewListByManagementGroupIDPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByManagementGroupIDPager not implemented")}
 	}
-	if t.newListByManagementGroupIDPager == nil {
+	newListByManagementGroupIDPager := t.newListByManagementGroupIDPager.get(req)
+	if newListByManagementGroupIDPager == nil {
 		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/tenantActionGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -210,17 +214,19 @@ func (t *TenantActionGroupsServerTransport) dispatchNewListByManagementGroupIDPa
 			return nil, err
 		}
 		resp := t.srv.NewListByManagementGroupIDPager(managementGroupIDUnescaped, getHeaderValue(req.Header, "x-ms-client-tenant-id"), nil)
-		t.newListByManagementGroupIDPager = &resp
+		newListByManagementGroupIDPager = &resp
+		t.newListByManagementGroupIDPager.add(req, newListByManagementGroupIDPager)
 	}
-	resp, err := server.PagerResponderNext(t.newListByManagementGroupIDPager, req)
+	resp, err := server.PagerResponderNext(newListByManagementGroupIDPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListByManagementGroupIDPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListByManagementGroupIDPager) {
-		t.newListByManagementGroupIDPager = nil
+	if !server.PagerResponderMore(newListByManagementGroupIDPager) {
+		t.newListByManagementGroupIDPager.remove(req)
 	}
 	return resp, nil
 }

@@ -41,17 +41,20 @@ type PrivateEndpointConnectionsServer struct {
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
-// The returned PrivateEndpointConnectionsServerTransport instance is connected to an instance of armstorage.PrivateEndpointConnectionsClient by way of the
-// undefined.Transporter field.
+// The returned PrivateEndpointConnectionsServerTransport instance is connected to an instance of armstorage.PrivateEndpointConnectionsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
-	return &PrivateEndpointConnectionsServerTransport{srv: srv}
+	return &PrivateEndpointConnectionsServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.PrivateEndpointConnectionsClientListResponse]](),
+	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armstorage.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
 	srv          *PrivateEndpointConnectionsServer
-	newListPager *azfake.PagerResponder[armstorage.PrivateEndpointConnectionsClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.PrivateEndpointConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -163,7 +166,8 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -179,17 +183,19 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, nil)
-		p.newListPager = &resp
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

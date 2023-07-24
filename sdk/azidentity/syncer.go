@@ -23,16 +23,20 @@ type authFn func(context.Context, policy.TokenRequestOptions) (azcore.AccessToke
 // syncer synchronizes authentication calls so that goroutines can share a credential instance
 type syncer struct {
 	addlTenants      []string
-	authing          bool
-	cond             *sync.Cond
+	mu               *sync.Mutex
 	reqToken, silent authFn
 	name, tenant     string
 }
 
-func newSyncer(name, tenant string, additionalTenants []string, reqToken, silentAuth authFn) *syncer {
+type syncerOptions struct {
+	// AdditionallyAllowedTenants syncer may authenticate to
+	AdditionallyAllowedTenants []string
+}
+
+func newSyncer(name, tenant string, reqToken, silentAuth authFn, opts syncerOptions) *syncer {
 	return &syncer{
-		addlTenants: resolveAdditionalTenants(additionalTenants),
-		cond:        &sync.Cond{L: &sync.Mutex{}},
+		addlTenants: resolveAdditionalTenants(opts.AdditionallyAllowedTenants),
+		mu:          &sync.Mutex{},
 		name:        name,
 		reqToken:    reqToken,
 		silent:      silentAuth,
@@ -42,8 +46,7 @@ func newSyncer(name, tenant string, additionalTenants []string, reqToken, silent
 
 // GetToken ensures that only one goroutine authenticates at a time
 func (s *syncer) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	var at azcore.AccessToken
-	var err error
+	at := azcore.AccessToken{}
 	if len(opts.Scopes) == 0 {
 		return at, errors.New(s.name + ".GetToken() requires at least one scope")
 	}
@@ -55,27 +58,14 @@ func (s *syncer) GetToken(ctx context.Context, opts policy.TokenRequestOptions) 
 		}
 		opts.TenantID = tenant
 	}
-	auth := false
-	s.cond.L.Lock()
-	defer s.cond.L.Unlock()
-	for {
-		at, err = s.silent(ctx, opts)
-		if err == nil {
-			// got a token
-			break
-		}
-		if !s.authing {
-			// this goroutine will request a token
-			s.authing, auth = true, true
-			break
-		}
-		// another goroutine is acquiring a token; wait for it to finish, then try silent auth again
-		s.cond.Wait()
-	}
-	if auth {
-		s.authing = false
+	var err error
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.silent == nil {
 		at, err = s.reqToken(ctx, opts)
-		s.cond.Broadcast()
+	} else if at, err = s.silent(ctx, opts); err != nil {
+		// cache miss; request a new token
+		at, err = s.reqToken(ctx, opts)
 	}
 	if err != nil {
 		// Return credentialUnavailableError directly because that type affects the behavior of credential chains.

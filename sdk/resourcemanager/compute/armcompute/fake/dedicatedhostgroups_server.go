@@ -50,18 +50,22 @@ type DedicatedHostGroupsServer struct {
 }
 
 // NewDedicatedHostGroupsServerTransport creates a new instance of DedicatedHostGroupsServerTransport with the provided implementation.
-// The returned DedicatedHostGroupsServerTransport instance is connected to an instance of armcompute.DedicatedHostGroupsClient by way of the
-// undefined.Transporter field.
+// The returned DedicatedHostGroupsServerTransport instance is connected to an instance of armcompute.DedicatedHostGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDedicatedHostGroupsServerTransport(srv *DedicatedHostGroupsServer) *DedicatedHostGroupsServerTransport {
-	return &DedicatedHostGroupsServerTransport{srv: srv}
+	return &DedicatedHostGroupsServerTransport{
+		srv:                         srv,
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]](),
+	}
 }
 
 // DedicatedHostGroupsServerTransport connects instances of armcompute.DedicatedHostGroupsClient to instances of DedicatedHostGroupsServer.
 // Don't use this type directly, use NewDedicatedHostGroupsServerTransport instead.
 type DedicatedHostGroupsServerTransport struct {
 	srv                         *DedicatedHostGroupsServer
-	newListByResourceGroupPager *azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]
-	newListBySubscriptionPager  *azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHostGroupsServerTransport.
@@ -218,7 +222,8 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListByResourceGroupPager
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if d.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -230,20 +235,22 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListByResourceGroupPager
 			return nil, err
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		d.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourceGroupPager, req, func(page *armcompute.DedicatedHostGroupsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.DedicatedHostGroupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourceGroupPager) {
-		d.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -252,7 +259,8 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListBySubscriptionPager(
 	if d.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
-	if d.newListBySubscriptionPager == nil {
+	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -260,20 +268,22 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListBySubscriptionPager(
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := d.srv.NewListBySubscriptionPager(nil)
-		d.newListBySubscriptionPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListBySubscriptionPager, req, func(page *armcompute.DedicatedHostGroupsClientListBySubscriptionResponse, createLink func() string) {
+		newListBySubscriptionPager = &resp
+		d.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.DedicatedHostGroupsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListBySubscriptionPager, req)
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListBySubscriptionPager) {
-		d.newListBySubscriptionPager = nil
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		d.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

@@ -96,7 +96,15 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		return nil, err
 	}
 	cred := DeviceCodeCredential{client: c, prompt: cp.UserPrompt}
-	cred.s = newSyncer(credNameDeviceCode, cp.TenantID, cp.AdditionallyAllowedTenants, cred.requestToken, cred.silentAuth)
+	cred.s = newSyncer(
+		credNameDeviceCode,
+		cp.TenantID,
+		cred.requestToken,
+		cred.silentAuth,
+		syncerOptions{
+			AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants,
+		},
+	)
 	return &cred, nil
 }
 

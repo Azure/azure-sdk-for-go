@@ -50,8 +50,8 @@ type VirtualMachineImagesServer struct {
 }
 
 // NewVirtualMachineImagesServerTransport creates a new instance of VirtualMachineImagesServerTransport with the provided implementation.
-// The returned VirtualMachineImagesServerTransport instance is connected to an instance of armcompute.VirtualMachineImagesClient by way of the
-// undefined.Transporter field.
+// The returned VirtualMachineImagesServerTransport instance is connected to an instance of armcompute.VirtualMachineImagesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineImagesServerTransport(srv *VirtualMachineImagesServer) *VirtualMachineImagesServerTransport {
 	return &VirtualMachineImagesServerTransport{srv: srv}
 }

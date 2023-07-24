@@ -29,7 +29,7 @@ type RackSKUsClient struct {
 }
 
 // NewRackSKUsClient creates a new instance of RackSKUsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RackSKUsClient, error) {
@@ -47,7 +47,7 @@ func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get the properties of the provided rack SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - rackSKUName - The name of the rack SKU.
 //   - options - RackSKUsClientGetOptions contains the optional parameters for the RackSKUsClient.Get method.
 func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (RackSKUsClientGetResponse, error) {
@@ -68,9 +68,6 @@ func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, optio
 // getCreateRequest creates the Get request.
 func (client *RackSKUsClient) getCreateRequest(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/rackSkus/{rackSkuName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if rackSKUName == "" {
 		return nil, errors.New("parameter rackSKUName cannot be empty")
@@ -81,7 +78,7 @@ func (client *RackSKUsClient) getCreateRequest(ctx context.Context, rackSKUName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +95,7 @@ func (client *RackSKUsClient) getHandleResponse(resp *http.Response) (RackSKUsCl
 
 // NewListBySubscriptionPager - Get a list of rack SKUs in the provided subscription.
 //
-// Generated from API version 2022-12-12-preview
+// Generated from API version 2023-05-01-preview
 //   - options - RackSKUsClientListBySubscriptionOptions contains the optional parameters for the RackSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClientListBySubscriptionOptions) *runtime.Pager[RackSKUsClientListBySubscriptionResponse] {
@@ -132,16 +129,13 @@ func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClient
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *RackSKUsClient) listBySubscriptionCreateRequest(ctx context.Context, options *RackSKUsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/rackSkus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-12-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

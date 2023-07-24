@@ -103,6 +103,86 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	}
 }
 
+func TestDefaultAzureCredential_TenantID(t *testing.T) {
+	expected := "expected"
+	for _, override := range []bool{false, true} {
+		name := "default tenant"
+		if override {
+			name = "TenantID set"
+		}
+		t.Run(fmt.Sprintf("%s_%s", credNameAzureCLI, name), func(t *testing.T) {
+			realTokenProvider := defaultTokenProvider
+			t.Cleanup(func() { defaultTokenProvider = realTokenProvider })
+			called := false
+			defaultTokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+				called = true
+				if (override && tenantID != expected) || (!override && tenantID != "") {
+					t.Fatalf("unexpected tenantID %q", tenantID)
+				}
+				return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+			}
+			// mock IMDS failure because managed identity precedes CLI in the chain
+			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.SetResponse(mock.WithStatusCode(400))
+			o := DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}}
+			if override {
+				o.TenantID = expected
+			}
+			cred, err := NewDefaultAzureCredential(&o)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), testTRO)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !called {
+				t.Fatal("Azure CLI wasn't invoked")
+			}
+		})
+
+		t.Run(fmt.Sprintf("%s_%s", credNameWorkloadIdentity, name), func(t *testing.T) {
+			af := filepath.Join(t.TempDir(), "assertions")
+			if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {
+				t.Fatal(err)
+			}
+			for k, v := range map[string]string{
+				azureAuthorityHost:      "https://login.microsoftonline.com",
+				azureClientID:           fakeClientID,
+				azureFederatedTokenFile: af,
+				azureTenantID:           "un" + expected,
+			} {
+				t.Setenv(k, v)
+			}
+			o := DefaultAzureCredentialOptions{
+				ClientOptions: policy.ClientOptions{
+					Transport: &mockSTS{
+						tenant: expected,
+						tokenRequestCallback: func(r *http.Request) *http.Response {
+							if actual := strings.Split(r.URL.Path, "/")[1]; actual != expected {
+								t.Fatalf("expected tenant %q, got %q", expected, actual)
+							}
+							return nil
+						},
+					},
+				},
+			}
+			if override {
+				o.TenantID = expected
+			}
+			cred, err := NewDefaultAzureCredential(&o)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), testTRO)
+			if err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
+
 func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 	for _, ID := range []ManagedIDKind{nil, ClientID("client-id")} {
 		t.Run(fmt.Sprintf("%v", ID), func(t *testing.T) {
@@ -132,7 +212,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
 		t.Fatalf(`failed to write temporary file "%s": %v`, tempFile, err)
 	}
-	pred := func(req *http.Request) bool {
+	sts := mockSTS{tokenRequestCallback: func(req *http.Request) *http.Response {
 		if err := req.ParseForm(); err != nil {
 			t.Fatal(err)
 		}
@@ -145,14 +225,8 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
 			t.Fatalf(`unexpected tenant "%s"`, actual)
 		}
-		return true
-	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
-	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
+		return nil
+	}}
 	for k, v := range map[string]string{
 		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
 		azureClientID:           fakeClientID,
@@ -161,7 +235,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	} {
 		t.Setenv(k, v)
 	}
-	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}})
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: &sts}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -186,17 +260,13 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
-
 	timeout := 100 * time.Millisecond
 	dp := delayPolicy{2 * timeout}
 	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{&dp},
 			Retry:           policy.RetryOptions{MaxRetries: -1},
-			Transport:       srv,
+			Transport:       &mockSTS{},
 		},
 	})
 	if err != nil {

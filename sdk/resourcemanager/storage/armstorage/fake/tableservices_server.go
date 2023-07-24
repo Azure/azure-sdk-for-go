@@ -37,8 +37,8 @@ type TableServicesServer struct {
 }
 
 // NewTableServicesServerTransport creates a new instance of TableServicesServerTransport with the provided implementation.
-// The returned TableServicesServerTransport instance is connected to an instance of armstorage.TableServicesClient by way of the
-// undefined.Transporter field.
+// The returned TableServicesServerTransport instance is connected to an instance of armstorage.TableServicesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTableServicesServerTransport(srv *TableServicesServer) *TableServicesServerTransport {
 	return &TableServicesServerTransport{srv: srv}
 }

@@ -54,21 +54,28 @@ type VirtualMachineRunCommandsServer struct {
 }
 
 // NewVirtualMachineRunCommandsServerTransport creates a new instance of VirtualMachineRunCommandsServerTransport with the provided implementation.
-// The returned VirtualMachineRunCommandsServerTransport instance is connected to an instance of armcompute.VirtualMachineRunCommandsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualMachineRunCommandsServerTransport instance is connected to an instance of armcompute.VirtualMachineRunCommandsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineRunCommandsServerTransport(srv *VirtualMachineRunCommandsServer) *VirtualMachineRunCommandsServerTransport {
-	return &VirtualMachineRunCommandsServerTransport{srv: srv}
+	return &VirtualMachineRunCommandsServerTransport{
+		srv:                          srv,
+		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]](),
+		beginDelete:                  newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]](),
+		newListByVirtualMachinePager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]](),
+	}
 }
 
 // VirtualMachineRunCommandsServerTransport connects instances of armcompute.VirtualMachineRunCommandsClient to instances of VirtualMachineRunCommandsServer.
 // Don't use this type directly, use NewVirtualMachineRunCommandsServerTransport instead.
 type VirtualMachineRunCommandsServerTransport struct {
 	srv                          *VirtualMachineRunCommandsServer
-	beginCreateOrUpdate          *azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]
-	beginDelete                  *azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]
-	newListPager                 *azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]
-	newListByVirtualMachinePager *azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]
-	beginUpdate                  *azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]
+	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]]
+	beginDelete                  *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]]
+	newListByVirtualMachinePager *tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineRunCommandsServerTransport.
@@ -112,7 +119,8 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginCreateOrUpdate(r
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -139,19 +147,21 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginCreateOrUpdate(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -161,7 +171,8 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginDelete(req *http
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -184,19 +195,21 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginDelete(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -288,7 +301,8 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchNewListPager(req *htt
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -300,20 +314,22 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchNewListPager(req *htt
 			return nil, err
 		}
 		resp := v.srv.NewListPager(locationUnescaped, nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armcompute.VirtualMachineRunCommandsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.VirtualMachineRunCommandsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -322,7 +338,8 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchNewListByVirtualMachi
 	if v.srv.NewListByVirtualMachinePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVirtualMachinePager not implemented")}
 	}
-	if v.newListByVirtualMachinePager == nil {
+	newListByVirtualMachinePager := v.newListByVirtualMachinePager.get(req)
+	if newListByVirtualMachinePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -350,20 +367,22 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchNewListByVirtualMachi
 			}
 		}
 		resp := v.srv.NewListByVirtualMachinePager(resourceGroupNameUnescaped, vmNameUnescaped, options)
-		v.newListByVirtualMachinePager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByVirtualMachinePager, req, func(page *armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse, createLink func() string) {
+		newListByVirtualMachinePager = &resp
+		v.newListByVirtualMachinePager.add(req, newListByVirtualMachinePager)
+		server.PagerResponderInjectNextLinks(newListByVirtualMachinePager, req, func(page *armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByVirtualMachinePager, req)
+	resp, err := server.PagerResponderNext(newListByVirtualMachinePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVirtualMachinePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByVirtualMachinePager) {
-		v.newListByVirtualMachinePager = nil
+	if !server.PagerResponderMore(newListByVirtualMachinePager) {
+		v.newListByVirtualMachinePager.remove(req)
 	}
 	return resp, nil
 }
@@ -372,7 +391,8 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginUpdate(req *http
 	if v.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if v.beginUpdate == nil {
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommands/(?P<runCommandName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -399,19 +419,21 @@ func (v *VirtualMachineRunCommandsServerTransport) dispatchBeginUpdate(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginUpdate = &respr
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginUpdate) {
-		v.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
 	}
 
 	return resp, nil

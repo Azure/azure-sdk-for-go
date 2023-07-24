@@ -86,7 +86,7 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
-	validateReq := func(req *http.Request) bool {
+	validateReq := func(req *http.Request) *http.Response {
 		err := req.ParseForm()
 		if err != nil {
 			t.Fatal(err)
@@ -97,15 +97,10 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 		if h := req.Header.Get("metadata"); h != "true" {
 			t.Fatalf("unexpected metadata header: %s", h)
 		}
-		return true
+		return nil
 	}
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
-	srv.AppendResponse()
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
-	options.Transport = srv
+	options.Transport = &mockSTS{tokenRequestCallback: validateReq}
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatal(err)
@@ -301,11 +296,7 @@ func TestManagedIdentityCredential_GetTokenScopes(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
-	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: &mockSTS{}}}
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

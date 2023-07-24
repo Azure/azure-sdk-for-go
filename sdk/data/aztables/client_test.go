@@ -175,6 +175,7 @@ func TestMergeEntity(t *testing.T) {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
 			}
+			require.NotEmpty(t, qResp.Entities)
 			postMerge := qResp.Entities[0]
 			var unmarshalledPostMerge map[string]interface{}
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
@@ -216,7 +217,7 @@ func TestInsertEntity(t *testing.T) {
 			defer delete()
 
 			// 1. Create Basic Entity
-			entityToCreate := createSimpleEntity(1, "partition")
+			entityToCreate := createSimpleEntityWithRowKey(1, "parti'tion", "one'")
 			marshalled, err := json.Marshal(entityToCreate)
 			require.NoError(t, err)
 

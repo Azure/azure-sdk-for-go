@@ -6,7 +6,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0
-	github.com/google/go-cmp v0.5.9
 	github.com/joho/godotenv v1.3.0
 	github.com/stretchr/testify v1.7.0
 )

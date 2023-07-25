@@ -7,7 +7,9 @@
 package file_test
 
 import (
+	"bytes"
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
@@ -16,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"math/rand"
 	"net/http"
 	"testing"
 	"time"
@@ -2301,4 +2304,40 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
+}
+
+func (s *RecordedTestSuite) TestFileUploadStream() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
 }

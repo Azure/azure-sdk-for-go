@@ -7,11 +7,16 @@
 package file
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -19,9 +24,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -254,11 +262,6 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 	return resp, err
 }
 
-//// Upload uploads data to a file.
-//func (f *Client) Upload(ctx context.Context) {
-//
-//}
-//
 //// Append appends data to a file.
 //func (f *Client) Append(ctx context.Context) {
 //
@@ -359,4 +362,123 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	endpoint := f.BlobURL() + "?" + qps.Encode()
 
 	return endpoint, nil
+}
+
+func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
+	appendDataOptions, leaseAccessConditions, httpsHeaders, cpkInfo, err := options.format(offset, body)
+	if err != nil {
+		return AppendDataResponse{}, err
+	}
+
+	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, httpsHeaders, leaseAccessConditions, cpkInfo)
+	return resp, err
+}
+
+func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushDataOptions) (FlushDataResponse, error) {
+	flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, err := options.format(offset)
+	if err != nil {
+		return FlushDataResponse{}, err
+	}
+
+	resp, err := f.generatedFileClientWithDFS().FlushData(ctx, flushDataOpts, httpHeaderOpts, leaseAccessConditions, modifiedAccessConditions, cpkInfoOpts)
+	return resp, err
+}
+
+// Concurrent Upload Functions -----------------------------------------------------------------------------------------
+
+// uploadFromReader uploads a buffer in chunks to an Azure file.
+func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) error {
+	if actualSize > MaxFileSize {
+		return errors.New("buffer is too large to upload to a file")
+	}
+	if o.ChunkSize == 0 {
+		o.ChunkSize = MaxUpdateRangeBytes
+	}
+
+	if log.Should(exported.EventUpload) {
+		urlParts, err := azdatalake.ParseURL(f.DFSURL())
+		if err == nil {
+			log.Writef(exported.EventUpload, "file name %s actual size %v chunk-size %v chunk-count %v",
+				urlParts.PathName, actualSize, o.ChunkSize, ((actualSize-1)/o.ChunkSize)+1)
+		}
+	}
+
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "uploadFromReader",
+		TransferSize:  actualSize,
+		ChunkSize:     o.ChunkSize,
+		Concurrency:   o.Concurrency,
+		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
+			// This function is called once per file range.
+			// It is passed this file's offset within the buffer and its count of bytes
+			// Prepare to read the proper range/section of the buffer
+			if chunkSize < o.ChunkSize {
+				// this is the last file range.  Its actual size might be less
+				// than the calculated size due to rounding up of the payload
+				// size to fit in a whole number of chunks.
+				chunkSize = actualSize - offset
+			}
+			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)
+			if o.Progress != nil {
+				chunkProgress := int64(0)
+				body = streaming.NewRequestProgress(streaming.NopCloser(body),
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - chunkProgress
+						chunkProgress = bytesTransferred
+						progressLock.Lock() // 1 goroutine at a time gets progress report
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+
+			uploadRangeOptions := o.getAppendDataOptions()
+			_, err := f.AppendData(ctx, offset, streaming.NopCloser(body), uploadRangeOptions)
+			return err
+		},
+	})
+
+	if err != nil {
+		return err
+	}
+	// All appends were successful, call to flush
+	flushOpts := o.getFlushDataOptions()
+	_, err = f.FlushData(ctx, actualSize, flushOpts)
+	return err
+}
+
+// UploadBuffer uploads a buffer in chunks to an Azure file.
+func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *UploadBufferOptions) error {
+	uploadOptions := uploadFromReaderOptions{}
+	if options != nil {
+		uploadOptions = *options
+	}
+	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
+}
+
+// UploadFile uploads a file in chunks to an Azure file.
+func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
+	stat, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	uploadOptions := uploadFromReaderOptions{}
+	if options != nil {
+		uploadOptions = *options
+	}
+	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
+}
+
+// UploadStream copies the file held in io.Reader to the file at fileClient.
+// A Context deadline or cancellation will cause this to error.
+func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
+	if options == nil {
+		options = &UploadStreamOptions{}
+	}
+
+	err := copyFromReader(ctx, body, f, *options, newMMBPool)
+	return err
 }

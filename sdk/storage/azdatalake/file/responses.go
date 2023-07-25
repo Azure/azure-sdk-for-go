@@ -26,6 +26,12 @@ type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursive
 // RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
 type RemoveAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
 
+// AppendDataResponse contains the response from method Client.AppendData.
+type AppendDataResponse = generated.PathClientAppendDataResponse
+
+// FlushDataResponse contains the response from method Client.FlushData.
+type FlushDataResponse = generated.PathClientFlushDataResponse
+
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse struct {
 	Response      generated.PathClientCreateResponse

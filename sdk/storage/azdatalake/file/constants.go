@@ -7,6 +7,7 @@
 package file
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -36,3 +37,9 @@ const (
 	CopyStatusTypeAborted CopyStatusType = path.CopyStatusTypeAborted
 	CopyStatusTypeFailed  CopyStatusType = path.CopyStatusTypeFailed
 )
+
+// TransferValidationType abstracts the various mechanisms used to verify a transfer.
+type TransferValidationType = exported.TransferValidationType
+
+// TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed crc64.
+type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64

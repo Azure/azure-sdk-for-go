@@ -133,9 +133,6 @@ func (gem *globalEndpointManager) Update() error {
 //
 // The method is designed to be used as a goroutine and will continue running until explicitly stopped.
 func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Duration) {
-	// Create an error channel to receive possible errors from the goroutine.
-	errChan := make(chan error)
-
 	// Create a new context and a cancellation function to stop the background refresh.
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -156,12 +153,6 @@ func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Du
 			}
 		}
 	}()
-
-	// Wait for an error to be received from the error channel (this will not happen in this case).
-	// If there's an error, panic (this should never happen).
-	if err := <-errChan; err != nil {
-		panic(err)
-	}
 }
 
 // RefreshStaleEndpoints triggers a refresh of stale endpoints in the location cache.

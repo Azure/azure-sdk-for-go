@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcosmos
 
 import (
@@ -23,6 +26,9 @@ func TestGlobalEndpointManager_GetWriteEndpoints(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -60,6 +66,9 @@ func TestGlobalEndpointManager_GetReadEndpoints(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -94,6 +103,9 @@ func TestGlobalEndpointManager_GetAccountProperties(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -129,6 +141,9 @@ func TestGlobalEndpointManager_GetLocation(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -159,6 +174,9 @@ func TestGlobalEndpointManager_MarkEndpointUnavailableForRead(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -185,8 +203,6 @@ func TestGlobalEndpointManager_MarkEndpointUnavailableForRead(t *testing.T) {
 }
 
 func TestGlobalEndpointManager_MarkEndpointUnavailableForWrite(t *testing.T) {
-	// Create a mock client
-	// Create a mock client
 	headerPolicy := &headerPolicies{}
 	srv, close := mock.NewTLSServer()
 	defer close()
@@ -195,6 +211,9 @@ func TestGlobalEndpointManager_MarkEndpointUnavailableForWrite(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -229,6 +248,9 @@ func TestGlobalEndpointManager_Update(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -278,6 +300,9 @@ func TestGlobalEndpointManager_RefreshStaleEndpoints(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})
@@ -304,6 +329,38 @@ func TestGlobalEndpointManager_CanUseMultipleWriteLocations(t *testing.T) {
 	verifier := headerPoliciesVerify{}
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
+	req.SetOperationValue(pipelineRequestOptions{
+		isWriteOperation: true,
+	})
+
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	mockClient := client
+
+	// Create a new global endpoint manager with preferred regions and refresh interval
+	gem, err := newGlobalEndpointManager(mockClient, []string{"westus", "eastus"}, 5*time.Minute)
+	assert.NoError(t, err)
+
+	// Check if multiple write locations can be used
+	canUseMultipleWriteLocs := gem.CanUseMultipleWriteLocations()
+	assert.False(t, canUseMultipleWriteLocs)
+}
+
+func TestGlobalEndpointManagerBackgroundRefresh(t *testing.T) {
+	// Create a mock client
+	headerPolicy := &headerPolicies{}
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+
+	verifier := headerPoliciesVerify{}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		return
+	}
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
 	})

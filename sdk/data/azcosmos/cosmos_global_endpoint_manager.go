@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcosmos
 
 import (
@@ -5,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"sync"
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -13,15 +15,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const globalEndpointManagerDefaultBackgroundRefreshInterval = 5 * time.Minute
+const defaultBackgroundRefreshInterval = 5 * time.Minute
 
 type globalEndpointManager struct {
 	client           *Client
 	preferredRegions []string
 	locationCache    *locationCache
-	refreshTicker    *time.Ticker
-	refreshDone      chan struct{}
-	sync.Mutex
 }
 
 // NewGlobalEndpointManager creates a new global endpoint manager.
@@ -29,6 +28,10 @@ func newGlobalEndpointManager(client *Client, preferredRegions []string, refresh
 	endpoint, err := url.Parse(client.endpoint)
 	if err != nil {
 		return nil, err
+	}
+	// If refreshInterval is zero, use the default value (5 minutes)
+	if refreshInterval == 0 {
+		refreshInterval = defaultBackgroundRefreshInterval
 	}
 	gem, err := &globalEndpointManager{
 		client:           client,
@@ -64,8 +67,9 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 	if err != nil {
 		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
 	}
-
-	azResponse, err := gem.client.sendGetRequest(path, context.Background(), operationContext, nil, nil)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	azResponse, err := gem.client.sendGetRequest(path, ctx, operationContext, nil, nil)
+	cancel()
 	if err != nil {
 		return accountProperties{}, fmt.Errorf("failed to send GET request: %v", err)
 	}
@@ -126,12 +130,14 @@ func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Du
 			select {
 			case <-ctx.Done():
 				err := gem.Update()
+				cancel()
 				if err != nil {
 					return
 				}
 				return
 			case <-time.After(refreshInterval):
 				err := gem.Update()
+				cancel()
 				if err != nil {
 					log.Write(azlog.EventResponse, fmt.Sprintf("Failed to update location cache: %v", err))
 					return
@@ -139,8 +145,8 @@ func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Du
 				return
 			}
 		}
+
 	}()
-	cancel()
 
 	if err := <-errChan; err != nil {
 		panic(err)

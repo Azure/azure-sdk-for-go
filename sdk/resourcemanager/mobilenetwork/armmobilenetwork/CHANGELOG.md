@@ -3,7 +3,6 @@
 ## 3.0.0 (2023-07-28)
 ### Breaking Changes
 
-- Function `NewPacketCoreControlPlaneVersionsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
 - Function `*PacketCoreControlPlanesClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsObject, *PacketCoreControlPlanesClientUpdateTagsOptions)` to `(context.Context, string, string, IdentityAndTagsObject, *PacketCoreControlPlanesClientUpdateTagsOptions)`
 - Function `*SimGroupsClient.UpdateTags` parameter(s) have been changed from `(context.Context, string, string, TagsObject, *SimGroupsClientUpdateTagsOptions)` to `(context.Context, string, string, IdentityAndTagsObject, *SimGroupsClientUpdateTagsOptions)`
 - `BillingSKUG3`, `BillingSKUG4` from enum `BillingSKU` has been removed
@@ -31,8 +30,8 @@
 - New function `*PacketCapturesClient.Get(context.Context, string, string, string, *PacketCapturesClientGetOptions) (PacketCapturesClientGetResponse, error)`
 - New function `*PacketCapturesClient.NewListByPacketCoreControlPlanePager(string, string, *PacketCapturesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCapturesClientListByPacketCoreControlPlaneResponse]`
 - New function `*PacketCapturesClient.BeginStop(context.Context, string, string, string, *PacketCapturesClientBeginStopOptions) (*runtime.Poller[PacketCapturesClientStopResponse], error)`
-- New function `*PacketCoreControlPlaneVersionsClient.GetBySubscription(context.Context, string, *PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions) (PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse, error)`
-- New function `*PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager(*PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]`
+- New function `*PacketCoreControlPlaneVersionsClient.GetBySubscription(context.Context, string, string, *PacketCoreControlPlaneVersionsClientGetBySubscriptionOptions) (PacketCoreControlPlaneVersionsClientGetBySubscriptionResponse, error)`
+- New function `*PacketCoreControlPlaneVersionsClient.NewListBySubscriptionPager(string, *PacketCoreControlPlaneVersionsClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListBySubscriptionResponse]`
 - New function `*SitesClient.BeginDeletePacketCore(context.Context, string, string, string, SiteDeletePacketCore, *SitesClientBeginDeletePacketCoreOptions) (*runtime.Poller[SitesClientDeletePacketCoreResponse], error)`
 - New struct `DiagnosticsPackage`
 - New struct `DiagnosticsPackageListResult`

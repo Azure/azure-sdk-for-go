@@ -79,41 +79,6 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
 
-// ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
-type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
-	// A managed cluster snapshot resource.
-	ManagedClusterSnapshot
-}
-
-// ManagedClusterSnapshotsClientDeleteResponse contains the response from method ManagedClusterSnapshotsClient.Delete.
-type ManagedClusterSnapshotsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ManagedClusterSnapshotsClientGetResponse contains the response from method ManagedClusterSnapshotsClient.Get.
-type ManagedClusterSnapshotsClientGetResponse struct {
-	// A managed cluster snapshot resource.
-	ManagedClusterSnapshot
-}
-
-// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.NewListByResourceGroupPager.
-type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
-	// The response from the List Managed Cluster Snapshots operation.
-	ManagedClusterSnapshotListResult
-}
-
-// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.NewListPager.
-type ManagedClusterSnapshotsClientListResponse struct {
-	// The response from the List Managed Cluster Snapshots operation.
-	ManagedClusterSnapshotListResult
-}
-
-// ManagedClusterSnapshotsClientUpdateTagsResponse contains the response from method ManagedClusterSnapshotsClient.UpdateTags.
-type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
-	// A managed cluster snapshot resource.
-	ManagedClusterSnapshot
-}
-
 // ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.BeginAbortLatestOperation.
 type ManagedClustersClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
@@ -321,33 +286,4 @@ type SnapshotsClientListResponse struct {
 type SnapshotsClientUpdateTagsResponse struct {
 	// A node pool snapshot resource.
 	Snapshot
-}
-
-// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.CreateOrUpdate.
-type TrustedAccessRoleBindingsClientCreateOrUpdateResponse struct {
-	// Defines binding between a resource and role
-	TrustedAccessRoleBinding
-}
-
-// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.Delete.
-type TrustedAccessRoleBindingsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// TrustedAccessRoleBindingsClientGetResponse contains the response from method TrustedAccessRoleBindingsClient.Get.
-type TrustedAccessRoleBindingsClientGetResponse struct {
-	// Defines binding between a resource and role
-	TrustedAccessRoleBinding
-}
-
-// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.NewListPager.
-type TrustedAccessRoleBindingsClientListResponse struct {
-	// List of trusted access role bindings
-	TrustedAccessRoleBindingListResult
-}
-
-// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.NewListPager.
-type TrustedAccessRolesClientListResponse struct {
-	// List of trusted access roles
-	TrustedAccessRoleListResult
 }

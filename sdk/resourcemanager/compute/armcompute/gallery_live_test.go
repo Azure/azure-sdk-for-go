@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -38,9 +39,9 @@ func (testsuite *GalleryTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.galleryApplicationName = testutil.GenerateAlphaNumericID(testsuite.T(), "galleryapp", 6)
-	testsuite.galleryImageName = testutil.GenerateAlphaNumericID(testsuite.T(), "galleryima", 6)
-	testsuite.galleryName = testutil.GenerateAlphaNumericID(testsuite.T(), "gallerynam", 6)
+	testsuite.galleryApplicationName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "galleryapp", 16, false)
+	testsuite.galleryImageName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "galleryima", 16, false)
+	testsuite.galleryName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "gallerynam", 16, false)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

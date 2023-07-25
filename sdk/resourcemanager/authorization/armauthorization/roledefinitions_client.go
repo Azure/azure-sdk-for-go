@@ -44,8 +44,11 @@ func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.Cl
 // CreateOrUpdate - Creates or updates a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the role definition.
+// Generated from API version 2022-05-01-preview
+//   - scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+//     resource group (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - roleDefinitionID - The ID of the role definition.
 //   - roleDefinition - The values for the role definition.
 //   - options - RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
@@ -78,7 +81,7 @@ func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, roleDefinition)
@@ -96,8 +99,11 @@ func (client *RoleDefinitionsClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Deletes a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the role definition.
+// Generated from API version 2022-05-01-preview
+//   - scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+//     resource group (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - roleDefinitionID - The ID of the role definition to delete.
 //   - options - RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
 func (client *RoleDefinitionsClient) Delete(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientDeleteOptions) (RoleDefinitionsClientDeleteResponse, error) {
@@ -128,7 +134,7 @@ func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -143,11 +149,14 @@ func (client *RoleDefinitionsClient) deleteHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// Get - Get role definition by name (GUID).
+// Get - Get role definition by ID (GUID).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the role definition.
+// Generated from API version 2022-05-01-preview
+//   - scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+//     resource group (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - roleDefinitionID - The ID of the role definition.
 //   - options - RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
 func (client *RoleDefinitionsClient) Get(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientGetOptions) (RoleDefinitionsClientGetResponse, error) {
@@ -178,7 +187,7 @@ func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -196,7 +205,7 @@ func (client *RoleDefinitionsClient) getHandleResponse(resp *http.Response) (Rol
 // GetByID - Gets a role definition by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2022-05-01-preview
 //   - roleID - The fully qualified role definition ID. Use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
 //     for subscription level role definitions, or
 //     /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role definitions.
@@ -225,7 +234,7 @@ func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -242,8 +251,11 @@ func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) 
 
 // NewListPager - Get all role definitions that are applicable at scope and above.
 //
-// Generated from API version 2022-04-01
-//   - scope - The scope of the role definition.
+// Generated from API version 2022-05-01-preview
+//   - scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+//     resource group (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+//     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager
 //     method.
 func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDefinitionsClientListOptions) *runtime.Pager[RoleDefinitionsClientListResponse] {
@@ -286,7 +298,7 @@ func (client *RoleDefinitionsClient) listCreateRequest(ctx context.Context, scop
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

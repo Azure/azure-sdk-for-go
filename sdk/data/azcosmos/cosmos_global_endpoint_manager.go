@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package azcosmos
 
 import (
@@ -10,9 +7,7 @@ import (
 	"net/url"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const defaultBackgroundRefreshInterval = 5 * time.Minute
@@ -23,16 +18,22 @@ type globalEndpointManager struct {
 	locationCache    *locationCache
 }
 
-// NewGlobalEndpointManager creates a new global endpoint manager.
+// newGlobalEndpointManager creates a new global endpoint manager.
+// It takes a client, preferredRegions, and refreshInterval as input parameters.
+// If the refreshInterval is zero, it uses the default value (5 minutes).
+// It initializes a new globalEndpointManager, creates a location cache, and starts a background refresh process.
+// The background refresh process periodically updates the location cache based on the specified refreshInterval.
 func newGlobalEndpointManager(client *Client, preferredRegions []string, refreshInterval time.Duration) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(client.endpoint)
 	if err != nil {
 		return nil, err
 	}
+
 	// If refreshInterval is zero, use the default value (5 minutes)
 	if refreshInterval == 0 {
 		refreshInterval = defaultBackgroundRefreshInterval
 	}
+
 	gem, err := &globalEndpointManager{
 		client:           client,
 		preferredRegions: preferredRegions,
@@ -41,6 +42,8 @@ func newGlobalEndpointManager(client *Client, preferredRegions []string, refresh
 	if err != nil {
 		return nil, err
 	}
+
+	// Start the background refresh process with the specified refreshInterval.
 	gem.startBackgroundRefresh(refreshInterval)
 
 	return gem, nil
@@ -120,34 +123,42 @@ func (gem *globalEndpointManager) Update() error {
 	return nil
 }
 
+// startBackgroundRefresh starts a background refresh process that periodically updates the location cache
+// based on the given refreshInterval.
+// It creates a context and a cancellation function to gracefully stop the background refresh process.
+// The function runs a goroutine that listens for two events:
+//  1. If the context is canceled (e.g., due to stopBackgroundRefresh being called), it performs an update
+//     to refresh the location cache and cancels the goroutine.
+//  2. After the specified refreshInterval, it performs an update to refresh the location cache and cancels the goroutine.
+//
+// The method is designed to be used as a goroutine and will continue running until explicitly stopped.
 func (gem *globalEndpointManager) startBackgroundRefresh(refreshInterval time.Duration) {
+	// Create an error channel to receive possible errors from the goroutine.
 	errChan := make(chan error)
 
+	// Create a new context and a cancellation function to stop the background refresh.
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// Start a new goroutine to handle the background refresh process.
 	go func() {
 		for {
 			select {
+			// If the context is canceled (e.g., due to stopBackgroundRefresh being called), perform an update
+			// to refresh the location cache and cancel the goroutine.
 			case <-ctx.Done():
-				err := gem.Update()
-				cancel()
-				if err != nil {
-					return
-				}
-				return
+				_ = gem.Update() // Perform the update to refresh the location cache.
+				cancel()         // Cancel the context to stop the goroutine.
+				return           // Return from the goroutine.
+			// After the specified refreshInterval, perform an update to refresh the location cache and cancel the goroutine.
 			case <-time.After(refreshInterval):
-				err := gem.Update()
-				cancel()
-				if err != nil {
-					log.Write(azlog.EventResponse, fmt.Sprintf("Failed to update location cache: %v", err))
-					return
-				}
-				return
+				_ = gem.Update() // Perform the update to refresh the location cache.
+				return           // Return from the goroutine.
 			}
 		}
-
 	}()
 
+	// Wait for an error to be received from the error channel (this will not happen in this case).
+	// If there's an error, panic (this should never happen).
 	if err := <-errChan; err != nil {
 		panic(err)
 	}

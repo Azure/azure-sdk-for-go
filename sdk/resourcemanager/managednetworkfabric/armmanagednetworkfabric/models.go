@@ -11,25 +11,7 @@ package armmanagednetworkfabric
 
 import "time"
 
-// ARPProperties - Show ARP table entry properties
-type ARPProperties struct {
-	// REQUIRED; Ipv4 or Ipv6 address
-	Address *string
-
-	// REQUIRED; Duration in seconds.
-	Age *string
-
-	// REQUIRED; Layer 2 interface name.
-	Interface *string
-
-	// REQUIRED; Hardware address.
-	MacAddress *string
-
-	// ARP status
-	State *string
-}
-
-// AccessControlList - The AccessControlList resource definition.
+// AccessControlList - The Access Control List resource definition.
 type AccessControlList struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -40,7 +22,7 @@ type AccessControlList struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -53,77 +35,178 @@ type AccessControlList struct {
 	Type *string
 }
 
-// AccessControlListConditionProperties - Access Control List condition model.
-type AccessControlListConditionProperties struct {
-	// REQUIRED; action. Example: allow | deny.
-	Action *ConditionActionType
+// AccessControlListAction - Action that need to performed.
+type AccessControlListAction struct {
+	// Name of the counter block to get match count information.
+	CounterName *string
 
-	// REQUIRED; destinationAddress. Example: any | 1.1.1.0/24 | 1.1.10.10
-	DestinationAddress *string
-
-	// REQUIRED; destinationPort. Example: any | 1253
-	DestinationPort *string
-
-	// REQUIRED; TCP/IP protocol as defined in the list of IP protocol numbers. Example: 255 (any) | 0 | 1.
-	Protocol *int32
-
-	// REQUIRED; sequenceNumber of the Access Control List.
-	SequenceNumber *int32
-
-	// REQUIRED; sourceAddress. Example: any | 1.1.1.0/24 | 1.1.10.10
-	SourceAddress *string
-
-	// REQUIRED; sourcePort. Example: any | 1253
-	SourcePort *string
-
-	// Switch configuration description.
-	Annotation *string
+	// Type of actions that can be performed.
+	Type *ACLActionType
 }
 
-// AccessControlListPatch - The AccessControlList patch resource definition.
+// AccessControlListMatchCondition - Defines the match condition that is supported to filter the traffic.
+type AccessControlListMatchCondition struct {
+	// List of DSCP Markings that needs to be matched.
+	DscpMarkings []*string
+
+	// List of ether type values that needs to be matched.
+	EtherTypes []*string
+
+	// List of IP fragment packets that needs to be matched.
+	Fragments []*string
+
+	// IP condition that needs to be matched.
+	IPCondition *IPMatchCondition
+
+	// List of IP Lengths that needs to be matched.
+	IPLengths []*string
+
+	// Defines the port condition that needs to be matched.
+	PortCondition *AccessControlListPortCondition
+
+	// List of the protocols that need to be matched.
+	ProtocolTypes []*string
+
+	// List of TTL [Time To Live] values that needs to be matched.
+	TTLValues []*string
+
+	// Vlan match condition that needs to be matched.
+	VlanMatchCondition *VlanMatchCondition
+}
+
+// AccessControlListMatchConfiguration - Defines the match configuration that are supported to filter the traffic.
+type AccessControlListMatchConfiguration struct {
+	// List of actions that need to be performed for the matched conditions.
+	Actions []*AccessControlListAction
+
+	// Type of IP Address. IPv4 or IPv6
+	IPAddressType *IPAddressType
+
+	// List of the match conditions.
+	MatchConditions []*AccessControlListMatchCondition
+
+	// The name of the match configuration.
+	MatchConfigurationName *string
+
+	// Sequence Number of the match configuration.
+	SequenceNumber *int64
+}
+
+// AccessControlListPatch - The Access Control Lists patch resource definition.
 type AccessControlListPatch struct {
-	// Resource properties.
+	// Access Control Lists patch properties.
 	Properties *AccessControlListPatchProperties
 
 	// Resource tags
 	Tags map[string]*string
 }
 
-// AccessControlListPatchProperties define the patchable resource properties.
+// AccessControlListPatchProperties - Access Control Lists patch properties.
 type AccessControlListPatchProperties struct {
-	// IP address family. Example: ipv4 | ipv6.
-	AddressFamily *AddressFamily
+	// Access Control List file URL.
+	ACLsURL *string
 
 	// Switch configuration description.
 	Annotation *string
 
-	// Access Control List conditions.
-	Conditions []*AccessControlListConditionProperties
+	// Input method to configure Access Control List.
+	ConfigurationType *ConfigurationType
+
+	// List of dynamic match configurations.
+	DynamicMatchConfigurations []*CommonDynamicMatchConfiguration
+
+	// List of match configurations.
+	MatchConfigurations []*AccessControlListMatchConfiguration
 }
 
-// AccessControlListProperties define the resource properties.
-type AccessControlListProperties struct {
-	// REQUIRED; IP address family. Example: ipv4 | ipv6.
-	AddressFamily *AddressFamily
+// AccessControlListPortCondition - Defines the port condition that needs to be matched.
+type AccessControlListPortCondition struct {
+	// REQUIRED; Layer4 protocol type that needs to be matched.
+	Layer4Protocol *Layer4Protocol
 
-	// REQUIRED; Access Control List conditions.
-	Conditions []*AccessControlListConditionProperties
+	// List of protocol flags that needs to be matched.
+	Flags []*string
+
+	// List of the port Group Names that to be matched.
+	PortGroupNames []*string
+
+	// Port type that needs to be matched.
+	PortType *PortType
+
+	// List of the Ports that need to be matched.
+	Ports []*string
+}
+
+// AccessControlListProperties - Access Control List Properties defines the resource properties.
+type AccessControlListProperties struct {
+	// Access Control List file URL.
+	ACLsURL *string
 
 	// Switch configuration description.
 	Annotation *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// Input method to configure Access Control List.
+	ConfigurationType *ConfigurationType
+
+	// List of dynamic match configurations.
+	DynamicMatchConfigurations []*CommonDynamicMatchConfiguration
+
+	// List of match configurations.
+	MatchConfigurations []*AccessControlListMatchConfiguration
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; The last synced timestamp.
+	LastSyncedTime *time.Time
+
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-// AccessControlListsClientCreateOptions contains the optional parameters for the AccessControlListsClient.Create method.
-type AccessControlListsClientCreateOptions struct {
-	// placeholder for future optional parameters
+// AccessControlListsClientBeginCreateOptions contains the optional parameters for the AccessControlListsClient.BeginCreate
+// method.
+type AccessControlListsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// AccessControlListsClientDeleteOptions contains the optional parameters for the AccessControlListsClient.Delete method.
-type AccessControlListsClientDeleteOptions struct {
-	// placeholder for future optional parameters
+// AccessControlListsClientBeginDeleteOptions contains the optional parameters for the AccessControlListsClient.BeginDelete
+// method.
+type AccessControlListsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessControlListsClientBeginResyncOptions contains the optional parameters for the AccessControlListsClient.BeginResync
+// method.
+type AccessControlListsClientBeginResyncOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessControlListsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the AccessControlListsClient.BeginUpdateAdministrativeState
+// method.
+type AccessControlListsClientBeginUpdateAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessControlListsClientBeginUpdateOptions contains the optional parameters for the AccessControlListsClient.BeginUpdate
+// method.
+type AccessControlListsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessControlListsClientBeginValidateConfigurationOptions contains the optional parameters for the AccessControlListsClient.BeginValidateConfiguration
+// method.
+type AccessControlListsClientBeginValidateConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccessControlListsClientGetOptions contains the optional parameters for the AccessControlListsClient.Get method.
@@ -143,76 +226,68 @@ type AccessControlListsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessControlListsClientUpdateOptions contains the optional parameters for the AccessControlListsClient.Update method.
-type AccessControlListsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccessControlListsListResult - List of AccessControlLists.
+// AccessControlListsListResult - List of Access Control Lists.
 type AccessControlListsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of AccessControlList resources.
+	// List of Access Control List resources.
 	Value []*AccessControlList
 }
 
 // ActionIPCommunityProperties - IP Community Properties.
 type ActionIPCommunityProperties struct {
-	// IP Community ID list properties.
+	// List of IP Community IDs.
 	Add *IPCommunityIDList
 
-	// IP Community ID list properties.
+	// List of IP Community IDs.
 	Delete *IPCommunityIDList
 
-	// IP Community ID list properties.
+	// List of IP Community IDs.
 	Set *IPCommunityIDList
 }
 
 // ActionIPExtendedCommunityProperties - IP Extended Community Properties.
 type ActionIPExtendedCommunityProperties struct {
-	// IP Extended Community Id list properties.
+	// List of IP Extended Community IDs.
 	Add *IPExtendedCommunityIDList
 
-	// IP Extended Community Id list properties.
+	// List of IP Extended Community IDs.
 	Delete *IPExtendedCommunityIDList
 
-	// IP Extended Community Id list properties.
+	// List of IP Extended Community IDs.
 	Set *IPExtendedCommunityIDList
 }
 
-// AggregateRoute - Aggregate Route properties.
+// AggregateRoute - aggregateIpv4Route model.
 type AggregateRoute struct {
-	// Prefix of the aggregate Route.
+	// REQUIRED; IPv4 Prefix of the aggregate Ipv4Route.
 	Prefix *string
 }
 
-// AggregateRouteConfiguration - List of IPv4 and IPv6 route configurations.
+// AggregateRouteConfiguration - List of IPv4 and IPv6 aggregate routes.
 type AggregateRouteConfiguration struct {
 	// List of IPv4 Route prefixes.
 	IPv4Routes []*AggregateRoute
 
-	// List of IPv6 Routes prefixes.
+	// List of Ipv6Routes prefixes.
 	IPv6Routes []*AggregateRoute
 }
 
 // BfdConfiguration - BFD configuration properties
 type BfdConfiguration struct {
-	// READ-ONLY; Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
+	// Interval in milliseconds. Example: 300.
+	IntervalInMilliSeconds *int32
 
-	// READ-ONLY; interval in milliseconds. Example: 300.
-	Interval *int32
-
-	// READ-ONLY; Multiplier for the Bfd Configuration. Example: 3.
+	// Multiplier for the Bfd Configuration. Example: 5.
 	Multiplier *int32
+
+	// READ-ONLY; Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
+	AdministrativeState *BfdAdministrativeState
 }
 
 // BgpConfiguration - BGP configuration properties
 type BgpConfiguration struct {
-	// REQUIRED; Peer ASN. Example: 65047.
-	PeerASN *int32
-
 	// Allows for routes to be received and processed even if the router detects its own ASN in the AS-Path. 0 is disable, Possible
 	// values are 1-10, default is 2.
 	AllowAS *int32
@@ -229,29 +304,87 @@ type BgpConfiguration struct {
 	// Originate a defaultRoute. Ex: "True" | "False".
 	DefaultRouteOriginate *BooleanEnumProperty
 
-	// BGP Ipv4 ListenRange.
+	// List of BGP IPv4 Listen Range prefixes.
 	IPv4ListenRangePrefixes []*string
 
-	// List with stringified ipv4NeighborAddresses.
+	// List with stringified IPv4 Neighbor Addresses.
 	IPv4NeighborAddress []*NeighborAddress
 
-	// BGP Ipv6 ListenRange.
+	// List of BGP IPv6 Listen Ranges prefixes.
 	IPv6ListenRangePrefixes []*string
 
 	// List with stringified IPv6 Neighbor Address.
 	IPv6NeighborAddress []*NeighborAddress
 
+	// Peer ASN. Example: 65047.
+	PeerASN *int64
+
 	// READ-ONLY; ASN of Network Fabric. Example: 65048.
-	FabricASN *int32
+	FabricASN *int64
+}
+
+// CommonDynamicMatchConfiguration - Dynamic match configuration object.
+type CommonDynamicMatchConfiguration struct {
+	// List of IP Groups.
+	IPGroups []*IPGroupProperties
+
+	// List of the port group.
+	PortGroups []*PortGroupProperties
+
+	// List of vlan groups.
+	VlanGroups []*VlanGroupProperties
+}
+
+// CommonPostActionResponseForDeviceUpdate - Common response for device updates.
+type CommonPostActionResponseForDeviceUpdate struct {
+	// The error object.
+	Error *ErrorDetail
+
+	// List of ARM Resource IDs for which the given action failed to apply.
+	FailedDevices []*string
+
+	// List of ARM Resource IDs for which the given action applied successfully.
+	SuccessfulDevices []*string
+
+	// READ-ONLY; Gets the configuration state.
+	ConfigurationState *ConfigurationState
+}
+
+// CommonPostActionResponseForStateUpdate - Common response for the state updates.
+type CommonPostActionResponseForStateUpdate struct {
+	// The error object.
+	Error *ErrorDetail
+
+	// READ-ONLY; Gets the configuration state.
+	ConfigurationState *ConfigurationState
 }
 
 // ConnectedSubnet - Connected Subnet properties.
 type ConnectedSubnet struct {
+	// REQUIRED; Prefix of the Connected Subnet.
+	Prefix *string
+
 	// Switch configuration description.
 	Annotation *string
+}
 
-	// Prefix of the connected Subnet.
-	Prefix *string
+// ConnectedSubnetRoutePolicy - Connected Subnet Route Policy properties.
+type ConnectedSubnetRoutePolicy struct {
+	// Array of ARM Resource ID of the RoutePolicies.
+	ExportRoutePolicy *L3ExportRoutePolicy
+
+	// ARM Resource ID of the Route Policy. This is used for the backward compatibility.
+	ExportRoutePolicyID *string
+}
+
+// ControllerServices - Network Fabric Controller services.
+type ControllerServices struct {
+	// The IPv4 Address space is optional, if the value is not defined at the time of NFC creation, then the default value 10.0.0.0/19
+	// is considered. The IPV4 address subnet is an optional attribute.
+	IPv4AddressSpaces []*string
+
+	// The IPv6 is not supported right now.
+	IPv6AddressSpaces []*string
 }
 
 // DeviceInterfaceProperties - Network device interface properties.
@@ -266,31 +399,49 @@ type DeviceInterfaceProperties struct {
 	SupportedConnectorTypes []*SupportedConnectorProperties
 }
 
-// DeviceLimits - Network device limits.
-type DeviceLimits struct {
-	// Maximum number of Bidirectional Forwarding Detection (BFD) peers.
-	MaxBidirectionalForwardingDetectionPeers *int32
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
 
-	// Maximum number of Border Gateway Protocol (BGP) peers.
-	MaxBorderGatewayProtocolPeers *int32
-
-	// Maximum number of sub-interfaces.
-	MaxSubInterfaces *int32
-
-	// Maximum number of tunnel interfaces.
-	MaxTunnelInterfaces *int32
-
-	// Maximum number of virtual router functions.
-	MaxVirtualRouterFunctions *int32
-
-	// Maximum number of physical interfaces.
-	PhysicalInterfaceCount *int32
+	// READ-ONLY; The additional info type.
+	Type *string
 }
 
-// EnableDisableOnResources - Update administrative state on list of resources.
-type EnableDisableOnResources struct {
-	// Network Fabrics or Network Rack resource Id.
-	ResourceIDs []*string
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ExportRoutePolicy - Export Route Policy either IPv4 or IPv6.
+type ExportRoutePolicy struct {
+	// ARM resource ID of RoutePolicy.
+	ExportIPv4RoutePolicyID *string
+
+	// ARM resource ID of RoutePolicy.
+	ExportIPv6RoutePolicyID *string
+}
+
+// ExportRoutePolicyInformation - Export Route Policy Configuration.
+type ExportRoutePolicyInformation struct {
+	// Export IPv4 Route Policy Id.
+	ExportIPv4RoutePolicyID *string
+
+	// Export IPv6 Route Policy Id.
+	ExportIPv6RoutePolicyID *string
 }
 
 // ExpressRouteConnectionInformation - The ExpressRoute circuit ID and the Auth Key are required for you to successfully deploy
@@ -305,12 +456,12 @@ type ExpressRouteConnectionInformation struct {
 	ExpressRouteCircuitID *string
 }
 
-// ExternalNetwork - Defines the ExternalNetwork item.
+// ExternalNetwork - Defines the External Network resource.
 type ExternalNetwork struct {
 	// REQUIRED; Resource properties.
 	Properties *ExternalNetworkProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -334,20 +485,62 @@ type ExternalNetworkPatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// ARM resource ID of exportRoutePolicy.
+	// Export Route Policy either IPv4 or IPv6.
+	ExportRoutePolicy *ExportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ExportRoutePolicyID *string
 
-	// ARM resource ID of importRoutePolicy.
+	// Import Route Policy either IPv4 or IPv6.
+	ImportRoutePolicy *ImportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ImportRoutePolicyID *string
 
 	// option A properties object
-	OptionAProperties *Layer3OptionAProperties
+	OptionAProperties *ExternalNetworkPatchPropertiesOptionAProperties
 
 	// option B properties object
-	OptionBProperties *OptionBProperties
+	OptionBProperties *L3OptionBProperties
 
 	// Peering option list.
 	PeeringOption *PeeringOption
+}
+
+// ExternalNetworkPatchPropertiesOptionAProperties - option A properties object
+type ExternalNetworkPatchPropertiesOptionAProperties struct {
+	// BFD configuration properties
+	BfdConfiguration *BfdConfiguration
+
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
+
+	// MTU to use for option A peering.
+	Mtu *int32
+
+	// Peer ASN number.Example : 28
+	PeerASN *int64
+
+	// IPv4 Address Prefix.
+	PrimaryIPv4Prefix *string
+
+	// IPv6 Address Prefix.
+	PrimaryIPv6Prefix *string
+
+	// Secondary IPv4 Address Prefix.
+	SecondaryIPv4Prefix *string
+
+	// Secondary IPv6 Address Prefix.
+	SecondaryIPv6Prefix *string
+
+	// Vlan identifier. Example : 501
+	VlanID *int32
+
+	// READ-ONLY; Fabric ASN number. Example 65001
+	FabricASN *int64
 }
 
 // ExternalNetworkProperties - External Network Properties.
@@ -358,28 +551,34 @@ type ExternalNetworkProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// ARM resource ID of exportRoutePolicy.
+	// Export Route Policy either IPv4 or IPv6.
+	ExportRoutePolicy *ExportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ExportRoutePolicyID *string
 
-	// ARM resource ID of importRoutePolicy.
+	// Import Route Policy either IPv4 or IPv6.
+	ImportRoutePolicy *ImportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ImportRoutePolicyID *string
 
 	// option A properties object
 	OptionAProperties *ExternalNetworkPropertiesOptionAProperties
 
 	// option B properties object
-	OptionBProperties *OptionBProperties
+	OptionBProperties *L3OptionBProperties
 
-	// READ-ONLY; AdministrativeState of the externalNetwork. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 
-	// READ-ONLY; List of resources the externalNetwork is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	DisabledOnResources []*string
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
 
 	// READ-ONLY; Gets the networkToNetworkInterconnectId of the resource.
 	NetworkToNetworkInterconnectID *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
@@ -388,55 +587,35 @@ type ExternalNetworkPropertiesOptionAProperties struct {
 	// BFD configuration properties
 	BfdConfiguration *BfdConfiguration
 
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
+
 	// MTU to use for option A peering.
 	Mtu *int32
 
 	// Peer ASN number.Example : 28
-	PeerASN *int32
+	PeerASN *int64
 
-	// IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time of creation
-	// or can be updated afterwards. Any update to the values post-provisioning
-	// may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-	// are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv4 Address Prefix.
 	PrimaryIPv4Prefix *string
 
-	// IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv6 Address Prefix.
 	PrimaryIPv6Prefix *string
 
-	// Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv4 Address Prefix.
 	SecondaryIPv4Prefix *string
 
-	// Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be specified
-	// at the time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv6 Address Prefix.
 	SecondaryIPv6Prefix *string
 
 	// Vlan identifier. Example : 501
 	VlanID *int32
 
 	// READ-ONLY; Fabric ASN number. Example 65001
-	FabricASN *int32
-}
-
-// ExternalNetworksClientBeginClearArpEntriesOptions contains the optional parameters for the ExternalNetworksClient.BeginClearArpEntries
-// method.
-type ExternalNetworksClientBeginClearArpEntriesOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExternalNetworksClientBeginClearIPv6NeighborsOptions contains the optional parameters for the ExternalNetworksClient.BeginClearIPv6Neighbors
-// method.
-type ExternalNetworksClientBeginClearIPv6NeighborsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+	FabricASN *int64
 }
 
 // ExternalNetworksClientBeginCreateOptions contains the optional parameters for the ExternalNetworksClient.BeginCreate method.
@@ -458,22 +637,15 @@ type ExternalNetworksClientBeginUpdateAdministrativeStateOptions struct {
 	ResumeToken string
 }
 
-// ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState
-// method.
-type ExternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdateBgpAdministrativeState
-// method.
-type ExternalNetworksClientBeginUpdateBgpAdministrativeStateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // ExternalNetworksClientBeginUpdateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdate method.
 type ExternalNetworksClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions contains the optional parameters for the ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState
+// method.
+type ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -483,87 +655,19 @@ type ExternalNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExternalNetworksClientListOptions contains the optional parameters for the ExternalNetworksClient.NewListPager method.
-type ExternalNetworksClientListOptions struct {
+// ExternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the ExternalNetworksClient.NewListByL3IsolationDomainPager
+// method.
+type ExternalNetworksClientListByL3IsolationDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExternalNetworksList - List of ExternalNetworks.
+// ExternalNetworksList - List of External Networks.
 type ExternalNetworksList struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of ExternalNetworks resources.
+	// List of External Network resources.
 	Value []*ExternalNetwork
-}
-
-// FabricBfdConfiguration - BFD Configuration properties.
-type FabricBfdConfiguration struct {
-	// READ-ONLY; interval in seconds. Example: 300.
-	Interval *int32
-
-	// READ-ONLY; multiplier. Example: 3.
-	Multiplier *int32
-}
-
-// GetDeviceStatusProperties - Get Device status response properties.
-type GetDeviceStatusProperties struct {
-	// REQUIRED; Primary or Secondary power end.
-	OperationalStatus *OperationalStatus
-
-	// REQUIRED; On or Off power cycle state.
-	PowerCycleState *PowerCycleState
-
-	// REQUIRED; The serial number of the device
-	SerialNumber *string
-}
-
-// GetDynamicInterfaceMapsPropertiesItem - Get Device static interface maps as per topology.
-type GetDynamicInterfaceMapsPropertiesItem struct {
-	// Connected to ARM resource or external interface
-	ConnectedTo *string
-
-	// The interface name.
-	Name *string
-
-	// The interface operational status.
-	OperationalStatus *string
-
-	// The physical status.
-	PhyStatus *string
-
-	// The interface transceiver type. Example: up or down
-	TransceiverStatus *string
-
-	// READ-ONLY; The interface administrative state.
-	AdministrativeState *EnabledDisabledState
-}
-
-// GetStaticInterfaceMapsPropertiesItem - Get Device static interface maps as per topology.
-type GetStaticInterfaceMapsPropertiesItem struct {
-	// The port channel group id.
-	ChannelGroupID *float32
-
-	// Connected to ARM resource or external interface
-	ConnectedTo *string
-
-	// The physical cable connector type. Example: Optical
-	ConnectorType *string
-
-	// The interface description.
-	Description *string
-
-	// The interface identifier.
-	Identifier *string
-
-	// The interface type. Example: Ethernet
-	InterfaceType *string
-
-	// The interface name.
-	Name *string
-
-	// The interface speed. Example: 100
-	Speed *float32
 }
 
 // IPCommunitiesClientBeginCreateOptions contains the optional parameters for the IPCommunitiesClient.BeginCreate method.
@@ -601,27 +705,27 @@ type IPCommunitiesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPCommunitiesListResult - List of IPCommunities.
+// IPCommunitiesListResult - List of IP Communities.
 type IPCommunitiesListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of IpCommunity resources.
+	// List of IP Community resources.
 	Value []*IPCommunity
 }
 
-// IPCommunity - The IpCommunity resource definition.
+// IPCommunity - The IP Community resource definition.
 type IPCommunity struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
+	// REQUIRED; Resource properties.
 	Properties *IPCommunityProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -640,28 +744,54 @@ type IPCommunityIDList struct {
 	IPCommunityIDs []*string
 }
 
-// IPCommunityPatch - The IPCommunity patch resource definition.
+// IPCommunityPatch - The IP Community patch resource definition.
 type IPCommunityPatch struct {
+	// IP Community patchable properties.
+	Properties *IPCommunityPatchableProperties
+
 	// Resource tags
 	Tags map[string]*string
 }
 
-// IPCommunityProperties - IpCommunityProperties define the resource properties.
+// IPCommunityPatchableProperties - IP Community patchable properties.
+type IPCommunityPatchableProperties struct {
+	// List of IP Community Rules.
+	IPCommunityRules []*IPCommunityRule
+}
+
+// IPCommunityProperties - IP Community Properties defines the resource properties.
 type IPCommunityProperties struct {
-	// REQUIRED; Action to be taken on the configuration. Example: Permit | Deny.
-	Action *CommunityActionTypes
-
-	// REQUIRED; List the communityMembers of IP Community .
-	CommunityMembers []*string
-
 	// Switch configuration description.
 	Annotation *string
 
+	// List of IP Community Rules.
+	IPCommunityRules []*IPCommunityRule
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// IPCommunityRule - IP Community patchable properties.
+type IPCommunityRule struct {
+	// REQUIRED; Action to be taken on the configuration. Example: Permit | Deny.
+	Action *CommunityActionTypes
+
+	// REQUIRED; List the community members of IP Community.
+	CommunityMembers []*string
+
+	// REQUIRED; Sequence to insert to/delete from existing route. Prefix lists are evaluated starting with the lowest sequence
+	// number and continue down the list until a match is made. Once a match is made, the permit
+	// or deny statement is applied to that network and the rest of the list is ignored.
+	SequenceNumber *int64
+
 	// Supported well known Community List.
 	WellKnownCommunities []*WellKnownCommunities
-
-	// READ-ONLY; Gets the provisioning state of the resource.
-	ProvisioningState *ProvisioningState
 }
 
 // IPExtendedCommunitiesClientBeginCreateOptions contains the optional parameters for the IPExtendedCommunitiesClient.BeginCreate
@@ -702,18 +832,18 @@ type IPExtendedCommunitiesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPExtendedCommunity - The IpExtendedCommunity resource definition.
+// IPExtendedCommunity - The IP Extended Community resource definition.
 type IPExtendedCommunity struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
+	// REQUIRED; Resource properties.
 	Properties *IPExtendedCommunityProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -732,23 +862,53 @@ type IPExtendedCommunityIDList struct {
 	IPExtendedCommunityIDs []*string
 }
 
-// IPExtendedCommunityListResult - List of IpExtendedCommunities.
+// IPExtendedCommunityListResult - List of IP Extended Communities.
 type IPExtendedCommunityListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of IpExtendedCommunities resources.
+	// List of IP Extended Communities resources.
 	Value []*IPExtendedCommunity
 }
 
-// IPExtendedCommunityPatch - The IpExtendedCommunities patch resource definition.
+// IPExtendedCommunityPatch - The IP Extended Communities patch resource definition.
 type IPExtendedCommunityPatch struct {
+	// IP Extended Community patchable properties.
+	Properties *IPExtendedCommunityPatchProperties
+
 	// Resource tags
 	Tags map[string]*string
 }
 
-// IPExtendedCommunityProperties - IpExtendedCommunityProperties define the resource properties.
+// IPExtendedCommunityPatchProperties - IP Extended Community patchable properties.
+type IPExtendedCommunityPatchProperties struct {
+	// REQUIRED; List of IP Extended Community Rules.
+	IPExtendedCommunityRules []*IPExtendedCommunityRule
+
+	// Switch configuration description.
+	Annotation *string
+}
+
+// IPExtendedCommunityProperties - IP Extended Community Properties defines the resource properties.
 type IPExtendedCommunityProperties struct {
+	// REQUIRED; List of IP Extended Community Rules.
+	IPExtendedCommunityRules []*IPExtendedCommunityRule
+
+	// Switch configuration description.
+	Annotation *string
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// IPExtendedCommunityRule - List of IP Extended Community Rules.
+type IPExtendedCommunityRule struct {
 	// REQUIRED; Action to be taken on the configuration. Example: Permit | Deny.
 	Action *CommunityActionTypes
 
@@ -757,14 +917,40 @@ type IPExtendedCommunityProperties struct {
 	// in range of 0-65535, ASN(plain) is in range of 0-4294967295.
 	RouteTargets []*string
 
-	// Switch configuration description.
-	Annotation *string
-
-	// READ-ONLY; Gets the provisioning state of the resource.
-	ProvisioningState *ProvisioningState
+	// REQUIRED; Sequence to insert to/delete from existing route. Prefix lists are evaluated starting with the lowest sequence
+	// number and continue down the list until a match is made. Once a match is made, the permit
+	// or deny statement is applied to that network and the rest of the list is ignored.
+	SequenceNumber *int64
 }
 
-// IPPrefix - The IPPrefix resource definition.
+// IPGroupProperties - IP Group properties.
+type IPGroupProperties struct {
+	// IP Address type.
+	IPAddressType *IPAddressType
+
+	// List of IP Prefixes.
+	IPPrefixes []*string
+
+	// IP Group name.
+	Name *string
+}
+
+// IPMatchCondition - Defines the condition that can be filtered using the selected IPs.
+type IPMatchCondition struct {
+	// The List of IP Group Names that need to be matched.
+	IPGroupNames []*string
+
+	// The list of IP Prefixes.
+	IPPrefixValues []*string
+
+	// IP Prefix Type.
+	PrefixType *PrefixType
+
+	// IP Address type.
+	Type *SourceDestinationType
+}
+
+// IPPrefix - The IP Prefix resource definition.
 type IPPrefix struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -775,7 +961,7 @@ type IPPrefix struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -788,25 +974,44 @@ type IPPrefix struct {
 	Type *string
 }
 
-// IPPrefixPatch - The IPPrefix patch resource definition.
+// IPPrefixPatch - The IP Prefix patch resource definition.
 type IPPrefixPatch struct {
+	// IP Prefix patchable properties.
+	Properties *IPPrefixPatchProperties
+
 	// Resource tags
 	Tags map[string]*string
 }
 
-// IPPrefixProperties - IpPrefixProperties define the resource properties.
-type IPPrefixProperties struct {
-	// REQUIRED; IpPrefix contains the list of IP PrefixRules objects.
-	IPPrefixRules []*IPPrefixPropertiesIPPrefixRulesItem
-
+// IPPrefixPatchProperties - IP Prefix patchable properties.
+type IPPrefixPatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// The list of IP Prefix Rules.
+	IPPrefixRules []*IPPrefixRule
+}
+
+// IPPrefixProperties - IP Prefix Properties defines the properties of the resource.
+type IPPrefixProperties struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// The list of IP Prefix Rules.
+	IPPrefixRules []*IPPrefixRule
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-type IPPrefixPropertiesIPPrefixRulesItem struct {
+// IPPrefixRule - IP Prefix Rule properties.
+type IPPrefixRule struct {
 	// REQUIRED; Action to be taken on the configuration. Example: Permit | Deny.
 	Action *CommunityActionTypes
 
@@ -821,9 +1026,9 @@ type IPPrefixPropertiesIPPrefixRulesItem struct {
 	// Specify prefix-list bounds.
 	Condition *Condition
 
-	// SubnetMaskLength gives the minimum NetworkPrefix length to be matched.Possible values for IPv4 are 1 - 32. Possible values
+	// SubnetMaskLength gives the minimum NetworkPrefix length to be matched. Possible values for IPv4 are 1 - 32 . Possible values
 	// of IPv6 are 1 - 128.
-	SubnetMaskLength *int32
+	SubnetMaskLength *string
 }
 
 // IPPrefixesClientBeginCreateOptions contains the optional parameters for the IPPrefixesClient.BeginCreate method.
@@ -861,49 +1066,39 @@ type IPPrefixesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IPPrefixesListResult - List of IpPrefixes.
+// IPPrefixesListResult - List of IP Prefixes.
 type IPPrefixesListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of IPPrefix resources.
+	// List of IP Prefix resources.
 	Value []*IPPrefix
 }
 
-// InfrastructureServices IP ranges.
-type InfrastructureServices struct {
-	// The IPv4 Address space is optional, if the value is not defined at the time of NFC creation, then the default value 10.0.0.0/19
-	// is considered. The IPV4 address subnet is an optional attribute.
-	IPv4AddressSpaces []*string
+// ImportRoutePolicy - Import Route Policy either IPv4 or IPv6.
+type ImportRoutePolicy struct {
+	// ARM resource ID of RoutePolicy.
+	ImportIPv4RoutePolicyID *string
 
-	// The IPv6 is not supported right now.
-	IPv6AddressSpaces []*string
+	// ARM resource ID of RoutePolicy.
+	ImportIPv6RoutePolicyID *string
 }
 
-// InterfaceStatus - Interface running status properties
-type InterfaceStatus struct {
-	// Connected to ARM resource or external interface
-	ConnectedTo *string
+// ImportRoutePolicyInformation - Import Route Policy Configuration.
+type ImportRoutePolicyInformation struct {
+	// Import IPv4 Route Policy Id.
+	ImportIPv4RoutePolicyID *string
 
-	// The interface operational status.
-	OperationalStatus *string
-
-	// The physical status.
-	PhyStatus *string
-
-	// The interface transceiver type. Example: up or down
-	TransceiverStatus *string
-
-	// READ-ONLY; The interface administrative state.
-	AdministrativeState *EnabledDisabledState
+	// Import IPv6 Route Policy Id.
+	ImportIPv6RoutePolicyID *string
 }
 
-// InternalNetwork - Defines the InternalNetwork item.
+// InternalNetwork - Defines the Internal Network resource.
 type InternalNetwork struct {
 	// REQUIRED; Resource properties.
 	Properties *InternalNetworkProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -927,20 +1122,35 @@ type InternalNetworkPatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// BGP configuration properties
+	// BGP configuration properties.
 	BgpConfiguration *BgpConfiguration
 
-	// List with object connected IPv4 Subnets.
+	// List of Connected IPv4 Subnets.
 	ConnectedIPv4Subnets []*ConnectedSubnet
 
-	// List with object connected IPv6 Subnets.
+	// List of connected IPv6 Subnets.
 	ConnectedIPv6Subnets []*ConnectedSubnet
 
-	// ARM resource ID of importRoutePolicy.
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Export Route Policy either IPv4 or IPv6.
+	ExportRoutePolicy *ExportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ExportRoutePolicyID *string
 
-	// ARM resource ID of importRoutePolicy.
+	// Import Route Policy either IPv4 or IPv6.
+	ImportRoutePolicy *ImportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ImportRoutePolicyID *string
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
+
+	// To check whether monitoring of internal network is enabled or not.
+	IsMonitoringEnabled *IsMonitoringEnabled
 
 	// Maximum transmission unit. Default value is 1500.
 	Mtu *int32
@@ -949,7 +1159,7 @@ type InternalNetworkPatchProperties struct {
 	StaticRouteConfiguration *StaticRouteConfiguration
 }
 
-// InternalNetworkProperties - Internal Network Properties
+// InternalNetworkProperties - Internal Network Properties defines the properties of the resource.
 type InternalNetworkProperties struct {
 	// REQUIRED; Vlan identifier. Example: 1001.
 	VlanID *int32
@@ -957,58 +1167,105 @@ type InternalNetworkProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// BGP configuration properties
-	BgpConfiguration *BgpConfiguration
+	// BGP configuration properties.
+	BgpConfiguration *InternalNetworkPropertiesBgpConfiguration
 
-	// List with object connected IPv4 Subnets.
+	// List of Connected IPv4 Subnets.
 	ConnectedIPv4Subnets []*ConnectedSubnet
 
-	// List with object connected IPv6 Subnets.
+	// List of connected IPv6 Subnets.
 	ConnectedIPv6Subnets []*ConnectedSubnet
 
-	// ARM resource ID of importRoutePolicy.
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Export Route Policy either IPv4 or IPv6.
+	ExportRoutePolicy *ExportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ExportRoutePolicyID *string
 
-	// ARM resource ID of importRoutePolicy.
+	// Extension. Example: NoExtension | NPB.
+	Extension *Extension
+
+	// Import Route Policy either IPv4 or IPv6.
+	ImportRoutePolicy *ImportRoutePolicy
+
+	// ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
 	ImportRoutePolicyID *string
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
+
+	// To check whether monitoring of internal network is enabled or not.
+	IsMonitoringEnabled *IsMonitoringEnabled
 
 	// Maximum transmission unit. Default value is 1500.
 	Mtu *int32
 
 	// Static Route Configuration properties.
-	StaticRouteConfiguration *StaticRouteConfiguration
+	StaticRouteConfiguration *InternalNetworkPropertiesStaticRouteConfiguration
 
-	// READ-ONLY; Administrative state of the InternalNetwork. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 
-	// READ-ONLY; List of resources the BFD for BGP is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	BfdDisabledOnResources []*string
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
 
-	// READ-ONLY; List of resources the BFD of StaticRoutes is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	BfdForStaticRoutesDisabledOnResources []*string
-
-	// READ-ONLY; List of resources the BGP is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	BgpDisabledOnResources []*string
-
-	// READ-ONLY; List of resources the InternalNetwork is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	DisabledOnResources []*string
-
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-// InternalNetworksClientBeginClearArpEntriesOptions contains the optional parameters for the InternalNetworksClient.BeginClearArpEntries
-// method.
-type InternalNetworksClientBeginClearArpEntriesOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+// InternalNetworkPropertiesBgpConfiguration - BGP configuration properties.
+type InternalNetworkPropertiesBgpConfiguration struct {
+	// Allows for routes to be received and processed even if the router detects its own ASN in the AS-Path. 0 is disable, Possible
+	// values are 1-10, default is 2.
+	AllowAS *int32
+
+	// Enable Or Disable state.
+	AllowASOverride *AllowASOverride
+
+	// Switch configuration description.
+	Annotation *string
+
+	// BFD configuration properties
+	BfdConfiguration *BfdConfiguration
+
+	// Originate a defaultRoute. Ex: "True" | "False".
+	DefaultRouteOriginate *BooleanEnumProperty
+
+	// List of BGP IPv4 Listen Range prefixes.
+	IPv4ListenRangePrefixes []*string
+
+	// List with stringified IPv4 Neighbor Addresses.
+	IPv4NeighborAddress []*NeighborAddress
+
+	// List of BGP IPv6 Listen Ranges prefixes.
+	IPv6ListenRangePrefixes []*string
+
+	// List with stringified IPv6 Neighbor Address.
+	IPv6NeighborAddress []*NeighborAddress
+
+	// Peer ASN. Example: 65047.
+	PeerASN *int64
+
+	// READ-ONLY; ASN of Network Fabric. Example: 65048.
+	FabricASN *int64
 }
 
-// InternalNetworksClientBeginClearIPv6NeighborsOptions contains the optional parameters for the InternalNetworksClient.BeginClearIPv6Neighbors
-// method.
-type InternalNetworksClientBeginClearIPv6NeighborsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+// InternalNetworkPropertiesStaticRouteConfiguration - Static Route Configuration properties.
+type InternalNetworkPropertiesStaticRouteConfiguration struct {
+	// BFD configuration properties
+	BfdConfiguration *BfdConfiguration
+
+	// Extension. Example: NoExtension | NPB.
+	Extension *Extension
+
+	// List of IPv4 Routes.
+	IPv4Routes []*StaticRouteProperties
+
+	// List of IPv6 Routes.
+	IPv6Routes []*StaticRouteProperties
 }
 
 // InternalNetworksClientBeginCreateOptions contains the optional parameters for the InternalNetworksClient.BeginCreate method.
@@ -1030,20 +1287,6 @@ type InternalNetworksClientBeginUpdateAdministrativeStateOptions struct {
 	ResumeToken string
 }
 
-// InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateBfdForBgpAdministrativeState
-// method.
-type InternalNetworksClientBeginUpdateBfdForBgpAdministrativeStateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateBfdForStaticRouteAdministrativeState
-// method.
-type InternalNetworksClientBeginUpdateBfdForStaticRouteAdministrativeStateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateBgpAdministrativeState
 // method.
 type InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions struct {
@@ -1057,37 +1300,45 @@ type InternalNetworksClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions contains the optional parameters for the InternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState
+// method.
+type InternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // InternalNetworksClientGetOptions contains the optional parameters for the InternalNetworksClient.Get method.
 type InternalNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InternalNetworksClientListOptions contains the optional parameters for the InternalNetworksClient.NewListPager method.
-type InternalNetworksClientListOptions struct {
+// InternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the InternalNetworksClient.NewListByL3IsolationDomainPager
+// method.
+type InternalNetworksClientListByL3IsolationDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InternalNetworksList - List of InternalNetworks.
+// InternalNetworksList - List of Internal Networks.
 type InternalNetworksList struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of InternalNetworks resources.
+	// List of Internal Network resources.
 	Value []*InternalNetwork
 }
 
-// L2IsolationDomain - The L2IsolationDomain resource definition.
-type L2IsolationDomain struct {
+// InternetGateway - The Internet Gateway resource definition.
+type InternetGateway struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
-	Properties *L2IsolationDomainProperties
+	// REQUIRED; Resource properties.
+	Properties *InternetGatewayProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1100,7 +1351,215 @@ type L2IsolationDomain struct {
 	Type *string
 }
 
-// L2IsolationDomainPatch - The L2IsolationDomain patch resource definition.
+// InternetGatewayPatch - The Internet Gateway patch resource definition.
+type InternetGatewayPatch struct {
+	// Resource properties.
+	Properties *InternetGatewayPatchableProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// InternetGatewayPatchableProperties - Internet Gateway Patchable Properties defines the patchable properties of the resource.
+type InternetGatewayPatchableProperties struct {
+	// ARM Resource ID of the Internet Gateway Rule.
+	InternetGatewayRuleID *string
+}
+
+// InternetGatewayProperties - Internet Gateway Properties defines the properties of the resource.
+type InternetGatewayProperties struct {
+	// REQUIRED; ARM Resource ID of the Network Fabric Controller.
+	NetworkFabricControllerID *string
+
+	// REQUIRED; Gateway Type of the resource.
+	Type *GatewayType
+
+	// Switch configuration description.
+	Annotation *string
+
+	// ARM Resource ID of the Internet Gateway Rule.
+	InternetGatewayRuleID *string
+
+	// READ-ONLY; IPv4 Address of Internet Gateway.
+	IPv4Address *string
+
+	// READ-ONLY; Port number of Internet Gateway.
+	Port *int32
+
+	// READ-ONLY; Provisioning state of resource.
+	ProvisioningState *ProvisioningState
+}
+
+// InternetGatewayRule - The Internet Gateway Rule resource definition.
+type InternetGatewayRule struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *InternetGatewayRuleProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// InternetGatewayRulePatch - The Internet Gateway Rules patch resource definition.
+type InternetGatewayRulePatch struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
+// InternetGatewayRuleProperties - Internet Gateway Rule Properties defines the resource properties.
+type InternetGatewayRuleProperties struct {
+	// REQUIRED; Rules for the InternetGateways
+	RuleProperties *RuleProperties
+
+	// Switch configuration description.
+	Annotation *string
+
+	// READ-ONLY; List of Internet Gateway resource Id.
+	InternetGatewayIDs []*string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// InternetGatewayRulesClientBeginCreateOptions contains the optional parameters for the InternetGatewayRulesClient.BeginCreate
+// method.
+type InternetGatewayRulesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewayRulesClientBeginDeleteOptions contains the optional parameters for the InternetGatewayRulesClient.BeginDelete
+// method.
+type InternetGatewayRulesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewayRulesClientBeginUpdateOptions contains the optional parameters for the InternetGatewayRulesClient.BeginUpdate
+// method.
+type InternetGatewayRulesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewayRulesClientGetOptions contains the optional parameters for the InternetGatewayRulesClient.Get method.
+type InternetGatewayRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewayRulesClientListByResourceGroupOptions contains the optional parameters for the InternetGatewayRulesClient.NewListByResourceGroupPager
+// method.
+type InternetGatewayRulesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewayRulesClientListBySubscriptionOptions contains the optional parameters for the InternetGatewayRulesClient.NewListBySubscriptionPager
+// method.
+type InternetGatewayRulesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewayRulesListResult - List of Internet Gateway Rules.
+type InternetGatewayRulesListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of Internet Gateway Rule resources.
+	Value []*InternetGatewayRule
+}
+
+// InternetGatewaysClientBeginCreateOptions contains the optional parameters for the InternetGatewaysClient.BeginCreate method.
+type InternetGatewaysClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewaysClientBeginDeleteOptions contains the optional parameters for the InternetGatewaysClient.BeginDelete method.
+type InternetGatewaysClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewaysClientBeginUpdateOptions contains the optional parameters for the InternetGatewaysClient.BeginUpdate method.
+type InternetGatewaysClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InternetGatewaysClientGetOptions contains the optional parameters for the InternetGatewaysClient.Get method.
+type InternetGatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewaysClientListByResourceGroupOptions contains the optional parameters for the InternetGatewaysClient.NewListByResourceGroupPager
+// method.
+type InternetGatewaysClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewaysClientListBySubscriptionOptions contains the optional parameters for the InternetGatewaysClient.NewListBySubscriptionPager
+// method.
+type InternetGatewaysClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InternetGatewaysListResult - List of InternetGateways.
+type InternetGatewaysListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// Displays list of Internet Gateway resources.
+	Value []*InternetGateway
+}
+
+// IsolationDomainProperties - Isolation Domain Properties.
+type IsolationDomainProperties struct {
+	// Type of encapsulation.
+	Encapsulation *Encapsulation
+
+	// List of Neighbor Group IDs.
+	NeighborGroupIDs []*string
+}
+
+// L2IsolationDomain - The L2 Isolation Domain resource definition.
+type L2IsolationDomain struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *L2IsolationDomainProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// L2IsolationDomainPatch - The L2 Isolation Domain patch resource definition.
 type L2IsolationDomainPatch struct {
 	// Resource properties.
 	Properties *L2IsolationDomainPatchProperties
@@ -1109,51 +1568,42 @@ type L2IsolationDomainPatch struct {
 	Tags map[string]*string
 }
 
-// L2IsolationDomainPatchProperties define the patchable resource properties.
+// L2IsolationDomainPatchProperties - L2 Isolation Domain Patch Properties defines the patchable properties of the resource.
 type L2IsolationDomainPatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// maximum transmission unit. Default value is 1500.
+	// Maximum transmission unit. Default value is 1500.
 	Mtu *int32
 }
 
-// L2IsolationDomainProperties define the resource properties.
+// L2IsolationDomainProperties - L2Isolation Domain Properties defines the properties of the resource.
 type L2IsolationDomainProperties struct {
-	// REQUIRED; Network Fabric ARM resource id.
+	// REQUIRED; ARM Resource ID of the Network Fabric.
 	NetworkFabricID *string
 
-	// REQUIRED; vlanId. Example: 501.
+	// REQUIRED; Vlan Identifier of the Network Fabric. Example: 501.
 	VlanID *int32
 
 	// Switch configuration description.
 	Annotation *string
 
-	// maximum transmission unit. Default value is 1500.
+	// Maximum transmission unit. Default value is 1500.
 	Mtu *int32
 
-	// READ-ONLY; state. Example: Enabled | Disabled. It indicates administrative state of the isolationDomain, whether it is
-	// enabled or disabled. If enabled, the configuration is applied on the devices. If disabled,
-	// the configuration is removed from the devices
-	AdministrativeState *EnabledDisabledState
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 
-	// READ-ONLY; List of resources the L2 Isolation Domain is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	DisabledOnResources []*string
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-// L2IsolationDomainsClientBeginClearArpTableOptions contains the optional parameters for the L2IsolationDomainsClient.BeginClearArpTable
+// L2IsolationDomainsClientBeginCommitConfigurationOptions contains the optional parameters for the L2IsolationDomainsClient.BeginCommitConfiguration
 // method.
-type L2IsolationDomainsClientBeginClearArpTableOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// L2IsolationDomainsClientBeginClearNeighborTableOptions contains the optional parameters for the L2IsolationDomainsClient.BeginClearNeighborTable
-// method.
-type L2IsolationDomainsClientBeginClearNeighborTableOptions struct {
+type L2IsolationDomainsClientBeginCommitConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1172,13 +1622,6 @@ type L2IsolationDomainsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// L2IsolationDomainsClientBeginGetArpEntriesOptions contains the optional parameters for the L2IsolationDomainsClient.BeginGetArpEntries
-// method.
-type L2IsolationDomainsClientBeginGetArpEntriesOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdateAdministrativeState
 // method.
 type L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions struct {
@@ -1189,6 +1632,13 @@ type L2IsolationDomainsClientBeginUpdateAdministrativeStateOptions struct {
 // L2IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L2IsolationDomainsClient.BeginUpdate
 // method.
 type L2IsolationDomainsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// L2IsolationDomainsClientBeginValidateConfigurationOptions contains the optional parameters for the L2IsolationDomainsClient.BeginValidateConfiguration
+// method.
+type L2IsolationDomainsClientBeginValidateConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1210,27 +1660,36 @@ type L2IsolationDomainsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// L2IsolationDomainsListResult - List of L2IsolationDomains.
+// L2IsolationDomainsListResult - List of L2 Isolation Domains.
 type L2IsolationDomainsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// Displays list of L2IsolationDomain resources.
+	// Displays list of L2 Isolation Domain resources.
 	Value []*L2IsolationDomain
 }
 
-// L3IsolationDomain - The L3IsolationDomain resource definition.
+// L3ExportRoutePolicy - Array of ARM Resource ID of the RoutePolicies.
+type L3ExportRoutePolicy struct {
+	// ARM Resource ID of the RoutePolicy.
+	ExportIPv4RoutePolicyID *string
+
+	// ARM Resource ID of the RoutePolicy.
+	ExportIPv6RoutePolicyID *string
+}
+
+// L3IsolationDomain - The L3 Isolation Domain resource definition.
 type L3IsolationDomain struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
+	// REQUIRED; Resource properties.
 	Properties *L3IsolationDomainProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1243,7 +1702,7 @@ type L3IsolationDomain struct {
 	Type *string
 }
 
-// L3IsolationDomainPatch - The L3IsolationDomain patch resource definition.
+// L3IsolationDomainPatch - The L3 Isolation Domain patch resource definition.
 type L3IsolationDomainPatch struct {
 	// Resource properties.
 	Properties *L3IsolationDomainPatchProperties
@@ -1252,49 +1711,37 @@ type L3IsolationDomainPatch struct {
 	Tags map[string]*string
 }
 
-// L3IsolationDomainPatchProperties define the patch resource properties.
+// L3IsolationDomainPatchProperties - Resource properties.
 type L3IsolationDomainPatchProperties struct {
-	// List of Ipv4 and Ipv6 route configurations.
-	AggregateRouteConfiguration *AggregateRouteConfiguration
-
-	// Connected Subnet RoutePolicy
-	ConnectedSubnetRoutePolicy *L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy
-
-	// L3 Isolation Domain description.
-	Description *string
-
-	// Advertise Connected Subnets. Ex: "True" | "False".
-	RedistributeConnectedSubnets *RedistributeConnectedSubnets
-
-	// Advertise Static Routes. Ex: "True" | "False".
-	RedistributeStaticRoutes *RedistributeStaticRoutes
-}
-
-// L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy - Connected Subnet RoutePolicy
-type L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy struct {
-	// exportRoutePolicyId value.
-	ExportRoutePolicyID *string
-
-	// READ-ONLY; Enabled/Disabled connected subnet route policy. Ex: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
-}
-
-// L3IsolationDomainProperties define the resource properties.
-type L3IsolationDomainProperties struct {
-	// REQUIRED; Network Fabric ARM resource id.
-	NetworkFabricID *string
-
-	// List of Ipv4 and Ipv6 route configurations.
+	// Aggregate route configurations.
 	AggregateRouteConfiguration *AggregateRouteConfiguration
 
 	// Switch configuration description.
 	Annotation *string
 
 	// Connected Subnet RoutePolicy
-	ConnectedSubnetRoutePolicy *L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy
+	ConnectedSubnetRoutePolicy *ConnectedSubnetRoutePolicy
 
-	// L3 Isolation Domain description.
-	Description *string
+	// Advertise Connected Subnets. Ex: "True" | "False".
+	RedistributeConnectedSubnets *RedistributeConnectedSubnets
+
+	// Advertise Static Routes. Ex: "True" | "False".
+	RedistributeStaticRoutes *RedistributeStaticRoutes
+}
+
+// L3IsolationDomainProperties - L3 Isolation Domain Properties defines the properties of the resource.
+type L3IsolationDomainProperties struct {
+	// REQUIRED; ARM Resource ID of the Network Fabric.
+	NetworkFabricID *string
+
+	// Aggregate route configurations.
+	AggregateRouteConfiguration *AggregateRouteConfiguration
+
+	// Switch configuration description.
+	Annotation *string
+
+	// Connected Subnet RoutePolicy
+	ConnectedSubnetRoutePolicy *ConnectedSubnetRoutePolicy
 
 	// Advertise Connected Subnets. Ex: "True" | "False".
 	RedistributeConnectedSubnets *RedistributeConnectedSubnets
@@ -1302,29 +1749,19 @@ type L3IsolationDomainProperties struct {
 	// Advertise Static Routes. Ex: "True" | "False".
 	RedistributeStaticRoutes *RedistributeStaticRoutes
 
-	// READ-ONLY; Administrative state of the IsolationDomain. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 
-	// READ-ONLY; List of resources the L3 Isolation Domain is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	DisabledOnResources []*string
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
 
-	// READ-ONLY; List of resources the OptionB is disabled on. Can be either entire NetworkFabric or NetworkRack.
-	OptionBDisabledOnResources []*string
-
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-// L3IsolationDomainsClientBeginClearArpTableOptions contains the optional parameters for the L3IsolationDomainsClient.BeginClearArpTable
+// L3IsolationDomainsClientBeginCommitConfigurationOptions contains the optional parameters for the L3IsolationDomainsClient.BeginCommitConfiguration
 // method.
-type L3IsolationDomainsClientBeginClearArpTableOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// L3IsolationDomainsClientBeginClearNeighborTableOptions contains the optional parameters for the L3IsolationDomainsClient.BeginClearNeighborTable
-// method.
-type L3IsolationDomainsClientBeginClearNeighborTableOptions struct {
+type L3IsolationDomainsClientBeginCommitConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1350,16 +1787,16 @@ type L3IsolationDomainsClientBeginUpdateAdministrativeStateOptions struct {
 	ResumeToken string
 }
 
-// L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginUpdateOptionBAdministrativeState
+// L3IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginUpdate
 // method.
-type L3IsolationDomainsClientBeginUpdateOptionBAdministrativeStateOptions struct {
+type L3IsolationDomainsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// L3IsolationDomainsClientBeginUpdateOptions contains the optional parameters for the L3IsolationDomainsClient.BeginUpdate
+// L3IsolationDomainsClientBeginValidateConfigurationOptions contains the optional parameters for the L3IsolationDomainsClient.BeginValidateConfiguration
 // method.
-type L3IsolationDomainsClientBeginUpdateOptions struct {
+type L3IsolationDomainsClientBeginValidateConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1381,109 +1818,34 @@ type L3IsolationDomainsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// L3IsolationDomainsListResult - List of L3IsolationDomains.
+// L3IsolationDomainsListResult - List of L3 Isolation Domains.
 type L3IsolationDomainsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of L3IsolationDomain resources.
+	// List of L3 Isolation Domain resources.
 	Value []*L3IsolationDomain
 }
 
-// Layer2Configuration - layer2Configuration
+// L3OptionBProperties - Option B configuration.
+type L3OptionBProperties struct {
+	// RouteTargets to be applied. This is used for the backward compatibility.
+	ExportRouteTargets []*string
+
+	// RouteTargets to be applied. This is used for the backward compatibility.
+	ImportRouteTargets []*string
+
+	// RouteTargets to be applied.
+	RouteTargets *RouteTargetInformation
+}
+
+// Layer2Configuration - Common properties for Layer2 Configuration.
 type Layer2Configuration struct {
-	// REQUIRED; MTU of the packets between PE & CE.
-	Mtu *int32
-
-	// Number of ports connected between PE/CE. Maximum value depends on FabricSKU.
-	PortCount *int32
-
-	// READ-ONLY; List of network device interfaces resource IDs.
+	// List of network device interfaces resource IDs.
 	Interfaces []*string
-}
 
-// Layer3Configuration - layer3Configuration
-type Layer3Configuration struct {
-	// exportRoutePolicyId
-	ExportRoutePolicyID *string
-
-	// importRoutePolicyId
-	ImportRoutePolicyID *string
-
-	// ASN of PE devices for CE/PE connectivity.Example : 28
-	PeerASN *int32
-
-	// IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time of creation
-	// or can be updated afterwards. Any update to the values post-provisioning
-	// may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-	// are to be configured on PE1 and PE2 for Option B interfaces.
-	PrimaryIPv4Prefix *string
-
-	// IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	PrimaryIPv6Prefix *string
-
-	// Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	SecondaryIPv4Prefix *string
-
-	// Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be specified
-	// at the time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	SecondaryIPv6Prefix *string
-
-	// VLAN for CE/PE Layer 3 connectivity.Example : 501
-	VlanID *int32
-
-	// READ-ONLY; ASN of CE devices for CE/PE connectivity.
-	FabricASN *int32
-}
-
-// Layer3OptionAProperties - Peering optionA properties
-type Layer3OptionAProperties struct {
-	// BFD configuration properties
-	BfdConfiguration *BfdConfiguration
-
-	// MTU to use for option A peering.
+	// MTU of the packets between PE & CE.
 	Mtu *int32
-
-	// Peer ASN number.Example : 28
-	PeerASN *int32
-
-	// IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time of creation
-	// or can be updated afterwards. Any update to the values post-provisioning
-	// may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-	// are to be configured on PE1 and PE2 for Option B interfaces.
-	PrimaryIPv4Prefix *string
-
-	// IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	PrimaryIPv6Prefix *string
-
-	// Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	SecondaryIPv4Prefix *string
-
-	// Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be specified
-	// at the time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
-	SecondaryIPv6Prefix *string
-
-	// Vlan identifier. Example : 501
-	VlanID *int32
-
-	// READ-ONLY; Fabric ASN number. Example 65001
-	FabricASN *int32
 }
 
 // ManagedResourceGroupConfiguration - Managed Resource Group configuration properties.
@@ -1495,12 +1857,21 @@ type ManagedResourceGroupConfiguration struct {
 	Name *string
 }
 
-// ManagementNetworkConfiguration - Configuration to be used to setup the management network.
-type ManagementNetworkConfiguration struct {
-	// REQUIRED; Configuration for infrastructure vpn.
+// ManagementNetworkConfigurationPatchableProperties - Configuration to be used to setup the management network.
+type ManagementNetworkConfigurationPatchableProperties struct {
+	// VPN Configuration properties.
+	InfrastructureVPNConfiguration *VPNConfigurationPatchableProperties
+
+	// VPN Configuration properties.
+	WorkloadVPNConfiguration *VPNConfigurationPatchableProperties
+}
+
+// ManagementNetworkConfigurationProperties - Configuration to be used to setup the management network.
+type ManagementNetworkConfigurationProperties struct {
+	// REQUIRED; VPN Configuration properties.
 	InfrastructureVPNConfiguration *VPNConfigurationProperties
 
-	// REQUIRED; Configuration for workload vpn.
+	// REQUIRED; VPN Configuration properties.
 	WorkloadVPNConfiguration *VPNConfigurationProperties
 }
 
@@ -1509,22 +1880,22 @@ type NeighborAddress struct {
 	// IP Address.
 	Address *string
 
-	// READ-ONLY; OperationalState of the NeighborAddress.
-	OperationalState *string
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
 }
 
-// NetworkDevice - The NetworkDevice resource definition.
-type NetworkDevice struct {
+// NeighborGroup - Defines the Neighbor Group.
+type NeighborGroup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
-	Properties *NetworkDeviceProperties
+	// REQUIRED; Resource properties.
+	Properties *NeighborGroupProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1537,12 +1908,125 @@ type NetworkDevice struct {
 	Type *string
 }
 
-// NetworkDevicePatchParameters - The NetworkDevicePatchParameters resource definition.
+// NeighborGroupDestination - An array of destination IPv4 Addresses or IPv6 Addresses.
+type NeighborGroupDestination struct {
+	// Array of IPv4 Addresses.
+	IPv4Addresses []*string
+
+	// Array of IPv6 Addresses.
+	IPv6Addresses []*string
+}
+
+// NeighborGroupPatch - The Neighbor Group Patch definition.
+type NeighborGroupPatch struct {
+	// Neighbor Group Patch properties.
+	Properties *NeighborGroupPatchProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// NeighborGroupPatchProperties - Neighbor Group Patch properties.
+type NeighborGroupPatchProperties struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// An array of destination IPv4 Addresses or IPv6 Addresses.
+	Destination *NeighborGroupDestination
+}
+
+// NeighborGroupProperties - Neighbor Group Properties defines the properties of the resource.
+type NeighborGroupProperties struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// An array of destination IPv4 Addresses or IPv6 Addresses.
+	Destination *NeighborGroupDestination
+
+	// READ-ONLY; List of NetworkTap IDs where neighbor group is associated.
+	NetworkTapIDs []*string
+
+	// READ-ONLY; List of Network Tap Rule IDs where neighbor group is associated.
+	NetworkTapRuleIDs []*string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// NeighborGroupsClientBeginCreateOptions contains the optional parameters for the NeighborGroupsClient.BeginCreate method.
+type NeighborGroupsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NeighborGroupsClientBeginDeleteOptions contains the optional parameters for the NeighborGroupsClient.BeginDelete method.
+type NeighborGroupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NeighborGroupsClientBeginUpdateOptions contains the optional parameters for the NeighborGroupsClient.BeginUpdate method.
+type NeighborGroupsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NeighborGroupsClientGetOptions contains the optional parameters for the NeighborGroupsClient.Get method.
+type NeighborGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NeighborGroupsClientListByResourceGroupOptions contains the optional parameters for the NeighborGroupsClient.NewListByResourceGroupPager
+// method.
+type NeighborGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NeighborGroupsClientListBySubscriptionOptions contains the optional parameters for the NeighborGroupsClient.NewListBySubscriptionPager
+// method.
+type NeighborGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NeighborGroupsListResult - List of Neighbor Group.
+type NeighborGroupsListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of Neighbor Group resources.
+	Value []*NeighborGroup
+}
+
+// NetworkDevice - The Network Device resource definition.
+type NetworkDevice struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *NetworkDeviceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkDevicePatchParameters - The Network Device Patch Parameters defines the patch parameters of the resource.
 type NetworkDevicePatchParameters struct {
 	// Network Device Patch properties.
 	Properties *NetworkDevicePatchParametersProperties
 
-	// Azure resource tags that will replace the existing ones.
+	// Resource tags
 	Tags map[string]*string
 }
 
@@ -1551,50 +2035,50 @@ type NetworkDevicePatchParametersProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// The host Name of the device.
+	// The host name of the device.
 	HostName *string
 
-	// serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example: Arista;DCS-7280DR3-24;12.05;JPE21116969
+	// Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
 	SerialNumber *string
 }
 
-// NetworkDeviceProperties define the resource properties.
+// NetworkDeviceProperties - Network Device Properties defines the properties of the resource.
 type NetworkDeviceProperties struct {
-	// REQUIRED; networkDeviceRole is the device role: Example: CE | ToR.
-	NetworkDeviceRole *NetworkDeviceRoleTypes
-
-	// REQUIRED; Network Device SKU name.
-	NetworkDeviceSKU *string
-
 	// Switch configuration description.
 	Annotation *string
 
-	// The host Name of the device.
+	// The host name of the device.
 	HostName *string
 
-	// serialNumber of the format Make;Model;HardwareRevisionId;SerialNumber. Example: Arista;DCS-7280DR3-24;12.05;JPE21116969
+	// Network Device SKU name.
+	NetworkDeviceSKU *string
+
+	// Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
 	SerialNumber *string
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Management IPv4 Address.
+	ManagementIPv4Address *string
+
+	// READ-ONLY; Management IPv6 Address.
+	ManagementIPv6Address *string
+
+	// READ-ONLY; NetworkDeviceRole is the device role: Example: CE | ToR.
+	NetworkDeviceRole *NetworkDeviceRole
 
 	// READ-ONLY; Reference to network rack resource id.
 	NetworkRackID *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Current version of the device as defined in SKU.
 	Version *string
-}
-
-// NetworkDeviceRoleProperties - Network device properties / role for the Network Rack.
-type NetworkDeviceRoleProperties struct {
-	// Name of the associated Network Device SKU.
-	NetworkDeviceSKUName *string
-
-	// Rack slot for the network device.
-	RackSlot *int32
-
-	// Role for the network device.
-	RoleType *NetworkDeviceRackRoleType
 }
 
 // NetworkDeviceSKU - The NetworkDeviceSku resource definition.
@@ -1602,7 +2086,7 @@ type NetworkDeviceSKU struct {
 	// REQUIRED; Resource properties.
 	Properties *NetworkDeviceSKUProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1615,7 +2099,7 @@ type NetworkDeviceSKU struct {
 	Type *string
 }
 
-// NetworkDeviceSKUProperties - NetworkDeviceSkuProperties define the resource properties.
+// NetworkDeviceSKUProperties - Network Device SKU Properties defines the properties of the resource.
 type NetworkDeviceSKUProperties struct {
 	// REQUIRED; Model of the network device.
 	Model *string
@@ -1623,19 +2107,16 @@ type NetworkDeviceSKUProperties struct {
 	// List of network device interfaces.
 	Interfaces []*DeviceInterfaceProperties
 
-	// Network device limits.
-	Limits *DeviceLimits
-
 	// Manufacturer of the network device.
 	Manufacturer *string
 
 	// Available roles for the network device.
 	SupportedRoleTypes []*NetworkDeviceRoleName
 
-	// List of network device interfaces.
+	// List of supported version details of network device.
 	SupportedVersions []*SupportedVersionProperties
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
@@ -1650,12 +2131,12 @@ type NetworkDeviceSKUsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkDeviceSKUsListResult - List of NetworkDeviceSkus.
+// NetworkDeviceSKUsListResult - List of Network Device SKUs.
 type NetworkDeviceSKUsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of NetworkDeviceSku resources.
+	// List of Network Device SKU resources.
 	Value []*NetworkDeviceSKU
 }
 
@@ -1671,43 +2152,22 @@ type NetworkDevicesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// NetworkDevicesClientBeginGenerateSupportPackageOptions contains the optional parameters for the NetworkDevicesClient.BeginGenerateSupportPackage
-// method.
-type NetworkDevicesClientBeginGenerateSupportPackageOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions contains the optional parameters for the NetworkDevicesClient.BeginGetDynamicInterfaceMaps
-// method.
-type NetworkDevicesClientBeginGetDynamicInterfaceMapsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkDevicesClientBeginGetStaticInterfaceMapsOptions contains the optional parameters for the NetworkDevicesClient.BeginGetStaticInterfaceMaps
-// method.
-type NetworkDevicesClientBeginGetStaticInterfaceMapsOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkDevicesClientBeginGetStatusOptions contains the optional parameters for the NetworkDevicesClient.BeginGetStatus
-// method.
-type NetworkDevicesClientBeginGetStatusOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // NetworkDevicesClientBeginRebootOptions contains the optional parameters for the NetworkDevicesClient.BeginReboot method.
 type NetworkDevicesClientBeginRebootOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// NetworkDevicesClientBeginRestoreConfigOptions contains the optional parameters for the NetworkDevicesClient.BeginRestoreConfig
+// NetworkDevicesClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkDevicesClient.BeginRefreshConfiguration
 // method.
-type NetworkDevicesClientBeginRestoreConfigOptions struct {
+type NetworkDevicesClientBeginRefreshConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkDevicesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdateAdministrativeState
+// method.
+type NetworkDevicesClientBeginUpdateAdministrativeStateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1718,16 +2178,8 @@ type NetworkDevicesClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// NetworkDevicesClientBeginUpdatePowerCycleOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdatePowerCycle
-// method.
-type NetworkDevicesClientBeginUpdatePowerCycleOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkDevicesClientBeginUpdateVersionOptions contains the optional parameters for the NetworkDevicesClient.BeginUpdateVersion
-// method.
-type NetworkDevicesClientBeginUpdateVersionOptions struct {
+// NetworkDevicesClientBeginUpgradeOptions contains the optional parameters for the NetworkDevicesClient.BeginUpgrade method.
+type NetworkDevicesClientBeginUpgradeOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1758,18 +2210,18 @@ type NetworkDevicesListResult struct {
 	Value []*NetworkDevice
 }
 
-// NetworkFabric - The NetworkFabric resource definition.
+// NetworkFabric - The Network Fabric resource definition.
 type NetworkFabric struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
+	// REQUIRED; Resource properties.
 	Properties *NetworkFabricProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1782,18 +2234,18 @@ type NetworkFabric struct {
 	Type *string
 }
 
-// NetworkFabricController - The NetworkFabricController resource definition.
+// NetworkFabricController - The Network Fabric Controller resource definition.
 type NetworkFabricController struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Resource properties.
+	// REQUIRED; Resource properties.
 	Properties *NetworkFabricControllerProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1806,12 +2258,12 @@ type NetworkFabricController struct {
 	Type *string
 }
 
-// NetworkFabricControllerPatch - The NetworkFabricControllerPatch payload definition.
+// NetworkFabricControllerPatch - The Network Fabric Controller Patch payload definition.
 type NetworkFabricControllerPatch struct {
 	// Network Fabric Controller patch properties.
 	Properties *NetworkFabricControllerPatchableProperties
 
-	// Azure resource tags that will replace the existing ones.
+	// Resource tags
 	Tags map[string]*string
 }
 
@@ -1827,7 +2279,7 @@ type NetworkFabricControllerPatchableProperties struct {
 	WorkloadExpressRouteConnections []*ExpressRouteConnectionInformation
 }
 
-// NetworkFabricControllerProperties define the resource properties.
+// NetworkFabricControllerProperties defines the resource properties.
 type NetworkFabricControllerProperties struct {
 	// Switch configuration description.
 	Annotation *string
@@ -1843,33 +2295,41 @@ type NetworkFabricControllerProperties struct {
 	// attribute)
 	InfrastructureExpressRouteConnections []*ExpressRouteConnectionInformation
 
+	// A workload management network is required for all the tenant (workload) traffic. This traffic is only dedicated for Tenant
+	// workloads which are required to access internet or any other MSFT/Public
+	// endpoints.
+	IsWorkloadManagementNetworkEnabled *IsWorkloadManagementNetworkEnabled
+
 	// Managed Resource Group configuration properties.
 	ManagedResourceGroupConfiguration *ManagedResourceGroupConfiguration
+
+	// Network Fabric Controller SKU.
+	NfcSKU *NfcSKU
 
 	// As part of an update, the workload ExpressRoute CircuitID should be provided to create and Provision a NFC. This Express
 	// route is dedicated for Workload services. (This is a Mandatory attribute).
 	WorkloadExpressRouteConnections []*ExpressRouteConnectionInformation
 
 	// READ-ONLY; InfrastructureServices IP ranges.
-	InfrastructureServices *InfrastructureServices
+	InfrastructureServices *ControllerServices
 
 	// READ-ONLY; The NF-ID will be an input parameter used by the NF to link and get associated with the parent NFC Service.
 	NetworkFabricIDs []*string
-
-	// READ-ONLY; The Operational Status would always be NULL. Look only in to the Provisioning state for the latest status.
-	OperationalState *NetworkFabricControllerOperationalState
 
 	// READ-ONLY; Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
 	// this process, the states keep changing based on the status of NFC provisioning.
 	ProvisioningState *ProvisioningState
 
+	// READ-ONLY; List of tenant InternetGateway resource IDs
+	TenantInternetGatewayIDs []*string
+
 	// READ-ONLY; A workload management network is required for all the tenant (workload) traffic. This traffic is only dedicated
 	// for Tenant workloads which are required to access internet or any other MSFT/Public
-	// endpoints.
+	// endpoints. This is used for the backward compatibility.
 	WorkloadManagementNetwork *bool
 
 	// READ-ONLY; WorkloadServices IP ranges.
-	WorkloadServices *WorkloadServices
+	WorkloadServices *ControllerServices
 }
 
 // NetworkFabricControllersClientBeginCreateOptions contains the optional parameters for the NetworkFabricControllersClient.BeginCreate
@@ -1882,20 +2342,6 @@ type NetworkFabricControllersClientBeginCreateOptions struct {
 // NetworkFabricControllersClientBeginDeleteOptions contains the optional parameters for the NetworkFabricControllersClient.BeginDelete
 // method.
 type NetworkFabricControllersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions contains the optional parameters for the NetworkFabricControllersClient.BeginDisableWorkloadManagementNetwork
-// method.
-type NetworkFabricControllersClientBeginDisableWorkloadManagementNetworkOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions contains the optional parameters for the NetworkFabricControllersClient.BeginEnableWorkloadManagementNetwork
-// method.
-type NetworkFabricControllersClientBeginEnableWorkloadManagementNetworkOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1924,50 +2370,86 @@ type NetworkFabricControllersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFabricControllersListResult - List of NetworkFabricControllers.
+// NetworkFabricControllersListResult - List of Network Fabric Controllers.
 type NetworkFabricControllersListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of NetworkFabricController resources.
+	// List of Network Fabric Controller resources.
 	Value []*NetworkFabricController
 }
 
-// NetworkFabricPatchParameters - The NetworkFabric resource definition.
-type NetworkFabricPatchParameters struct {
+// NetworkFabricPatch - The Network Fabric resource definition.
+type NetworkFabricPatch struct {
 	// Network Fabric Patch properties.
-	Properties *NetworkFabricPatchParametersProperties
+	Properties *NetworkFabricPatchProperties
 
-	// Azure resource tags that will replace the existing ones.
+	// Resource tags
 	Tags map[string]*string
 }
 
-// NetworkFabricPatchParametersProperties - Network Fabric Patch properties.
-type NetworkFabricPatchParametersProperties struct {
+// NetworkFabricPatchProperties - Network Fabric Patch properties.
+type NetworkFabricPatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
+	// ASN of CE devices for CE/PE connectivity.
+	FabricASN *int64
+
+	// IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+	IPv4Prefix *string
+
+	// IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+	IPv6Prefix *string
+
+	// Configuration to be used to setup the management network.
+	ManagementNetworkConfiguration *ManagementNetworkConfigurationPatchableProperties
+
+	// Number of compute racks associated to Network Fabric.
+	RackCount *int32
+
+	// Number of servers.Possible values are from 1-16.
+	ServerCountPerRack *int32
+
 	// Network and credentials configuration already applied to terminal server.
-	TerminalServerConfiguration *TerminalServerPatchableProperties
-
-	// READ-ONLY; List of L2IsolationDomain resource IDs under the Network Fabric.
-	L2IsolationDomains []*string
-
-	// READ-ONLY; List of L3IsolationDomain resource IDs under the Network Fabric.
-	L3IsolationDomains []*string
-
-	// READ-ONLY; List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed depends on the Network
-	// Fabric SKU.
-	Racks []*string
+	TerminalServerConfiguration *NetworkFabricPatchablePropertiesTerminalServerConfiguration
 }
 
-// NetworkFabricProperties - define the resource properties.
+// NetworkFabricPatchablePropertiesTerminalServerConfiguration - Network and credentials configuration already applied to
+// terminal server.
+type NetworkFabricPatchablePropertiesTerminalServerConfiguration struct {
+	// Password for the terminal server connection.
+	Password *string
+
+	// IPv4 Address Prefix.
+	PrimaryIPv4Prefix *string
+
+	// IPv6 Address Prefix.
+	PrimaryIPv6Prefix *string
+
+	// Secondary IPv4 Address Prefix.
+	SecondaryIPv4Prefix *string
+
+	// Secondary IPv6 Address Prefix.
+	SecondaryIPv6Prefix *string
+
+	// Serial Number of Terminal server.
+	SerialNumber *string
+
+	// Username for the terminal server connection.
+	Username *string
+}
+
+// NetworkFabricProperties - Network Fabric Properties defines the properties of the resource.
 type NetworkFabricProperties struct {
 	// REQUIRED; ASN of CE devices for CE/PE connectivity.
-	FabricASN *int32
+	FabricASN *int64
+
+	// REQUIRED; IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+	IPv4Prefix *string
 
 	// REQUIRED; Configuration to be used to setup the management network.
-	ManagementNetworkConfiguration *ManagementNetworkConfiguration
+	ManagementNetworkConfiguration *ManagementNetworkConfigurationProperties
 
 	// REQUIRED; Azure resource ID for the NetworkFabricController the NetworkFabric belongs.
 	NetworkFabricControllerID *string
@@ -1976,9 +2458,6 @@ type NetworkFabricProperties struct {
 	// supported racks can be added to the Network Fabric. The SKU determines whether it is a
 	// single / multi rack Network Fabric.
 	NetworkFabricSKU *string
-
-	// REQUIRED; Number of racks associated to Network Fabric.Possible values are from 2-8.
-	RackCount *int32
 
 	// REQUIRED; Number of servers.Possible values are from 1-16.
 	ServerCountPerRack *int32
@@ -1989,38 +2468,45 @@ type NetworkFabricProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-	IPv4Prefix *string
-
-	// IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+	// IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59
 	IPv6Prefix *string
 
-	// READ-ONLY; List of L2IsolationDomain resource IDs under the Network Fabric.
+	// Number of compute racks associated to Network Fabric.
+	RackCount *int32
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; The version of Network Fabric.
+	FabricVersion *string
+
+	// READ-ONLY; List of L2 Isolation Domain resource IDs under the Network Fabric.
 	L2IsolationDomains []*string
 
-	// READ-ONLY; List of L3IsolationDomain resource IDs under the Network Fabric.
+	// READ-ONLY; List of L3 Isolation Domain resource IDs under the Network Fabric.
 	L3IsolationDomains []*string
 
-	// READ-ONLY; Gets the operational state of the resource.
-	OperationalState *NetworkFabricOperationalState
-
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
+	// this process, the states keep changing based on the status of NFC provisioning.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed depends on the Network
 	// Fabric SKU.
 	Racks []*string
 
-	// READ-ONLY; Router Id of CE to be used for MP-BGP between PE and CE
-	RouterID *string
+	// READ-ONLY; Array of router IDs.
+	RouterIDs []*string
 }
 
-// NetworkFabricSKU - The NetworkFabricSku resource definition.
+// NetworkFabricSKU - The Network Fabric SKU resource definition.
 type NetworkFabricSKU struct {
 	// REQUIRED; Resource properties.
 	Properties *NetworkFabricSKUProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2033,25 +2519,26 @@ type NetworkFabricSKU struct {
 	Type *string
 }
 
-// NetworkFabricSKUProperties - NetworkFabricSkuProperties define the resource properties.
+// NetworkFabricSKUProperties - Network Fabric SKU Properties define properties of the resource.
 type NetworkFabricSKUProperties struct {
-	// Maximum number of compute racks available for this Network Fabric SKU.
+	// Maximum number of compute racks available for this Network Fabric SKU. The value of max count racks is 4 for 4 rack SKU
+	// and 8 for 8 rack SKU.
 	MaxComputeRacks *int32
 
-	// READ-ONLY; The URI gives full details of sku.
-	DetailsURI *string
+	// Maximum number of servers available for this Network Fabric SKU.
+	MaximumServerCount *int32
 
-	// READ-ONLY; Maximum supported version.
-	MaxSupportedVer *string
+	// READ-ONLY; URL providing detailed configuration of the fabric SKU.
+	Details *string
 
-	// READ-ONLY; Minimum supported version.
-	MinSupportedVer *string
-
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; Type of Network Fabric Sku.
-	Type *string
+	// READ-ONLY; List of supported Network Fabric SKU versions.
+	SupportedVersions []*string
+
+	// READ-ONLY; Type of Network Fabric SKU.
+	Type *FabricSKUType
 }
 
 // NetworkFabricSKUsClientGetOptions contains the optional parameters for the NetworkFabricSKUsClient.Get method.
@@ -2065,13 +2552,20 @@ type NetworkFabricSKUsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFabricSKUsListResult - List of NetworkFabricSkus.
+// NetworkFabricSKUsListResult - List of Network Fabric SKUs.
 type NetworkFabricSKUsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of NetworkFabricSku resources.
+	// List of Network Fabric SKU resources.
 	Value []*NetworkFabricSKU
+}
+
+// NetworkFabricsClientBeginCommitConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginCommitConfiguration
+// method.
+type NetworkFabricsClientBeginCommitConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NetworkFabricsClientBeginCreateOptions contains the optional parameters for the NetworkFabricsClient.BeginCreate method.
@@ -2093,6 +2587,13 @@ type NetworkFabricsClientBeginDeprovisionOptions struct {
 	ResumeToken string
 }
 
+// NetworkFabricsClientBeginGetTopologyOptions contains the optional parameters for the NetworkFabricsClient.BeginGetTopology
+// method.
+type NetworkFabricsClientBeginGetTopologyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NetworkFabricsClientBeginProvisionOptions contains the optional parameters for the NetworkFabricsClient.BeginProvision
 // method.
 type NetworkFabricsClientBeginProvisionOptions struct {
@@ -2100,8 +2601,42 @@ type NetworkFabricsClientBeginProvisionOptions struct {
 	ResumeToken string
 }
 
+// NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
+// method.
+type NetworkFabricsClientBeginRefreshConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration
+// method.
+type NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NetworkFabricsClientBeginUpdateOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdate method.
 type NetworkFabricsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration
+// method.
+type NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkFabricsClientBeginUpgradeOptions contains the optional parameters for the NetworkFabricsClient.BeginUpgrade method.
+type NetworkFabricsClientBeginUpgradeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkFabricsClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginValidateConfiguration
+// method.
+type NetworkFabricsClientBeginValidateConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2123,12 +2658,12 @@ type NetworkFabricsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkFabricsListResult - List of NetworkFabrics.
+// NetworkFabricsListResult - List of Network Fabrics.
 type NetworkFabricsListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of NetworkFabric resources.
+	// List of Network Fabric resources.
 	Value []*NetworkFabric
 }
 
@@ -2137,7 +2672,7 @@ type NetworkInterface struct {
 	// REQUIRED; Resource properties.
 	Properties *NetworkInterfaceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2162,30 +2697,30 @@ type NetworkInterfacePatchProperties struct {
 	Annotation *string
 }
 
-// NetworkInterfaceProperties define the resource properties.
+// NetworkInterfaceProperties - Network Interface Properties defines the properties of the resource.
 type NetworkInterfaceProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
-	// READ-ONLY; administrativeState of the network interface. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 
-	// READ-ONLY; The arm resource id of the interface or compute server its connected to.
+	// READ-ONLY; The ARM resource id of the interface or compute server its connected to.
 	ConnectedTo *string
 
-	// READ-ONLY; ipv4Address.
+	// READ-ONLY; IPv4Address of the interface.
 	IPv4Address *string
 
-	// READ-ONLY; ipv6Address.
+	// READ-ONLY; IPv6Address of the interface.
 	IPv6Address *string
 
 	// READ-ONLY; The Interface Type. Example: Management/Data
 	InterfaceType *InterfaceType
 
-	// READ-ONLY; physicalIdentifier of the network interface.
+	// READ-ONLY; Physical Identifier of the network interface.
 	PhysicalIdentifier *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
@@ -2199,13 +2734,6 @@ type NetworkInterfacesClientBeginCreateOptions struct {
 // NetworkInterfacesClientBeginDeleteOptions contains the optional parameters for the NetworkInterfacesClient.BeginDelete
 // method.
 type NetworkInterfacesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// NetworkInterfacesClientBeginGetStatusOptions contains the optional parameters for the NetworkInterfacesClient.BeginGetStatus
-// method.
-type NetworkInterfacesClientBeginGetStatusOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2229,8 +2757,9 @@ type NetworkInterfacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkInterfacesClientListOptions contains the optional parameters for the NetworkInterfacesClient.NewListPager method.
-type NetworkInterfacesClientListOptions struct {
+// NetworkInterfacesClientListByNetworkDeviceOptions contains the optional parameters for the NetworkInterfacesClient.NewListByNetworkDevicePager
+// method.
+type NetworkInterfacesClientListByNetworkDeviceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2243,7 +2772,105 @@ type NetworkInterfacesList struct {
 	Value []*NetworkInterface
 }
 
-// NetworkRack - The NetworkRack resource definition.
+// NetworkPacketBroker - The NetworkPacketBroker resource definition.
+type NetworkPacketBroker struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *NetworkPacketBrokerProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkPacketBrokerPatch - The NetworkPacketBroker patch resource definition.
+type NetworkPacketBrokerPatch struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
+// NetworkPacketBrokerProperties - Network Packet Broker Properties defines the properties of the resource.
+type NetworkPacketBrokerProperties struct {
+	// REQUIRED; ARM resource ID of the Network Fabric.
+	NetworkFabricID *string
+
+	// READ-ONLY; List of neighbor group IDs configured on NPB.
+	NeighborGroupIDs []*string
+
+	// READ-ONLY; List of ARM resource IDs of Network Devices [NPB].
+	NetworkDeviceIDs []*string
+
+	// READ-ONLY; List of network Tap IDs configured on NPB.
+	NetworkTapIDs []*string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; List of network interfaces across NPB devices that are used to mirror source traffic.
+	SourceInterfaceIDs []*string
+}
+
+// NetworkPacketBrokersClientBeginCreateOptions contains the optional parameters for the NetworkPacketBrokersClient.BeginCreate
+// method.
+type NetworkPacketBrokersClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkPacketBrokersClientBeginDeleteOptions contains the optional parameters for the NetworkPacketBrokersClient.BeginDelete
+// method.
+type NetworkPacketBrokersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkPacketBrokersClientBeginUpdateOptions contains the optional parameters for the NetworkPacketBrokersClient.BeginUpdate
+// method.
+type NetworkPacketBrokersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkPacketBrokersClientGetOptions contains the optional parameters for the NetworkPacketBrokersClient.Get method.
+type NetworkPacketBrokersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkPacketBrokersClientListByResourceGroupOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListByResourceGroupPager
+// method.
+type NetworkPacketBrokersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkPacketBrokersClientListBySubscriptionOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListBySubscriptionPager
+// method.
+type NetworkPacketBrokersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkPacketBrokersListResult - List of NetworkPacketBrokers.
+type NetworkPacketBrokersListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of NetworkPacketBroker resources.
+	Value []*NetworkPacketBroker
+}
+
+// NetworkRack - The Network Rack resource definition.
 type NetworkRack struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -2254,7 +2881,7 @@ type NetworkRack struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2267,90 +2894,22 @@ type NetworkRack struct {
 	Type *string
 }
 
-// NetworkRackPatch - The NetworkRack patch resource definition.
-type NetworkRackPatch struct {
-	// Resource properties.
-	Properties any
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-// NetworkRackProperties define the resource properties.
+// NetworkRackProperties - Network Rack Properties defines the properties of the resource.
 type NetworkRackProperties struct {
-	// REQUIRED; Network Fabric ARM resource id.
+	// REQUIRED; ARM resource ID of the Network Fabric.
 	NetworkFabricID *string
-
-	// REQUIRED; Network Rack SKU name.
-	NetworkRackSKU *string
 
 	// Switch configuration description.
 	Annotation *string
 
-	// READ-ONLY; List of network device ARM resource ids.
+	// Network Rack SKU name.
+	NetworkRackType *NetworkRackType
+
+	// READ-ONLY; List of network device ARM resource IDs.
 	NetworkDevices []*string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
-}
-
-// NetworkRackSKU - The NetworkRackSku resource definition.
-type NetworkRackSKU struct {
-	// REQUIRED; Resource properties.
-	Properties *NetworkRackSKUProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// NetworkRackSKUProperties - NetworkRackSkuProperties define the resource properties.
-type NetworkRackSKUProperties struct {
-	// REQUIRED; The role of the Network Rack: Aggregate or Compute.
-	RoleName *NetworkRackRoleName
-
-	// Maximum number of servers available for this SKU.
-	MaximumServerCount *int32
-
-	// Maximum number of storage devices available for this SKU.
-	MaximumStorageCount *int32
-
-	// Maximum number of network uplinks available for this SKU.
-	MaximumUplinks *int32
-
-	// List of network device properties / role for the Network Rack.
-	NetworkDevices []*NetworkDeviceRoleProperties
-
-	// READ-ONLY; Gets the provisioning state of the resource.
-	ProvisioningState *ProvisioningState
-}
-
-// NetworkRackSKUsClientGetOptions contains the optional parameters for the NetworkRackSKUsClient.Get method.
-type NetworkRackSKUsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkRackSKUsClientListBySubscriptionOptions contains the optional parameters for the NetworkRackSKUsClient.NewListBySubscriptionPager
-// method.
-type NetworkRackSKUsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetworkRackSKUsListResult - List of NetworkRackSkus.
-type NetworkRackSKUsListResult struct {
-	// Url to follow for getting next page of resources.
-	NextLink *string
-
-	// List of NetworkRackSku resources.
-	Value []*NetworkRackSKU
 }
 
 // NetworkRacksClientBeginCreateOptions contains the optional parameters for the NetworkRacksClient.BeginCreate method.
@@ -2388,21 +2947,27 @@ type NetworkRacksClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkRacksListResult - List of NetworkRacks.
+// NetworkRacksListResult - List of Network Racks.
 type NetworkRacksListResult struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
-	// List of NetworkRack resources.
+	// List of Network Rack resources.
 	Value []*NetworkRack
 }
 
-// NetworkToNetworkInterconnect - The NetworkToNetworkInterconnect resource definition.
-type NetworkToNetworkInterconnect struct {
-	// Resource properties.
-	Properties *NetworkToNetworkInterconnectProperties
+// NetworkTap - The Network Tap resource definition.
+type NetworkTap struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// REQUIRED; Resource properties.
+	Properties *NetworkTapProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2415,28 +2980,478 @@ type NetworkToNetworkInterconnect struct {
 	Type *string
 }
 
-// NetworkToNetworkInterconnectProperties - Configuration used to setup CE-PE connectivity.
-type NetworkToNetworkInterconnectProperties struct {
-	// REQUIRED; Configuration to use NNI for Infrastructure Management. Example: True/False.
-	IsManagementType *BooleanEnumProperty
+// NetworkTapPatch - The NetworkFabric resource definition.
+type NetworkTapPatch struct {
+	// Resource properties.
+	Properties *NetworkTapPatchableParameters
 
-	// REQUIRED; Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False
-	UseOptionB *BooleanEnumProperty
+	// Resource tags
+	Tags map[string]*string
+}
+
+// NetworkTapPatchableParameters - The Network Tap resource patch definition.
+type NetworkTapPatchableParameters struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// List of destination properties to send the filter traffic.
+	Destinations []*NetworkTapPatchableParametersDestinationsItem
+
+	// Polling type.
+	PollingType *PollingType
+}
+
+// NetworkTapPatchableParametersDestinationsItem - Destination.
+type NetworkTapPatchableParametersDestinationsItem struct {
+	// The destination Id. ARM Resource ID of either NNI or Internal Networks.
+	DestinationID *string
+
+	// ARM Resource ID of destination Tap Rule that contains match configurations.
+	DestinationTapRuleID *string
+
+	// Type of destination. Input can be IsolationDomain or Direct.
+	DestinationType *DestinationType
+
+	// Isolation Domain Properties.
+	IsolationDomainProperties *IsolationDomainProperties
+
+	// Destination name.
+	Name *string
+}
+
+// NetworkTapProperties - Network Tap Properties defines the properties of the resource.
+type NetworkTapProperties struct {
+	// REQUIRED; List of destinations to send the filter traffic.
+	Destinations []*NetworkTapPropertiesDestinationsItem
+
+	// REQUIRED; ARM resource ID of the Network Packet Broker.
+	NetworkPacketBrokerID *string
+
+	// Switch configuration description.
+	Annotation *string
+
+	// Polling type.
+	PollingType *PollingType
+
+	// READ-ONLY; Administrative state of the resource. Example -Enabled/Disabled
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Gets the configurations state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
+	// this process, the states keep changing based on the status of Network Tap provisioning.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Source Tap Rule Id. ARM Resource ID of the Network Tap Rule.
+	SourceTapRuleID *string
+}
+
+// NetworkTapPropertiesDestinationsItem - Destination.
+type NetworkTapPropertiesDestinationsItem struct {
+	// The destination Id. ARM Resource ID of either NNI or Internal Networks.
+	DestinationID *string
+
+	// ARM Resource ID of destination Tap Rule that contains match configurations.
+	DestinationTapRuleID *string
+
+	// Type of destination. Input can be IsolationDomain or Direct.
+	DestinationType *DestinationType
+
+	// Isolation Domain Properties.
+	IsolationDomainProperties *IsolationDomainProperties
+
+	// Destination name.
+	Name *string
+}
+
+// NetworkTapRule - The NetworkTapRule resource definition.
+type NetworkTapRule struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *NetworkTapRuleProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkTapRuleAction - Action that need to performed.
+type NetworkTapRuleAction struct {
+	// Destination Id. The ARM resource Id may be either Network To Network Interconnect or NeighborGroup.
+	DestinationID *string
+
+	// The parameter to enable or disable the timestamp.
+	IsTimestampEnabled *BooleanEnumProperty
+
+	// The name of the match configuration. This is used when Goto type is provided. If Goto type is selected and no match configuration
+	// name is provided. It goes to next configuration.
+	MatchConfigurationName *string
+
+	// Truncate. 0 indicates do not truncate.
+	Truncate *string
+
+	// Type of actions that can be performed.
+	Type *TapRuleActionType
+}
+
+// NetworkTapRuleMatchCondition - Defines the match condition that is supported to filter the traffic.
+type NetworkTapRuleMatchCondition struct {
+	// Encapsulation Type.
+	EncapsulationType *EncapsulationType
+
+	// IP condition that needs to be matched.
+	IPCondition *IPMatchCondition
+
+	// Defines the port condition that needs to be matched.
+	PortCondition *PortCondition
+
+	// List of the protocols that need to be matched.
+	ProtocolTypes []*string
+
+	// Vlan match condition that needs to be matched.
+	VlanMatchCondition *VlanMatchCondition
+}
+
+// NetworkTapRuleMatchConfiguration - Defines the match configuration that are supported to filter the traffic.
+type NetworkTapRuleMatchConfiguration struct {
+	// List of actions that need to be performed for the matched conditions.
+	Actions []*NetworkTapRuleAction
+
+	// Type of IP Address. IPv4 or IPv6
+	IPAddressType *IPAddressType
+
+	// List of the match conditions.
+	MatchConditions []*NetworkTapRuleMatchCondition
+
+	// The name of the match configuration.
+	MatchConfigurationName *string
+
+	// Sequence Number of the match configuration..
+	SequenceNumber *int64
+}
+
+// NetworkTapRulePatch - The NetworkTapRule resource definition.
+type NetworkTapRulePatch struct {
+	// Network Tap Rule Patch properties.
+	Properties *NetworkTapRulePatchProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// NetworkTapRulePatchProperties - Network Tap Rule Patch properties.
+type NetworkTapRulePatchProperties struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// Input method to configure Network Tap Rule.
+	ConfigurationType *ConfigurationType
+
+	// List of dynamic match configurations.
+	DynamicMatchConfigurations []*CommonDynamicMatchConfiguration
+
+	// List of match configurations.
+	MatchConfigurations []*NetworkTapRuleMatchConfiguration
+
+	// Network Tap Rules file URL.
+	TapRulesURL *string
+}
+
+// NetworkTapRuleProperties - Network Tap Rule Properties defines the resource properties.
+type NetworkTapRuleProperties struct {
+	// Switch configuration description.
+	Annotation *string
+
+	// Input method to configure Network Tap Rule.
+	ConfigurationType *ConfigurationType
+
+	// List of dynamic match configurations.
+	DynamicMatchConfigurations []*CommonDynamicMatchConfiguration
+
+	// List of match configurations.
+	MatchConfigurations []*NetworkTapRuleMatchConfiguration
+
+	// Polling interval in seconds.
+	PollingIntervalInSeconds *PollingIntervalInSeconds
+
+	// Network Tap Rules file URL.
+	TapRulesURL *string
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; The last sync timestamp.
+	LastSyncedTime *time.Time
+
+	// READ-ONLY; The ARM resource Id of the NetworkTap.
+	NetworkTapID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// NetworkTapRulesClientBeginCreateOptions contains the optional parameters for the NetworkTapRulesClient.BeginCreate method.
+type NetworkTapRulesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientBeginDeleteOptions contains the optional parameters for the NetworkTapRulesClient.BeginDelete method.
+type NetworkTapRulesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientBeginResyncOptions contains the optional parameters for the NetworkTapRulesClient.BeginResync method.
+type NetworkTapRulesClientBeginResyncOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkTapRulesClient.BeginUpdateAdministrativeState
+// method.
+type NetworkTapRulesClientBeginUpdateAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientBeginUpdateOptions contains the optional parameters for the NetworkTapRulesClient.BeginUpdate method.
+type NetworkTapRulesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkTapRulesClient.BeginValidateConfiguration
+// method.
+type NetworkTapRulesClientBeginValidateConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapRulesClientGetOptions contains the optional parameters for the NetworkTapRulesClient.Get method.
+type NetworkTapRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapRulesClientListByResourceGroupOptions contains the optional parameters for the NetworkTapRulesClient.NewListByResourceGroupPager
+// method.
+type NetworkTapRulesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapRulesClientListBySubscriptionOptions contains the optional parameters for the NetworkTapRulesClient.NewListBySubscriptionPager
+// method.
+type NetworkTapRulesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapRulesListResult - List of NetworkTapRules.
+type NetworkTapRulesListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of NetworkTapRule resources.
+	Value []*NetworkTapRule
+}
+
+// NetworkTapsClientBeginCreateOptions contains the optional parameters for the NetworkTapsClient.BeginCreate method.
+type NetworkTapsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapsClientBeginDeleteOptions contains the optional parameters for the NetworkTapsClient.BeginDelete method.
+type NetworkTapsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapsClientBeginResyncOptions contains the optional parameters for the NetworkTapsClient.BeginResync method.
+type NetworkTapsClientBeginResyncOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkTapsClient.BeginUpdateAdministrativeState
+// method.
+type NetworkTapsClientBeginUpdateAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapsClientBeginUpdateOptions contains the optional parameters for the NetworkTapsClient.BeginUpdate method.
+type NetworkTapsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkTapsClientGetOptions contains the optional parameters for the NetworkTapsClient.Get method.
+type NetworkTapsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapsClientListByResourceGroupOptions contains the optional parameters for the NetworkTapsClient.NewListByResourceGroupPager
+// method.
+type NetworkTapsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapsClientListBySubscriptionOptions contains the optional parameters for the NetworkTapsClient.NewListBySubscriptionPager
+// method.
+type NetworkTapsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkTapsListResult - List of NetworkTaps.
+type NetworkTapsListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of NetworkTap resources.
+	Value []*NetworkTap
+}
+
+// NetworkToNetworkInterconnect - The Network To Network Interconnect resource definition.
+type NetworkToNetworkInterconnect struct {
+	// REQUIRED; Resource properties.
+	Properties *NetworkToNetworkInterconnectProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkToNetworkInterconnectPatch - The Network To Network Interconnect resource patch definition.
+type NetworkToNetworkInterconnectPatch struct {
+	// Resource properties.
+	Properties *NetworkToNetworkInterconnectPatchableProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkToNetworkInterconnectPatchableProperties - Network to Network Interconnect patchable properties.
+type NetworkToNetworkInterconnectPatchableProperties struct {
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Export Route Policy information
+	ExportRoutePolicy *ExportRoutePolicyInformation
+
+	// Import Route Policy information.
+	ImportRoutePolicy *ImportRoutePolicyInformation
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
 
 	// Common properties for Layer2Configuration.
 	Layer2Configuration *Layer2Configuration
 
+	// NPB Static Route Configuration properties.
+	NpbStaticRouteConfiguration *NpbStaticRouteConfiguration
+
 	// Common properties for Layer3Configuration.
-	Layer3Configuration *Layer3Configuration
+	OptionBLayer3Configuration *OptionBLayer3Configuration
+}
+
+// NetworkToNetworkInterconnectProperties - Configuration used to setup CE-PE connectivity.
+type NetworkToNetworkInterconnectProperties struct {
+	// REQUIRED; Based on this option layer3 parameters are mandatory. Example: True/False
+	UseOptionB *BooleanEnumProperty
+
+	// Egress Acl. ARM resource ID of Access Control Lists.
+	EgressACLID *string
+
+	// Export Route Policy configuration.
+	ExportRoutePolicy *ExportRoutePolicyInformation
+
+	// Import Route Policy configuration.
+	ImportRoutePolicy *ImportRoutePolicyInformation
+
+	// Ingress Acl. ARM resource ID of Access Control Lists.
+	IngressACLID *string
+
+	// Configuration to use NNI for Infrastructure Management. Example: True/False.
+	IsManagementType *IsManagementType
+
+	// Common properties for Layer2 Configuration.
+	Layer2Configuration *Layer2Configuration
 
 	// Type of NNI used. Example: CE | NPB
 	NniType *NniType
 
-	// READ-ONLY; Gets the administrativeState of the resource. Example -Enabled/Disabled
-	AdministrativeState *EnabledDisabledState
+	// NPB Static Route Configuration properties.
+	NpbStaticRouteConfiguration *NpbStaticRouteConfiguration
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// Common properties for Layer3Configuration.
+	OptionBLayer3Configuration *NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+}
+
+// NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration - Common properties for Layer3Configuration.
+type NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration struct {
+	// ASN of PE devices for CE/PE connectivity.Example : 28
+	PeerASN *int64
+
+	// IPv4 Address Prefix.
+	PrimaryIPv4Prefix *string
+
+	// IPv6 Address Prefix.
+	PrimaryIPv6Prefix *string
+
+	// Secondary IPv4 Address Prefix.
+	SecondaryIPv4Prefix *string
+
+	// Secondary IPv6 Address Prefix.
+	SecondaryIPv6Prefix *string
+
+	// VLAN for CE/PE Layer 3 connectivity.Example : 501
+	VlanID *int32
+
+	// READ-ONLY; ASN of CE devices for CE/PE connectivity.
+	FabricASN *int64
 }
 
 // NetworkToNetworkInterconnectsClientBeginCreateOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.BeginCreate
@@ -2453,25 +3468,58 @@ type NetworkToNetworkInterconnectsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState
+// method.
+type NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions contains the optional parameters
+// for the NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState method.
+type NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkToNetworkInterconnectsClientBeginUpdateOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.BeginUpdate
+// method.
+type NetworkToNetworkInterconnectsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NetworkToNetworkInterconnectsClientGetOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.Get
 // method.
 type NetworkToNetworkInterconnectsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkToNetworkInterconnectsClientListOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.NewListPager
+// NetworkToNetworkInterconnectsClientListByNetworkFabricOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager
 // method.
-type NetworkToNetworkInterconnectsClientListOptions struct {
+type NetworkToNetworkInterconnectsClientListByNetworkFabricOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkToNetworkInterconnectsList - List of NetworkToNetworkInterconnects.
+// NetworkToNetworkInterconnectsList - List of Network To Network Interconnects.
 type NetworkToNetworkInterconnectsList struct {
 	// Url to follow for getting next page of resources.
 	NextLink *string
 
 	// List of NetworkToNetworkInterconnects resources.
 	Value []*NetworkToNetworkInterconnect
+}
+
+// NpbStaticRouteConfiguration - NPB Static Route Configuration properties.
+type NpbStaticRouteConfiguration struct {
+	// BFD Configuration properties.
+	BfdConfiguration *BfdConfiguration
+
+	// List of IPv4 Routes.
+	IPv4Routes []*StaticRouteProperties
+
+	// List of IPv6 Routes.
+	IPv6Routes []*StaticRouteProperties
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -2528,61 +3576,77 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OptionAProperties - Peering optionA properties
-type OptionAProperties struct {
-	// BFD Configuration properties.
-	BfdConfiguration *FabricBfdConfiguration
+// OptionBLayer3Configuration - OptionB Layer3 Configuration properties.
+type OptionBLayer3Configuration struct {
+	// ASN of PE devices for CE/PE connectivity.Example : 28
+	PeerASN *int64
 
-	// MTU to use for option A peering.
-	Mtu *int32
-
-	// Peer ASN number.Example : 28
-	PeerASN *int32
-
-	// IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time of creation
-	// or can be updated afterwards. Any update to the values post-provisioning
-	// may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-	// are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv4 Address Prefix.
 	PrimaryIPv4Prefix *string
 
-	// IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv6 Address Prefix.
 	PrimaryIPv6Prefix *string
 
-	// Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv4 Address Prefix.
 	SecondaryIPv4Prefix *string
 
-	// Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be specified
-	// at the time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv6 Address Prefix.
 	SecondaryIPv6Prefix *string
 
-	// Vlan identifier. Example : 501
+	// VLAN for CE/PE Layer 3 connectivity.Example : 501
 	VlanID *int32
+
+	// READ-ONLY; ASN of CE devices for CE/PE connectivity.
+	FabricASN *int64
 }
 
-// OptionBProperties - Option B configuration.
+// OptionBProperties - Option B configuration to be used for Management VPN.
 type OptionBProperties struct {
-	// Route Targets to be applied for outgoing routes from CE.
+	// Route Targets to be applied for outgoing routes from CE. This is for backward compatibility.
 	ExportRouteTargets []*string
 
-	// Route Targets to be applied for incoming routes into CE.
+	// Route Targets to be applied for incoming routes into CE. This is for backward compatibility.
 	ImportRouteTargets []*string
+
+	// Route Targets to be applied.
+	RouteTargets *RouteTargetInformation
 }
 
-// OptionBPropertiesAutoGenerated - Option B configuration.
-type OptionBPropertiesAutoGenerated struct {
-	// REQUIRED; Route Targets to be applied for outgoing routes from CE.
-	ExportRouteTargets []*string
+// PortCondition - Port condition that needs to be matched.
+type PortCondition struct {
+	// REQUIRED; Layer4 protocol type that needs to be matched.
+	Layer4Protocol *Layer4Protocol
 
-	// REQUIRED; Route Targets to be applied for incoming routes into CE.
-	ImportRouteTargets []*string
+	// List of the port Group Names that to be matched.
+	PortGroupNames []*string
+
+	// Port type that needs to be matched.
+	PortType *PortType
+
+	// List of the Ports that need to be matched.
+	Ports []*string
+}
+
+// PortGroupProperties - Port Group properties.
+type PortGroupProperties struct {
+	// The name of the port group.
+	Name *string
+
+	// List of the ports that needs to be matched.
+	Ports []*string
+}
+
+// RebootProperties - Reboot properties.
+type RebootProperties struct {
+	// Type of reboot to be performed. Example: GracefulRebootWithZTP
+	RebootType *RebootType
+}
+
+// RoutePoliciesClientBeginCommitConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginCommitConfiguration
+// method.
+type RoutePoliciesClientBeginCommitConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RoutePoliciesClientBeginCreateOptions contains the optional parameters for the RoutePoliciesClient.BeginCreate method.
@@ -2597,8 +3661,22 @@ type RoutePoliciesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// RoutePoliciesClientBeginUpdateAdministrativeStateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdateAdministrativeState
+// method.
+type RoutePoliciesClientBeginUpdateAdministrativeStateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // RoutePoliciesClientBeginUpdateOptions contains the optional parameters for the RoutePoliciesClient.BeginUpdate method.
 type RoutePoliciesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoutePoliciesClientBeginValidateConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginValidateConfiguration
+// method.
+type RoutePoliciesClientBeginValidateConfigurationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2640,7 +3718,7 @@ type RoutePolicy struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2653,25 +3731,46 @@ type RoutePolicy struct {
 	Type *string
 }
 
-// RoutePolicyPatch - The RoutePolicy patch resource definition.
+// RoutePolicyPatch - The Route Policy patch resource definition.
 type RoutePolicyPatch struct {
+	// The RoutePolicy patchable properties.
+	Properties *RoutePolicyPatchableProperties
+
 	// Resource tags
 	Tags map[string]*string
 }
 
-// RoutePolicyProperties - RoutePolicy Properties define the resource properties.
-type RoutePolicyProperties struct {
-	// REQUIRED; Route Policy statements.
+// RoutePolicyPatchableProperties - Route Policy patchable properties.
+type RoutePolicyPatchableProperties struct {
+	// Route Policy statements.
 	Statements []*RoutePolicyStatementProperties
+}
+
+// RoutePolicyProperties defines the resource properties.
+type RoutePolicyProperties struct {
+	// REQUIRED; Arm Resource ID of Network Fabric.
+	NetworkFabricID *string
+
+	// AddressFamilyType. This parameter decides whether the given ipv4 or ipv6 route policy.
+	AddressFamilyType *AddressFamilyType
 
 	// Switch configuration description.
 	Annotation *string
 
-	// READ-ONLY; Gets the provisioning state of the resource.
+	// Route Policy statements.
+	Statements []*RoutePolicyStatementProperties
+
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
+	// READ-ONLY; Configuration state of the resource.
+	ConfigurationState *ConfigurationState
+
+	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
 
-// RoutePolicyStatementProperties - Route Policy Statement properties..
+// RoutePolicyStatementProperties - Route Policy Statement properties.
 type RoutePolicyStatementProperties struct {
 	// REQUIRED; Route policy action properties.
 	Action *StatementActionProperties
@@ -2686,10 +3785,34 @@ type RoutePolicyStatementProperties struct {
 	Annotation *string
 }
 
+// RouteTargetInformation - Route Target Configuration.
+type RouteTargetInformation struct {
+	// Route Targets to be applied for outgoing routes into CE.
+	ExportIPv4RouteTargets []*string
+
+	// Route Targets to be applied for outgoing routes from CE.
+	ExportIPv6RouteTargets []*string
+
+	// Route Targets to be applied for incoming routes into CE.
+	ImportIPv4RouteTargets []*string
+
+	// Route Targets to be applied for incoming routes from CE.
+	ImportIPv6RouteTargets []*string
+}
+
+// RuleProperties - Rules for the InternetGateways
+type RuleProperties struct {
+	// REQUIRED; Specify action.
+	Action *Action
+
+	// REQUIRED; List of Addresses to be allowed or denied.
+	AddressList []*string
+}
+
 // StatementActionProperties - Route policy action properties.
 type StatementActionProperties struct {
-	// REQUIRED; action. Example: Permit | Deny.
-	ActionType *CommunityActionTypes
+	// REQUIRED; Action type. Example: Permit | Deny | Continue.
+	ActionType *RoutePolicyActionType
 
 	// IP Community Properties.
 	IPCommunityProperties *ActionIPCommunityProperties
@@ -2697,7 +3820,7 @@ type StatementActionProperties struct {
 	// IP Extended Community Properties.
 	IPExtendedCommunityProperties *ActionIPExtendedCommunityProperties
 
-	// localPreference of the route policy.
+	// Local Preference of the route policy.
 	LocalPreference *int64
 }
 
@@ -2711,51 +3834,46 @@ type StatementConditionProperties struct {
 
 	// Arm Resource Id of IpPrefix.
 	IPPrefixID *string
+
+	// Type of the condition used.
+	Type *RoutePolicyConditionType
 }
 
-// StaticRouteConfiguration - staticRouteConfiguration model.
+// StaticRouteConfiguration - Static Route Configuration properties.
 type StaticRouteConfiguration struct {
 	// BFD configuration properties
 	BfdConfiguration *BfdConfiguration
 
-	// List with object IPv4Routes.
+	// List of IPv4 Routes.
 	IPv4Routes []*StaticRouteProperties
 
-	// List with object IPv6Routes.
+	// List of IPv6 Routes.
 	IPv6Routes []*StaticRouteProperties
 }
 
-// StaticRouteProperties - Static Route properties.
+// StaticRouteProperties - Route Properties.
 type StaticRouteProperties struct {
-	// REQUIRED; List of next hop IPv4 | IPv6 addresses.
+	// REQUIRED; List of next hop addresses.
 	NextHop []*string
 
-	// REQUIRED; IPv4 | IPv6 Prefix.
+	// REQUIRED; Prefix of the route.
 	Prefix *string
-}
-
-// SupportPackageProperties - Generate support package post action properties.
-type SupportPackageProperties struct {
-	// REQUIRED; The URL to fetch the generated support package from.
-	SupportPackageURL *string
 }
 
 // SupportedConnectorProperties - Supported connector properties.
 type SupportedConnectorProperties struct {
-	// Connector type. Example: Optical.
+	// Type of connector used. Example: Optical.
 	ConnectorType *string
 
 	// Maximum speed of the connector in Mbps.
 	MaxSpeedInMbps *int32
 }
 
-// SupportedVersionProperties - Network device supported version properties.
+// SupportedVersionProperties - Supported version details of the network device.
 type SupportedVersionProperties struct {
-	// If the current version is in use.
-	IsCurrent *IsCurrentVersion
-
-	// If the current version is a test version.
-	IsTest *IsTestVersion
+	// If true newly provisioned Fabric will use this device version by default to bootstrap the network devices for the first
+	// time.
+	IsDefault *BooleanEnumProperty
 
 	// Firmware version.
 	VendorFirmwareVersion *string
@@ -2788,33 +3906,27 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TagsUpdate - Base tracked resource type for PATCH updates.
+type TagsUpdate struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
 // TerminalServerConfiguration - Network and credentials configuration currently applied to terminal server.
 type TerminalServerConfiguration struct {
 	// Password for the terminal server connection.
 	Password *string
 
-	// IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.0/31. The values can be specified at the time of creation
-	// or can be updated afterwards. Any update to the values post-provisioning
-	// may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces. The 2nd and 4th IPs
-	// are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv4 Address Prefix.
 	PrimaryIPv4Prefix *string
 
-	// IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a0/126. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// IPv6 Address Prefix.
 	PrimaryIPv6Prefix *string
 
-	// Secondary IPv4 Address Prefix of CE-PE interconnect links. Example: 172.31.0.20/31. The values can be specified at the
-	// time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv4 Address Prefix.
 	SecondaryIPv4Prefix *string
 
-	// Secondary IPv6 Address Prefix of CE-PE interconnect links. Example: 3FFE:FFFF:0:CD30::a4/126. The values can be specified
-	// at the time of creation or can be updated afterwards. Any update to the values
-	// post-provisioning may disrupt traffic. The 1st and 3rd IPs are to be configured on CE1 and CE2 for Option B interfaces.
-	// The 2nd and 4th IPs are to be configured on PE1 and PE2 for Option B interfaces.
+	// Secondary IPv6 Address Prefix.
 	SecondaryIPv6Prefix *string
 
 	// Serial Number of Terminal server.
@@ -2827,66 +3939,152 @@ type TerminalServerConfiguration struct {
 	NetworkDeviceID *string
 }
 
-// TerminalServerPatchableProperties - Network and credential configuration currently applied on terminal server.
-type TerminalServerPatchableProperties struct {
-	// Password for the terminal server connection.
-	Password *string
-
-	// Serial Number of Terminal server.
-	SerialNumber *string
-
-	// Username for the terminal server connection.
-	Username *string
-}
-
 // UpdateAdministrativeState - Update administrative state on list of resources.
 type UpdateAdministrativeState struct {
 	// Network Fabrics or Network Rack resource Id.
 	ResourceIDs []*string
 
 	// Administrative state.
-	State *AdministrativeState
+	State *EnableDisableState
 }
 
-// UpdatePowerCycleProperties - Update power cycle input properties.
-type UpdatePowerCycleProperties struct {
-	// REQUIRED; Primary or Secondary power end.
-	PowerEnd *PowerEnd
+// UpdateDeviceAdministrativeState - Update the administrative state on list of resources.
+type UpdateDeviceAdministrativeState struct {
+	// Network Fabrics or Network Rack resource Id.
+	ResourceIDs []*string
 
-	// REQUIRED; On or Off toggle state.
-	State *State
+	// Administrative state.
+	State *DeviceAdministrativeState
 }
 
-// UpdateVersionProperties - Generate support package post action properties.
-type UpdateVersionProperties struct {
-	// REQUIRED; The supported version defined in network device SKU.
-	SKUVersion *string
+// UpdateVersion - Update version properties.
+type UpdateVersion struct {
+	// Specify the version.
+	Version *string
 }
 
-// VPNConfigurationProperties - Configuration for infrastructure vpn.
+// VPNConfigurationPatchableProperties - Network and credential configuration currently applied on terminal server.
+type VPNConfigurationPatchableProperties struct {
+	// ARM Resource ID of the Network To Network Interconnect.
+	NetworkToNetworkInterconnectID *string
+
+	// option A properties
+	OptionAProperties *VPNConfigurationPatchablePropertiesOptionAProperties
+
+	// option B properties
+	OptionBProperties *OptionBProperties
+
+	// Peering option list.
+	PeeringOption *PeeringOption
+}
+
+// VPNConfigurationPatchablePropertiesOptionAProperties - option A properties
+type VPNConfigurationPatchablePropertiesOptionAProperties struct {
+	// BFD Configuration properties.
+	BfdConfiguration *BfdConfiguration
+
+	// MTU to use for option A peering.
+	Mtu *int32
+
+	// Peer ASN number.Example : 28
+	PeerASN *int64
+
+	// IPv4 Address Prefix.
+	PrimaryIPv4Prefix *string
+
+	// IPv6 Address Prefix.
+	PrimaryIPv6Prefix *string
+
+	// Secondary IPv4 Address Prefix.
+	SecondaryIPv4Prefix *string
+
+	// Secondary IPv6 Address Prefix.
+	SecondaryIPv6Prefix *string
+
+	// Vlan Id.Example : 501
+	VlanID *int32
+}
+
+// VPNConfigurationProperties - Network and credential configuration currently applied on terminal server.
 type VPNConfigurationProperties struct {
 	// REQUIRED; Peering option list.
 	PeeringOption *PeeringOption
 
+	// ARM Resource ID of the Network To Network Interconnect.
+	NetworkToNetworkInterconnectID *string
+
 	// option A properties
-	OptionAProperties *OptionAProperties
+	OptionAProperties *VPNConfigurationPropertiesOptionAProperties
 
 	// option B properties
-	OptionBProperties *OptionBPropertiesAutoGenerated
+	OptionBProperties *OptionBProperties
 
-	// READ-ONLY; Indicates configuration state. Example: Enabled | Disabled.
-	AdministrativeState *EnabledDisabledState
-
-	// READ-ONLY; Gets the networkToNetworkInterconnectId of the resource.
-	NetworkToNetworkInterconnectID *string
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
 }
 
-// WorkloadServices IP ranges.
-type WorkloadServices struct {
-	// The IPv4 Address space is optional, if the value is defined at the time of NFC creation, then the default value 10.0.0.0/19
-	// is considered. The IPV4 address subnet is an optional attribute.
-	IPv4AddressSpaces []*string
+// VPNConfigurationPropertiesOptionAProperties - option A properties
+type VPNConfigurationPropertiesOptionAProperties struct {
+	// BFD Configuration properties.
+	BfdConfiguration *BfdConfiguration
 
-	// The IPv6 is not supported right now.
-	IPv6AddressSpaces []*string
+	// MTU to use for option A peering.
+	Mtu *int32
+
+	// Peer ASN number.Example : 28
+	PeerASN *int64
+
+	// IPv4 Address Prefix.
+	PrimaryIPv4Prefix *string
+
+	// IPv6 Address Prefix.
+	PrimaryIPv6Prefix *string
+
+	// Secondary IPv4 Address Prefix.
+	SecondaryIPv4Prefix *string
+
+	// Secondary IPv6 Address Prefix.
+	SecondaryIPv6Prefix *string
+
+	// Vlan Id.Example : 501
+	VlanID *int32
+}
+
+// ValidateConfigurationProperties - Validation configuration properties.
+type ValidateConfigurationProperties struct {
+	// Validate action that to be performed
+	ValidateAction *ValidateAction
+}
+
+// ValidateConfigurationResponse - The response of the action validate configuration.
+type ValidateConfigurationResponse struct {
+	// The error object.
+	Error *ErrorDetail
+
+	// URL for the details of the response.
+	URL *string
+
+	// READ-ONLY; Gets the configuration state.
+	ConfigurationState *ConfigurationState
+}
+
+// VlanGroupProperties - Vlan group properties.
+type VlanGroupProperties struct {
+	// Vlan group name.
+	Name *string
+
+	// List of vlans.
+	Vlans []*string
+}
+
+// VlanMatchCondition - The vlan match conditions that needs to be matched.
+type VlanMatchCondition struct {
+	// List of inner vlans that needs to be matched.
+	InnerVlans []*string
+
+	// List of vlan group names that to be matched.
+	VlanGroupNames []*string
+
+	// List of vlans that needs to be matched.
+	Vlans []*string
 }

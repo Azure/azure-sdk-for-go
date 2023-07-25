@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Create_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,21 +29,22 @@ func ExampleIPCommunitiesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPCommunitiesClient().BeginCreate(ctx, "rgIpCommunityLists", "example-ipCommunity", armmanagednetworkfabric.IPCommunity{
-		Location: to.Ptr("EastUS"),
+	poller, err := clientFactory.NewIPCommunitiesClient().BeginCreate(ctx, "example-rg", "example-ipcommunity", armmanagednetworkfabric.IPCommunity{
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
-			"key2814": to.Ptr(""),
+			"keyId": to.Ptr("KeyValue"),
 		},
 		Properties: &armmanagednetworkfabric.IPCommunityProperties{
-			Annotation: to.Ptr("annotationValue"),
-			Action:     to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-			CommunityMembers: []*string{
-				to.Ptr("1234:5678")},
-			WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+			Annotation: to.Ptr("annotation"),
+			IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+				{
+					Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+					CommunityMembers: []*string{
+						to.Ptr("1:1")},
+					SequenceNumber: to.Ptr[int64](4155123341),
+					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+				}},
 		},
 	}, nil)
 	if err != nil {
@@ -57,37 +58,40 @@ func ExampleIPCommunitiesClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.IPCommunity = armmanagednetworkfabric.IPCommunity{
-	// 	Name: to.Ptr("example-ipCommunity"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipCommunities"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"),
+	// 	Name: to.Ptr("example-ipcommunity"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipcommunities"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipcommunity"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@email.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserId"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key2814": to.Ptr(""),
+	// 		"keyId": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPCommunityProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 		CommunityMembers: []*string{
-	// 			to.Ptr("1234:5678")},
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+	// 			{
+	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+	// 				CommunityMembers: []*string{
+	// 					to.Ptr("1:1")},
+	// 					SequenceNumber: to.Ptr[int64](4155123341),
+	// 					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+	// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+	// 				}},
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Get_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +102,7 @@ func ExampleIPCommunitiesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIPCommunitiesClient().Get(ctx, "resourceGroupName", "example-ipCommunity", nil)
+	res, err := clientFactory.NewIPCommunitiesClient().Get(ctx, "example-rg", "example-ipcommunity", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,37 +110,40 @@ func ExampleIPCommunitiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.IPCommunity = armmanagednetworkfabric.IPCommunity{
-	// 	Name: to.Ptr("example-ipCommunity"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipCommunities"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"),
+	// 	Name: to.Ptr("example-ipcommunity"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipcommunities"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipcommunity"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@email.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserId"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key2814": to.Ptr(""),
+	// 		"keyId": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPCommunityProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 		CommunityMembers: []*string{
-	// 			to.Ptr("1234:5678")},
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+	// 			{
+	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+	// 				CommunityMembers: []*string{
+	// 					to.Ptr("1:1")},
+	// 					SequenceNumber: to.Ptr[int64](4155123341),
+	// 					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+	// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+	// 				}},
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Update_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,9 +154,17 @@ func ExampleIPCommunitiesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPCommunitiesClient().BeginUpdate(ctx, "resourceGroupName", "example-ipCommunity", armmanagednetworkfabric.IPCommunityPatch{
-		Tags: map[string]*string{
-			"key2814": to.Ptr(""),
+	poller, err := clientFactory.NewIPCommunitiesClient().BeginUpdate(ctx, "example-rg", "example-ipcommunity", armmanagednetworkfabric.IPCommunityPatch{
+		Properties: &armmanagednetworkfabric.IPCommunityPatchableProperties{
+			IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+				{
+					Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+					CommunityMembers: []*string{
+						to.Ptr("1:1")},
+					SequenceNumber: to.Ptr[int64](4155123341),
+					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+				}},
 		},
 	}, nil)
 	if err != nil {
@@ -163,37 +178,40 @@ func ExampleIPCommunitiesClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.IPCommunity = armmanagednetworkfabric.IPCommunity{
-	// 	Name: to.Ptr("example-ipCommunity"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipCommunities"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"),
+	// 	Name: to.Ptr("example-ipcommunity"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipcommunities"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipcommunity"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@email.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("UserId"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key2814": to.Ptr(""),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPCommunityProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 		CommunityMembers: []*string{
-	// 			to.Ptr("1234:5678")},
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 			WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-	// 				to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+	// 			{
+	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+	// 				CommunityMembers: []*string{
+	// 					to.Ptr("1:1")},
+	// 					SequenceNumber: to.Ptr[int64](4155123341),
+	// 					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+	// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+	// 				}},
+	// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Delete_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +222,7 @@ func ExampleIPCommunitiesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPCommunitiesClient().BeginDelete(ctx, "resourceGroupName", "IpCommunityList1", nil)
+	poller, err := clientFactory.NewIPCommunitiesClient().BeginDelete(ctx, "example-rg", "example-ipcommunity", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -214,7 +232,7 @@ func ExampleIPCommunitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +243,7 @@ func ExampleIPCommunitiesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIPCommunitiesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewIPCommunitiesClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -239,39 +257,42 @@ func ExampleIPCommunitiesClient_NewListByResourceGroupPager() {
 		// page.IPCommunitiesListResult = armmanagednetworkfabric.IPCommunitiesListResult{
 		// 	Value: []*armmanagednetworkfabric.IPCommunity{
 		// 		{
-		// 			Name: to.Ptr("example-ipCommunity"),
-		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipCommunities"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"),
+		// 			Name: to.Ptr("example-ipcommunity"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipcommunities"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipcommunity"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@email.com"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("UserId"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("EastUS"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
-		// 				"key2814": to.Ptr(""),
+		// 				"keyId": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.IPCommunityProperties{
-		// 				Annotation: to.Ptr("annotationValue"),
-		// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-		// 				CommunityMembers: []*string{
-		// 					to.Ptr("1234:5678")},
-		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+		// 				Annotation: to.Ptr("annotation"),
+		// 				IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+		// 					{
+		// 						Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+		// 						CommunityMembers: []*string{
+		// 							to.Ptr("1:1")},
+		// 							SequenceNumber: to.Ptr[int64](4155123341),
+		// 							WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+		// 								to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+		// 						}},
+		// 						AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 						ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 						ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_ListBySubscription_MaximumSet_Gen.json
 func ExampleIPCommunitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,32 +317,35 @@ func ExampleIPCommunitiesClient_NewListBySubscriptionPager() {
 		// page.IPCommunitiesListResult = armmanagednetworkfabric.IPCommunitiesListResult{
 		// 	Value: []*armmanagednetworkfabric.IPCommunity{
 		// 		{
-		// 			Name: to.Ptr("example-ipCommunity"),
-		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipCommunities"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"),
+		// 			Name: to.Ptr("example-ipcommunity"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipcommunities"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipcommunity"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@email.com"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T14:05:16.579Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("UserId"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T18:26:17.611Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("EastUS"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
-		// 				"key2814": to.Ptr(""),
+		// 				"keyId": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.IPCommunityProperties{
-		// 				Annotation: to.Ptr("annotationValue"),
-		// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-		// 				CommunityMembers: []*string{
-		// 					to.Ptr("1234:5678")},
-		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 					WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesLocalAS),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesNoExport),
-		// 						to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesGShut)},
+		// 				Annotation: to.Ptr("annotation"),
+		// 				IPCommunityRules: []*armmanagednetworkfabric.IPCommunityRule{
+		// 					{
+		// 						Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+		// 						CommunityMembers: []*string{
+		// 							to.Ptr("1:1")},
+		// 							SequenceNumber: to.Ptr[int64](4155123341),
+		// 							WellKnownCommunities: []*armmanagednetworkfabric.WellKnownCommunities{
+		// 								to.Ptr(armmanagednetworkfabric.WellKnownCommunitiesInternet)},
+		// 						}},
+		// 						AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 						ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 						ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 					},
 		// 			}},
 		// 		}

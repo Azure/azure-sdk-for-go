@@ -1,4 +1,4 @@
-// Deprecated: This package has moved to github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai instead
 module github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
 
 go 1.18

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
+module github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
 
 go 1.18
 

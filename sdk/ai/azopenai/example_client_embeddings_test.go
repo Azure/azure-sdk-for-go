@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 )
 
 func ExampleClient_GetEmbeddings() {

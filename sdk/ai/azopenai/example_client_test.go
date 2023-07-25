@@ -4,8 +4,8 @@
 package azopenai_test
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 )
 
 func ExampleNewClientForOpenAI() {

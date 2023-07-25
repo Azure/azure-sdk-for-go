@@ -10,8 +10,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
 )
 
 func ExampleClient_GetCompletions() {

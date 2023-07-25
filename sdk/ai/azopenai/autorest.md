@@ -9,7 +9,7 @@ input-file:
 
 output-folder: ../azopenai
 clear-output-folder: false
-module: github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai
+module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true

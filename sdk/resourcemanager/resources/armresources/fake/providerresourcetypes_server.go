@@ -29,8 +29,8 @@ type ProviderResourceTypesServer struct {
 }
 
 // NewProviderResourceTypesServerTransport creates a new instance of ProviderResourceTypesServerTransport with the provided implementation.
-// The returned ProviderResourceTypesServerTransport instance is connected to an instance of armresources.ProviderResourceTypesClient by way of the
-// undefined.Transporter field.
+// The returned ProviderResourceTypesServerTransport instance is connected to an instance of armresources.ProviderResourceTypesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProviderResourceTypesServerTransport(srv *ProviderResourceTypesServer) *ProviderResourceTypesServerTransport {
 	return &ProviderResourceTypesServerTransport{srv: srv}
 }

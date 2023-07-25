@@ -92,7 +92,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.con.Endpoint(), "$batch"))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(t.client.Endpoint(), "$batch"))
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -124,7 +124,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, err
 	}
 
-	resp, err := t.con.Pipeline().Do(req)
+	resp, err := t.client.Pipeline().Do(req)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -289,7 +289,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		if err != nil {
 			return err
 		}
-		if isCosmosEndpoint(t.con.Endpoint()) {
+		if isCosmosEndpoint(t.client.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
 	case TransactionTypeUpdateReplace:

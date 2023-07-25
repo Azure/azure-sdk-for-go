@@ -70,23 +70,32 @@ type ExpressRouteCircuitsServer struct {
 }
 
 // NewExpressRouteCircuitsServerTransport creates a new instance of ExpressRouteCircuitsServerTransport with the provided implementation.
-// The returned ExpressRouteCircuitsServerTransport instance is connected to an instance of armnetwork.ExpressRouteCircuitsClient by way of the
-// undefined.Transporter field.
+// The returned ExpressRouteCircuitsServerTransport instance is connected to an instance of armnetwork.ExpressRouteCircuitsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteCircuitsServerTransport(srv *ExpressRouteCircuitsServer) *ExpressRouteCircuitsServerTransport {
-	return &ExpressRouteCircuitsServerTransport{srv: srv}
+	return &ExpressRouteCircuitsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]](),
+		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]](),
+		beginListArpTable:           newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListArpTableResponse]](),
+		beginListRoutesTable:        newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableResponse]](),
+		beginListRoutesTableSummary: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableSummaryResponse]](),
+	}
 }
 
 // ExpressRouteCircuitsServerTransport connects instances of armnetwork.ExpressRouteCircuitsClient to instances of ExpressRouteCircuitsServer.
 // Don't use this type directly, use NewExpressRouteCircuitsServerTransport instead.
 type ExpressRouteCircuitsServerTransport struct {
 	srv                         *ExpressRouteCircuitsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]
-	newListAllPager             *azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]
-	beginListArpTable           *azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListArpTableResponse]
-	beginListRoutesTable        *azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableResponse]
-	beginListRoutesTableSummary *azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableSummaryResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListResponse]]
+	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCircuitsClientListAllResponse]]
+	beginListArpTable           *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListArpTableResponse]]
+	beginListRoutesTable        *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableResponse]]
+	beginListRoutesTableSummary *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCircuitsClientListRoutesTableSummaryResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteCircuitsServerTransport.
@@ -138,7 +147,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	if e.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if e.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -161,19 +171,21 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginCreateOrUpdate(req *h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		e.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginCreateOrUpdate) {
-		e.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		e.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -183,7 +195,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginDelete(req *http.Requ
 	if e.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if e.beginDelete == nil {
+	beginDelete := e.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -202,19 +215,21 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginDelete(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginDelete = &respr
+		beginDelete = &respr
+		e.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		e.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginDelete) {
-		e.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		e.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -327,7 +342,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchNewListPager(req *http.Req
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if e.newListPager == nil {
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -339,20 +355,22 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		resp := e.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		e.newListPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListPager) {
-		e.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -361,7 +379,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchNewListAllPager(req *http.
 	if e.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if e.newListAllPager == nil {
+	newListAllPager := e.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -369,20 +388,22 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchNewListAllPager(req *http.
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := e.srv.NewListAllPager(nil)
-		e.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(e.newListAllPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		e.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ExpressRouteCircuitsClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(e.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(e.newListAllPager) {
-		e.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		e.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -391,7 +412,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListArpTable(req *htt
 	if e.srv.BeginListArpTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListArpTable not implemented")}
 	}
-	if e.beginListArpTable == nil {
+	beginListArpTable := e.beginListArpTable.get(req)
+	if beginListArpTable == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arpTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -418,19 +440,21 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListArpTable(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginListArpTable = &respr
+		beginListArpTable = &respr
+		e.beginListArpTable.add(req, beginListArpTable)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginListArpTable, req)
+	resp, err := server.PollerResponderNext(beginListArpTable, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginListArpTable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginListArpTable) {
-		e.beginListArpTable = nil
+	if !server.PollerResponderMore(beginListArpTable) {
+		e.beginListArpTable.remove(req)
 	}
 
 	return resp, nil
@@ -440,7 +464,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTable(req *
 	if e.srv.BeginListRoutesTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListRoutesTable not implemented")}
 	}
-	if e.beginListRoutesTable == nil {
+	beginListRoutesTable := e.beginListRoutesTable.get(req)
+	if beginListRoutesTable == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTables/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -467,19 +492,21 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTable(req *
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginListRoutesTable = &respr
+		beginListRoutesTable = &respr
+		e.beginListRoutesTable.add(req, beginListRoutesTable)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginListRoutesTable, req)
+	resp, err := server.PollerResponderNext(beginListRoutesTable, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginListRoutesTable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginListRoutesTable) {
-		e.beginListRoutesTable = nil
+	if !server.PollerResponderMore(beginListRoutesTable) {
+		e.beginListRoutesTable.remove(req)
 	}
 
 	return resp, nil
@@ -489,7 +516,8 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTableSummar
 	if e.srv.BeginListRoutesTableSummary == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListRoutesTableSummary not implemented")}
 	}
-	if e.beginListRoutesTableSummary == nil {
+	beginListRoutesTableSummary := e.beginListRoutesTableSummary.get(req)
+	if beginListRoutesTableSummary == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/expressRouteCircuits/(?P<circuitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routeTablesSummary/(?P<devicePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -516,19 +544,21 @@ func (e *ExpressRouteCircuitsServerTransport) dispatchBeginListRoutesTableSummar
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		e.beginListRoutesTableSummary = &respr
+		beginListRoutesTableSummary = &respr
+		e.beginListRoutesTableSummary.add(req, beginListRoutesTableSummary)
 	}
 
-	resp, err := server.PollerResponderNext(e.beginListRoutesTableSummary, req)
+	resp, err := server.PollerResponderNext(beginListRoutesTableSummary, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginListRoutesTableSummary.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(e.beginListRoutesTableSummary) {
-		e.beginListRoutesTableSummary = nil
+	if !server.PollerResponderMore(beginListRoutesTableSummary) {
+		e.beginListRoutesTableSummary.remove(req)
 	}
 
 	return resp, nil

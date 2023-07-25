@@ -51,19 +51,24 @@ type DataCollectionRuleAssociationsServer struct {
 }
 
 // NewDataCollectionRuleAssociationsServerTransport creates a new instance of DataCollectionRuleAssociationsServerTransport with the provided implementation.
-// The returned DataCollectionRuleAssociationsServerTransport instance is connected to an instance of armmonitor.DataCollectionRuleAssociationsClient by way of the
-// undefined.Transporter field.
+// The returned DataCollectionRuleAssociationsServerTransport instance is connected to an instance of armmonitor.DataCollectionRuleAssociationsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDataCollectionRuleAssociationsServerTransport(srv *DataCollectionRuleAssociationsServer) *DataCollectionRuleAssociationsServerTransport {
-	return &DataCollectionRuleAssociationsServerTransport{srv: srv}
+	return &DataCollectionRuleAssociationsServerTransport{
+		srv:                                  srv,
+		newListByDataCollectionEndpointPager: newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]](),
+		newListByResourcePager:               newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]](),
+		newListByRulePager:                   newTracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]](),
+	}
 }
 
 // DataCollectionRuleAssociationsServerTransport connects instances of armmonitor.DataCollectionRuleAssociationsClient to instances of DataCollectionRuleAssociationsServer.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsServerTransport instead.
 type DataCollectionRuleAssociationsServerTransport struct {
 	srv                                  *DataCollectionRuleAssociationsServer
-	newListByDataCollectionEndpointPager *azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]
-	newListByResourcePager               *azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]
-	newListByRulePager                   *azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]
+	newListByDataCollectionEndpointPager *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]]
+	newListByResourcePager               *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse]]
+	newListByRulePager                   *tracker[azfake.PagerResponder[armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataCollectionRuleAssociationsServerTransport.
@@ -214,7 +219,8 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByDataCol
 	if d.srv.NewListByDataCollectionEndpointPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByDataCollectionEndpointPager not implemented")}
 	}
-	if d.newListByDataCollectionEndpointPager == nil {
+	newListByDataCollectionEndpointPager := d.newListByDataCollectionEndpointPager.get(req)
+	if newListByDataCollectionEndpointPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionEndpoints/(?P<dataCollectionEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -230,20 +236,22 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByDataCol
 			return nil, err
 		}
 		resp := d.srv.NewListByDataCollectionEndpointPager(resourceGroupNameUnescaped, dataCollectionEndpointNameUnescaped, nil)
-		d.newListByDataCollectionEndpointPager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByDataCollectionEndpointPager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, createLink func() string) {
+		newListByDataCollectionEndpointPager = &resp
+		d.newListByDataCollectionEndpointPager.add(req, newListByDataCollectionEndpointPager)
+		server.PagerResponderInjectNextLinks(newListByDataCollectionEndpointPager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByDataCollectionEndpointPager, req)
+	resp, err := server.PagerResponderNext(newListByDataCollectionEndpointPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByDataCollectionEndpointPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByDataCollectionEndpointPager) {
-		d.newListByDataCollectionEndpointPager = nil
+	if !server.PagerResponderMore(newListByDataCollectionEndpointPager) {
+		d.newListByDataCollectionEndpointPager.remove(req)
 	}
 	return resp, nil
 }
@@ -252,7 +260,8 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByResourc
 	if d.srv.NewListByResourcePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourcePager not implemented")}
 	}
-	if d.newListByResourcePager == nil {
+	newListByResourcePager := d.newListByResourcePager.get(req)
+	if newListByResourcePager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRuleAssociations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -264,20 +273,22 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByResourc
 			return nil, err
 		}
 		resp := d.srv.NewListByResourcePager(resourceURIUnescaped, nil)
-		d.newListByResourcePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByResourcePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse, createLink func() string) {
+		newListByResourcePager = &resp
+		d.newListByResourcePager.add(req, newListByResourcePager)
+		server.PagerResponderInjectNextLinks(newListByResourcePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByResourceResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByResourcePager, req)
+	resp, err := server.PagerResponderNext(newListByResourcePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourcePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByResourcePager) {
-		d.newListByResourcePager = nil
+	if !server.PagerResponderMore(newListByResourcePager) {
+		d.newListByResourcePager.remove(req)
 	}
 	return resp, nil
 }
@@ -286,7 +297,8 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByRulePag
 	if d.srv.NewListByRulePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByRulePager not implemented")}
 	}
-	if d.newListByRulePager == nil {
+	newListByRulePager := d.newListByRulePager.get(req)
+	if newListByRulePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/dataCollectionRules/(?P<dataCollectionRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -302,20 +314,22 @@ func (d *DataCollectionRuleAssociationsServerTransport) dispatchNewListByRulePag
 			return nil, err
 		}
 		resp := d.srv.NewListByRulePager(resourceGroupNameUnescaped, dataCollectionRuleNameUnescaped, nil)
-		d.newListByRulePager = &resp
-		server.PagerResponderInjectNextLinks(d.newListByRulePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse, createLink func() string) {
+		newListByRulePager = &resp
+		d.newListByRulePager.add(req, newListByRulePager)
+		server.PagerResponderInjectNextLinks(newListByRulePager, req, func(page *armmonitor.DataCollectionRuleAssociationsClientListByRuleResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(d.newListByRulePager, req)
+	resp, err := server.PagerResponderNext(newListByRulePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByRulePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(d.newListByRulePager) {
-		d.newListByRulePager = nil
+	if !server.PagerResponderMore(newListByRulePager) {
+		d.newListByRulePager.remove(req)
 	}
 	return resp, nil
 }

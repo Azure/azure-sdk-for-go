@@ -47,17 +47,20 @@ type TableServer struct {
 }
 
 // NewTableServerTransport creates a new instance of TableServerTransport with the provided implementation.
-// The returned TableServerTransport instance is connected to an instance of armstorage.TableClient by way of the
-// undefined.Transporter field.
+// The returned TableServerTransport instance is connected to an instance of armstorage.TableClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTableServerTransport(srv *TableServer) *TableServerTransport {
-	return &TableServerTransport{srv: srv}
+	return &TableServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armstorage.TableClientListResponse]](),
+	}
 }
 
 // TableServerTransport connects instances of armstorage.TableClient to instances of TableServer.
 // Don't use this type directly, use NewTableServerTransport instead.
 type TableServerTransport struct {
 	srv          *TableServer
-	newListPager *azfake.PagerResponder[armstorage.TableClientListResponse]
+	newListPager *tracker[azfake.PagerResponder[armstorage.TableClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TableServerTransport.
@@ -218,7 +221,8 @@ func (t *TableServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableServices/default/tables`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -234,20 +238,22 @@ func (t *TableServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 			return nil, err
 		}
 		resp := t.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, nil)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armstorage.TableClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.TableClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

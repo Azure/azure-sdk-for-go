@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_ListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("clusterName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -60,7 +60,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.ClusterProperties{
@@ -90,10 +90,10 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 							RackSlot: to.Ptr[int64](2),
 		// 							SerialNumber: to.Ptr("BM1219YYY"),
 		// 					}},
-		// 					NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 					NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 		// 					RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 		// 					RackSerialNumber: to.Ptr("AA1234"),
-		// 					RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 					RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 					StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 		// 						{
 		// 							AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -104,7 +104,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 							StorageApplianceName: to.Ptr("vmName"),
 		// 					}},
 		// 				},
-		// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 		// 				AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 		// 					{
 		// 						ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -126,12 +126,12 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 		// 				ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 					Type: to.Ptr("CustomLocation"),
 		// 				},
 		// 				ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 		// 				ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-		// 				ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+		// 				ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 		// 				ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 		// 					ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 		// 					PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -171,10 +171,10 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 								RackSlot: to.Ptr[int64](2),
 		// 								SerialNumber: to.Ptr("BM1219YYY"),
 		// 						}},
-		// 						NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 		// 						RackSerialNumber: to.Ptr("AA1234"),
-		// 						RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 		// 							{
 		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -187,27 +187,23 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 				}},
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 				DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 				HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-		// 					Type: to.Ptr("CustomLocation"),
-		// 				},
 		// 				ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 		// 					Name: to.Ptr("my-managed-rg"),
 		// 					Location: to.Ptr("East US"),
 		// 				},
 		// 				ManualActionCount: to.Ptr[int64](0),
-		// 				NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 		// 				SupportExpiryDate: to.Ptr("2023-04-29"),
 		// 				WorkloadResourceIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_ListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +230,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("clusterName"),
 		// 			Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 			ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 			SystemData: &armnetworkcloud.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 		// 				CreatedBy: to.Ptr("identityA"),
@@ -249,7 +245,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				"key2": to.Ptr("myvalue2"),
 		// 			},
 		// 			ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 				Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.ClusterProperties{
@@ -279,10 +275,10 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 							RackSlot: to.Ptr[int64](2),
 		// 							SerialNumber: to.Ptr("BM1219YYY"),
 		// 					}},
-		// 					NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 					NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 		// 					RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 		// 					RackSerialNumber: to.Ptr("AA1234"),
-		// 					RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 					RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 					StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 		// 						{
 		// 							AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -293,7 +289,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 							StorageApplianceName: to.Ptr("vmName"),
 		// 					}},
 		// 				},
-		// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 		// 				AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 		// 					{
 		// 						ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -315,12 +311,12 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 		// 				ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 					Type: to.Ptr("CustomLocation"),
 		// 				},
 		// 				ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 		// 				ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-		// 				ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+		// 				ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 		// 				ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 		// 					ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 		// 					PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -360,10 +356,10 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 								RackSlot: to.Ptr[int64](2),
 		// 								SerialNumber: to.Ptr("BM1219YYY"),
 		// 						}},
-		// 						NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 						NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 		// 						RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 		// 						RackSerialNumber: to.Ptr("AA1234"),
-		// 						RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+		// 						RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 						StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 		// 							{
 		// 								AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -376,27 +372,23 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				}},
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 				DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-		// 				HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-		// 					Type: to.Ptr("CustomLocation"),
-		// 				},
 		// 				ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 		// 					Name: to.Ptr("my-managed-rg"),
 		// 					Location: to.Ptr("East US"),
 		// 				},
 		// 				ManualActionCount: to.Ptr[int64](0),
-		// 				NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+		// 				NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 		// 				SupportExpiryDate: to.Ptr("2023-04-29"),
 		// 				WorkloadResourceIDs: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +409,7 @@ func ExampleClustersClient_Get() {
 	// res.Cluster = armnetworkcloud.Cluster{
 	// 	Name: to.Ptr("clusterName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -432,7 +424,7 @@ func ExampleClustersClient_Get() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterProperties{
@@ -462,10 +454,10 @@ func ExampleClustersClient_Get() {
 	// 					RackSlot: to.Ptr[int64](2),
 	// 					SerialNumber: to.Ptr("BM1219YYY"),
 	// 			}},
-	// 			NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 			NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 			RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 			RackSerialNumber: to.Ptr("AA1234"),
-	// 			RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 			StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 				{
 	// 					AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -476,7 +468,7 @@ func ExampleClustersClient_Get() {
 	// 					StorageApplianceName: to.Ptr("vmName"),
 	// 			}},
 	// 		},
-	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 		AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 	// 			{
 	// 				ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -498,12 +490,12 @@ func ExampleClustersClient_Get() {
 	// 		},
 	// 		ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 	// 		ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
 	// 		ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 	// 		ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-	// 		ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 		ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 	// 			ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 	// 			PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -543,10 +535,10 @@ func ExampleClustersClient_Get() {
 	// 						RackSlot: to.Ptr[int64](2),
 	// 						SerialNumber: to.Ptr("BM1219YYY"),
 	// 				}},
-	// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 				RackSerialNumber: to.Ptr("AA1234"),
-	// 				RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 					{
 	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -559,25 +551,21 @@ func ExampleClustersClient_Get() {
 	// 		}},
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 		DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 		HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
 	// 		ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 			Name: to.Ptr("my-managed-rg"),
 	// 			Location: to.Ptr("East US"),
 	// 		},
 	// 		ManualActionCount: to.Ptr[int64](0),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 		SupportExpiryDate: to.Ptr("2023-04-29"),
 	// 		WorkloadResourceIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Create.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +583,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 			"key2": to.Ptr("myvalue2"),
 		},
 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.ClusterProperties{
@@ -625,10 +613,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 						RackSlot:       to.Ptr[int64](2),
 						SerialNumber:   to.Ptr("BM1219YYY"),
 					}},
-				NetworkRackID:    to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+				NetworkRackID:    to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 				RackLocation:     to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 				RackSerialNumber: to.Ptr("AA1234"),
-				RackSKUID:        to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+				RackSKUID:        to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 					{
 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -640,7 +628,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 						StorageApplianceName: to.Ptr("vmName"),
 					}},
 			},
-			AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+			AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 			ClusterLocation:      to.Ptr("Foo Street, 3rd Floor, row 9"),
 			ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 				ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
@@ -682,10 +670,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 							RackSlot:       to.Ptr[int64](2),
 							SerialNumber:   to.Ptr("BM1219YYY"),
 						}},
-					NetworkRackID:    to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+					NetworkRackID:    to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 					RackLocation:     to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 					RackSerialNumber: to.Ptr("AA1234"),
-					RackSKUID:        to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+					RackSKUID:        to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 					StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 						{
 							AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -701,7 +689,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 				Name:     to.Ptr("my-managed-rg"),
 				Location: to.Ptr("East US"),
 			},
-			NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 		},
 	}, nil)
 	if err != nil {
@@ -717,7 +705,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// res.Cluster = armnetworkcloud.Cluster{
 	// 	Name: to.Ptr("clusterName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -732,7 +720,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterProperties{
@@ -762,10 +750,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 					RackSlot: to.Ptr[int64](2),
 	// 					SerialNumber: to.Ptr("BM1219YYY"),
 	// 			}},
-	// 			NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 			NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 			RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 			RackSerialNumber: to.Ptr("AA1234"),
-	// 			RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 			StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 				{
 	// 					AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -776,7 +764,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 					StorageApplianceName: to.Ptr("vmName"),
 	// 			}},
 	// 		},
-	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 		AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 	// 			{
 	// 				ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -798,12 +786,12 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 	// 		ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
 	// 		ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 	// 		ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-	// 		ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 		ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 	// 			ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 	// 			PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -843,10 +831,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 						RackSlot: to.Ptr[int64](2),
 	// 						SerialNumber: to.Ptr("BM1219YYY"),
 	// 				}},
-	// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 				RackSerialNumber: to.Ptr("AA1234"),
-	// 				RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 					{
 	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -859,25 +847,21 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 		}},
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 		DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 		HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
 	// 		ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 			Name: to.Ptr("my-managed-rg"),
 	// 			Location: to.Ptr("East US"),
 	// 		},
 	// 		ManualActionCount: to.Ptr[int64](0),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 		SupportExpiryDate: to.Ptr("2023-04-29"),
 	// 		WorkloadResourceIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,7 +882,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
 func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -937,10 +921,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 						RackSlot:       to.Ptr[int64](2),
 						SerialNumber:   to.Ptr("BM1219YYY"),
 					}},
-				NetworkRackID:    to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+				NetworkRackID:    to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 				RackLocation:     to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 				RackSerialNumber: to.Ptr("newSerialNumber"),
-				RackSKUID:        to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+				RackSKUID:        to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 					{
 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -976,7 +960,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// res.Cluster = armnetworkcloud.Cluster{
 	// 	Name: to.Ptr("clusterName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -991,7 +975,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterProperties{
@@ -1021,10 +1005,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 					RackSlot: to.Ptr[int64](2),
 	// 					SerialNumber: to.Ptr("BM1219YYY"),
 	// 			}},
-	// 			NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 			NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 			RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 			RackSerialNumber: to.Ptr("newSerialNumber"),
-	// 			RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 			StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 				{
 	// 					AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -1035,7 +1019,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 					StorageApplianceName: to.Ptr("vmName"),
 	// 			}},
 	// 		},
-	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 		AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 	// 			{
 	// 				ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -1057,12 +1041,12 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 		},
 	// 		ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 	// 		ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
 	// 		ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 	// 		ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-	// 		ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 		ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 	// 			ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 	// 			PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -1102,10 +1086,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 						RackSlot: to.Ptr[int64](2),
 	// 						SerialNumber: to.Ptr("BM1219YYY"),
 	// 				}},
-	// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 				RackSerialNumber: to.Ptr("AA1234"),
-	// 				RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 					{
 	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -1118,25 +1102,21 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 		}},
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 		DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 		HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
 	// 		ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 			Name: to.Ptr("my-managed-rg"),
 	// 			Location: to.Ptr("East US"),
 	// 		},
 	// 		ManualActionCount: to.Ptr[int64](0),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 		SupportExpiryDate: to.Ptr("2023-04-29"),
 	// 		WorkloadResourceIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_Location.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Patch_Location.json
 func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1169,7 +1149,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// res.Cluster = armnetworkcloud.Cluster{
 	// 	Name: to.Ptr("clusterName"),
 	// 	Type: to.Ptr("Microsoft.NetworkCloud/clusters"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 	ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 	SystemData: &armnetworkcloud.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
 	// 		CreatedBy: to.Ptr("identityA"),
@@ -1184,7 +1164,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 		"key2": to.Ptr("myvalue2"),
 	// 	},
 	// 	ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 		Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.ClusterProperties{
@@ -1214,10 +1194,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 					RackSlot: to.Ptr[int64](2),
 	// 					SerialNumber: to.Ptr("BM1219YYY"),
 	// 			}},
-	// 			NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 			NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 			RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 			RackSerialNumber: to.Ptr("AA1234"),
-	// 			RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 			StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 				{
 	// 					AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -1228,7 +1208,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 					StorageApplianceName: to.Ptr("vmName"),
 	// 			}},
 	// 		},
-	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 		AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 		AvailableUpgradeVersions: []*armnetworkcloud.ClusterAvailableUpgradeVersion{
 	// 			{
 	// 				ControlImpact: to.Ptr(armnetworkcloud.ControlImpactFalse),
@@ -1250,12 +1230,12 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 		},
 	// 		ClusterConnectionStatus: to.Ptr(armnetworkcloud.ClusterConnectionStatusConnected),
 	// 		ClusterExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
 	// 		},
 	// 		ClusterLocation: to.Ptr("Foo Street, 3rd Floor, row 9"),
 	// 		ClusterManagerConnectionStatus: to.Ptr(armnetworkcloud.ClusterManagerConnectionStatusConnected),
-	// 		ClusterManagerID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 		ClusterManagerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
 	// 		ClusterServicePrincipal: &armnetworkcloud.ServicePrincipalInformation{
 	// 			ApplicationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 	// 			PrincipalID: to.Ptr("00000008-0004-0004-0004-000000000012"),
@@ -1295,10 +1275,10 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 						RackSlot: to.Ptr[int64](2),
 	// 						SerialNumber: to.Ptr("BM1219YYY"),
 	// 				}},
-	// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 				NetworkRackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
 	// 				RackLocation: to.Ptr("Foo Datacenter, Floor 3, Aisle 9, Rack 2"),
 	// 				RackSerialNumber: to.Ptr("AA1234"),
-	// 				RackSKUID: to.Ptr("/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 				StorageApplianceConfigurationData: []*armnetworkcloud.StorageApplianceConfigurationData{
 	// 					{
 	// 						AdminCredentials: &armnetworkcloud.AdministrativeCredentials{
@@ -1311,25 +1291,21 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 		}},
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 		DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
-	// 		HybridAksExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/hybridAKSExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
 	// 		ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 			Name: to.Ptr("my-managed-rg"),
 	// 			Location: to.Ptr("East US"),
 	// 		},
 	// 		ManualActionCount: to.Ptr[int64](0),
-	// 		NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
+	// 		NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 		SupportExpiryDate: to.Ptr("2023-04-29"),
 	// 		WorkloadResourceIDs: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
+	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName")},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Deploy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Deploy.json
 func ExampleClustersClient_BeginDeploy_deployCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1350,7 +1326,7 @@ func ExampleClustersClient_BeginDeploy_deployCluster() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Deploy_SkipValidation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Deploy_SkipValidation.json
 func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1375,7 +1351,7 @@ func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_UpdateVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_UpdateVersion.json
 func ExampleClustersClient_BeginUpdateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

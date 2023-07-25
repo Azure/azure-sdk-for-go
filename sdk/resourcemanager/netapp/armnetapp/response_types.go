@@ -359,6 +359,11 @@ type VolumesClientGetResponse struct {
 	Volume
 }
 
+// VolumesClientListGetGroupIDListForLdapUserResponse contains the response from method VolumesClient.BeginListGetGroupIDListForLdapUser.
+type VolumesClientListGetGroupIDListForLdapUserResponse struct {
+	GetGroupIDListForLDAPUserResponse
+}
+
 // VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.
 type VolumesClientListReplicationsResponse struct {
 	ListReplications

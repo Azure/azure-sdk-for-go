@@ -12,7 +12,7 @@ output-folder: ../azkeys
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.54"
 version: "^3.0.0"
 
 directive:
@@ -218,6 +218,7 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");

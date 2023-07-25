@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenai
+package azopenai_test
 
 import (
 	"context"
@@ -15,27 +15,28 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/cognitiveservices/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewClient(t *testing.T) {
 	type args struct {
-		endpoint     string
-		credential   azcore.TokenCredential
-		deploymentID string
-		options      *ClientOptions
+		endpoint   string
+		credential azcore.TokenCredential
+		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *Client
+		want    *azopenai.Client
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewClient(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClient(tt.args.endpoint, tt.args.credential, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -49,22 +50,21 @@ func TestNewClient(t *testing.T) {
 
 func TestNewClientWithKeyCredential(t *testing.T) {
 	type args struct {
-		endpoint     string
-		credential   KeyCredential
-		deploymentID string
-		options      *ClientOptions
+		endpoint   string
+		credential azopenai.KeyCredential
+		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *Client
+		want    *azopenai.Client
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.deploymentID, tt.args.options)
+			got, err := azopenai.NewClientWithKeyCredential(tt.args.endpoint, tt.args.credential, tt.args.options)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewClientWithKeyCredential() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -76,22 +76,36 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 	}
 }
 
-func TestClient_GetCompletionsStream(t *testing.T) {
-	body := CompletionsOptions{
-		Prompt:      []*string{to.Ptr("What is Azure OpenAI?")},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-	}
-
-	cred, err := NewKeyCredential(apiKey)
+func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
+	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKeyCredential(endpoint, cred, streamingModelDeployment, newClientOptionsForTest(t))
-	if err != nil {
-		t.Errorf("NewClientWithKeyCredential() error = %v", err)
-		return
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
+	require.NoError(t, err)
+
+	testGetCompletionsStream(t, client, azureOpenAI)
+}
+
+func TestGetCompletionsStream_OpenAI(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping OpenAI tests when attempting to do quick tests")
 	}
+
+	client := newOpenAIClientForTest(t)
+	testGetCompletionsStream(t, client, openAI)
+}
+
+func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
+	body := azopenai.CompletionsOptions{
+		Prompt:       []string{"What is Azure OpenAI?"},
+		MaxTokens:    to.Ptr(int32(2048)),
+		Temperature:  to.Ptr(float32(0.0)),
+		DeploymentID: tv.Completions,
+	}
+
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
+	require.NoError(t, err)
+
 	if err != nil {
 		t.Errorf("Client.GetCompletionsStream() error = %v", err)
 		return
@@ -101,28 +115,61 @@ func TestClient_GetCompletionsStream(t *testing.T) {
 
 	var sb strings.Builder
 	var eventCount int
+
 	for {
-		event, err := reader.Read()
+		completion, err := reader.Read()
+
 		if err == io.EOF {
 			break
 		}
+
+		if completion.PromptAnnotations != nil {
+			require.Equal(t, []azopenai.PromptFilterResult{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+			}, completion.PromptAnnotations)
+		}
+
 		eventCount++
+
 		if err != nil {
 			t.Errorf("reader.Read() error = %v", err)
 			return
 		}
-		sb.WriteString(*event.Choices[0].Text)
+
+		if len(completion.Choices) > 0 {
+			sb.WriteString(*completion.Choices[0].Text)
+		}
 	}
 	got := sb.String()
 	const want = "\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."
-	if got != want {
-		i := 0
-		for i < len(got) && i < len(want) && got[i] == want[i] {
-			i++
-		}
-		t.Errorf("Client.GetCompletionsStream() text[%d] = %c, want %c", i, got[i], want[i])
+
+	require.Equal(t, want, got)
+	require.Equal(t, 86, eventCount)
+}
+
+func TestClient_GetCompletions_Error(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip()
 	}
-	if eventCount != 86 {
-		t.Errorf("Client.GetCompletionsStream() got = %v, want %v", eventCount, 1)
+
+	doTest := func(t *testing.T, client *azopenai.Client, model string) {
+		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
+			Prompt:       []string{"What is Azure OpenAI?"},
+			MaxTokens:    to.Ptr(int32(2048 - 127)),
+			Temperature:  to.Ptr(float32(0.0)),
+			DeploymentID: model,
+		}, nil)
+		require.Empty(t, streamResp)
+		assertResponseIsError(t, err)
 	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newBogusAzureOpenAIClient(t)
+		doTest(t, client, azureOpenAI.Completions)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		client := newBogusOpenAIClient(t)
+		doTest(t, client, openAI.Completions)
+	})
 }

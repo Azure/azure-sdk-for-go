@@ -78,25 +78,36 @@ type PublicIPAddressesServer struct {
 }
 
 // NewPublicIPAddressesServerTransport creates a new instance of PublicIPAddressesServerTransport with the provided implementation.
-// The returned PublicIPAddressesServerTransport instance is connected to an instance of armnetwork.PublicIPAddressesClient by way of the
-// undefined.Transporter field.
+// The returned PublicIPAddressesServerTransport instance is connected to an instance of armnetwork.PublicIPAddressesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPublicIPAddressesServerTransport(srv *PublicIPAddressesServer) *PublicIPAddressesServerTransport {
-	return &PublicIPAddressesServerTransport{srv: srv}
+	return &PublicIPAddressesServerTransport{
+		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientCreateOrUpdateResponse]](),
+		beginDdosProtectionStatus: newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDdosProtectionStatusResponse]](),
+		beginDelete:               newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]](),
+		newListAllPager:           newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]](),
+		newListCloudServicePublicIPAddressesPager:             newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]](),
+		newListCloudServiceRoleInstancePublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]](),
+		newListVirtualMachineScaleSetPublicIPAddressesPager:   newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]](),
+		newListVirtualMachineScaleSetVMPublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]](),
+	}
 }
 
 // PublicIPAddressesServerTransport connects instances of armnetwork.PublicIPAddressesClient to instances of PublicIPAddressesServer.
 // Don't use this type directly, use NewPublicIPAddressesServerTransport instead.
 type PublicIPAddressesServerTransport struct {
 	srv                                                   *PublicIPAddressesServer
-	beginCreateOrUpdate                                   *azfake.PollerResponder[armnetwork.PublicIPAddressesClientCreateOrUpdateResponse]
-	beginDdosProtectionStatus                             *azfake.PollerResponder[armnetwork.PublicIPAddressesClientDdosProtectionStatusResponse]
-	beginDelete                                           *azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse]
-	newListPager                                          *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]
-	newListAllPager                                       *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]
-	newListCloudServicePublicIPAddressesPager             *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]
-	newListCloudServiceRoleInstancePublicIPAddressesPager *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]
-	newListVirtualMachineScaleSetPublicIPAddressesPager   *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]
-	newListVirtualMachineScaleSetVMPublicIPAddressesPager *azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]
+	beginCreateOrUpdate                                   *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientCreateOrUpdateResponse]]
+	beginDdosProtectionStatus                             *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDdosProtectionStatusResponse]]
+	beginDelete                                           *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse]]
+	newListPager                                          *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]]
+	newListAllPager                                       *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]]
+	newListCloudServicePublicIPAddressesPager             *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]]
+	newListCloudServiceRoleInstancePublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]]
+	newListVirtualMachineScaleSetPublicIPAddressesPager   *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]]
+	newListVirtualMachineScaleSetVMPublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]]
 }
 
 // Do implements the policy.Transporter interface for PublicIPAddressesServerTransport.
@@ -152,7 +163,8 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	if p.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if p.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/publicIPAddresses/(?P<publicIpAddressName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -175,19 +187,21 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginCreateOrUpdate(req *http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreateOrUpdate) {
-		p.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		p.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -197,7 +211,8 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginDdosProtectionStatus(req
 	if p.srv.BeginDdosProtectionStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDdosProtectionStatus not implemented")}
 	}
-	if p.beginDdosProtectionStatus == nil {
+	beginDdosProtectionStatus := p.beginDdosProtectionStatus.get(req)
+	if beginDdosProtectionStatus == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/publicIPAddresses/(?P<publicIpAddressName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ddosProtectionStatus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -216,19 +231,21 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginDdosProtectionStatus(req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDdosProtectionStatus = &respr
+		beginDdosProtectionStatus = &respr
+		p.beginDdosProtectionStatus.add(req, beginDdosProtectionStatus)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDdosProtectionStatus, req)
+	resp, err := server.PollerResponderNext(beginDdosProtectionStatus, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginDdosProtectionStatus.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDdosProtectionStatus) {
-		p.beginDdosProtectionStatus = nil
+	if !server.PollerResponderMore(beginDdosProtectionStatus) {
+		p.beginDdosProtectionStatus.remove(req)
 	}
 
 	return resp, nil
@@ -238,7 +255,8 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginDelete(req *http.Request
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/publicIPAddresses/(?P<publicIpAddressName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -257,19 +275,21 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginDelete(req *http.Request
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -446,7 +466,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListPager(req *http.Reques
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/publicIPAddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -458,20 +479,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, err
 		}
 		resp := p.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.PublicIPAddressesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PublicIPAddressesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -480,7 +503,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListAllPager(req *http.Req
 	if p.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if p.newListAllPager == nil {
+	newListAllPager := p.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/publicIPAddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -488,20 +512,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListAllPager(req *http.Req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListAllPager(nil)
-		p.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListAllPager, req, func(page *armnetwork.PublicIPAddressesClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		p.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.PublicIPAddressesClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListAllPager) {
-		p.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		p.newListAllPager.remove(req)
 	}
 	return resp, nil
 }
@@ -510,7 +536,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListCloudServicePublicIPAd
 	if p.srv.NewListCloudServicePublicIPAddressesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListCloudServicePublicIPAddressesPager not implemented")}
 	}
-	if p.newListCloudServicePublicIPAddressesPager == nil {
+	newListCloudServicePublicIPAddressesPager := p.newListCloudServicePublicIPAddressesPager.get(req)
+	if newListCloudServicePublicIPAddressesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publicipaddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -526,20 +553,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListCloudServicePublicIPAd
 			return nil, err
 		}
 		resp := p.srv.NewListCloudServicePublicIPAddressesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		p.newListCloudServicePublicIPAddressesPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListCloudServicePublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse, createLink func() string) {
+		newListCloudServicePublicIPAddressesPager = &resp
+		p.newListCloudServicePublicIPAddressesPager.add(req, newListCloudServicePublicIPAddressesPager)
+		server.PagerResponderInjectNextLinks(newListCloudServicePublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListCloudServicePublicIPAddressesPager, req)
+	resp, err := server.PagerResponderNext(newListCloudServicePublicIPAddressesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListCloudServicePublicIPAddressesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListCloudServicePublicIPAddressesPager) {
-		p.newListCloudServicePublicIPAddressesPager = nil
+	if !server.PagerResponderMore(newListCloudServicePublicIPAddressesPager) {
+		p.newListCloudServicePublicIPAddressesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -548,7 +577,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListCloudServiceRoleInstan
 	if p.srv.NewListCloudServiceRoleInstancePublicIPAddressesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListCloudServiceRoleInstancePublicIPAddressesPager not implemented")}
 	}
-	if p.newListCloudServiceRoleInstancePublicIPAddressesPager == nil {
+	newListCloudServiceRoleInstancePublicIPAddressesPager := p.newListCloudServiceRoleInstancePublicIPAddressesPager.get(req)
+	if newListCloudServiceRoleInstancePublicIPAddressesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipconfigurations/(?P<ipConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publicipaddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -576,20 +606,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListCloudServiceRoleInstan
 			return nil, err
 		}
 		resp := p.srv.NewListCloudServiceRoleInstancePublicIPAddressesPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, roleInstanceNameUnescaped, networkInterfaceNameUnescaped, ipConfigurationNameUnescaped, nil)
-		p.newListCloudServiceRoleInstancePublicIPAddressesPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListCloudServiceRoleInstancePublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse, createLink func() string) {
+		newListCloudServiceRoleInstancePublicIPAddressesPager = &resp
+		p.newListCloudServiceRoleInstancePublicIPAddressesPager.add(req, newListCloudServiceRoleInstancePublicIPAddressesPager)
+		server.PagerResponderInjectNextLinks(newListCloudServiceRoleInstancePublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListCloudServiceRoleInstancePublicIPAddressesPager, req)
+	resp, err := server.PagerResponderNext(newListCloudServiceRoleInstancePublicIPAddressesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListCloudServiceRoleInstancePublicIPAddressesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListCloudServiceRoleInstancePublicIPAddressesPager) {
-		p.newListCloudServiceRoleInstancePublicIPAddressesPager = nil
+	if !server.PagerResponderMore(newListCloudServiceRoleInstancePublicIPAddressesPager) {
+		p.newListCloudServiceRoleInstancePublicIPAddressesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -598,7 +630,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 	if p.srv.NewListVirtualMachineScaleSetPublicIPAddressesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetPublicIPAddressesPager not implemented")}
 	}
-	if p.newListVirtualMachineScaleSetPublicIPAddressesPager == nil {
+	newListVirtualMachineScaleSetPublicIPAddressesPager := p.newListVirtualMachineScaleSetPublicIPAddressesPager.get(req)
+	if newListVirtualMachineScaleSetPublicIPAddressesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publicipaddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -614,20 +647,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 			return nil, err
 		}
 		resp := p.srv.NewListVirtualMachineScaleSetPublicIPAddressesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, nil)
-		p.newListVirtualMachineScaleSetPublicIPAddressesPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListVirtualMachineScaleSetPublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse, createLink func() string) {
+		newListVirtualMachineScaleSetPublicIPAddressesPager = &resp
+		p.newListVirtualMachineScaleSetPublicIPAddressesPager.add(req, newListVirtualMachineScaleSetPublicIPAddressesPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetPublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListVirtualMachineScaleSetPublicIPAddressesPager, req)
+	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetPublicIPAddressesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListVirtualMachineScaleSetPublicIPAddressesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListVirtualMachineScaleSetPublicIPAddressesPager) {
-		p.newListVirtualMachineScaleSetPublicIPAddressesPager = nil
+	if !server.PagerResponderMore(newListVirtualMachineScaleSetPublicIPAddressesPager) {
+		p.newListVirtualMachineScaleSetPublicIPAddressesPager.remove(req)
 	}
 	return resp, nil
 }
@@ -636,7 +671,8 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 	if p.srv.NewListVirtualMachineScaleSetVMPublicIPAddressesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachineScaleSetVMPublicIPAddressesPager not implemented")}
 	}
-	if p.newListVirtualMachineScaleSetVMPublicIPAddressesPager == nil {
+	newListVirtualMachineScaleSetVMPublicIPAddressesPager := p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.get(req)
+	if newListVirtualMachineScaleSetVMPublicIPAddressesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<virtualMachineScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<virtualmachineIndex>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ipconfigurations/(?P<ipConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publicipaddresses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -664,20 +700,22 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 			return nil, err
 		}
 		resp := p.srv.NewListVirtualMachineScaleSetVMPublicIPAddressesPager(resourceGroupNameUnescaped, virtualMachineScaleSetNameUnescaped, virtualmachineIndexUnescaped, networkInterfaceNameUnescaped, ipConfigurationNameUnescaped, nil)
-		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListVirtualMachineScaleSetVMPublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse, createLink func() string) {
+		newListVirtualMachineScaleSetVMPublicIPAddressesPager = &resp
+		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.add(req, newListVirtualMachineScaleSetVMPublicIPAddressesPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachineScaleSetVMPublicIPAddressesPager, req, func(page *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListVirtualMachineScaleSetVMPublicIPAddressesPager, req)
+	resp, err := server.PagerResponderNext(newListVirtualMachineScaleSetVMPublicIPAddressesPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListVirtualMachineScaleSetVMPublicIPAddressesPager) {
-		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager = nil
+	if !server.PagerResponderMore(newListVirtualMachineScaleSetVMPublicIPAddressesPager) {
+		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.remove(req)
 	}
 	return resp, nil
 }

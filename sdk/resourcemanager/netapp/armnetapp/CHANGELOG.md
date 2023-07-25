@@ -1,5 +1,18 @@
 # Release History
 
+## 4.1.0 (2023-07-28)
+### Features Added
+
+- New value `RegionStorageToNetworkProximityAcrossT2`, `RegionStorageToNetworkProximityT1AndAcrossT2`, `RegionStorageToNetworkProximityT1AndT2AndAcrossT2`, `RegionStorageToNetworkProximityT2AndAcrossT2` added to enum type `RegionStorageToNetworkProximity`
+- New value `VolumeStorageToNetworkProximityAcrossT2` added to enum type `VolumeStorageToNetworkProximity`
+- New function `*VolumesClient.BeginListGetGroupIDListForLdapUser(context.Context, string, string, string, string, GetGroupIDListForLDAPUserRequest, *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*runtime.Poller[VolumesClientListGetGroupIDListForLdapUserResponse], error)`
+- New struct `GetGroupIDListForLDAPUserRequest`
+- New struct `GetGroupIDListForLDAPUserResponse`
+- New field `Identity` in struct `AccountPatch`
+- New field `SnapshotDirectoryVisible` in struct `VolumePatchProperties`
+- New field `ActualThroughputMibps`, `OriginatingResourceID` in struct `VolumeProperties`
+
+
 ## 4.0.0 (2023-03-24)
 ### Breaking Changes
 

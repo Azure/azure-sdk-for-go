@@ -58,17 +58,23 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if err != nil {
 		return nil, err
 	}
-	var o []confidential.Option
-	if options.SendCertificateChain {
-		o = append(o, confidential.WithX5C())
+	msalOpts := msalClientOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+		SendX5C:                  options.SendCertificateChain,
 	}
-	o = append(o, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
+	c, err := getConfidentialClient(clientID, tenantID, cred, msalOpts)
 	if err != nil {
 		return nil, err
 	}
 	cc := ClientCertificateCredential{client: c}
-	cc.s = newSyncer(credNameCert, tenantID, options.AdditionallyAllowedTenants, cc.requestToken, cc.silentAuth)
+	cc.s = newSyncer(
+		credNameCert,
+		tenantID,
+		cc.requestToken,
+		cc.silentAuth,
+		syncerOptions{AdditionallyAllowedTenants: options.AdditionallyAllowedTenants},
+	)
 	return &cc, nil
 }
 

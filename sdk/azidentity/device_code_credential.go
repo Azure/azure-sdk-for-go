@@ -87,14 +87,24 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		cp = *options
 	}
 	cp.init()
-	c, err := getPublicClient(
-		cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableInstanceDiscovery),
-	)
+	msalOpts := msalClientOptions{
+		ClientOptions:            cp.ClientOptions,
+		DisableInstanceDiscovery: cp.DisableInstanceDiscovery,
+	}
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, msalOpts)
 	if err != nil {
 		return nil, err
 	}
 	cred := DeviceCodeCredential{client: c, prompt: cp.UserPrompt}
-	cred.s = newSyncer(credNameDeviceCode, cp.TenantID, cp.AdditionallyAllowedTenants, cred.requestToken, cred.silentAuth)
+	cred.s = newSyncer(
+		credNameDeviceCode,
+		cp.TenantID,
+		cred.requestToken,
+		cred.silentAuth,
+		syncerOptions{
+			AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants,
+		},
+	)
 	return &cred, nil
 }
 

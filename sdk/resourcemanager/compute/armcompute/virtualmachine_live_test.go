@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -42,10 +43,10 @@ func (testsuite *VirtualMachineTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.adminUsername = testutil.GenerateAlphaNumericID(testsuite.T(), "vmuserna", 6)
-	testsuite.networkInterfaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmnic", 6)
-	testsuite.virtualNetworksName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmvnet", 6)
-	testsuite.vmName = testutil.GenerateAlphaNumericID(testsuite.T(), "vmname", 6)
+	testsuite.adminUsername, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmuserna", 14, true)
+	testsuite.networkInterfaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmnic", 11, false)
+	testsuite.virtualNetworksName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmvnet", 12, false)
+	testsuite.vmName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "vmname", 12, false)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

@@ -26,7 +26,7 @@
         },
         {
             "Name": "azidentity",
-            "CoverageGoal": 0.68
+            "CoverageGoal": 0.87
         },
         {
             "Name": "azqueue",
@@ -38,7 +38,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.45
+            "CoverageGoal": 0.39
         },
         {
             "Name": "aztemplate",
@@ -96,6 +96,10 @@
         {
             "Name": "monitor/azquery",
             "CoverageGoal": 0.85
+        },
+        {
+            "Name": "monitor/azingest",
+            "CoverageGoal": 0.75
         },
         {
             "Name": "security/keyvault/azadmin",

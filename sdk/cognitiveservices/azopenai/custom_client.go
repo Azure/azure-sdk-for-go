@@ -4,6 +4,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+// Package azopenai Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4,
+// GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
+//
+// The [Client] in this package can be used with Azure OpenAI or OpenAI.
 package azopenai
 
 // this file contains handwritten additions to the generated code
@@ -21,7 +25,6 @@ import (
 
 const (
 	clientName = "azopenai.Client"
-	apiVersion = "2023-03-15-preview"
 	tokenScope = "https://cognitiveservices.azure.com/.default"
 )
 
@@ -35,29 +38,33 @@ type ClientOptions struct {
 // NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests. Usually a credential from [github.com/Azure/azure-sdk-for-go/sdk/azidentity].
-//   - deploymentID - the deployment ID of the model to query
 //   - options - client options, pass nil to accept the default values.
-func NewClient(endpoint string, credential azcore.TokenCredential, deploymentID string, options *ClientOptions) (*Client, error) {
+func NewClient(endpoint string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{tokenScope}, nil)
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+
 	if err != nil {
 		return nil, err
 	}
 
-	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
-	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			endpoint: endpoint,
+			azure:    true,
+		},
+	}, nil
 }
 
 // NewClientWithKeyCredential creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests with an API Key credential
-//   - deploymentID - the deployment ID of the model to query
 //   - options - client options, pass nil to accept the default values.
-func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deploymentID string, options *ClientOptions) (*Client, error) {
+func NewClientWithKeyCredential(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -68,8 +75,13 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, deplo
 		return nil, err
 	}
 
-	fullEndpoint := formatAzureOpenAIURL(endpoint, deploymentID)
-	return &Client{endpoint: fullEndpoint, internal: azcoreClient}, nil
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			endpoint: endpoint,
+			azure:    true,
+		},
+	}, nil
 }
 
 // NewClientForOpenAI creates a new instance of Client which connects to the public OpenAI endpoint.
@@ -85,7 +97,14 @@ func NewClientForOpenAI(endpoint string, credential KeyCredential, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, internal: azcoreClient}, nil
+
+	return &Client{
+		internal: azcoreClient,
+		clientData: clientData{
+			endpoint: endpoint,
+			azure:    false,
+		},
+	}, nil
 }
 
 // openAIPolicy is an internal pipeline policy to remove the api-version query parameter
@@ -109,17 +128,20 @@ func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 // Methods that return streaming response
-
 type streamCompletionsOptions struct {
-	CompletionsOptions
+	// we strip out the 'stream' field from the options exposed to the customer so
+	// now we need to add it back in.
+	any
 	Stream bool `json:"stream"`
 }
 
 func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
-	bytes, err := o.CompletionsOptions.MarshalJSON()
+	bytes, err := json.Marshal(o.any)
+
 	if err != nil {
 		return nil, err
 	}
+
 	objectMap := make(map[string]any)
 	err = json.Unmarshal(bytes, &objectMap)
 	if err != nil {
@@ -133,13 +155,16 @@ func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsOptions, options *GetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
-	req, err := client.getCompletionsCreateRequest(ctx, CompletionsOptions{}, &GetCompletionsOptions{})
+	req, err := client.getCompletionsCreateRequest(ctx, body, &GetCompletionsOptions{})
 
 	if err != nil {
 		return GetCompletionsStreamResponse{}, err
 	}
 
-	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{body, true}); err != nil {
+	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{
+		any:    body,
+		Stream: true,
+	}); err != nil {
 		return GetCompletionsStreamResponse{}, err
 	}
 
@@ -160,7 +185,75 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	}, nil
 }
 
-func formatAzureOpenAIURL(endpoint, deploymentID string) string {
-	escapedDeplID := url.PathEscape(deploymentID)
-	return runtime.JoinPaths(endpoint, "openai", "deployments", escapedDeplID)
+// GetChatCompletionsStream - Return the chat completions for a given prompt as a sequence of events.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
+func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsStreamOptions) (GetChatCompletionsStreamResponse, error) {
+	req, err := client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
+
+	if err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{
+		any:    body,
+		Stream: true,
+	}); err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	runtime.SkipBodyDownload(req)
+
+	resp, err := client.internal.Pipeline().Do(req)
+
+	if err != nil {
+		return GetChatCompletionsStreamResponse{}, err
+	}
+
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return GetChatCompletionsStreamResponse{}, runtime.NewResponseError(resp)
+	}
+
+	return GetChatCompletionsStreamResponse{
+		ChatCompletionsStream: newEventReader[ChatCompletions](resp.Body),
+	}, nil
+}
+
+func (client *Client) formatURL(path string, deploymentID string) string {
+	switch path {
+	// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation
+	case "/images/generations:submit":
+		return runtime.JoinPaths(client.endpoint, "openai", path)
+	default:
+		if client.azure {
+			escapedDeplID := url.PathEscape(deploymentID)
+			return runtime.JoinPaths(client.endpoint, "openai", "deployments", escapedDeplID, path)
+		}
+
+		return runtime.JoinPaths(client.endpoint, path)
+	}
+}
+
+func (client *Client) newError(resp *http.Response) error {
+	return newContentFilterResponseError(resp)
+}
+
+type clientData struct {
+	endpoint string
+	azure    bool
+}
+
+func getDeploymentID[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions](v T) string {
+	switch a := any(v).(type) {
+	case ChatCompletionsOptions:
+		return a.DeploymentID
+	case CompletionsOptions:
+		return a.DeploymentID
+	case EmbeddingsOptions:
+		return a.DeploymentID
+	case ImageGenerationOptions:
+		return ""
+	default:
+		return ""
+	}
 }

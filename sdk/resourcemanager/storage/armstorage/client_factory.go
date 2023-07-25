@@ -37,33 +37,13 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSKUsClient() *SKUsClient {
-	subClient, _ := NewSKUsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	subClient, _ := NewAccountsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewDeletedAccountsClient() *DeletedAccountsClient {
-	subClient, _ := NewDeletedAccountsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewUsagesClient() *UsagesClient {
-	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewManagementPoliciesClient() *ManagementPoliciesClient {
-	subClient, _ := NewManagementPoliciesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewBlobContainersClient() *BlobContainersClient {
+	subClient, _ := NewBlobContainersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -72,38 +52,18 @@ func (c *ClientFactory) NewBlobInventoryPoliciesClient() *BlobInventoryPoliciesC
 	return subClient
 }
 
-func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewObjectReplicationPoliciesClient() *ObjectReplicationPoliciesClient {
-	subClient, _ := NewObjectReplicationPoliciesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewLocalUsersClient() *LocalUsersClient {
-	subClient, _ := NewLocalUsersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewEncryptionScopesClient() *EncryptionScopesClient {
-	subClient, _ := NewEncryptionScopesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewBlobServicesClient() *BlobServicesClient {
 	subClient, _ := NewBlobServicesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewBlobContainersClient() *BlobContainersClient {
-	subClient, _ := NewBlobContainersClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewDeletedAccountsClient() *DeletedAccountsClient {
+	subClient, _ := NewDeletedAccountsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewEncryptionScopesClient() *EncryptionScopesClient {
+	subClient, _ := NewEncryptionScopesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -117,8 +77,33 @@ func (c *ClientFactory) NewFileSharesClient() *FileSharesClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewQueueServicesClient() *QueueServicesClient {
-	subClient, _ := NewQueueServicesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewLocalUsersClient() *LocalUsersClient {
+	subClient, _ := NewLocalUsersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewManagementPoliciesClient() *ManagementPoliciesClient {
+	subClient, _ := NewManagementPoliciesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewObjectReplicationPoliciesClient() *ObjectReplicationPoliciesClient {
+	subClient, _ := NewObjectReplicationPoliciesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
+	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
+	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -127,12 +112,27 @@ func (c *ClientFactory) NewQueueClient() *QueueClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewTableServicesClient() *TableServicesClient {
-	subClient, _ := NewTableServicesClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewQueueServicesClient() *QueueServicesClient {
+	subClient, _ := NewQueueServicesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSKUsClient() *SKUsClient {
+	subClient, _ := NewSKUsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewTableClient() *TableClient {
 	subClient, _ := NewTableClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewTableServicesClient() *TableServicesClient {
+	subClient, _ := NewTableServicesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewUsagesClient() *UsagesClient {
+	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

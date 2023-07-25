@@ -99,7 +99,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 		return nil, err
 	}
 	m := ManagedIdentityCredential{client: c, mic: mic}
-	m.s = newSyncer(credNameManagedIdentity, "", nil, m.requestToken, m.silentAuth)
+	m.s = newSyncer(credNameManagedIdentity, "", m.requestToken, m.silentAuth, syncerOptions{})
 	return &m, nil
 }
 

@@ -54,10 +54,6 @@ func NewVirtualMachineExtensionImagesClient(subscriptionID string, credential az
 //     method.
 func (client *VirtualMachineExtensionImagesClient) Get(ctx context.Context, location string, publisherName string, typeParam string, version string, options *VirtualMachineExtensionImagesClientGetOptions) (VirtualMachineExtensionImagesClientGetResponse, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionImagesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, publisherName, typeParam, version, options)
 	if err != nil {
 		return VirtualMachineExtensionImagesClientGetResponse{}, err
@@ -126,10 +122,6 @@ func (client *VirtualMachineExtensionImagesClient) getHandleResponse(resp *http.
 //     method.
 func (client *VirtualMachineExtensionImagesClient) ListTypes(ctx context.Context, location string, publisherName string, options *VirtualMachineExtensionImagesClientListTypesOptions) (VirtualMachineExtensionImagesClientListTypesResponse, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionImagesClient.ListTypes"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listTypesCreateRequest(ctx, location, publisherName, options)
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListTypesResponse{}, err
@@ -190,10 +182,6 @@ func (client *VirtualMachineExtensionImagesClient) listTypesHandleResponse(resp 
 //     method.
 func (client *VirtualMachineExtensionImagesClient) ListVersions(ctx context.Context, location string, publisherName string, typeParam string, options *VirtualMachineExtensionImagesClientListVersionsOptions) (VirtualMachineExtensionImagesClientListVersionsResponse, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionImagesClient.ListVersions"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listVersionsCreateRequest(ctx, location, publisherName, typeParam, options)
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListVersionsResponse{}, err

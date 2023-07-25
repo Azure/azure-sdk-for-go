@@ -55,19 +55,24 @@ type ResourceGroupsServer struct {
 }
 
 // NewResourceGroupsServerTransport creates a new instance of ResourceGroupsServerTransport with the provided implementation.
-// The returned ResourceGroupsServerTransport instance is connected to an instance of armresources.ResourceGroupsClient by way of the
-// undefined.Transporter field.
+// The returned ResourceGroupsServerTransport instance is connected to an instance of armresources.ResourceGroupsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceGroupsServerTransport(srv *ResourceGroupsServer) *ResourceGroupsServerTransport {
-	return &ResourceGroupsServerTransport{srv: srv}
+	return &ResourceGroupsServerTransport{
+		srv:                 srv,
+		beginDelete:         newTracker[azfake.PollerResponder[armresources.ResourceGroupsClientDeleteResponse]](),
+		beginExportTemplate: newTracker[azfake.PollerResponder[armresources.ResourceGroupsClientExportTemplateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armresources.ResourceGroupsClientListResponse]](),
+	}
 }
 
 // ResourceGroupsServerTransport connects instances of armresources.ResourceGroupsClient to instances of ResourceGroupsServer.
 // Don't use this type directly, use NewResourceGroupsServerTransport instead.
 type ResourceGroupsServerTransport struct {
 	srv                 *ResourceGroupsServer
-	beginDelete         *azfake.PollerResponder[armresources.ResourceGroupsClientDeleteResponse]
-	beginExportTemplate *azfake.PollerResponder[armresources.ResourceGroupsClientExportTemplateResponse]
-	newListPager        *azfake.PagerResponder[armresources.ResourceGroupsClientListResponse]
+	beginDelete         *tracker[azfake.PollerResponder[armresources.ResourceGroupsClientDeleteResponse]]
+	beginExportTemplate *tracker[azfake.PollerResponder[armresources.ResourceGroupsClientExportTemplateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armresources.ResourceGroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceGroupsServerTransport.
@@ -173,7 +178,8 @@ func (r *ResourceGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if r.beginDelete == nil {
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -200,19 +206,21 @@ func (r *ResourceGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginDelete = &respr
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginDelete) {
-		r.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -222,7 +230,8 @@ func (r *ResourceGroupsServerTransport) dispatchBeginExportTemplate(req *http.Re
 	if r.srv.BeginExportTemplate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginExportTemplate not implemented")}
 	}
-	if r.beginExportTemplate == nil {
+	beginExportTemplate := r.beginExportTemplate.get(req)
+	if beginExportTemplate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -241,19 +250,21 @@ func (r *ResourceGroupsServerTransport) dispatchBeginExportTemplate(req *http.Re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		r.beginExportTemplate = &respr
+		beginExportTemplate = &respr
+		r.beginExportTemplate.add(req, beginExportTemplate)
 	}
 
-	resp, err := server.PollerResponderNext(r.beginExportTemplate, req)
+	resp, err := server.PollerResponderNext(beginExportTemplate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginExportTemplate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(r.beginExportTemplate) {
-		r.beginExportTemplate = nil
+	if !server.PollerResponderMore(beginExportTemplate) {
+		r.beginExportTemplate.remove(req)
 	}
 
 	return resp, nil
@@ -292,7 +303,8 @@ func (r *ResourceGroupsServerTransport) dispatchNewListPager(req *http.Request) 
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if r.newListPager == nil {
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -327,20 +339,22 @@ func (r *ResourceGroupsServerTransport) dispatchNewListPager(req *http.Request) 
 			}
 		}
 		resp := r.srv.NewListPager(options)
-		r.newListPager = &resp
-		server.PagerResponderInjectNextLinks(r.newListPager, req, func(page *armresources.ResourceGroupsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.ResourceGroupsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(r.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(r.newListPager) {
-		r.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

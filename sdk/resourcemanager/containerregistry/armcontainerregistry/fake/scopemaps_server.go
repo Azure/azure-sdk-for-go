@@ -46,20 +46,26 @@ type ScopeMapsServer struct {
 }
 
 // NewScopeMapsServerTransport creates a new instance of ScopeMapsServerTransport with the provided implementation.
-// The returned ScopeMapsServerTransport instance is connected to an instance of armcontainerregistry.ScopeMapsClient by way of the
-// undefined.Transporter field.
+// The returned ScopeMapsServerTransport instance is connected to an instance of armcontainerregistry.ScopeMapsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScopeMapsServerTransport(srv *ScopeMapsServer) *ScopeMapsServerTransport {
-	return &ScopeMapsServerTransport{srv: srv}
+	return &ScopeMapsServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
+	}
 }
 
 // ScopeMapsServerTransport connects instances of armcontainerregistry.ScopeMapsClient to instances of ScopeMapsServer.
 // Don't use this type directly, use NewScopeMapsServerTransport instead.
 type ScopeMapsServerTransport struct {
 	srv          *ScopeMapsServer
-	beginCreate  *azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]
-	beginDelete  *azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]
-	beginUpdate  *azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScopeMapsServerTransport.
@@ -99,7 +105,8 @@ func (s *ScopeMapsServerTransport) dispatchBeginCreate(req *http.Request) (*http
 	if s.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if s.beginCreate == nil {
+	beginCreate := s.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -126,19 +133,21 @@ func (s *ScopeMapsServerTransport) dispatchBeginCreate(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginCreate = &respr
+		beginCreate = &respr
+		s.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		s.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginCreate) {
-		s.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		s.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -148,7 +157,8 @@ func (s *ScopeMapsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if s.beginDelete == nil {
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -171,19 +181,21 @@ func (s *ScopeMapsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginDelete = &respr
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginDelete) {
-		s.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -230,7 +242,8 @@ func (s *ScopeMapsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if s.newListPager == nil {
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -246,20 +259,22 @@ func (s *ScopeMapsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 			return nil, err
 		}
 		resp := s.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		s.newListPager = &resp
-		server.PagerResponderInjectNextLinks(s.newListPager, req, func(page *armcontainerregistry.ScopeMapsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ScopeMapsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(s.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(s.newListPager) {
-		s.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -268,7 +283,8 @@ func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if s.beginUpdate == nil {
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scopeMaps/(?P<scopeMapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -295,19 +311,21 @@ func (s *ScopeMapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		s.beginUpdate = &respr
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(s.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(s.beginUpdate) {
-		s.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
 	}
 
 	return resp, nil

@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -98,7 +97,7 @@ func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error) erro
 		var awErr amqpwrap.Error
 
 		if !errors.As(err, &awErr) {
-			log.Writef(exported.EventConn, "RecoveryKindLink, but not an amqpwrap.Error: %T,%v", err, err)
+			azlog.Writef(exported.EventConn, "RecoveryKindLink, but not an amqpwrap.Error: %T,%v", err, err)
 			return nil
 		}
 
@@ -112,7 +111,7 @@ func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error) erro
 		var awErr amqpwrap.Error
 
 		if !errors.As(err, &awErr) {
-			log.Writef(exported.EventConn, "RecoveryKindConn, but not an amqpwrap.Error: %T,%v", err, err)
+			azlog.Writef(exported.EventConn, "RecoveryKindConn, but not an amqpwrap.Error: %T,%v", err, err)
 			return nil
 		}
 

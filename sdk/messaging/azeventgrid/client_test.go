@@ -25,11 +25,8 @@ func TestFailedAck(t *testing.T) {
 	ce, err := messaging.NewCloudEvent("hello-source", "world", []byte("ack this one"), nil)
 	require.NoError(t, err)
 
-	pubResp, err := c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
+	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
-
-	// just documenting this, I don't think the return value is useful.
-	require.Equal(t, map[string]interface{}{}, pubResp.Interface)
 
 	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
@@ -38,21 +35,21 @@ func TestFailedAck(t *testing.T) {
 	require.NoError(t, err)
 
 	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
-		LockTokens: []*string{recvResp.Value[0].BrokerProperties.LockToken},
+		LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
-	require.Equal(t, []*string{recvResp.Value[0].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+	require.Equal(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 
 	// now let's try to do stuff with an "out of date" token
 	t.Run("AcknowledgeCloudEvents", func(t *testing.T) {
 		resp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
-			LockTokens: []*string{recvResp.Value[0].BrokerProperties.LockToken},
+			LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
 		}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -63,12 +60,12 @@ func TestFailedAck(t *testing.T) {
 
 	t.Run("RejectCloudEvents", func(t *testing.T) {
 		resp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.RejectOptions{
-			LockTokens: []*string{recvResp.Value[0].BrokerProperties.LockToken},
+			LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
 		}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -77,14 +74,14 @@ func TestFailedAck(t *testing.T) {
 		}, resp.FailedLockTokens)
 	})
 
-	t.Run("AcknowledgeCloudEvents", func(t *testing.T) {
+	t.Run("ReleaseCloudEvents", func(t *testing.T) {
 		resp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.ReleaseOptions{
-			LockTokens: []*string{recvResp.Value[0].BrokerProperties.LockToken},
+			LockTokens: []string{*recvResp.Value[0].BrokerProperties.LockToken},
 		}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
 		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []*azeventgrid.FailedLockToken{
+		require.Equal(t, []azeventgrid.FailedLockToken{
 			{
 				LockToken:        recvResp.Value[0].BrokerProperties.LockToken,
 				ErrorCode:        to.Ptr("TokenLost"),
@@ -113,27 +110,27 @@ func TestPartialAckFailure(t *testing.T) {
 
 	// we'll ack one now so we can force a failure to happen.
 	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
-		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+		LockTokens: []string{*events.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
 
 	// this will result in a partial failure.
 	ackResp, err = c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
-		LockTokens: []*string{
-			events.Value[0].BrokerProperties.LockToken,
-			events.Value[1].BrokerProperties.LockToken,
+		LockTokens: []string{
+			*events.Value[0].BrokerProperties.LockToken,
+			*events.Value[1].BrokerProperties.LockToken,
 		},
 	}, nil)
 	require.NoError(t, err)
-	require.Equal(t, []*azeventgrid.FailedLockToken{
+	require.Equal(t, []azeventgrid.FailedLockToken{
 		{
 			LockToken:        events.Value[0].BrokerProperties.LockToken,
 			ErrorCode:        to.Ptr("TokenLost"),
 			ErrorDescription: to.Ptr("Token has expired."),
 		},
 	}, ackResp.FailedLockTokens)
-	require.Equal(t, []*string{events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
+	require.Equal(t, []string{*events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
 func TestReject(t *testing.T) {
@@ -158,7 +155,7 @@ func TestReject(t *testing.T) {
 	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
 	rejectResp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.RejectOptions{
-		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+		LockTokens: []string{*events.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
 	require.Empty(t, rejectResp.FailedLockTokens)
@@ -188,7 +185,7 @@ func TestRelease(t *testing.T) {
 	require.Equal(t, int32(1), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount starts at 1")
 
 	rejectResp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.ReleaseOptions{
-		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+		LockTokens: []string{*events.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
 	require.Empty(t, rejectResp.FailedLockTokens)
@@ -198,7 +195,7 @@ func TestRelease(t *testing.T) {
 
 	require.Equal(t, int32(2), *events.Value[0].BrokerProperties.DeliveryCount, "DeliveryCount is incremented")
 	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, azeventgrid.AcknowledgeOptions{
-		LockTokens: []*string{events.Value[0].BrokerProperties.LockToken},
+		LockTokens: []string{*events.Value[0].BrokerProperties.LockToken},
 	}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ackResp.FailedLockTokens)
@@ -270,7 +267,7 @@ func TestPublishingAndReceivingCloudEvents(t *testing.T) {
 
 	for _, e := range resp.Value {
 		require.NotNil(t, e.BrokerProperties.LockToken)
-		ackArgs.LockTokens = append(ackArgs.LockTokens, e.BrokerProperties.LockToken)
+		ackArgs.LockTokens = append(ackArgs.LockTokens, *e.BrokerProperties.LockToken)
 	}
 
 	ackResp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, ackArgs, nil)

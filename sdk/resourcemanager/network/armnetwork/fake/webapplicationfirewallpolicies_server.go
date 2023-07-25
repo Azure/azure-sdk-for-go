@@ -46,19 +46,24 @@ type WebApplicationFirewallPoliciesServer struct {
 }
 
 // NewWebApplicationFirewallPoliciesServerTransport creates a new instance of WebApplicationFirewallPoliciesServerTransport with the provided implementation.
-// The returned WebApplicationFirewallPoliciesServerTransport instance is connected to an instance of armnetwork.WebApplicationFirewallPoliciesClient by way of the
-// undefined.Transporter field.
+// The returned WebApplicationFirewallPoliciesServerTransport instance is connected to an instance of armnetwork.WebApplicationFirewallPoliciesClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebApplicationFirewallPoliciesServerTransport(srv *WebApplicationFirewallPoliciesServer) *WebApplicationFirewallPoliciesServerTransport {
-	return &WebApplicationFirewallPoliciesServerTransport{srv: srv}
+	return &WebApplicationFirewallPoliciesServerTransport{
+		srv:             srv,
+		beginDelete:     newTracker[azfake.PollerResponder[armnetwork.WebApplicationFirewallPoliciesClientDeleteResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListAllResponse]](),
+	}
 }
 
 // WebApplicationFirewallPoliciesServerTransport connects instances of armnetwork.WebApplicationFirewallPoliciesClient to instances of WebApplicationFirewallPoliciesServer.
 // Don't use this type directly, use NewWebApplicationFirewallPoliciesServerTransport instead.
 type WebApplicationFirewallPoliciesServerTransport struct {
 	srv             *WebApplicationFirewallPoliciesServer
-	beginDelete     *azfake.PollerResponder[armnetwork.WebApplicationFirewallPoliciesClientDeleteResponse]
-	newListPager    *azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListResponse]
-	newListAllPager *azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListAllResponse]
+	beginDelete     *tracker[azfake.PollerResponder[armnetwork.WebApplicationFirewallPoliciesClientDeleteResponse]]
+	newListPager    *tracker[azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListResponse]]
+	newListAllPager *tracker[azfake.PagerResponder[armnetwork.WebApplicationFirewallPoliciesClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebApplicationFirewallPoliciesServerTransport.
@@ -135,7 +140,8 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchBeginDelete(req 
 	if w.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if w.beginDelete == nil {
+	beginDelete := w.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -154,19 +160,21 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchBeginDelete(req 
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		w.beginDelete = &respr
+		beginDelete = &respr
+		w.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(w.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(w.beginDelete) {
-		w.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		w.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -209,7 +217,8 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchNewListPager(req
 	if w.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if w.newListPager == nil {
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -221,20 +230,22 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchNewListPager(req
 			return nil, err
 		}
 		resp := w.srv.NewListPager(resourceGroupNameUnescaped, nil)
-		w.newListPager = &resp
-		server.PagerResponderInjectNextLinks(w.newListPager, req, func(page *armnetwork.WebApplicationFirewallPoliciesClientListResponse, createLink func() string) {
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.WebApplicationFirewallPoliciesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(w.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListPager) {
-		w.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -243,7 +254,8 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchNewListAllPager(
 	if w.srv.NewListAllPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	if w.newListAllPager == nil {
+	newListAllPager := w.newListAllPager.get(req)
+	if newListAllPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -251,20 +263,22 @@ func (w *WebApplicationFirewallPoliciesServerTransport) dispatchNewListAllPager(
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListAllPager(nil)
-		w.newListAllPager = &resp
-		server.PagerResponderInjectNextLinks(w.newListAllPager, req, func(page *armnetwork.WebApplicationFirewallPoliciesClientListAllResponse, createLink func() string) {
+		newListAllPager = &resp
+		w.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.WebApplicationFirewallPoliciesClientListAllResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(w.newListAllPager, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(w.newListAllPager) {
-		w.newListAllPager = nil
+	if !server.PagerResponderMore(newListAllPager) {
+		w.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

@@ -63,23 +63,32 @@ type VirtualHubsServer struct {
 }
 
 // NewVirtualHubsServerTransport creates a new instance of VirtualHubsServerTransport with the provided implementation.
-// The returned VirtualHubsServerTransport instance is connected to an instance of armnetwork.VirtualHubsClient by way of the
-// undefined.Transporter field.
+// The returned VirtualHubsServerTransport instance is connected to an instance of armnetwork.VirtualHubsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualHubsServerTransport(srv *VirtualHubsServer) *VirtualHubsServerTransport {
-	return &VirtualHubsServerTransport{srv: srv}
+	return &VirtualHubsServerTransport{
+		srv:                               srv,
+		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientCreateOrUpdateResponse]](),
+		beginDelete:                       newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientDeleteResponse]](),
+		beginGetEffectiveVirtualHubRoutes: newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]](),
+		beginGetInboundRoutes:             newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetInboundRoutesResponse]](),
+		beginGetOutboundRoutes:            newTracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]](),
+		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse]](),
+	}
 }
 
 // VirtualHubsServerTransport connects instances of armnetwork.VirtualHubsClient to instances of VirtualHubsServer.
 // Don't use this type directly, use NewVirtualHubsServerTransport instead.
 type VirtualHubsServerTransport struct {
 	srv                               *VirtualHubsServer
-	beginCreateOrUpdate               *azfake.PollerResponder[armnetwork.VirtualHubsClientCreateOrUpdateResponse]
-	beginDelete                       *azfake.PollerResponder[armnetwork.VirtualHubsClientDeleteResponse]
-	beginGetEffectiveVirtualHubRoutes *azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]
-	beginGetInboundRoutes             *azfake.PollerResponder[armnetwork.VirtualHubsClientGetInboundRoutesResponse]
-	beginGetOutboundRoutes            *azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse]
-	newListPager                      *azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]
-	newListByResourceGroupPager       *azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse]
+	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientCreateOrUpdateResponse]]
+	beginDelete                       *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientDeleteResponse]]
+	beginGetEffectiveVirtualHubRoutes *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]]
+	beginGetInboundRoutes             *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetInboundRoutesResponse]]
+	beginGetOutboundRoutes            *tracker[azfake.PollerResponder[armnetwork.VirtualHubsClientGetOutboundRoutesResponse]]
+	newListPager                      *tracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListResponse]]
+	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armnetwork.VirtualHubsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualHubsServerTransport.
@@ -127,7 +136,8 @@ func (v *VirtualHubsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	if v.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if v.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -150,19 +160,21 @@ func (v *VirtualHubsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		v.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginCreateOrUpdate) {
-		v.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		v.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -172,7 +184,8 @@ func (v *VirtualHubsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	if v.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if v.beginDelete == nil {
+	beginDelete := v.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -191,19 +204,21 @@ func (v *VirtualHubsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginDelete = &respr
+		beginDelete = &respr
+		v.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginDelete) {
-		v.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		v.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -246,7 +261,8 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetEffectiveVirtualHubRoutes(r
 	if v.srv.BeginGetEffectiveVirtualHubRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetEffectiveVirtualHubRoutes not implemented")}
 	}
-	if v.beginGetEffectiveVirtualHubRoutes == nil {
+	beginGetEffectiveVirtualHubRoutes := v.beginGetEffectiveVirtualHubRoutes.get(req)
+	if beginGetEffectiveVirtualHubRoutes == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/effectiveRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -275,19 +291,21 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetEffectiveVirtualHubRoutes(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginGetEffectiveVirtualHubRoutes = &respr
+		beginGetEffectiveVirtualHubRoutes = &respr
+		v.beginGetEffectiveVirtualHubRoutes.add(req, beginGetEffectiveVirtualHubRoutes)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginGetEffectiveVirtualHubRoutes, req)
+	resp, err := server.PollerResponderNext(beginGetEffectiveVirtualHubRoutes, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetEffectiveVirtualHubRoutes.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginGetEffectiveVirtualHubRoutes) {
-		v.beginGetEffectiveVirtualHubRoutes = nil
+	if !server.PollerResponderMore(beginGetEffectiveVirtualHubRoutes) {
+		v.beginGetEffectiveVirtualHubRoutes.remove(req)
 	}
 
 	return resp, nil
@@ -297,7 +315,8 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetInboundRoutes(req *http.Req
 	if v.srv.BeginGetInboundRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetInboundRoutes not implemented")}
 	}
-	if v.beginGetInboundRoutes == nil {
+	beginGetInboundRoutes := v.beginGetInboundRoutes.get(req)
+	if beginGetInboundRoutes == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inboundRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -320,19 +339,21 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetInboundRoutes(req *http.Req
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginGetInboundRoutes = &respr
+		beginGetInboundRoutes = &respr
+		v.beginGetInboundRoutes.add(req, beginGetInboundRoutes)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginGetInboundRoutes, req)
+	resp, err := server.PollerResponderNext(beginGetInboundRoutes, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetInboundRoutes.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginGetInboundRoutes) {
-		v.beginGetInboundRoutes = nil
+	if !server.PollerResponderMore(beginGetInboundRoutes) {
+		v.beginGetInboundRoutes.remove(req)
 	}
 
 	return resp, nil
@@ -342,7 +363,8 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetOutboundRoutes(req *http.Re
 	if v.srv.BeginGetOutboundRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetOutboundRoutes not implemented")}
 	}
-	if v.beginGetOutboundRoutes == nil {
+	beginGetOutboundRoutes := v.beginGetOutboundRoutes.get(req)
+	if beginGetOutboundRoutes == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs/(?P<virtualHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundRoutes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -365,19 +387,21 @@ func (v *VirtualHubsServerTransport) dispatchBeginGetOutboundRoutes(req *http.Re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		v.beginGetOutboundRoutes = &respr
+		beginGetOutboundRoutes = &respr
+		v.beginGetOutboundRoutes.add(req, beginGetOutboundRoutes)
 	}
 
-	resp, err := server.PollerResponderNext(v.beginGetOutboundRoutes, req)
+	resp, err := server.PollerResponderNext(beginGetOutboundRoutes, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetOutboundRoutes.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(v.beginGetOutboundRoutes) {
-		v.beginGetOutboundRoutes = nil
+	if !server.PollerResponderMore(beginGetOutboundRoutes) {
+		v.beginGetOutboundRoutes.remove(req)
 	}
 
 	return resp, nil
@@ -387,7 +411,8 @@ func (v *VirtualHubsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if v.newListPager == nil {
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -395,20 +420,22 @@ func (v *VirtualHubsServerTransport) dispatchNewListPager(req *http.Request) (*h
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := v.srv.NewListPager(nil)
-		v.newListPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListPager, req, func(page *armnetwork.VirtualHubsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualHubsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListPager) {
-		v.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -417,7 +444,8 @@ func (v *VirtualHubsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if v.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := v.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/virtualHubs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -429,20 +457,22 @@ func (v *VirtualHubsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 			return nil, err
 		}
 		resp := v.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		v.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(v.newListByResourceGroupPager, req, func(page *armnetwork.VirtualHubsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		v.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.VirtualHubsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(v.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(v.newListByResourceGroupPager) {
-		v.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		v.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

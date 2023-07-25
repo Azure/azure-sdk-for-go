@@ -70,26 +70,38 @@ type P2SVPNGatewaysServer struct {
 }
 
 // NewP2SVPNGatewaysServerTransport creates a new instance of P2SVPNGatewaysServerTransport with the provided implementation.
-// The returned P2SVPNGatewaysServerTransport instance is connected to an instance of armnetwork.P2SVPNGatewaysClient by way of the
-// undefined.Transporter field.
+// The returned P2SVPNGatewaysServerTransport instance is connected to an instance of armnetwork.P2SVPNGatewaysClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewP2SVPNGatewaysServerTransport(srv *P2SVPNGatewaysServer) *P2SVPNGatewaysServerTransport {
-	return &P2SVPNGatewaysServerTransport{srv: srv}
+	return &P2SVPNGatewaysServerTransport{
+		srv:                                    srv,
+		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientCreateOrUpdateResponse]](),
+		beginDelete:                            newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDeleteResponse]](),
+		beginDisconnectP2SVPNConnections:       newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse]](),
+		beginGenerateVPNProfile:                newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse]](),
+		beginGetP2SVPNConnectionHealth:         newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse]](),
+		beginGetP2SVPNConnectionHealthDetailed: newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]](),
+		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]](),
+		beginReset:                             newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse]](),
+		beginUpdateTags:                        newTracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse]](),
+	}
 }
 
 // P2SVPNGatewaysServerTransport connects instances of armnetwork.P2SVPNGatewaysClient to instances of P2SVPNGatewaysServer.
 // Don't use this type directly, use NewP2SVPNGatewaysServerTransport instead.
 type P2SVPNGatewaysServerTransport struct {
 	srv                                    *P2SVPNGatewaysServer
-	beginCreateOrUpdate                    *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientCreateOrUpdateResponse]
-	beginDelete                            *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDeleteResponse]
-	beginDisconnectP2SVPNConnections       *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse]
-	beginGenerateVPNProfile                *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse]
-	beginGetP2SVPNConnectionHealth         *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse]
-	beginGetP2SVPNConnectionHealthDetailed *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse]
-	newListPager                           *azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]
-	newListByResourceGroupPager            *azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]
-	beginReset                             *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse]
-	beginUpdateTags                        *azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse]
+	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientCreateOrUpdateResponse]]
+	beginDelete                            *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDeleteResponse]]
+	beginDisconnectP2SVPNConnections       *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse]]
+	beginGenerateVPNProfile                *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGenerateVPNProfileResponse]]
+	beginGetP2SVPNConnectionHealth         *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse]]
+	beginGetP2SVPNConnectionHealthDetailed *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListResponse]]
+	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse]]
+	beginReset                             *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientResetResponse]]
+	beginUpdateTags                        *tracker[azfake.PollerResponder[armnetwork.P2SVPNGatewaysClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for P2SVPNGatewaysServerTransport.
@@ -141,7 +153,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	if p.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if p.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -164,19 +177,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginCreateOrUpdate) {
-		p.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		p.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -186,7 +201,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (
 	if p.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if p.beginDelete == nil {
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -205,19 +221,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDelete(req *http.Request) (
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDelete = &respr
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDelete) {
-		p.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -227,7 +245,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDisconnectP2SVPNConnections
 	if p.srv.BeginDisconnectP2SVPNConnections == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDisconnectP2SVPNConnections not implemented")}
 	}
-	if p.beginDisconnectP2SVPNConnections == nil {
+	beginDisconnectP2SVPNConnections := p.beginDisconnectP2SVPNConnections.get(req)
+	if beginDisconnectP2SVPNConnections == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<p2sVpnGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnectP2sVpnConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -250,19 +269,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginDisconnectP2SVPNConnections
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginDisconnectP2SVPNConnections = &respr
+		beginDisconnectP2SVPNConnections = &respr
+		p.beginDisconnectP2SVPNConnections.add(req, beginDisconnectP2SVPNConnections)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginDisconnectP2SVPNConnections, req)
+	resp, err := server.PollerResponderNext(beginDisconnectP2SVPNConnections, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginDisconnectP2SVPNConnections.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginDisconnectP2SVPNConnections) {
-		p.beginDisconnectP2SVPNConnections = nil
+	if !server.PollerResponderMore(beginDisconnectP2SVPNConnections) {
+		p.beginDisconnectP2SVPNConnections.remove(req)
 	}
 
 	return resp, nil
@@ -272,7 +293,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *htt
 	if p.srv.BeginGenerateVPNProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGenerateVPNProfile not implemented")}
 	}
-	if p.beginGenerateVPNProfile == nil {
+	beginGenerateVPNProfile := p.beginGenerateVPNProfile.get(req)
+	if beginGenerateVPNProfile == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatevpnprofile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -295,19 +317,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGenerateVPNProfile(req *htt
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginGenerateVPNProfile = &respr
+		beginGenerateVPNProfile = &respr
+		p.beginGenerateVPNProfile.add(req, beginGenerateVPNProfile)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginGenerateVPNProfile, req)
+	resp, err := server.PollerResponderNext(beginGenerateVPNProfile, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginGenerateVPNProfile.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginGenerateVPNProfile) {
-		p.beginGenerateVPNProfile = nil
+	if !server.PollerResponderMore(beginGenerateVPNProfile) {
+		p.beginGenerateVPNProfile.remove(req)
 	}
 
 	return resp, nil
@@ -350,7 +374,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealth(r
 	if p.srv.BeginGetP2SVPNConnectionHealth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetP2SVPNConnectionHealth not implemented")}
 	}
-	if p.beginGetP2SVPNConnectionHealth == nil {
+	beginGetP2SVPNConnectionHealth := p.beginGetP2SVPNConnectionHealth.get(req)
+	if beginGetP2SVPNConnectionHealth == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getP2sVpnConnectionHealth`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -369,19 +394,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealth(r
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginGetP2SVPNConnectionHealth = &respr
+		beginGetP2SVPNConnectionHealth = &respr
+		p.beginGetP2SVPNConnectionHealth.add(req, beginGetP2SVPNConnectionHealth)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginGetP2SVPNConnectionHealth, req)
+	resp, err := server.PollerResponderNext(beginGetP2SVPNConnectionHealth, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginGetP2SVPNConnectionHealth.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginGetP2SVPNConnectionHealth) {
-		p.beginGetP2SVPNConnectionHealth = nil
+	if !server.PollerResponderMore(beginGetP2SVPNConnectionHealth) {
+		p.beginGetP2SVPNConnectionHealth.remove(req)
 	}
 
 	return resp, nil
@@ -391,7 +418,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDe
 	if p.srv.BeginGetP2SVPNConnectionHealthDetailed == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetP2SVPNConnectionHealthDetailed not implemented")}
 	}
-	if p.beginGetP2SVPNConnectionHealthDetailed == nil {
+	beginGetP2SVPNConnectionHealthDetailed := p.beginGetP2SVPNConnectionHealthDetailed.get(req)
+	if beginGetP2SVPNConnectionHealthDetailed == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getP2sVpnConnectionHealthDetailed`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -414,19 +442,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginGetP2SVPNConnectionHealthDe
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginGetP2SVPNConnectionHealthDetailed = &respr
+		beginGetP2SVPNConnectionHealthDetailed = &respr
+		p.beginGetP2SVPNConnectionHealthDetailed.add(req, beginGetP2SVPNConnectionHealthDetailed)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginGetP2SVPNConnectionHealthDetailed, req)
+	resp, err := server.PollerResponderNext(beginGetP2SVPNConnectionHealthDetailed, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginGetP2SVPNConnectionHealthDetailed.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginGetP2SVPNConnectionHealthDetailed) {
-		p.beginGetP2SVPNConnectionHealthDetailed = nil
+	if !server.PollerResponderMore(beginGetP2SVPNConnectionHealthDetailed) {
+		p.beginGetP2SVPNConnectionHealthDetailed.remove(req)
 	}
 
 	return resp, nil
@@ -436,7 +466,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) 
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if p.newListPager == nil {
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -444,20 +475,22 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListPager(req *http.Request) 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListPager(nil)
-		p.newListPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListPager, req, func(page *armnetwork.P2SVPNGatewaysClientListResponse, createLink func() string) {
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.P2SVPNGatewaysClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListPager) {
-		p.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -466,7 +499,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req 
 	if p.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if p.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -478,20 +512,22 @@ func (p *P2SVPNGatewaysServerTransport) dispatchNewListByResourceGroupPager(req 
 			return nil, err
 		}
 		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		p.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(p.newListByResourceGroupPager, req, func(page *armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.P2SVPNGatewaysClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(p.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(p.newListByResourceGroupPager) {
-		p.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -500,7 +536,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*
 	if p.srv.BeginReset == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReset not implemented")}
 	}
-	if p.beginReset == nil {
+	beginReset := p.beginReset.get(req)
+	if beginReset == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reset`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -519,19 +556,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginReset(req *http.Request) (*
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginReset = &respr
+		beginReset = &respr
+		p.beginReset.add(req, beginReset)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginReset, req)
+	resp, err := server.PollerResponderNext(beginReset, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginReset.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginReset) {
-		p.beginReset = nil
+	if !server.PollerResponderMore(beginReset) {
+		p.beginReset.remove(req)
 	}
 
 	return resp, nil
@@ -541,7 +580,8 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Reques
 	if p.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
-	if p.beginUpdateTags == nil {
+	beginUpdateTags := p.beginUpdateTags.get(req)
+	if beginUpdateTags == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/p2svpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -564,19 +604,21 @@ func (p *P2SVPNGatewaysServerTransport) dispatchBeginUpdateTags(req *http.Reques
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		p.beginUpdateTags = &respr
+		beginUpdateTags = &respr
+		p.beginUpdateTags.add(req, beginUpdateTags)
 	}
 
-	resp, err := server.PollerResponderNext(p.beginUpdateTags, req)
+	resp, err := server.PollerResponderNext(beginUpdateTags, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdateTags.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(p.beginUpdateTags) {
-		p.beginUpdateTags = nil
+	if !server.PollerResponderMore(beginUpdateTags) {
+		p.beginUpdateTags.remove(req)
 	}
 
 	return resp, nil

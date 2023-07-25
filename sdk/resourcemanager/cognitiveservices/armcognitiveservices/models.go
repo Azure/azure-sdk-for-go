@@ -56,6 +56,18 @@ type APIProperties struct {
 	WebsiteName *string
 }
 
+// AbusePenalty - The abuse penalty.
+type AbusePenalty struct {
+	// The action of AbusePenalty.
+	Action *AbusePenaltyAction
+
+	// The datetime of expiration of the AbusePenalty.
+	Expiration *time.Time
+
+	// The percentage of rate limit.
+	RateLimitPercentage *float32
+}
+
 // Account - Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and
 // SKU.
 type Account struct {
@@ -119,6 +131,9 @@ type AccountModel struct {
 	// Deployment model format.
 	Format *string
 
+	// If the model is default version.
+	IsDefaultVersion *bool
+
 	// Model lifecycle status.
 	LifecycleStatus *ModelLifecycleStatus
 
@@ -128,7 +143,15 @@ type AccountModel struct {
 	// Deployment model name.
 	Name *string
 
-	// Deployment model version.
+	// The list of Model Sku.
+	SKUs []*ModelSKU
+
+	// Optional. Deployment model source ARM resource ID.
+	Source *string
+
+	// Optional. Deployment model version. If version is not specified, a default version will be assigned. The default version
+	// is different for different models and might change when there is new version
+	// available for a model. Default version for a model could be found from list models API.
 	Version *string
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
@@ -179,6 +202,9 @@ type AccountProperties struct {
 
 	// The storage accounts for this resource.
 	UserOwnedStorage []*UserOwnedStorage
+
+	// READ-ONLY; The abuse penalty.
+	AbusePenalty *AbusePenalty
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
 	CallRateLimit *CallRateLimit
@@ -323,6 +349,21 @@ type CallRateLimit struct {
 	// The renewal period in seconds of Call Rate Limit.
 	RenewalPeriod *float32
 	Rules         []*ThrottlingRule
+}
+
+// CapacityConfig - The capacity configuration.
+type CapacityConfig struct {
+	// The default capacity.
+	Default *int32
+
+	// The maximum capacity.
+	Maximum *int32
+
+	// The minimum capacity.
+	Minimum *int32
+
+	// The minimal incremental between allowed values for capacity.
+	Step *int32
 }
 
 // CheckDomainAvailabilityParameter - Check Domain availability parameter.
@@ -487,6 +528,9 @@ type CommitmentPlanProperties struct {
 	// READ-ONLY; Cognitive Services account commitment period.
 	Last *CommitmentPeriod
 
+	// READ-ONLY; The list of ProvisioningIssue.
+	ProvisioningIssues []*string
+
 	// READ-ONLY; Gets the status of the resource at the time the operation was called.
 	ProvisioningState *CommitmentPlanProvisioningState
 }
@@ -648,6 +692,9 @@ type Deployment struct {
 	// Properties of Cognitive Services account deployment.
 	Properties *DeploymentProperties
 
+	// The resource model definition representing SKU
+	SKU *SKU
+
 	// READ-ONLY; Resource Etag.
 	Etag *string
 
@@ -681,7 +728,12 @@ type DeploymentModel struct {
 	// Deployment model name.
 	Name *string
 
-	// Deployment model version.
+	// Optional. Deployment model source ARM resource ID.
+	Source *string
+
+	// Optional. Deployment model version. If version is not specified, a default version will be assigned. The default version
+	// is different for different models and might change when there is new version
+	// available for a model. Default version for a model could be found from list models API.
 	Version *string
 
 	// READ-ONLY; The call rate limit Cognitive Services account.
@@ -699,6 +751,9 @@ type DeploymentProperties struct {
 	// Properties of Cognitive Services account deployment model.
 	ScaleSettings *DeploymentScaleSettings
 
+	// Deployment model version upgrade option.
+	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
+
 	// READ-ONLY; The call rate limit Cognitive Services account.
 	CallRateLimit *CallRateLimit
 
@@ -707,6 +762,9 @@ type DeploymentProperties struct {
 
 	// READ-ONLY; Gets the status of the resource at the time the operation was called.
 	ProvisioningState *DeploymentProvisioningState
+
+	// READ-ONLY
+	RateLimits []*ThrottlingRule
 }
 
 // DeploymentScaleSettings - Properties of Cognitive Services account deployment model.
@@ -864,6 +922,18 @@ type MetricName struct {
 	Value *string
 }
 
+// Model - Cognitive Services Model.
+type Model struct {
+	// The Kind of the Model.
+	Kind *string
+
+	// Model Metadata.
+	Model *AccountModel
+
+	// The SKU of the Model.
+	SKUName *string
+}
+
 // ModelDeprecationInfo - Cognitive Services account ModelDeprecationInfo.
 type ModelDeprecationInfo struct {
 	// The datetime of deprecation of the fineTune Model.
@@ -871,6 +941,38 @@ type ModelDeprecationInfo struct {
 
 	// The datetime of deprecation of the inference Model.
 	Inference *string
+}
+
+// ModelListResult - The list of cognitive services models.
+type ModelListResult struct {
+	// The link used to get the next page of Model.
+	NextLink *string
+
+	// Gets the list of Cognitive Services accounts Model and their properties.
+	Value []*Model
+}
+
+// ModelSKU - Describes an available Cognitive Services Model SKU.
+type ModelSKU struct {
+	// The capacity configuration.
+	Capacity *CapacityConfig
+
+	// The datetime of deprecation of the model SKU.
+	DeprecationDate *time.Time
+
+	// The name of the model SKU.
+	Name *string
+
+	// The list of rateLimit.
+	RateLimits []*CallRateLimit
+
+	// The usage name of the model SKU.
+	UsageName *string
+}
+
+// ModelsClientListOptions contains the optional parameters for the ModelsClient.NewListPager method.
+type ModelsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MultiRegionSettings - The multiregion settings Cognitive Services account.
@@ -1331,8 +1433,18 @@ type Usage struct {
 
 // UsageListResult - The response to a list usage request.
 type UsageListResult struct {
+	// The link used to get the next page of Usages.
+	NextLink *string
+
 	// The list of usages for Cognitive Service account.
 	Value []*Usage
+}
+
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
+type UsagesClientListOptions struct {
+	// An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of
+	// the metric, can have an or of multiple names).
+	Filter *string
 }
 
 // UserAssignedIdentity - User-assigned managed identity.

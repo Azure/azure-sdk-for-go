@@ -68,7 +68,7 @@ func (c Changelog) GetChangeSummary() string {
 func (c Changelog) GetBreakingChangeItems() []string {
 	if c.RemovedPackage {
 		return []string{
-			fmt.Sprintf("Package was removed"),
+			"Package was removed",
 		}
 	}
 	if c.Modified == nil {

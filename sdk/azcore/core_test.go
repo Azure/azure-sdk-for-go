@@ -216,6 +216,7 @@ func TestClientWithClientName(t *testing.T) {
 	newClient := client.WithClientName("other.Client")
 	require.EqualValues(t, "other.Client", clientName)
 	require.EqualValues(t, "v1.0.0", modVersion)
+	require.EqualValues(t, client.Pipeline(), newClient.Pipeline())
 	_, err = newClient.Pipeline().Do(req)
 	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)

@@ -50,21 +50,28 @@ type BastionHostsServer struct {
 }
 
 // NewBastionHostsServerTransport creates a new instance of BastionHostsServerTransport with the provided implementation.
-// The returned BastionHostsServerTransport instance is connected to an instance of armnetwork.BastionHostsClient by way of the
-// undefined.Transporter field.
+// The returned BastionHostsServerTransport instance is connected to an instance of armnetwork.BastionHostsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBastionHostsServerTransport(srv *BastionHostsServer) *BastionHostsServerTransport {
-	return &BastionHostsServerTransport{srv: srv}
+	return &BastionHostsServerTransport{
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]](),
+		beginUpdateTags:             newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientUpdateTagsResponse]](),
+	}
 }
 
 // BastionHostsServerTransport connects instances of armnetwork.BastionHostsClient to instances of BastionHostsServer.
 // Don't use this type directly, use NewBastionHostsServerTransport instead.
 type BastionHostsServerTransport struct {
 	srv                         *BastionHostsServer
-	beginCreateOrUpdate         *azfake.PollerResponder[armnetwork.BastionHostsClientCreateOrUpdateResponse]
-	beginDelete                 *azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse]
-	newListPager                *azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]
-	newListByResourceGroupPager *azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]
-	beginUpdateTags             *azfake.PollerResponder[armnetwork.BastionHostsClientUpdateTagsResponse]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]]
+	beginUpdateTags             *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientUpdateTagsResponse]]
 }
 
 // Do implements the policy.Transporter interface for BastionHostsServerTransport.
@@ -106,7 +113,8 @@ func (b *BastionHostsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	if b.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	if b.beginCreateOrUpdate == nil {
+	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -129,19 +137,21 @@ func (b *BastionHostsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		b.beginCreateOrUpdate = &respr
+		beginCreateOrUpdate = &respr
+		b.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(b.beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		b.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(b.beginCreateOrUpdate) {
-		b.beginCreateOrUpdate = nil
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		b.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -151,7 +161,8 @@ func (b *BastionHostsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	if b.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if b.beginDelete == nil {
+	beginDelete := b.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -170,19 +181,21 @@ func (b *BastionHostsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		b.beginDelete = &respr
+		beginDelete = &respr
+		b.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(b.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		b.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(b.beginDelete) {
-		b.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		b.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -225,7 +238,8 @@ func (b *BastionHostsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if b.newListPager == nil {
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -233,20 +247,22 @@ func (b *BastionHostsServerTransport) dispatchNewListPager(req *http.Request) (*
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := b.srv.NewListPager(nil)
-		b.newListPager = &resp
-		server.PagerResponderInjectNextLinks(b.newListPager, req, func(page *armnetwork.BastionHostsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.BastionHostsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(b.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListPager) {
-		b.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -255,7 +271,8 @@ func (b *BastionHostsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	if b.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	if b.newListByResourceGroupPager == nil {
+	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -267,20 +284,22 @@ func (b *BastionHostsServerTransport) dispatchNewListByResourceGroupPager(req *h
 			return nil, err
 		}
 		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
-		b.newListByResourceGroupPager = &resp
-		server.PagerResponderInjectNextLinks(b.newListByResourceGroupPager, req, func(page *armnetwork.BastionHostsClientListByResourceGroupResponse, createLink func() string) {
+		newListByResourceGroupPager = &resp
+		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.BastionHostsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(b.newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(b.newListByResourceGroupPager) {
-		b.newListByResourceGroupPager = nil
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		b.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -289,7 +308,8 @@ func (b *BastionHostsServerTransport) dispatchBeginUpdateTags(req *http.Request)
 	if b.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
 	}
-	if b.beginUpdateTags == nil {
+	beginUpdateTags := b.beginUpdateTags.get(req)
+	if beginUpdateTags == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -312,19 +332,21 @@ func (b *BastionHostsServerTransport) dispatchBeginUpdateTags(req *http.Request)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		b.beginUpdateTags = &respr
+		beginUpdateTags = &respr
+		b.beginUpdateTags.add(req, beginUpdateTags)
 	}
 
-	resp, err := server.PollerResponderNext(b.beginUpdateTags, req)
+	resp, err := server.PollerResponderNext(beginUpdateTags, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginUpdateTags.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(b.beginUpdateTags) {
-		b.beginUpdateTags = nil
+	if !server.PollerResponderMore(beginUpdateTags) {
+		b.beginUpdateTags.remove(req)
 	}
 
 	return resp, nil

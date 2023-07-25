@@ -69,9 +69,9 @@ func loadEnv() (testVars, error) {
 	// Setting this variable will cause the test clients to dump out the pre-master-key
 	// for your HTTP connection. This allows you decrypt a packet capture from wireshark.
 	//
-	// If you want to do this just set SSLKEYLOGFILE_TEST env var to a path on disk and
+	// If you want to do this just set SSLKEYLOGFILE env var to a path on disk and
 	// Go will write out the key.
-	tv.KeyLogPath = os.Getenv("SSLKEYLOGFILE_TEST")
+	tv.KeyLogPath = os.Getenv("SSLKEYLOGFILE")
 	return tv, nil
 }
 
@@ -241,10 +241,10 @@ func purgePreviousEvents(t *testing.T, c *azeventgrid.Client, testVars testVars)
 		})
 		require.NoError(t, err)
 
-		var lockTokens []*string
+		var lockTokens []string
 
 		for _, e := range events.Value {
-			lockTokens = append(lockTokens, e.BrokerProperties.LockToken)
+			lockTokens = append(lockTokens, *e.BrokerProperties.LockToken)
 		}
 
 		if len(lockTokens) > 0 {

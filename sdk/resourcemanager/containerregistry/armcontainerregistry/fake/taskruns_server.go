@@ -50,20 +50,26 @@ type TaskRunsServer struct {
 }
 
 // NewTaskRunsServerTransport creates a new instance of TaskRunsServerTransport with the provided implementation.
-// The returned TaskRunsServerTransport instance is connected to an instance of armcontainerregistry.TaskRunsClient by way of the
-// undefined.Transporter field.
+// The returned TaskRunsServerTransport instance is connected to an instance of armcontainerregistry.TaskRunsClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTaskRunsServerTransport(srv *TaskRunsServer) *TaskRunsServerTransport {
-	return &TaskRunsServerTransport{srv: srv}
+	return &TaskRunsServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.TaskRunsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientUpdateResponse]](),
+	}
 }
 
 // TaskRunsServerTransport connects instances of armcontainerregistry.TaskRunsClient to instances of TaskRunsServer.
 // Don't use this type directly, use NewTaskRunsServerTransport instead.
 type TaskRunsServerTransport struct {
 	srv          *TaskRunsServer
-	beginCreate  *azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse]
-	beginDelete  *azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse]
-	newListPager *azfake.PagerResponder[armcontainerregistry.TaskRunsClientListResponse]
-	beginUpdate  *azfake.PollerResponder[armcontainerregistry.TaskRunsClientUpdateResponse]
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.TaskRunsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TaskRunsServerTransport.
@@ -105,7 +111,8 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	if t.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	if t.beginCreate == nil {
+	beginCreate := t.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -132,19 +139,21 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		t.beginCreate = &respr
+		beginCreate = &respr
+		t.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(t.beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(t.beginCreate) {
-		t.beginCreate = nil
+	if !server.PollerResponderMore(beginCreate) {
+		t.beginCreate.remove(req)
 	}
 
 	return resp, nil
@@ -154,7 +163,8 @@ func (t *TaskRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	if t.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	if t.beginDelete == nil {
+	beginDelete := t.beginDelete.get(req)
+	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -177,19 +187,21 @@ func (t *TaskRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		t.beginDelete = &respr
+		beginDelete = &respr
+		t.beginDelete.add(req, beginDelete)
 	}
 
-	resp, err := server.PollerResponderNext(t.beginDelete, req)
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(t.beginDelete) {
-		t.beginDelete = nil
+	if !server.PollerResponderMore(beginDelete) {
+		t.beginDelete.remove(req)
 	}
 
 	return resp, nil
@@ -273,7 +285,8 @@ func (t *TaskRunsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	if t.newListPager == nil {
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -289,20 +302,22 @@ func (t *TaskRunsServerTransport) dispatchNewListPager(req *http.Request) (*http
 			return nil, err
 		}
 		resp := t.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
-		t.newListPager = &resp
-		server.PagerResponderInjectNextLinks(t.newListPager, req, func(page *armcontainerregistry.TaskRunsClientListResponse, createLink func() string) {
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.TaskRunsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(t.newListPager, req)
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(t.newListPager) {
-		t.newListPager = nil
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -311,7 +326,8 @@ func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	if t.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	if t.beginUpdate == nil {
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -338,19 +354,21 @@ func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		t.beginUpdate = &respr
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(t.beginUpdate, req)
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(t.beginUpdate) {
-		t.beginUpdate = nil
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
 	}
 
 	return resp, nil

@@ -1,5 +1,32 @@
 # Release History
 
+## 1.5.0 (2023-07-28)
+### Features Added
+
+- New value `DeploymentProvisioningStateCanceled`, `DeploymentProvisioningStateDisabled` added to enum type `DeploymentProvisioningState`
+- New value `HostingModelProvisionedWeb` added to enum type `HostingModel`
+- New enum type `AbusePenaltyAction` with values `AbusePenaltyActionBlock`, `AbusePenaltyActionThrottle`
+- New enum type `DeploymentModelVersionUpgradeOption` with values `DeploymentModelVersionUpgradeOptionNoAutoUpgrade`, `DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired`, `DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable`
+- New function `*ClientFactory.NewModelsClient() *ModelsClient`
+- New function `*ClientFactory.NewUsagesClient() *UsagesClient`
+- New function `NewModelsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ModelsClient, error)`
+- New function `*ModelsClient.NewListPager(string, *ModelsClientListOptions) *runtime.Pager[ModelsClientListResponse]`
+- New function `NewUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsagesClient, error)`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New struct `AbusePenalty`
+- New struct `CapacityConfig`
+- New struct `Model`
+- New struct `ModelListResult`
+- New struct `ModelSKU`
+- New field `IsDefaultVersion`, `SKUs`, `Source` in struct `AccountModel`
+- New field `AbusePenalty` in struct `AccountProperties`
+- New field `ProvisioningIssues` in struct `CommitmentPlanProperties`
+- New field `SKU` in struct `Deployment`
+- New field `Source` in struct `DeploymentModel`
+- New field `RateLimits`, `VersionUpgradeOption` in struct `DeploymentProperties`
+- New field `NextLink` in struct `UsageListResult`
+
+
 ## 1.4.1 (2023-04-14)
 ### Bug Fixes
 

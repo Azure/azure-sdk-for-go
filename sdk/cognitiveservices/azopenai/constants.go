@@ -8,11 +8,23 @@
 
 package azopenai
 
+// azureOpenAIOperationState - The state of a job or item.
+type azureOpenAIOperationState string
+
+const (
+	azureOpenAIOperationStateCanceled   azureOpenAIOperationState = "canceled"
+	azureOpenAIOperationStateFailed     azureOpenAIOperationState = "failed"
+	azureOpenAIOperationStateNotRunning azureOpenAIOperationState = "notRunning"
+	azureOpenAIOperationStateRunning    azureOpenAIOperationState = "running"
+	azureOpenAIOperationStateSucceeded  azureOpenAIOperationState = "succeeded"
+)
+
 // ChatRole - A description of the intended purpose of a message within a chat completions interaction.
 type ChatRole string
 
 const (
 	ChatRoleAssistant ChatRole = "assistant"
+	ChatRoleFunction  ChatRole = "function"
 	ChatRoleSystem    ChatRole = "system"
 	ChatRoleUser      ChatRole = "user"
 )
@@ -21,6 +33,7 @@ const (
 func PossibleChatRoleValues() []ChatRole {
 	return []ChatRole{
 		ChatRoleAssistant,
+		ChatRoleFunction,
 		ChatRoleSystem,
 		ChatRoleUser,
 	}
@@ -31,6 +44,7 @@ type CompletionsFinishReason string
 
 const (
 	CompletionsFinishReasonContentFilter CompletionsFinishReason = "content_filter"
+	CompletionsFinishReasonFunctionCall  CompletionsFinishReason = "function_call"
 	CompletionsFinishReasonLength        CompletionsFinishReason = "length"
 	CompletionsFinishReasonStop          CompletionsFinishReason = "stop"
 )
@@ -39,7 +53,79 @@ const (
 func PossibleCompletionsFinishReasonValues() []CompletionsFinishReason {
 	return []CompletionsFinishReason{
 		CompletionsFinishReasonContentFilter,
+		CompletionsFinishReasonFunctionCall,
 		CompletionsFinishReasonLength,
 		CompletionsFinishReasonStop,
+	}
+}
+
+// ContentFilterSeverity - Ratings for the intensity and risk level of harmful content.
+type ContentFilterSeverity string
+
+const (
+	ContentFilterSeverityHigh   ContentFilterSeverity = "high"
+	ContentFilterSeverityLow    ContentFilterSeverity = "low"
+	ContentFilterSeverityMedium ContentFilterSeverity = "medium"
+	ContentFilterSeveritySafe   ContentFilterSeverity = "safe"
+)
+
+// PossibleContentFilterSeverityValues returns the possible values for the ContentFilterSeverity const type.
+func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
+	return []ContentFilterSeverity{
+		ContentFilterSeverityHigh,
+		ContentFilterSeverityLow,
+		ContentFilterSeverityMedium,
+		ContentFilterSeveritySafe,
+	}
+}
+
+// FunctionCallPreset - The collection of predefined behaviors for handling request-provided function information in a chat
+// completions operation.
+type FunctionCallPreset string
+
+const (
+	FunctionCallPresetAuto FunctionCallPreset = "auto"
+	FunctionCallPresetNone FunctionCallPreset = "none"
+)
+
+// PossibleFunctionCallPresetValues returns the possible values for the FunctionCallPreset const type.
+func PossibleFunctionCallPresetValues() []FunctionCallPreset {
+	return []FunctionCallPreset{
+		FunctionCallPresetAuto,
+		FunctionCallPresetNone,
+	}
+}
+
+// ImageGenerationResponseFormat - The format in which the generated images are returned.
+type ImageGenerationResponseFormat string
+
+const (
+	ImageGenerationResponseFormatB64JSON ImageGenerationResponseFormat = "b64_json"
+	ImageGenerationResponseFormatURL     ImageGenerationResponseFormat = "url"
+)
+
+// PossibleImageGenerationResponseFormatValues returns the possible values for the ImageGenerationResponseFormat const type.
+func PossibleImageGenerationResponseFormatValues() []ImageGenerationResponseFormat {
+	return []ImageGenerationResponseFormat{
+		ImageGenerationResponseFormatB64JSON,
+		ImageGenerationResponseFormatURL,
+	}
+}
+
+// ImageSize - The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+type ImageSize string
+
+const (
+	ImageSize512x512   ImageSize = "512x512"
+	ImageSize1024x1024 ImageSize = "1024x1024"
+	ImageSize256x256   ImageSize = "256x256"
+)
+
+// PossibleImageSizeValues returns the possible values for the ImageSize const type.
+func PossibleImageSizeValues() []ImageSize {
+	return []ImageSize{
+		ImageSize512x512,
+		ImageSize1024x1024,
+		ImageSize256x256,
 	}
 }

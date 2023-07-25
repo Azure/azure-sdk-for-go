@@ -29,8 +29,8 @@ type PrivateLinkScopeOperationStatusServer struct {
 }
 
 // NewPrivateLinkScopeOperationStatusServerTransport creates a new instance of PrivateLinkScopeOperationStatusServerTransport with the provided implementation.
-// The returned PrivateLinkScopeOperationStatusServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopeOperationStatusClient by way of the
-// undefined.Transporter field.
+// The returned PrivateLinkScopeOperationStatusServerTransport instance is connected to an instance of armmonitor.PrivateLinkScopeOperationStatusClient via the
+// azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkScopeOperationStatusServerTransport(srv *PrivateLinkScopeOperationStatusServer) *PrivateLinkScopeOperationStatusServerTransport {
 	return &PrivateLinkScopeOperationStatusServerTransport{srv: srv}
 }

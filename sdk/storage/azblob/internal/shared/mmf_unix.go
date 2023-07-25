@@ -14,10 +14,10 @@ import (
 )
 
 // mmb is a memory mapped buffer
-type mmb []byte
+type Mmb []byte
 
 // newMMB creates a new memory mapped buffer with the specified size
-func newMMB(size int64) (mmb, error) {
+func NewMMB(size int64) (Mmb, error) {
 	prot, flags := syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_ANON|syscall.MAP_PRIVATE
 	addr, err := syscall.Mmap(-1, 0, int(size), prot, flags)
 	if err != nil {
@@ -27,7 +27,7 @@ func newMMB(size int64) (mmb, error) {
 }
 
 // delete cleans up the memory mapped buffer
-func (m *mmb) delete() {
+func (m *Mmb) Delete() {
 	err := syscall.Munmap(*m)
 	*m = nil
 	if err != nil {

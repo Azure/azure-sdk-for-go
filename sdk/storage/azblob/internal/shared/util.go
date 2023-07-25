@@ -27,27 +27,27 @@ type BufferManager[T ~[]byte] interface {
 // it uses anonymous memory mapped files for buffers.
 // don't use this type directly, use newMMBPool() instead.
 type mmbPool struct {
-	buffers chan mmb
+	buffers chan Mmb
 	count   int
 	max     int
 	size    int64
 }
 
-func NewMMBPool(maxBuffers int, bufferSize int64) BufferManager[mmb] {
+func NewMMBPool(maxBuffers int, bufferSize int64) BufferManager[Mmb] {
 	return &mmbPool{
-		buffers: make(chan mmb, maxBuffers),
+		buffers: make(chan Mmb, maxBuffers),
 		max:     maxBuffers,
 		size:    bufferSize,
 	}
 }
 
-func (pool *mmbPool) Acquire() <-chan mmb {
+func (pool *mmbPool) Acquire() <-chan Mmb {
 	return pool.buffers
 }
 
 func (pool *mmbPool) Grow() (int, error) {
 	if pool.count < pool.max {
-		buffer, err := newMMB(pool.size)
+		buffer, err := NewMMB(pool.size)
 		if err != nil {
 			return 0, err
 		}
@@ -57,14 +57,14 @@ func (pool *mmbPool) Grow() (int, error) {
 	return pool.count, nil
 }
 
-func (pool *mmbPool) Release(buffer mmb) {
+func (pool *mmbPool) Release(buffer Mmb) {
 	pool.buffers <- buffer
 }
 
 func (pool *mmbPool) Free() {
 	for i := 0; i < pool.count; i++ {
 		buffer := <-pool.buffers
-		buffer.delete()
+		buffer.Delete()
 	}
 	pool.count = 0
 }

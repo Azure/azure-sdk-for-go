@@ -23,7 +23,7 @@ func NewMMB(size int64) (Mmb, error) {
 	if err != nil {
 		return nil, os.NewSyscallError("Mmap", err)
 	}
-	return mmb(addr), nil
+	return Mmb(addr), nil
 }
 
 // delete cleans up the memory mapped buffer

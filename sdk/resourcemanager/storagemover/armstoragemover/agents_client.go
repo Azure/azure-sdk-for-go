@@ -47,7 +47,7 @@ func NewAgentsClient(subscriptionID string, credential azcore.TokenCredential, o
 // CreateOrUpdate - Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - agentName - The name of the Agent resource.
@@ -91,7 +91,7 @@ func (client *AgentsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agent)
@@ -109,7 +109,7 @@ func (client *AgentsClient) createOrUpdateHandleResponse(resp *http.Response) (A
 // BeginDelete - Deletes an Agent resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - agentName - The name of the Agent resource.
@@ -131,7 +131,7 @@ func (client *AgentsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Deletes an Agent resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 func (client *AgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, agentName string, options *AgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, agentName, options)
 	if err != nil {
@@ -171,7 +171,7 @@ func (client *AgentsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +180,7 @@ func (client *AgentsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // Get - Gets an Agent resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - agentName - The name of the Agent resource.
@@ -224,7 +224,7 @@ func (client *AgentsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *AgentsClient) getHandleResponse(resp *http.Response) (AgentsClient
 
 // NewListPager - Lists all Agents in a Storage Mover.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - AgentsClientListOptions contains the optional parameters for the AgentsClient.NewListPager method.
@@ -293,7 +293,7 @@ func (client *AgentsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +311,7 @@ func (client *AgentsClient) listHandleResponse(resp *http.Response) (AgentsClien
 // Update - Creates or updates an Agent resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - agentName - The name of the Agent resource.
@@ -355,7 +355,7 @@ func (client *AgentsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agent)

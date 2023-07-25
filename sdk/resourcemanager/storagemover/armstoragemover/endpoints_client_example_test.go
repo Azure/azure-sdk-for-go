@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_List.json
 func ExampleEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,21 +45,23 @@ func ExampleEndpointsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("examples-endpointName1"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName1"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName1"),
 		// 			Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
 		// 				Description: to.Ptr("Example Storage Container Endpoint 1 Description"),
 		// 				EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-		// 				BlobContainerName: to.Ptr("examples-blobContainerName1"),
-		// 				StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+		// 				ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+		// 				BlobContainerName: to.Ptr("examples-blobcontainer1"),
+		// 				StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examples-endpointName2"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName2"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName2"),
 		// 			Properties: &armstoragemover.NfsMountEndpointProperties{
 		// 				Description: to.Ptr("Example Storage Container Endpoint 2 Description"),
 		// 				EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+		// 				ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
 		// 				Export: to.Ptr("/"),
 		// 				Host: to.Ptr("0.0.0.0"),
 		// 				NfsVersion: to.Ptr(armstoragemover.NfsVersionNFSv4),
@@ -68,20 +70,21 @@ func ExampleEndpointsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("examples-endpointName3"),
 		// 			Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName3"),
+		// 			ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName3"),
 		// 			Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
 		// 				Description: to.Ptr("Example Storage Container Endpoint 3 Description"),
 		// 				EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-		// 				BlobContainerName: to.Ptr("examples-blobContainerName3"),
-		// 				StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+		// 				ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+		// 				BlobContainerName: to.Ptr("examples-blobcontainer3"),
+		// 				StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Get.json
-func ExampleEndpointsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageBlobContainer.json
+func ExampleEndpointsClient_Get_endpointsGetAzureStorageBlobContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -101,18 +104,121 @@ func ExampleEndpointsClient_Get() {
 	// res.Endpoint = armstoragemover.Endpoint{
 	// 	Name: to.Ptr("examples-endpointName"),
 	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 	Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
-	// 		Description: to.Ptr("Example Storage Container Endpoint Description"),
+	// 		Description: to.Ptr("Example Storage Blob Container Endpoint Description"),
 	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-	// 		BlobContainerName: to.Ptr("examples-blobContainerName"),
-	// 		StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		BlobContainerName: to.Ptr("examples-blobcontainer"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_CreateOrUpdate.json
-func ExampleEndpointsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_AzureStorageSmbFileShare.json
+func ExampleEndpointsClient_Get_endpointsGetAzureStorageSmbFileShare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
+	// 		Description: to.Ptr("Example Storage File Share Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageSmbFileShare),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		FileShareName: to.Ptr("examples-fileshare"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_NfsMount.json
+func ExampleEndpointsClient_Get_endpointsGetNfsMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.NfsMountEndpointProperties{
+	// 		Description: to.Ptr("Example NFS Mount Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Export: to.Ptr("examples-exportName"),
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		NfsVersion: to.Ptr(armstoragemover.NfsVersionNFSauto),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Get_SmbMount.json
+func ExampleEndpointsClient_Get_endpointsGetSmbMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.SmbMountEndpointProperties{
+	// 		Description: to.Ptr("Example SMB Mount Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeSmbMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Credentials: &armstoragemover.AzureKeyVaultSmbCredentials{
+	// 			Type: to.Ptr(armstoragemover.CredentialTypeAzureKeyVaultSmb),
+	// 			PasswordURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-password"),
+	// 			UsernameURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-username"),
+	// 		},
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		ShareName: to.Ptr("examples-shareName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
+func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureStorageBlobContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -124,10 +230,10 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
 		Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
-			Description:              to.Ptr("Example Storage Container Endpoint Description"),
+			Description:              to.Ptr("Example Storage Blob Container Endpoint Description"),
 			EndpointType:             to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-			BlobContainerName:        to.Ptr("examples-blobContainerName"),
-			StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+			BlobContainerName:        to.Ptr("examples-blobcontainer"),
+			StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 		},
 	}, nil)
 	if err != nil {
@@ -139,18 +245,147 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 	// res.Endpoint = armstoragemover.Endpoint{
 	// 	Name: to.Ptr("examples-endpointName"),
 	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 	Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
-	// 		Description: to.Ptr("Example Storage Container Endpoint Description"),
+	// 		Description: to.Ptr("Example Storage Blob Container Endpoint Description"),
 	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-	// 		BlobContainerName: to.Ptr("examples-blobContainerName"),
-	// 		StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		BlobContainerName: to.Ptr("examples-blobcontainer"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Update.json
-func ExampleEndpointsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
+func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureStorageSmbFileShare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
+		Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
+			Description:              to.Ptr("Example Storage File Share Endpoint Description"),
+			EndpointType:             to.Ptr(armstoragemover.EndpointTypeAzureStorageSmbFileShare),
+			FileShareName:            to.Ptr("examples-fileshare"),
+			StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
+	// 		Description: to.Ptr("Example Storage File Share Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageSmbFileShare),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		FileShareName: to.Ptr("examples-fileshare"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_NfsMount.json
+func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateNfsMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
+		Properties: &armstoragemover.NfsMountEndpointProperties{
+			Description:  to.Ptr("Example NFS Mount Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+			Export:       to.Ptr("examples-exportName"),
+			Host:         to.Ptr("0.0.0.0"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.NfsMountEndpointProperties{
+	// 		Description: to.Ptr("Example NFS Mount Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Export: to.Ptr("examples-exportName"),
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		NfsVersion: to.Ptr(armstoragemover.NfsVersionNFSauto),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_SmbMount.json
+func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateSmbMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.Endpoint{
+		Properties: &armstoragemover.SmbMountEndpointProperties{
+			Description:  to.Ptr("Example SMB Mount Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeSmbMount),
+			Credentials: &armstoragemover.AzureKeyVaultSmbCredentials{
+				Type:        to.Ptr(armstoragemover.CredentialTypeAzureKeyVaultSmb),
+				PasswordURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-password"),
+				UsernameURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-username"),
+			},
+			Host:      to.Ptr("0.0.0.0"),
+			ShareName: to.Ptr("examples-shareName"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.SmbMountEndpointProperties{
+	// 		Description: to.Ptr("Example SMB Mount Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeSmbMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Credentials: &armstoragemover.AzureKeyVaultSmbCredentials{
+	// 			Type: to.Ptr(armstoragemover.CredentialTypeAzureKeyVaultSmb),
+	// 			PasswordURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-password"),
+	// 			UsernameURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-username"),
+	// 		},
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		ShareName: to.Ptr("examples-shareName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_AzureStorageBlobContainer.json
+func ExampleEndpointsClient_Update_endpointsUpdateAzureStorageBlobContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -161,8 +396,9 @@ func ExampleEndpointsClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEndpointsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
-		Properties: &armstoragemover.EndpointBaseUpdateProperties{
-			Description: to.Ptr("Updated Endpoint Description"),
+		Properties: &armstoragemover.AzureStorageBlobContainerEndpointUpdateProperties{
+			Description:  to.Ptr("Updated Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
 		},
 	}, nil)
 	if err != nil {
@@ -174,17 +410,140 @@ func ExampleEndpointsClient_Update() {
 	// res.Endpoint = armstoragemover.Endpoint{
 	// 	Name: to.Ptr("examples-endpointName"),
 	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
-	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 	Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
 	// 		Description: to.Ptr("Updated Endpoint Description"),
 	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageBlobContainer),
-	// 		BlobContainerName: to.Ptr("examples-blobContainerName"),
-	// 		StorageAccountResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examples-storageAccountName/"),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		BlobContainerName: to.Ptr("examples-blobcontainer"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/241e964afe675a7be98aa6a2e171a3c5f830816c/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_AzureStorageSmbFileShare.json
+func ExampleEndpointsClient_Update_endpointsUpdateAzureStorageSmbFileShare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
+		Properties: &armstoragemover.AzureStorageSmbFileShareEndpointUpdateProperties{
+			Description:  to.Ptr("Updated Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageSmbFileShare),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
+	// 		Description: to.Ptr("Updated Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeAzureStorageSmbFileShare),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		FileShareName: to.Ptr("examples-fileshare"),
+	// 		StorageAccountResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Storage/storageAccounts/examplesa"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_NfsMount.json
+func ExampleEndpointsClient_Update_endpointsUpdateNfsMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
+		Properties: &armstoragemover.NfsMountEndpointUpdateProperties{
+			Description:  to.Ptr("Updated Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.NfsMountEndpointProperties{
+	// 		Description: to.Ptr("Updated Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeNfsMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Export: to.Ptr("examples-exportName"),
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		NfsVersion: to.Ptr(armstoragemover.NfsVersionNFSauto),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_SmbMount.json
+func ExampleEndpointsClient_Update_endpointsUpdateSmbMount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "examples-rg", "examples-storageMoverName", "examples-endpointName", armstoragemover.EndpointBaseUpdateParameters{
+		Properties: &armstoragemover.SmbMountEndpointUpdateProperties{
+			Description:  to.Ptr("Updated Endpoint Description"),
+			EndpointType: to.Ptr(armstoragemover.EndpointTypeSmbMount),
+			Credentials: &armstoragemover.AzureKeyVaultSmbCredentials{
+				Type:        to.Ptr(armstoragemover.CredentialTypeAzureKeyVaultSmb),
+				PasswordURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-updated-password"),
+				UsernameURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-updated-username"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Endpoint = armstoragemover.Endpoint{
+	// 	Name: to.Ptr("examples-endpointName"),
+	// 	Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
+	// 	ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
+	// 	Properties: &armstoragemover.SmbMountEndpointProperties{
+	// 		Description: to.Ptr("Updated Endpoint Description"),
+	// 		EndpointType: to.Ptr(armstoragemover.EndpointTypeSmbMount),
+	// 		ProvisioningState: to.Ptr(armstoragemover.ProvisioningStateSucceeded),
+	// 		Credentials: &armstoragemover.AzureKeyVaultSmbCredentials{
+	// 			Type: to.Ptr(armstoragemover.CredentialTypeAzureKeyVaultSmb),
+	// 			PasswordURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-updated-password"),
+	// 			UsernameURI: to.Ptr("https://examples-azureKeyVault.vault.azure.net/secrets/examples-updated-username"),
+	// 		},
+	// 		Host: to.Ptr("0.0.0.0"),
+	// 		ShareName: to.Ptr("examples-shareName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

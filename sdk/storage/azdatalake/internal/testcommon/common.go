@@ -1,11 +1,14 @@
 package testcommon
 
 import (
+	"bytes"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/stretchr/testify/require"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -79,4 +82,21 @@ func ValidateErrorCode(_require *require.Assertions, err error, code datalakeerr
 
 func GetRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
 	return anchorTime.Add(amount * time.Second)
+}
+
+const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
+
+func GenerateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
+	data := make([]byte, sizeInBytes)
+	_len := len(random64BString)
+	if sizeInBytes > _len {
+		count := sizeInBytes / _len
+		if sizeInBytes%_len != 0 {
+			count = count + 1
+		}
+		copy(data[:], strings.Repeat(random64BString, count))
+	} else {
+		copy(data[:], random64BString)
+	}
+	return streaming.NopCloser(bytes.NewReader(data)), data
 }

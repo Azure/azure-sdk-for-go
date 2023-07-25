@@ -43,3 +43,8 @@ type TransferValidationType = exported.TransferValidationType
 
 // TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed crc64.
 type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
+
+// TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates a CRC64 should be computed during transfer.
+func TransferValidationTypeComputeCRC64() TransferValidationType {
+	return exported.TransferValidationTypeComputeCRC64()
+}

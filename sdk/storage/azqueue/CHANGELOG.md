@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used.
+
 #### Other Changes
 
 ### 1.0.0 (2023-05-09)

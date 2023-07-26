@@ -8,6 +8,7 @@ package file
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net"
 	"strings"
@@ -17,10 +18,14 @@ import (
 // HTTPGetter is a function type that refers to a method that performs an HTTP GET operation.
 type httpGetter func(ctx context.Context, i httpGetterInfo) (io.ReadCloser, error)
 
-// httpGetterInfo is passed to an HTTPGetter function passing it parameters
+// HTTPGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
 type httpGetterInfo struct {
-	Range HTTPRange
+	Range *HTTPRange
+
+	// ETag specifies the resource's etag that should be used when creating
+	// the HTTP GET request's If-Match header
+	ETag *azcore.ETag
 }
 
 // RetryReaderOptions configures the retry reader's behavior.
@@ -145,7 +150,7 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 		// Notify, for logging purposes, of any failures
 		if s.retryReaderOptions.OnFailedRead != nil {
 			failureCount := try + 1 // because try is zero-based
-			s.retryReaderOptions.OnFailedRead(failureCount, err, s.info.Range, willRetry)
+			s.retryReaderOptions.OnFailedRead(failureCount, err, *s.info.Range, willRetry)
 		}
 
 		if willRetry {

@@ -262,21 +262,6 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 	return resp, err
 }
 
-//// Append appends data to a file.
-//func (f *Client) Append(ctx context.Context) {
-//
-//}
-//
-//// Flush flushes previous uploaded data to a file.
-//func (f *Client) Flush(ctx context.Context) {
-//
-//}
-//
-//// Download downloads data from a file.
-//func (f *Client) Download(ctx context.Context) {
-//
-//}
-
 // SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
 func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
@@ -371,7 +356,7 @@ func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekC
 	}
 
 	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, httpsHeaders, leaseAccessConditions, cpkInfo)
-	return resp, err
+	return resp, exported.ConvertToDFSError(err)
 }
 
 func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushDataOptions) (FlushDataResponse, error) {
@@ -381,7 +366,7 @@ func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushData
 	}
 
 	resp, err := f.generatedFileClientWithDFS().FlushData(ctx, flushDataOpts, httpHeaderOpts, leaseAccessConditions, modifiedAccessConditions, cpkInfoOpts)
-	return resp, err
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
@@ -437,17 +422,17 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 
 			uploadRangeOptions := o.getAppendDataOptions()
 			_, err := f.AppendData(ctx, offset, streaming.NopCloser(body), uploadRangeOptions)
-			return err
+			return exported.ConvertToDFSError(err)
 		},
 	})
 
 	if err != nil {
-		return err
+		return exported.ConvertToDFSError(err)
 	}
 	// All appends were successful, call to flush
 	flushOpts := o.getFlushDataOptions()
 	_, err = f.FlushData(ctx, actualSize, flushOpts)
-	return err
+	return exported.ConvertToDFSError(err)
 }
 
 // UploadBuffer uploads a buffer in chunks to an Azure file.
@@ -456,7 +441,7 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	if options != nil {
 		uploadOptions = *options
 	}
-	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
+	return exported.ConvertToDFSError(f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions))
 }
 
 // UploadFile uploads a file in chunks to an Azure file.
@@ -469,7 +454,7 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	if options != nil {
 		uploadOptions = *options
 	}
-	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
+	return exported.ConvertToDFSError(f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions))
 }
 
 // UploadStream copies the file held in io.Reader to the file at fileClient.
@@ -480,5 +465,37 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	}
 
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
-	return err
+	return exported.ConvertToDFSError(err)
+}
+
+// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
+func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	opts := o.format()
+	resp, err := f.blobClient().DownloadStream(ctx, opts)
+	newResp := FormatDownloadStreamResponse(&resp)
+	fullResp := DownloadStreamResponse{
+		client:           f,
+		DownloadResponse: newResp,
+		getInfo:          httpGetterInfo{Range: o.Range, ETag: newResp.ETag},
+		cpkInfo:          o.CPKInfo,
+		cpkScope:         o.CPKScopeInfo,
+	}
+
+	return fullResp, exported.ConvertToDFSError(err)
+}
+
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	opts := o.format()
+	val, err := f.blobClient().DownloadBuffer(ctx, shared.NewBytesWriter(buffer), opts)
+	return val, exported.ConvertToDFSError(err)
+}
+
+// DownloadFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	opts := o.format()
+	val, err := f.blobClient().DownloadFile(ctx, file, opts)
+	return val, exported.ConvertToDFSError(err)
 }

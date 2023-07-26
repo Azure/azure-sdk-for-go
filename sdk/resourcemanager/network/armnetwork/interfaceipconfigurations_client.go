@@ -47,7 +47,7 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 // Get - Gets the specified network interface ip configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - ipConfigurationName - The name of the ip configuration name.
@@ -55,10 +55,6 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 //     method.
 func (client *InterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *InterfaceIPConfigurationsClientGetOptions) (InterfaceIPConfigurationsClientGetResponse, error) {
 	var err error
-	const operationName = "InterfaceIPConfigurationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, ipConfigurationName, options)
 	if err != nil {
 		return InterfaceIPConfigurationsClientGetResponse{}, err
@@ -99,7 +95,7 @@ func (client *InterfaceIPConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +112,7 @@ func (client *InterfaceIPConfigurationsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Get all ip configurations in a network interface.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.NewListPager
@@ -127,7 +123,6 @@ func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *InterfaceIPConfigurationsClientListResponse) (InterfaceIPConfigurationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InterfaceIPConfigurationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -147,7 +142,6 @@ func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName st
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -171,7 +165,7 @@ func (client *InterfaceIPConfigurationsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

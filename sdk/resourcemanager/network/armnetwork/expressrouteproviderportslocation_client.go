@@ -47,15 +47,11 @@ func NewExpressRouteProviderPortsLocationClient(subscriptionID string, credentia
 // List - Retrieves all the ExpressRouteProviderPorts in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - ExpressRouteProviderPortsLocationClientListOptions contains the optional parameters for the ExpressRouteProviderPortsLocationClient.List
 //     method.
 func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context, options *ExpressRouteProviderPortsLocationClientListOptions) (ExpressRouteProviderPortsLocationClientListResponse, error) {
 	var err error
-	const operationName = "ExpressRouteProviderPortsLocationClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
@@ -84,7 +80,7 @@ func (client *ExpressRouteProviderPortsLocationClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

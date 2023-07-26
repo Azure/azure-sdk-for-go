@@ -46,7 +46,7 @@ func NewAzureFirewallFqdnTagsClient(subscriptionID string, credential azcore.Tok
 
 // NewListAllPager - Gets all the Azure Firewall FQDN Tags in a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - AzureFirewallFqdnTagsClientListAllOptions contains the optional parameters for the AzureFirewallFqdnTagsClient.NewListAllPager
 //     method.
 func (client *AzureFirewallFqdnTagsClient) NewListAllPager(options *AzureFirewallFqdnTagsClientListAllOptions) *runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse] {
@@ -55,7 +55,6 @@ func (client *AzureFirewallFqdnTagsClient) NewListAllPager(options *AzureFirewal
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureFirewallFqdnTagsClientListAllResponse) (AzureFirewallFqdnTagsClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureFirewallFqdnTagsClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -75,7 +74,6 @@ func (client *AzureFirewallFqdnTagsClient) NewListAllPager(options *AzureFirewal
 			}
 			return client.listAllHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -91,7 +89,7 @@ func (client *AzureFirewallFqdnTagsClient) listAllCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

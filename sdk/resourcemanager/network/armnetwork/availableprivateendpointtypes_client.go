@@ -57,6 +57,7 @@ func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailablePrivateEndpointTypesClientListResponse) (AvailablePrivateEndpointTypesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailablePrivateEndpointTypesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -76,6 +77,7 @@ func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string,
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -124,6 +126,7 @@ func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(l
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailablePrivateEndpointTypesClientListByResourceGroupResponse) (AvailablePrivateEndpointTypesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -143,6 +146,7 @@ func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(l
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

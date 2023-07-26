@@ -75,6 +75,10 @@ func (client *VirtualHubRouteTableV2SClient) BeginCreateOrUpdate(ctx context.Con
 // Generated from API version 2023-02-01
 func (client *VirtualHubRouteTableV2SClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VirtualHubRouteTableV2SClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *VirtualHubRouteTableV2SClient) BeginDelete(ctx context.Context, re
 // Generated from API version 2023-02-01
 func (client *VirtualHubRouteTableV2SClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VirtualHubRouteTableV2SClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *VirtualHubRouteTableV2SClient) deleteCreateRequest(ctx context.Con
 //     method.
 func (client *VirtualHubRouteTableV2SClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SClientGetOptions) (VirtualHubRouteTableV2SClientGetResponse, error) {
 	var err error
+	const operationName = "VirtualHubRouteTableV2SClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return VirtualHubRouteTableV2SClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *VirtualHubRouteTableV2SClient) NewListPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualHubRouteTableV2SClientListResponse) (VirtualHubRouteTableV2SClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualHubRouteTableV2SClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *VirtualHubRouteTableV2SClient) NewListPager(resourceGroupName stri
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

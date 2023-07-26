@@ -75,6 +75,10 @@ func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGro
 // Generated from API version 2023-02-01
 func (client *PacketCapturesClient) create(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters PacketCapture, options *PacketCapturesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCapturesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2023-02-01
 func (client *PacketCapturesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCapturesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +216,10 @@ func (client *PacketCapturesClient) deleteCreateRequest(ctx context.Context, res
 //   - options - PacketCapturesClientGetOptions contains the optional parameters for the PacketCapturesClient.Get method.
 func (client *PacketCapturesClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientGetOptions) (PacketCapturesClientGetResponse, error) {
 	var err error
+	const operationName = "PacketCapturesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return PacketCapturesClientGetResponse{}, err
@@ -293,6 +305,10 @@ func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resource
 // Generated from API version 2023-02-01
 func (client *PacketCapturesClient) getStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginGetStatusOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCapturesClient.BeginGetStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err
@@ -350,6 +366,7 @@ func (client *PacketCapturesClient) NewListPager(resourceGroupName string, netwo
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *PacketCapturesClientListResponse) (PacketCapturesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PacketCapturesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 			if err != nil {
 				return PacketCapturesClientListResponse{}, err
@@ -363,6 +380,7 @@ func (client *PacketCapturesClient) NewListPager(resourceGroupName string, netwo
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -431,6 +449,10 @@ func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroup
 // Generated from API version 2023-02-01
 func (client *PacketCapturesClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, options *PacketCapturesClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PacketCapturesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, networkWatcherName, packetCaptureName, options)
 	if err != nil {
 		return nil, err

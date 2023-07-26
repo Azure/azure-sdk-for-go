@@ -76,6 +76,10 @@ func (client *WatchersClient) BeginCheckConnectivity(ctx context.Context, resour
 // Generated from API version 2023-02-01
 func (client *WatchersClient) checkConnectivity(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConnectivityParameters, options *WatchersClientBeginCheckConnectivityOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginCheckConnectivity"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkConnectivityCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -130,6 +134,10 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 //   - options - WatchersClientCreateOrUpdateOptions contains the optional parameters for the WatchersClient.CreateOrUpdate method.
 func (client *WatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters Watcher, options *WatchersClientCreateOrUpdateOptions) (WatchersClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "WatchersClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return WatchersClientCreateOrUpdateResponse{}, err
@@ -212,6 +220,10 @@ func (client *WatchersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-02-01
 func (client *WatchersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
 		return nil, err
@@ -262,6 +274,10 @@ func (client *WatchersClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - WatchersClientGetOptions contains the optional parameters for the WatchersClient.Get method.
 func (client *WatchersClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, options *WatchersClientGetOptions) (WatchersClientGetResponse, error) {
 	var err error
+	const operationName = "WatchersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
 		return WatchersClientGetResponse{}, err
@@ -345,6 +361,10 @@ func (client *WatchersClient) BeginGetAzureReachabilityReport(ctx context.Contex
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getAzureReachabilityReport(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AzureReachabilityReportParameters, options *WatchersClientBeginGetAzureReachabilityReportOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetAzureReachabilityReport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAzureReachabilityReportCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -419,6 +439,10 @@ func (client *WatchersClient) BeginGetFlowLogStatus(ctx context.Context, resourc
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters, options *WatchersClientBeginGetFlowLogStatusOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetFlowLogStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getFlowLogStatusCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -501,6 +525,10 @@ func (client *WatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx context
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getNetworkConfigurationDiagnostic(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters ConfigurationDiagnosticParameters, options *WatchersClientBeginGetNetworkConfigurationDiagnosticOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetNetworkConfigurationDiagnostic"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getNetworkConfigurationDiagnosticCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -575,6 +603,10 @@ func (client *WatchersClient) BeginGetNextHop(ctx context.Context, resourceGroup
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getNextHop(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters NextHopParameters, options *WatchersClientBeginGetNextHopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetNextHop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getNextHopCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -629,6 +661,10 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 //   - options - WatchersClientGetTopologyOptions contains the optional parameters for the WatchersClient.GetTopology method.
 func (client *WatchersClient) GetTopology(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TopologyParameters, options *WatchersClientGetTopologyOptions) (WatchersClientGetTopologyResponse, error) {
 	var err error
+	const operationName = "WatchersClient.GetTopology"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getTopologyCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return WatchersClientGetTopologyResponse{}, err
@@ -713,6 +749,10 @@ func (client *WatchersClient) BeginGetTroubleshooting(ctx context.Context, resou
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getTroubleshooting(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TroubleshootingParameters, options *WatchersClientBeginGetTroubleshootingOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetTroubleshooting"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getTroubleshootingCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -787,6 +827,10 @@ func (client *WatchersClient) BeginGetTroubleshootingResult(ctx context.Context,
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getTroubleshootingResult(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters QueryTroubleshootingParameters, options *WatchersClientBeginGetTroubleshootingResultOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetTroubleshootingResult"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getTroubleshootingResultCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -861,6 +905,10 @@ func (client *WatchersClient) BeginGetVMSecurityRules(ctx context.Context, resou
 // Generated from API version 2023-02-01
 func (client *WatchersClient) getVMSecurityRules(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters SecurityGroupViewParameters, options *WatchersClientBeginGetVMSecurityRulesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginGetVMSecurityRules"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVMSecurityRulesCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -916,6 +964,7 @@ func (client *WatchersClient) NewListPager(resourceGroupName string, options *Wa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *WatchersClientListResponse) (WatchersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WatchersClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return WatchersClientListResponse{}, err
@@ -929,6 +978,7 @@ func (client *WatchersClient) NewListPager(resourceGroupName string, options *Wa
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -973,6 +1023,7 @@ func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOpti
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *WatchersClientListAllResponse) (WatchersClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WatchersClient.NewListAllPager")
 			req, err := client.listAllCreateRequest(ctx, options)
 			if err != nil {
 				return WatchersClientListAllResponse{}, err
@@ -986,6 +1037,7 @@ func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOpti
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1048,6 +1100,10 @@ func (client *WatchersClient) BeginListAvailableProviders(ctx context.Context, r
 // Generated from API version 2023-02-01
 func (client *WatchersClient) listAvailableProviders(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters AvailableProvidersListParameters, options *WatchersClientBeginListAvailableProvidersOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginListAvailableProviders"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAvailableProvidersCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1122,6 +1178,10 @@ func (client *WatchersClient) BeginSetFlowLogConfiguration(ctx context.Context, 
 // Generated from API version 2023-02-01
 func (client *WatchersClient) setFlowLogConfiguration(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogInformation, options *WatchersClientBeginSetFlowLogConfigurationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginSetFlowLogConfiguration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.setFlowLogConfigurationCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1176,6 +1236,10 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 //   - options - WatchersClientUpdateTagsOptions contains the optional parameters for the WatchersClient.UpdateTags method.
 func (client *WatchersClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters TagsObject, options *WatchersClientUpdateTagsOptions) (WatchersClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "WatchersClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return WatchersClientUpdateTagsResponse{}, err
@@ -1260,6 +1324,10 @@ func (client *WatchersClient) BeginVerifyIPFlow(ctx context.Context, resourceGro
 // Generated from API version 2023-02-01
 func (client *WatchersClient) verifyIPFlow(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters VerificationIPFlowParameters, options *WatchersClientBeginVerifyIPFlowOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WatchersClient.BeginVerifyIPFlow"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.verifyIPFlowCreateRequest(ctx, resourceGroupName, networkWatcherName, parameters, options)
 	if err != nil {
 		return nil, err

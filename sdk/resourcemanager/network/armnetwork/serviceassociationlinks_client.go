@@ -55,6 +55,10 @@ func NewServiceAssociationLinksClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksClientListOptions) (ServiceAssociationLinksClientListResponse, error) {
 	var err error
+	const operationName = "ServiceAssociationLinksClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return ServiceAssociationLinksClientListResponse{}, err

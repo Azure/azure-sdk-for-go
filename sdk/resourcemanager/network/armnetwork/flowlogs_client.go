@@ -75,6 +75,10 @@ func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-02-01
 func (client *FlowLogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLog, options *FlowLogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FlowLogsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -152,6 +156,10 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-02-01
 func (client *FlowLogsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FlowLogsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
 	if err != nil {
 		return nil, err
@@ -207,6 +215,10 @@ func (client *FlowLogsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - FlowLogsClientGetOptions contains the optional parameters for the FlowLogsClient.Get method.
 func (client *FlowLogsClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientGetOptions) (FlowLogsClientGetResponse, error) {
 	var err error
+	const operationName = "FlowLogsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
 	if err != nil {
 		return FlowLogsClientGetResponse{}, err
@@ -274,6 +286,7 @@ func (client *FlowLogsClient) NewListPager(resourceGroupName string, networkWatc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FlowLogsClientListResponse) (FlowLogsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FlowLogsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -293,6 +306,7 @@ func (client *FlowLogsClient) NewListPager(resourceGroupName string, networkWatc
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -342,6 +356,10 @@ func (client *FlowLogsClient) listHandleResponse(resp *http.Response) (FlowLogsC
 //   - options - FlowLogsClientUpdateTagsOptions contains the optional parameters for the FlowLogsClient.UpdateTags method.
 func (client *FlowLogsClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters TagsObject, options *FlowLogsClientUpdateTagsOptions) (FlowLogsClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "FlowLogsClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, flowLogName, parameters, options)
 	if err != nil {
 		return FlowLogsClientUpdateTagsResponse{}, err

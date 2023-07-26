@@ -2312,7 +2312,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFileUploadStream() {
+func (s *RecordedTestSuite) TestFileUploadDownloadStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2336,6 +2336,8 @@ func (s *RecordedTestSuite) TestFileUploadStream() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
 		Concurrency: 5,
@@ -2346,9 +2348,21 @@ func (s *RecordedTestSuite) TestFileUploadStream() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
 }
 
-func (s *RecordedTestSuite) TestFileUploadSmallStream() {
+func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2372,6 +2386,8 @@ func (s *RecordedTestSuite) TestFileUploadSmallStream() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
 		Concurrency: 5,
@@ -2382,6 +2398,17 @@ func (s *RecordedTestSuite) TestFileUploadSmallStream() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestFileUploadTinyStream() {
@@ -2408,6 +2435,8 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
 		Concurrency: 5,
@@ -2418,6 +2447,17 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestFileUploadFile() {
@@ -2432,7 +2472,7 @@ func (s *RecordedTestSuite) TestFileUploadFile() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	var fileSize int64 = 200 * 1024 * 1024
+	var fileSize int64 = 100 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -2464,7 +2504,7 @@ func (s *RecordedTestSuite) TestFileUploadFile() {
 	hash := md5.New()
 	_, err = io.Copy(hash, fh)
 	_require.NoError(err)
-	//contentMD5 := hash.Sum(nil)
+	contentMD5 := hash.Sum(nil)
 
 	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
 		Concurrency: 5,
@@ -2475,26 +2515,17 @@ func (s *RecordedTestSuite) TestFileUploadFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
-	//dResp, err := fClient.DownloadStream(context.Background(), nil)
-	//_require.NoError(err)
-	//
-	//data, err := io.ReadAll(dResp.Body)
-	//_require.NoError(err)
-	//
-	//downloadedMD5Value := md5.Sum(data)
-	//downloadedContentMD5 := downloadedMD5Value[:]
-	//
-	//_require.EqualValues(downloadedContentMD5, contentMD5)
-	//
-	//gResp2, err := fClient.GetProperties(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Equal(*gResp2.ContentLength, fileSize)
-	//
-	//rangeList, err := fClient.GetRangeList(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Len(rangeList.Ranges, 1)
-	//_require.Equal(*rangeList.Ranges[0].Start, int64(0))
-	//_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestSmallFileUploadFile() {
@@ -2541,7 +2572,7 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	hash := md5.New()
 	_, err = io.Copy(hash, fh)
 	_require.NoError(err)
-	//contentMD5 := hash.Sum(nil)
+	contentMD5 := hash.Sum(nil)
 
 	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
 		Concurrency: 5,
@@ -2552,26 +2583,17 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
-	//dResp, err := fClient.DownloadStream(context.Background(), nil)
-	//_require.NoError(err)
-	//
-	//data, err := io.ReadAll(dResp.Body)
-	//_require.NoError(err)
-	//
-	//downloadedMD5Value := md5.Sum(data)
-	//downloadedContentMD5 := downloadedMD5Value[:]
-	//
-	//_require.EqualValues(downloadedContentMD5, contentMD5)
-	//
-	//gResp2, err := fClient.GetProperties(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Equal(*gResp2.ContentLength, fileSize)
-	//
-	//rangeList, err := fClient.GetRangeList(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Len(rangeList.Ranges, 1)
-	//_require.Equal(*rangeList.Ranges[0].Start, int64(0))
-	//_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestTinyFileUploadFile() {
@@ -2618,7 +2640,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	hash := md5.New()
 	_, err = io.Copy(hash, fh)
 	_require.NoError(err)
-	//contentMD5 := hash.Sum(nil)
+	contentMD5 := hash.Sum(nil)
 
 	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
 		ChunkSize: 2,
@@ -2628,26 +2650,17 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
-	//dResp, err := fClient.DownloadStream(context.Background(), nil)
-	//_require.NoError(err)
-	//
-	//data, err := io.ReadAll(dResp.Body)
-	//_require.NoError(err)
-	//
-	//downloadedMD5Value := md5.Sum(data)
-	//downloadedContentMD5 := downloadedMD5Value[:]
-	//
-	//_require.EqualValues(downloadedContentMD5, contentMD5)
-	//
-	//gResp2, err := fClient.GetProperties(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Equal(*gResp2.ContentLength, fileSize)
-	//
-	//rangeList, err := fClient.GetRangeList(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Len(rangeList.Ranges, 1)
-	//_require.Equal(*rangeList.Ranges[0].Start, int64(0))
-	//_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestFileUploadBuffer() {
@@ -2674,8 +2687,8 @@ func (s *RecordedTestSuite) TestFileUploadBuffer() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
-	//md5Value := md5.Sum(content)
-	//contentMD5 := md5Value[:]
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
 
 	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
 		Concurrency: 5,
@@ -2686,26 +2699,16 @@ func (s *RecordedTestSuite) TestFileUploadBuffer() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 
-	//dResp, err := fClient.DownloadStream(context.Background(), nil)
-	//_require.NoError(err)
-	//
-	//data, err := io.ReadAll(dResp.Body)
-	//_require.NoError(err)
-	//
-	//downloadedMD5Value := md5.Sum(data)
-	//downloadedContentMD5 := downloadedMD5Value[:]
-	//
-	//_require.EqualValues(downloadedContentMD5, contentMD5)
-	//
-	//gResp2, err := fClient.GetProperties(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Equal(*gResp2.ContentLength, fileSize)
-	//
-	//rangeList, err := fClient.GetRangeList(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Len(rangeList.Ranges, 1)
-	//_require.Equal(*rangeList.Ranges[0].Start, int64(0))
-	//_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
@@ -2732,8 +2735,8 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
-	//md5Value := md5.Sum(content)
-	//contentMD5 := md5Value[:]
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
 
 	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
 		Concurrency: 5,
@@ -2744,26 +2747,16 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 
-	//dResp, err := fClient.DownloadStream(context.Background(), nil)
-	//_require.NoError(err)
-	//
-	//data, err := io.ReadAll(dResp.Body)
-	//_require.NoError(err)
-	//
-	//downloadedMD5Value := md5.Sum(data)
-	//downloadedContentMD5 := downloadedMD5Value[:]
-	//
-	//_require.EqualValues(downloadedContentMD5, contentMD5)
-	//
-	//gResp2, err := fClient.GetProperties(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Equal(*gResp2.ContentLength, fileSize)
-	//
-	//rangeList, err := fClient.GetRangeList(context.Background(), nil)
-	//_require.NoError(err)
-	//_require.Len(rangeList.Ranges, 1)
-	//_require.Equal(*rangeList.Ranges[0].Start, int64(0))
-	//_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
@@ -2844,3 +2837,260 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 }
+
+func (s *RecordedTestSuite) TestFileDownloadFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	destFileName := "BigFile-downloaded.bin"
+	destFile, err := os.Create(destFileName)
+	_require.NoError(err)
+	defer func(name string) {
+		err = os.Remove(name)
+		_require.NoError(err)
+	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
+
+	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
+		ChunkSize:   10 * 1024 * 1024,
+		Concurrency: 5,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+
+	hash := md5.New()
+	_, err = io.Copy(hash, destFile)
+	_require.NoError(err)
+	downloadedContentMD5 := hash.Sum(nil)
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	// create local file
+	_, content := testcommon.GenerateData(int(fileSize))
+	srcFileName := "testFileUpload"
+	err = os.WriteFile(srcFileName, content, 0644)
+	_require.NoError(err)
+	defer func() {
+		err = os.Remove(srcFileName)
+		_require.NoError(err)
+	}()
+	fh, err := os.Open(srcFileName)
+	_require.NoError(err)
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	srcHash := md5.New()
+	_, err = io.Copy(srcHash, fh)
+	_require.NoError(err)
+	contentMD5 := srcHash.Sum(nil)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+	})
+	_require.NoError(err)
+
+	destFileName := "SmallFile-downloaded.bin"
+	destFile, err := os.Create(destFileName)
+	_require.NoError(err)
+	defer func(name string) {
+		err = os.Remove(name)
+		_require.NoError(err)
+	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
+
+	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
+		ChunkSize:   2 * 1024,
+		Concurrency: 5,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+
+	destHash := md5.New()
+	_, err = io.Copy(destHash, destFile)
+	_require.NoError(err)
+	downloadedContentMD5 := destHash.Sum(nil)
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	_, content := testcommon.GenerateData(int(fileSize))
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	bytesUploaded := int64(0)
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+		Progress: func(bytesTransferred int64) {
+			_require.GreaterOrEqual(bytesTransferred, bytesUploaded)
+			bytesUploaded = bytesTransferred
+		},
+	})
+	_require.NoError(err)
+	_require.Equal(bytesUploaded, fileSize)
+
+	destBuffer := make([]byte, fileSize)
+	bytesDownloaded := int64(0)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   2 * 1024,
+		Concurrency: 5,
+		Progress: func(bytesTransferred int64) {
+			_require.GreaterOrEqual(bytesTransferred, bytesDownloaded)
+			bytesDownloaded = bytesTransferred
+		},
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+	_require.Equal(bytesDownloaded, fileSize)
+
+	downloadedMD5Value := md5.Sum(destBuffer)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileDownloadBuffer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	destBuffer := make([]byte, fileSize)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   10 * 1024 * 1024,
+		Concurrency: 5,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+
+	downloadedMD5Value := md5.Sum(destBuffer)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+// TODO tests all uploads/downloads with other opts

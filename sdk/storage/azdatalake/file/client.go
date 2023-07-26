@@ -471,6 +471,9 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	if o == nil {
+		o = &DownloadStreamOptions{}
+	}
 	opts := o.format()
 	resp, err := f.blobClient().DownloadStream(ctx, opts)
 	newResp := FormatDownloadStreamResponse(&resp)
@@ -499,3 +502,5 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	val, err := f.blobClient().DownloadFile(ctx, file, opts)
 	return val, exported.ConvertToDFSError(err)
 }
+
+// TODO: add undelete

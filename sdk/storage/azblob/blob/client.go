@@ -415,8 +415,8 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 
 	// helper routine to get body
 	getBodyForRange := func(ctx context.Context,
-							chunkStart int64,
-							size int64) (io.ReadCloser, error) {
+				chunkStart int64,
+				size int64) (io.ReadCloser, error) {
 		downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 			Offset: chunkStart + o.Range.Offset,
 			Count:  size,

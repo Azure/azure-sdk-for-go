@@ -29,8 +29,7 @@ type DatabasePrincipalAssignmentsClient struct {
 }
 
 // NewDatabasePrincipalAssignmentsClient creates a new instance of DatabasePrincipalAssignmentsClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasePrincipalAssignmentsClient, error) {
@@ -48,8 +47,8 @@ func NewDatabasePrincipalAssignmentsClient(subscriptionID string, credential azc
 // CheckNameAvailability - Checks that the database principal assignment is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - principalAssignmentName - The name of the resource.
@@ -94,7 +93,7 @@ func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, principalAssignmentName)
@@ -112,8 +111,8 @@ func (client *DatabasePrincipalAssignmentsClient) checkNameAvailabilityHandleRes
 // BeginCreateOrUpdate - Creates a Kusto cluster database principalAssignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - principalAssignmentName - The name of the Kusto principalAssignment.
@@ -126,7 +125,9 @@ func (client *DatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -135,7 +136,7 @@ func (client *DatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(ctx contex
 // CreateOrUpdate - Creates a Kusto cluster database principalAssignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *DatabasePrincipalAssignmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, parameters DatabasePrincipalAssignment, options *DatabasePrincipalAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, options)
 	if err != nil {
@@ -179,7 +180,7 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -188,8 +189,8 @@ func (client *DatabasePrincipalAssignmentsClient) createOrUpdateCreateRequest(ct
 // BeginDelete - Deletes a Kusto principalAssignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - principalAssignmentName - The name of the Kusto principalAssignment.
@@ -201,7 +202,9 @@ func (client *DatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DatabasePrincipalAssignmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasePrincipalAssignmentsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[DatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -210,7 +213,7 @@ func (client *DatabasePrincipalAssignmentsClient) BeginDelete(ctx context.Contex
 // Delete - Deletes a Kusto principalAssignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *DatabasePrincipalAssignmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, principalAssignmentName string, options *DatabasePrincipalAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, principalAssignmentName, options)
 	if err != nil {
@@ -254,7 +257,7 @@ func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,8 +266,8 @@ func (client *DatabasePrincipalAssignmentsClient) deleteCreateRequest(ctx contex
 // Get - Gets a Kusto cluster database principalAssignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - principalAssignmentName - The name of the Kusto principalAssignment.
@@ -313,7 +316,7 @@ func (client *DatabasePrincipalAssignmentsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,8 +333,8 @@ func (client *DatabasePrincipalAssignmentsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Lists all Kusto cluster database principalAssignments.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - options - DatabasePrincipalAssignmentsClientListOptions contains the optional parameters for the DatabasePrincipalAssignmentsClient.NewListPager
@@ -382,7 +385,7 @@ func (client *DatabasePrincipalAssignmentsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

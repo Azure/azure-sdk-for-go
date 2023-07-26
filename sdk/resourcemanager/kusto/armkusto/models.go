@@ -228,6 +228,12 @@ type ClusterListResult struct {
 	Value []*Cluster
 }
 
+// ClusterMigrateRequest - A cluster migrate request.
+type ClusterMigrateRequest struct {
+	// REQUIRED; Resource ID of the destination cluster or kusto pool.
+	ClusterResourceID *string
+}
+
 // ClusterPrincipalAssignment - Class representing a cluster principal assignment.
 type ClusterPrincipalAssignment struct {
 	// The cluster principal.
@@ -380,6 +386,9 @@ type ClusterProperties struct {
 	// READ-ONLY; The cluster data ingestion URI.
 	DataIngestionURI *string
 
+	// READ-ONLY; Properties of the peer cluster involved in a migration to/from this cluster.
+	MigrationCluster *MigrationClusterProperties
+
 	// READ-ONLY; A list of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -458,6 +467,12 @@ type ClustersClientBeginDetachFollowerDatabasesOptions struct {
 // ClustersClientBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the ClustersClient.BeginDiagnoseVirtualNetwork
 // method.
 type ClustersClientBeginDiagnoseVirtualNetworkOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginMigrateOptions contains the optional parameters for the ClustersClient.BeginMigrate method.
+type ClustersClientBeginMigrateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -753,8 +768,31 @@ type Database struct {
 // GetDatabase implements the DatabaseClassification interface for type Database.
 func (d *Database) GetDatabase() *Database { return d }
 
+// DatabaseClientInviteFollowerOptions contains the optional parameters for the DatabaseClient.InviteFollower method.
+type DatabaseClientInviteFollowerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseInviteFollowerRequest - The request to invite a follower to a database.
+type DatabaseInviteFollowerRequest struct {
+	// REQUIRED; The email of the invited user for which the follower invitation is generated.
+	InviteeEmail *string
+
+	// Table level sharing specifications
+	TableLevelSharingProperties *TableLevelSharingProperties
+}
+
+// DatabaseInviteFollowerResult - The result returned from a follower invitation generation request.
+type DatabaseInviteFollowerResult struct {
+	// The generated invitation token.
+	GeneratedInvitation *string
+}
+
 // DatabaseListResult - The list Kusto databases operation response.
 type DatabaseListResult struct {
+	// Link to the next page of results
+	NextLink *string
+
 	// The list of Kusto databases.
 	Value []DatabaseClassification
 }
@@ -935,7 +973,12 @@ type DatabasesClientGetOptions struct {
 
 // DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.NewListByClusterPager method.
 type DatabasesClientListByClusterOptions struct {
-	// placeholder for future optional parameters
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
+	Skiptoken *string
+	// limit the number of results
+	Top *int32
 }
 
 // DatabasesClientListPrincipalsOptions contains the optional parameters for the DatabasesClient.NewListPrincipalsPager method.
@@ -1349,6 +1392,21 @@ type ManagedPrivateEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MigrationClusterProperties - Represents a properties of a cluster that is part of a migration.
+type MigrationClusterProperties struct {
+	// READ-ONLY; The public data ingestion URL of the cluster.
+	DataIngestionURI *string
+
+	// READ-ONLY; The resource ID of the cluster.
+	ID *string
+
+	// READ-ONLY; The role of the cluster in the migration process.
+	Role *MigrationClusterRole
+
+	// READ-ONLY; The public URL of the cluster.
+	URI *string
+}
+
 // Operation - A REST API operation
 type Operation struct {
 	// The object that describes the operation.
@@ -1701,6 +1759,10 @@ type ReadOnlyFollowingDatabaseProperties struct {
 	// READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics
 
+	// READ-ONLY; The database suspension details. If the database is suspended, this object contains information related to the
+	// database's suspension state.
+	SuspensionDetails *SuspensionDetails
+
 	// READ-ONLY; Table level sharing specifications
 	TableLevelSharingProperties *TableLevelSharingProperties
 }
@@ -1742,6 +1804,9 @@ type ReadWriteDatabaseProperties struct {
 	// The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string
 
+	// KeyVault properties for the database encryption.
+	KeyVaultProperties *KeyVaultProperties
+
 	// The time the data should be kept before it stops being accessible to queries in TimeSpan.
 	SoftDeletePeriod *string
 
@@ -1753,6 +1818,10 @@ type ReadWriteDatabaseProperties struct {
 
 	// READ-ONLY; The statistics of the database.
 	Statistics *DatabaseStatistics
+
+	// READ-ONLY; The database suspension details. If the database is suspended, this object contains information related to the
+	// database's suspension state.
+	SuspensionDetails *SuspensionDetails
 }
 
 // ResourceSKUCapabilities - Describes The SKU capabilities object.
@@ -1905,6 +1974,13 @@ type ScriptsClientGetOptions struct {
 // ScriptsClientListByDatabaseOptions contains the optional parameters for the ScriptsClient.NewListByDatabasePager method.
 type ScriptsClientListByDatabaseOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SuspensionDetails - The database suspension details. If the database is suspended, this object contains information related
+// to the database's suspension state.
+type SuspensionDetails struct {
+	// The starting date and time of the suspension state.
+	SuspensionStartDate *time.Time
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

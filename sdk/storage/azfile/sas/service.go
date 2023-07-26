@@ -39,7 +39,7 @@ type SignatureValues struct {
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+	if v.Identifier == "" && (v.ExpiryTime.IsZero() || v.Permissions == "") {
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 

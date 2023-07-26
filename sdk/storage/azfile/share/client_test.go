@@ -1525,3 +1525,73 @@ func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {
 	_require.NotNil(getResp.Permission)
 	_require.NotEmpty(*getResp.Permission)
 }
+
+func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	id := "testAccessPolicy"
+	ps := share.AccessPolicyPermission{
+		Read:   true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+		List:   true,
+	}
+	signedIdentifiers := make([]*share.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &share.SignedIdentifier{
+		AccessPolicy: &share.AccessPolicy{
+			Expiry:     to.Ptr(time.Now().Add(1 * time.Hour)),
+			Start:      to.Ptr(time.Now()),
+			Permission: to.Ptr(ps.String()),
+		},
+		ID: &id,
+	})
+
+	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
+		ShareACL: signedIdentifiers,
+	})
+	_require.NoError(err)
+
+	gResp, err := shareClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(gResp.SignedIdentifiers, 1)
+
+	time.Sleep(30 * time.Second)
+
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:   sas.ProtocolHTTPS,
+		Identifier: id,
+		ShareName:  shareName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	shareSAS := shareClient.URL() + "?" + sasQueryParams.Encode()
+	shareClientSAS, err := share.NewClientWithNoCredential(shareSAS, nil)
+	_require.NoError(err)
+
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClientSAS)
+	fileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 2048, shareClientSAS)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+}

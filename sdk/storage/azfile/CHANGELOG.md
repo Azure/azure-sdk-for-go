@@ -13,6 +13,8 @@
 
 ### Bugs Fixed
 
+* Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used.
+
 ### Other Changes
 
 * Updated version of azcore to 1.7.0 and azidentity to 1.3.0.

@@ -4,11 +4,7 @@
 
 ### Breaking Changes
 
--  This module has moved to `github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai`.
-
-### Bugs Fixed
-
-### Other Changes
+* This module has moved to `github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai`.
 
 ## 0.1.0 (2023-07-20)
 

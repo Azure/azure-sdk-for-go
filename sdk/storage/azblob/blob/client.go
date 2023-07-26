@@ -504,6 +504,9 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			body, err := getBodyForRange(ctx, chunkStart, count)
+			if err != nil {
+				return nil
+			}
 
 			buff, err := aquireBuffer()
 			if err != nil {

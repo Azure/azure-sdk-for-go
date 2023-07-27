@@ -144,7 +144,11 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars
 	const want = "\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."
 
 	require.Equal(t, want, got)
-	require.Equal(t, 86, eventCount)
+
+	// there's no strict requirement of how the response is streamed so just
+	// choosing something that's reasonable but will be lower than typical usage
+	// (which is usually somewhere around the 80s).
+	require.GreaterOrEqual(t, eventCount, 50)
 }
 
 func TestClient_GetCompletions_Error(t *testing.T) {

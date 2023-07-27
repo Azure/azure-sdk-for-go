@@ -123,7 +123,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, "sdk/cognitiveservices/azopenai/testdata", nil)
+	err = recording.Start(t, "sdk/ai/azopenai/testdata", nil)
 	require.NoError(t, err)
 
 	if recording.GetRecordMode() != recording.PlaybackMode {

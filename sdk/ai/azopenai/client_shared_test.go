@@ -111,7 +111,6 @@ func initEnvVars() {
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
-			os.Exit(1)
 		}
 
 		azureOpenAI = newTestVars("AOAI", false)

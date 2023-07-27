@@ -76,6 +76,10 @@ func (client *ManagedClustersClient) BeginAbortLatestOperation(ctx context.Conte
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) abortLatestOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginAbortLatestOperationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginAbortLatestOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.abortLatestOperationCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -145,6 +149,10 @@ func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -216,6 +224,10 @@ func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -266,6 +278,10 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 //   - options - ManagedClustersClientGetOptions contains the optional parameters for the ManagedClustersClient.Get method.
 func (client *ManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientGetOptions) (ManagedClustersClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClustersClientGetResponse{}, err
@@ -330,6 +346,10 @@ func (client *ManagedClustersClient) getHandleResponse(resp *http.Response) (Man
 //     method.
 func (client *ManagedClustersClient) GetAccessProfile(ctx context.Context, resourceGroupName string, resourceName string, roleName string, options *ManagedClustersClientGetAccessProfileOptions) (ManagedClustersClientGetAccessProfileResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.GetAccessProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAccessProfileCreateRequest(ctx, resourceGroupName, resourceName, roleName, options)
 	if err != nil {
 		return ManagedClustersClientGetAccessProfileResponse{}, err
@@ -396,6 +416,10 @@ func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *http.R
 //     method.
 func (client *ManagedClustersClient) GetCommandResult(ctx context.Context, resourceGroupName string, resourceName string, commandID string, options *ManagedClustersClientGetCommandResultOptions) (ManagedClustersClientGetCommandResultResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.GetCommandResult"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCommandResultCreateRequest(ctx, resourceGroupName, resourceName, commandID, options)
 	if err != nil {
 		return ManagedClustersClientGetCommandResultResponse{}, err
@@ -463,6 +487,10 @@ func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *http.R
 //     method.
 func (client *ManagedClustersClient) GetOSOptions(ctx context.Context, location string, options *ManagedClustersClientGetOSOptionsOptions) (ManagedClustersClientGetOSOptionsResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.GetOSOptions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getOSOptionsCreateRequest(ctx, location, options)
 	if err != nil {
 		return ManagedClustersClientGetOSOptionsResponse{}, err
@@ -523,6 +551,10 @@ func (client *ManagedClustersClient) getOSOptionsHandleResponse(resp *http.Respo
 //     method.
 func (client *ManagedClustersClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientGetUpgradeProfileOptions) (ManagedClustersClientGetUpgradeProfileResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.GetUpgradeProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getUpgradeProfileCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClustersClientGetUpgradeProfileResponse{}, err
@@ -585,6 +617,7 @@ func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedClustersClientListResponse) (ManagedClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -604,6 +637,7 @@ func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClient
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -646,6 +680,7 @@ func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedClustersClientListByResourceGroupResponse) (ManagedClustersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -665,6 +700,7 @@ func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupNa
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -709,6 +745,10 @@ func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *htt
 //     method.
 func (client *ManagedClustersClient) ListClusterAdminCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientListClusterAdminCredentialsOptions) (ManagedClustersClientListClusterAdminCredentialsResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.ListClusterAdminCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listClusterAdminCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClustersClientListClusterAdminCredentialsResponse{}, err
@@ -773,6 +813,10 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(r
 //     method.
 func (client *ManagedClustersClient) ListClusterMonitoringUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientListClusterMonitoringUserCredentialsOptions) (ManagedClustersClientListClusterMonitoringUserCredentialsResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.ListClusterMonitoringUserCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listClusterMonitoringUserCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}, err
@@ -837,6 +881,10 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleR
 //     method.
 func (client *ManagedClustersClient) ListClusterUserCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientListClusterUserCredentialsOptions) (ManagedClustersClientListClusterUserCredentialsResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.ListClusterUserCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listClusterUserCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
@@ -904,6 +952,10 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 //     method.
 func (client *ManagedClustersClient) ListKubernetesVersions(ctx context.Context, location string, options *ManagedClustersClientListKubernetesVersionsOptions) (ManagedClustersClientListKubernetesVersionsResponse, error) {
 	var err error
+	const operationName = "ManagedClustersClient.ListKubernetesVersions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKubernetesVersionsCreateRequest(ctx, location, options)
 	if err != nil {
 		return ManagedClustersClientListKubernetesVersionsResponse{}, err
@@ -965,6 +1017,7 @@ func (client *ManagedClustersClient) NewListOutboundNetworkDependenciesEndpoints
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse) (ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -984,6 +1037,7 @@ func (client *ManagedClustersClient) NewListOutboundNetworkDependenciesEndpoints
 			}
 			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1054,6 +1108,10 @@ func (client *ManagedClustersClient) BeginResetAADProfile(ctx context.Context, r
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile, options *ManagedClustersClientBeginResetAADProfileOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginResetAADProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resetAADProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1128,6 +1186,10 @@ func (client *ManagedClustersClient) BeginResetServicePrincipalProfile(ctx conte
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile, options *ManagedClustersClientBeginResetServicePrincipalProfileOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginResetServicePrincipalProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resetServicePrincipalProfileCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1203,6 +1265,10 @@ func (client *ManagedClustersClient) BeginRotateClusterCertificates(ctx context.
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateClusterCertificatesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginRotateClusterCertificates"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rotateClusterCertificatesCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -1273,6 +1339,10 @@ func (client *ManagedClustersClient) BeginRotateServiceAccountSigningKeys(ctx co
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) rotateServiceAccountSigningKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginRotateServiceAccountSigningKeysOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginRotateServiceAccountSigningKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rotateServiceAccountSigningKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -1348,6 +1418,10 @@ func (client *ManagedClustersClient) BeginRunCommand(ctx context.Context, resour
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest, options *ManagedClustersClientBeginRunCommandOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginRunCommand"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.runCommandCreateRequest(ctx, resourceGroupName, resourceName, requestPayload, options)
 	if err != nil {
 		return nil, err
@@ -1423,6 +1497,10 @@ func (client *ManagedClustersClient) BeginStart(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -1499,6 +1577,10 @@ func (client *ManagedClustersClient) BeginStop(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClustersClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -1568,6 +1650,10 @@ func (client *ManagedClustersClient) BeginUpdateTags(ctx context.Context, resour
 // Generated from API version 2023-05-01
 func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject, options *ManagedClustersClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedClustersClient.BeginUpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err

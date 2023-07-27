@@ -6,14 +6,16 @@
 
 package path
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+)
 
-// EncryptionAlgorithmType defines values for EncryptionAlgorithmType.
-type EncryptionAlgorithmType = blob.EncryptionAlgorithmType
+type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
 
 const (
-	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeNone
-	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = blob.EncryptionAlgorithmTypeAES256
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = generated.EncryptionAlgorithmTypeNone
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = generated.EncryptionAlgorithmTypeAES256
 )
 
 type ImmutabilityPolicyMode = blob.ImmutabilityPolicyMode

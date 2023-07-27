@@ -30,7 +30,7 @@ func FormatGetPropertiesOptions(o *GetPropertiesOptions) *blob.GetPropertiesOpti
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
 			EncryptionKey:       o.CPKInfo.EncryptionKey,
-			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		},
 	}
@@ -159,19 +159,18 @@ type HTTPHeaders struct {
 	ContentType *string
 }
 
-//
-//func (o HTTPHeaders) formatBlobHTTPHeaders() blob.HTTPHeaders {
-//
-//	opts := blob.HTTPHeaders{
-//		BlobCacheControl:       o.CacheControl,
-//		BlobContentDisposition: o.ContentDisposition,
-//		BlobContentEncoding:    o.ContentEncoding,
-//		BlobContentLanguage:    o.ContentLanguage,
-//		BlobContentMD5:         o.ContentMD5,
-//		BlobContentType:        o.ContentType,
-//	}
-//	return opts
-//}
+func FormatBlobHTTPHeaders(o *HTTPHeaders) *blob.HTTPHeaders {
+
+	opts := &blob.HTTPHeaders{
+		BlobCacheControl:       o.CacheControl,
+		BlobContentDisposition: o.ContentDisposition,
+		BlobContentEncoding:    o.ContentEncoding,
+		BlobContentLanguage:    o.ContentLanguage,
+		BlobContentMD5:         o.ContentMD5,
+		BlobContentType:        o.ContentType,
+	}
+	return opts
+}
 
 func FormatPathHTTPHeaders(o *HTTPHeaders) *generated.PathHTTPHeaders {
 	// TODO: will be used for file related ops, like append
@@ -209,7 +208,7 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, 
 	if o.CPKInfo != nil {
 		opts.CPKInfo = &blob.CPKInfo{
 			EncryptionKey:       o.CPKInfo.EncryptionKey,
-			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		}
 	}

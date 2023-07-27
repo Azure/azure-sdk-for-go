@@ -162,8 +162,8 @@ func (fs *Client) containerClient() *container.Client {
 	return containerClient
 }
 
-func (f *Client) identityCredential() *azcore.TokenCredential {
-	return base.IdentityCredentialComposite((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(f))
+func (fs *Client) identityCredential() *azcore.TokenCredential {
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
 }
 
 func (fs *Client) sharedKey() *exported.SharedKeyCredential {

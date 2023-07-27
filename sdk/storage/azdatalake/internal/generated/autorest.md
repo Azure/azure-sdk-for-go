@@ -76,8 +76,22 @@ directive:
     transform: >-
       return $.
         replace(/func \(client \*ServiceClient\) NewListFileSystemsPager\(.+\/\/ listFileSystemsCreateRequest creates the ListFileSystems request/s, `//\n// ListFileSystemsCreateRequest creates the ListFileSystems request`).
-        replace(/\(client \*ServiceClient\) listFileSystemsCreateRequest\(/, `(client *FileSystemClient) ListFileSystemsCreateRequest(`).
-        replace(/\(client \*ServiceClient\) listFileSystemsHandleResponse\(/, `(client *FileSystemClient) ListFileSystemsHandleResponse(`);
+        replace(/\(client \*ServiceClient\) listFileSystemsCreateRequest\(/, `(client *ServiceClient) ListFileSystemsCreateRequest(`).
+        replace(/\(client \*ServiceClient\) listFileSystemsHandleResponse\(/, `(client *ServiceClient) ListFileSystemsHandleResponse(`);
+```
+
+
+### Remove pager methods and export various generated methods in path client
+
+``` yaml
+directive:
+  - from: zz_path_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*PathClient\) SetAccessControlRecursive\(.+\/\/ setAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request/s, `//\n// SetAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request`).
+        replace(/\(client \*PathClient\) setAccessControlRecursiveCreateRequest\(/, `(client *PathClient) SetAccessControlRecursiveCreateRequest(`).
+        replace(/\(client \*PathClient\) setAccessControlRecursiveHandleResponse\(/, `(client *PathClient) SetAccessControlRecursiveHandleResponse(`);
 ```
 
 ### Fix EncryptionAlgorithm

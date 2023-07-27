@@ -282,7 +282,8 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return ListPathsSegmentResponse{}, runtime.NewResponseError(resp)
 			}
-			return fs.generatedFSClientWithDFS().ListPathsHandleResponse(resp)
+			newResp, err := fs.generatedFSClientWithDFS().ListPathsHandleResponse(resp)
+			return newResp, exported.ConvertToDFSError(err)
 		},
 	})
 }
@@ -317,7 +318,8 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return ListDeletedPathsSegmentResponse{}, runtime.NewResponseError(resp)
 			}
-			return fs.generatedFSClientWithDFS().ListBlobHierarchySegmentHandleResponse(resp)
+			newResp, err := fs.generatedFSClientWithDFS().ListBlobHierarchySegmentHandleResponse(resp)
+			return newResp, exported.ConvertToDFSError(err)
 		},
 	})
 }

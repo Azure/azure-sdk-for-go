@@ -82,61 +82,36 @@ type RenameOptions = path.RenameOptions
 // ===================================== PATH IMPORTS ===========================================
 
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation. TODO: Design formatter
-type SetAccessControlRecursiveOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
+type accessControlRecursiveOptions struct {
+	MaxResults *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
 	// Marker is the continuation token to use when continuing the operation.
 	Marker *string
 }
 
-func (o *SetAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
-	// TODO: design formatter
-	return nil, nil
+func (o *accessControlRecursiveOptions) format(ACL, mode string) (generated.PathSetAccessControlRecursiveMode, *generated.PathClientSetAccessControlRecursiveOptions) {
+	opts := &generated.PathClientSetAccessControlRecursiveOptions{
+		ACL: &ACL,
+	}
+	newMode := generated.PathSetAccessControlRecursiveMode(mode)
+	if o == nil {
+		return newMode, opts
+	}
+	opts.ForceFlag = o.ContinueOnFailure
+	opts.Continuation = o.Marker
+	opts.MaxRecords = o.MaxResults
+	return newMode, opts
 }
+
+// SetAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
+type SetAccessControlRecursiveOptions = accessControlRecursiveOptions
 
 // UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
-type UpdateAccessControlRecursiveOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
-	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
-	ContinueOnFailure *bool
-	// Marker is the continuation token to use when continuing the operation.
-	Marker *string
-}
-
-func (o *UpdateAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
-	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
-	return nil, nil
-}
+type UpdateAccessControlRecursiveOptions = accessControlRecursiveOptions
 
 // RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
-type RemoveAccessControlRecursiveOptions struct {
-	// ACL is the access control list for the path.
-	ACL *string
-	// BatchSize is the number of paths to set access control recursively in a single call.
-	BatchSize *int32
-	// MaxBatches is the maximum number of batches to perform the operation on.
-	MaxBatches *int32
-	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
-	ContinueOnFailure *bool
-	// Marker is the continuation token to use when continuing the operation.
-	Marker *string
-}
-
-func (o *RemoveAccessControlRecursiveOptions) format() (*generated.PathClientSetAccessControlRecursiveOptions, error) {
-	// TODO: design formatter - similar to SetAccessControlRecursiveOptions
-	return nil, nil
-}
+type RemoveAccessControlRecursiveOptions = accessControlRecursiveOptions
 
 // ================================= path imports ==================================
 

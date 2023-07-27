@@ -257,16 +257,56 @@ func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	return resp, err
 }
 
-// SetAccessControlRecursive sets the owner, owning group, and permissions for a file or directory (dfs1).
-func (d *Client) SetAccessControlRecursive(ctx context.Context, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
-	// TODO explicitly pass SetAccessControlRecursiveMode
-	return SetAccessControlRecursiveResponse{}, nil
+func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SetAccessControlRecursiveResponse]{
+		More: func(page SetAccessControlRecursiveResponse) bool {
+			return page.Continuation != nil && len(*page.Continuation) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SetAccessControlRecursiveResponse) (SetAccessControlRecursiveResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = d.generatedDirClientWithDFS().SetAccessControlRecursiveCreateRequest(ctx, mode, listOptions)
+				err = exported.ConvertToDFSError(err)
+			} else {
+				listOptions.Continuation = page.Continuation
+				req, err = d.generatedDirClientWithDFS().SetAccessControlRecursiveCreateRequest(ctx, mode, listOptions)
+				err = exported.ConvertToDFSError(err)
+			}
+			if err != nil {
+				return SetAccessControlRecursiveResponse{}, err
+			}
+			resp, err := d.generatedDirClientWithDFS().InternalClient().Pipeline().Do(req)
+			err = exported.ConvertToDFSError(err)
+			if err != nil {
+				return SetAccessControlRecursiveResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
+			}
+			newResp, err := d.generatedDirClientWithDFS().SetAccessControlRecursiveHandleResponse(resp)
+			return newResp, exported.ConvertToDFSError(err)
+		},
+	})
+
 }
 
-// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a file or directory (dfs1).
-func (d *Client) UpdateAccessControlRecursive(ctx context.Context, options *UpdateAccessControlRecursiveOptions) (UpdateAccessControlRecursiveResponse, error) {
-	// TODO explicitly pass SetAccessControlRecursiveMode
-	return SetAccessControlRecursiveResponse{}, nil
+// NewSetAccessControlRecursivePager sets the owner, owning group, and permissions for a file or directory (dfs1).
+func (d *Client) NewSetAccessControlRecursivePager(ACL string, options *SetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
+	mode, listOptions := options.format(ACL, "set")
+	return d.setAccessControlHelper(mode, listOptions)
+}
+
+// NewUpdateAccessControlRecursivePager updates the owner, owning group, and permissions for a file or directory (dfs1).
+func (d *Client) NewUpdateAccessControlRecursivePager(ACL string, options *UpdateAccessControlRecursiveOptions) *runtime.Pager[UpdateAccessControlRecursiveResponse] {
+	mode, listOptions := options.format(ACL, "modify")
+	return d.setAccessControlHelper(mode, listOptions)
+}
+
+// NewRemoveAccessControlRecursivePager removes the owner, owning group, and permissions for a file or directory (dfs1).
+func (d *Client) NewRemoveAccessControlRecursivePager(ACL string, options *RemoveAccessControlRecursiveOptions) *runtime.Pager[RemoveAccessControlRecursiveResponse] {
+	mode, listOptions := options.format(ACL, "remove")
+	return d.setAccessControlHelper(mode, listOptions)
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
@@ -275,12 +315,6 @@ func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
-}
-
-// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a file or directory (dfs1).
-func (d *Client) RemoveAccessControlRecursive(ctx context.Context, options *RemoveAccessControlRecursiveOptions) (RemoveAccessControlRecursiveResponse, error) {
-	// TODO explicitly pass SetAccessControlRecursiveMode
-	return SetAccessControlRecursiveResponse{}, nil
 }
 
 // SetMetadata sets the metadata for a file or directory (blob3).

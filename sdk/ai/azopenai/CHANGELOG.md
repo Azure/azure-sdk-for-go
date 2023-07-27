@@ -6,7 +6,7 @@
 
 ### Breaking Changes
 
-- ChatCompletionsOptions, CompletionsOptions EmbeddingsOptions `DeploymentID` field renamed to `Deployment`
+- ChatCompletionsOptions, CompletionsOptions, EmbeddingsOptions `DeploymentID` field renamed to `Deployment`.
 
 ### Bugs Fixed
 

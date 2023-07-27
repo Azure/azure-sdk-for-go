@@ -8,8 +8,7 @@ Please verify the following before submitting your PR, thank you!
 - [ ] The PR does not update generated files.
    - These files are managed by the codegen framework at [Azure/autorest.go][].
 - [ ] Tests are included and/or updated for code changes.
-- [ ] Updates to [CHANGELOG.md][] are included.
+- [ ] Updates to module CHANGELOG.md are included.
 - [ ] MIT license headers are included in each file.
 
 [Azure/autorest.go]: https://github.com/Azure/autorest.go
-[CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/main/CHANGELOG.md

@@ -481,7 +481,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "logit_bias", c.LogitBias)
 	populate(objectMap, "max_tokens", c.MaxTokens)
 	populate(objectMap, "messages", c.Messages)
-	populate(objectMap, "model", &c.DeploymentID)
+	populate(objectMap, "model", &c.Deployment)
 	populate(objectMap, "n", c.N)
 	populate(objectMap, "presence_penalty", c.PresencePenalty)
 	populate(objectMap, "stop", c.Stop)
@@ -519,7 +519,7 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Messages", &c.Messages)
 			delete(rawMsg, key)
 		case "model":
-			err = unpopulate(val, "Model", &c.DeploymentID)
+			err = unpopulate(val, "Model", &c.Deployment)
 			delete(rawMsg, key)
 		case "n":
 			err = unpopulate(val, "N", &c.N)
@@ -829,7 +829,7 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "logit_bias", c.LogitBias)
 	populate(objectMap, "logprobs", c.LogProbs)
 	populate(objectMap, "max_tokens", c.MaxTokens)
-	populate(objectMap, "model", &c.DeploymentID)
+	populate(objectMap, "model", &c.Deployment)
 	populate(objectMap, "n", c.N)
 	populate(objectMap, "presence_penalty", c.PresencePenalty)
 	populate(objectMap, "prompt", c.Prompt)
@@ -868,7 +868,7 @@ func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "MaxTokens", &c.MaxTokens)
 			delete(rawMsg, key)
 		case "model":
-			err = unpopulate(val, "Model", &c.DeploymentID)
+			err = unpopulate(val, "Model", &c.Deployment)
 			delete(rawMsg, key)
 		case "n":
 			err = unpopulate(val, "N", &c.N)
@@ -1190,7 +1190,7 @@ func (e *Embeddings) UnmarshalJSON(data []byte) error {
 func (e EmbeddingsOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "input", e.Input)
-	populate(objectMap, "model", &e.DeploymentID)
+	populate(objectMap, "model", &e.Deployment)
 	populate(objectMap, "user", e.User)
 	return json.Marshal(objectMap)
 }
@@ -1208,7 +1208,7 @@ func (e *EmbeddingsOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Input", &e.Input)
 			delete(rawMsg, key)
 		case "model":
-			err = unpopulate(val, "Model", &e.DeploymentID)
+			err = unpopulate(val, "Model", &e.Deployment)
 			delete(rawMsg, key)
 		case "user":
 			err = unpopulate(val, "User", &e.User)

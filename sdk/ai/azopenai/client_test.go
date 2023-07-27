@@ -32,7 +32,7 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 				Content: to.Ptr("hello"),
 			},
 		},
-		DeploymentID: "non-existent-model",
+		Deployment: "non-existent-model",
 	}, nil)
 
 	var respErr *azcore.ResponseError

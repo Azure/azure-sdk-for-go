@@ -243,14 +243,14 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeploymentID[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions](v T) string {
+func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions](v T) string {
 	switch a := any(v).(type) {
 	case ChatCompletionsOptions:
-		return a.DeploymentID
+		return a.Deployment
 	case CompletionsOptions:
-		return a.DeploymentID
+		return a.Deployment
 	case EmbeddingsOptions:
-		return a.DeploymentID
+		return a.Deployment
 	case ImageGenerationOptions:
 		return ""
 	default:

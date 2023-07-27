@@ -42,10 +42,10 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 	}
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:       []string{"What is Azure OpenAI?"},
-		MaxTokens:    to.Ptr(int32(2048 - 127)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: deploymentID,
+		Prompt:      []string{"What is Azure OpenAI?"},
+		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  deploymentID,
 	}, nil)
 	require.NoError(t, err)
 

@@ -16,12 +16,12 @@ import (
 
 func ExampleClient_GetCompletions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
 
-	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+	if azureOpenAIKey == "" || modelDeployment == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
@@ -41,10 +41,10 @@ func ExampleClient_GetCompletions() {
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:       []string{"What is Azure OpenAI, in 20 words or less"},
-		MaxTokens:    to.Ptr(int32(2048)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: modelDeploymentID,
+		Prompt:      []string{"What is Azure OpenAI, in 20 words or less"},
+		MaxTokens:   to.Ptr(int32(2048)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  modelDeployment,
 	}, nil)
 
 	if err != nil {
@@ -85,10 +85,10 @@ func ExampleClient_GetCompletionsStream() {
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:       []string{"What is Azure OpenAI, in 20 words or less?"},
-		MaxTokens:    to.Ptr(int32(2048)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: modelDeploymentID,
+		Prompt:      []string{"What is Azure OpenAI, in 20 words or less?"},
+		MaxTokens:   to.Ptr(int32(2048)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  modelDeploymentID,
 	}, nil)
 
 	if err != nil {

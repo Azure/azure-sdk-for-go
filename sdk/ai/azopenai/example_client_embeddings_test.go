@@ -38,8 +38,8 @@ func ExampleClient_GetEmbeddings() {
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
-		Input:        []string{"The food was delicious and the waiter..."},
-		DeploymentID: modelDeploymentID,
+		Input:      []string{"The food was delicious and the waiter..."},
+		Deployment: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

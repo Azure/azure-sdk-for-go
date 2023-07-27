@@ -174,7 +174,7 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeploymentID(body))");
+        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
 
   # Some ImageGenerations hackery to represent the ImageLocation/ImagePayload polymorphism.
   # - Remove the auto-generated ImageGenerationsDataItem.
@@ -280,18 +280,18 @@ directive:
     transform: return $.replace(/runtime\.NewResponseError/sg, "client.newError");
 
   #
-  # rename `Model` to `DeploymentID`
+  # rename `Model` to `Deployment`
   #
   - from: models.go
     where: $
     transform: |
       return $
-        .replace(/\/\/ The model name.*?Model \*string/sg, "// REQUIRED: DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeploymentID string");
+        .replace(/\/\/ The model name.*?Model \*string/sg, "// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.\nDeployment string");
 
   - from: models_serde.go
     where: $
     transform: |
       return $
-        .replace(/populate\(objectMap, "model", (c|e).Model\)/g, 'populate(objectMap, "model", &$1.DeploymentID)')
-        .replace(/err = unpopulate\(val, "Model", &(c|e).Model\)/g, 'err = unpopulate(val, "Model", &$1.DeploymentID)');
+        .replace(/populate\(objectMap, "model", (c|e).Model\)/g, 'populate(objectMap, "model", &$1.Deployment)')
+        .replace(/err = unpopulate\(val, "Model", &(c|e).Model\)/g, 'err = unpopulate(val, "Model", &$1.Deployment)');
 ```

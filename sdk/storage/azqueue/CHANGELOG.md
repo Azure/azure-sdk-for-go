@@ -7,7 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-
+* Fixed issue where some requests fail with mismatch in string to sign.
+* 
 #### Other Changes
 
 ### 1.0.0 (2023-05-09)

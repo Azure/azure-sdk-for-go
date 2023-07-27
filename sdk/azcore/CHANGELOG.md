@@ -7,6 +7,9 @@
 * Added function `SanitizePagerPollerPath` to the `server` package to centralize sanitization and formalize the contract.
 
 ### Breaking Changes
+
+* `messaging.CloudEvent` deserializes JSON objects as `[]byte`, instead of `json.RawMessage`. See the documentation for CloudEvent.Data for more information.
+
 > These changes affect only code written against beta versions `v1.7.0-beta.2` and `v1.8.0-beta.1`.
 * Removed parameter from method `Span.End()` and its type `tracing.SpanEndOptions`. This API GA'ed in `v1.2.0` so we cannot change it.
 

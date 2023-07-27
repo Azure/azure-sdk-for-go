@@ -32,7 +32,7 @@ func Example_usingCloudEvent() {
 
 	var receivedData *sampleType
 
-	if err := json.Unmarshal(receivedEvent.Data.(json.RawMessage), &receivedData); err != nil {
+	if err := json.Unmarshal(receivedEvent.Data.([]byte), &receivedData); err != nil {
 		panic(err)
 	}
 

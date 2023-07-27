@@ -29,9 +29,6 @@ const (
 
 	// MaxFileSize indicates the maximum size of the file allowed.
 	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
-
-	// DefaultDownloadChunkSize is default chunk size
-	DefaultDownloadChunkSize = int64(4 * 1024 * 1024) // 4MiB
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
@@ -371,10 +368,7 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 
 	downloadStreamOptions := &blob.DownloadStreamOptions{}
 	if o.Range != nil {
-		downloadStreamOptions.Range = blob.HTTPRange{
-			Offset: o.Range.Offset,
-			Count:  o.Range.Count,
-		}
+		downloadStreamOptions.Range = *o.Range
 	}
 	if o.CPKInfo != nil {
 		downloadStreamOptions.CPKInfo = &blob.CPKInfo{
@@ -386,7 +380,7 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadStreamOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
 	return downloadStreamOptions
 }
 
@@ -438,19 +432,12 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 	}
 
 	downloadBufferOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadBufferOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadBufferOptions.CPKScopeInfo = o.CPKScopeInfo
 	downloadBufferOptions.BlockSize = o.ChunkSize
 	downloadBufferOptions.Progress = o.Progress
 	downloadBufferOptions.Concurrency = o.Concurrency
 	if o.RetryReaderOptionsPerChunk != nil {
-		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
-			newRange := HTTPRange{
-				Offset: rnge.Offset,
-				Count:  rnge.Count,
-			}
-			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
-		}
-		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadBufferOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
@@ -504,19 +491,12 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 	}
 
 	downloadFileOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadFileOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadFileOptions.CPKScopeInfo = o.CPKScopeInfo
 	downloadFileOptions.BlockSize = o.ChunkSize
 	downloadFileOptions.Progress = o.Progress
 	downloadFileOptions.Concurrency = o.Concurrency
 	if o.RetryReaderOptionsPerChunk != nil {
-		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
-			newRange := HTTPRange{
-				Offset: rnge.Offset,
-				Count:  rnge.Count,
-			}
-			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
-		}
-		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadFileOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
@@ -637,4 +617,4 @@ type ModifiedAccessConditions = path.ModifiedAccessConditions
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
-type CPKScopeInfo path.CPKScopeInfo
+type CPKScopeInfo = path.CPKScopeInfo

@@ -226,7 +226,6 @@ func FormatBlobHTTPHeaders(o *HTTPHeaders) *blob.HTTPHeaders {
 }
 
 func FormatPathHTTPHeaders(o *HTTPHeaders) *generated.PathHTTPHeaders {
-	// TODO: will be used for file related ops, like append
 	if o == nil {
 		return nil
 	}
@@ -292,4 +291,4 @@ type ModifiedAccessConditions = exported.ModifiedAccessConditions
 type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the Client.SetMetadata() method.
-type CPKScopeInfo blob.CPKScopeInfo
+type CPKScopeInfo = blob.CPKScopeInfo

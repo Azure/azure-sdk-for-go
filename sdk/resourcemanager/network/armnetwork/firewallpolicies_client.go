@@ -47,7 +47,7 @@ func NewFirewallPoliciesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - parameters - Parameters supplied to the create or update Firewall Policy operation.
@@ -71,13 +71,9 @@ func (client *FirewallPoliciesClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *FirewallPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters FirewallPolicy, options *FirewallPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallPoliciesClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -113,7 +109,7 @@ func (client *FirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +121,7 @@ func (client *FirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - options - FirewallPoliciesClientBeginDeleteOptions contains the optional parameters for the FirewallPoliciesClient.BeginDelete
@@ -148,13 +144,9 @@ func (client *FirewallPoliciesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 func (client *FirewallPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallPoliciesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
 		return nil, err
@@ -190,7 +182,7 @@ func (client *FirewallPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,16 +191,12 @@ func (client *FirewallPoliciesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - options - FirewallPoliciesClientGetOptions contains the optional parameters for the FirewallPoliciesClient.Get method.
 func (client *FirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesClientGetOptions) (FirewallPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "FirewallPoliciesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
 		return FirewallPoliciesClientGetResponse{}, err
@@ -245,7 +233,7 @@ func (client *FirewallPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -265,7 +253,7 @@ func (client *FirewallPoliciesClient) getHandleResponse(resp *http.Response) (Fi
 
 // NewListPager - Lists all Firewall Policies in a resource group.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - FirewallPoliciesClientListOptions contains the optional parameters for the FirewallPoliciesClient.NewListPager
 //     method.
@@ -275,7 +263,6 @@ func (client *FirewallPoliciesClient) NewListPager(resourceGroupName string, opt
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FirewallPoliciesClientListResponse) (FirewallPoliciesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FirewallPoliciesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -295,7 +282,6 @@ func (client *FirewallPoliciesClient) NewListPager(resourceGroupName string, opt
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -315,7 +301,7 @@ func (client *FirewallPoliciesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -332,7 +318,7 @@ func (client *FirewallPoliciesClient) listHandleResponse(resp *http.Response) (F
 
 // NewListAllPager - Gets all the Firewall Policies in a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - options - FirewallPoliciesClientListAllOptions contains the optional parameters for the FirewallPoliciesClient.NewListAllPager
 //     method.
 func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesClientListAllOptions) *runtime.Pager[FirewallPoliciesClientListAllResponse] {
@@ -341,7 +327,6 @@ func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesC
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FirewallPoliciesClientListAllResponse) (FirewallPoliciesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FirewallPoliciesClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -361,7 +346,6 @@ func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesC
 			}
 			return client.listAllHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -377,7 +361,7 @@ func (client *FirewallPoliciesClient) listAllCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -395,7 +379,7 @@ func (client *FirewallPoliciesClient) listAllHandleResponse(resp *http.Response)
 // UpdateTags - Updates tags of a Azure Firewall Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - parameters - Parameters supplied to update Azure Firewall Policy tags.
@@ -403,10 +387,6 @@ func (client *FirewallPoliciesClient) listAllHandleResponse(resp *http.Response)
 //     method.
 func (client *FirewallPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters TagsObject, options *FirewallPoliciesClientUpdateTagsOptions) (FirewallPoliciesClientUpdateTagsResponse, error) {
 	var err error
-	const operationName = "FirewallPoliciesClient.UpdateTags"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
 		return FirewallPoliciesClientUpdateTagsResponse{}, err
@@ -443,7 +423,7 @@ func (client *FirewallPoliciesClient) updateTagsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

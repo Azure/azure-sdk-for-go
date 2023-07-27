@@ -47,7 +47,7 @@ func NewDefaultSecurityRulesClient(subscriptionID string, credential azcore.Toke
 // Get - Get the specified default network security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - defaultSecurityRuleName - The name of the default security rule.
@@ -55,10 +55,6 @@ func NewDefaultSecurityRulesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *DefaultSecurityRulesClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string, options *DefaultSecurityRulesClientGetOptions) (DefaultSecurityRulesClientGetResponse, error) {
 	var err error
-	const operationName = "DefaultSecurityRulesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName, options)
 	if err != nil {
 		return DefaultSecurityRulesClientGetResponse{}, err
@@ -99,7 +95,7 @@ func (client *DefaultSecurityRulesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +112,7 @@ func (client *DefaultSecurityRulesClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Gets all default security rules in a network security group.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkSecurityGroupName - The name of the network security group.
 //   - options - DefaultSecurityRulesClientListOptions contains the optional parameters for the DefaultSecurityRulesClient.NewListPager
@@ -127,7 +123,6 @@ func (client *DefaultSecurityRulesClient) NewListPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DefaultSecurityRulesClientListResponse) (DefaultSecurityRulesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DefaultSecurityRulesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -147,7 +142,6 @@ func (client *DefaultSecurityRulesClient) NewListPager(resourceGroupName string,
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -171,7 +165,7 @@ func (client *DefaultSecurityRulesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

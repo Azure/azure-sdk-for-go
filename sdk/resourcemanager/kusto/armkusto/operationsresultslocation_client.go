@@ -29,8 +29,7 @@ type OperationsResultsLocationClient struct {
 }
 
 // NewOperationsResultsLocationClient creates a new instance of OperationsResultsLocationClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsResultsLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsLocationClient, error) {
@@ -48,9 +47,9 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - location - Azure location (region) name.
-//   - operationID - The Guid of the operation ID
+// Generated from API version 2023-05-02
+//   - location - The name of Azure region.
+//   - operationID - The ID of an ongoing async operation.
 //   - options - OperationsResultsLocationClientGetOptions contains the optional parameters for the OperationsResultsLocationClient.Get
 //     method.
 func (client *OperationsResultsLocationClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsLocationClientGetOptions) (OperationsResultsLocationClientGetResponse, error) {
@@ -65,7 +64,7 @@ func (client *OperationsResultsLocationClient) Get(ctx context.Context, location
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return OperationsResultsLocationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
-	return OperationsResultsLocationClientGetResponse{}, nil
+	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,7 +87,16 @@ func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *OperationsResultsLocationClient) getHandleResponse(resp *http.Response) (OperationsResultsLocationClientGetResponse, error) {
+	result := OperationsResultsLocationClientGetResponse{}
+	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+		result.AzureAsyncOperation = &val
+	}
+	return result, nil
 }

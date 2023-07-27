@@ -14,5 +14,5 @@ const (
 	moduleName = "azeventgrid"
 
 	// moduleVersion is the semantic version (see http://semver.org) of this module.
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )

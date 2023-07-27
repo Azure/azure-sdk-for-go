@@ -249,6 +249,9 @@ type AdminPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // AdminRule - Network admin rule.
@@ -327,6 +330,9 @@ type AdminRuleCollectionPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // AdminRuleListResult - security configuration admin rule list result.
@@ -1454,6 +1460,9 @@ type ApplicationGatewayPropertiesFormat struct {
 
 	// Web application firewall configuration.
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration
+
+	// READ-ONLY; The default predefined SSL Policy applied on the application gateway resource.
+	DefaultPredefinedSSLPolicy *ApplicationGatewaySSLPolicyName
 
 	// READ-ONLY; Operational state of the application gateway resource.
 	OperationalState *ApplicationGatewayOperationalState
@@ -3687,6 +3696,9 @@ type ConnectivityConfigurationProperties struct {
 
 	// READ-ONLY; The provisioning state of the connectivity configuration resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // ConnectivityDestination - Parameters that define destination of connection.
@@ -4164,6 +4176,9 @@ type DefaultAdminPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 
 	// READ-ONLY; The source port ranges.
 	SourcePortRanges []*string
@@ -6486,6 +6501,9 @@ type GroupProperties struct {
 
 	// READ-ONLY; The provisioning state of the scope assignment resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // HTTPConfiguration - HTTP configuration of the connectivity check.
@@ -8202,6 +8220,9 @@ type ManagerProperties struct {
 
 	// READ-ONLY; The provisioning state of the network manager resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // ManagerPropertiesNetworkManagerScopes - Scope of Network Manager.
@@ -10417,6 +10438,9 @@ type SecurityAdminConfigurationPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
 }
 
 // SecurityGroup - NetworkSecurityGroup resource.
@@ -12324,10 +12348,10 @@ type VirtualAppliance struct {
 
 // VirtualApplianceAdditionalNicProperties - Network Virtual Appliance Additional NIC properties.
 type VirtualApplianceAdditionalNicProperties struct {
-	// Customer Intent for Public Ip on additional nic
+	// Flag (true or false) for Intent for Public Ip on additional nic
 	HasPublicIP *bool
 
-	// Customer Name for additional nic
+	// Name of additional nic
 	Name *string
 }
 
@@ -13186,6 +13210,10 @@ type VirtualNetworkGatewayPolicyGroupProperties struct {
 type VirtualNetworkGatewayPropertiesFormat struct {
 	// ActiveActive flag.
 	Active *bool
+
+	// Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways in the
+	// vnet
+	AdminState *AdminState
 
 	// Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity
 	// to Azure Virtual WAN.

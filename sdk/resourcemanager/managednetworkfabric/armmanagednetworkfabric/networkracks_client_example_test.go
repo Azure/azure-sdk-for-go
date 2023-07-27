@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Create_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,15 +29,15 @@ func ExampleNetworkRacksClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkRacksClient().BeginCreate(ctx, "resourceGroupName", "networkRackName", armmanagednetworkfabric.NetworkRack{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewNetworkRacksClient().BeginCreate(ctx, "example-rg", "example-rack", armmanagednetworkfabric.NetworkRack{
+		Location: to.Ptr("eastuseuap"),
 		Tags: map[string]*string{
 			"keyID": to.Ptr("keyValue"),
 		},
 		Properties: &armmanagednetworkfabric.NetworkRackProperties{
-			Annotation:      to.Ptr("null"),
-			NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-			NetworkRackSKU:  to.Ptr("RackSKU"),
+			Annotation:      to.Ptr("annotation"),
+			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+			NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 		},
 	}, nil)
 	if err != nil {
@@ -51,33 +51,33 @@ func ExampleNetworkRacksClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkRack = armmanagednetworkfabric.NetworkRack{
-	// 	Name: to.Ptr("networkRackName"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkracks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 	Name: to.Ptr("example-rack"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkRacks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:09:38.603Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:19:40.603Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@email.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
 	// 		"keyID": to.Ptr("keyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkRackProperties{
-	// 		Annotation: to.Ptr("null"),
+	// 		Annotation: to.Ptr("annotation"),
 	// 		NetworkDevices: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-	// 			NetworkRackSKU: to.Ptr("RackSKU"),
+	// 			to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice")},
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+	// 			NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Get_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleNetworkRacksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNetworkRacksClient().Get(ctx, "resourceGroupName", "networkRackName", nil)
+	res, err := clientFactory.NewNetworkRacksClient().Get(ctx, "example-rg", "example-rack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,33 +96,33 @@ func ExampleNetworkRacksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkRack = armmanagednetworkfabric.NetworkRack{
-	// 	Name: to.Ptr("networkRackName"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkracks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 	Name: to.Ptr("example-rack"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkRacks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:09:38.603Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:19:40.603Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@email.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
 	// 		"keyID": to.Ptr("keyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkRackProperties{
-	// 		Annotation: to.Ptr("null"),
+	// 		Annotation: to.Ptr("annotation"),
 	// 		NetworkDevices: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-	// 			NetworkRackSKU: to.Ptr("RackSKU"),
+	// 			to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice")},
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+	// 			NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Update_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,8 +133,7 @@ func ExampleNetworkRacksClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkRacksClient().BeginUpdate(ctx, "resourceGroupName", "networkRackName", armmanagednetworkfabric.NetworkRackPatch{
-		Properties: map[string]any{},
+	poller, err := clientFactory.NewNetworkRacksClient().BeginUpdate(ctx, "example-rg", "example-rack", armmanagednetworkfabric.TagsUpdate{
 		Tags: map[string]*string{
 			"keyID": to.Ptr("keyValue"),
 		},
@@ -150,33 +149,33 @@ func ExampleNetworkRacksClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkRack = armmanagednetworkfabric.NetworkRack{
-	// 	Name: to.Ptr("networkRackName"),
-	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkracks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 	Name: to.Ptr("example-rack"),
+	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkRacks"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:09:38.603Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:19:40.603Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("email@address.com"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@mail.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@email.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
 	// 		"keyID": to.Ptr("keyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkRackProperties{
-	// 		Annotation: to.Ptr("null"),
+	// 		Annotation: to.Ptr("annotation"),
 	// 		NetworkDevices: []*string{
-	// 			to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName")},
-	// 			NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-	// 			NetworkRackSKU: to.Ptr("RackSKU"),
+	// 			to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice")},
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+	// 			NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Delete_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +186,7 @@ func ExampleNetworkRacksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkRacksClient().BeginDelete(ctx, "resourceGroupName", "networkRackName", nil)
+	poller, err := clientFactory.NewNetworkRacksClient().BeginDelete(ctx, "example-rg", "example-rack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -197,7 +196,7 @@ func ExampleNetworkRacksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +207,7 @@ func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNetworkRacksClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewNetworkRacksClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -222,27 +221,27 @@ func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 		// page.NetworkRacksListResult = armmanagednetworkfabric.NetworkRacksListResult{
 		// 	Value: []*armmanagednetworkfabric.NetworkRack{
 		// 		{
-		// 			Name: to.Ptr("networkRackName"),
-		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkracks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 			Name: to.Ptr("example-rack"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkRacks"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:09:38.603Z"); return t}()),
-		// 				CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:19:40.603Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("email@address.com"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
+		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@email.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("eastus"),
+		// 			Location: to.Ptr("eastuseuap"),
 		// 			Tags: map[string]*string{
 		// 				"keyID": to.Ptr("keyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.NetworkRackProperties{
-		// 				Annotation: to.Ptr("null"),
+		// 				Annotation: to.Ptr("annotation"),
 		// 				NetworkDevices: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName")},
-		// 					NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-		// 					NetworkRackSKU: to.Ptr("RackSKU"),
+		// 					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice")},
+		// 					NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+		// 					NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 				},
 		// 		}},
@@ -250,7 +249,7 @@ func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_ListBySubscription_MaximumSet_Gen.json
 func ExampleNetworkRacksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,27 +274,27 @@ func ExampleNetworkRacksClient_NewListBySubscriptionPager() {
 		// page.NetworkRacksListResult = armmanagednetworkfabric.NetworkRacksListResult{
 		// 	Value: []*armmanagednetworkfabric.NetworkRack{
 		// 		{
-		// 			Name: to.Ptr("networkRackName"),
-		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkracks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 			Name: to.Ptr("example-rack"),
+		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkRacks"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:09:38.603Z"); return t}()),
-		// 				CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-16T06:19:40.603Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("email@address.com"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@mail.com"),
+		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T06:00:50.441Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@email.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("eastus"),
+		// 			Location: to.Ptr("eastuseuap"),
 		// 			Tags: map[string]*string{
 		// 				"keyID": to.Ptr("keyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.NetworkRackProperties{
-		// 				Annotation: to.Ptr("null"),
+		// 				Annotation: to.Ptr("annotation"),
 		// 				NetworkDevices: []*string{
-		// 					to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName")},
-		// 					NetworkFabricID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName"),
-		// 					NetworkRackSKU: to.Ptr("RackSKU"),
+		// 					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice")},
+		// 					NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+		// 					NetworkRackType: to.Ptr(armmanagednetworkfabric.NetworkRackTypeAggregate),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 				},
 		// 		}},

@@ -22,7 +22,7 @@ type Agent struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -121,6 +121,26 @@ type AgentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AzureKeyVaultSmbCredentials - The Azure Key Vault secret URIs which store the credentials.
+type AzureKeyVaultSmbCredentials struct {
+	// REQUIRED; The Credentials type.
+	Type *CredentialType
+
+	// The Azure Key Vault secret URI which stores the password. Use empty string to clean-up existing value.
+	PasswordURI *string
+
+	// The Azure Key Vault secret URI which stores the username. Use empty string to clean-up existing value.
+	UsernameURI *string
+}
+
+// GetCredentials implements the CredentialsClassification interface for type AzureKeyVaultSmbCredentials.
+func (a *AzureKeyVaultSmbCredentials) GetCredentials() *Credentials {
+	return &Credentials{
+		Type: a.Type,
+	}
+}
+
+// AzureStorageBlobContainerEndpointProperties - The properties of Azure Storage blob container endpoint.
 type AzureStorageBlobContainerEndpointProperties struct {
 	// REQUIRED; The name of the Storage blob container that is the target destination.
 	BlobContainerName *string
@@ -147,6 +167,84 @@ func (a *AzureStorageBlobContainerEndpointProperties) GetEndpointBaseProperties(
 	}
 }
 
+type AzureStorageBlobContainerEndpointUpdateProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// A description for the Endpoint.
+	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type AzureStorageBlobContainerEndpointUpdateProperties.
+func (a *AzureStorageBlobContainerEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return &EndpointBaseUpdateProperties{
+		EndpointType: a.EndpointType,
+		Description:  a.Description,
+	}
+}
+
+// AzureStorageSmbFileShareEndpointProperties - The properties of Azure Storage SMB file share endpoint.
+type AzureStorageSmbFileShareEndpointProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// REQUIRED; The name of the Azure Storage file share.
+	FileShareName *string
+
+	// REQUIRED; The Azure Resource ID of the storage account.
+	StorageAccountResourceID *string
+
+	// A description for the Endpoint.
+	Description *string
+
+	// READ-ONLY; The provisioning state of this resource.
+	ProvisioningState *ProvisioningState
+}
+
+// GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type AzureStorageSmbFileShareEndpointProperties.
+func (a *AzureStorageSmbFileShareEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
+	return &EndpointBaseProperties{
+		EndpointType:      a.EndpointType,
+		Description:       a.Description,
+		ProvisioningState: a.ProvisioningState,
+	}
+}
+
+// AzureStorageSmbFileShareEndpointUpdateProperties - The properties of Azure Storage SMB file share endpoint to update.
+type AzureStorageSmbFileShareEndpointUpdateProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// A description for the Endpoint.
+	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type AzureStorageSmbFileShareEndpointUpdateProperties.
+func (a *AzureStorageSmbFileShareEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return &EndpointBaseUpdateProperties{
+		EndpointType: a.EndpointType,
+		Description:  a.Description,
+	}
+}
+
+// CredentialsClassification provides polymorphic access to related types.
+// Call the interface's GetCredentials() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureKeyVaultSmbCredentials, *Credentials
+type CredentialsClassification interface {
+	// GetCredentials returns the Credentials content of the underlying type.
+	GetCredentials() *Credentials
+}
+
+// Credentials - The Credentials.
+type Credentials struct {
+	// REQUIRED; The Credentials type.
+	Type *CredentialType
+}
+
+// GetCredentials implements the CredentialsClassification interface for type Credentials.
+func (c *Credentials) GetCredentials() *Credentials { return c }
+
 // Endpoint - The Endpoint resource, which contains information about file sources and targets.
 type Endpoint struct {
 	// REQUIRED; The resource specific properties for the Storage Mover resource.
@@ -158,7 +256,7 @@ type Endpoint struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -168,7 +266,8 @@ type Endpoint struct {
 // EndpointBasePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetEndpointBaseProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureStorageBlobContainerEndpointProperties, *EndpointBaseProperties, *NfsMountEndpointProperties
+// - *AzureStorageBlobContainerEndpointProperties, *AzureStorageSmbFileShareEndpointProperties, *EndpointBaseProperties, *NfsMountEndpointProperties,
+// - *SmbMountEndpointProperties
 type EndpointBasePropertiesClassification interface {
 	// GetEndpointBaseProperties returns the EndpointBaseProperties content of the underlying type.
 	GetEndpointBaseProperties() *EndpointBaseProperties
@@ -192,13 +291,31 @@ func (e *EndpointBaseProperties) GetEndpointBaseProperties() *EndpointBaseProper
 // EndpointBaseUpdateParameters - The Endpoint resource.
 type EndpointBaseUpdateParameters struct {
 	// The Endpoint resource, which contains information about file sources and targets.
-	Properties *EndpointBaseUpdateProperties
+	Properties EndpointBaseUpdatePropertiesClassification
+}
+
+// EndpointBaseUpdatePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEndpointBaseUpdateProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureStorageBlobContainerEndpointUpdateProperties, *AzureStorageSmbFileShareEndpointUpdateProperties, *EndpointBaseUpdateProperties,
+// - *NfsMountEndpointUpdateProperties, *SmbMountEndpointUpdateProperties
+type EndpointBaseUpdatePropertiesClassification interface {
+	// GetEndpointBaseUpdateProperties returns the EndpointBaseUpdateProperties content of the underlying type.
+	GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties
 }
 
 // EndpointBaseUpdateProperties - The Endpoint resource, which contains information about file sources and targets.
 type EndpointBaseUpdateProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
 	// A description for the Endpoint.
 	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type EndpointBaseUpdateProperties.
+func (e *EndpointBaseUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return e
 }
 
 // EndpointList - List of Endpoints.
@@ -248,7 +365,7 @@ type JobDefinition struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -376,7 +493,7 @@ type JobRun struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -518,6 +635,7 @@ type List struct {
 	Value []*StorageMover
 }
 
+// NfsMountEndpointProperties - The properties of NFS share endpoint.
 type NfsMountEndpointProperties struct {
 	// REQUIRED; The Endpoint resource type.
 	EndpointType *EndpointType
@@ -544,6 +662,22 @@ func (n *NfsMountEndpointProperties) GetEndpointBaseProperties() *EndpointBasePr
 		EndpointType:      n.EndpointType,
 		Description:       n.Description,
 		ProvisioningState: n.ProvisioningState,
+	}
+}
+
+type NfsMountEndpointUpdateProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// A description for the Endpoint.
+	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type NfsMountEndpointUpdateProperties.
+func (n *NfsMountEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return &EndpointBaseUpdateProperties{
+		EndpointType: n.EndpointType,
+		Description:  n.Description,
 	}
 }
 
@@ -612,7 +746,7 @@ type Project struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -685,6 +819,56 @@ type Properties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// SmbMountEndpointProperties - The properties of SMB share endpoint.
+type SmbMountEndpointProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// REQUIRED; The host name or IP address of the server exporting the file system.
+	Host *string
+
+	// REQUIRED; The name of the SMB share being exported from the server.
+	ShareName *string
+
+	// The Azure Key Vault secret URIs which store the required credentials to access the SMB share.
+	Credentials *AzureKeyVaultSmbCredentials
+
+	// A description for the Endpoint.
+	Description *string
+
+	// READ-ONLY; The provisioning state of this resource.
+	ProvisioningState *ProvisioningState
+}
+
+// GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type SmbMountEndpointProperties.
+func (s *SmbMountEndpointProperties) GetEndpointBaseProperties() *EndpointBaseProperties {
+	return &EndpointBaseProperties{
+		EndpointType:      s.EndpointType,
+		Description:       s.Description,
+		ProvisioningState: s.ProvisioningState,
+	}
+}
+
+// SmbMountEndpointUpdateProperties - The properties of SMB share endpoint to update.
+type SmbMountEndpointUpdateProperties struct {
+	// REQUIRED; The Endpoint resource type.
+	EndpointType *EndpointType
+
+	// The Azure Key Vault secret URIs which store the required credentials to access the SMB share.
+	Credentials *AzureKeyVaultSmbCredentials
+
+	// A description for the Endpoint.
+	Description *string
+}
+
+// GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type SmbMountEndpointUpdateProperties.
+func (s *SmbMountEndpointUpdateProperties) GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties {
+	return &EndpointBaseUpdateProperties{
+		EndpointType: s.EndpointType,
+		Description:  s.Description,
+	}
+}
+
 // StorageMover - The Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints.
 type StorageMover struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -702,7 +886,7 @@ type StorageMover struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource system metadata.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Create_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,17 +29,16 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginCreate(ctx, "resourceGroupName", "networkDeviceName", armmanagednetworkfabric.NetworkDevice{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginCreate(ctx, "example-rg", "example-device", armmanagednetworkfabric.NetworkDevice{
+		Location: to.Ptr("eastuseuap"),
 		Tags: map[string]*string{
-			"keyID": to.Ptr("keyValue"),
+			"keyID": to.Ptr("KeyValue"),
 		},
 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-			Annotation:        to.Ptr("null"),
-			HostName:          to.Ptr("networkDeviceName"),
-			SerialNumber:      to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-			NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-			NetworkDeviceSKU:  to.Ptr("DefaultSku"),
+			Annotation:       to.Ptr("annotation"),
+			HostName:         to.Ptr("NFA-Device"),
+			SerialNumber:     to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+			NetworkDeviceSKU: to.Ptr("DeviceSku"),
 		},
 	}, nil)
 	if err != nil {
@@ -53,35 +52,39 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkDevice = armmanagednetworkfabric.NetworkDevice{
-	// 	Name: to.Ptr("networkDeviceName"),
+	// 	Name: to.Ptr("example-device"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkdevices"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("email@address.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
-	// 		"keyID": to.Ptr("keyValue"),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-	// 		Annotation: to.Ptr("null"),
-	// 		HostName: to.Ptr("networkDeviceName"),
-	// 		SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-	// 		NetworkDeviceSKU: to.Ptr("DefaultSku"),
-	// 		NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		HostName: to.Ptr("NFA-Device"),
+	// 		SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		ManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 		ManagementIPv6Address: to.Ptr("2F::1/100"),
+	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleCE),
+	// 		NetworkDeviceSKU: to.Ptr("DeviceSku"),
+	// 		NetworkRackID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 		Version: to.Ptr("null"),
+	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Get_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +95,7 @@ func ExampleNetworkDevicesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNetworkDevicesClient().Get(ctx, "resourceGroupName", "networkDeviceName", nil)
+	res, err := clientFactory.NewNetworkDevicesClient().Get(ctx, "example-rg", "example-device", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,35 +103,39 @@ func ExampleNetworkDevicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkDevice = armmanagednetworkfabric.NetworkDevice{
-	// 	Name: to.Ptr("networkDeviceName"),
+	// 	Name: to.Ptr("example-device"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkdevices"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("email@address.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
-	// 		"keyID": to.Ptr("keyValue"),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-	// 		Annotation: to.Ptr("null"),
-	// 		HostName: to.Ptr("networkDeviceName"),
-	// 		SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-	// 		NetworkDeviceSKU: to.Ptr("DefaultSku"),
-	// 		NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		HostName: to.Ptr("NFA-Device"),
+	// 		SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		ManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 		ManagementIPv6Address: to.Ptr("2F::1/100"),
+	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleCE),
+	// 		NetworkDeviceSKU: to.Ptr("DeviceSku"),
+	// 		NetworkRackID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 		Version: to.Ptr("null"),
+	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Update_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,14 +146,14 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpdate(ctx, "resourceGroupName", "networkDeviceName", armmanagednetworkfabric.NetworkDevicePatchParameters{
-		Properties: &armmanagednetworkfabric.NetworkDevicePatchParametersProperties{
-			Annotation:   to.Ptr("null"),
-			HostName:     to.Ptr("networkDeviceName"),
-			SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-		},
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpdate(ctx, "example-rg", "example-device", armmanagednetworkfabric.NetworkDevicePatchParameters{
 		Tags: map[string]*string{
-			"keyID": to.Ptr("keyValue"),
+			"keyID": to.Ptr("KeyValue"),
+		},
+		Properties: &armmanagednetworkfabric.NetworkDevicePatchParametersProperties{
+			Annotation:   to.Ptr("annotation"),
+			HostName:     to.Ptr("NFA-Device"),
+			SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
 		},
 	}, nil)
 	if err != nil {
@@ -160,35 +167,39 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NetworkDevice = armmanagednetworkfabric.NetworkDevice{
-	// 	Name: to.Ptr("networkDeviceName"),
+	// 	Name: to.Ptr("example-device"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/networkdevices"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
-	// 		CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
-	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
+	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("email@address.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("eastuseuap"),
 	// 	Tags: map[string]*string{
-	// 		"keyID": to.Ptr("keyValue"),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-	// 		Annotation: to.Ptr("null"),
-	// 		HostName: to.Ptr("networkDeviceName"),
-	// 		SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-	// 		NetworkDeviceSKU: to.Ptr("DefaultSku"),
-	// 		NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+	// 		Annotation: to.Ptr("annotation"),
+	// 		HostName: to.Ptr("NFA-Device"),
+	// 		SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		ManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 		ManagementIPv6Address: to.Ptr("2F::1/100"),
+	// 		NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleCE),
+	// 		NetworkDeviceSKU: to.Ptr("DeviceSku"),
+	// 		NetworkRackID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-	// 		Version: to.Ptr("null"),
+	// 		Version: to.Ptr("1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Delete_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +210,7 @@ func ExampleNetworkDevicesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginDelete(ctx, "resourceGroupName", "networkDeviceName", nil)
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginDelete(ctx, "example-rg", "example-device", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -209,7 +220,7 @@ func ExampleNetworkDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +231,7 @@ func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNetworkDevicesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewNetworkDevicesClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -234,37 +245,41 @@ func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 		// page.NetworkDevicesListResult = armmanagednetworkfabric.NetworkDevicesListResult{
 		// 	Value: []*armmanagednetworkfabric.NetworkDevice{
 		// 		{
-		// 			Name: to.Ptr("networkDeviceName"),
+		// 			Name: to.Ptr("example-device"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkdevices"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("email@address.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("eastus"),
+		// 			Location: to.Ptr("eastuseuap"),
 		// 			Tags: map[string]*string{
-		// 				"keyID": to.Ptr("keyValue"),
+		// 				"keyID": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-		// 				Annotation: to.Ptr("null"),
-		// 				HostName: to.Ptr("networkDeviceName"),
-		// 				SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-		// 				NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-		// 				NetworkDeviceSKU: to.Ptr("DefaultSku"),
-		// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 				Annotation: to.Ptr("annotation"),
+		// 				HostName: to.Ptr("NFA-Device"),
+		// 				SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				ManagementIPv4Address: to.Ptr("10.10.10.10"),
+		// 				ManagementIPv6Address: to.Ptr("2F::1/100"),
+		// 				NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleCE),
+		// 				NetworkDeviceSKU: to.Ptr("DeviceSku"),
+		// 				NetworkRackID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 				Version: to.Ptr("null"),
+		// 				Version: to.Ptr("1.0"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_ListBySubscription_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,37 +304,41 @@ func ExampleNetworkDevicesClient_NewListBySubscriptionPager() {
 		// page.NetworkDevicesListResult = armmanagednetworkfabric.NetworkDevicesListResult{
 		// 	Value: []*armmanagednetworkfabric.NetworkDevice{
 		// 		{
-		// 			Name: to.Ptr("networkDeviceName"),
+		// 			Name: to.Ptr("example-device"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/networkdevices"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkDevices/networkDeviceName"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
-		// 				CreatedBy: to.Ptr("d1bd24c7-b27f-477e-86dd-939e107873d7"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
+		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-18T07:58:04.840Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-11T16:02:19.538Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("email@address.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("eastus"),
+		// 			Location: to.Ptr("eastuseuap"),
 		// 			Tags: map[string]*string{
-		// 				"keyID": to.Ptr("keyValue"),
+		// 				"keyID": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
-		// 				Annotation: to.Ptr("null"),
-		// 				HostName: to.Ptr("networkDeviceName"),
-		// 				SerialNumber: to.Ptr("Arista;DCS-7280PR3-24;12.05;JPE21330382"),
-		// 				NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleTypesCE),
-		// 				NetworkDeviceSKU: to.Ptr("DefaultSku"),
-		// 				NetworkRackID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName"),
+		// 				Annotation: to.Ptr("annotation"),
+		// 				HostName: to.Ptr("NFA-Device"),
+		// 				SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 				ManagementIPv4Address: to.Ptr("10.10.10.10"),
+		// 				ManagementIPv6Address: to.Ptr("2F::1/100"),
+		// 				NetworkDeviceRole: to.Ptr(armmanagednetworkfabric.NetworkDeviceRoleCE),
+		// 				NetworkDeviceSKU: to.Ptr("DeviceSku"),
+		// 				NetworkRackID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkRacks/example-rack"),
 		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
-		// 				Version: to.Ptr("null"),
+		// 				Version: to.Ptr("1.0"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_reboot_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Reboot_MaximumSet_Gen.json
 func ExampleNetworkDevicesClient_BeginReboot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,62 +349,39 @@ func ExampleNetworkDevicesClient_BeginReboot() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginReboot(ctx, "resourceGroupName", "networkDeviceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_restoreConfig_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginRestoreConfig() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginRestoreConfig(ctx, "resourceGroupName", "networkDeviceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_updateVersion_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginUpdateVersion() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpdateVersion(ctx, "resourceGroupName", "networkDeviceName", armmanagednetworkfabric.UpdateVersionProperties{
-		SKUVersion: to.Ptr("DefaultSku"),
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginReboot(ctx, "example-rg", "example-device", armmanagednetworkfabric.RebootProperties{
+		RebootType: to.Ptr(armmanagednetworkfabric.RebootTypeGracefulRebootWithZTP),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_generateSupportPackage_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginGenerateSupportPackage() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_RefreshConfiguration_MaximumSet_Gen.json
+func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -395,18 +391,37 @@ func ExampleNetworkDevicesClient_BeginGenerateSupportPackage() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginGenerateSupportPackage(ctx, "resourceGroupName", "networkDeviceName", nil)
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginRefreshConfiguration(ctx, "example-rg", "example-device", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_updatePowerCycle_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginUpdatePowerCycle() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_UpdateAdministrativeState_MaximumSet_Gen.json
+func ExampleNetworkDevicesClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -416,21 +431,41 @@ func ExampleNetworkDevicesClient_BeginUpdatePowerCycle() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpdatePowerCycle(ctx, "resourceGroupName", "networkDeviceName", armmanagednetworkfabric.UpdatePowerCycleProperties{
-		PowerEnd: to.Ptr(armmanagednetworkfabric.PowerEndPrimary),
-		State:    to.Ptr(armmanagednetworkfabric.StateOn),
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-device", armmanagednetworkfabric.UpdateDeviceAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr("")},
+		State: to.Ptr(armmanagednetworkfabric.DeviceAdministrativeStateRMA),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_getStatus_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginGetStatus() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Upgrade_MaximumSet_Gen.json
+func ExampleNetworkDevicesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -440,54 +475,33 @@ func ExampleNetworkDevicesClient_BeginGetStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginGetStatus(ctx, "resourceGroupName", "networkDeviceName", nil)
+	poller, err := clientFactory.NewNetworkDevicesClient().BeginUpgrade(ctx, "example-rg", "example-device", armmanagednetworkfabric.UpdateVersion{
+		Version: to.Ptr("1.0.0"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_getStaticInterfaceMaps_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginGetStaticInterfaceMaps() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginGetStaticInterfaceMaps(ctx, "resourceGroupName", "networkDeviceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_getDynamicInterfaceMaps_MaximumSet_Gen.json
-func ExampleNetworkDevicesClient_BeginGetDynamicInterfaceMaps() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkDevicesClient().BeginGetDynamicInterfaceMaps(ctx, "resourceGroupName", "networkDeviceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CommonPostActionResponseForStateUpdate = armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	Error: &armmanagednetworkfabric.ErrorDetail{
+	// 		AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 			{
+	// 				Info: map[string]any{
+	// 				},
+	// 				Type: to.Ptr(""),
+	// 		}},
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 		Target: to.Ptr(""),
+	// 		Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 		},
+	// 	},
+	// 	ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// }
 }

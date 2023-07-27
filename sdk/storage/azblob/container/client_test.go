@@ -1548,7 +1548,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerGetPermissionsPublicAccessNot
 	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeBlob)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNone() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsPublicAccessNone() {
 	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
 	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
 	_require := require.New(s.T())
@@ -3026,4 +3026,61 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchErrors() {
 	// submitting nil BatchBuilder
 	_, err = cntClient.SubmitBatch(context.Background(), nil, nil)
 	_require.Error(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerSASUsingAccessPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClient)
+
+	id := "testAccessPolicy"
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		AccessPolicy: &container.AccessPolicy{
+			Expiry:     to.Ptr(time.Now().Add(1 * time.Hour)),
+			Start:      to.Ptr(time.Now()),
+			Permission: to.Ptr("racwd"),
+		},
+		ID: &id,
+	})
+
+	_, err = cntClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{
+		ContainerACL: signedIdentifiers,
+	})
+	_require.NoError(err)
+
+	gResp, err := cntClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(gResp.SignedIdentifiers, 1)
+
+	time.Sleep(30 * time.Second)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		Identifier:    id,
+		ContainerName: containerName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	cntSAS := cntClient.URL() + "?" + sasQueryParams.Encode()
+	cntClientSAS, err := container.NewClientWithNoCredential(cntSAS, nil)
+	_require.NoError(err)
+
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), cntClientSAS)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NoError(err)
 }

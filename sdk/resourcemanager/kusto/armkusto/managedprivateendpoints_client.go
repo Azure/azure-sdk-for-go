@@ -29,8 +29,7 @@ type ManagedPrivateEndpointsClient struct {
 }
 
 // NewManagedPrivateEndpointsClient creates a new instance of ManagedPrivateEndpointsClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedPrivateEndpointsClient, error) {
@@ -48,8 +47,8 @@ func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.T
 // CheckNameAvailability - Checks that the managed private endpoints resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - resourceName - The name of the resource.
 //   - options - ManagedPrivateEndpointsClientCheckNameAvailabilityOptions contains the optional parameters for the ManagedPrivateEndpointsClient.CheckNameAvailability
@@ -89,7 +88,7 @@ func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resourceName)
@@ -107,8 +106,8 @@ func (client *ManagedPrivateEndpointsClient) checkNameAvailabilityHandleResponse
 // BeginCreateOrUpdate - Creates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - managedPrivateEndpointName - The name of the managed private endpoint.
 //   - parameters - The managed private endpoint parameters.
@@ -120,7 +119,9 @@ func (client *ManagedPrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ManagedPrivateEndpointsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedPrivateEndpointsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ManagedPrivateEndpointsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -129,7 +130,7 @@ func (client *ManagedPrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Creates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ManagedPrivateEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
@@ -169,7 +170,7 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -178,8 +179,8 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - Deletes a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - managedPrivateEndpointName - The name of the managed private endpoint.
 //   - options - ManagedPrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginDelete
@@ -190,7 +191,9 @@ func (client *ManagedPrivateEndpointsClient) BeginDelete(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ManagedPrivateEndpointsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedPrivateEndpointsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ManagedPrivateEndpointsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -199,7 +202,7 @@ func (client *ManagedPrivateEndpointsClient) BeginDelete(ctx context.Context, re
 // Delete - Deletes a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ManagedPrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, options)
 	if err != nil {
@@ -239,7 +242,7 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,8 +251,8 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 // Get - Gets a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - managedPrivateEndpointName - The name of the managed private endpoint.
 //   - options - ManagedPrivateEndpointsClientGetOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Get
@@ -293,7 +296,7 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,8 +313,8 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Returns the list of managed private endpoints.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - options - ManagedPrivateEndpointsClientListOptions contains the optional parameters for the ManagedPrivateEndpointsClient.NewListPager
 //     method.
@@ -357,7 +360,7 @@ func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,8 +378,8 @@ func (client *ManagedPrivateEndpointsClient) listHandleResponse(resp *http.Respo
 // BeginUpdate - Updates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - managedPrivateEndpointName - The name of the managed private endpoint.
 //   - parameters - The managed private endpoint parameters.
@@ -388,7 +391,9 @@ func (client *ManagedPrivateEndpointsClient) BeginUpdate(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ManagedPrivateEndpointsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedPrivateEndpointsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ManagedPrivateEndpointsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -397,7 +402,7 @@ func (client *ManagedPrivateEndpointsClient) BeginUpdate(ctx context.Context, re
 // Update - Updates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ManagedPrivateEndpointsClient) update(ctx context.Context, resourceGroupName string, clusterName string, managedPrivateEndpointName string, parameters ManagedPrivateEndpoint, options *ManagedPrivateEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, managedPrivateEndpointName, parameters, options)
 	if err != nil {
@@ -437,7 +442,7 @@ func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

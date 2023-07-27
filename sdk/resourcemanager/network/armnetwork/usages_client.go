@@ -46,7 +46,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List network usages for a subscription.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location where resource usage is queried.
 //   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
@@ -55,7 +55,6 @@ func (client *UsagesClient) NewListPager(location string, options *UsagesClientL
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UsagesClientListResponse) (UsagesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsagesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -75,7 +74,6 @@ func (client *UsagesClient) NewListPager(location string, options *UsagesClientL
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -95,7 +93,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

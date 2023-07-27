@@ -1,16 +1,23 @@
 # Release History
 
-## 3.1.0-beta.2 (2023-07-19)
+## 4.0.0 (2023-07-11)
+### Breaking Changes
 
-### Bug Fixes
-
-- Fixed a potential panic in faked paged and long-running operations.
-
-## 3.1.0-beta.1 (2023-06-12)
+- `ApplicationGatewayCustomErrorStatusCodeHTTPStatus499` from enum `ApplicationGatewayCustomErrorStatusCode` has been removed
 
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
+- New enum type `AdminState` with values `AdminStateDisabled`, `AdminStateEnabled`
+- New field `ResourceGUID` in struct `AdminPropertiesFormat`
+- New field `ResourceGUID` in struct `AdminRuleCollectionPropertiesFormat`
+- New field `DefaultPredefinedSSLPolicy` in struct `ApplicationGatewayPropertiesFormat`
+- New field `ResourceGUID` in struct `ConnectivityConfigurationProperties`
+- New field `ResourceGUID` in struct `DefaultAdminPropertiesFormat`
+- New field `ResourceGUID` in struct `GroupProperties`
+- New field `ResourceGUID` in struct `ManagerProperties`
+- New field `ResourceGUID` in struct `SecurityAdminConfigurationPropertiesFormat`
+- New field `AdminState` in struct `VirtualNetworkGatewayPropertiesFormat`
+
 
 ## 3.0.0 (2023-05-26)
 ### Breaking Changes

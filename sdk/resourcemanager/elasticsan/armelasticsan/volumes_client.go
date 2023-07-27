@@ -47,7 +47,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Create a Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -61,7 +61,7 @@ func (client *VolumesClient) BeginCreate(ctx context.Context, resourceGroupName 
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[VolumesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -71,7 +71,7 @@ func (client *VolumesClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Create - Create a Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 func (client *VolumesClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, parameters Volume, options *VolumesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, options)
 	if err != nil {
@@ -81,7 +81,7 @@ func (client *VolumesClient) create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -115,7 +115,7 @@ func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,7 +124,7 @@ func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGr
 // BeginDelete - Delete an Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -137,7 +137,7 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -147,7 +147,7 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete an Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, volumeName, options)
 	if err != nil {
@@ -191,7 +191,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get an Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -249,7 +249,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 
 // NewListByVolumeGroupPager - List Volumes in a VolumeGroup.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -324,7 +324,7 @@ func (client *VolumesClient) listByVolumeGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *VolumesClient) listByVolumeGroupHandleResponse(resp *http.Response
 // BeginUpdate - Update an Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -356,7 +356,7 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
@@ -366,7 +366,7 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Update an Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, parameters VolumeUpdate, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, options)
 	if err != nil {
@@ -410,7 +410,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

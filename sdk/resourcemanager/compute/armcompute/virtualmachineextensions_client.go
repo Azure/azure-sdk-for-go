@@ -73,10 +73,6 @@ func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Co
 // Generated from API version 2023-03-01
 func (client *VirtualMachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,10 +149,6 @@ func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *VirtualMachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return nil, err
@@ -213,10 +205,6 @@ func (client *VirtualMachineExtensionsClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsClientGetOptions) (VirtualMachineExtensionsClientGetResponse, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return VirtualMachineExtensionsClientGetResponse{}, err
@@ -285,10 +273,6 @@ func (client *VirtualMachineExtensionsClient) getHandleResponse(resp *http.Respo
 //     method.
 func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsClientListOptions) (VirtualMachineExtensionsClientListResponse, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionsClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return VirtualMachineExtensionsClientListResponse{}, err
@@ -372,10 +356,6 @@ func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *VirtualMachineExtensionsClient) update(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VirtualMachineExtensionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err

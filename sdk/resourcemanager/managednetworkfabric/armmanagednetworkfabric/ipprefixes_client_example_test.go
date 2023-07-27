@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Create_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,20 +29,20 @@ func ExampleIPPrefixesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPPrefixesClient().BeginCreate(ctx, "resourcegroupname", "example-ipPrefix", armmanagednetworkfabric.IPPrefix{
-		Location: to.Ptr("EastUS"),
+	poller, err := clientFactory.NewIPPrefixesClient().BeginCreate(ctx, "example-rg", "example-ipPrefix", armmanagednetworkfabric.IPPrefix{
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
-			"key6404": to.Ptr(""),
+			"keyID": to.Ptr("KeyValue"),
 		},
 		Properties: &armmanagednetworkfabric.IPPrefixProperties{
-			Annotation: to.Ptr("annotationValue"),
-			IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+			Annotation: to.Ptr("annotation"),
+			IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 				{
 					Action:           to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-					Condition:        to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-					NetworkPrefix:    to.Ptr("1.1.1.0/24"),
-					SequenceNumber:   to.Ptr[int64](12),
-					SubnetMaskLength: to.Ptr[int32](28),
+					Condition:        to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+					NetworkPrefix:    to.Ptr("10.10.10.10/30"),
+					SequenceNumber:   to.Ptr[int64](4155123341),
+					SubnetMaskLength: to.Ptr("10"),
 				}},
 		},
 	}, nil)
@@ -59,35 +59,37 @@ func ExampleIPPrefixesClient_BeginCreate() {
 	// res.IPPrefix = armmanagednetworkfabric.IPPrefix{
 	// 	Name: to.Ptr("example-ipPrefix"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipPrefixes"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.656Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.657Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key6404": to.Ptr(""),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPPrefixProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 	// 			{
 	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-	// 				NetworkPrefix: to.Ptr("1.1.1.0/24"),
-	// 				SequenceNumber: to.Ptr[int64](12),
-	// 				SubnetMaskLength: to.Ptr[int32](28),
+	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+	// 				NetworkPrefix: to.Ptr("10.10.10.10/30"),
+	// 				SequenceNumber: to.Ptr[int64](4155123341),
+	// 				SubnetMaskLength: to.Ptr("10"),
 	// 		}},
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Get_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +100,7 @@ func ExampleIPPrefixesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIPPrefixesClient().Get(ctx, "resourcegroupname", "example-ipPrefix", nil)
+	res, err := clientFactory.NewIPPrefixesClient().Get(ctx, "example-rg", "example-ipPrefix", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,35 +110,37 @@ func ExampleIPPrefixesClient_Get() {
 	// res.IPPrefix = armmanagednetworkfabric.IPPrefix{
 	// 	Name: to.Ptr("example-ipPrefix"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipPrefixes"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.656Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.657Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key6404": to.Ptr(""),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPPrefixProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 	// 			{
 	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-	// 				NetworkPrefix: to.Ptr("1.1.1.0/24"),
-	// 				SequenceNumber: to.Ptr[int64](12),
-	// 				SubnetMaskLength: to.Ptr[int32](28),
+	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+	// 				NetworkPrefix: to.Ptr("10.10.10.10/30"),
+	// 				SequenceNumber: to.Ptr[int64](4155123341),
+	// 				SubnetMaskLength: to.Ptr("10"),
 	// 		}},
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Update_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,9 +151,20 @@ func ExampleIPPrefixesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPPrefixesClient().BeginUpdate(ctx, "resourcegroupname", "example-ipPrefix", armmanagednetworkfabric.IPPrefixPatch{
+	poller, err := clientFactory.NewIPPrefixesClient().BeginUpdate(ctx, "example-rg", "example-ipPrefix", armmanagednetworkfabric.IPPrefixPatch{
 		Tags: map[string]*string{
-			"key3127": to.Ptr("key"),
+			"keyID": to.Ptr("KeyValue"),
+		},
+		Properties: &armmanagednetworkfabric.IPPrefixPatchProperties{
+			Annotation: to.Ptr("annotation"),
+			IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
+				{
+					Action:           to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
+					Condition:        to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+					NetworkPrefix:    to.Ptr("10.10.10.10/30"),
+					SequenceNumber:   to.Ptr[int64](4155123341),
+					SubnetMaskLength: to.Ptr("10"),
+				}},
 		},
 	}, nil)
 	if err != nil {
@@ -165,35 +180,37 @@ func ExampleIPPrefixesClient_BeginUpdate() {
 	// res.IPPrefix = armmanagednetworkfabric.IPPrefix{
 	// 	Name: to.Ptr("example-ipPrefix"),
 	// 	Type: to.Ptr("microsoft.managednetworkfabric/ipPrefixes"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
+	// 	ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
 	// 	SystemData: &armmanagednetworkfabric.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.656Z"); return t}()),
+	// 		CreatedBy: to.Ptr("email@address.com"),
 	// 		CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.657Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user@mail.com"),
 	// 		LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("EastUS"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
-	// 		"key6404": to.Ptr(""),
+	// 		"keyID": to.Ptr("KeyValue"),
 	// 	},
 	// 	Properties: &armmanagednetworkfabric.IPPrefixProperties{
-	// 		Annotation: to.Ptr("annotationValue"),
-	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+	// 		Annotation: to.Ptr("annotation"),
+	// 		IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 	// 			{
 	// 				Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-	// 				NetworkPrefix: to.Ptr("1.1.1.0/24"),
-	// 				SequenceNumber: to.Ptr[int64](12),
-	// 				SubnetMaskLength: to.Ptr[int32](28),
+	// 				Condition: to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+	// 				NetworkPrefix: to.Ptr("10.10.10.10/30"),
+	// 				SequenceNumber: to.Ptr[int64](4155123341),
+	// 				SubnetMaskLength: to.Ptr("10"),
 	// 		}},
+	// 		AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Delete_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +221,7 @@ func ExampleIPPrefixesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIPPrefixesClient().BeginDelete(ctx, "rgIpPrefixLists", "example-ipPrefix", nil)
+	poller, err := clientFactory.NewIPPrefixesClient().BeginDelete(ctx, "example-rg", "example-ipPrefix", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -214,7 +231,7 @@ func ExampleIPPrefixesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +242,7 @@ func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIPPrefixesClient().NewListByResourceGroupPager("resourcegroupname", nil)
+	pager := clientFactory.NewIPPrefixesClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -241,29 +258,31 @@ func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("example-ipPrefix"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipPrefixes"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
-		// 				CreatedBy: to.Ptr("User"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.656Z"); return t}()),
+		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.657Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("EastUS"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
-		// 				"key6404": to.Ptr(""),
+		// 				"keyID": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.IPPrefixProperties{
-		// 				Annotation: to.Ptr("annotationValue"),
-		// 				IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+		// 				Annotation: to.Ptr("annotation"),
+		// 				IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 		// 					{
 		// 						Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-		// 						Condition: to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-		// 						NetworkPrefix: to.Ptr("1.1.1.0/24"),
-		// 						SequenceNumber: to.Ptr[int64](12),
-		// 						SubnetMaskLength: to.Ptr[int32](28),
+		// 						Condition: to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+		// 						NetworkPrefix: to.Ptr("10.10.10.10/30"),
+		// 						SequenceNumber: to.Ptr[int64](4155123341),
+		// 						SubnetMaskLength: to.Ptr("10"),
 		// 				}},
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -271,7 +290,7 @@ func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d03c1964cb76ffd6884d10a1871bbe779a2f68ef/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/925ba149e17454ce91ecd3f9f4134effb2f97844/specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_ListBySubscription_MaximumSet_Gen.json
 func ExampleIPPrefixesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,29 +317,31 @@ func ExampleIPPrefixesClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("example-ipPrefix"),
 		// 			Type: to.Ptr("microsoft.managednetworkfabric/ipPrefixes"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
+		// 			ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"),
 		// 			SystemData: &armmanagednetworkfabric.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
-		// 				CreatedBy: to.Ptr("User"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.656Z"); return t}()),
+		// 				CreatedBy: to.Ptr("email@address.com"),
 		// 				CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-16T15:43:02.233Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-12T03:52:05.657Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user@mail.com"),
 		// 				LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
 		// 			},
-		// 			Location: to.Ptr("EastUS"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
-		// 				"key6404": to.Ptr(""),
+		// 				"keyID": to.Ptr("KeyValue"),
 		// 			},
 		// 			Properties: &armmanagednetworkfabric.IPPrefixProperties{
-		// 				Annotation: to.Ptr("annotationValue"),
-		// 				IPPrefixRules: []*armmanagednetworkfabric.IPPrefixPropertiesIPPrefixRulesItem{
+		// 				Annotation: to.Ptr("annotation"),
+		// 				IPPrefixRules: []*armmanagednetworkfabric.IPPrefixRule{
 		// 					{
 		// 						Action: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-		// 						Condition: to.Ptr(armmanagednetworkfabric.ConditionEqualTo),
-		// 						NetworkPrefix: to.Ptr("1.1.1.0/24"),
-		// 						SequenceNumber: to.Ptr[int64](12),
-		// 						SubnetMaskLength: to.Ptr[int32](28),
+		// 						Condition: to.Ptr(armmanagednetworkfabric.ConditionGreaterThanOrEqualTo),
+		// 						NetworkPrefix: to.Ptr("10.10.10.10/30"),
+		// 						SequenceNumber: to.Ptr[int64](4155123341),
+		// 						SubnetMaskLength: to.Ptr("10"),
 		// 				}},
+		// 				AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 				ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 				ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateSucceeded),
 		// 			},
 		// 	}},

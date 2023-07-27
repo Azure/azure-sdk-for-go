@@ -24,7 +24,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -40,6 +40,16 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 
 func (c *ClientFactory) NewAccessControlListsClient() *AccessControlListsClient {
 	subClient, _ := NewAccessControlListsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewInternetGatewaysClient() *InternetGatewaysClient {
+	subClient, _ := NewInternetGatewaysClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewInternetGatewayRulesClient() *InternetGatewayRulesClient {
+	subClient, _ := NewInternetGatewayRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -78,6 +88,11 @@ func (c *ClientFactory) NewExternalNetworksClient() *ExternalNetworksClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewNeighborGroupsClient() *NeighborGroupsClient {
+	subClient, _ := NewNeighborGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewNetworkDeviceSKUsClient() *NetworkDeviceSKUsClient {
 	subClient, _ := NewNetworkDeviceSKUsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -113,13 +128,23 @@ func (c *ClientFactory) NewNetworkToNetworkInterconnectsClient() *NetworkToNetwo
 	return subClient
 }
 
-func (c *ClientFactory) NewNetworkRackSKUsClient() *NetworkRackSKUsClient {
-	subClient, _ := NewNetworkRackSKUsClient(c.subscriptionID, c.credential, c.options)
+func (c *ClientFactory) NewNetworkPacketBrokersClient() *NetworkPacketBrokersClient {
+	subClient, _ := NewNetworkPacketBrokersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
 func (c *ClientFactory) NewNetworkRacksClient() *NetworkRacksClient {
 	subClient, _ := NewNetworkRacksClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewNetworkTapRulesClient() *NetworkTapRulesClient {
+	subClient, _ := NewNetworkTapRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewNetworkTapsClient() *NetworkTapsClient {
+	subClient, _ := NewNetworkTapsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

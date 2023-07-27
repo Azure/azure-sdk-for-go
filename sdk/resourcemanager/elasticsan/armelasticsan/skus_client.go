@@ -46,7 +46,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - List all the available Skus in the region and information related to them
 //
-// Generated from API version 2021-11-20-preview
+// Generated from API version 2022-12-01-preview
 //   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
@@ -82,7 +82,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-20-preview")
+	reqQP.Set("api-version", "2022-12-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

@@ -9,6 +9,8 @@
 ### Bugs Fixed
 * Fixed issue where some requests fail with mismatch in string to sign. 
 
+* Fixed service SAS creation where expiry time or permissions can be omitted when stored access policy is used. Fixes [#21229](https://github.com/Azure/azure-sdk-for-go/issues/21229).
+
 ### Other Changes
 
 ## 1.1.0 (2023-07-13)
@@ -26,7 +28,6 @@
 
 * Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
 * Fixed an issue where passing a blob tags map of length 0 would result in the x-ms-tags header to be sent to the service with an empty string as value.
-
 * Fixed block size and number of blocks calculation in `UploadBuffer` and `UploadFile`. Fixes [#20735](https://github.com/Azure/azure-sdk-for-go/issues/20735).
 
 ### Other Changes

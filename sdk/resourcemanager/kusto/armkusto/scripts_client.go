@@ -29,8 +29,7 @@ type ScriptsClient struct {
 }
 
 // NewScriptsClient creates a new instance of ScriptsClient with the specified values.
-//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptsClient, error) {
@@ -48,8 +47,8 @@ func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CheckNameAvailability - Checks that the script name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - scriptName - The name of the script.
@@ -94,7 +93,7 @@ func (client *ScriptsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, scriptName)
@@ -112,8 +111,8 @@ func (client *ScriptsClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // BeginCreateOrUpdate - Creates a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - scriptName - The name of the Kusto database script.
@@ -126,7 +125,9 @@ func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ScriptsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ScriptsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -135,7 +136,7 @@ func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // CreateOrUpdate - Creates a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ScriptsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
 	if err != nil {
@@ -179,17 +180,17 @@ func (client *ScriptsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// BeginDelete - Deletes a Kusto principalAssignment.
+// BeginDelete - Deletes a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - scriptName - The name of the Kusto database script.
@@ -200,16 +201,18 @@ func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ScriptsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ScriptsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Delete - Deletes a Kusto principalAssignment.
+// Delete - Deletes a Kusto database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ScriptsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
 	if err != nil {
@@ -253,7 +256,7 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,8 +265,8 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Gets a Kusto cluster database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - scriptName - The name of the Kusto database script.
@@ -311,7 +314,7 @@ func (client *ScriptsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,8 +331,8 @@ func (client *ScriptsClient) getHandleResponse(resp *http.Response) (ScriptsClie
 
 // NewListByDatabasePager - Returns the list of database scripts for given database.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - options - ScriptsClientListByDatabaseOptions contains the optional parameters for the ScriptsClient.NewListByDatabasePager
@@ -380,7 +383,7 @@ func (client *ScriptsClient) listByDatabaseCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -398,8 +401,8 @@ func (client *ScriptsClient) listByDatabaseHandleResponse(resp *http.Response) (
 // BeginUpdate - Updates a database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
-//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+// Generated from API version 2023-05-02
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
 //   - scriptName - The name of the Kusto database script.
@@ -411,7 +414,9 @@ func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ScriptsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ScriptsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -420,7 +425,7 @@ func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Updates a database script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-29
+// Generated from API version 2023-05-02
 func (client *ScriptsClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
 	if err != nil {
@@ -464,7 +469,7 @@ func (client *ScriptsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-29")
+	reqQP.Set("api-version", "2023-05-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerGroupGet.json
 func ExampleGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,6 +43,7 @@ func ExampleGroupsClient_Get() {
 	// 	Properties: &armnetwork.GroupProperties{
 	// 		Description: to.Ptr("A sample group"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -55,7 +56,7 @@ func ExampleGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerGroupPut.json
 func ExampleGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,6 +85,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	// 	Properties: &armnetwork.GroupProperties{
 	// 		Description: to.Ptr("A sample group"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
@@ -96,7 +98,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerGroupDelete.json
 func ExampleGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +119,7 @@ func ExampleGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGroupList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9975d3476c05bcc6bd9535ad3dfb564e6a168fa5/specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerGroupList.json
 func ExampleGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,6 +152,7 @@ func ExampleGroupsClient_NewListPager() {
 		// 			Properties: &armnetwork.GroupProperties{
 		// 				Description: to.Ptr("A sample group"),
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			},
 		// 			SystemData: &armnetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),

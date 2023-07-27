@@ -46,7 +46,7 @@ func NewAvailableServiceAliasesClient(subscriptionID string, credential azcore.T
 
 // NewListPager - Gets all available service aliases for this subscription in this region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - location - The location.
 //   - options - AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListPager
 //     method.
@@ -56,7 +56,6 @@ func (client *AvailableServiceAliasesClient) NewListPager(location string, optio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListResponse) (AvailableServiceAliasesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -76,7 +75,6 @@ func (client *AvailableServiceAliasesClient) NewListPager(location string, optio
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -96,7 +94,7 @@ func (client *AvailableServiceAliasesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +111,7 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *http.Respo
 
 // NewListByResourceGroupPager - Gets all available service aliases for this resource group in this region.
 //
-// Generated from API version 2022-11-01
+// Generated from API version 2023-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - location - The location.
 //   - options - AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListByResourceGroupPager
@@ -124,7 +122,6 @@ func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListByResourceGroupResponse) (AvailableServiceAliasesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -144,7 +141,6 @@ func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourc
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -168,7 +164,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

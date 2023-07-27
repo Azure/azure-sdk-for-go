@@ -7,13 +7,31 @@
 package file
 
 import (
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"io"
 	"net/http"
 	"strconv"
 	"time"
+)
+
+const (
+	_1MiB      = 1024 * 1024
+	CountToEnd = 0
+
+	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
+
+	// MaxFileSize indicates the maximum size of the file allowed.
+	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
+
+	// DefaultDownloadChunkSize is default chunk size
+	DefaultDownloadChunkSize = int64(4 * 1024 * 1024) // 4MiB
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
@@ -165,6 +183,401 @@ func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSe
 	return &generated.PathClientSetAccessControlRecursiveOptions{
 		ACL: &ACL,
 	}, mode
+}
+
+type HTTPRange = exported.HTTPRange
+
+// uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
+type uploadFromReaderOptions struct {
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	ChunkSize int64
+	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
+	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
+	Progress func(bytesTransferred int64)
+	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
+	Concurrency uint16
+	// AccessConditions contains optional parameters to access leased entity.
+	AccessConditions *AccessConditions
+	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
+	HTTPHeaders *HTTPHeaders
+	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
+	CPKInfo *CPKInfo
+}
+
+// UploadStreamOptions provides set of configurations for Client.UploadStream operation.
+type UploadStreamOptions struct {
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	ChunkSize int64
+	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
+	Concurrency uint16
+	// AccessConditions contains optional parameters to access leased entity.
+	AccessConditions *AccessConditions
+	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
+	HTTPHeaders *HTTPHeaders
+	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
+	CPKInfo *CPKInfo
+}
+
+// UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
+type UploadBufferOptions = uploadFromReaderOptions
+
+// UploadFileOptions provides set of configurations for Client.UploadFile operation.
+type UploadFileOptions = uploadFromReaderOptions
+
+// FlushDataOptions contains the optional parameters for the Client.FlushData method.
+type FlushDataOptions struct {
+	AccessConditions *AccessConditions
+	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
+	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
+	CPKInfo               *CPKInfo
+	HTTPHeaders           *HTTPHeaders
+	Close                 *bool
+	RetainUncommittedData *bool
+}
+
+func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.PathHTTPHeaders, *generated.CPKInfo, error) {
+	defaultRetainUncommitted := false
+	defaultClose := false
+	contentLength := int64(0)
+
+	var httpHeaderOpts *generated.PathHTTPHeaders
+	var leaseAccessConditions *generated.LeaseAccessConditions
+	var modifiedAccessConditions *generated.ModifiedAccessConditions
+	var cpkInfoOpts *generated.CPKInfo
+	flushDataOpts := &generated.PathClientFlushDataOptions{ContentLength: &contentLength, Position: &offset}
+
+	if o == nil {
+		flushDataOpts.RetainUncommittedData = &defaultRetainUncommitted
+		flushDataOpts.Close = &defaultClose
+		return flushDataOpts, nil, nil, nil, nil, nil
+	}
+
+	if o != nil {
+		if o.RetainUncommittedData == nil {
+			flushDataOpts.RetainUncommittedData = &defaultRetainUncommitted
+		} else {
+			flushDataOpts.RetainUncommittedData = o.RetainUncommittedData
+		}
+		if o.Close == nil {
+			flushDataOpts.Close = &defaultClose
+		} else {
+			flushDataOpts.Close = o.Close
+		}
+		leaseAccessConditions, modifiedAccessConditions = exported.FormatPathAccessConditions(o.AccessConditions)
+		if o.HTTPHeaders != nil {
+			httpHeaderOpts := generated.PathHTTPHeaders{}
+			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
+			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
+			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
+			httpHeaderOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
+			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
+		}
+		if o.CPKInfo != nil {
+			cpkInfoOpts := generated.CPKInfo{}
+			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
+			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		}
+	}
+	return flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
+}
+
+// AppendDataOptions contains the optional parameters for the Client.UploadRange method.
+type AppendDataOptions struct {
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
+	HTTPHeaders *HTTPHeaders
+	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
+	CPKInfo *CPKInfo
+}
+
+func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions, *generated.LeaseAccessConditions, *generated.PathHTTPHeaders, *generated.CPKInfo, error) {
+	if offset < 0 || body == nil {
+		return nil, nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+	}
+
+	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+
+	if count == 0 {
+		return nil, nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+	}
+
+	appendDataOptions := &generated.PathClientAppendDataOptions{}
+	httpRange := exported.FormatHTTPRange(HTTPRange{
+		Offset: offset,
+		Count:  count,
+	})
+	if httpRange != nil {
+		appendDataOptions.Position = &offset
+		appendDataOptions.ContentLength = &count
+	}
+
+	var leaseAccessConditions *LeaseAccessConditions
+	var httpHeaderOpts *generated.PathHTTPHeaders
+	var cpkInfoOpts *generated.CPKInfo
+
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
+		if o.HTTPHeaders != nil {
+			httpHeaderOpts := generated.PathHTTPHeaders{}
+			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
+			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
+			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
+			httpHeaderOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
+			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
+		}
+		if o.CPKInfo != nil {
+			cpkInfoOpts := generated.CPKInfo{}
+			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
+			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		}
+	}
+	if o != nil && o.TransactionalValidation != nil {
+		_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+	}
+
+	return appendDataOptions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
+}
+
+func (u *UploadStreamOptions) setDefaults() {
+	if u.Concurrency == 0 {
+		u.Concurrency = 1
+	}
+
+	if u.ChunkSize < _1MiB {
+		u.ChunkSize = _1MiB
+	}
+}
+
+func (u *uploadFromReaderOptions) getAppendDataOptions() *AppendDataOptions {
+	if u == nil {
+		return nil
+	}
+	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
+	return &AppendDataOptions{
+		LeaseAccessConditions: leaseAccessConditions,
+		HTTPHeaders:           u.HTTPHeaders,
+		CPKInfo:               u.CPKInfo,
+	}
+}
+
+func (u *uploadFromReaderOptions) getFlushDataOptions() *FlushDataOptions {
+	if u == nil {
+		return nil
+	}
+	return &FlushDataOptions{
+		AccessConditions: u.AccessConditions,
+		HTTPHeaders:      u.HTTPHeaders,
+		CPKInfo:          u.CPKInfo,
+	}
+}
+
+func (u *UploadStreamOptions) getAppendDataOptions() *AppendDataOptions {
+	if u == nil {
+		return nil
+	}
+	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
+	return &AppendDataOptions{
+		LeaseAccessConditions: leaseAccessConditions,
+		HTTPHeaders:           u.HTTPHeaders,
+		CPKInfo:               u.CPKInfo,
+	}
+}
+
+func (u *UploadStreamOptions) getFlushDataOptions() *FlushDataOptions {
+	if u == nil {
+		return nil
+	}
+	return &FlushDataOptions{
+		AccessConditions: u.AccessConditions,
+		HTTPHeaders:      u.HTTPHeaders,
+		CPKInfo:          u.CPKInfo,
+	}
+}
+
+// DownloadStreamOptions contains the optional parameters for the Client.Download method.
+type DownloadStreamOptions struct {
+	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
+	// range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range *HTTPRange
+
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+	CPKScopeInfo     *CPKScopeInfo
+}
+
+func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
+	if o == nil {
+		return nil
+	}
+
+	downloadStreamOptions := &blob.DownloadStreamOptions{}
+	if o.Range != nil {
+		downloadStreamOptions.Range = blob.HTTPRange{
+			Offset: o.Range.Offset,
+			Count:  o.Range.Count,
+		}
+	}
+	if o.CPKInfo != nil {
+		downloadStreamOptions.CPKInfo = &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+		}
+	}
+
+	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
+	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
+	downloadStreamOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	return downloadStreamOptions
+}
+
+// DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
+type DownloadBufferOptions struct {
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range *HTTPRange
+
+	// ChunkSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// CPKInfo contains a group of parameters for client provided encryption key.
+	CPKInfo *CPKInfo
+
+	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
+	CPKScopeInfo *CPKScopeInfo
+
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	Concurrency uint16
+
+	// RetryReaderOptionsPerChunk is used when downloading each block.
+	RetryReaderOptionsPerChunk *RetryReaderOptions
+}
+
+func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
+	if o == nil {
+		return nil
+	}
+
+	downloadBufferOptions := &blob.DownloadBufferOptions{}
+	if o.Range != nil {
+		downloadBufferOptions.Range = blob.HTTPRange{
+			Offset: o.Range.Offset,
+			Count:  o.Range.Count,
+		}
+	}
+	if o.CPKInfo != nil {
+		downloadBufferOptions.CPKInfo = &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+		}
+	}
+
+	downloadBufferOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
+	downloadBufferOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadBufferOptions.BlockSize = o.ChunkSize
+	downloadBufferOptions.Progress = o.Progress
+	downloadBufferOptions.Concurrency = o.Concurrency
+	if o.RetryReaderOptionsPerChunk != nil {
+		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
+			newRange := HTTPRange{
+				Offset: rnge.Offset,
+				Count:  rnge.Count,
+			}
+			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
+		}
+		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
+		downloadBufferOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
+	}
+
+	return downloadBufferOptions
+}
+
+// DownloadFileOptions contains the optional parameters for the Client.DownloadFile method.
+type DownloadFileOptions struct {
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range *HTTPRange
+
+	// ChunkSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
+	CPKInfo      *CPKInfo
+	CPKScopeInfo *CPKScopeInfo
+
+	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	Concurrency uint16
+
+	// RetryReaderOptionsPerChunk is used when downloading each block.
+	RetryReaderOptionsPerChunk *RetryReaderOptions
+}
+
+func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
+	if o == nil {
+		return nil
+	}
+
+	downloadFileOptions := &blob.DownloadFileOptions{}
+	if o.Range != nil {
+		downloadFileOptions.Range = blob.HTTPRange{
+			Offset: o.Range.Offset,
+			Count:  o.Range.Count,
+		}
+	}
+	if o.CPKInfo != nil {
+		downloadFileOptions.CPKInfo = &blob.CPKInfo{
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+			EncryptionAlgorithm: (*blob.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+		}
+	}
+
+	downloadFileOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
+	downloadFileOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadFileOptions.BlockSize = o.ChunkSize
+	downloadFileOptions.Progress = o.Progress
+	downloadFileOptions.Concurrency = o.Concurrency
+	if o.RetryReaderOptionsPerChunk != nil {
+		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
+			newRange := HTTPRange{
+				Offset: rnge.Offset,
+				Count:  rnge.Count,
+			}
+			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
+		}
+		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
+		downloadFileOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
+	}
+
+	return downloadFileOptions
 }
 
 // CreationExpiryType defines values for Create() ExpiryType

@@ -55,7 +55,7 @@ func getDirectoryDepth(path string) string {
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+	if v.Identifier == "" && v.ExpiryTime.IsZero() || v.Permissions == "" {
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
@@ -118,7 +118,6 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 
 		// Container/Blob-specific SAS parameters
 		resource:             resource,
-		identifier:           v.Identifier,
 		cacheControl:         v.CacheControl,
 		contentDisposition:   v.ContentDisposition,
 		contentEncoding:      v.ContentEncoding,
@@ -129,7 +128,8 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		unauthorizedObjectID: v.UnauthorizedObjectID,
 		correlationID:        v.CorrelationID,
 		// Calculated SAS signature
-		signature: signature,
+		signature:  signature,
+		identifier: signedIdentifier,
 	}
 
 	return p, nil

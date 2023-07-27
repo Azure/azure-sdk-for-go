@@ -18,7 +18,10 @@ type CreateResponse = generated.PathClientCreateResponse
 type DeleteResponse = generated.PathClientDeleteResponse
 
 // RenameResponse contains the response fields for the Create operation.
-type RenameResponse = generated.PathClientCreateResponse
+type RenameResponse struct {
+	Response           generated.PathClientCreateResponse
+	NewDirectoryClient *Client
+}
 
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse

@@ -97,69 +97,13 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	}
 	if o.CPKInfo != nil {
 		cpkOpts = &generated.CPKInfo{
-			EncryptionAlgorithm: (*generated.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
 			EncryptionKey:       o.CPKInfo.EncryptionKey,
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		}
 	}
 	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
-
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
-type DeleteOptions struct {
-	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
-}
-
-func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathClientDeleteOptions) {
-	recursive := false
-	deleteOpts := &generated.PathClientDeleteOptions{
-		Recursive: &recursive,
-	}
-	if o == nil {
-		return nil, nil, deleteOpts
-	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
-}
-
-// RenameOptions contains the optional parameters when calling the Rename operation.
-type RenameOptions struct {
-	// SourceAccessConditions identifies the source path access conditions.
-	SourceAccessConditions *SourceAccessConditions
-	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
-}
-
-func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
-	// we don't need sourceModAccCond since this is not rename
-	mode := generated.PathRenameModeLegacy
-	createOpts := &generated.PathClientCreateOptions{
-		Mode:         &mode,
-		RenameSource: &path,
-	}
-	if o == nil {
-		return nil, nil, nil, createOpts
-	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	if o.SourceAccessConditions != nil {
-		if o.SourceAccessConditions.SourceLeaseAccessConditions != nil {
-			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
-		}
-		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
-			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
-				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
-				SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
-				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
-				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
-			}
-			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
-		}
-	}
-	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
-}
-
-// ===================================== PATH IMPORTS ===========================================
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
@@ -185,7 +129,7 @@ func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSe
 	}, mode
 }
 
-type HTTPRange = exported.HTTPRange
+// ===================================== PATH IMPORTS ===========================================
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
 type uploadFromReaderOptions struct {
@@ -640,7 +584,15 @@ type SetExpiryTypeNever = exported.SetExpiryTypeNever
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions
 
+type HTTPRange = exported.HTTPRange
+
 // ================================= path imports ==================================
+
+// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+type DeleteOptions = path.DeleteOptions
+
+// RenameOptions contains the optional parameters when calling the Rename operation.
+type RenameOptions = path.RenameOptions
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions = path.GetPropertiesOptions

@@ -15,6 +15,59 @@ import (
 	"time"
 )
 
+// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+type DeleteOptions struct {
+	// AccessConditions contains parameters for accessing the file.
+	AccessConditions *AccessConditions
+}
+
+func FormatDeleteOptions(o *DeleteOptions, recursive bool) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathClientDeleteOptions) {
+	deleteOpts := &generated.PathClientDeleteOptions{
+		Recursive: &recursive,
+	}
+	if o == nil {
+		return nil, nil, deleteOpts
+	}
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
+}
+
+// RenameOptions contains the optional parameters when calling the Rename operation.
+type RenameOptions struct {
+	// SourceAccessConditions identifies the source path access conditions.
+	SourceAccessConditions *SourceAccessConditions
+	// AccessConditions contains parameters for accessing the file.
+	AccessConditions *AccessConditions
+}
+
+func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
+	// we don't need sourceModAccCond since this is not rename
+	mode := generated.PathRenameModeLegacy
+	createOpts := &generated.PathClientCreateOptions{
+		Mode:         &mode,
+		RenameSource: &path,
+	}
+	if o == nil {
+		return nil, nil, nil, createOpts
+	}
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	if o.SourceAccessConditions != nil {
+		if o.SourceAccessConditions.SourceLeaseAccessConditions != nil {
+			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
+		}
+		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
+			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
+				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
+				SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
+				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
+				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+			}
+			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
+		}
+	}
+	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
+}
+
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
 	AccessConditions *AccessConditions

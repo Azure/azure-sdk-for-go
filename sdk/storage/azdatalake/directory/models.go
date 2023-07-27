@@ -10,10 +10,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
-	"time"
 )
 
-// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint
+// CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
@@ -23,9 +22,10 @@ type CreateOptions struct {
 	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.
 	HTTPHeaders *HTTPHeaders
-	//PathExpiryOptions *ExpiryOptions
-	// LeaseDuration specifies the duration of the lease.
-	LeaseDuration *time.Duration
+	// LeaseDuration specifies the duration of the lease, in seconds, or negative one
+	// (-1) for a lease that never expires. A non-infinite lease can be
+	// between 15 and 60 seconds.
+	LeaseDuration *int64
 	// ProposedLeaseID specifies the proposed lease ID for the file.
 	ProposedLeaseID *string
 	// Permissions is the octal representation of the permissions for user, group and mask.
@@ -40,38 +40,44 @@ type CreateOptions struct {
 	ACL *string
 }
 
-func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, error) {
-	// TODO: add all other required options for the create operation, we don't need sourceModAccCond since this is not rename
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	httpHeaders := &generated.PathHTTPHeaders{
-		CacheControl:             o.HTTPHeaders.CacheControl,
-		ContentDisposition:       o.HTTPHeaders.ContentDisposition,
-		ContentEncoding:          o.HTTPHeaders.ContentEncoding,
-		ContentLanguage:          o.HTTPHeaders.ContentLanguage,
-		ContentMD5:               o.HTTPHeaders.ContentMD5,
-		ContentType:              o.HTTPHeaders.ContentType,
-		TransactionalContentHash: o.HTTPHeaders.ContentMD5,
+func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
+	resource := generated.PathResourceTypeFile
+	createOpts := &generated.PathClientCreateOptions{
+		Resource: &resource,
 	}
-	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, nil
+	if o == nil {
+		return nil, nil, nil, createOpts, nil
+	}
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	createOpts.ACL = o.ACL
+	createOpts.Group = o.Group
+	createOpts.Owner = o.Owner
+	createOpts.Umask = o.Umask
+	createOpts.Permissions = o.Permissions
+	createOpts.ProposedLeaseID = o.ProposedLeaseID
+	createOpts.LeaseDuration = o.LeaseDuration
+
+	var httpHeaders *generated.PathHTTPHeaders
+	var cpkOpts *generated.CPKInfo
+
+	if o.HTTPHeaders != nil {
+		httpHeaders = path.FormatPathHTTPHeaders(o.HTTPHeaders)
+	}
+	if o.CPKInfo != nil {
+		cpkOpts = &generated.CPKInfo{
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		}
+	}
+	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
 
 // DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
-type DeleteOptions struct {
-	// AccessConditions specifies parameters for accessing the directory
-	AccessConditions *AccessConditions
-}
+type DeleteOptions = path.DeleteOptions
 
-func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, modifiedAccessConditions, nil
-}
-
-type RenameOptions struct {
-	// SourceModifiedAccessConditions specifies parameters for accessing the source directory
-	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	// AccessConditions specifies parameters for accessing the destination directory
-	AccessConditions *AccessConditions
-}
+// RenameOptions contains the optional parameters when calling the Rename operation.
+type RenameOptions = path.RenameOptions
 
 // ===================================== PATH IMPORTS ===========================================
 

@@ -5,6 +5,7 @@ package common
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -494,4 +495,55 @@ func AddTagSet(path, tag string) error {
 	}
 
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}
+
+func isGenerateFake(path string) bool {
+	b, _ := os.ReadFile(filepath.Join(path, "autorest.md"))
+	if strings.Contains(string(b), "generate-fakes: true") {
+		return true
+	}
+
+	return false
+}
+
+func replaceFakeImport(path, rpName, namespaceName string, previousVersion, currentVersion string) error {
+	previous, err := semver.NewVersion(previousVersion)
+	if err != nil {
+		return err
+	}
+
+	current, err := semver.NewVersion(currentVersion)
+	if err != nil {
+		return err
+	}
+
+	oldModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	if previous.Major() > 1 {
+		oldModule = fmt.Sprintf("%s/v%d", oldModule, previous.Major())
+	}
+
+	if current.Major() < 1 {
+		return nil
+	}
+	newModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d", rpName, namespaceName, current.Major())
+
+	if previous.Major() == current.Major() {
+		return nil
+	}
+
+	return filepath.Walk(filepath.Join(path, "fake"), func(path string, info fs.FileInfo, err error) error {
+		if !info.IsDir() && strings.HasSuffix(info.Name(), "_server.go") {
+			b, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			newFile := strings.ReplaceAll(string(b), oldModule, newModule)
+			if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
 }

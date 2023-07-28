@@ -37,7 +37,7 @@ func TestRecording(t *testing.T) {
 
 func (s *recordingTests) SetupSuite() {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(ProxyManualStartEnv, "false")
+	os.Setenv(proxyManualStartEnv, "false")
 	proxy, err := StartTestProxy("", nil)
 	s.proxy = proxy
 	require.NoError(s.T(), err)

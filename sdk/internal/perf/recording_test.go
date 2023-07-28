@@ -15,9 +15,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
+const proxyManualStartEnv = "PROXY_MANUAL_START"
+
 func TestRecordingHTTPClient_Do(t *testing.T) {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(recording.ProxyManualStartEnv, "false")
+	os.Setenv(proxyManualStartEnv, "false")
 
 	proxy, err := recording.StartTestProxy("", nil)
 	require.NoError(t, err)

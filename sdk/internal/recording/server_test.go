@@ -27,7 +27,7 @@ func TestServer(t *testing.T) {
 
 func (s *serverTests) SetupSuite() {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(ProxyManualStartEnv, "false")
+	os.Setenv(proxyManualStartEnv, "false")
 }
 
 func (s *serverTests) TestProxyDownloadFile() {

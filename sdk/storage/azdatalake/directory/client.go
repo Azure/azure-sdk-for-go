@@ -12,14 +12,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -42,7 +45,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -333,4 +336,38 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	path.FormatSetHTTPHeadersResponse(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (f *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if f.sharedKey() == nil {
+		return "", datalakeerror.MissingSharedKeyCredential
+	}
+
+	urlParts, err := sas.ParseURL(f.BlobURL())
+	err = exported.ConvertToDFSError(err)
+	if err != nil {
+		return "", err
+	}
+
+	st := path.FormatGetSASURLOptions(o)
+
+	qps, err := sas.DatalakeSignatureValues{
+		DirectoryPath:  urlParts.PathName,
+		FilesystemName: urlParts.FilesystemName,
+		Version:        sas.Version,
+		Permissions:    permissions.String(),
+		StartTime:      st,
+		ExpiryTime:     expiry.UTC(),
+	}.SignWithSharedKey(f.sharedKey())
+
+	err = exported.ConvertToDFSError(err)
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := f.BlobURL() + "?" + qps.Encode()
+
+	return endpoint, nil
 }

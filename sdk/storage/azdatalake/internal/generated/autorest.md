@@ -89,9 +89,10 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/func \(client \*PathClient\) SetAccessControlRecursive\(.+\/\/ setAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request/s, `//\n// SetAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request`).
         replace(/\(client \*PathClient\) setAccessControlRecursiveCreateRequest\(/, `(client *PathClient) SetAccessControlRecursiveCreateRequest(`).
-        replace(/\(client \*PathClient\) setAccessControlRecursiveHandleResponse\(/, `(client *PathClient) SetAccessControlRecursiveHandleResponse(`);
+        replace(/\(client \*PathClient\) setAccessControlRecursiveHandleResponse\(/, `(client *PathClient) SetAccessControlRecursiveHandleResponse(`).
+        replace(/setAccessControlRecursiveCreateRequest/g, 'SetAccessControlRecursiveCreateRequest').
+        replace(/setAccessControlRecursiveHandleResponse/g, 'SetAccessControlRecursiveHandleResponse');
 ```
 
 ### Fix EncryptionAlgorithm

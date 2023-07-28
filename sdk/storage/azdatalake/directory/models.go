@@ -41,7 +41,7 @@ type CreateOptions struct {
 }
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
-	resource := generated.PathResourceTypeFile
+	resource := generated.PathResourceTypeDirectory
 	createOpts := &generated.PathClientCreateOptions{
 		Resource: &resource,
 	}

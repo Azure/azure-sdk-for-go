@@ -24,7 +24,7 @@ import (
 	"time"
 )
 
-const ProxyManualStartEnv = "PROXY_MANUAL_START"
+const proxyManualStartEnv = "PROXY_MANUAL_START"
 
 type TestProxyInstance struct {
 	Cmd     *exec.Cmd
@@ -366,9 +366,9 @@ func waitForProxyStart(cmd *exec.Cmd, options *RecordingOptions) (*TestProxyInst
 }
 
 func StartTestProxy(pathToRecordings string, options *RecordingOptions) (*TestProxyInstance, error) {
-	manualStart := strings.ToLower(os.Getenv(ProxyManualStartEnv))
+	manualStart := strings.ToLower(os.Getenv(proxyManualStartEnv))
 	if manualStart == "true" {
-		log.Printf("%s env variable is set to true, not starting test proxy...\n", ProxyManualStartEnv)
+		log.Printf("%s env variable is set to true, not starting test proxy...\n", proxyManualStartEnv)
 		return nil, nil
 	}
 

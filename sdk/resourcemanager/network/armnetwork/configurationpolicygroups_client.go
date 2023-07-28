@@ -75,6 +75,10 @@ func (client *ConfigurationPolicyGroupsClient) BeginCreateOrUpdate(ctx context.C
 // Generated from API version 2023-02-01
 func (client *ConfigurationPolicyGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, vpnServerConfigurationPolicyGroupParameters VPNServerConfigurationPolicyGroup, options *ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConfigurationPolicyGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, vpnServerConfigurationPolicyGroupParameters, options)
 	if err != nil {
 		return nil, err
@@ -153,6 +157,10 @@ func (client *ConfigurationPolicyGroupsClient) BeginDelete(ctx context.Context, 
 // Generated from API version 2023-02-01
 func (client *ConfigurationPolicyGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConfigurationPolicyGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +217,10 @@ func (client *ConfigurationPolicyGroupsClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *ConfigurationPolicyGroupsClient) Get(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientGetOptions) (ConfigurationPolicyGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "ConfigurationPolicyGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, options)
 	if err != nil {
 		return ConfigurationPolicyGroupsClientGetResponse{}, err
@@ -277,6 +289,7 @@ func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse) (ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationPolicyGroupsClient.NewListByVPNServerConfigurationPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,6 +309,7 @@ func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPa
 			}
 			return client.listByVPNServerConfigurationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

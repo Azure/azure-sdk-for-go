@@ -74,6 +74,10 @@ func (client *ExpressRouteCircuitsClient) BeginCreateOrUpdate(ctx context.Contex
 // Generated from API version 2023-02-01
 func (client *ExpressRouteCircuitsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, parameters ExpressRouteCircuit, options *ExpressRouteCircuitsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *ExpressRouteCircuitsClient) BeginDelete(ctx context.Context, resou
 // Generated from API version 2023-02-01
 func (client *ExpressRouteCircuitsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, options)
 	if err != nil {
 		return nil, err
@@ -198,6 +206,10 @@ func (client *ExpressRouteCircuitsClient) deleteCreateRequest(ctx context.Contex
 //     method.
 func (client *ExpressRouteCircuitsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientGetOptions) (ExpressRouteCircuitsClientGetResponse, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, options)
 	if err != nil {
 		return ExpressRouteCircuitsClientGetResponse{}, err
@@ -260,6 +272,10 @@ func (client *ExpressRouteCircuitsClient) getHandleResponse(resp *http.Response)
 //     method.
 func (client *ExpressRouteCircuitsClient) GetPeeringStats(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitsClientGetPeeringStatsOptions) (ExpressRouteCircuitsClientGetPeeringStatsResponse, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.GetPeeringStats"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getPeeringStatsCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
 	if err != nil {
 		return ExpressRouteCircuitsClientGetPeeringStatsResponse{}, err
@@ -325,6 +341,10 @@ func (client *ExpressRouteCircuitsClient) getPeeringStatsHandleResponse(resp *ht
 //     method.
 func (client *ExpressRouteCircuitsClient) GetStats(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitsClientGetStatsOptions) (ExpressRouteCircuitsClientGetStatsResponse, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.GetStats"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getStatsCreateRequest(ctx, resourceGroupName, circuitName, options)
 	if err != nil {
 		return ExpressRouteCircuitsClientGetStatsResponse{}, err
@@ -388,6 +408,7 @@ func (client *ExpressRouteCircuitsClient) NewListPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteCircuitsClientListResponse) (ExpressRouteCircuitsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteCircuitsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -407,6 +428,7 @@ func (client *ExpressRouteCircuitsClient) NewListPager(resourceGroupName string,
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -452,6 +474,7 @@ func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteC
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRouteCircuitsClientListAllResponse) (ExpressRouteCircuitsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRouteCircuitsClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -471,6 +494,7 @@ func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteC
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -532,6 +556,10 @@ func (client *ExpressRouteCircuitsClient) BeginListArpTable(ctx context.Context,
 // Generated from API version 2023-02-01
 func (client *ExpressRouteCircuitsClient) listArpTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListArpTableOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.BeginListArpTable"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listArpTableCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
 	if err != nil {
 		return nil, err
@@ -613,6 +641,10 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTable(ctx context.Conte
 // Generated from API version 2023-02-01
 func (client *ExpressRouteCircuitsClient) listRoutesTable(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListRoutesTableOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.BeginListRoutesTable"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listRoutesTableCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
 	if err != nil {
 		return nil, err
@@ -695,6 +727,10 @@ func (client *ExpressRouteCircuitsClient) BeginListRoutesTableSummary(ctx contex
 // Generated from API version 2023-02-01
 func (client *ExpressRouteCircuitsClient) listRoutesTableSummary(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, devicePath string, options *ExpressRouteCircuitsClientBeginListRoutesTableSummaryOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.BeginListRoutesTableSummary"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listRoutesTableSummaryCreateRequest(ctx, resourceGroupName, circuitName, peeringName, devicePath, options)
 	if err != nil {
 		return nil, err
@@ -755,6 +791,10 @@ func (client *ExpressRouteCircuitsClient) listRoutesTableSummaryCreateRequest(ct
 //     method.
 func (client *ExpressRouteCircuitsClient) UpdateTags(ctx context.Context, resourceGroupName string, circuitName string, parameters TagsObject, options *ExpressRouteCircuitsClientUpdateTagsOptions) (ExpressRouteCircuitsClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "ExpressRouteCircuitsClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, circuitName, parameters, options)
 	if err != nil {
 		return ExpressRouteCircuitsClientUpdateTagsResponse{}, err

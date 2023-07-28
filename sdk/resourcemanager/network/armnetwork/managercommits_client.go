@@ -74,6 +74,10 @@ func (client *ManagerCommitsClient) BeginPost(ctx context.Context, resourceGroup
 // Generated from API version 2023-02-01
 func (client *ManagerCommitsClient) post(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, options *ManagerCommitsClientBeginPostOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagerCommitsClient.BeginPost"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.postCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return nil, err

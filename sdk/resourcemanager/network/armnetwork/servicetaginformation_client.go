@@ -59,6 +59,7 @@ func (client *ServiceTagInformationClient) NewListPager(location string, options
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServiceTagInformationClientListResponse) (ServiceTagInformationClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceTagInformationClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -78,6 +79,7 @@ func (client *ServiceTagInformationClient) NewListPager(location string, options
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

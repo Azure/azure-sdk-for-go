@@ -74,6 +74,10 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 // Generated from API version 2023-02-01
 func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DscpConfigurationClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dscpConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 // Generated from API version 2023-02-01
 func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DscpConfigurationClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +205,10 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 //   - options - DscpConfigurationClientGetOptions contains the optional parameters for the DscpConfigurationClient.Get method.
 func (client *DscpConfigurationClient) Get(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientGetOptions) (DscpConfigurationClientGetResponse, error) {
 	var err error
+	const operationName = "DscpConfigurationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dscpConfigurationName, options)
 	if err != nil {
 		return DscpConfigurationClientGetResponse{}, err
@@ -260,6 +272,7 @@ func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, op
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DscpConfigurationClientListResponse) (DscpConfigurationClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DscpConfigurationClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -279,6 +292,7 @@ func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, op
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -324,6 +338,7 @@ func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfiguratio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DscpConfigurationClientListAllResponse) (DscpConfigurationClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DscpConfigurationClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -343,6 +358,7 @@ func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfiguratio
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

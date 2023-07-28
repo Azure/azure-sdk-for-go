@@ -74,6 +74,10 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 // Generated from API version 2023-02-01
 func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, options *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SecurityPartnerProvidersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 // Generated from API version 2023-02-01
 func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SecurityPartnerProvidersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, options)
 	if err != nil {
 		return nil, err
@@ -198,6 +206,10 @@ func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *SecurityPartnerProvidersClient) Get(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientGetOptions) (SecurityPartnerProvidersClientGetResponse, error) {
 	var err error
+	const operationName = "SecurityPartnerProvidersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, options)
 	if err != nil {
 		return SecurityPartnerProvidersClientGetResponse{}, err
@@ -260,6 +272,7 @@ func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPart
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListResponse) (SecurityPartnerProvidersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityPartnerProvidersClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -279,6 +292,7 @@ func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPart
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -321,6 +335,7 @@ func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resour
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListByResourceGroupResponse) (SecurityPartnerProvidersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityPartnerProvidersClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -340,6 +355,7 @@ func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resour
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -385,6 +401,10 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(
 //     method.
 func (client *SecurityPartnerProvidersClient) UpdateTags(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters TagsObject, options *SecurityPartnerProvidersClientUpdateTagsOptions) (SecurityPartnerProvidersClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "SecurityPartnerProvidersClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, securityPartnerProviderName, parameters, options)
 	if err != nil {
 		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err

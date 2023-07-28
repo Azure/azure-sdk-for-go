@@ -74,6 +74,10 @@ func (client *IPAllocationsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-02-01
 func (client *IPAllocationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation, options *IPAllocationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "IPAllocationsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ipAllocationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -147,6 +151,10 @@ func (client *IPAllocationsClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-02-01
 func (client *IPAllocationsClient) deleteOperation(ctx context.Context, resourceGroupName string, ipAllocationName string, options *IPAllocationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "IPAllocationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipAllocationName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +205,10 @@ func (client *IPAllocationsClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - IPAllocationsClientGetOptions contains the optional parameters for the IPAllocationsClient.Get method.
 func (client *IPAllocationsClient) Get(ctx context.Context, resourceGroupName string, ipAllocationName string, options *IPAllocationsClientGetOptions) (IPAllocationsClientGetResponse, error) {
 	var err error
+	const operationName = "IPAllocationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ipAllocationName, options)
 	if err != nil {
 		return IPAllocationsClientGetResponse{}, err
@@ -261,6 +273,7 @@ func (client *IPAllocationsClient) NewListPager(options *IPAllocationsClientList
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPAllocationsClientListResponse) (IPAllocationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPAllocationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -280,6 +293,7 @@ func (client *IPAllocationsClient) NewListPager(options *IPAllocationsClientList
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,6 +336,7 @@ func (client *IPAllocationsClient) NewListByResourceGroupPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPAllocationsClientListByResourceGroupResponse) (IPAllocationsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPAllocationsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -341,6 +356,7 @@ func (client *IPAllocationsClient) NewListByResourceGroupPager(resourceGroupName
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -386,6 +402,10 @@ func (client *IPAllocationsClient) listByResourceGroupHandleResponse(resp *http.
 //     method.
 func (client *IPAllocationsClient) UpdateTags(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters TagsObject, options *IPAllocationsClientUpdateTagsOptions) (IPAllocationsClientUpdateTagsResponse, error) {
 	var err error
+	const operationName = "IPAllocationsClient.UpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, ipAllocationName, parameters, options)
 	if err != nil {
 		return IPAllocationsClientUpdateTagsResponse{}, err

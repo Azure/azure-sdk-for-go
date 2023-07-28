@@ -55,6 +55,7 @@ func (client *UsagesClient) NewListPager(location string, options *UsagesClientL
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UsagesClientListResponse) (UsagesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsagesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -74,6 +75,7 @@ func (client *UsagesClient) NewListPager(location string, options *UsagesClientL
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

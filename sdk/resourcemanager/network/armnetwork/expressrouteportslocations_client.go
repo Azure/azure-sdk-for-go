@@ -54,6 +54,10 @@ func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcor
 //     method.
 func (client *ExpressRoutePortsLocationsClient) Get(ctx context.Context, locationName string, options *ExpressRoutePortsLocationsClientGetOptions) (ExpressRoutePortsLocationsClientGetResponse, error) {
 	var err error
+	const operationName = "ExpressRoutePortsLocationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return ExpressRoutePortsLocationsClientGetResponse{}, err
@@ -113,6 +117,7 @@ func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRoutePortsLocationsClientListResponse) (ExpressRoutePortsLocationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRoutePortsLocationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -132,6 +137,7 @@ func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRou
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

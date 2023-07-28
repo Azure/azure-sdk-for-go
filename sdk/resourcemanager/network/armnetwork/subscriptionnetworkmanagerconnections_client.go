@@ -55,6 +55,10 @@ func NewSubscriptionNetworkManagerConnectionsClient(subscriptionID string, crede
 //     method.
 func (client *SubscriptionNetworkManagerConnectionsClient) CreateOrUpdate(ctx context.Context, networkManagerConnectionName string, parameters ManagerConnection, options *SubscriptionNetworkManagerConnectionsClientCreateOrUpdateOptions) (SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SubscriptionNetworkManagerConnectionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, networkManagerConnectionName, parameters, options)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
@@ -114,6 +118,10 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateHandleR
 //     method.
 func (client *SubscriptionNetworkManagerConnectionsClient) Delete(ctx context.Context, networkManagerConnectionName string, options *SubscriptionNetworkManagerConnectionsClientDeleteOptions) (SubscriptionNetworkManagerConnectionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "SubscriptionNetworkManagerConnectionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, networkManagerConnectionName, options)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
@@ -160,6 +168,10 @@ func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(c
 //     method.
 func (client *SubscriptionNetworkManagerConnectionsClient) Get(ctx context.Context, networkManagerConnectionName string, options *SubscriptionNetworkManagerConnectionsClientGetOptions) (SubscriptionNetworkManagerConnectionsClientGetResponse, error) {
 	var err error
+	const operationName = "SubscriptionNetworkManagerConnectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, networkManagerConnectionName, options)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
@@ -218,6 +230,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SubscriptionNetworkManagerConnectionsClientListResponse) (SubscriptionNetworkManagerConnectionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubscriptionNetworkManagerConnectionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -237,6 +250,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options 
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -56,6 +56,10 @@ func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.Token
 //     method.
 func (client *DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroup, options *DedicatedHostGroupsClientCreateOrUpdateOptions) (DedicatedHostGroupsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DedicatedHostGroupsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientCreateOrUpdateResponse{}, err
@@ -120,6 +124,10 @@ func (client *DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *http
 //     method.
 func (client *DedicatedHostGroupsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientDeleteOptions) (DedicatedHostGroupsClientDeleteResponse, error) {
 	var err error
+	const operationName = "DedicatedHostGroupsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientDeleteResponse{}, err
@@ -170,6 +178,10 @@ func (client *DedicatedHostGroupsClient) deleteCreateRequest(ctx context.Context
 //   - options - DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
 func (client *DedicatedHostGroupsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientGetOptions) (DedicatedHostGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "DedicatedHostGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientGetResponse{}, err
@@ -237,6 +249,7 @@ func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListByResourceGroupResponse) (DedicatedHostGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -256,6 +269,7 @@ func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGro
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -302,6 +316,7 @@ func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *Ded
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListBySubscriptionResponse) (DedicatedHostGroupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -321,6 +336,7 @@ func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *Ded
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -362,6 +378,10 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *
 //     method.
 func (client *DedicatedHostGroupsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroupUpdate, options *DedicatedHostGroupsClientUpdateOptions) (DedicatedHostGroupsClientUpdateResponse, error) {
 	var err error
+	const operationName = "DedicatedHostGroupsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientUpdateResponse{}, err

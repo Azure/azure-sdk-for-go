@@ -56,6 +56,10 @@ func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *RestorePointCollectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollection, options *RestorePointCollectionsClientCreateOrUpdateOptions) (RestorePointCollectionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "RestorePointCollectionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, restorePointCollectionName, parameters, options)
 	if err != nil {
 		return RestorePointCollectionsClientCreateOrUpdateResponse{}, err
@@ -139,6 +143,10 @@ func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *RestorePointCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "RestorePointCollectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, restorePointCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -190,6 +198,10 @@ func (client *RestorePointCollectionsClient) deleteCreateRequest(ctx context.Con
 //     method.
 func (client *RestorePointCollectionsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientGetOptions) (RestorePointCollectionsClientGetResponse, error) {
 	var err error
+	const operationName = "RestorePointCollectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, options)
 	if err != nil {
 		return RestorePointCollectionsClientGetResponse{}, err
@@ -256,6 +268,7 @@ func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListResponse) (RestorePointCollectionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointCollectionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -275,6 +288,7 @@ func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName stri
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,6 +336,7 @@ func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePoi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RestorePointCollectionsClientListAllResponse) (RestorePointCollectionsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointCollectionsClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -341,6 +356,7 @@ func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePoi
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -382,6 +398,10 @@ func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Re
 //     method.
 func (client *RestorePointCollectionsClient) Update(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters RestorePointCollectionUpdate, options *RestorePointCollectionsClientUpdateOptions) (RestorePointCollectionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "RestorePointCollectionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, restorePointCollectionName, parameters, options)
 	if err != nil {
 		return RestorePointCollectionsClientUpdateResponse{}, err

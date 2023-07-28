@@ -55,6 +55,10 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet, options *AvailabilitySetsClientCreateOrUpdateOptions) (AvailabilitySetsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AvailabilitySetsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetName, parameters, options)
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
@@ -118,6 +122,10 @@ func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Re
 //   - options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
 func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientDeleteOptions) (AvailabilitySetsClientDeleteResponse, error) {
 	var err error
+	const operationName = "AvailabilitySetsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
 		return AvailabilitySetsClientDeleteResponse{}, err
@@ -168,6 +176,10 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
 func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientGetOptions) (AvailabilitySetsClientGetResponse, error) {
 	var err error
+	const operationName = "AvailabilitySetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
@@ -231,6 +243,7 @@ func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, opt
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListResponse) (AvailabilitySetsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -250,6 +263,7 @@ func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, opt
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -298,6 +312,7 @@ func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupNa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListAvailableSizesResponse) (AvailabilitySetsClientListAvailableSizesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListAvailableSizesPager")
 			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
@@ -311,6 +326,7 @@ func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupNa
 			}
 			return client.listAvailableSizesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -360,6 +376,7 @@ func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *Availa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListBySubscriptionResponse) (AvailabilitySetsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -379,6 +396,7 @@ func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *Availa
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -422,6 +440,10 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 //   - options - AvailabilitySetsClientUpdateOptions contains the optional parameters for the AvailabilitySetsClient.Update method.
 func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate, options *AvailabilitySetsClientUpdateOptions) (AvailabilitySetsClientUpdateResponse, error) {
 	var err error
+	const operationName = "AvailabilitySetsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetName, parameters, options)
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err

@@ -22,10 +22,10 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 	client := newAzureOpenAIClientForTest(t, azureOpenAI)
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:       []string{"How do I rob a bank?"},
-		MaxTokens:    to.Ptr(int32(2048 - 127)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: azureOpenAI.Completions,
+		Prompt:      []string{"How do I rob a bank?"},
+		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  azureOpenAI.Completions,
 	}, nil)
 
 	require.Empty(t, resp)
@@ -40,9 +40,9 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing
 			{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant.")},
 			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I rob a bank?")},
 		},
-		MaxTokens:    to.Ptr(int32(2048 - 127)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: azureOpenAICanary.ChatCompletions,
+		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  azureOpenAICanary.ChatCompletions,
 	}, nil)
 	require.Empty(t, resp)
 	assertContentFilterError(t, err, true)
@@ -55,9 +55,9 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 		Messages: []azopenai.ChatMessage{
 			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I cook a bell pepper?")},
 		},
-		MaxTokens:    to.Ptr(int32(2048 - 127)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: azureOpenAICanary.ChatCompletions,
+		MaxTokens:   to.Ptr(int32(2048 - 127)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  azureOpenAICanary.ChatCompletions,
 	}, nil)
 
 	require.NoError(t, err)

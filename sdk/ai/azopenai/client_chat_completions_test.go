@@ -30,9 +30,9 @@ func newTestChatCompletionOptions(tv testVars) azopenai.ChatCompletionsOptions {
 				Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
 			},
 		},
-		MaxTokens:    to.Ptr(int32(1024)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: tv.ChatCompletions,
+		MaxTokens:   to.Ptr(int32(1024)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  tv.ChatCompletions,
 	}
 }
 
@@ -202,9 +202,9 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
 			},
 		},
-		MaxTokens:    to.Ptr(int32(1024)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: "invalid model name",
+		MaxTokens:   to.Ptr(int32(1024)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  "invalid model name",
 	}, nil)
 
 	var respErr *azcore.ResponseError

@@ -97,10 +97,10 @@ func TestGetCompletionsStream_OpenAI(t *testing.T) {
 
 func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
 	body := azopenai.CompletionsOptions{
-		Prompt:       []string{"What is Azure OpenAI?"},
-		MaxTokens:    to.Ptr(int32(2048)),
-		Temperature:  to.Ptr(float32(0.0)),
-		DeploymentID: tv.Completions,
+		Prompt:      []string{"What is Azure OpenAI?"},
+		MaxTokens:   to.Ptr(int32(2048)),
+		Temperature: to.Ptr(float32(0.0)),
+		Deployment:  tv.Completions,
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
@@ -154,10 +154,10 @@ func TestClient_GetCompletions_Error(t *testing.T) {
 
 	doTest := func(t *testing.T, client *azopenai.Client, model string) {
 		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
-			Prompt:       []string{"What is Azure OpenAI?"},
-			MaxTokens:    to.Ptr(int32(2048 - 127)),
-			Temperature:  to.Ptr(float32(0.0)),
-			DeploymentID: model,
+			Prompt:      []string{"What is Azure OpenAI?"},
+			MaxTokens:   to.Ptr(int32(2048 - 127)),
+			Temperature: to.Ptr(float32(0.0)),
+			Deployment:  model,
 		}, nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)

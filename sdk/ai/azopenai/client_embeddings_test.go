@@ -20,7 +20,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = chatClient.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
-		DeploymentID: "thisdoesntexist",
+		Deployment: "thisdoesntexist",
 	}, nil)
 
 	var respErr *azcore.ResponseError
@@ -69,8 +69,8 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input:        []string{"\"Your text string goes here\""},
-					DeploymentID: modelOrDeploymentID,
+					Input:      []string{"\"Your text string goes here\""},
+					Deployment: modelOrDeploymentID,
 				},
 				options: nil,
 			},

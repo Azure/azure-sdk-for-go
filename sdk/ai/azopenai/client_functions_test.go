@@ -41,7 +41,7 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv testVars) {
 	body := azopenai.ChatCompletionsOptions{
-		DeploymentID: tv.ChatCompletions,
+		Deployment: tv.ChatCompletions,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),

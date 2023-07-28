@@ -64,8 +64,8 @@ func ExampleClient_GetChatCompletions() {
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages:     messages,
-		DeploymentID: modelDeploymentID,
+		Messages:   messages,
+		Deployment: modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleClient_GetChatCompletions_functions() {
 	}
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		DeploymentID: modelDeploymentID,
+		Deployment: modelDeploymentID,
 		Messages: []azopenai.ChatMessage{
 			{
 				Role:    to.Ptr(azopenai.ChatRoleUser),
@@ -220,9 +220,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages:     messages,
-		N:            to.Ptr[int32](1),
-		DeploymentID: modelDeploymentID,
+		Messages:   messages,
+		N:          to.Ptr[int32](1),
+		Deployment: modelDeploymentID,
 	}, nil)
 
 	if err != nil {

@@ -237,8 +237,8 @@ type ChatCompletionsOptions struct {
 	// The maximum number of tokens to generate.
 	MaxTokens *int32
 
-	// REQUIRED: DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
-	DeploymentID string
+	// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
+	Deployment string
 
 	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
 	// generate many completions, it may quickly consume your token quota. Use
@@ -431,8 +431,8 @@ type CompletionsOptions struct {
 	// The maximum number of tokens to generate.
 	MaxTokens *int32
 
-	// REQUIRED: DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
-	DeploymentID string
+	// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
+	Deployment string
 
 	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
 	// Because this setting can generate many completions, it may quickly consume
@@ -579,8 +579,8 @@ type EmbeddingsOptions struct {
 	// inferior results when newlines are present.
 	Input []string
 
-	// REQUIRED: DeploymentID specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
-	DeploymentID string
+	// REQUIRED: Deployment specifies the name of the deployment (for Azure OpenAI) or model (for OpenAI) to use for this request.
+	Deployment string
 
 	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
 	User *string

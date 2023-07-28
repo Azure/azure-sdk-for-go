@@ -67,6 +67,13 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 		},
 	}
 
+	if isAzure {
+		want.Choices[0].ContentFilterResults = (*azopenai.ChoiceContentFilterResults)(safeContentFilter)
+		want.PromptAnnotations = []azopenai.PromptFilterResult{
+			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+		}
+	}
+
 	want.ID = resp.Completions.ID
 	want.Created = resp.Completions.Created
 

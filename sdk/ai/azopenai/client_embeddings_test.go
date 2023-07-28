@@ -90,10 +90,8 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				t.Errorf("Client.GetEmbeddings() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if len(got.Embeddings.Data[0].Embedding) != 4096 {
-				t.Errorf("Client.GetEmbeddings() len(Data) want 4096, got %d", len(got.Embeddings.Data))
-				return
-			}
+
+			require.NotEmpty(t, got.Embeddings.Data[0].Embedding)
 		})
 	}
 }

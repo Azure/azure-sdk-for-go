@@ -106,12 +106,11 @@ func initEnvVars() {
 		azureOpenAI.ChatCompletions = "gpt-4-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
 
-		openAI.Embeddings = "text-similarity-curie-001"
+		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "embedding"
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
-			os.Exit(1)
 		}
 
 		azureOpenAI = newTestVars("AOAI", false)
@@ -124,7 +123,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, "sdk/cognitiveservices/azopenai/testdata", nil)
+	err = recording.Start(t, "sdk/ai/azopenai/testdata", nil)
 	require.NoError(t, err)
 
 	if recording.GetRecordMode() != recording.PlaybackMode {

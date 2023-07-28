@@ -8,7 +8,6 @@
 - Type of `ManagedDatabaseRestoreDetailsProperties.NumberOfFilesDetected` has been changed from `*int64` to `*int32`
 - Type of `ManagedDatabaseRestoreDetailsProperties.PercentCompleted` has been changed from `*float64` to `*int32`
 - Type of `ManagedDatabaseRestoreDetailsProperties.UnrestorableFiles` has been changed from `[]*string` to `[]*ManagedDatabaseRestoreDetailsUnrestorableFileProperties`
-- Type of `ServerPrivateEndpointConnection.Properties` has been changed from `*PrivateEndpointConnectionProperties` to `*ServerPrivateEndpointConnectionProperties`
 - Type of `ServerProperties.PublicNetworkAccess` has been changed from `*ServerNetworkAccessFlag` to `*ServerPublicNetworkAccessFlag`
 - Enum `DNSRefreshConfigurationPropertiesStatus` has been removed
 - Operation `*ReplicationLinksClient.Delete` has been changed to LRO, use `*ReplicationLinksClient.BeginDelete` instead.
@@ -211,7 +210,6 @@
 - New struct `ServerConfigurationOption`
 - New struct `ServerConfigurationOptionListResult`
 - New struct `ServerConfigurationOptionProperties`
-- New struct `ServerPrivateEndpointConnectionProperties`
 - New struct `StartStopManagedInstanceSchedule`
 - New struct `StartStopManagedInstanceScheduleListResult`
 - New struct `StartStopManagedInstanceScheduleProperties`
@@ -240,6 +238,7 @@
 - New field `SecondaryType` in struct `InstanceFailoverGroupProperties`
 - New field `CrossSubscriptionRestorableDroppedDatabaseID`, `CrossSubscriptionSourceDatabaseID`, `CrossSubscriptionTargetManagedInstanceID`, `IsLedgerOn`, `StorageContainerIdentity` in struct `ManagedDatabaseProperties`
 - New field `CurrentBackupType`, `CurrentRestorePlanSizeMB`, `CurrentRestoredSizeMB`, `DiffBackupSets`, `FullBackupSets`, `LogBackupSets`, `NumberOfFilesQueued`, `NumberOfFilesRestored`, `NumberOfFilesRestoring`, `NumberOfFilesSkipped`, `NumberOfFilesUnrestorable`, `Type` in struct `ManagedDatabaseRestoreDetailsProperties`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
 - New field `NextLink` in struct `RecoverableDatabaseListResult`
 - New field `Keys` in struct `RecoverableDatabaseProperties`
 - New field `Expand`, `Filter` in struct `RecoverableDatabasesClientGetOptions`

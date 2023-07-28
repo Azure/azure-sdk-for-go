@@ -5417,6 +5417,9 @@ type PrivateEndpointConnectionProperties struct {
 	// Connection state of the private endpoint connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty
 
+	// READ-ONLY; Group IDs.
+	GroupIDs []*string
+
 	// READ-ONLY; State of the private endpoint connection.
 	ProvisioningState *PrivateEndpointProvisioningState
 }
@@ -7050,22 +7053,7 @@ type ServerPrivateEndpointConnection struct {
 	ID *string
 
 	// READ-ONLY; Private endpoint connection properties
-	Properties *ServerPrivateEndpointConnectionProperties
-}
-
-// ServerPrivateEndpointConnectionProperties - Properties of a private endpoint connection.
-type ServerPrivateEndpointConnectionProperties struct {
-	// Private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpointProperty
-
-	// Connection state of the private endpoint connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty
-
-	// READ-ONLY; Group IDs.
-	GroupIDs []*string
-
-	// READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *PrivateEndpointProvisioningState
+	Properties *PrivateEndpointConnectionProperties
 }
 
 // ServerProperties - The properties of a server.

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyEx
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerAvailable.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailab
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerInvalid.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/CheckNameAvailabilityServerInvalid.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerList.json
 func ExampleServersClient_NewListPager_listServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -172,7 +172,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -195,7 +195,7 @@ func ExampleServersClient_NewListPager_listServers() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -278,7 +278,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -301,7 +301,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +338,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -370,7 +370,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -393,7 +393,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroupWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -476,7 +476,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
 		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
 		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 		// 							},
@@ -499,7 +499,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGet.json
 func ExampleServersClient_Get_getServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,7 +533,7 @@ func ExampleServersClient_Get_getServer() {
 	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
 	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
 	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 	// 					},
@@ -554,7 +554,7 @@ func ExampleServersClient_Get_getServer() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGetWithExpandEqualsAdministrators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerGetWithExpandEqualsAdministrators.json
 func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +595,7 @@ func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory()
 	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
 	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
 	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 	// 					},
@@ -616,7 +616,7 @@ func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerCreate.json
 func ExampleServersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -672,7 +672,7 @@ func ExampleServersClient_BeginCreateOrUpdate() {
 	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
 	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
 	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 	// 					},
@@ -692,7 +692,7 @@ func ExampleServersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -713,7 +713,7 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ServerUpdate.json
 func ExampleServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,7 +757,7 @@ func ExampleServersClient_BeginUpdate() {
 	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.ServerPrivateEndpointConnectionProperties{
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
 	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
 	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
 	// 					},
@@ -777,7 +777,7 @@ func ExampleServersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateLinkForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,7 +828,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateL
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ImportNewDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ImportNewDatabase.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edd7863aeaad7379a7a8eef424ca11617d8c91eb/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RefreshExternalGovernanceStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RefreshExternalGovernanceStatus.json
 func ExampleServersClient_BeginRefreshStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

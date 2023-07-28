@@ -185,7 +185,7 @@ func (d *Client) BlobURL() string {
 
 //TODO: create method to get file client - this will require block blob to have a method to get another block blob
 
-// Create creates a new file (dfs1).
+// Create creates a new directory (dfs1).
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
 	resp, err := d.generatedDirClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
@@ -201,7 +201,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	return resp, err
 }
 
-// GetProperties gets the properties of a file (blob3)
+// GetProperties gets the properties of a directory (blob3)
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -224,7 +224,7 @@ func (d *Client) renamePathInURL(newName string) (string, string, string) {
 	return parsedNewURL.Path, newPathURL, newBlobURL
 }
 
-// Rename renames a file (dfs1)
+// Rename renames a directory (dfs1)
 func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
 	newPathWithoutURL, newBlobURL, newPathURL := d.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
@@ -249,7 +249,7 @@ func (d *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	}, exported.ConvertToDFSError(err)
 }
 
-// SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
+// SetAccessControl sets the owner, owning group, and permissions for a directory (dfs1).
 func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
 	if err != nil {
@@ -294,25 +294,25 @@ func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecur
 
 }
 
-// NewSetAccessControlRecursivePager sets the owner, owning group, and permissions for a file or directory (dfs1).
+// NewSetAccessControlRecursivePager sets the owner, owning group, and permissions for a directory (dfs1).
 func (d *Client) NewSetAccessControlRecursivePager(ACL string, options *SetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
 	mode, listOptions := options.format(ACL, "set")
 	return d.setAccessControlHelper(mode, listOptions)
 }
 
-// NewUpdateAccessControlRecursivePager updates the owner, owning group, and permissions for a file or directory (dfs1).
+// NewUpdateAccessControlRecursivePager updates the owner, owning group, and permissions for a directory (dfs1).
 func (d *Client) NewUpdateAccessControlRecursivePager(ACL string, options *UpdateAccessControlRecursiveOptions) *runtime.Pager[UpdateAccessControlRecursiveResponse] {
 	mode, listOptions := options.format(ACL, "modify")
 	return d.setAccessControlHelper(mode, listOptions)
 }
 
-// NewRemoveAccessControlRecursivePager removes the owner, owning group, and permissions for a file or directory (dfs1).
+// NewRemoveAccessControlRecursivePager removes the owner, owning group, and permissions for a directory (dfs1).
 func (d *Client) NewRemoveAccessControlRecursivePager(ACL string, options *RemoveAccessControlRecursiveOptions) *runtime.Pager[RemoveAccessControlRecursiveResponse] {
 	mode, listOptions := options.format(ACL, "remove")
 	return d.setAccessControlHelper(mode, listOptions)
 }
 
-// GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
+// GetAccessControl gets the owner, owning group, and permissions for a directory (dfs1).
 func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
 	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
@@ -320,7 +320,7 @@ func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
-// SetMetadata sets the metadata for a file or directory (blob3).
+// SetMetadata sets the metadata for a directory (blob3).
 func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts, metadata := path.FormatSetMetadataOptions(options)
 	resp, err := d.blobClient().SetMetadata(ctx, metadata, opts)
@@ -328,7 +328,7 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 	return resp, err
 }
 
-// SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
+// SetHTTPHeaders sets the HTTP headers for a directory (blob3).
 func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	opts, blobHTTPHeaders := path.FormatSetHTTPHeadersOptions(options, httpHeaders)
 	resp, err := d.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)

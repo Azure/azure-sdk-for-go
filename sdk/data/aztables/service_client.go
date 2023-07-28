@@ -122,7 +122,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	if err != nil {
 		return CreateTableResponse{}, err
 	}
@@ -261,7 +261,6 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 			}
 			resp, err := t.client.Query(
 				ctx,
-				generated.Enum1Three0,
 				&generated.TableClientQueryOptions{NextTableName: tableName},
 				listOptions.toQueryOptions())
 			if err != nil {
@@ -298,7 +297,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
-	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
+	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
 	if err != nil {
 		return GetStatisticsResponse{}, err
 	}
@@ -341,7 +340,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
-	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
+	resp, err := t.service.GetProperties(ctx, options.toGenerated())
 	if err != nil {
 		return GetPropertiesResponse{}, err
 	}
@@ -381,7 +380,7 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
 	if err != nil {
 		return SetPropertiesResponse{}, err
 	}

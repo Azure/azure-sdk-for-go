@@ -19,7 +19,6 @@ func NewTableClient(endpoint string, plOpts runtime.PipelineOptions, options *az
 	return &TableClient{
 		endpoint: endpoint,
 		internal: client,
-		version:  Enum0TwoThousandNineteen0202,
 	}, nil
 }
 

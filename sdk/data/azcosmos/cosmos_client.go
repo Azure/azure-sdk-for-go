@@ -106,6 +106,29 @@ func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pip
 		&options.ClientOptions)
 }
 
+func newGEMPipeline(gemPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
+	// If options are nil, create an empty ClientOptions.
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
+	// Create a new pipeline with the specified policies and options.
+	pipeline := azruntime.NewPipeline("azcosmos", serviceLibVersion,
+		azruntime.PipelineOptions{
+			// PerCall policies apply to each HTTP request made by the pipeline.
+			PerCall: []policy.Policy{
+				&globalEndpointManagerPolicies{},
+			},
+			// PerRetry policies apply only to requests that are retried.
+			PerRetry: []policy.Policy{
+				gemPolicy,
+			},
+		},
+		&options.ClientOptions)
+
+	return pipeline
+}
+
 func createScopeFromEndpoint(endpoint string) ([]string, error) {
 	u, err := url.Parse(endpoint)
 	if err != nil {

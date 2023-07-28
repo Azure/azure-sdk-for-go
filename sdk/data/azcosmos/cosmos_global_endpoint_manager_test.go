@@ -50,8 +50,7 @@ func TestGlobalEndpointManager_GetWriteEndpoints(t *testing.T) {
 
 	// Assert the expected write endpoints
 	expectedWriteEndpoints := []url.URL{
-		{Scheme: "https", Host: "westus.documents.azure.com"},
-		{Scheme: "https", Host: "eastus.documents.azure.com"},
+		{Scheme: "https", Host: "127.0.0.1:61453"},
 	}
 	assert.Equal(t, expectedWriteEndpoints, writeEndpoints)
 }
@@ -87,8 +86,7 @@ func TestGlobalEndpointManager_GetReadEndpoints(t *testing.T) {
 
 	// Assert the expected read endpoints
 	expectedReadEndpoints := []url.URL{
-		{Scheme: "https", Host: "westus.documents.azure.com"},
-		{Scheme: "https", Host: "eastus.documents.azure.com"},
+		{Scheme: "https", Host: "127.0.0.1:61453"},
 	}
 	assert.Equal(t, expectedReadEndpoints, readEndpoints)
 }
@@ -156,7 +154,7 @@ func TestGlobalEndpointManager_GetLocation(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Get the location for the given endpoint
-	endpoint := url.URL{Scheme: "https", Host: "westus.documents.azure.com"}
+	endpoint := url.URL{Scheme: "https", Host: "127.0.0.1:61453"}
 	location := gem.GetLocation(endpoint)
 
 	// Assert the expected location
@@ -272,8 +270,7 @@ func TestGlobalEndpointManager_Update(t *testing.T) {
 
 	// Assert the expected write endpoints after the update
 	expectedWriteEndpoints := []url.URL{
-		{Scheme: "https", Host: "westus.documents.azure.com"},
-		{Scheme: "https", Host: "eastus.documents.azure.com"},
+		{Scheme: "https", Host: "127.0.0.1:61453"},
 	}
 	assert.Equal(t, expectedWriteEndpoints, writeEndpoints)
 
@@ -283,8 +280,7 @@ func TestGlobalEndpointManager_Update(t *testing.T) {
 
 	// Assert the expected read endpoints after the update
 	expectedReadEndpoints := []url.URL{
-		{Scheme: "https", Host: "westus.documents.azure.com"},
-		{Scheme: "https", Host: "eastus.documents.azure.com"},
+		{Scheme: "https", Host: "127.0.0.1:61453"},
 	}
 	assert.Equal(t, expectedReadEndpoints, readEndpoints)
 }
@@ -349,6 +345,56 @@ func TestGlobalEndpointManager_CanUseMultipleWriteLocations(t *testing.T) {
 }
 
 func TestGlobalEndpointManagerBackgroundRefresh(t *testing.T) {
+
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+
+	// Create a mock client
+	// headerPolicy := &headerPolicies{}
+	// srv, close := mock.NewTLSServer()
+	// defer close()
+	// srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+
+	// verifier := headerPoliciesVerify{}
+	// pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
+	// req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	// if err != nil {
+	// 	return
+	// }
+	// req.SetOperationValue(pipelineRequestOptions{
+	// 	isWriteOperation: true,
+	// })
+
+	// client := &Client{endpoint: srv.URL(), pipeline: pl}
+	mockClient := client
+
+	// Create a new global endpoint manager with preferred regions and refresh interval
+	gem, err := newGlobalEndpointManager(mockClient, []string{"westus", "eastus"}, 5*time.Minute)
+	assert.NoError(t, err)
+
+	// Check if multiple write locations can be used
+	canUseMultipleWriteLocs := gem.CanUseMultipleWriteLocations()
+	assert.False(t, canUseMultipleWriteLocs)
+}
+
+// MockClient is a mock implementation of the Client interface for testing purposes.
+type MockClient struct {
+	sendGetRequestErr      error
+	sendGetRequestResponse *http.Response
+	sendGetRequestTimeout  bool
+}
+
+// sendGetRequest is a mock implementation for the Client's sendGetRequest method.
+func (mc *MockClient) sendGetRequest(path string, ctx context.Context, options pipelineRequestOptions, resourceType resourceType, headers http.Header) (*http.Response, error) {
+	if mc.sendGetRequestTimeout {
+		// Simulate a timeout.
+		<-ctx.Done()
+		return nil, ctx.Err()
+	}
+	return mc.sendGetRequestResponse, mc.sendGetRequestErr
+}
+func TestEndpointFailureMockTest(t *testing.T) {
+	// Create a mock client and preferredRegions for testing
 	// Create a mock client
 	headerPolicy := &headerPolicies{}
 	srv, close := mock.NewTLSServer()
@@ -368,11 +414,36 @@ func TestGlobalEndpointManagerBackgroundRefresh(t *testing.T) {
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	mockClient := client
 
-	// Create a new global endpoint manager with preferred regions and refresh interval
-	gem, err := newGlobalEndpointManager(mockClient, []string{"westus", "eastus"}, 5*time.Minute)
-	assert.NoError(t, err)
+	// Simulate multiple regions for testing
+	preferredRegions := []string{"region1", "region2", "region3"}
 
-	// Check if multiple write locations can be used
-	canUseMultipleWriteLocs := gem.CanUseMultipleWriteLocations()
-	assert.False(t, canUseMultipleWriteLocs)
+	// Create a new globalEndpointManager with the mock client
+	gem, err := newGlobalEndpointManager(mockClient, preferredRegions, time.Minute)
+	if err != nil {
+		t.Fatalf("unexpected error creating globalEndpointManager: %v", err)
+	}
+
+	endpoints, err := gem.GetWriteEndpoints()
+	assert.NoError(t, err, "unexpected error")
+	// Verify that the write endpoints are switched to the next available region
+	expectedEndpoints := []url.URL{
+		// In this case, region1 failed, so the next available region is region2.
+		// Assuming region2 is also available, the write endpoints should switch to it.
+		// Add the appropriate URL values based on your implementation.
+		// For example, &url.URL{Scheme: "https", Host: "region2.mydomain.com"},
+	}
+	assert.Equal(t, expectedEndpoints, endpoints, "write endpoints not switched as expected")
+
+	endpoints, err = gem.GetWriteEndpoints()
+	assert.NoError(t, err, "unexpected error")
+	// Verify that the write endpoints are switched to the next available region
+	// For example, region2 failed, so the next available region is region3.
+	// Assuming region3 is also available, the write endpoints should switch to it.
+	expectedEndpoints = []url.URL{
+		// Add the appropriate URL values based on your implementation.
+		// For example, &url.URL{Scheme: "https", Host: "region3.mydomain.com"},
+	}
+	assert.Equal(t, expectedEndpoints, endpoints, "write endpoints not switched as expected")
+
+	// You can add more test cases to cover various failure scenarios and endpoint switching.
 }

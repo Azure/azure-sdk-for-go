@@ -106,7 +106,7 @@ func initEnvVars() {
 		azureOpenAI.ChatCompletions = "gpt-4-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
 
-		openAI.Embeddings = "text-similarity-curie-001"
+		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "embedding"
 	} else {
 		if err := godotenv.Load(); err != nil {

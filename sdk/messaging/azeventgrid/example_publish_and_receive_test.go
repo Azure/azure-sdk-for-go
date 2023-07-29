@@ -59,7 +59,7 @@ func Example_publishAndReceiveCloudEvents() {
 	}
 
 	var sampleData *SampleData
-	if err := json.Unmarshal(eventWithStruct.Event.Data.(json.RawMessage), &sampleData); err != nil {
+	if err := json.Unmarshal(eventWithStruct.Event.Data.([]byte), &sampleData); err != nil {
 		panic(err)
 	}
 

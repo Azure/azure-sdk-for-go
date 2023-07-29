@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -31,6 +32,21 @@ type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Storage file.
 type Client base.Client[generated.FileClient]
+
+// NewClient creates an instance of Client with the specified values.
+//   - fileURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/share/directoryPath/file
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+//
+// The directoryPath is optional in the fileURL. If omitted, it points to file within the specified share.
+func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewFileClient(fileURL, pl, &cred)), nil
+}
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a file or with a shared access signature (SAS) token.

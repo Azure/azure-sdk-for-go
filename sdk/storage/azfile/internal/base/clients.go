@@ -19,8 +19,8 @@ type ClientOptions struct {
 }
 
 type Client[T any] struct {
-	inner     *T
-	sharedKey *exported.SharedKeyCredential
+	inner      *T
+	credential any
 }
 
 func InnerClient[T any](client *Client[T]) *T {
@@ -28,33 +28,42 @@ func InnerClient[T any](client *Client[T]) *T {
 }
 
 func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
-	return client.sharedKey
+	switch cred := client.credential.(type) {
+	case *exported.SharedKeyCredential:
+		return cred
+	default:
+		return nil
+	}
 }
 
-func NewServiceClient(serviceURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+func Credential[T any](client *Client[T]) any {
+	return client.credential
+}
+
+func NewServiceClient(serviceURL string, pipeline runtime.Pipeline, credential any) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(serviceURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewServiceClient(serviceURL, pipeline),
+		credential: credential,
 	}
 }
 
-func NewShareClient(shareURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ShareClient] {
+func NewShareClient(shareURL string, pipeline runtime.Pipeline, credential any) *Client[generated.ShareClient] {
 	return &Client[generated.ShareClient]{
-		inner:     generated.NewShareClient(shareURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewShareClient(shareURL, pipeline),
+		credential: credential,
 	}
 }
 
-func NewDirectoryClient(directoryURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.DirectoryClient] {
+func NewDirectoryClient(directoryURL string, pipeline runtime.Pipeline, credential any) *Client[generated.DirectoryClient] {
 	return &Client[generated.DirectoryClient]{
-		inner:     generated.NewDirectoryClient(directoryURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewDirectoryClient(directoryURL, pipeline),
+		credential: credential,
 	}
 }
 
-func NewFileClient(fileURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.FileClient] {
+func NewFileClient(fileURL string, pipeline runtime.Pipeline, credential any) *Client[generated.FileClient] {
 	return &Client[generated.FileClient]{
-		inner:     generated.NewFileClient(fileURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewFileClient(fileURL, pipeline),
+		credential: credential,
 	}
 }

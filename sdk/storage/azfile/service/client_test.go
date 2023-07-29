@@ -91,6 +91,24 @@ func (s *ServiceRecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithTokenCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcURL := "https://" + accountName + ".file.core.windows.net/"
+	svcClient, err := service.NewClient(svcURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := svcClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
 func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 

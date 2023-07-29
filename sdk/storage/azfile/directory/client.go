@@ -8,6 +8,7 @@ package directory
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -25,6 +26,19 @@ type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Storage directory allowing you to manipulate its directories and files.
 type Client base.Client[generated.DirectoryClient]
+
+// NewClient creates an instance of Client with the specified values.
+//   - directoryURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/share/directory
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewDirectoryClient(directoryURL, pl, &cred)), nil
+}
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a directory or with a shared access signature (SAS) token.
@@ -83,6 +97,10 @@ func (d *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.DirectoryClient])(d))
 }
 
+func (d *Client) credential() any {
+	return base.Credential((*base.Client[generated.DirectoryClient])(d))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (d *Client) URL() string {
 	return d.generated().Endpoint()
@@ -93,7 +111,7 @@ func (d *Client) URL() string {
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 	subDirectoryName = url.PathEscape(strings.TrimRight(subDirectoryName, "/"))
 	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
-	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey()))
+	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.credential()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
@@ -101,7 +119,7 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey()))
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.credential()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

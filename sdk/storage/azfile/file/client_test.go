@@ -101,6 +101,28 @@ func (f *FileRecordedTestsSuite) TestFileNewFileClient() {
 	_require.Equal(rootFileClient.URL(), correctURL)
 }
 
+func (f *FileRecordedTestsSuite) TestServiceClientWithTokenCredential() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	dirName := testcommon.GenerateDirectoryName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName + "/" + fileName
+	dirClient, err := file.NewClient(fileURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
 func (f *FileRecordedTestsSuite) TestFileCreateUsingSharedKey() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

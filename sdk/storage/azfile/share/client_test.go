@@ -94,6 +94,27 @@ func (s *ShareRecordedTestsSuite) TestShareCreateDirectoryURL() {
 	_require.Equal(dirClient.URL(), correctURL)
 }
 
+func (s *ShareRecordedTestsSuite) TestServiceClientWithTokenCredential() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + accountName + ".file.core.windows.net/" + shareName
+
+	shareClient, err := share.NewClient(shareURL, cred, nil)
+	_require.NoError(err)
+
+	resp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

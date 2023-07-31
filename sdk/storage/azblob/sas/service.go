@@ -40,6 +40,7 @@ type BlobSignatureValues struct {
 	AuthorizedObjectID   string // saoid
 	UnauthorizedObjectID string // suoid
 	CorrelationID        string // scid
+	EncryptionScope      string // ses
 }
 
 func getDirectoryDepth(path string) string {
@@ -103,7 +104,8 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		string(v.Protocol),
 		v.Version,
 		resource,
-		snapshotTime,         // signed timestamp
+		snapshotTime, // signed timestamp
+		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -118,12 +120,13 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 
 	p := QueryParameters{
 		// Common SAS parameters
-		version:     v.Version,
-		protocol:    v.Protocol,
-		startTime:   v.StartTime,
-		expiryTime:  v.ExpiryTime,
-		permissions: v.Permissions,
-		ipRange:     v.IPRange,
+		version:         v.Version,
+		protocol:        v.Protocol,
+		startTime:       v.StartTime,
+		expiryTime:      v.ExpiryTime,
+		permissions:     v.Permissions,
+		ipRange:         v.IPRange,
+		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
 		resource:             resource,
@@ -211,7 +214,8 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		string(v.Protocol),
 		v.Version,
 		resource,
-		snapshotTime,         // signed timestamp
+		snapshotTime, // signed timestamp
+		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -226,12 +230,13 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 
 	p := QueryParameters{
 		// Common SAS parameters
-		version:     v.Version,
-		protocol:    v.Protocol,
-		startTime:   v.StartTime,
-		expiryTime:  v.ExpiryTime,
-		permissions: v.Permissions,
-		ipRange:     v.IPRange,
+		version:         v.Version,
+		protocol:        v.Protocol,
+		startTime:       v.StartTime,
+		expiryTime:      v.ExpiryTime,
+		permissions:     v.Permissions,
+		ipRange:         v.IPRange,
+		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
 		resource:             resource,

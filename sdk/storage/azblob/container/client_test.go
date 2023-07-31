@@ -3004,6 +3004,50 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 	_require.Equal(ctrCool, 10)
 }
 
+func (s *ContainerUnrecordedTestsSuite) TestGetUserDelegationSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	permissions := sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true}
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:        sas.ProtocolHTTPS,
+		StartTime:       time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:      time.Now().UTC().Add(15 * time.Minute),
+		Permissions:     permissions.String(),
+		ContainerName:   containerName,
+		EncryptionScope: testcommon.EncryptionScopeEnvVar,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	_, err = container.NewClientWithNoCredential(cntClientTokenCred.URL()+"?"+sasQueryParams.Encode(), nil)
+	_require.NoError(err)
+
+}
+
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

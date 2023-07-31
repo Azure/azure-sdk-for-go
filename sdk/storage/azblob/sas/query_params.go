@@ -23,7 +23,7 @@ const (
 
 var (
 	// Version is the default version encoded in the SAS token.
-	Version = "2020-02-10"
+	Version = "2020-12-06"
 )
 
 // TimeFormats ISO 8601 format.
@@ -143,6 +143,7 @@ type QueryParameters struct {
 	authorizedObjectID   string    `param:"saoid"`
 	unauthorizedObjectID string    `param:"suoid"`
 	correlationID        string    `param:"scid"`
+	encryptionScope      string    `param:"ses"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string

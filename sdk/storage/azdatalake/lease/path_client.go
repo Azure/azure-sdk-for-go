@@ -60,13 +60,15 @@ func (c *PathClient) LeaseID() *string {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) AcquireLease(ctx context.Context, duration int32, o *PathAcquireOptions) (PathAcquireResponse, error) {
 	opts := o.format()
-	return c.blobClient.AcquireLease(ctx, duration, opts)
+	resp, err := c.blobClient.AcquireLease(ctx, duration, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // BreakLease breaks the path's previously-acquired lease.
 func (c *PathClient) BreakLease(ctx context.Context, o *PathBreakOptions) (PathBreakResponse, error) {
 	opts := o.format()
-	return c.blobClient.BreakLease(ctx, opts)
+	resp, err := c.blobClient.BreakLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // ChangeLease changes the path's lease ID.
@@ -75,7 +77,7 @@ func (c *PathClient) ChangeLease(ctx context.Context, proposedID string, o *Path
 	opts := o.format()
 	resp, err := c.blobClient.ChangeLease(ctx, proposedID, opts)
 	if err != nil {
-		return PathChangeResponse{}, err
+		return resp, exported.ConvertToDFSError(err)
 	}
 	c.leaseID = &proposedID
 	return resp, nil
@@ -85,12 +87,14 @@ func (c *PathClient) ChangeLease(ctx context.Context, proposedID string, o *Path
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) RenewLease(ctx context.Context, o *PathRenewOptions) (PathRenewResponse, error) {
 	opts := o.format()
-	return c.blobClient.RenewLease(ctx, opts)
+	resp, err := c.blobClient.RenewLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // ReleaseLease releases the path's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) ReleaseLease(ctx context.Context, o *PathReleaseOptions) (PathReleaseResponse, error) {
 	opts := o.format()
-	return c.blobClient.ReleaseLease(ctx, opts)
+	resp, err := c.blobClient.ReleaseLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }

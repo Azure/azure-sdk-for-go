@@ -147,7 +147,7 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 // The new filesystem.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewFilesystemClient(filesystemName string) *filesystem.Client {
 	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
-	filesystemURL, containerURL := shared.GetURLs(filesystemURL)
+	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
 	return (*filesystem.Client)(base.NewFilesystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FilesystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
 }
 
@@ -162,7 +162,7 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 	getUserDelegationKeyOptions := o.format()
 	udk, err := s.generatedServiceClientWithBlob().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
 	if err != nil {
-		return nil, err
+		return nil, exported.ConvertToDFSError(err)
 	}
 
 	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil

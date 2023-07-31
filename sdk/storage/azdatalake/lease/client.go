@@ -50,7 +50,8 @@ func (c *FilesystemClient) LeaseID() *string {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *FilesystemClient) AcquireLease(ctx context.Context, duration int32, o *FilesystemAcquireOptions) (FilesystemAcquireResponse, error) {
 	opts := o.format()
-	return c.containerClient.AcquireLease(ctx, duration, opts)
+	resp, err := c.containerClient.AcquireLease(ctx, duration, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // BreakLease breaks the filesystem's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
@@ -58,7 +59,8 @@ func (c *FilesystemClient) AcquireLease(ctx context.Context, duration int32, o *
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *FilesystemClient) BreakLease(ctx context.Context, o *FilesystemBreakOptions) (FilesystemBreakResponse, error) {
 	opts := o.format()
-	return c.containerClient.BreakLease(ctx, opts)
+	resp, err := c.containerClient.BreakLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // ChangeLease changes the filesystem's lease ID.
@@ -67,7 +69,7 @@ func (c *FilesystemClient) ChangeLease(ctx context.Context, proposedLeaseID stri
 	opts := o.format()
 	resp, err := c.containerClient.ChangeLease(ctx, proposedLeaseID, opts)
 	if err != nil {
-		return FilesystemChangeResponse{}, err
+		return resp, exported.ConvertToDFSError(err)
 	}
 	c.leaseID = &proposedLeaseID
 	return resp, nil
@@ -77,11 +79,13 @@ func (c *FilesystemClient) ChangeLease(ctx context.Context, proposedLeaseID stri
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *FilesystemClient) RenewLease(ctx context.Context, o *FilesystemRenewOptions) (FilesystemRenewResponse, error) {
 	opts := o.format()
-	return c.containerClient.RenewLease(ctx, opts)
+	resp, err := c.containerClient.RenewLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // ReleaseLease releases the filesystem's previously-acquired lease.
 func (c *FilesystemClient) ReleaseLease(ctx context.Context, o *FilesystemReleaseOptions) (FilesystemReleaseResponse, error) {
 	opts := o.format()
-	return c.containerClient.ReleaseLease(ctx, opts)
+	resp, err := c.containerClient.ReleaseLease(ctx, opts)
+	return resp, exported.ConvertToDFSError(err)
 }

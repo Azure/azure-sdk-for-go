@@ -44,12 +44,12 @@ type CloudEvent struct {
 	// Data is the payload for the event.
 	// * []byte will be serialized and deserialized as []byte.
 	// * Any other type will be serialized to a JSON object and deserialized into
-	//   a [json.RawMessage].
+	//   a []byte, containing the JSON text.
 	//
-	// To deserialize a [json.RawMessage] into your chosen type:
+	// To deserialize into your chosen type:
 	//
 	//   var yourData *YourType
-	//   json.Unmarshal(cloudEvent.Data.(json.RawMessage), &yourData)
+	//   json.Unmarshal(cloudEvent.Data.([]byte), &yourData)
 	//
 	Data any
 
@@ -240,7 +240,7 @@ func updateFieldFromValue(ce *CloudEvent, k string, raw json.RawMessage) error {
 	//
 	case "data":
 		// let the user deserialize so they can put it into their own native type.
-		ce.Data = raw
+		ce.Data = []byte(raw)
 	case "datacontenttype":
 		return json.Unmarshal(raw, &ce.DataContentType)
 	case "dataschema":

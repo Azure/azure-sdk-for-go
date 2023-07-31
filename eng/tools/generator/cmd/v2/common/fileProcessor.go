@@ -506,7 +506,7 @@ func isGenerateFake(path string) bool {
 	return false
 }
 
-func replaceFakeImport(path, rpName, namespaceName string, previousVersion, currentVersion string) error {
+func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVersion, subPath string, suffixes ...string) error {
 	previous, err := semver.NewVersion(previousVersion)
 	if err != nil {
 		return err
@@ -517,30 +517,49 @@ func replaceFakeImport(path, rpName, namespaceName string, previousVersion, curr
 		return err
 	}
 
+	if previous.Major() == current.Major() {
+		return nil
+	}
+
 	oldModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
 	if previous.Major() > 1 {
 		oldModule = fmt.Sprintf("%s/v%d", oldModule, previous.Major())
 	}
 
-	if current.Major() < 1 {
-		return nil
-	}
-	newModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d", rpName, namespaceName, current.Major())
-
-	if previous.Major() == current.Major() {
-		return nil
+	newModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	if current.Major() > 1 {
+		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
 	}
 
-	return filepath.Walk(filepath.Join(path, "fake"), func(path string, info fs.FileInfo, err error) error {
-		if !info.IsDir() && strings.HasSuffix(info.Name(), "_server.go") {
+	if oldModule == newModule {
+		return nil
+	}
+
+	return filepath.Walk(filepath.Join(path, subPath), func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		suffix := false
+		for i := 0; i < len(suffixes) && !suffix; i++ {
+			suffix = strings.HasSuffix(info.Name(), suffixes[i])
+		}
+
+		if suffix {
 			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
 			newFile := strings.ReplaceAll(string(b), oldModule, newModule)
-			if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
-				return err
+			if newFile != string(b) {
+				if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
+					return err
+				}
 			}
 		}
 

@@ -1124,7 +1124,7 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 //   - options - PathClientSetAccessControlRecursiveOptions contains the optional parameters for the PathClient.SetAccessControlRecursive
 //     method.
 func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode PathSetAccessControlRecursiveMode, options *PathClientSetAccessControlRecursiveOptions) (PathClientSetAccessControlRecursiveResponse, error) {
-	req, err := client.setAccessControlRecursiveCreateRequest(ctx, mode, options)
+	req, err := client.SetAccessControlRecursiveCreateRequest(ctx, mode, options)
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
@@ -1135,11 +1135,11 @@ func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode Pa
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PathClientSetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.setAccessControlRecursiveHandleResponse(resp)
+	return client.SetAccessControlRecursiveHandleResponse(resp)
 }
 
-// setAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request.
-func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Context, mode PathSetAccessControlRecursiveMode, options *PathClientSetAccessControlRecursiveOptions) (*policy.Request, error) {
+// SetAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request.
+func (client *PathClient) SetAccessControlRecursiveCreateRequest(ctx context.Context, mode PathSetAccessControlRecursiveMode, options *PathClientSetAccessControlRecursiveOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1171,8 +1171,8 @@ func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// setAccessControlRecursiveHandleResponse handles the SetAccessControlRecursive response.
-func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Response) (PathClientSetAccessControlRecursiveResponse, error) {
+// SetAccessControlRecursiveHandleResponse handles the SetAccessControlRecursive response.
+func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Response) (PathClientSetAccessControlRecursiveResponse, error) {
 	result := PathClientSetAccessControlRecursiveResponse{}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

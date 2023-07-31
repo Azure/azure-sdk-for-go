@@ -34,7 +34,7 @@ type ServiceClient struct {
 //     method.
 //
 // ListFileSystemsCreateRequest creates the ListFileSystems request.
-func (client *FileSystemClient) ListFileSystemsCreateRequest(ctx context.Context, options *ServiceClientListFileSystemsOptions) (*policy.Request, error) {
+func (client *ServiceClient) ListFileSystemsCreateRequest(ctx context.Context, options *ServiceClientListFileSystemsOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (client *FileSystemClient) ListFileSystemsCreateRequest(ctx context.Context
 }
 
 // listFileSystemsHandleResponse handles the ListFileSystems response.
-func (client *FileSystemClient) ListFileSystemsHandleResponse(resp *http.Response) (ServiceClientListFileSystemsResponse, error) {
+func (client *ServiceClient) ListFileSystemsHandleResponse(resp *http.Response) (ServiceClientListFileSystemsResponse, error) {
 	result := ServiceClientListFileSystemsResponse{}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

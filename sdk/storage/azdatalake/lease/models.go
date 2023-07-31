@@ -18,6 +18,9 @@ type FilesystemAcquireOptions struct {
 }
 
 func (o *FilesystemAcquireOptions) format() *lease.ContainerAcquireOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.ContainerAcquireOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -35,6 +38,14 @@ type FilesystemBreakOptions struct {
 }
 
 func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		if o != nil {
+			return &lease.ContainerBreakOptions{
+				BreakPeriod: o.BreakPeriod,
+			}
+		}
+		return nil
+	}
 	return &lease.ContainerBreakOptions{
 		BreakPeriod: o.BreakPeriod,
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -52,6 +63,9 @@ type FilesystemChangeOptions struct {
 }
 
 func (o *FilesystemChangeOptions) format() *lease.ContainerChangeOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.ContainerChangeOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -67,6 +81,9 @@ type FilesystemReleaseOptions struct {
 }
 
 func (o *FilesystemReleaseOptions) format() *lease.ContainerReleaseOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.ContainerReleaseOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -82,6 +99,9 @@ type FilesystemRenewOptions struct {
 }
 
 func (o *FilesystemRenewOptions) format() *lease.ContainerRenewOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.ContainerRenewOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -98,6 +118,9 @@ type PathAcquireOptions struct {
 }
 
 func (o *PathAcquireOptions) format() *lease.BlobAcquireOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.BlobAcquireOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -115,6 +138,14 @@ type PathBreakOptions struct {
 }
 
 func (o *PathBreakOptions) format() *lease.BlobBreakOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		if o != nil {
+			return &lease.BlobBreakOptions{
+				BreakPeriod: o.BreakPeriod,
+			}
+		}
+		return nil
+	}
 	return &lease.BlobBreakOptions{
 		BreakPeriod: o.BreakPeriod,
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -132,6 +163,9 @@ type PathChangeOptions struct {
 }
 
 func (o *PathChangeOptions) format() *lease.BlobChangeOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.BlobChangeOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -147,6 +181,9 @@ type PathReleaseOptions struct {
 }
 
 func (o *PathReleaseOptions) format() *lease.BlobReleaseOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.BlobReleaseOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
@@ -162,6 +199,9 @@ type PathRenewOptions struct {
 }
 
 func (o *PathRenewOptions) format() *lease.BlobRenewOptions {
+	if o == nil || o.ModifiedAccessConditions == nil {
+		return nil
+	}
 	return &lease.BlobRenewOptions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,

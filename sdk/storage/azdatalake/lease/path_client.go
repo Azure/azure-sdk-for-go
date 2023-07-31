@@ -8,9 +8,14 @@ package lease
 
 import (
 	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
 // PathClient provides lease functionality for the underlying path client.
@@ -20,17 +25,29 @@ type PathClient struct {
 }
 
 // PathClientOptions contains the optional values when creating a PathClient.
-type PathClientOptions struct {
-	// LeaseID contains a caller-provided lease ID.
-	LeaseID *string
-}
+type PathClientOptions = lease.BlobClientOptions
 
 // NewPathClient creates a path lease client for the provided path client.
 //   - client - an instance of a path client
 //   - options - client options; pass nil to accept the default values
 func NewPathClient[T directory.Client | file.Client](client *T, options *PathClientOptions) (*PathClient, error) {
-	// TODO: set up blob lease client
-	return nil, nil
+	var blobClient *blockblob.Client
+	switch t := any(client).(type) {
+	case *directory.Client:
+		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(t))
+	case *file.Client:
+		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(t))
+	default:
+		return nil, fmt.Errorf("unhandled client type %T", client)
+	}
+	blobLeaseClient, err := lease.NewBlobClient(blobClient, options)
+	if err != nil {
+		return nil, exported.ConvertToDFSError(err)
+	}
+	return &PathClient{
+		blobClient: blobLeaseClient,
+		leaseID:    blobLeaseClient.LeaseID(),
+	}, nil
 }
 
 // LeaseID returns leaseID of the client.
@@ -56,7 +73,12 @@ func (c *PathClient) BreakLease(ctx context.Context, o *PathBreakOptions) (PathB
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *PathClient) ChangeLease(ctx context.Context, proposedID string, o *PathChangeOptions) (PathChangeResponse, error) {
 	opts := o.format()
-	return c.blobClient.ChangeLease(ctx, proposedID, opts)
+	resp, err := c.blobClient.ChangeLease(ctx, proposedID, opts)
+	if err != nil {
+		return PathChangeResponse{}, err
+	}
+	c.leaseID = &proposedID
+	return resp, nil
 }
 
 // RenewLease renews the path's previously-acquired lease.

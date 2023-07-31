@@ -8,28 +8,36 @@ package lease
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
 // FilesystemClient provides lease functionality for the underlying filesystem client.
 type FilesystemClient struct {
-	leaseID         *string
 	containerClient *lease.ContainerClient
+	leaseID         *string
 }
 
 // FilesystemClientOptions contains the optional values when creating a FilesystemClient.
-type FilesystemClientOptions struct {
-	// LeaseID contains a caller-provided lease ID.
-	LeaseID *string
-}
+type FilesystemClientOptions = lease.ContainerClientOptions
 
 // NewFilesystemClient creates a filesystem lease client for the provided filesystem client.
 //   - client - an instance of a filesystem client
 //   - options - client options; pass nil to accept the default values
 func NewFilesystemClient(client *filesystem.Client, options *FilesystemClientOptions) (*FilesystemClient, error) {
-	// TODO: set up container lease client
-	return nil, nil
+	_, _, containerClient := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(client))
+	containerLeaseClient, err := lease.NewContainerClient(containerClient, options)
+	if err != nil {
+		return nil, exported.ConvertToDFSError(err)
+	}
+	return &FilesystemClient{
+		containerClient: containerLeaseClient,
+		leaseID:         containerLeaseClient.LeaseID(),
+	}, nil
 }
 
 // LeaseID returns leaseID of the client.
@@ -57,7 +65,12 @@ func (c *FilesystemClient) BreakLease(ctx context.Context, o *FilesystemBreakOpt
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (c *FilesystemClient) ChangeLease(ctx context.Context, proposedLeaseID string, o *FilesystemChangeOptions) (FilesystemChangeResponse, error) {
 	opts := o.format()
-	return c.containerClient.ChangeLease(ctx, proposedLeaseID, opts)
+	resp, err := c.containerClient.ChangeLease(ctx, proposedLeaseID, opts)
+	if err != nil {
+		return FilesystemChangeResponse{}, err
+	}
+	c.leaseID = &proposedLeaseID
+	return resp, nil
 }
 
 // RenewLease renews the filesystem's previously-acquired lease.

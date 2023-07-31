@@ -141,6 +141,13 @@ func GetFileClient(fsName, fName string, t *testing.T, accountType TestAccountTy
 	return fileClient, err
 }
 
+func CreateNewFile(ctx context.Context, _require *require.Assertions, fileName string, filesystemClient *filesystem.Client) *file.Client {
+	fileClient := filesystemClient.NewFileClient(fileName)
+	_, err := fileClient.Create(ctx, nil)
+	_require.Nil(err)
+	return fileClient
+}
+
 func GetDirClient(fsName, dirName string, t *testing.T, accountType TestAccountType, options *directory.ClientOptions) (*directory.Client, error) {
 	if options == nil {
 		options = &directory.ClientOptions{}

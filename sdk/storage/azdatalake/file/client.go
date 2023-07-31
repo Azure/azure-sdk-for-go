@@ -377,7 +377,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		return errors.New("buffer is too large to upload to a file")
 	}
 	if o.ChunkSize == 0 {
-		o.ChunkSize = MaxUpdateRangeBytes
+		o.ChunkSize = MaxAppendBytes
 	}
 
 	if log.Should(exported.EventUpload) {

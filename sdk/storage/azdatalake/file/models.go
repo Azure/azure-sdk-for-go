@@ -24,8 +24,8 @@ const (
 	_1MiB      = 1024 * 1024
 	CountToEnd = 0
 
-	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
-	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
+	// MaxAppendBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	MaxAppendBytes = 100 * 1024 * 1024 // 100iB
 
 	// MaxFileSize indicates the maximum size of the file allowed.
 	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
@@ -130,7 +130,7 @@ func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSe
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
 type uploadFromReaderOptions struct {
-	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxAppendBytes.
 	ChunkSize int64
 	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
@@ -147,7 +147,7 @@ type uploadFromReaderOptions struct {
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
 type UploadStreamOptions struct {
-	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxAppendBytes.
 	ChunkSize int64
 	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
 	Concurrency uint16

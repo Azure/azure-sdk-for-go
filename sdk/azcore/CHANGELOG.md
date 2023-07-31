@@ -28,6 +28,7 @@
 ### Bugs Fixed
 
 * Propagate any query parameters when constructing a fake poller and/or injecting next links.
+* Calling `runtime.NewRequest` will encode any query parameters in the `endpoint` parameter.
 
 ## 1.7.1 (2023-08-14)
 

@@ -211,3 +211,18 @@ func TestRequestWithContext(t *testing.T) {
 	req2.Raw().Header.Add("added-req2", "value")
 	require.EqualValues(t, "value", req1.Raw().Header.Get("added-req2"))
 }
+
+func TestNewRequestWithEncoding(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodGet, testURL+"query?$skip=5&$filter='foo eq bar'")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", req.Raw().URL.String())
+	req, err = NewRequest(context.Background(), http.MethodGet, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", req.Raw().URL.String())
+	req, err = NewRequest(context.Background(), http.MethodGet, testURL+"query?foo=bar&one=two")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?foo=bar&one=two", req.Raw().URL.String())
+	req, err = NewRequest(context.Background(), http.MethodGet, testURL+"query?invalid=;semicolon")
+	require.Error(t, err)
+	require.Nil(t, req)
+}

@@ -38,7 +38,8 @@ const (
 )
 
 // NewRequest creates a new policy.Request with the specified input.
-// The endpoint MUST be properly encoded before calling this function.
+// It's assumed that the URL's path segments have been properly encoded.
+// Any query parameters will be validated and encoded during construction.
 func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*policy.Request, error) {
 	return exported.NewRequest(ctx, httpMethod, endpoint)
 }

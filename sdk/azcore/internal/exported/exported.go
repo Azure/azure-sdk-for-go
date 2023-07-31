@@ -57,6 +57,13 @@ type TokenRequestOptions struct {
 	// service may return in a claims challenge following an authorization failure. If a service returned the
 	// claims value base64 encoded, it must be decoded before setting this field.
 	Claims string
+
+	// EnableCAE indicates whether to enable Continuous Access Evaluation (CAE) for the requested token. When true,
+	// azidentity credentials request CAE tokens for resource APIs supporting CAE. Clients are responsible for
+	// handling CAE challenges. If a client that doesn't handle CAE challenges receives a CAE token, it may end up
+	// in a loop retrying an API call with a token that has been revoked due to CAE.
+	EnableCAE bool
+
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 

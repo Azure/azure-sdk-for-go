@@ -5,6 +5,7 @@
 ### Features Added
 
 * Added function `SanitizePagerPollerPath` to the `server` package to centralize sanitization and formalize the contract.
+* Added `TokenRequestOptions.EnableCAE` to indicate whether to request a CAE token
 
 ### Breaking Changes
 

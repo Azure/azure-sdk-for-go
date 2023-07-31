@@ -200,7 +200,7 @@ func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 
 // Delete deletes a file (dfs1).
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	lac, mac, deleteOpts := options.format()
+	lac, mac, deleteOpts := path.FormatDeleteOptions(options, false)
 	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
 	err = exported.ConvertToDFSError(err)
 	return resp, err
@@ -232,7 +232,7 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 // Rename renames a file (dfs1)
 func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
 	newPathWithoutURL, newBlobURL, newPathURL := f.renamePathInURL(newName)
-	lac, mac, smac, createOpts := options.format(newPathWithoutURL)
+	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
 	var newBlobClient *blockblob.Client
 	var err error
 	if f.identityCredential() != nil {
@@ -377,7 +377,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		return errors.New("buffer is too large to upload to a file")
 	}
 	if o.ChunkSize == 0 {
-		o.ChunkSize = MaxUpdateRangeBytes
+		o.ChunkSize = MaxAppendBytes
 	}
 
 	if log.Should(exported.EventUpload) {

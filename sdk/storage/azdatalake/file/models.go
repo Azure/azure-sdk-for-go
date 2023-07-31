@@ -24,14 +24,11 @@ const (
 	_1MiB      = 1024 * 1024
 	CountToEnd = 0
 
-	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
-	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
+	// MaxAppendBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	MaxAppendBytes = 100 * 1024 * 1024 // 100iB
 
 	// MaxFileSize indicates the maximum size of the file allowed.
 	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
-
-	// DefaultDownloadChunkSize is default chunk size
-	DefaultDownloadChunkSize = int64(4 * 1024 * 1024) // 4MiB
 )
 
 // CreateOptions contains the optional parameters when calling the Create operation. dfs endpoint.
@@ -97,69 +94,13 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	}
 	if o.CPKInfo != nil {
 		cpkOpts = &generated.CPKInfo{
-			EncryptionAlgorithm: (*generated.EncryptionAlgorithmType)(o.CPKInfo.EncryptionAlgorithm),
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
 			EncryptionKey:       o.CPKInfo.EncryptionKey,
 			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		}
 	}
 	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
-
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
-type DeleteOptions struct {
-	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
-}
-
-func (o *DeleteOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathClientDeleteOptions) {
-	recursive := false
-	deleteOpts := &generated.PathClientDeleteOptions{
-		Recursive: &recursive,
-	}
-	if o == nil {
-		return nil, nil, deleteOpts
-	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, modifiedAccessConditions, deleteOpts
-}
-
-// RenameOptions contains the optional parameters when calling the Rename operation.
-type RenameOptions struct {
-	// SourceAccessConditions identifies the source path access conditions.
-	SourceAccessConditions *SourceAccessConditions
-	// AccessConditions contains parameters for accessing the file.
-	AccessConditions *AccessConditions
-}
-
-func (o *RenameOptions) format(path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
-	// we don't need sourceModAccCond since this is not rename
-	mode := generated.PathRenameModeLegacy
-	createOpts := &generated.PathClientCreateOptions{
-		Mode:         &mode,
-		RenameSource: &path,
-	}
-	if o == nil {
-		return nil, nil, nil, createOpts
-	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	if o.SourceAccessConditions != nil {
-		if o.SourceAccessConditions.SourceLeaseAccessConditions != nil {
-			createOpts.SourceLeaseID = o.SourceAccessConditions.SourceLeaseAccessConditions.LeaseID
-		}
-		if o.SourceAccessConditions.SourceModifiedAccessConditions != nil {
-			sourceModifiedAccessConditions := &generated.SourceModifiedAccessConditions{
-				SourceIfMatch:           o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfMatch,
-				SourceIfModifiedSince:   o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfModifiedSince,
-				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
-				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
-			}
-			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
-		}
-	}
-	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
-}
-
-// ===================================== PATH IMPORTS ===========================================
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlOptions struct {
@@ -185,11 +126,11 @@ func (o *RemoveAccessControlOptions) format(ACL string) (*generated.PathClientSe
 	}, mode
 }
 
-type HTTPRange = exported.HTTPRange
+// ===================================== PATH IMPORTS ===========================================
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
 type uploadFromReaderOptions struct {
-	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxAppendBytes.
 	ChunkSize int64
 	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
@@ -206,7 +147,7 @@ type uploadFromReaderOptions struct {
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
 type UploadStreamOptions struct {
-	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxAppendBytes.
 	ChunkSize int64
 	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
 	Concurrency uint16
@@ -427,10 +368,7 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 
 	downloadStreamOptions := &blob.DownloadStreamOptions{}
 	if o.Range != nil {
-		downloadStreamOptions.Range = blob.HTTPRange{
-			Offset: o.Range.Offset,
-			Count:  o.Range.Count,
-		}
+		downloadStreamOptions.Range = *o.Range
 	}
 	if o.CPKInfo != nil {
 		downloadStreamOptions.CPKInfo = &blob.CPKInfo{
@@ -442,7 +380,7 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadStreamOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
 	return downloadStreamOptions
 }
 
@@ -494,19 +432,12 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 	}
 
 	downloadBufferOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadBufferOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadBufferOptions.CPKScopeInfo = o.CPKScopeInfo
 	downloadBufferOptions.BlockSize = o.ChunkSize
 	downloadBufferOptions.Progress = o.Progress
 	downloadBufferOptions.Concurrency = o.Concurrency
 	if o.RetryReaderOptionsPerChunk != nil {
-		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
-			newRange := HTTPRange{
-				Offset: rnge.Offset,
-				Count:  rnge.Count,
-			}
-			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
-		}
-		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadBufferOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadBufferOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
@@ -560,19 +491,12 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 	}
 
 	downloadFileOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-	downloadFileOptions.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+	downloadFileOptions.CPKScopeInfo = o.CPKScopeInfo
 	downloadFileOptions.BlockSize = o.ChunkSize
 	downloadFileOptions.Progress = o.Progress
 	downloadFileOptions.Concurrency = o.Concurrency
 	if o.RetryReaderOptionsPerChunk != nil {
-		newFunc := func(failureCount int32, lastError error, rnge blob.HTTPRange, willRetry bool) {
-			newRange := HTTPRange{
-				Offset: rnge.Offset,
-				Count:  rnge.Count,
-			}
-			o.RetryReaderOptionsPerChunk.OnFailedRead(failureCount, lastError, newRange, willRetry)
-		}
-		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = newFunc
+		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadFileOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
@@ -640,7 +564,15 @@ type SetExpiryTypeNever = exported.SetExpiryTypeNever
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions = exported.SetExpiryOptions
 
+type HTTPRange = exported.HTTPRange
+
 // ================================= path imports ==================================
+
+// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+type DeleteOptions = path.DeleteOptions
+
+// RenameOptions contains the optional parameters when calling the Rename operation.
+type RenameOptions = path.RenameOptions
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions = path.GetPropertiesOptions
@@ -685,4 +617,4 @@ type ModifiedAccessConditions = path.ModifiedAccessConditions
 type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
-type CPKScopeInfo path.CPKScopeInfo
+type CPKScopeInfo = path.CPKScopeInfo

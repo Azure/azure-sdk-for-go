@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
@@ -140,6 +141,23 @@ func GetFileClient(fsName, fName string, t *testing.T, accountType TestAccountTy
 	return fileClient, err
 }
 
+func GetDirClient(fsName, dirName string, t *testing.T, accountType TestAccountType, options *directory.ClientOptions) (*directory.Client, error) {
+	if options == nil {
+		options = &directory.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	cred, err := GetGenericSharedKeyCredential(accountType)
+	if err != nil {
+		return nil, err
+	}
+
+	dirClient, err := directory.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".dfs.core.windows.net/"+fsName+"/"+dirName, cred, options)
+
+	return dirClient, err
+}
+
 func ServiceGetFilesystemClient(filesystemName string, s *service.Client) *filesystem.Client {
 	return s.NewFilesystemClient(filesystemName)
 }
@@ -151,6 +169,11 @@ func DeleteFilesystem(ctx context.Context, _require *require.Assertions, filesys
 
 func DeleteFile(ctx context.Context, _require *require.Assertions, fileClient *file.Client) {
 	_, err := fileClient.Delete(ctx, nil)
+	_require.Nil(err)
+}
+
+func DeleteDir(ctx context.Context, _require *require.Assertions, dirClient *directory.Client) {
+	_, err := dirClient.Delete(ctx, nil)
 	_require.Nil(err)
 }
 

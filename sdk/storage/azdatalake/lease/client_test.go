@@ -388,3 +388,173 @@ func (s *LeaseRecordedTestsSuite) TestFileChangeLease() {
 	_, err = fileLeaseClient.ReleaseLease(ctx, nil)
 	_require.Nil(err)
 }
+
+func (s *LeaseRecordedTestsSuite) TestDirAcquireLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
+	dirLeaseClient, err := lease.NewPathClient(dirClient, &lease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(60), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
+
+	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
+	_require.Nil(err)
+}
+
+func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
+	dirLeaseClient, err := lease.NewPathClient(dirClient, &lease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(60), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
+
+	_, err = dirClient.Delete(ctx, nil)
+	_require.NotNil(err)
+
+	leaseID := dirLeaseClient.LeaseID()
+	_, err = dirClient.Delete(ctx, &file.DeleteOptions{
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{
+				LeaseID: leaseID,
+			},
+		},
+	})
+	_require.Nil(err)
+}
+
+func (s *LeaseRecordedTestsSuite) TestDirReleaseLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+
+	DirName := testcommon.GenerateDirName(testName)
+	DirClient := testcommon.CreateNewDir(context.Background(), _require, DirName, filesystemClient)
+	DirLeaseClient, _ := lease.NewPathClient(DirClient, &lease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := DirLeaseClient.AcquireLease(ctx, int32(60), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, DirLeaseClient.LeaseID())
+
+	_, err = DirClient.Delete(ctx, nil)
+	_require.NotNil(err)
+
+	_, err = DirLeaseClient.ReleaseLease(ctx, nil)
+	_require.Nil(err)
+
+	_, err = DirClient.Delete(ctx, nil)
+	_require.Nil(err)
+}
+
+func (s *LeaseRecordedTestsSuite) TestDirRenewLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
+	dirLeaseClient, _ := lease.NewPathClient(dirClient, &lease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(15), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, dirLeaseClient.LeaseID())
+
+	_, err = dirLeaseClient.RenewLease(ctx, nil)
+	_require.Nil(err)
+
+	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
+	_require.Nil(err)
+}
+
+func (s *LeaseRecordedTestsSuite) TestDirChangeLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
+	dirLeaseClient, _ := lease.NewPathClient(dirClient, &lease.PathClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+
+	ctx := context.Background()
+	acquireLeaseResponse, err := dirLeaseClient.AcquireLease(ctx, int32(15), nil)
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
+
+	changeLeaseResp, err := dirLeaseClient.ChangeLease(ctx, *proposedLeaseIDs[1], nil)
+	_require.Nil(err)
+	_require.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
+
+	_, err = dirLeaseClient.RenewLease(ctx, nil)
+	_require.Nil(err)
+
+	_, err = dirLeaseClient.ReleaseLease(ctx, nil)
+	_require.Nil(err)
+}

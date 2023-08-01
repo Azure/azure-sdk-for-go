@@ -2111,6 +2111,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
+
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2127,8 +2128,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	createAppendBlobOptions := appendblob.CreateOptions{}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
+
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
+	
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 

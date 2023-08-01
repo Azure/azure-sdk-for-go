@@ -2111,7 +2111,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	_require.EqualValues(string(data), "AAA BBB CCC ")
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
-
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2119,33 +2118,31 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require.Nil(err)
 
 	// Create container and blob, upload blob to container
-	containerName := testcommon.GenerateContainerName(testName) + "1"
+	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	blobName := testcommon.GenerateBlobName(testName)
-	abClient := containerClient.NewAppendBlobClient(blobName)
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	createAppendBlobOptions := appendblob.CreateOptions{}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
-
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
-
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
-	stuff, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	_require.NoError(err)
 	// Set Account SAS and set Permanent Delete to true
 	parts.SAS, err = sas.AccountSignatureValues{
-		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
-		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true, Create: true}).String(),
-		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-		EncryptionScope: stuff,
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
 	_require.Nil(err)
 
 	urlWithSAS := parts.String()

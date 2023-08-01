@@ -184,7 +184,7 @@ func (fs *Client) BlobURL() string {
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
-	dirURL, blobURL := shared.GetURLs(dirURL)
+	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
@@ -192,7 +192,7 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
 	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
-	fileURL, blobURL := shared.GetURLs(filePath)
+	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 

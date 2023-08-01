@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -381,24 +382,16 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionSco
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	srcBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
-
-	// Prepare source abClient for copy.
-	_, err = srcBlob.Create(context.Background(), nil)
-	_require.Nil(err)
-	_, err = srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
 
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
-	encryptionScope := testcommon.EncryptionScopeEnvVar
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
-	perms := sas.BlobPermissions{Read: true}
+	perms := sas.BlobPermissions{Read: true, Create: true, Write: true, Delete: true}
 
 	srcBlobParts.SAS, err = sas.BlobSignatureValues{
 		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
@@ -412,19 +405,13 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionSco
 
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	// Append block from URL.
-	_, err = destBlob.Create(context.Background(), nil)
+	// create new client with sas url
+	blobClient, err := appendblob.NewClientWithNoCredential(srcBlobURLWithSAS, nil)
 	_require.Nil(err)
 
-	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, nil)
-	_require.Nil(err)
-
-	// Check data integrity through downloading.
-	destBuffer := make([]byte, 4*1024)
-	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
-	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
-	_require.Equal(destBuffer, sourceData)
+	createResponse, err := blobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*createResponse.EncryptionScope, encryptionScope)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionScopeAccount() {
@@ -437,49 +424,42 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionSco
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
-	srcBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
+	blobName := testcommon.GenerateBlobName("appendsrc")
+	srcBlob := containerClient.NewAppendBlobClient(blobName)
 
 	// Prepare source abClient for copy.
 	_, err = srcBlob.Create(context.Background(), nil)
 	_require.Nil(err)
-	_, err = srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
-	_require.Nil(err)
 
-	// Get source abClient URL with SAS for AppendBlockFromURL.
+	// Get source srcBlob URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
-	encryptionScope := testcommon.EncryptionScopeEnvVar
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
-	// perms := sas.BlobPermissions{Read: true}
 
 	srcBlobParts.SAS, err = sas.AccountSignatureValues{
 		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, List: true, Tag: true}).String(),
-		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, Create: true, Write: true, Delete: true}).String(),
+		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Service: true, Container: true, Object: true}).String(),
 		EncryptionScope: encryptionScope,
 	}.SignWithSharedKey(credential)
 	_require.NoError(err)
 
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	// Append block from URL.
-	_, err = destBlob.Create(context.Background(), nil)
-	_require.Nil(err)
+	// create new client with sas url
+	newSvcClient, err := service.NewClientWithNoCredential(srcBlobURLWithSAS, nil)
+	_require.NoError(err)
 
-	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, nil)
-	_require.Nil(err)
-
-	// Check data integrity through downloading.
-	destBuffer := make([]byte, 4*1024)
-	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
-	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
-	_require.Nil(err)
-	_require.Equal(destBuffer, sourceData)
+	newContainerClient := newSvcClient.NewContainerClient(containerName)
+	abClient := newContainerClient.NewAppendBlobClient(blobName)
+	createResp, err := abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*createResp.EncryptionScope, encryptionScope)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
@@ -2139,11 +2119,12 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require.Nil(err)
 
 	// Create container and blob, upload blob to container
-	containerName := testcommon.GenerateContainerName(testName)
+	containerName := testcommon.GenerateContainerName(testName) + "1"
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+	blobName := testcommon.GenerateBlobName(testName)
+	abClient := containerClient.NewAppendBlobClient(blobName)
 
 	createAppendBlobOptions := appendblob.CreateOptions{}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
@@ -2155,14 +2136,27 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
+	stuff, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.NoError(err)
 	// Set Account SAS and set Permanent Delete to true
 	parts.SAS, err = sas.AccountSignatureValues{
-		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
-		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true, Create: true}).String(),
+		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+		EncryptionScope: stuff,
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
+
+	urlWithSAS := parts.String()
+	newSvcClient, err := service.NewClientWithNoCredential(urlWithSAS, nil)
+	_require.NoError(err)
+
+	cClient := newSvcClient.NewContainerClient(containerName)
+	aClient := cClient.NewAppendBlobClient(blobName)
+	createResp, err := aClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*createResp.EncryptionScope, stuff)
 
 	// Create snapshot of Blob and get snapshot URL
 	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})

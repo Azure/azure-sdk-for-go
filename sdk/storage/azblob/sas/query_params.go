@@ -164,6 +164,10 @@ func (p *QueryParameters) SignedCorrelationID() string {
 	return p.correlationID
 }
 
+func (p *QueryParameters) EncryptionScope() string {
+	return p.encryptionScope
+}
+
 // SignedOID returns signedOID.
 func (p *QueryParameters) SignedOID() string {
 	return p.signedOID
@@ -356,6 +360,9 @@ func (p *QueryParameters) Encode() string {
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
 	}
+	if p.encryptionScope != "" {
+		v.Add("ses", p.encryptionScope)
+	}
 
 	return v.Encode()
 }
@@ -430,6 +437,8 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.unauthorizedObjectID = val
 		case "scid":
 			p.correlationID = val
+		case "ses":
+			p.encryptionScope = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

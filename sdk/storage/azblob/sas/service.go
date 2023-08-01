@@ -40,7 +40,7 @@ type BlobSignatureValues struct {
 	AuthorizedObjectID   string // saoid
 	UnauthorizedObjectID string // suoid
 	CorrelationID        string // scid
-	EncryptionScope      string // ses
+	EncryptionScope      string `param:"ses"`
 }
 
 func getDirectoryDepth(path string) string {

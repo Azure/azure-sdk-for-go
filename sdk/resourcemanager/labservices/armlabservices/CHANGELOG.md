@@ -1,5 +1,16 @@
 # Release History
 
+## 1.2.0 (2023-08-01)
+### Features Added
+
+- New struct `ResourceOperationError`
+- New field `ResourceOperationError` in struct `LabPlanProperties`
+- New field `ResourceOperationError` in struct `LabProperties`
+- New field `ResourceOperationError` in struct `ScheduleProperties`
+- New field `ResourceOperationError` in struct `UserProperties`
+- New field `ResourceOperationError` in struct `VirtualMachineProperties`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

@@ -2131,7 +2131,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
-	
+
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
@@ -2143,20 +2143,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
-
-	// Create snapshot of Blob and get snapshot URL
-	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
-	_require.Nil(err)
-
-	urlWithSAS := parts.String()
-	newSvcClient, err := service.NewClientWithNoCredential(urlWithSAS, nil)
-	_require.NoError(err)
-
-	cClient := newSvcClient.NewContainerClient(containerName)
-	aClient := cClient.NewAppendBlobClient(blobName)
-	createResp, err := aClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*createResp.EncryptionScope, stuff)
 
 	// Create snapshot of Blob and get snapshot URL
 	resp, err := abClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})

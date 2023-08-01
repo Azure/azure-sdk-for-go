@@ -462,7 +462,7 @@ func (s *RecordedTestSuite) TestCreateFileWithHTTPHeaders() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
+func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -594,7 +594,7 @@ func (s *RecordedTestSuite) TestCreateFileWithLease() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithPermissions() {
+func (s *UnrecordedTestSuite) TestCreateFileWithPermissions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1303,7 +1303,7 @@ func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestDeleteWithSAS() {
+func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2312,7 +2312,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadStream() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2362,7 +2362,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadStream() {
 
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2411,7 +2411,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadTinyStream() {
+func (s *UnrecordedTestSuite) TestFileUploadTinyStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2460,7 +2460,7 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadFile() {
+func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2528,7 +2528,7 @@ func (s *RecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestSmallFileUploadFile() {
+func (s *UnrecordedTestSuite) TestSmallFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2596,7 +2596,7 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestTinyFileUploadFile() {
+func (s *UnrecordedTestSuite) TestTinyFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2663,7 +2663,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadBuffer() {
+func (s *UnrecordedTestSuite) TestFileUploadBuffer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2711,7 +2711,7 @@ func (s *RecordedTestSuite) TestFileUploadBuffer() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
+func (s *UnrecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2759,7 +2759,7 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
+func (s *UnrecordedTestSuite) TestFileAppendAndFlushData() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2794,7 +2794,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 }
 
-func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
+func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2838,7 +2838,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 }
 
-func (s *RecordedTestSuite) TestFileDownloadFile() {
+func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2902,7 +2902,7 @@ func (s *RecordedTestSuite) TestFileDownloadFile() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2981,7 +2981,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadWithProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3042,7 +3042,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
-func (s *RecordedTestSuite) TestFileDownloadBuffer() {
+func (s *UnrecordedTestSuite) TestFileDownloadBuffer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

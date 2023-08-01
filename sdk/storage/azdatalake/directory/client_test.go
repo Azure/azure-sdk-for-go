@@ -1189,7 +1189,7 @@ func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestDeleteWithSAS() {
+func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

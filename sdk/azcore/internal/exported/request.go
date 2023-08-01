@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strconv"
 
@@ -81,11 +80,6 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 	if !(req.URL.Scheme == "http" || req.URL.Scheme == "https") {
 		return nil, fmt.Errorf("unsupported protocol scheme %s", req.URL.Scheme)
 	}
-	qp, err := url.ParseQuery(req.URL.RawQuery)
-	if err != nil {
-		return nil, err
-	}
-	req.URL.RawQuery = qp.Encode()
 	return &Request{req: req}, nil
 }
 

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added function `FetcherHelper` to the `runtime` package to centralize creation of `Pager[T].Fetcher` values.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -15,7 +17,6 @@
 ### Features Added
 
 * Added function `SanitizePagerPollerPath` to the `server` package to centralize sanitization and formalize the contract.
-* Added `TokenRequestOptions.EnableCAE` to indicate whether to request a CAE token.
 
 ### Breaking Changes
 
@@ -28,7 +29,6 @@
 ### Bugs Fixed
 
 * Propagate any query parameters when constructing a fake poller and/or injecting next links.
-* Calling `runtime.NewRequest` will encode any query parameters in the `endpoint` parameter.
 
 ## 1.7.1 (2023-08-14)
 

@@ -11,8 +11,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
 	"reflect"
+	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
@@ -87,4 +91,39 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 // UnmarshalJSON implements the json.Unmarshaler interface for Pager[T].
 func (p *Pager[T]) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &p.current)
+}
+
+// FetcherHelper is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher.
+func FetcherHelper(ctx context.Context, pl Pipeline, nextLink string, createReq func(context.Context) (*policy.Request, error)) (*http.Response, error) {
+	var req *policy.Request
+	var err error
+	if nextLink == "" {
+		req, err = createReq(ctx)
+	} else if nextLink, err = encodeNextLink(nextLink); err == nil {
+		req, err = NewRequest(ctx, http.MethodGet, nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !HasStatusCode(resp, http.StatusOK) {
+		return nil, NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// encode any query parameters in the nextLink
+func encodeNextLink(nextLink string) (string, error) {
+	before, after, found := strings.Cut(nextLink, "?")
+	if !found {
+		return nextLink, nil
+	}
+	qp, err := url.ParseQuery(after)
+	if err != nil {
+		return "", err
+	}
+	return before + "?" + qp.Encode(), nil
 }

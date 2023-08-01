@@ -344,6 +344,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
+		NumChunks:     uint16(((count - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
@@ -392,12 +393,11 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	}
 
 	if o.Concurrency == 0 {
-		o.Concurrency = defaultConcurrency
+		o.Concurrency = DefaultConcurrency
 	}
 
 	count := o.Range.Count
-	if count == CountToEnd { // If size not specified, calculate it
-		// If we don't have the length at all, get it
+	if count == CountToEnd { //Calculate size if not specified
 		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
 		if err != nil {
 			return 0, err
@@ -448,6 +448,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		if err != nil {
 			return 0, err
 		}
+		defer body.Close()
 
 		return io.Copy(writer, body)
 	}
@@ -476,6 +477,15 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		blocks[b] = make(chan []byte)
 	}
 
+	/*
+	 * We have created as many channels as the number of chunks we have.
+	 * Each downloaded block will be sent to the channel matching its
+	 * sequece number, i.e. 0th Block is sent to 0th channel, 1st block
+	 * to 1st channel and likewise. These blocks sent are then read and 
+	 * written to file serially by below goroutine. Do note that the 
+	 * blocks are still read parallelly from n/w, but serailized and
+	 * written to file here.
+	 */
 	writerError := make(chan error)
 	go func(ch chan error) {
 		for _, block := range blocks {
@@ -499,23 +509,25 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
+		NumChunks:     numChunks,
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			body, err := getBodyForRange(ctx, chunkStart, count)
-			if err != nil {
-				return nil
-			}
-
 			buff, err := aquireBuffer()
 			if err != nil {
 				return err
 			}
+			
+			body, err := getBodyForRange(ctx, chunkStart, count)
+			if err != nil {
+				buffers.Release(buff)
+				return nil
+			}
 
 			_, err = io.ReadFull(body, buff[:count])
+			body.Close()
 			if err != nil {
 				return err
 			}
-			body.Close()
 
 			blockIndex := (chunkStart / o.BlockSize)
 			blocks[blockIndex] <- buff

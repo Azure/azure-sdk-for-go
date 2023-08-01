@@ -20,6 +20,6 @@ func ExampleWithCaptureResponse() {
 	// make some client method call using the updated context
 	// resp, err := client.SomeMethod(ctx, ...)
 	// *respFromCtx contains the raw *http.Response returned during the client method call.
-	// if the HTTP didn't return a response due to an error then *respFromCtx will be nil.
+	// if the HTTP transport didn't return a response due to an error then *respFromCtx will be nil.
 	_ = ctx
 }

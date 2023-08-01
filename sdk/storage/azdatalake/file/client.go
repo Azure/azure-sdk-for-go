@@ -224,14 +224,14 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 	lastIndex := strings.LastIndex(endpoint, separator)
 	// Split the string based on the last occurrence of the separator
 	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
-	newPathURL, newBlobURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
+	newBlobURL, newPathURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
 	parsedNewURL, _ := url.Parse(f.DFSURL())
 	return parsedNewURL.Path, newPathURL, newBlobURL
 }
 
 // Rename renames a file (dfs1)
 func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	newPathWithoutURL, newBlobURL, newPathURL := f.renamePathInURL(newName)
+	newPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
 	var newBlobClient *blockblob.Client
 	var err error

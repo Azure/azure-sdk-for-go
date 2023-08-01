@@ -21,4 +21,5 @@ func ExampleWithCaptureResponse() {
 	// resp, err := client.SomeMethod(ctx, ...)
 	// *respFromCtx contains the raw *http.Response returned during the client method call.
 	// if the HTTP didn't return a response due to an error then *respFromCtx will be nil.
+	_ = ctx
 }

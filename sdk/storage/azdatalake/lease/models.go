@@ -38,13 +38,13 @@ type FilesystemBreakOptions struct {
 }
 
 func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
-	if o == nil || o.ModifiedAccessConditions == nil {
-		if o != nil {
-			return &lease.ContainerBreakOptions{
-				BreakPeriod: o.BreakPeriod,
-			}
-		}
-		return nil
+	opts := &lease.ContainerBreakOptions{}
+	if o == nil {
+		return opts
+	}
+	if o.ModifiedAccessConditions == nil {
+		opts.BreakPeriod = o.BreakPeriod
+		return opts
 	}
 	return &lease.ContainerBreakOptions{
 		BreakPeriod: o.BreakPeriod,
@@ -138,13 +138,13 @@ type PathBreakOptions struct {
 }
 
 func (o *PathBreakOptions) format() *lease.BlobBreakOptions {
-	if o == nil || o.ModifiedAccessConditions == nil {
-		if o != nil {
-			return &lease.BlobBreakOptions{
-				BreakPeriod: o.BreakPeriod,
-			}
-		}
-		return nil
+	opts := &lease.BlobBreakOptions{}
+	if o == nil {
+		return opts
+	}
+	if o.ModifiedAccessConditions == nil {
+		opts.BreakPeriod = o.BreakPeriod
+		return opts
 	}
 	return &lease.BlobBreakOptions{
 		BreakPeriod: o.BreakPeriod,

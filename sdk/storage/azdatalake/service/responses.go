@@ -27,10 +27,5 @@ type SetPropertiesResponse = service.SetPropertiesResponse
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = service.GetPropertiesResponse
 
+// ListFilesystemsResponse contains the response fields for the ListFilesystems operation.
 type ListFilesystemsResponse = generated_blob.ServiceClientListFileSystemsSegmentResponse
-
-type ListFilesystemsSegmentResponse = generated_blob.ListFileSystemsSegmentResponse
-
-type FilesystemItem = generated_blob.FileSystemItem
-
-type FilesystemProperties = generated_blob.FileSystemProperties

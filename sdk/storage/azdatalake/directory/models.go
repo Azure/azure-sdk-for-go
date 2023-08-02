@@ -159,3 +159,6 @@ type SourceModifiedAccessConditions = path.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the PathClient.SetMetadata method.
 type CPKScopeInfo path.CPKScopeInfo
+
+// ACLFailedEntry contains the failed ACL entry (response model).
+type ACLFailedEntry = path.ACLFailedEntry

@@ -136,11 +136,14 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, filePath, fsName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
+
+	filePath = strings.ReplaceAll(filePath, "\\", "/")
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName, filePath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {
 		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)

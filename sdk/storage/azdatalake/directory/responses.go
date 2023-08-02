@@ -20,6 +20,9 @@ type RenameResponse struct {
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
 
+// SetAccessControlRecursiveSegment contains segment fields for the SetAccessControlRecursive operation.
+type SetAccessControlRecursiveSegment = generated.SetAccessControlRecursiveResponse
+
 // ========================================== path imports ===========================================================
 
 // SetAccessControlResponse contains the response fields for the SetAccessControl operation.

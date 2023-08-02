@@ -292,3 +292,6 @@ type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the Client.SetMetadata() method.
 type CPKScopeInfo = blob.CPKScopeInfo
+
+// ACLFailedEntry contains the failed ACL entry (response model).
+type ACLFailedEntry = generated.ACLFailedEntry

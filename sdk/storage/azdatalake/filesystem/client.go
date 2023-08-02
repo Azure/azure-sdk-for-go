@@ -4,6 +4,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+// FOR FS CLIENT WE STORE THE GENERATED DATALAKE LAYER WITH BLOB ENDPOINT IN ORDER TO USE DELETED PATH LISTING
+
 package filesystem
 
 import (
@@ -22,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -125,8 +128,9 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, fsName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName)
 	if err != nil {
 		return nil, err
 	}
@@ -182,6 +186,7 @@ func (fs *Client) BlobURL() string {
 // NewDirectoryClient creates a new directory.Client object by concatenating directory path to the end of this Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
+	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
 	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
 	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
@@ -190,6 +195,7 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
+	filePath = strings.ReplaceAll(filePath, "\\", "/")
 	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
 	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
@@ -216,7 +222,6 @@ func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptio
 	opts := options.format()
 	newResp := GetPropertiesResponse{}
 	resp, err := fs.containerClient().GetProperties(ctx, opts)
-	// TODO: find a cleaner way to not use lease from blob package
 	formatFilesystemProperties(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
@@ -253,7 +258,6 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 // NewListPathsPager operation returns a pager of the shares under the specified account. (dfs1)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
-	//TODO: look into possibility of using blob endpoint like list deleted paths is
 	listOptions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[ListPathsSegmentResponse]{
 		More: func(page ListPathsSegmentResponse) bool {

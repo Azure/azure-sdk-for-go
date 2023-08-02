@@ -541,7 +541,7 @@ func (e CreationExpiryTypeNever) Format() (generated.ExpiryOptions, *string) {
 func (e CreationExpiryTypeNever) notPubliclyImplementable() {}
 
 // ACLFailedEntry contains the failed ACL entry (response model).
-type ACLFailedEntry = generated.ACLFailedEntry
+type ACLFailedEntry = path.ACLFailedEntry
 
 // SetAccessControlRecursiveResponse contains part of the response data returned by the []OP_AccessControl operations.
 type SetAccessControlRecursiveResponse = generated.SetAccessControlRecursiveResponse

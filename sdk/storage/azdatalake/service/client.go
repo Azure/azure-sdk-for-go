@@ -25,6 +25,8 @@ import (
 	"time"
 )
 
+// FOR SERVICE CLIENT WE STORE THE GENERATED BLOB LAYER IN ORDER TO USE FS LISTING AND THE TRANSFORMS IT HAS
+
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
@@ -268,16 +270,17 @@ func (s *Client) NewListFilesystemsPager(o *ListFilesystemsOptions) *runtime.Pag
 				req, err = s.generatedServiceClientWithBlob().ListContainersSegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {
-				return ListFilesystemsResponse{}, err
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
 			}
 			resp, err := s.generatedServiceClientWithBlob().InternalClient().Pipeline().Do(req)
 			if err != nil {
-				return ListFilesystemsResponse{}, err
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListFilesystemsResponse{}, runtime.NewResponseError(resp)
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(runtime.NewResponseError(resp))
 			}
-			return s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp)
+			resp1, err := s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp)
+			return resp1, exported.ConvertToDFSError(err)
 		},
 	})
 }

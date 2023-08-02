@@ -14,18 +14,6 @@ import (
 	"time"
 )
 
-// CreateResponse contains the response from method FilesystemClient.Create.
-type CreateResponse = container.CreateResponse
-
-// DeleteResponse contains the response from method FilesystemClient.Delete.
-type DeleteResponse = container.DeleteResponse
-
-// SetMetadataResponse contains the response from method FilesystemClient.SetMetadata.
-type SetMetadataResponse = container.SetMetadataResponse
-
-// SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
-type SetAccessPolicyResponse = container.SetAccessPolicyResponse
-
 // GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
 type GetAccessPolicyResponse struct {
 	// PublicAccess contains the information returned from the x-ms-blob-public-access header response.
@@ -137,14 +125,20 @@ func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.Ge
 	r.Version = contResp.Version
 }
 
+// CreateResponse contains the response from method FilesystemClient.Create.
+type CreateResponse = container.CreateResponse
+
+// DeleteResponse contains the response from method FilesystemClient.Delete.
+type DeleteResponse = container.DeleteResponse
+
+// SetMetadataResponse contains the response from method FilesystemClient.SetMetadata.
+type SetMetadataResponse = container.SetMetadataResponse
+
+// SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
+type SetAccessPolicyResponse = container.SetAccessPolicyResponse
+
 // ListPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
 type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
-
-// PathList contains the path list
-type PathList = generated.PathList
-
-// Path contains the path properties
-type Path = generated.Path
 
 // UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
 type UndeletePathResponse = generated.PathClientUndeleteResponse
@@ -157,12 +151,3 @@ type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResp
 
 // PathHierarchyListSegment contains the response from method FilesystemClient.ListBlobsHierarchySegment.
 type PathHierarchyListSegment = generated.PathHierarchyListSegment
-
-// PathItem contains the response from method FilesystemClient.ListBlobsHierarchySegment.
-type PathItem = generated.PathItemInternal
-
-// PathProperties contains the response from method FilesystemClient.ListBlobsHierarchySegment.
-type PathProperties = generated.PathPropertiesInternal
-
-// PathPrefix contains the response from method FilesystemClient.ListBlobsHierarchySegment.
-type PathPrefix = generated.PathPrefix

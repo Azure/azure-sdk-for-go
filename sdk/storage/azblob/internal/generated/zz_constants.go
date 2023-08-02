@@ -76,6 +76,7 @@ func PossibleAccountKindValues() []AccountKind {
 type ArchiveStatus string
 
 const (
+	ArchiveStatusRehydratePendingToCold ArchiveStatus = "rehydrate-pending-to-cold"
 	ArchiveStatusRehydratePendingToCool ArchiveStatus = "rehydrate-pending-to-cool"
 	ArchiveStatusRehydratePendingToHot  ArchiveStatus = "rehydrate-pending-to-hot"
 )
@@ -83,6 +84,7 @@ const (
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
 func PossibleArchiveStatusValues() []ArchiveStatus {
 	return []ArchiveStatus{
+		ArchiveStatusRehydratePendingToCold,
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
 	}

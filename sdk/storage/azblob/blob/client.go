@@ -516,7 +516,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 			if err != nil {
 				return err
 			}
-			
+
 			body, err := getBodyForRange(ctx, chunkStart, count)
 			if err != nil {
 				buffers.Release(buff)

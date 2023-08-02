@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListAuthorizationServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListAuthorizationServers.json
 func ExampleAuthorizationServerClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,6 +67,8 @@ func ExampleAuthorizationServerClient_NewListByServicePager() {
 		// 						GrantTypes: []*armapimanagement.GrantType{
 		// 							to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 		// 							to.Ptr(armapimanagement.GrantTypeImplicit)},
+		// 							UseInAPIDocumentation: to.Ptr(false),
+		// 							UseInTestConsole: to.Ptr(true),
 		// 						},
 		// 					},
 		// 					{
@@ -93,13 +95,15 @@ func ExampleAuthorizationServerClient_NewListByServicePager() {
 		// 										GrantTypes: []*armapimanagement.GrantType{
 		// 											to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 		// 											to.Ptr(armapimanagement.GrantTypeImplicit)},
+		// 											UseInAPIDocumentation: to.Ptr(true),
+		// 											UseInTestConsole: to.Ptr(false),
 		// 										},
 		// 								}},
 		// 							}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadAuthorizationServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadAuthorizationServer.json
 func ExampleAuthorizationServerClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +120,7 @@ func ExampleAuthorizationServerClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetAuthorizationServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetAuthorizationServer.json
 func ExampleAuthorizationServerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,11 +162,13 @@ func ExampleAuthorizationServerClient_Get() {
 	// 					GrantTypes: []*armapimanagement.GrantType{
 	// 						to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 	// 						to.Ptr(armapimanagement.GrantTypeImplicit)},
+	// 						UseInAPIDocumentation: to.Ptr(true),
+	// 						UseInTestConsole: to.Ptr(false),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateAuthorizationServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationServer.json
 func ExampleAuthorizationServerClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,6 +199,8 @@ func ExampleAuthorizationServerClient_CreateOrUpdate() {
 			GrantTypes: []*armapimanagement.GrantType{
 				to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 				to.Ptr(armapimanagement.GrantTypeImplicit)},
+			UseInAPIDocumentation: to.Ptr(true),
+			UseInTestConsole:      to.Ptr(false),
 		},
 	}, &armapimanagement.AuthorizationServerClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -223,11 +231,13 @@ func ExampleAuthorizationServerClient_CreateOrUpdate() {
 	// 				GrantTypes: []*armapimanagement.GrantType{
 	// 					to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 	// 					to.Ptr(armapimanagement.GrantTypeImplicit)},
+	// 					UseInAPIDocumentation: to.Ptr(true),
+	// 					UseInTestConsole: to.Ptr(false),
 	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateAuthorizationServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateAuthorizationServer.json
 func ExampleAuthorizationServerClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,8 +250,10 @@ func ExampleAuthorizationServerClient_Update() {
 	}
 	res, err := clientFactory.NewAuthorizationServerClient().Update(ctx, "rg1", "apimService1", "newauthServer", "*", armapimanagement.AuthorizationServerUpdateContract{
 		Properties: &armapimanagement.AuthorizationServerUpdateContractProperties{
-			ClientID:     to.Ptr("update"),
-			ClientSecret: to.Ptr("updated"),
+			ClientID:              to.Ptr("update"),
+			ClientSecret:          to.Ptr("updated"),
+			UseInAPIDocumentation: to.Ptr(true),
+			UseInTestConsole:      to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -274,11 +286,13 @@ func ExampleAuthorizationServerClient_Update() {
 	// 					GrantTypes: []*armapimanagement.GrantType{
 	// 						to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 	// 						to.Ptr(armapimanagement.GrantTypeImplicit)},
+	// 						UseInAPIDocumentation: to.Ptr(true),
+	// 						UseInTestConsole: to.Ptr(false),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteAuthorizationServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteAuthorizationServer.json
 func ExampleAuthorizationServerClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +309,7 @@ func ExampleAuthorizationServerClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementAuthorizationServerListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementAuthorizationServerListSecrets.json
 func ExampleAuthorizationServerClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

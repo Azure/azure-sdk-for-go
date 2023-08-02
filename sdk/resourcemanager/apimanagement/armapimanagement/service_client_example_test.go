@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementRestoreWithAccessKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementRestoreWithAccessKey.json
 func ExampleServiceClient_BeginRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleServiceClient_BeginRestore() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithAccessKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithAccessKey.json
 func ExampleServiceClient_BeginBackup_apiManagementBackupWithAccessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithAccessKey() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithSystemManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithSystemManagedIdentity.json
 func ExampleServiceClient_BeginBackup_apiManagementBackupWithSystemManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,16 +313,16 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithSystemManagedIdenti
 	// 	Etag: to.Ptr("AAAAAAAQM8o="),
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("XXXXX-5fb4-4916-95d4-64b306f9d924"),
-	// 		TenantID: to.Ptr("XXXXX-86f1-XXXXX-91ab-2d7cd011db47"),
+	// 		PrincipalID: to.Ptr("00000000-5fb4-4916-95d4-64b306f9d924"),
+	// 		TenantID: to.Ptr("00000000-86f1-0000-91ab-2d7cd011db47"),
 	// 		UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/rg1UserIdentity": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("XXXXX-a154-4830-XXXX-46a12da1a1e2"),
-	// 				PrincipalID: to.Ptr("XXXXX-a100-4478-XXXX-d65d98118ba0"),
+	// 				ClientID: to.Ptr("00000000-a154-4830-0000-46a12da1a1e2"),
+	// 				PrincipalID: to.Ptr("00000000-a100-4478-0000-d65d98118ba0"),
 	// 			},
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/vpnpremium": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("XXXX-6328-4db2-XXXX-ab0e3e7806cf"),
-	// 				PrincipalID: to.Ptr("XXXXX-9208-4128-af2d-a10d2af9b5a3"),
+	// 				ClientID: to.Ptr("00000000-6328-4db2-0000-ab0e3e7806cf"),
+	// 				PrincipalID: to.Ptr("00000000-9208-4128-af2d-a10d2af9b5a3"),
 	// 			},
 	// 		},
 	// 	},
@@ -377,7 +377,7 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithSystemManagedIdenti
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithUserAssignedManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithUserAssignedManagedIdentity.json
 func ExampleServiceClient_BeginBackup_apiManagementBackupWithUserAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,16 +415,16 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithUserAssignedManaged
 	// 	Etag: to.Ptr("AAAAAAAQM8o="),
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("XXXXX-5fb4-4916-95d4-64b306f9d924"),
-	// 		TenantID: to.Ptr("XXXXX-86f1-XXXXX-91ab-2d7cd011db47"),
+	// 		PrincipalID: to.Ptr("00000000-5fb4-4916-95d4-64b306f9d924"),
+	// 		TenantID: to.Ptr("00000000-86f1-0000-91ab-2d7cd011db47"),
 	// 		UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/rg1UserIdentity": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("XXXXX-a154-4830-XXXX-46a12da1a1e2"),
-	// 				PrincipalID: to.Ptr("XXXXX-a100-4478-XXXX-d65d98118ba0"),
+	// 				ClientID: to.Ptr("00000000-a154-4830-0000-46a12da1a1e2"),
+	// 				PrincipalID: to.Ptr("00000000-a100-4478-0000-d65d98118ba0"),
 	// 			},
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/vpnpremium": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("XXXX-6328-4db2-XXXX-ab0e3e7806cf"),
-	// 				PrincipalID: to.Ptr("XXXXX-9208-4128-af2d-a10d2af9b5a3"),
+	// 				ClientID: to.Ptr("00000000-6328-4db2-0000-ab0e3e7806cf"),
+	// 				PrincipalID: to.Ptr("00000000-9208-4128-af2d-a10d2af9b5a3"),
 	// 			},
 	// 		},
 	// 	},
@@ -479,7 +479,7 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithUserAssignedManaged
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateMultiRegionServiceWithCustomHostname.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateMultiRegionServiceWithCustomHostname.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateMultiRegionServiceWithCustomHostname() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -650,7 +650,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateMultiRegionServ
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateService.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,15 +691,12 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateService() {
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
 	// 	Tags: map[string]*string{
-	// 		"Name": to.Ptr("Contoso"),
-	// 		"Test": to.Ptr("User"),
+	// 		"api-version": to.Ptr("2022-08-01"),
 	// 	},
-	// 	Etag: to.Ptr("AAAAAAAp3T4="),
-	// 	Location: to.Ptr("South Central US"),
+	// 	Etag: to.Ptr("AAAAAAAmREI="),
+	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armapimanagement.ServiceProperties{
-	// 		APIVersionConstraint: &armapimanagement.APIVersionConstraint{
-	// 		},
-	// 		CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-18T06:10:56.0327105Z"); return t}()),
+	// 		CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:01.2506031Z"); return t}()),
 	// 		CustomProperties: map[string]*string{
 	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": to.Ptr("False"),
 	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": to.Ptr("False"),
@@ -712,7 +709,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateService() {
 	// 		},
 	// 		DeveloperPortalURL: to.Ptr("https://apimService1.developer.azure-api.net"),
 	// 		DisableGateway: to.Ptr(false),
-	// 		GatewayRegionalURL: to.Ptr("https://apimService1-southcentralus-01.regional.azure-api.net"),
+	// 		GatewayRegionalURL: to.Ptr("https://apimService1-eastus-01.regional.azure-api.net"),
 	// 		GatewayURL: to.Ptr("https://apimService1.azure-api.net"),
 	// 		HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
 	// 			{
@@ -724,32 +721,34 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateService() {
 	// 		}},
 	// 		ManagementAPIURL: to.Ptr("https://apimService1.management.azure-api.net"),
 	// 		NotificationSenderEmail: to.Ptr("apimgmt-noreply@mail.windowsazure.com"),
+	// 		PlatformVersion: to.Ptr(armapimanagement.PlatformVersionStv1),
 	// 		PortalURL: to.Ptr("https://apimService1.portal.azure-api.net"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		PublicIPAddresses: []*string{
-	// 			to.Ptr("23.102.171.124")},
+	// 			to.Ptr("13.90.229.33")},
+	// 			PublicNetworkAccess: to.Ptr(armapimanagement.PublicNetworkAccessEnabled),
 	// 			ScmURL: to.Ptr("https://apimService1.scm.azure-api.net"),
 	// 			TargetProvisioningState: to.Ptr(""),
 	// 			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
-	// 			PublisherEmail: to.Ptr("foo@contoso.com"),
+	// 			PublisherEmail: to.Ptr("samir@microsoft.com"),
 	// 			PublisherName: to.Ptr("foo"),
 	// 		},
 	// 		SKU: &armapimanagement.ServiceSKUProperties{
-	// 			Name: to.Ptr(armapimanagement.SKUTypeDeveloper),
+	// 			Name: to.Ptr(armapimanagement.SKUTypeStandard),
 	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		SystemData: &armapimanagement.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceHavingMsi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceHavingMsi.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceHavingMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +801,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceHavingMs
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssigned),
 	// 		PrincipalID: to.Ptr("dfb9a757-df69-4966-a8d0-711a9cd8ffb4"),
-	// 		TenantID: to.Ptr("XXXXXX-86f1-41af-91ab-2d7cd011db47"),
+	// 		TenantID: to.Ptr("00000000-86f1-41af-91ab-2d7cd011db47"),
 	// 	},
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armapimanagement.ServiceProperties{
@@ -840,7 +839,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceHavingMs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceInVnetWithPublicIP.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceInVnetWithPublicIP.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInVnetWithPublicIp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -954,7 +953,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInVnetWi
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceInZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceInZones.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1059,7 +1058,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInZones(
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceWithCustomHostnameKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceWithCustomHostnameKeyVault.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithCustomHostnameKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,11 +1137,11 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithCust
 	// 	Etag: to.Ptr("AAAAAAAigjU="),
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
-	// 		TenantID: to.Ptr("f686d426-8d16-xxxx-xxxx-ab578e110ccd"),
+	// 		TenantID: to.Ptr("f686d426-8d16-0000-0000-ab578e110ccd"),
 	// 		UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armapimanagement.UserIdentityProperties{
 	// 				ClientID: to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
-	// 				PrincipalID: to.Ptr("15e769b2-xxxx-xxxx-xxxx-3fd9a923ac3a"),
+	// 				PrincipalID: to.Ptr("15e769b2-0000-0000-0000-3fd9a923ac3a"),
 	// 			},
 	// 		},
 	// 	},
@@ -1244,7 +1243,112 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithCust
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceWithSystemCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceWithNatGatewayEnabled.json
+func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithNatGatewayEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+			"tag3": to.Ptr("value3"),
+		},
+		Location: to.Ptr("East US"),
+		Properties: &armapimanagement.ServiceProperties{
+			NatGatewayState: to.Ptr(armapimanagement.NatGatewayStateEnabled),
+			PublisherEmail:  to.Ptr("apim@autorestsdk.com"),
+			PublisherName:   to.Ptr("autorestsdk"),
+		},
+		SKU: &armapimanagement.ServiceSKUProperties{
+			Name:     to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity: to.Ptr[int32](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ServiceResource = armapimanagement.ServiceResource{
+	// 	Name: to.Ptr("apimService1"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
+	// 	Tags: map[string]*string{
+	// 		"api-version": to.Ptr("2022-08-01"),
+	// 	},
+	// 	Etag: to.Ptr("AAAAAAAmREI="),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armapimanagement.ServiceProperties{
+	// 		APIVersionConstraint: &armapimanagement.APIVersionConstraint{
+	// 		},
+	// 		CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-26T18:41:01.2506031Z"); return t}()),
+	// 		CustomProperties: map[string]*string{
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": to.Ptr("false"),
+	// 			"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": to.Ptr("false"),
+	// 		},
+	// 		DeveloperPortalURL: to.Ptr("https://apimService1.developer.azure-api.net"),
+	// 		DisableGateway: to.Ptr(false),
+	// 		GatewayRegionalURL: to.Ptr("https://apimService1-eastus-01.regional.azure-api.net"),
+	// 		GatewayURL: to.Ptr("https://apimService1.azure-api.net"),
+	// 		HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
+	// 			{
+	// 				Type: to.Ptr(armapimanagement.HostnameTypeProxy),
+	// 				CertificateSource: to.Ptr(armapimanagement.CertificateSourceBuiltIn),
+	// 				DefaultSSLBinding: to.Ptr(true),
+	// 				HostName: to.Ptr("apimService1.azure-api.net"),
+	// 				NegotiateClientCertificate: to.Ptr(false),
+	// 		}},
+	// 		ManagementAPIURL: to.Ptr("https://apimService1.management.azure-api.net"),
+	// 		NatGatewayState: to.Ptr(armapimanagement.NatGatewayStateEnabled),
+	// 		NotificationSenderEmail: to.Ptr("apimgmt-noreply@mail.windowsazure.com"),
+	// 		OutboundPublicIPAddresses: []*string{
+	// 			to.Ptr("60.0.0.0/31")},
+	// 			PlatformVersion: to.Ptr(armapimanagement.PlatformVersionStv2),
+	// 			PortalURL: to.Ptr("https://apimService1.portal.azure-api.net"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicIPAddresses: []*string{
+	// 				to.Ptr("13.90.229.33")},
+	// 				PublicNetworkAccess: to.Ptr(armapimanagement.PublicNetworkAccessEnabled),
+	// 				ScmURL: to.Ptr("https://apimService1.scm.azure-api.net"),
+	// 				TargetProvisioningState: to.Ptr(""),
+	// 				VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
+	// 				PublisherEmail: to.Ptr("apim@autorestsdk.com"),
+	// 				PublisherName: to.Ptr("autorestsdk"),
+	// 			},
+	// 			SKU: &armapimanagement.ServiceSKUProperties{
+	// 				Name: to.Ptr(armapimanagement.SKUTypePremium),
+	// 				Capacity: to.Ptr[int32](1),
+	// 			},
+	// 			SystemData: &armapimanagement.SystemData{
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 				CreatedBy: to.Ptr("user@contoso.com"),
+	// 				CreatedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
+	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-11T18:41:00.9390609Z"); return t}()),
+	// 				LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 				LastModifiedByType: to.Ptr(armapimanagement.CreatedByTypeUser),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceWithSystemCertificates.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithSystemCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1361,7 +1465,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithSyst
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateServiceWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateServiceWithUserAssignedIdentity.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1416,11 +1520,11 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithUser
 	// 	Etag: to.Ptr("AAAAAAAFzyk="),
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
-	// 		TenantID: to.Ptr("XXXXX-86f1-41af-XXXX-2d7cd011db47"),
+	// 		TenantID: to.Ptr("00000000-86f1-41af-0000-2d7cd011db47"),
 	// 		UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("5a2c6b8e-0905-XXXX-a772-993c9418137f"),
-	// 				PrincipalID: to.Ptr("XXXXX-6e62-4649-9f54-a119fc1ba85e"),
+	// 				ClientID: to.Ptr("5a2c6b8e-0905-0000-a772-993c9418137f"),
+	// 				PrincipalID: to.Ptr("00000000-6e62-4649-9f54-a119fc1ba85e"),
 	// 			},
 	// 		},
 	// 	},
@@ -1468,7 +1572,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithUser
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUndelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUndelete.json
 func ExampleServiceClient_BeginCreateOrUpdate_apiManagementUndelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1551,7 +1655,7 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementUndelete() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
 func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceDisableTls10() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1620,7 +1724,7 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceDisableTls10() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServicePublisherDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServicePublisherDetails.json
 func ExampleServiceClient_BeginUpdate_apiManagementUpdateServicePublisherDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1688,7 +1792,7 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServicePublisherDetails
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceToNewVnetAndAZs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServiceToNewVnetAndAZs.json
 func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceToNewVnetAndAvailabilityZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1846,7 +1950,7 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceToNewVnetAndAvai
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
 func ExampleServiceClient_Get_apiManagementServiceGetMultiRegionInternalVnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1950,7 +2054,7 @@ func ExampleServiceClient_Get_apiManagementServiceGetMultiRegionInternalVnet() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetService.json
 func ExampleServiceClient_Get_apiManagementServiceGetService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2120,7 +2224,7 @@ func ExampleServiceClient_Get_apiManagementServiceGetService() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetServiceHavingMsi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetServiceHavingMsi.json
 func ExampleServiceClient_Get_apiManagementServiceGetServiceHavingMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2147,12 +2251,12 @@ func ExampleServiceClient_Get_apiManagementServiceGetServiceHavingMsi() {
 	// 	Etag: to.Ptr("AAAAAAAENfI="),
 	// 	Identity: &armapimanagement.ServiceIdentity{
 	// 		Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("ca1d33f7-xxxx-42ec-xxxx-d526a1ee953a"),
-	// 		TenantID: to.Ptr("72f988bf-xxxx-41af-xxxx-2d7cd011db47"),
+	// 		PrincipalID: to.Ptr("ca1d33f7-0000-42ec-0000-d526a1ee953a"),
+	// 		TenantID: to.Ptr("72f988bf-0000-41af-0000-2d7cd011db47"),
 	// 		UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 	// 			"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1": &armapimanagement.UserIdentityProperties{
-	// 				ClientID: to.Ptr("aaff9c7d-xxxx-4db2-xxxx-ab0e3e7806cf"),
-	// 				PrincipalID: to.Ptr("95194df2-9208-xxxx-xxxx-a10d2af9b5a3"),
+	// 				ClientID: to.Ptr("aaff9c7d-0000-4db2-0000-ab0e3e7806cf"),
+	// 				PrincipalID: to.Ptr("95194df2-9208-0000-0000-a10d2af9b5a3"),
 	// 			},
 	// 		},
 	// 	},
@@ -2216,7 +2320,7 @@ func ExampleServiceClient_Get_apiManagementServiceGetServiceHavingMsi() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceDeleteService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceDeleteService.json
 func ExampleServiceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2237,7 +2341,116 @@ func ExampleServiceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscriptionAndResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceMigrateToStv2.json
+func ExampleServiceClient_BeginMigrateToStv2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServiceClient().BeginMigrateToStv2(ctx, "rg1", "apimService1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ServiceResource = armapimanagement.ServiceResource{
+	// 	Name: to.Ptr("apimservice1"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimservice1"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Etag: to.Ptr("AAAAAADqC0c="),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armapimanagement.ServiceProperties{
+	// 		AdditionalLocations: []*armapimanagement.AdditionalLocation{
+	// 			{
+	// 				DisableGateway: to.Ptr(false),
+	// 				GatewayRegionalURL: to.Ptr("https://apimservice1-westus2-01.regional.azure-api.net"),
+	// 				Location: to.Ptr("West US 2"),
+	// 				PrivateIPAddresses: []*string{
+	// 					to.Ptr("10.0.X.6")},
+	// 					PublicIPAddresses: []*string{
+	// 						to.Ptr("40.XXX.79.187")},
+	// 						SKU: &armapimanagement.ServiceSKUProperties{
+	// 							Name: to.Ptr(armapimanagement.SKUTypePremium),
+	// 							Capacity: to.Ptr[int32](1),
+	// 						},
+	// 						VirtualNetworkConfiguration: &armapimanagement.VirtualNetworkConfiguration{
+	// 							SubnetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/APIMVNet/subnets/apim-internal-sub"),
+	// 						},
+	// 				}},
+	// 				APIVersionConstraint: &armapimanagement.APIVersionConstraint{
+	// 				},
+	// 				CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-02T01:42:09.1268424Z"); return t}()),
+	// 				CustomProperties: map[string]*string{
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": to.Ptr("False"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": to.Ptr("True"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": to.Ptr("True"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": to.Ptr("True"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": to.Ptr("False"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": to.Ptr("True"),
+	// 					"Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": to.Ptr("True"),
+	// 				},
+	// 				DeveloperPortalURL: to.Ptr("https://apimService1.developer.azure-api.net"),
+	// 				DisableGateway: to.Ptr(false),
+	// 				GatewayRegionalURL: to.Ptr("https://apimservice1-westus-01.regional.azure-api.net"),
+	// 				GatewayURL: to.Ptr("https://apimservice1.azure-api.net"),
+	// 				HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
+	// 					{
+	// 						Type: to.Ptr(armapimanagement.HostnameTypeProxy),
+	// 						CertificateSource: to.Ptr(armapimanagement.CertificateSourceBuiltIn),
+	// 						DefaultSSLBinding: to.Ptr(false),
+	// 						HostName: to.Ptr("apimService1.azure-api.net"),
+	// 						NegotiateClientCertificate: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armapimanagement.HostnameTypeProxy),
+	// 						Certificate: &armapimanagement.CertificateInformation{
+	// 							Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-16T16:51:34+00:00"); return t}()),
+	// 							Subject: to.Ptr("CN=*.preview.net"),
+	// 							Thumbprint: to.Ptr("B4330123DBAXXXXXXXXX1F35E84493476"),
+	// 						},
+	// 						CertificateSource: to.Ptr(armapimanagement.CertificateSourceCustom),
+	// 						DefaultSSLBinding: to.Ptr(true),
+	// 						HostName: to.Ptr("apimgatewaytest.preview.net"),
+	// 						NegotiateClientCertificate: to.Ptr(false),
+	// 				}},
+	// 				ManagementAPIURL: to.Ptr("https://apimservice1.management.azure-api.net"),
+	// 				NotificationSenderEmail: to.Ptr("apimgmt-noreply@mail.windowsazure.com"),
+	// 				PlatformVersion: to.Ptr(armapimanagement.PlatformVersionStv1),
+	// 				PortalURL: to.Ptr("https://apimservice1.portal.azure-api.net"),
+	// 				PrivateIPAddresses: []*string{
+	// 					to.Ptr("172.XX.0.5")},
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 					PublicIPAddresses: []*string{
+	// 						to.Ptr("137.XXX.11.74")},
+	// 						ScmURL: to.Ptr("https://apimservice1.scm.azure-api.net"),
+	// 						TargetProvisioningState: to.Ptr(""),
+	// 						VirtualNetworkConfiguration: &armapimanagement.VirtualNetworkConfiguration{
+	// 							SubnetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apim-appGateway-vnet/subnets/apim-subnet"),
+	// 						},
+	// 						VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeInternal),
+	// 						PublisherEmail: to.Ptr("abcs@contoso.com"),
+	// 						PublisherName: to.Ptr("contoso publisher"),
+	// 					},
+	// 					SKU: &armapimanagement.ServiceSKUProperties{
+	// 						Name: to.Ptr(armapimanagement.SKUTypePremium),
+	// 						Capacity: to.Ptr[int32](1),
+	// 					},
+	// 				}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListServiceBySubscriptionAndResourceGroup.json
 func ExampleServiceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2599,7 +2812,7 @@ func ExampleServiceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListServiceBySubscription.json
 func ExampleServiceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2961,7 +3174,7 @@ func ExampleServiceClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetSsoToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetSsoToken.json
 func ExampleServiceClient_GetSsoToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2984,7 +3197,7 @@ func ExampleServiceClient_GetSsoToken() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceCheckNameAvailability.json
 func ExampleServiceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3011,7 +3224,7 @@ func ExampleServiceClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetDomainOwnershipIdentifier.json
 func ExampleServiceClient_GetDomainOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3034,7 +3247,7 @@ func ExampleServiceClient_GetDomainOwnershipIdentifier() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
 func ExampleServiceClient_BeginApplyNetworkConfigurationUpdates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

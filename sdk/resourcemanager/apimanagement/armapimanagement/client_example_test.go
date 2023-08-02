@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
 func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 				Headers: []*armapimanagement.HTTPHeader{
 					{
 						Name:  to.Ptr("Authorization"),
-						Value: to.Ptr("Bearer myPreciousToken"),
+						Value: to.Ptr("******"),
 					}},
 				ValidStatusCodes: []*int64{
 					to.Ptr[int64](200),
@@ -92,7 +92,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheck.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheck.json
 func ExampleClient_BeginPerformConnectivityCheckAsync_tcpConnectivityCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

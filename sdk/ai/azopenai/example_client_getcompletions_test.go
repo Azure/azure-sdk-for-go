@@ -95,6 +95,8 @@ func ExampleClient_GetCompletionsStream() {
 		// TODO: handle error
 	}
 
+	defer resp.CompletionsStream.Close()
+
 	for {
 		entry, err := resp.CompletionsStream.Read()
 

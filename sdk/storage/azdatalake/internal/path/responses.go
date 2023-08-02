@@ -9,7 +9,6 @@ package path
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"net/http"
 	"time"
@@ -140,13 +139,13 @@ type GetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *azdatalake.DurationType
+	LeaseDuration *DurationType
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *azdatalake.StateType
+	LeaseState *StateType
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *azdatalake.StatusType
+	LeaseStatus *StatusType
 
 	// LegalHold contains the information returned from the x-ms-legal-hold header response.
 	LegalHold *bool

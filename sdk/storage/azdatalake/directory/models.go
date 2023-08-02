@@ -75,7 +75,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 
 // ===================================== PATH IMPORTS ===========================================
 
-// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation. TODO: Design formatter
+// SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
 type accessControlRecursiveOptions struct {
 	MaxResults *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.

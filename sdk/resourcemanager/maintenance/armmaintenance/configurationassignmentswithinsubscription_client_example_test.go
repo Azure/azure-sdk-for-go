@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ApplyUpdatesResourceGroup_List.json
-func ExampleApplyUpdateForResourceGroupClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ConfigurationAssignmentsResultWithinSubscription_List.json
+func ExampleConfigurationAssignmentsWithinSubscriptionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +28,7 @@ func ExampleApplyUpdateForResourceGroupClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewApplyUpdateForResourceGroupClient().NewListPager("examplerg", nil)
+	pager := clientFactory.NewConfigurationAssignmentsWithinSubscriptionClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,15 +39,15 @@ func ExampleApplyUpdateForResourceGroupClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ListApplyUpdate = armmaintenance.ListApplyUpdate{
-		// 	Value: []*armmaintenance.ApplyUpdate{
+		// page.ListConfigurationAssignmentsResult = armmaintenance.ListConfigurationAssignmentsResult{
+		// 	Value: []*armmaintenance.ConfigurationAssignment{
 		// 		{
-		// 			Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
-		// 			Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
-		// 			Properties: &armmaintenance.ApplyUpdateProperties{
+		// 			Name: to.Ptr("workervmConfiguration"),
+		// 			Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
+		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
+		// 			Properties: &armmaintenance.ConfigurationAssignmentProperties{
+		// 				MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 		// 				ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1"),
-		// 				Status: to.Ptr(armmaintenance.UpdateStatusCompleted),
 		// 			},
 		// 	}},
 		// }

@@ -10,14 +10,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"time"
 )
 import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
 // KeyInfo contains KeyInfo struct.
-type KeyInfo = generated.KeyInfo
+type KeyInfo = generated_blob.KeyInfo
 
 type CreateFilesystemOptions = filesystem.CreateOptions
 
@@ -47,15 +47,12 @@ type StaticWebsite = service.StaticWebsite
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
-// PublicAccessType defines values for AccessType - private (default) or file or filesystem.
-type PublicAccessType = filesystem.PublicAccessType
-
 // GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+func (o *GetUserDelegationCredentialOptions) format() *generated_blob.ServiceClientGetUserDelegationKeyOptions {
 	return nil
 }
 
@@ -127,16 +124,8 @@ type ListFilesystemsInclude struct {
 
 	// Tells the service whether to return soft-deleted filesystems.
 	Deleted bool
-}
 
-func (o *ListFilesystemsInclude) format() service.ListContainersInclude {
-	if o == nil {
-		return service.ListContainersInclude{}
-	}
-	return service.ListContainersInclude{
-		Metadata: o.Metadata,
-		Deleted:  o.Deleted,
-	}
+	System bool
 }
 
 // ListFilesystemsOptions contains the optional parameters for the Client.List method.
@@ -145,18 +134,6 @@ type ListFilesystemsOptions struct {
 	Marker     *string
 	MaxResults *int32
 	Prefix     *string
-}
-
-func (o *ListFilesystemsOptions) format() *service.ListContainersOptions {
-	if o == nil {
-		return nil
-	}
-	return &service.ListContainersOptions{
-		Include:    o.Include.format(),
-		Marker:     o.Marker,
-		MaxResults: o.MaxResults,
-		Prefix:     o.Prefix,
-	}
 }
 
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.

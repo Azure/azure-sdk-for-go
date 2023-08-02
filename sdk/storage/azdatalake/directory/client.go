@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -29,7 +30,7 @@ import (
 type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service.
-type Client base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]
+type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client]
 
 // NewClient creates an instance of Client with the specified values.
 //   - directoryURL - the URL of the directory e.g. https://<account>.dfs.core.windows.net/fs/dir
@@ -128,11 +129,14 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, dirPath, fsName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
+
+	dirPath = strings.ReplaceAll(dirPath, "\\", "/")
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName, dirPath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {
 		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)
@@ -146,31 +150,30 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 }
 
 func (d *Client) generatedDirClientWithDFS() *generated.PathClient {
-	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
-	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return dirClientWithDFS
 }
 
-func (d *Client) generatedDirClientWithBlob() *generated.PathClient {
-	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+func (d *Client) generatedDirClientWithBlob() *generated_blob.BlobClient {
+	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return dirClientWithBlob
 }
 
 func (d *Client) blobClient() *blockblob.Client {
-	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return blobClient
 }
 
 func (d *Client) getClientOptions() *base.ClientOptions {
-	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 func (d *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 func (d *Client) identityCredential() *azcore.TokenCredential {
-	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.
@@ -340,12 +343,12 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (f *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
-	if f.sharedKey() == nil {
+func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if d.sharedKey() == nil {
 		return "", datalakeerror.MissingSharedKeyCredential
 	}
 
-	urlParts, err := sas.ParseURL(f.BlobURL())
+	urlParts, err := sas.ParseURL(d.BlobURL())
 	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
@@ -360,14 +363,14 @@ func (f *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Tim
 		Permissions:    permissions.String(),
 		StartTime:      st,
 		ExpiryTime:     expiry.UTC(),
-	}.SignWithSharedKey(f.sharedKey())
+	}.SignWithSharedKey(d.sharedKey())
 
 	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := f.BlobURL() + "?" + qps.Encode()
+	endpoint := d.BlobURL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }

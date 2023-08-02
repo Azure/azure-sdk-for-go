@@ -73,12 +73,6 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
 }
 
-// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
-type DeleteOptions = path.DeleteOptions
-
-// RenameOptions contains the optional parameters when calling the Rename operation.
-type RenameOptions = path.RenameOptions
-
 // ===================================== PATH IMPORTS ===========================================
 
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation. TODO: Design formatter
@@ -104,16 +98,22 @@ func (o *accessControlRecursiveOptions) format(ACL, mode string) (generated.Path
 	return newMode, opts
 }
 
-// SetAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
+// SetAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type SetAccessControlRecursiveOptions = accessControlRecursiveOptions
 
-// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation. TODO: Design formatter
+// UpdateAccessControlRecursiveOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
 type UpdateAccessControlRecursiveOptions = accessControlRecursiveOptions
 
-// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation. TODO: Design formatter
+// RemoveAccessControlRecursiveOptions contains the optional parameters when calling the RemoveAccessControlRecursive operation.
 type RemoveAccessControlRecursiveOptions = accessControlRecursiveOptions
 
 // ================================= path imports ==================================
+
+// DeleteOptions contains the optional parameters when calling the Delete operation. dfs endpoint
+type DeleteOptions = path.DeleteOptions
+
+// RenameOptions contains the optional parameters when calling the Rename operation.
+type RenameOptions = path.RenameOptions
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions = path.GetPropertiesOptions

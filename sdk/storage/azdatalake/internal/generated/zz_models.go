@@ -20,14 +20,14 @@ type ACLFailedEntry struct {
 	Type         *string
 }
 
-type BlobHierarchyListSegment struct {
+type PathHierarchyListSegment struct {
 	// REQUIRED
-	BlobItems    []*BlobItemInternal `xml:"Blob"`
-	BlobPrefixes []*BlobPrefix       `xml:"BlobPrefix"`
+	PathItems    []*PathItemInternal `xml:"Blob"`
+	PathPrefixes []*PathPrefix       `xml:"PathPrefix"`
 }
 
-// BlobItemInternal - An Azure Storage blob
-type BlobItemInternal struct {
+// PathItemInternal - An Azure Storage blob
+type PathItemInternal struct {
 	// REQUIRED
 	Deleted *bool `xml:"Deleted"`
 
@@ -35,7 +35,7 @@ type BlobItemInternal struct {
 	Name *string `xml:"Name"`
 
 	// REQUIRED; Properties of a blob
-	Properties *BlobPropertiesInternal `xml:"Properties"`
+	Properties *PathPropertiesInternal `xml:"Properties"`
 
 	// REQUIRED
 	Snapshot         *string `xml:"Snapshot"`
@@ -44,13 +44,13 @@ type BlobItemInternal struct {
 	VersionID        *string `xml:"VersionId"`
 }
 
-type BlobPrefix struct {
+type PathPrefix struct {
 	// REQUIRED
 	Name *string `xml:"Name"`
 }
 
-// BlobPropertiesInternal - Properties of a blob
-type BlobPropertiesInternal struct {
+// PathPropertiesInternal - Properties of a blob
+type PathPropertiesInternal struct {
 	// REQUIRED
 	ETag *azcore.ETag `xml:"Etag"`
 
@@ -149,7 +149,7 @@ type FileSystemClientGetPropertiesOptions struct {
 // FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.NewListBlobHierarchySegmentPager
 // method.
 type FileSystemClientListBlobHierarchySegmentOptions struct {
-	// When the request includes this parameter, the operation returns a BlobPrefix element in the response body that acts as
+	// When the request includes this parameter, the operation returns a PathPrefix element in the response body that acts as
 	// a placeholder for all blobs whose names begin with the same substring up to the
 	// appearance of the delimiter character. The delimiter may be a single character or a string.
 	Delimiter *string
@@ -230,13 +230,13 @@ type LeaseAccessConditions struct {
 	LeaseID *string
 }
 
-// ListBlobsHierarchySegmentResponse - An enumeration of blobs
-type ListBlobsHierarchySegmentResponse struct {
+// ListPathsHierarchySegmentResponse - An enumeration of blobs
+type ListPathsHierarchySegmentResponse struct {
 	// REQUIRED
-	ContainerName *string `xml:"ContainerName,attr"`
+	FileSystemName *string `xml:"ContainerName,attr"`
 
 	// REQUIRED
-	Segment *BlobHierarchyListSegment `xml:"Blobs"`
+	Segment *PathHierarchyListSegment `xml:"Blobs"`
 
 	// REQUIRED
 	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`

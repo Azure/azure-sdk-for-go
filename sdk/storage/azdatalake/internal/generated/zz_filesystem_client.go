@@ -300,8 +300,8 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 }
 
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListBlobHierarchySegmentResponse, error) {
-	result := FileSystemClientListBlobHierarchySegmentResponse{}
+func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListPathHierarchySegmentResponse, error) {
+	result := FileSystemClientListPathHierarchySegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -317,12 +317,12 @@ func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *htt
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return FileSystemClientListBlobHierarchySegmentResponse{}, err
+			return FileSystemClientListPathHierarchySegmentResponse{}, err
 		}
 		result.Date = &date
 	}
-	if err := runtime.UnmarshalAsXML(resp, &result.ListBlobsHierarchySegmentResponse); err != nil {
-		return FileSystemClientListBlobHierarchySegmentResponse{}, err
+	if err := runtime.UnmarshalAsXML(resp, &result.ListPathsHierarchySegmentResponse); err != nil {
+		return FileSystemClientListPathHierarchySegmentResponse{}, err
 	}
 	return result, nil
 }

@@ -222,12 +222,3 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
-
-// PathList contains the path list
-type PathList = generated.PathList
-
-// Path contains the path properties
-type Path = generated.Path
-
-// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
-type UndeletePathResponse = generated.PathClientUndeleteResponse

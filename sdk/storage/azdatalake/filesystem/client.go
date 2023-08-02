@@ -143,7 +143,6 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 }
 
 func (fs *Client) generatedFSClientWithDFS() *generated.FileSystemClient {
-	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
 	fsClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.FileSystemClient, generated.FileSystemClient, container.Client])(fs))
 	return fsClientWithDFS
 }
@@ -300,17 +299,17 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				req, err = fs.generatedFSClientWithBlob().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
 				err = exported.ConvertToDFSError(err)
 			} else {
 				listOptions.Marker = page.NextMarker
-				req, err = fs.generatedFSClientWithDFS().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				req, err = fs.generatedFSClientWithBlob().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
 				err = exported.ConvertToDFSError(err)
 			}
 			if err != nil {
 				return ListDeletedPathsSegmentResponse{}, err
 			}
-			resp, err := fs.generatedFSClientWithDFS().InternalClient().Pipeline().Do(req)
+			resp, err := fs.generatedFSClientWithBlob().InternalClient().Pipeline().Do(req)
 			err = exported.ConvertToDFSError(err)
 			if err != nil {
 				return ListDeletedPathsSegmentResponse{}, err
@@ -318,7 +317,7 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return ListDeletedPathsSegmentResponse{}, runtime.NewResponseError(resp)
 			}
-			newResp, err := fs.generatedFSClientWithDFS().ListBlobHierarchySegmentHandleResponse(resp)
+			newResp, err := fs.generatedFSClientWithBlob().ListBlobHierarchySegmentHandleResponse(resp)
 			return newResp, exported.ConvertToDFSError(err)
 		},
 	})

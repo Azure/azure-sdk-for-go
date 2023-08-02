@@ -21,7 +21,19 @@ type SetAccessControlResponse = generated.PathClientSetAccessControlResponse
 // GetAccessControlResponse contains the response fields for the GetAccessControl operation.
 type GetAccessControlResponse = generated.PathClientGetPropertiesResponse
 
-// TODO: removed BlobSequenceNumber, BlobCommittedBlockCount and BlobType headers from the original response:
+// UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
+
+// RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
+
+// CreateResponse contains the response fields for the Create operation.
+type CreateResponse = generated.PathClientCreateResponse
+
+// DeleteResponse contains the response fields for the Delete operation.
+type DeleteResponse = generated.PathClientDeleteResponse
+
+// removed BlobSequenceNumber, BlobCommittedBlockCount and BlobType headers from the original response:
 
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse struct {

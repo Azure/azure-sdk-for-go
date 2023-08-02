@@ -11,26 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-// CreateResponse contains the response fields for the Create operation.
-type CreateResponse = generated.PathClientCreateResponse
-
-// DeleteResponse contains the response fields for the Delete operation.
-type DeleteResponse = generated.PathClientDeleteResponse
-
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse struct {
-	Response           generated.PathClientCreateResponse
+	Response           CreateResponse
 	NewDirectoryClient *Client
 }
 
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
 type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
-
-// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
-type UpdateAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
-
-// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
-type RemoveAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
 
 // ========================================== path imports ===========================================================
 
@@ -48,3 +36,15 @@ type GetPropertiesResponse = path.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse
+
+// CreateResponse contains the response fields for the Create operation.
+type CreateResponse = path.CreateResponse
+
+// DeleteResponse contains the response fields for the Delete operation.
+type DeleteResponse = path.DeleteResponse
+
+// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlRecursiveResponse = path.UpdateAccessControlResponse
+
+// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlRecursiveResponse = path.RemoveAccessControlResponse

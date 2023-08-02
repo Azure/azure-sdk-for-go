@@ -265,7 +265,7 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, 
 		}
 	}
 	if o.CPKScopeInfo != nil {
-		opts.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+		opts.CPKScopeInfo = o.CPKScopeInfo
 	}
 	return opts, o.Metadata
 }

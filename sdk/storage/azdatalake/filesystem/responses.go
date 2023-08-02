@@ -140,8 +140,29 @@ func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.Ge
 // ListPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
 type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
 
-// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
-type ListDeletedPathsSegmentResponse = generated.FileSystemClientListBlobHierarchySegmentResponse
+// PathList contains the path list
+type PathList = generated.PathList
 
-// ListBlobsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
-type ListBlobsHierarchySegmentResponse = generated.ListBlobsHierarchySegmentResponse
+// Path contains the path properties
+type Path = generated.Path
+
+// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+type UndeletePathResponse = generated.PathClientUndeleteResponse
+
+// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+type ListDeletedPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
+
+// ListPathsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResponse
+
+// PathHierarchyListSegment contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathHierarchyListSegment = generated.PathHierarchyListSegment
+
+// PathItem contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathItem = generated.PathItemInternal
+
+// PathProperties contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathProperties = generated.PathPropertiesInternal
+
+// PathPrefix contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathPrefix = generated.PathPrefix

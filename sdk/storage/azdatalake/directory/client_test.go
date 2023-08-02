@@ -59,6 +59,59 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
+func (s *UnrecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDatalake)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := directory.NewClientFromConnectionString(*connectionString, dirName, filesystemName, nil)
+
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+}
+
+func (s *RecordedTestSuite) TestBlobURLAndDFSURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	_require.Contains(dirClient.DFSURL(), ".dfs.core.windows.net/"+filesystemName+"/"+dirName)
+	_require.Contains(dirClient.BlobURL(), ".blob.core.windows.net/"+filesystemName+"/"+dirName)
+}
+
 func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

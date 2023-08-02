@@ -592,7 +592,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 
 			if *ctnr.Name == fsName {
@@ -653,7 +653,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 
 			if *ctnr.Name == fsName {
@@ -718,7 +718,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
 			count += 1
@@ -760,7 +760,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
-		for _, container := range resp.Filesystems {
+		for _, container := range resp.FileSystemItems {
 			count++
 			_require.NotNil(container.Name)
 		}

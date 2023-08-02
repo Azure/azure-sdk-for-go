@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -37,7 +38,7 @@ import (
 type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service.
-type Client base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]
+type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client]
 
 // NewClient creates an instance of Client with the specified values.
 //   - fileURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/fs/file.txt
@@ -154,30 +155,30 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 func (f *Client) generatedFileClientWithDFS() *generated.PathClient {
 	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
-	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return dirClientWithDFS
 }
 
-func (f *Client) generatedFileClientWithBlob() *generated.PathClient {
-	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+func (f *Client) generatedFileClientWithBlob() *generated_blob.BlobClient {
+	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return dirClientWithBlob
 }
 
 func (f *Client) blobClient() *blockblob.Client {
-	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 	return blobClient
 }
 
 func (f *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 }
 
 func (f *Client) identityCredential() *azcore.TokenCredential {
-	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 }
 
 func (f *Client) getClientOptions() *base.ClientOptions {
-	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(f))
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(f))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.

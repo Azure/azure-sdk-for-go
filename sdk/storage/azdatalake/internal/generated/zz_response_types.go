@@ -72,9 +72,9 @@ type FileSystemClientGetPropertiesResponse struct {
 	Version *string
 }
 
-// FileSystemClientListBlobHierarchySegmentResponse contains the response from method FileSystemClient.NewListBlobHierarchySegmentPager.
-type FileSystemClientListBlobHierarchySegmentResponse struct {
-	ListBlobsHierarchySegmentResponse
+// FileSystemClientListPathHierarchySegmentResponse contains the response from method FileSystemClient.NewListBlobHierarchySegmentPager.
+type FileSystemClientListPathHierarchySegmentResponse struct {
+	ListPathsHierarchySegmentResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`
 

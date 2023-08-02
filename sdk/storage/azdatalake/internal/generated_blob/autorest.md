@@ -469,7 +469,7 @@ directive:
         replace(/PublicAccessTypeContainer/g, 'PublicAccessTypeFileSystem').
         replace(/ContainerClientListBlobHierarchySegmentResponse/g, 'FileSystemClientListPathHierarchySegmentResponse').
         replace(/ListBlobsHierarchySegmentResponse/g, 'ListPathsHierarchySegmentResponse').
-        replace(/ContainerName\s*\*string/g, 'FileSystemName *string').
+        replace(/(^|[^"])ContainerName/g, '$1FilesystemName').
         replace(/BlobHierarchyListSegment/g, 'PathHierarchyListSegment').
         replace(/BlobItems/g, 'PathItems').
         replace(/BlobItem/g, 'PathItem').

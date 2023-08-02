@@ -38,7 +38,7 @@ func DoBatchTransfer(ctx context.Context, o *BatchTransferOptions) error {
 
 	// Prepare and do parallel operations.
 	operationChannel := make(chan func() error, o.Concurrency) // Create the channel that release 'concurrency' goroutines concurrently
-	operationResponseChannel := make(chan error, o.NumChunks) // Holds each response
+	operationResponseChannel := make(chan error, o.NumChunks)  // Holds each response
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 

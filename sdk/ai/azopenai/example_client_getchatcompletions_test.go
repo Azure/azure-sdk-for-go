@@ -229,11 +229,12 @@ func ExampleClient_GetChatCompletionsStream() {
 		// TODO: handle error
 	}
 
-	streamReader := resp.ChatCompletionsStream
+	defer resp.ChatCompletionsStream.Close()
+
 	gotReply := false
 
 	for {
-		chatCompletions, err := streamReader.Read()
+		chatCompletions, err := resp.ChatCompletionsStream.Read()
 
 		if errors.Is(err, io.EOF) {
 			break

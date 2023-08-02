@@ -164,6 +164,7 @@ func (p *QueryParameters) SignedCorrelationID() string {
 	return p.correlationID
 }
 
+// EncryptionScope returns encryptionScope
 func (p *QueryParameters) EncryptionScope() string {
 	return p.encryptionScope
 }

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 - ChatCompletionsOptions, CompletionsOptions, EmbeddingsOptions `DeploymentID` field renamed to `Deployment`.
+- Method `Close()` on `EventReader[T]` now returns an error.
 
 ### Bugs Fixed
 

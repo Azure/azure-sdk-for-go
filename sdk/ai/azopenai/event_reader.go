@@ -16,11 +16,11 @@ import (
 
 // EventReader streams events dynamically from an OpenAI endpoint.
 type EventReader[T any] struct {
-	reader  io.Reader // Required for Closing
+	reader  io.ReadCloser // Required for Closing
 	scanner *bufio.Scanner
 }
 
-func newEventReader[T any](r io.Reader) *EventReader[T] {
+func newEventReader[T any](r io.ReadCloser) *EventReader[T] {
 	return &EventReader[T]{reader: r, scanner: bufio.NewScanner(r)}
 }
 
@@ -56,8 +56,6 @@ func (er *EventReader[T]) Read() (T, error) {
 }
 
 // Close closes the EventReader and any applicable inner stream state.
-func (er *EventReader[T]) Close() {
-	if closer, ok := er.reader.(io.Closer); ok {
-		closer.Close()
-	}
+func (er *EventReader[T]) Close() error {
+	return er.reader.Close()
 }

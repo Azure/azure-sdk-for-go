@@ -20,7 +20,7 @@ func TestEventReader_InvalidType(t *testing.T) {
 	}
 
 	text := strings.NewReader(strings.Join(data, "\n"))
-	eventReader := newEventReader[ChatCompletions](text)
+	eventReader := newEventReader[ChatCompletions](io.NopCloser(text))
 
 	firstEvent, err := eventReader.Read()
 	require.Empty(t, firstEvent)
@@ -34,7 +34,7 @@ func (br badReader) Read(p []byte) (n int, err error) {
 }
 
 func TestEventReader_BadReader(t *testing.T) {
-	eventReader := newEventReader[ChatCompletions](badReader{})
+	eventReader := newEventReader[ChatCompletions](io.NopCloser(badReader{}))
 
 	firstEvent, err := eventReader.Read()
 	require.Empty(t, firstEvent)

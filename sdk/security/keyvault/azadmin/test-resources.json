@@ -317,6 +317,10 @@
         "AZURE_KEYVAULT_ATTESTATION_URL": {
             "type": "string",
             "value": "[format('https://{0}/', reference(variables('attestationSite')).defaultHostName)]"
+        },
+        "BLOB_CONTAINER_URL": {
+            "type": "string",
+            "value": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))).primaryEndpoints.blob, variables('blobContainerName'))]"
         }
     }
 }

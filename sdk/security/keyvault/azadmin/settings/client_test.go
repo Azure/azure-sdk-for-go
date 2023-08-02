@@ -122,6 +122,6 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	require.Nil(t, res.Value)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
+	require.Equal(t, "InvalidSetting", httpErr.ErrorCode)
 	require.Equal(t, 400, httpErr.StatusCode)
 }

@@ -9,7 +9,6 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"time"
 )
@@ -87,13 +86,13 @@ type GetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *azdatalake.DurationType
+	LeaseDuration *DurationType
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *azdatalake.StateType
+	LeaseState *StateType
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *azdatalake.StatusType
+	LeaseStatus *StatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string

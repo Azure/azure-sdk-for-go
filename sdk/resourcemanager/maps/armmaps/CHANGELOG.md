@@ -1,5 +1,27 @@
 # Release History
 
+## 1.0.0 (2023-08-02)
+### Breaking Changes
+
+- Type of `ManagedServiceIdentity.Type` has been changed from `*ResourceIdentityType` to `*ManagedServiceIdentityType`
+- Type of `ManagedServiceIdentity.UserAssignedIdentities` has been changed from `map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` to `map[string]*UserAssignedIdentity`
+- Enum `ResourceIdentityType` has been removed
+- Struct `Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties` has been removed
+
+### Features Added
+
+- New value `SigningKeyManagedIdentity` added to enum type `SigningKey`
+- New enum type `IdentityType` with values `IdentityTypeDelegatedResourceIdentity`, `IdentityTypeSystemAssignedIdentity`, `IdentityTypeUserAssignedIdentity`
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `CustomerManagedKeyEncryptionKeyIdentity`
+- New struct `Encryption`
+- New struct `UserAssignedIdentity`
+- New field `Encryption` in struct `AccountProperties`
+- New field `LockAggregationType`, `SourceMdmNamespace`, `SupportedAggregationTypes` in struct `MetricSpecification`
+
+
 ## 0.6.1 (2023-04-14)
 ### Bug Fixes
 

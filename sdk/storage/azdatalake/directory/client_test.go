@@ -224,7 +224,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceTrue() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -262,7 +262,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
+func (s *RecordedTestSuite) TestCreateDirIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -299,7 +299,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -337,7 +337,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithMetadataNotNil() {
+func (s *RecordedTestSuite) TestCreateDirWithMetadataNotNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -364,7 +364,7 @@ func (s *RecordedTestSuite) TestCreateFileWithMetadataNotNil() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithEmptyMetadata() {
+func (s *RecordedTestSuite) TestCreateDirWithEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -391,7 +391,7 @@ func (s *RecordedTestSuite) TestCreateFileWithEmptyMetadata() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
+func (s *RecordedTestSuite) TestCreateDirWithNilHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -418,7 +418,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithHTTPHeaders() {
+func (s *RecordedTestSuite) TestCreateDirWithHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -785,7 +785,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlNil() {
+func (s *RecordedTestSuite) TestDirSetAccessControlNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -812,7 +812,7 @@ func (s *RecordedTestSuite) TestSetAccessControlNil() {
 }
 
 // TODO: write test that fails if you provide permissions and acls
-func (s *RecordedTestSuite) TestSetAccessControl() {
+func (s *RecordedTestSuite) TestDirSetAccessControl() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -845,7 +845,7 @@ func (s *RecordedTestSuite) TestSetAccessControl() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetAccessControlWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -879,7 +879,7 @@ func (s *RecordedTestSuite) TestSetAccessControlWithNilAccessConditions() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -918,7 +918,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceTrue() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -958,7 +958,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -996,7 +996,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceTrue() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1038,7 +1038,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfETagMatch() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1077,7 +1077,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfETagMatch() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1116,7 +1116,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControl() {
+func (s *RecordedTestSuite) TestDirGetAccessControl() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1145,7 +1145,7 @@ func (s *RecordedTestSuite) TestGetAccessControl() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
+func (s *UnrecordedTestSuite) TestDirGetAccessControlWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1228,7 +1228,7 @@ func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirGetAccessControlWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1261,7 +1261,7 @@ func (s *RecordedTestSuite) TestGetAccessControlWithNilAccessConditions() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1299,7 +1299,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceTrue() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1337,7 +1337,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1374,7 +1374,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceTrue() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1414,7 +1414,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfETagMatch() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1452,7 +1452,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfETagMatch() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1491,7 +1491,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfETagMatchFalse() {
 
 ///=====================================================================
 
-func (s *RecordedTestSuite) TestUpdateAccessControlRecursive() {
+func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1528,7 +1528,7 @@ func (s *RecordedTestSuite) TestUpdateAccessControlRecursive() {
 	}
 }
 
-func (s *RecordedTestSuite) TestRemoveAccessControlRecursive() {
+func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1563,7 +1563,7 @@ func (s *RecordedTestSuite) TestRemoveAccessControlRecursive() {
 	}
 }
 
-func (s *RecordedTestSuite) TestSetMetadataNil() {
+func (s *RecordedTestSuite) TestDirSetMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1589,7 +1589,7 @@ func (s *RecordedTestSuite) TestSetMetadataNil() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithEmptyOpts() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithEmptyOpts() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1618,7 +1618,7 @@ func (s *RecordedTestSuite) TestSetMetadataWithEmptyOpts() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithBasicMetadata() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1647,7 +1647,7 @@ func (s *RecordedTestSuite) TestSetMetadataWithBasicMetadata() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1689,7 +1689,7 @@ func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Cl
 	_require.Equal(*resp.ContentDisposition, disposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeaders() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1714,7 +1714,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeaders() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1743,7 +1743,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersWithNilAccessConditions() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1777,7 +1777,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceTrue() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1811,7 +1811,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1845,7 +1845,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1879,7 +1879,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatch() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1912,7 +1912,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatch() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1946,7 +1946,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameNoOptions() {
+func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1972,7 +1972,7 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2002,7 +2002,7 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2037,7 +2037,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2072,7 +2072,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2107,7 +2107,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2142,7 +2142,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
+func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2177,7 +2177,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -435,7 +435,7 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
 }
 
-func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -451,7 +451,7 @@ func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetNilAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNilAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -467,7 +467,7 @@ func (s *RecordedTestSuite) TestSetNilAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -499,7 +499,7 @@ func (s *RecordedTestSuite) TestSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMultipleAccessPolicies() {
+func (s *RecordedTestSuite) TestFilesystemSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -551,7 +551,7 @@ func (s *RecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-func (s *RecordedTestSuite) TestSetNullAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1047,7 +1047,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse()
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *UnrecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
+func (s *UnrecordedTestSuite) TestFilesystemSetAccessPoliciesInDifferentTimeFormats() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1112,7 +1112,7 @@ func (s *UnrecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
 	_require.EqualValues(resp1.SignedIdentifiers, signedIdentifiers)
 }
 
-func (s *RecordedTestSuite) TestSetAccessPolicyWithNullId() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

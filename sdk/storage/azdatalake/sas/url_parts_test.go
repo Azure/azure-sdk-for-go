@@ -45,10 +45,10 @@ func TestParseURL(t *testing.T) {
 	testContainer := "fakecontainer"
 	fileNames := []string{"/._.TESTT.txt", "/.gitignore/dummyfile1"}
 
-	const sasStr = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
+	const sasStr = "?sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
 
 	for _, fileName := range fileNames {
-		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s", testStorageAccount, testContainer, fileName)
+		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s?%s", testStorageAccount, testContainer, fileName, sasStr)
 		blobURLParts, err := ParseURL(urlWithVersion)
 		require.NoError(t, err)
 
@@ -60,7 +60,7 @@ func TestParseURL(t *testing.T) {
 	}
 
 	for _, fileName := range fileNames {
-		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s", testStorageAccount, testContainer, fileName)
+		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s?%s", testStorageAccount, testContainer, fileName, sasStr)
 		blobURLParts, err := ParseURL(urlWithVersion)
 		require.NoError(t, err)
 

@@ -298,6 +298,14 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			return nil, err
 		}
 
+		if changelog.HasBreakingChanges() && isGenerateFake(packagePath) {
+			log.Printf("Replace fake module v2+...")
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
+				"fake", "_server.go"); err != nil {
+				return nil, err
+			}
+		}
+
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")

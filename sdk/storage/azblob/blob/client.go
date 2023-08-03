@@ -13,7 +13,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"

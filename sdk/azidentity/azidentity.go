@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -40,12 +41,12 @@ const (
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
-	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
 
 var (
 	// capability CP1 indicates the client application is capable of handling CAE claims challenges
-	cp1 = []string{"CP1"}
+	cp1                = []string{"CP1"}
+	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names")
 )
 
 type msalClientOptions struct {
@@ -125,6 +126,25 @@ func setAuthorityHost(cc cloud.Configuration) (string, error) {
 		return "", errors.New("cannot use an authority host without https")
 	}
 	return host, nil
+}
+
+// resolveTenant returns the correct tenant for a token request
+func resolveTenant(defaultTenant, specified, credName string, additionalTenants []string) (string, error) {
+	if specified == "" || specified == defaultTenant {
+		return defaultTenant, nil
+	}
+	if defaultTenant == "adfs" {
+		return "", errors.New("ADFS doesn't support tenants")
+	}
+	if !validTenantID(specified) {
+		return "", errInvalidTenantID
+	}
+	for _, t := range additionalTenants {
+		if t == "*" || t == specified {
+			return specified, nil
+		}
+	}
+	return "", fmt.Errorf(`%s isn't configured to acquire tokens for tenant %q. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to allow acquiring tokens for any tenant`, credName, specified)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

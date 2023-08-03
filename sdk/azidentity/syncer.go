@@ -86,21 +86,7 @@ func (s *syncer) GetToken(ctx context.Context, opts policy.TokenRequestOptions) 
 // resolveTenant returns the correct tenant for a token request given the credential's
 // configuration, or an error when the specified tenant isn't allowed by that configuration
 func (s *syncer) resolveTenant(requested string) (string, error) {
-	if requested == "" || requested == s.tenant {
-		return s.tenant, nil
-	}
-	if s.tenant == "adfs" {
-		return "", errors.New("ADFS doesn't support tenants")
-	}
-	if !validTenantID(requested) {
-		return "", errors.New(tenantIDValidationErr)
-	}
-	for _, t := range s.addlTenants {
-		if t == "*" || t == requested {
-			return requested, nil
-		}
-	}
-	return "", fmt.Errorf(`%s isn't configured to acquire tokens for tenant %q. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to allow acquiring tokens for any tenant`, s.name, requested)
+	return resolveTenant(s.tenant, requested, s.name, s.addlTenants)
 }
 
 // resolveAdditionalTenants returns a copy of tenants, simplified when tenants contains a wildcard

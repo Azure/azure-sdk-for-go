@@ -546,6 +546,59 @@ func TestClaims(t *testing.T) {
 	}
 }
 
+func TestResolveTenant(t *testing.T) {
+	credName := "testcred"
+	defaultTenant := "default-tenant"
+	otherTenant := "other-tenant"
+	for _, test := range []struct {
+		allowed          []string
+		expected, tenant string
+		expectError      bool
+	}{
+		// no alternate tenant specified -> should get default
+		{expected: defaultTenant},
+		{allowed: []string{""}, expected: defaultTenant},
+		{allowed: []string{"*"}, expected: defaultTenant},
+		{allowed: []string{otherTenant}, expected: defaultTenant},
+
+		// alternate tenant specified and allowed -> should get that tenant
+		{allowed: []string{"*"}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, otherTenant}, expected: otherTenant, tenant: otherTenant},
+		{allowed: []string{"not-" + otherTenant, "*"}, expected: otherTenant, tenant: otherTenant},
+
+		// invalid or not allowed tenant -> should get an error
+		{tenant: otherTenant, expectError: true},
+		{allowed: []string{""}, tenant: otherTenant, expectError: true},
+		{allowed: []string{defaultTenant}, tenant: otherTenant, expectError: true},
+		{tenant: badTenantID, expectError: true},
+		{allowed: []string{""}, tenant: badTenantID, expectError: true},
+		{allowed: []string{"*", badTenantID}, tenant: badTenantID, expectError: true},
+		{tenant: "invalid@tenant", expectError: true},
+		{tenant: "invalid/tenant", expectError: true},
+		{tenant: "invalid(tenant", expectError: true},
+		{tenant: "invalid:tenant", expectError: true},
+	} {
+		t.Run("", func(t *testing.T) {
+			tenant, err := resolveTenant(defaultTenant, test.tenant, credName, test.allowed)
+			if err != nil {
+				if test.expectError {
+					if validTenantID(test.tenant) && !strings.Contains(err.Error(), credName) {
+						t.Fatalf("expected error to contain %q, got %q", credName, err.Error())
+					}
+					return
+				}
+				t.Fatal(err)
+			} else if test.expectError {
+				t.Fatal("expected an error")
+			}
+			if tenant != test.expected {
+				t.Fatalf(`expected "%s", got "%s"`, test.expected, tenant)
+			}
+		})
+	}
+}
+
 // ==================================================================================================================================
 
 type fakeConfidentialClient struct {

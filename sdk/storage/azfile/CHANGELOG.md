@@ -4,10 +4,14 @@
 
 ### Features Added
 
-* Updated service version to STG 87(2022-11-02).
+* Updated service version to `2022-11-02`.
 * Added OAuth support.
 * Added [Rename Directory API](https://learn.microsoft.com/rest/api/storageservices/rename-directory).
 * Added [Rename File API](https://learn.microsoft.com/rest/api/storageservices/rename-file).
+* Added `x-ms-file-change-time` request header in
+  * Create File/Directory
+  * Set File/Directory Properties
+  * Copy File
 
 ### Breaking Changes
 

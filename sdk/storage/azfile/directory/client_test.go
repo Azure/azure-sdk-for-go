@@ -315,6 +315,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.NoError(err)
 	creationTime := currTime.Add(5 * time.Minute).Round(time.Microsecond)
 	lastWriteTime := currTime.Add(10 * time.Minute).Round(time.Millisecond)
+	changeTime := currTime.Add(15 * time.Minute).Round(time.Millisecond)
 
 	// Set the custom permissions
 	sResp, err := dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
@@ -325,6 +326,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 			},
 			CreationTime:  &creationTime,
 			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
 		},
 		FilePermissions: &file.Permissions{
 			Permission: &testcommon.SampleSDDL,
@@ -337,6 +339,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
 	_require.Equal(*sResp.FileCreationTime, creationTime.UTC())
 	_require.Equal(*sResp.FileLastWriteTime, lastWriteTime.UTC())
+	_require.Equal(*sResp.FileChangeTime, changeTime.UTC())
 
 	fileAttributes, err := file.ParseNTFSFileAttributes(sResp.FileAttributes)
 	_require.NoError(err)
@@ -353,6 +356,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.Equal(*gResp.FilePermissionKey, *sResp.FilePermissionKey)
 	_require.Equal(*gResp.FileCreationTime, *sResp.FileCreationTime)
 	_require.Equal(*gResp.FileLastWriteTime, *sResp.FileLastWriteTime)
+	_require.Equal(*gResp.FileChangeTime, *sResp.FileChangeTime)
 	_require.Equal(*gResp.FileAttributes, *sResp.FileAttributes)
 
 	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
@@ -388,6 +392,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 			Attributes:    &file.NTFSFileAttributes{None: true},
 			CreationTime:  to.Ptr(time.Now().Add(5 * time.Minute)),
 			LastWriteTime: to.Ptr(time.Now().Add(10 * time.Minute)),
+			ChangeTime:    to.Ptr(time.Now().Add(10 * time.Minute)),
 		},
 		FilePermissions: &file.Permissions{
 			Permission: &testcommon.SampleSDDL,
@@ -1259,6 +1264,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require.NoError(err)
 	creationTime := currTime.Add(5 * time.Minute).Round(time.Microsecond)
 	lastWriteTime := currTime.Add(10 * time.Minute).Round(time.Millisecond)
+	changeTime := currTime.Add(15 * time.Minute).Round(time.Millisecond)
 
 	// Set the custom permissions
 	sResp, err := dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
@@ -1269,6 +1275,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 			},
 			CreationTime:  &creationTime,
 			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
 		},
 		FilePermissions: &file.Permissions{
 			Permission: &testcommon.SampleSDDL,
@@ -1277,10 +1284,12 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require.NoError(err)
 	_require.NotNil(sResp.FileCreationTime)
 	_require.NotNil(sResp.FileLastWriteTime)
+	_require.NotNil(sResp.FileChangeTime)
 	_require.NotNil(sResp.FilePermissionKey)
 	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
 	_require.Equal(*sResp.FileCreationTime, creationTime.UTC())
 	_require.Equal(*sResp.FileLastWriteTime, lastWriteTime.UTC())
+	_require.Equal(*sResp.FileChangeTime, changeTime.UTC())
 
 	fileAttributes, err := file.ParseNTFSFileAttributes(sResp.FileAttributes)
 	_require.NoError(err)
@@ -1293,10 +1302,12 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require.NoError(err)
 	_require.NotNil(gResp.FileCreationTime)
 	_require.NotNil(gResp.FileLastWriteTime)
+	_require.NotNil(gResp.FileChangeTime)
 	_require.NotNil(gResp.FilePermissionKey)
 	_require.Equal(*gResp.FilePermissionKey, *sResp.FilePermissionKey)
 	_require.Equal(*gResp.FileCreationTime, *sResp.FileCreationTime)
 	_require.Equal(*gResp.FileLastWriteTime, *sResp.FileLastWriteTime)
+	_require.Equal(*gResp.FileChangeTime, *sResp.FileChangeTime)
 	_require.Equal(*gResp.FileAttributes, *sResp.FileAttributes)
 
 	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)

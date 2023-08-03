@@ -322,8 +322,6 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 
-	var lock sync.Mutex
-
 	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it

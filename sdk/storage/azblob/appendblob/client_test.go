@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -371,7 +372,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionScope() {
+func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -413,7 +414,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionSco
 	_require.Equal(*createResponse.EncryptionScope, encryptionScope)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionScopeAccount() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAccountEncryptionScopeSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -452,6 +453,66 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithEncryptionSco
 	_require.NoError(err)
 	_require.NotNil(createResp)
 	_require.Equal(*createResp.EncryptionScope, encryptionScope)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestGetUserDelegationEncryptionScopeSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	blobName := testcommon.GenerateBlobName("appendsrc")
+	blobClient := cntClientTokenCred.NewAppendBlobClient(blobName)
+
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	// get permissions and details for sas
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
+	permissions := sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true}
+
+	blobParts, _ := blob.ParseURL(blobClient.URL())
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	blobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:        sas.ProtocolHTTPS,
+		StartTime:       time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:      time.Now().UTC().Add(15 * time.Minute),
+		Permissions:     permissions.String(),
+		ContainerName:   containerName,
+		EncryptionScope: encryptionScope,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	blobURLWithSAS := blobParts.String()
+	blobClient, err = appendblob.NewClientWithNoCredential(blobURLWithSAS, nil)
+	_require.NoError(err)
+
+	createResp, err := blobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(createResp)
+	_require.Equal(*createResp.EncryptionScope, encryptionScope)
+
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {

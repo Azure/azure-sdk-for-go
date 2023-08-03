@@ -70,7 +70,8 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
-		v.EncryptionScope},
+		v.EncryptionScope,
+		""},
 		"\n")
 
 	signature, err := exported.ComputeHMACSHA256(sharedKeyCredential, stringToSign)

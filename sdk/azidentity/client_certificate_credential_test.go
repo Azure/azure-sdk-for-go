@@ -297,12 +297,6 @@ func TestClientCertificateCredential_Regional(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// regional STS returns an error for CP1
-	before := disableCP1
-	defer func() { disableCP1 = before }()
-	disableCP1 = true
-
 	cred, err := NewClientCertificateCredential(
 		liveSP.tenantID, liveSP.clientID, cert, key, &ClientCertificateCredentialOptions{SendCertificateChain: true, ClientOptions: opts},
 	)

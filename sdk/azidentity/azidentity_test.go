@@ -446,8 +446,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
-	realCP1 := disableCP1
-	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
 	for _, test := range []struct {
 		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
@@ -499,13 +497,12 @@ func TestClaims(t *testing.T) {
 			},
 		},
 	} {
-		for _, d := range []bool{true, false} {
+		for _, enableCAE := range []bool{true, false} {
 			name := test.name
-			if d {
-				name += " disableCP1"
+			if enableCAE {
+				name += " CAE"
 			}
 			t.Run(name, func(t *testing.T) {
-				disableCP1 = d
 				reqs := 0
 				sts := mockSTS{
 					tokenRequestCallback: func(r *http.Request) *http.Response {
@@ -513,14 +510,14 @@ func TestClaims(t *testing.T) {
 							t.Error(err)
 						}
 						reqs++
-						// If the disableCP1 flag isn't set, both requests should specify CP1. The second
-						// GetToken call specifies claims we should find in the following token request.
+						// Both requests should specify CP1 when CAE is enabled for the token.
 						// We check only for substrings because MSAL is responsible for formatting claims.
 						actual := fmt.Sprint(r.Form["claims"])
-						if strings.Contains(actual, "CP1") == disableCP1 {
+						if strings.Contains(actual, "CP1") != enableCAE {
 							t.Fatalf(`unexpected claims "%v"`, actual)
 						}
 						if reqs == 2 {
+							// the second GetToken call specifies claims we should find in the following token request
 							if !strings.Contains(strings.ReplaceAll(actual, " ", ""), claim) {
 								t.Fatalf(`unexpected claims "%v"`, actual)
 							}
@@ -533,10 +530,12 @@ func TestClaims(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+				tro := policy.TokenRequestOptions{EnableCAE: enableCAE, Scopes: []string{"A"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
-				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+				tro = policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), EnableCAE: enableCAE, Scopes: []string{"B"}}
+				if _, err = cred.GetToken(context.Background(), tro); err != nil {
 					t.Fatal(err)
 				}
 				if reqs != 2 {

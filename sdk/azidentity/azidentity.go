@@ -15,7 +15,6 @@ import (
 	"net/url"
 	"os"
 	"regexp"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -46,8 +45,7 @@ const (
 
 var (
 	// capability CP1 indicates the client application is capable of handling CAE claims challenges
-	cp1        = []string{"CP1"}
-	disableCP1 = strings.ToLower(os.Getenv("AZURE_IDENTITY_DISABLE_CP1")) == "true"
+	cp1 = []string{"CP1"}
 )
 
 type msalClientOptions struct {

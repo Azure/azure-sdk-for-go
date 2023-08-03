@@ -321,6 +321,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 
+	var lock sync.Mutex
+
 	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
@@ -369,7 +371,9 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 						progressLock.Unlock()
 					})
 			}
+			lock.Lock()
 			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
+			lock.Unlock()
 			if err != nil {
 				return err
 			}
@@ -612,7 +616,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.downloadFile(ctx, file, *do)
+		return b.downloadBuffer(ctx, file, *do)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

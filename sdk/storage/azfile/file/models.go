@@ -295,6 +295,9 @@ type CopyFileSMBInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
 	// to set on a target file.
 	Attributes CopyFileAttributes
+	// Specifies either the option to copy file change time from a source file(source) to a target file or a time value in
+	// ISO 8601 format to set as change time on a target file.
+	ChangeTime CopyFileChangeTime
 	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
 	// 8601 format to set as creation time on a target file.
 	CreationTime CopyFileCreationTime
@@ -331,6 +334,9 @@ func (c *CopyFileSMBInfo) format() *generated.CopyFileSMBInfo {
 	if c.LastWriteTime != nil {
 		opts.FileLastWriteTime = c.LastWriteTime.FormatLastWriteTime()
 	}
+	if c.ChangeTime != nil {
+		opts.FileChangeTime = c.ChangeTime.FormatChangeTime()
+	}
 
 	return opts
 }
@@ -344,6 +350,16 @@ type SourceCopyFileAttributes = exported.SourceCopyFileAttributes
 
 // DestinationCopyFileAttributes specifies a list of attributes to set on a target file.
 type DestinationCopyFileAttributes = exported.DestinationCopyFileAttributes
+
+// CopyFileChangeTime specifies either the option to copy file change time from a source file(source) to a target file or
+// a time value in ISO 8601 format to set as change time on a target file.
+type CopyFileChangeTime = exported.CopyFileChangeTime
+
+// SourceCopyFileChangeTime specifies to copy file change time from a source file(source) to a target file.
+type SourceCopyFileChangeTime = exported.SourceCopyFileChangeTime
+
+// DestinationCopyFileChangeTime specifies a time value in ISO 8601 format to set as change time on a target file.
+type DestinationCopyFileChangeTime = exported.DestinationCopyFileChangeTime
 
 // CopyFileCreationTime specifies either the option to copy file creation time from a source file(source) to a target file or
 // a time value in ISO 8601 format to set as creation time on a target file.

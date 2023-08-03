@@ -179,7 +179,7 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 }
 
 // enables fakes for test scenarios
-type confidentialClient interface {
+type msalConfidentialClient interface {
 	AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireSilentOption) (confidential.AuthResult, error)
 	AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireByAuthCodeOption) (confidential.AuthResult, error)
 	AcquireTokenByCredential(ctx context.Context, scopes []string, options ...confidential.AcquireByCredentialOption) (confidential.AuthResult, error)
@@ -187,7 +187,7 @@ type confidentialClient interface {
 }
 
 // enables fakes for test scenarios
-type publicClient interface {
+type msalPublicClient interface {
 	AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireSilentOption) (public.AuthResult, error)
 	AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string, options ...public.AcquireByUsernamePasswordOption) (public.AuthResult, error)
 	AcquireTokenByDeviceCode(ctx context.Context, scopes []string, options ...public.AcquireByDeviceCodeOption) (public.DeviceCode, error)

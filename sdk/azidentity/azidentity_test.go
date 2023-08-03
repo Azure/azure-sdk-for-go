@@ -591,7 +591,7 @@ func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, user
 	return f.returnResult()
 }
 
-var _ confidentialClient = (*fakeConfidentialClient)(nil)
+var _ msalConfidentialClient = (*fakeConfidentialClient)(nil)
 
 // ==================================================================================================================================
 
@@ -642,4 +642,4 @@ func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []
 	return f.returnResult()
 }
 
-var _ publicClient = (*fakePublicClient)(nil)
+var _ msalPublicClient = (*fakePublicClient)(nil)

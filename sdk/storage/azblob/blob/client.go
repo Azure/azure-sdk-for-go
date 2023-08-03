@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -371,9 +372,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 						progressLock.Unlock()
 					})
 			}
-			lock.Lock()
 			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
-			lock.Unlock()
 			if err != nil {
 				return err
 			}
@@ -389,7 +388,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 // downloadFile downloads an Azure blob to a Writer. The blocks are downloaded parallely,
 // but written to file serially
-func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadOptions) (int64, error) {
+func (b *Client) downloadFile(ctx context.Context, writer *os.File, o downloadOptions) (int64, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	if o.BlockSize == 0 {
@@ -476,10 +475,11 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	}
 
 	numChunks := uint16((count-1)/o.BlockSize) + 1
-	blocks := make([]chan []byte, numChunks)
+	blocks := make(chan func() error, numChunks + 1)
+	/*
 	for b := range blocks {
 		blocks[b] = make(chan []byte)
-	}
+	}*/
 
 	/*
 	 * We have created as many channels as the number of chunks we have.
@@ -492,13 +492,12 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	 */
 	writerError := make(chan error)
 	go func(ch chan error) {
-		for _, block := range blocks {
+		for block := range blocks {
 			select {
 			case <-ctx.Done():
 				return
-			case block := <-block:
-				_, err := writer.Write(block)
-				buffers.Release(block)
+			default:
+				err := block()
 				if err != nil {
 					ch <- err
 					return
@@ -533,8 +532,16 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 				return err
 			}
 
+			f := func() error { 
+				_ , err = writer.WriteAt(buff, chunkStart)
+				buffers.Release(buff)
+				return err
+			}
+			blocks <- f
+			/*
 			blockIndex := (chunkStart / o.BlockSize)
 			blocks[blockIndex] <- buff
+			*/
 			return nil
 		},
 	})
@@ -616,7 +623,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.downloadBuffer(ctx, file, *do)
+		return b.downloadFile(ctx, file, *do)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

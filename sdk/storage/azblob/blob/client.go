@@ -472,7 +472,7 @@ func (b *Client) downloadFile(ctx context.Context, writer *os.File, o downloadOp
 	}
 
 	numChunks := uint16((count-1)/o.BlockSize) + 1
-	blocks := make(chan func() error, numChunks + 1)
+	blocks := make(chan struct{b []byte; o int64}, numChunks + 1)
 	/*
 	for b := range blocks {
 		blocks[b] = make(chan []byte)
@@ -494,7 +494,7 @@ func (b *Client) downloadFile(ctx context.Context, writer *os.File, o downloadOp
 			case <-ctx.Done():
 				return
 			default:
-				err := block()
+				_, err := writer.WriteAt(block.b, block.o)
 				if err != nil {
 					ch <- err
 					return
@@ -529,12 +529,7 @@ func (b *Client) downloadFile(ctx context.Context, writer *os.File, o downloadOp
 				return err
 			}
 
-			f := func() error { 
-				_ , err = writer.WriteAt(buff, chunkStart)
-				buffers.Release(buff)
-				return err
-			}
-			blocks <- f
+			blocks <- struct {b []byte;o int64}{buff, chunkStart}
 			/*
 			blockIndex := (chunkStart / o.BlockSize)
 			blocks[blockIndex] <- buff

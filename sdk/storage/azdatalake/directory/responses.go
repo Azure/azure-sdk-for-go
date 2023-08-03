@@ -7,7 +7,6 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
@@ -17,11 +16,21 @@ type RenameResponse struct {
 	NewDirectoryClient *Client
 }
 
-// SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
-type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+type setAccessControlRecursiveResponse struct {
+	DirectoriesSuccessful *int32
+	FailureCount          *int32
+	FilesSuccessful       *int32
+	FailedEntries         []*ACLFailedEntry
+}
 
-// SetAccessControlRecursiveSegment contains segment fields for the SetAccessControlRecursive operation.
-type SetAccessControlRecursiveSegment = generated.SetAccessControlRecursiveResponse
+// SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
+type SetAccessControlRecursiveResponse = setAccessControlRecursiveResponse
+
+// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlRecursiveResponse = setAccessControlRecursiveResponse
+
+// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlRecursiveResponse = setAccessControlRecursiveResponse
 
 // ========================================== path imports ===========================================================
 
@@ -45,9 +54,3 @@ type CreateResponse = path.CreateResponse
 
 // DeleteResponse contains the response fields for the Delete operation.
 type DeleteResponse = path.DeleteResponse
-
-// UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
-type UpdateAccessControlRecursiveResponse = path.UpdateAccessControlResponse
-
-// RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
-type RemoveAccessControlRecursiveResponse = path.RemoveAccessControlResponse

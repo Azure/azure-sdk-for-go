@@ -135,6 +135,36 @@ func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	_require.NotNil(resp)
 }
 
+func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1544,6 +1574,229 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 
 ///=====================================================================
 
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.SetAccessControlRecursive(acl, nil)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetAccessControlRecursiveOptions{}
+	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(2)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(2)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
 func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1569,16 +1822,14 @@ func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	pager := dirClient.NewUpdateAccessControlRecursivePager(acl1, nil)
+	resp1, err := dirClient.UpdateAccessControlRecursive(acl1, nil)
+	_require.Nil(err)
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 
-	for pager.More() {
-		resp1, err := pager.NextPage(context.Background())
-		_require.Nil(err)
-		_require.Equal(*resp1.SetAccessControlRecursiveResponse.DirectoriesSuccessful, int32(1))
-		if err != nil {
-			break
-		}
-	}
+	resp2, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl1, *resp2.ACL)
+
 }
 
 func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
@@ -1604,16 +1855,9 @@ func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	pager := dirClient.NewRemoveAccessControlRecursivePager(acl, nil)
-
-	for pager.More() {
-		resp1, err := pager.NextPage(context.Background())
-		_require.Nil(err)
-		_require.Equal(*resp1.SetAccessControlRecursiveResponse.DirectoriesSuccessful, int32(1))
-		if err != nil {
-			break
-		}
-	}
+	resp1, err := dirClient.RemoveAccessControlRecursive(acl, nil)
+	_require.Nil(err)
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 }
 
 func (s *RecordedTestSuite) TestDirSetMetadataNil() {

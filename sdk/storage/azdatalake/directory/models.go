@@ -7,6 +7,7 @@
 package directory
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
@@ -77,7 +78,10 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 
 // SetAccessControlRecursiveOptions contains the optional parameters when calling the SetAccessControlRecursive operation.
 type accessControlRecursiveOptions struct {
-	MaxResults *int32
+	// Max batch size is 2000 paths
+	BatchSize *int32
+	// Number of recursive calls to be made to set access control
+	MaxBatches *int32
 	// ContinueOnFailure indicates whether to continue on failure when the operation encounters an error.
 	ContinueOnFailure *bool
 	// Marker is the continuation token to use when continuing the operation.
@@ -85,16 +89,22 @@ type accessControlRecursiveOptions struct {
 }
 
 func (o *accessControlRecursiveOptions) format(ACL, mode string) (generated.PathSetAccessControlRecursiveMode, *generated.PathClientSetAccessControlRecursiveOptions) {
+	defaultMaxBatches := to.Ptr(int32(-1))
+	defaultForceFlag := to.Ptr(false)
 	opts := &generated.PathClientSetAccessControlRecursiveOptions{
 		ACL: &ACL,
 	}
 	newMode := generated.PathSetAccessControlRecursiveMode(mode)
-	if o == nil {
-		return newMode, opts
+	if o.ContinueOnFailure == nil {
+		opts.ForceFlag = defaultForceFlag
+	} else {
+		opts.ForceFlag = o.ContinueOnFailure
 	}
-	opts.ForceFlag = o.ContinueOnFailure
 	opts.Continuation = o.Marker
-	opts.MaxRecords = o.MaxResults
+	opts.MaxRecords = o.BatchSize
+	if o.MaxBatches == nil {
+		o.MaxBatches = defaultMaxBatches
+	}
 	return newMode, opts
 }
 

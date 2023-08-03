@@ -11,8 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -186,7 +188,27 @@ func (d *Client) BlobURL() string {
 	return d.generatedDirClientWithBlob().Endpoint()
 }
 
-//TODO: create method to get file client - this will require block blob to have a method to get another block blob
+// NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
+// The new file.Client uses the same request policy pipeline as the Client.
+func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
+	fileName = url.PathEscape(fileName)
+	fileURL := runtime.JoinPaths(d.DFSURL(), fileName)
+	newBlobURL, fileURL := shared.GetURLs(fileURL)
+	var newBlobClient *blockblob.Client
+	var err error
+	if d.identityCredential() != nil {
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
+	} else if d.sharedKey() != nil {
+		blobSharedKey, _ := d.sharedKey().ConvertToBlobSharedKey()
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+	} else {
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+	}
+	if err != nil {
+		return nil, exported.ConvertToDFSError(err)
+	}
+	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
+}
 
 // Create creates a new directory (dfs1).
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
@@ -263,12 +285,12 @@ func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	return resp, err
 }
 
-func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SetAccessControlRecursiveResponse]{
-		More: func(page SetAccessControlRecursiveResponse) bool {
+func (d *Client) setAccessControlPager(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions) *runtime.Pager[generated.PathClientSetAccessControlRecursiveResponse] {
+	return runtime.NewPager(runtime.PagingHandler[generated.PathClientSetAccessControlRecursiveResponse]{
+		More: func(page generated.PathClientSetAccessControlRecursiveResponse) bool {
 			return page.Continuation != nil && len(*page.Continuation) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SetAccessControlRecursiveResponse) (SetAccessControlRecursiveResponse, error) {
+		Fetcher: func(ctx context.Context, page *generated.PathClientSetAccessControlRecursiveResponse) (generated.PathClientSetAccessControlRecursiveResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -280,15 +302,15 @@ func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecur
 				err = exported.ConvertToDFSError(err)
 			}
 			if err != nil {
-				return SetAccessControlRecursiveResponse{}, err
+				return generated.PathClientSetAccessControlRecursiveResponse{}, err
 			}
 			resp, err := d.generatedDirClientWithDFS().InternalClient().Pipeline().Do(req)
 			err = exported.ConvertToDFSError(err)
 			if err != nil {
-				return SetAccessControlRecursiveResponse{}, err
+				return generated.PathClientSetAccessControlRecursiveResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
+				return generated.PathClientSetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
 			}
 			newResp, err := d.generatedDirClientWithDFS().SetAccessControlRecursiveHandleResponse(resp)
 			return newResp, exported.ConvertToDFSError(err)
@@ -297,22 +319,61 @@ func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecur
 
 }
 
-// NewSetAccessControlRecursivePager sets the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewSetAccessControlRecursivePager(ACL string, options *SetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
+func (d *Client) setAccessControlRecursiveHelper(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	pager := d.setAccessControlPager(mode, listOptions)
+	counter := *options.MaxBatches
+	continueOnFailure := listOptions.ForceFlag
+	totalSuccessfulDirs := int32(0)
+	totalSuccessfulFiles := int32(0)
+	totalFailureCount := int32(0)
+	finalResponse := SetAccessControlRecursiveResponse{
+		DirectoriesSuccessful: &totalSuccessfulDirs,
+		FilesSuccessful:       &totalSuccessfulFiles,
+		FailureCount:          &totalFailureCount,
+		FailedEntries:         []*ACLFailedEntry{},
+	}
+	for pager.More() && counter != 0 {
+		resp, err := pager.NextPage(context.Background())
+		if err != nil {
+			return finalResponse, exported.ConvertToDFSError(err)
+		}
+		finalResponse.DirectoriesSuccessful = to.Ptr(*finalResponse.DirectoriesSuccessful + *resp.DirectoriesSuccessful)
+		finalResponse.FilesSuccessful = to.Ptr(*finalResponse.FilesSuccessful + *resp.FilesSuccessful)
+		finalResponse.FailureCount = to.Ptr(*finalResponse.FailureCount + *resp.FailureCount)
+		finalResponse.FailedEntries = append(finalResponse.FailedEntries, resp.FailedEntries...)
+		counter = counter - 1
+		if !*continueOnFailure && *resp.FailureCount > 0 {
+			return finalResponse, exported.ConvertToDFSError(err)
+		}
+	}
+	return finalResponse, nil
+}
+
+// SetAccessControlRecursive sets the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) SetAccessControlRecursive(ACL string, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &SetAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "set")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// NewUpdateAccessControlRecursivePager updates the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewUpdateAccessControlRecursivePager(ACL string, options *UpdateAccessControlRecursiveOptions) *runtime.Pager[UpdateAccessControlRecursiveResponse] {
+// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) UpdateAccessControlRecursive(ACL string, options *UpdateAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &UpdateAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "modify")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// NewRemoveAccessControlRecursivePager removes the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewRemoveAccessControlRecursivePager(ACL string, options *RemoveAccessControlRecursiveOptions) *runtime.Pager[RemoveAccessControlRecursiveResponse] {
+// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) RemoveAccessControlRecursive(ACL string, options *RemoveAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &RemoveAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "remove")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a directory (dfs1).

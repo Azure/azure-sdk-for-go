@@ -209,6 +209,7 @@ func CreateNewFilesystem(ctx context.Context, _require *require.Assertions, file
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return fsClient
 }
+
 func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {
 		options = &service.ClientOptions{}

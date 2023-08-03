@@ -71,7 +71,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		string(v.Protocol),
 		v.Version,
 		v.EncryptionScope,
-		""},
+		""}, // That is right, the account SAS requires a terminating extra newline
 		"\n")
 
 	signature, err := exported.ComputeHMACSHA256(sharedKeyCredential, stringToSign)

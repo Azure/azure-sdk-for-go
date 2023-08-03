@@ -1607,6 +1607,36 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursive() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithBadContinuation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetAccessControlRecursiveOptions{Marker: to.Ptr("garbage")}
+	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+}
+
 func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithEmptyOpts() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

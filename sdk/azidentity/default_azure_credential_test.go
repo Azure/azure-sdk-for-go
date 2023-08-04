@@ -32,7 +32,7 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	c := cred.chain.sources[0].(*EnvironmentCredential)
-	c.cred.(*ClientSecretCredential).client = fakeConfidentialClient{}
+	c.cred.(*ClientSecretCredential).client.noCAE = fakeConfidentialClient{}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"scope"}})
 	if err != nil {
 		t.Fatalf("GetToken error: %v", err)

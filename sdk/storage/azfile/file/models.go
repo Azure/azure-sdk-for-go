@@ -540,6 +540,8 @@ type UploadRangeOptions struct {
 	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// LastWrittenMode specifies if the file last write time should be preserved or overwritten.
+	LastWrittenMode *LastWrittenMode
 }
 
 func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (string, int64, *generated.FileClientUploadRangeOptions, *generated.LeaseAccessConditions, error) {
@@ -570,6 +572,7 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions
+		uploadRangeOptions.FileLastWrittenMode = o.LastWrittenMode
 	}
 	if o != nil && o.TransactionalValidation != nil {
 		_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
@@ -612,6 +615,8 @@ type UploadRangeFromURLOptions struct {
 	SourceContentCRC64             uint64
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	LeaseAccessConditions          *LeaseAccessConditions
+	// LastWrittenMode specifies if the file last write time should be preserved or overwritten.
+	LastWrittenMode *LastWrittenMode
 }
 
 func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset int64, count int64) (string, *generated.FileClientUploadRangeFromURLOptions, *generated.SourceModifiedAccessConditions, *generated.LeaseAccessConditions, error) {
@@ -635,6 +640,7 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 
 	if o != nil {
 		opts.CopySourceAuthorization = o.CopySourceAuthorization
+		opts.FileLastWrittenMode = o.LastWrittenMode
 		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
 		leaseAccessConditions = o.LeaseAccessConditions
 

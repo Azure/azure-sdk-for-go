@@ -12,6 +12,7 @@
   * Create File/Directory
   * Set File/Directory Properties
   * Copy File
+* Added `x-ms-file-last-write-time` request header in Put Range and Put Range from URL.
 
 ### Breaking Changes
 

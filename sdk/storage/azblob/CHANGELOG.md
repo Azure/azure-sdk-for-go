@@ -7,7 +7,7 @@
 * Added `CopySourceTag` option for `UploadBlobFromURLOptions`
 * Added [FilterBlobs](https://learn.microsoft.com/rest/api/storageservices/find-blobs-by-tags-container) by tags API for container client.
 * Added `System` option to `ListContainersInclude` to allow listing of system containers.
-* Updated the SAS Version to `2020-12-06` and added `Encryption Scope` to Account SAS, Blob SAS, and User Delegation SAS 
+* Updated the SAS Version to `2021-12-02` and added `Encryption Scope` to Account SAS, Service SAS, and User Delegation SAS 
 
 ### Breaking Changes
 

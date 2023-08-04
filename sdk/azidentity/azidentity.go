@@ -49,60 +49,6 @@ var (
 	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names")
 )
 
-type msalClientOptions struct {
-	azcore.ClientOptions
-
-	DisableInstanceDiscovery bool
-	// SendX5C applies only to confidential clients authenticating with a cert
-	SendX5C bool
-}
-
-var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, opts msalClientOptions) (confidentialClient, error) {
-	if !validTenantID(tenantID) {
-		return confidential.Client{}, errors.New(tenantIDValidationErr)
-	}
-	authorityHost, err := setAuthorityHost(opts.Cloud)
-	if err != nil {
-		return confidential.Client{}, err
-	}
-	authority := runtime.JoinPaths(authorityHost, tenantID)
-	o := []confidential.Option{
-		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
-		confidential.WithHTTPClient(newPipelineAdapter(&opts.ClientOptions)),
-	}
-	if !disableCP1 {
-		o = append(o, confidential.WithClientCapabilities(cp1))
-	}
-	if opts.SendX5C {
-		o = append(o, confidential.WithX5C())
-	}
-	if opts.DisableInstanceDiscovery || strings.ToLower(tenantID) == "adfs" {
-		o = append(o, confidential.WithInstanceDiscovery(false))
-	}
-	return confidential.New(authority, clientID, cred, o...)
-}
-
-var getPublicClient = func(clientID, tenantID string, opts msalClientOptions) (public.Client, error) {
-	if !validTenantID(tenantID) {
-		return public.Client{}, errors.New(tenantIDValidationErr)
-	}
-	authorityHost, err := setAuthorityHost(opts.Cloud)
-	if err != nil {
-		return public.Client{}, err
-	}
-	o := []public.Option{
-		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		public.WithHTTPClient(newPipelineAdapter(&opts.ClientOptions)),
-	}
-	if !disableCP1 {
-		o = append(o, public.WithClientCapabilities(cp1))
-	}
-	if opts.DisableInstanceDiscovery || strings.ToLower(tenantID) == "adfs" {
-		o = append(o, public.WithInstanceDiscovery(false))
-	}
-	return public.New(clientID, o...)
-}
-
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 //  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
 //  2. value of AZURE_AUTHORITY_HOST

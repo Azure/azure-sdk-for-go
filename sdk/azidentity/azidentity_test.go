@@ -496,6 +496,17 @@ func TestClaims(t *testing.T) {
 				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
 			},
 		},
+		{
+			name: credNameWorkloadIdentity,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				tokenFile := filepath.Join(t.TempDir(), "token")
+				if err := os.WriteFile(tokenFile, []byte(tokenValue), os.ModePerm); err != nil {
+					t.Fatalf("failed to write token file: %v", err)
+				}
+				o := WorkloadIdentityCredentialOptions{ClientID: fakeClientID, ClientOptions: co, TenantID: fakeTenantID, TokenFilePath: tokenFile}
+				return NewWorkloadIdentityCredential(&o)
+			},
+		},
 	} {
 		for _, enableCAE := range []bool{true, false} {
 			name := test.name

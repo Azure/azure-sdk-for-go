@@ -420,7 +420,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			called := false
 			for _, source := range c.chain.sources {
 				if cli, ok := source.(*AzureCLICredential); ok {
-					cli.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+					cli.opts.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
 						called = true
 						if tenantID != test.expected {
 							t.Fatalf(`unexpected tenantID "%s"`, tenantID)

@@ -17,10 +17,12 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -53,8 +55,8 @@ func (o *AzureCLICredentialOptions) init() {
 
 // AzureCLICredential authenticates as the identity logged in to the Azure CLI.
 type AzureCLICredential struct {
-	s             *syncer
-	tokenProvider azureCLITokenProvider
+	mu   *sync.Mutex
+	opts AzureCLICredentialOptions
 }
 
 // NewAzureCLICredential constructs an AzureCLICredential. Pass nil to accept default options.
@@ -64,15 +66,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 		cp = *options
 	}
 	cp.init()
-	c := AzureCLICredential{tokenProvider: cp.tokenProvider}
-	c.s = newSyncer(
-		credNameAzureCLI,
-		cp.TenantID,
-		c.requestToken,
-		nil, // this credential doesn't have a silent auth method because the CLI handles caching
-		syncerOptions{AdditionallyAllowedTenants: cp.AdditionallyAllowedTenants},
-	)
-	return &c, nil
+	return &AzureCLICredential{mu: &sync.Mutex{}, opts: cp}, nil
 }
 
 // GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
@@ -81,13 +75,15 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	if len(opts.Scopes) != 1 {
 		return azcore.AccessToken{}, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
-	// CLI expects an AAD v1 resource, not a v2 scope
+	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureCLI, c.opts.AdditionallyAllowedTenants)
+	if err != nil {
+		return azcore.AccessToken{}, err
+	}
+	// pass the CLI an AAD v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
-	return c.s.GetToken(ctx, opts)
-}
-
-func (c *AzureCLICredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	b, err := c.tokenProvider(ctx, opts.Scopes[0], opts.TenantID)
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	b, err := c.opts.tokenProvider(ctx, opts.Scopes[0], tenant)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -95,6 +91,8 @@ func (c *AzureCLICredential) requestToken(ctx context.Context, opts policy.Token
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
+	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzureCLI, strings.Join(opts.Scopes, ", "))
+	log.Write(EventAuthentication, msg)
 	return at, nil
 }
 

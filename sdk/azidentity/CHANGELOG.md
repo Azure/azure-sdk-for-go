@@ -10,6 +10,8 @@
 ### Features Added
 * Service principal credentials can request CAE tokens
 
+- [[21328]](https://github.com/Azure/azure-dev/pull/21328) Add Azure Developer CLI credential
+
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.4.0-beta.4
 * Whether `GetToken` requests a CAE token is now determined by `TokenRequestOptions.EnableCAE`. Azure

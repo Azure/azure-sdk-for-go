@@ -32,7 +32,6 @@ type AccountSignatureValues struct {
 	Permissions     string    `param:"sp"`  // Create by initializing AccountPermissions and then call String()
 	IPRange         IPRange   `param:"sip"`
 	ResourceTypes   string    `param:"srt"` // Create by initializing AccountResourceTypes and then call String()
-	Identifier      string    `param:"si"`
 	EncryptionScope string    `param:"ses"`
 }
 

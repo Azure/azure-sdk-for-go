@@ -104,9 +104,9 @@ var getPublicClient = func(clientID, tenantID string, opts msalClientOptions) (p
 }
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
-// 1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
-// 2. value of AZURE_AUTHORITY_HOST
-// 3. default: Azure Public Cloud
+//  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
+//  2. value of AZURE_AUTHORITY_HOST
+//  3. default: Azure Public Cloud
 func setAuthorityHost(cc cloud.Configuration) (string, error) {
 	host := cc.ActiveDirectoryAuthorityHost
 	if host == "" {

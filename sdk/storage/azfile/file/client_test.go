@@ -2565,6 +2565,58 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() 
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)
 }
 
+func (f *FileRecordedTestsSuite) TestFileUploadRangeLastWrittenModePreserve() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := fClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	contentR, _ := testcommon.GenerateData(2048)
+
+	// Upload range with correct transactional MD5
+	pResp, err := fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		LastWrittenMode: to.Ptr(file.LastWrittenModePreserve),
+	})
+	_require.NoError(err)
+	_require.NotNil(pResp.FileLastWriteTime)
+	_require.EqualValues(*pResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadRangeLastWrittenModeNow() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := fClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	contentR, _ := testcommon.GenerateData(2048)
+
+	// Upload range with correct transactional MD5
+	pResp, err := fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		LastWrittenMode: to.Ptr(file.LastWrittenModeNow),
+	})
+	_require.NoError(err)
+	_require.NotNil(pResp.FileLastWriteTime)
+	_require.NotEqualValues(*pResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
 // Testings for GetRangeList and ClearRange
 func (f *FileRecordedTestsSuite) TestGetRangeListNonDefaultExact() {
 	_require := require.New(f.T())

@@ -10,7 +10,7 @@ package armstorage
 
 const (
 	moduleName    = "armstorage"
-	moduleVersion = "v1.4.0-beta.2"
+	moduleVersion = "v1.4.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
@@ -161,6 +161,7 @@ func PossibleBypassValues() []Bypass {
 type CorsRuleAllowedMethodsItem string
 
 const (
+	CorsRuleAllowedMethodsItemCONNECT CorsRuleAllowedMethodsItem = "CONNECT"
 	CorsRuleAllowedMethodsItemDELETE  CorsRuleAllowedMethodsItem = "DELETE"
 	CorsRuleAllowedMethodsItemGET     CorsRuleAllowedMethodsItem = "GET"
 	CorsRuleAllowedMethodsItemHEAD    CorsRuleAllowedMethodsItem = "HEAD"
@@ -169,11 +170,13 @@ const (
 	CorsRuleAllowedMethodsItemPATCH   CorsRuleAllowedMethodsItem = "PATCH"
 	CorsRuleAllowedMethodsItemPOST    CorsRuleAllowedMethodsItem = "POST"
 	CorsRuleAllowedMethodsItemPUT     CorsRuleAllowedMethodsItem = "PUT"
+	CorsRuleAllowedMethodsItemTRACE   CorsRuleAllowedMethodsItem = "TRACE"
 )
 
 // PossibleCorsRuleAllowedMethodsItemValues returns the possible values for the CorsRuleAllowedMethodsItem const type.
 func PossibleCorsRuleAllowedMethodsItemValues() []CorsRuleAllowedMethodsItem {
 	return []CorsRuleAllowedMethodsItem{
+		CorsRuleAllowedMethodsItemCONNECT,
 		CorsRuleAllowedMethodsItemDELETE,
 		CorsRuleAllowedMethodsItemGET,
 		CorsRuleAllowedMethodsItemHEAD,
@@ -182,6 +185,7 @@ func PossibleCorsRuleAllowedMethodsItemValues() []CorsRuleAllowedMethodsItem {
 		CorsRuleAllowedMethodsItemPATCH,
 		CorsRuleAllowedMethodsItemPOST,
 		CorsRuleAllowedMethodsItemPUT,
+		CorsRuleAllowedMethodsItemTRACE,
 	}
 }
 
@@ -706,6 +710,19 @@ func PossibleManagementPolicyNameValues() []ManagementPolicyName {
 	}
 }
 
+type MigrationName string
+
+const (
+	MigrationNameDefault MigrationName = "default"
+)
+
+// PossibleMigrationNameValues returns the possible values for the MigrationName const type.
+func PossibleMigrationNameValues() []MigrationName {
+	return []MigrationName{
+		MigrationNameDefault,
+	}
+}
+
 // MigrationState - This property denotes the container level immutability to object level immutability migration state.
 type MigrationState string
 
@@ -719,6 +736,28 @@ func PossibleMigrationStateValues() []MigrationState {
 	return []MigrationState{
 		MigrationStateCompleted,
 		MigrationStateInProgress,
+	}
+}
+
+// MigrationStatus - Current status of migration
+type MigrationStatus string
+
+const (
+	MigrationStatusComplete               MigrationStatus = "Complete"
+	MigrationStatusFailed                 MigrationStatus = "Failed"
+	MigrationStatusInProgress             MigrationStatus = "InProgress"
+	MigrationStatusInvalid                MigrationStatus = "Invalid"
+	MigrationStatusSubmittedForConversion MigrationStatus = "SubmittedForConversion"
+)
+
+// PossibleMigrationStatusValues returns the possible values for the MigrationStatus const type.
+func PossibleMigrationStatusValues() []MigrationStatus {
+	return []MigrationStatus{
+		MigrationStatusComplete,
+		MigrationStatusFailed,
+		MigrationStatusInProgress,
+		MigrationStatusInvalid,
+		MigrationStatusSubmittedForConversion,
 	}
 }
 
@@ -798,6 +837,42 @@ func PossiblePermissionsValues() []Permissions {
 		PermissionsR,
 		PermissionsU,
 		PermissionsW,
+	}
+}
+
+// PostFailoverRedundancy - The redundancy type of the account after an account failover is performed.
+type PostFailoverRedundancy string
+
+const (
+	PostFailoverRedundancyStandardLRS PostFailoverRedundancy = "Standard_LRS"
+	PostFailoverRedundancyStandardZRS PostFailoverRedundancy = "Standard_ZRS"
+)
+
+// PossiblePostFailoverRedundancyValues returns the possible values for the PostFailoverRedundancy const type.
+func PossiblePostFailoverRedundancyValues() []PostFailoverRedundancy {
+	return []PostFailoverRedundancy{
+		PostFailoverRedundancyStandardLRS,
+		PostFailoverRedundancyStandardZRS,
+	}
+}
+
+// PostPlannedFailoverRedundancy - The redundancy type of the account after a planned account failover is performed.
+type PostPlannedFailoverRedundancy string
+
+const (
+	PostPlannedFailoverRedundancyStandardGRS    PostPlannedFailoverRedundancy = "Standard_GRS"
+	PostPlannedFailoverRedundancyStandardGZRS   PostPlannedFailoverRedundancy = "Standard_GZRS"
+	PostPlannedFailoverRedundancyStandardRAGRS  PostPlannedFailoverRedundancy = "Standard_RAGRS"
+	PostPlannedFailoverRedundancyStandardRAGZRS PostPlannedFailoverRedundancy = "Standard_RAGZRS"
+)
+
+// PossiblePostPlannedFailoverRedundancyValues returns the possible values for the PostPlannedFailoverRedundancy const type.
+func PossiblePostPlannedFailoverRedundancyValues() []PostPlannedFailoverRedundancy {
+	return []PostPlannedFailoverRedundancy{
+		PostPlannedFailoverRedundancyStandardGRS,
+		PostPlannedFailoverRedundancyStandardGZRS,
+		PostPlannedFailoverRedundancyStandardRAGRS,
+		PostPlannedFailoverRedundancyStandardRAGZRS,
 	}
 }
 

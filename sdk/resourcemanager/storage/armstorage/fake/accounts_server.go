@@ -36,6 +36,10 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, accountName string, parameters armstorage.AccountCreateParameters, options *armstorage.AccountsClientBeginCreateOptions) (resp azfake.PollerResponder[armstorage.AccountsClientCreateResponse], errResp azfake.ErrorResponder)
 
+	// BeginCustomerInitiatedMigration is the fake for method AccountsClient.BeginCustomerInitiatedMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCustomerInitiatedMigration func(ctx context.Context, resourceGroupName string, accountName string, parameters armstorage.AccountMigration, options *armstorage.AccountsClientBeginCustomerInitiatedMigrationOptions) (resp azfake.PollerResponder[armstorage.AccountsClientCustomerInitiatedMigrationResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method AccountsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.AccountsClientDeleteOptions) (resp azfake.Responder[armstorage.AccountsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -43,6 +47,10 @@ type AccountsServer struct {
 	// BeginFailover is the fake for method AccountsClient.BeginFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFailover func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.AccountsClientBeginFailoverOptions) (resp azfake.PollerResponder[armstorage.AccountsClientFailoverResponse], errResp azfake.ErrorResponder)
+
+	// GetCustomerInitiatedMigration is the fake for method AccountsClient.GetCustomerInitiatedMigration
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCustomerInitiatedMigration func(ctx context.Context, resourceGroupName string, accountName string, migrationName armstorage.MigrationName, options *armstorage.AccountsClientGetCustomerInitiatedMigrationOptions) (resp azfake.Responder[armstorage.AccountsClientGetCustomerInitiatedMigrationResponse], errResp azfake.ErrorResponder)
 
 	// GetProperties is the fake for method AccountsClient.GetProperties
 	// HTTP status codes to indicate success: http.StatusOK
@@ -97,6 +105,7 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		srv:                                      srv,
 		beginAbortHierarchicalNamespaceMigration: newTracker[azfake.PollerResponder[armstorage.AccountsClientAbortHierarchicalNamespaceMigrationResponse]](),
 		beginCreate:                              newTracker[azfake.PollerResponder[armstorage.AccountsClientCreateResponse]](),
+		beginCustomerInitiatedMigration:          newTracker[azfake.PollerResponder[armstorage.AccountsClientCustomerInitiatedMigrationResponse]](),
 		beginFailover:                            newTracker[azfake.PollerResponder[armstorage.AccountsClientFailoverResponse]](),
 		beginHierarchicalNamespaceMigration:      newTracker[azfake.PollerResponder[armstorage.AccountsClientHierarchicalNamespaceMigrationResponse]](),
 		newListPager:                             newTracker[azfake.PagerResponder[armstorage.AccountsClientListResponse]](),
@@ -111,6 +120,7 @@ type AccountsServerTransport struct {
 	srv                                      *AccountsServer
 	beginAbortHierarchicalNamespaceMigration *tracker[azfake.PollerResponder[armstorage.AccountsClientAbortHierarchicalNamespaceMigrationResponse]]
 	beginCreate                              *tracker[azfake.PollerResponder[armstorage.AccountsClientCreateResponse]]
+	beginCustomerInitiatedMigration          *tracker[azfake.PollerResponder[armstorage.AccountsClientCustomerInitiatedMigrationResponse]]
 	beginFailover                            *tracker[azfake.PollerResponder[armstorage.AccountsClientFailoverResponse]]
 	beginHierarchicalNamespaceMigration      *tracker[azfake.PollerResponder[armstorage.AccountsClientHierarchicalNamespaceMigrationResponse]]
 	newListPager                             *tracker[azfake.PagerResponder[armstorage.AccountsClientListResponse]]
@@ -136,10 +146,14 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = a.dispatchCheckNameAvailability(req)
 	case "AccountsClient.BeginCreate":
 		resp, err = a.dispatchBeginCreate(req)
+	case "AccountsClient.BeginCustomerInitiatedMigration":
+		resp, err = a.dispatchBeginCustomerInitiatedMigration(req)
 	case "AccountsClient.Delete":
 		resp, err = a.dispatchDelete(req)
 	case "AccountsClient.BeginFailover":
 		resp, err = a.dispatchBeginFailover(req)
+	case "AccountsClient.GetCustomerInitiatedMigration":
+		resp, err = a.dispatchGetCustomerInitiatedMigration(req)
 	case "AccountsClient.GetProperties":
 		resp, err = a.dispatchGetProperties(req)
 	case "AccountsClient.BeginHierarchicalNamespaceMigration":
@@ -294,6 +308,54 @@ func (a *AccountsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (a *AccountsServerTransport) dispatchBeginCustomerInitiatedMigration(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginCustomerInitiatedMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCustomerInitiatedMigration not implemented")}
+	}
+	beginCustomerInitiatedMigration := a.beginCustomerInitiatedMigration.get(req)
+	if beginCustomerInitiatedMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startAccountMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstorage.AccountMigration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCustomerInitiatedMigration(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCustomerInitiatedMigration = &respr
+		a.beginCustomerInitiatedMigration.add(req, beginCustomerInitiatedMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginCustomerInitiatedMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginCustomerInitiatedMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCustomerInitiatedMigration) {
+		a.beginCustomerInitiatedMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AccountsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
@@ -380,6 +442,43 @@ func (a *AccountsServerTransport) dispatchBeginFailover(req *http.Request) (*htt
 		a.beginFailover.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchGetCustomerInitiatedMigration(req *http.Request) (*http.Response, error) {
+	if a.srv.GetCustomerInitiatedMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCustomerInitiatedMigration not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accountMigrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	migrationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("migrationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetCustomerInitiatedMigration(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, armstorage.MigrationName(migrationNameUnescaped), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccountMigration, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

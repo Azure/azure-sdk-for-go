@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleBlobInventoryPoliciesClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,9 +111,9 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 									to.Ptr("blockBlob"),
 									to.Ptr("appendBlob"),
 									to.Ptr("pageBlob")},
-								ExcludePrefix: []*string{
-									to.Ptr("excludeprefix1"),
-									to.Ptr("excludeprefix2")},
+								CreationTime: &armstorage.BlobInventoryCreationTime{
+									LastNDays: to.Ptr[int32](1000),
+								},
 								IncludeBlobVersions: to.Ptr(true),
 								IncludeSnapshots:    to.Ptr(true),
 								PrefixMatch: []*string{
@@ -187,60 +187,60 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// 								to.Ptr("blockBlob"),
 	// 								to.Ptr("appendBlob"),
 	// 								to.Ptr("pageBlob")},
-	// 								ExcludePrefix: []*string{
-	// 									to.Ptr("excludeprefix1"),
-	// 									to.Ptr("excludeprefix2")},
-	// 									IncludeBlobVersions: to.Ptr(true),
-	// 									IncludeSnapshots: to.Ptr(true),
-	// 									PrefixMatch: []*string{
-	// 										to.Ptr("inventoryprefix1"),
-	// 										to.Ptr("inventoryprefix2")},
-	// 									},
-	// 									ObjectType: to.Ptr(armstorage.ObjectTypeBlob),
-	// 									Schedule: to.Ptr(armstorage.ScheduleDaily),
+	// 								CreationTime: &armstorage.BlobInventoryCreationTime{
+	// 									LastNDays: to.Ptr[int32](1000),
+	// 								},
+	// 								IncludeBlobVersions: to.Ptr(true),
+	// 								IncludeSnapshots: to.Ptr(true),
+	// 								PrefixMatch: []*string{
+	// 									to.Ptr("inventoryprefix1"),
+	// 									to.Ptr("inventoryprefix2")},
+	// 								},
+	// 								ObjectType: to.Ptr(armstorage.ObjectTypeBlob),
+	// 								Schedule: to.Ptr(armstorage.ScheduleDaily),
+	// 								SchemaFields: []*string{
+	// 									to.Ptr("Name"),
+	// 									to.Ptr("Creation-Time"),
+	// 									to.Ptr("Last-Modified"),
+	// 									to.Ptr("Content-Length"),
+	// 									to.Ptr("Content-MD5"),
+	// 									to.Ptr("BlobType"),
+	// 									to.Ptr("AccessTier"),
+	// 									to.Ptr("AccessTierChangeTime"),
+	// 									to.Ptr("Snapshot"),
+	// 									to.Ptr("VersionId"),
+	// 									to.Ptr("IsCurrentVersion"),
+	// 									to.Ptr("Metadata")},
+	// 								},
+	// 								Destination: to.Ptr("container1"),
+	// 								Enabled: to.Ptr(true),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("inventoryPolicyRule2"),
+	// 								Definition: &armstorage.BlobInventoryPolicyDefinition{
+	// 									Format: to.Ptr(armstorage.FormatParquet),
+	// 									ObjectType: to.Ptr(armstorage.ObjectTypeContainer),
+	// 									Schedule: to.Ptr(armstorage.ScheduleWeekly),
 	// 									SchemaFields: []*string{
 	// 										to.Ptr("Name"),
-	// 										to.Ptr("Creation-Time"),
 	// 										to.Ptr("Last-Modified"),
-	// 										to.Ptr("Content-Length"),
-	// 										to.Ptr("Content-MD5"),
-	// 										to.Ptr("BlobType"),
-	// 										to.Ptr("AccessTier"),
-	// 										to.Ptr("AccessTierChangeTime"),
-	// 										to.Ptr("Snapshot"),
-	// 										to.Ptr("VersionId"),
-	// 										to.Ptr("IsCurrentVersion"),
-	// 										to.Ptr("Metadata")},
+	// 										to.Ptr("Metadata"),
+	// 										to.Ptr("LeaseStatus"),
+	// 										to.Ptr("LeaseState"),
+	// 										to.Ptr("LeaseDuration"),
+	// 										to.Ptr("PublicAccess"),
+	// 										to.Ptr("HasImmutabilityPolicy"),
+	// 										to.Ptr("HasLegalHold")},
 	// 									},
-	// 									Destination: to.Ptr("container1"),
+	// 									Destination: to.Ptr("container2"),
 	// 									Enabled: to.Ptr(true),
-	// 								},
-	// 								{
-	// 									Name: to.Ptr("inventoryPolicyRule2"),
-	// 									Definition: &armstorage.BlobInventoryPolicyDefinition{
-	// 										Format: to.Ptr(armstorage.FormatParquet),
-	// 										ObjectType: to.Ptr(armstorage.ObjectTypeContainer),
-	// 										Schedule: to.Ptr(armstorage.ScheduleWeekly),
-	// 										SchemaFields: []*string{
-	// 											to.Ptr("Name"),
-	// 											to.Ptr("Last-Modified"),
-	// 											to.Ptr("Metadata"),
-	// 											to.Ptr("LeaseStatus"),
-	// 											to.Ptr("LeaseState"),
-	// 											to.Ptr("LeaseDuration"),
-	// 											to.Ptr("PublicAccess"),
-	// 											to.Ptr("HasImmutabilityPolicy"),
-	// 											to.Ptr("HasLegalHold")},
-	// 										},
-	// 										Destination: to.Ptr("container2"),
-	// 										Enabled: to.Ptr(true),
-	// 								}},
-	// 							},
+	// 							}},
 	// 						},
-	// 					}
+	// 					},
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -430,7 +430,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +618,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +635,7 @@ func ExampleBlobInventoryPoliciesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b32e1896f30e6ea155449cb49719a6286e32b961/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListBlobInventoryPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0baf811c3c76c87b3c127d098519bd97141222dd/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

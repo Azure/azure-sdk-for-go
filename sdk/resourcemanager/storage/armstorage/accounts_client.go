@@ -46,7 +46,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginAbortHierarchicalNamespaceMigration - Abort live Migration of storage account to enable Hns
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -70,7 +70,7 @@ func (client *AccountsClient) BeginAbortHierarchicalNamespaceMigration(ctx conte
 // AbortHierarchicalNamespaceMigration - Abort live Migration of storage account to enable Hns
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 func (client *AccountsClient) abortHierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginAbortHierarchicalNamespaceMigration"
@@ -112,7 +112,7 @@ func (client *AccountsClient) abortHierarchicalNamespaceMigrationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,7 +121,7 @@ func (client *AccountsClient) abortHierarchicalNamespaceMigrationCreateRequest(c
 // CheckNameAvailability - Checks that the storage account name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
 //   - options - AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
@@ -160,7 +160,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, accountName); err != nil {
@@ -184,7 +184,7 @@ func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // set of properties, the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -209,7 +209,7 @@ func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName
 // set of properties, the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginCreate"
@@ -251,7 +251,92 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCustomerInitiatedMigration - Account Migration request can be triggered for a storage account to change its redundancy
+// level. The migration updates the non-zonal redundant storage account to a zonal redundant account or
+// vice-versa in order to have better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account
+// synchronously across three Azure availability zones in the primary region.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - parameters - The request parameters required to perform storage account migration.
+//   - options - AccountsClientBeginCustomerInitiatedMigrationOptions contains the optional parameters for the AccountsClient.BeginCustomerInitiatedMigration
+//     method.
+func (client *AccountsClient) BeginCustomerInitiatedMigration(ctx context.Context, resourceGroupName string, accountName string, parameters AccountMigration, options *AccountsClientBeginCustomerInitiatedMigrationOptions) (*runtime.Poller[AccountsClientCustomerInitiatedMigrationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.customerInitiatedMigration(ctx, resourceGroupName, accountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientCustomerInitiatedMigrationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken[AccountsClientCustomerInitiatedMigrationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+	}
+}
+
+// CustomerInitiatedMigration - Account Migration request can be triggered for a storage account to change its redundancy
+// level. The migration updates the non-zonal redundant storage account to a zonal redundant account or
+// vice-versa in order to have better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account
+// synchronously across three Azure availability zones in the primary region.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-01-01
+func (client *AccountsClient) customerInitiatedMigration(ctx context.Context, resourceGroupName string, accountName string, parameters AccountMigration, options *AccountsClientBeginCustomerInitiatedMigrationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginCustomerInitiatedMigration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.customerInitiatedMigrationCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// customerInitiatedMigrationCreateRequest creates the CustomerInitiatedMigration request.
+func (client *AccountsClient) customerInitiatedMigrationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters AccountMigration, options *AccountsClientBeginCustomerInitiatedMigrationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/startAccountMigration"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -263,7 +348,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 // Delete - Deletes a storage account in Microsoft Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -309,7 +394,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -325,7 +410,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 // 'Planned'. Learn more about the failover options here- https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -356,7 +441,7 @@ func (client *AccountsClient) BeginFailover(ctx context.Context, resourceGroupNa
 // 'Planned'. Learn more about the failover options here- https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 func (client *AccountsClient) failover(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginFailover"
@@ -398,7 +483,7 @@ func (client *AccountsClient) failoverCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.FailoverType != nil {
 		reqQP.Set("failoverType", "Planned")
 	}
@@ -406,11 +491,82 @@ func (client *AccountsClient) failoverCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// GetCustomerInitiatedMigration - Gets the status of the ongoing migration for the specified storage account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - migrationName - The name of the Storage Account Migration. It should always be 'default'
+//   - options - AccountsClientGetCustomerInitiatedMigrationOptions contains the optional parameters for the AccountsClient.GetCustomerInitiatedMigration
+//     method.
+func (client *AccountsClient) GetCustomerInitiatedMigration(ctx context.Context, resourceGroupName string, accountName string, migrationName MigrationName, options *AccountsClientGetCustomerInitiatedMigrationOptions) (AccountsClientGetCustomerInitiatedMigrationResponse, error) {
+	var err error
+	const operationName = "AccountsClient.GetCustomerInitiatedMigration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCustomerInitiatedMigrationCreateRequest(ctx, resourceGroupName, accountName, migrationName, options)
+	if err != nil {
+		return AccountsClientGetCustomerInitiatedMigrationResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientGetCustomerInitiatedMigrationResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientGetCustomerInitiatedMigrationResponse{}, err
+	}
+	resp, err := client.getCustomerInitiatedMigrationHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCustomerInitiatedMigrationCreateRequest creates the GetCustomerInitiatedMigration request.
+func (client *AccountsClient) getCustomerInitiatedMigrationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, migrationName MigrationName, options *AccountsClientGetCustomerInitiatedMigrationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/accountMigrations/{migrationName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if migrationName == "" {
+		return nil, errors.New("parameter migrationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{migrationName}", url.PathEscape(string(migrationName)))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCustomerInitiatedMigrationHandleResponse handles the GetCustomerInitiatedMigration response.
+func (client *AccountsClient) getCustomerInitiatedMigrationHandleResponse(resp *http.Response) (AccountsClientGetCustomerInitiatedMigrationResponse, error) {
+	result := AccountsClientGetCustomerInitiatedMigrationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountMigration); err != nil {
+		return AccountsClientGetCustomerInitiatedMigrationResponse{}, err
+	}
+	return result, nil
+}
+
 // GetProperties - Returns the properties for the specified storage account including but not limited to name, SKU name, location,
 // and account status. The ListKeys operation should be used to retrieve storage keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -457,7 +613,7 @@ func (client *AccountsClient) getPropertiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
@@ -478,7 +634,7 @@ func (client *AccountsClient) getPropertiesHandleResponse(resp *http.Response) (
 // BeginHierarchicalNamespaceMigration - Live Migration of storage account to enable Hns
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -505,7 +661,7 @@ func (client *AccountsClient) BeginHierarchicalNamespaceMigration(ctx context.Co
 // HierarchicalNamespaceMigration - Live Migration of storage account to enable Hns
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 func (client *AccountsClient) hierarchicalNamespaceMigration(ctx context.Context, resourceGroupName string, accountName string, requestType string, options *AccountsClientBeginHierarchicalNamespaceMigrationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginHierarchicalNamespaceMigration"
@@ -547,7 +703,7 @@ func (client *AccountsClient) hierarchicalNamespaceMigrationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	reqQP.Set("requestType", requestType)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -557,7 +713,7 @@ func (client *AccountsClient) hierarchicalNamespaceMigrationCreateRequest(ctx co
 // NewListPager - Lists all the storage accounts available under the subscription. Note that storage keys are not returned;
 // use the ListKeys operation for this.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
@@ -601,7 +757,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -619,7 +775,7 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 // ListAccountSAS - List SAS credentials of a storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -667,7 +823,7 @@ func (client *AccountsClient) listAccountSASCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -688,7 +844,7 @@ func (client *AccountsClient) listAccountSASHandleResponse(resp *http.Response) 
 // NewListByResourceGroupPager - Lists all the storage accounts available under the given resource group. Note that storage
 // keys are not returned; use the ListKeys operation for this.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
 //     method.
@@ -738,7 +894,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -756,7 +912,7 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 // ListKeys - Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -803,7 +959,7 @@ func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", "kerb")
 	}
@@ -824,7 +980,7 @@ func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (Accou
 // ListServiceSAS - List service SAS credentials of a specific resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -872,7 +1028,7 @@ func (client *AccountsClient) listServiceSASCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -893,7 +1049,7 @@ func (client *AccountsClient) listServiceSASHandleResponse(resp *http.Response) 
 // RegenerateKey - Regenerates one of the access keys or Kerberos keys for the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -941,7 +1097,7 @@ func (client *AccountsClient) regenerateKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, regenerateKey); err != nil {
@@ -962,7 +1118,7 @@ func (client *AccountsClient) regenerateKeyHandleResponse(resp *http.Response) (
 // BeginRestoreBlobRanges - Restore blobs in the specified blob ranges
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -987,7 +1143,7 @@ func (client *AccountsClient) BeginRestoreBlobRanges(ctx context.Context, resour
 // RestoreBlobRanges - Restore blobs in the specified blob ranges
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 func (client *AccountsClient) restoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters, options *AccountsClientBeginRestoreBlobRangesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginRestoreBlobRanges"
@@ -1029,7 +1185,7 @@ func (client *AccountsClient) restoreBlobRangesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1041,7 +1197,7 @@ func (client *AccountsClient) restoreBlobRangesCreateRequest(ctx context.Context
 // RevokeUserDelegationKeys - Revoke user delegation keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1088,7 +1244,7 @@ func (client *AccountsClient) revokeUserDelegationKeysCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1102,7 +1258,7 @@ func (client *AccountsClient) revokeUserDelegationKeysCreateRequest(ctx context.
 // location and name of the storage account cannot be changed after creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1150,7 +1306,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

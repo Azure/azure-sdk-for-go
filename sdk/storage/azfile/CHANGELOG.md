@@ -8,6 +8,7 @@
 * Added OAuth support.
 * Added [Rename Directory API](https://learn.microsoft.com/rest/api/storageservices/rename-directory).
 * Added [Rename File API](https://learn.microsoft.com/rest/api/storageservices/rename-file).
+* Updated the SAS Version to `2022-11-02` and added `Encryption Scope` to Account SAS.
 
 ### Breaking Changes
 

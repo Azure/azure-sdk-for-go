@@ -11,6 +11,10 @@
 
 ### Bugs Fixed
 
+- EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an 
+  error if the underlying Body reader was closed or EOF'd before the actual DONE: token arrived. This could result in an
+  infinite loop for callers. (PR#)
+
 ### Other Changes
 
 ## 0.1.1 (2023-07-26)

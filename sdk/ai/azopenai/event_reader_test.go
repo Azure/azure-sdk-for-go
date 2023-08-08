@@ -24,7 +24,7 @@ func TestEventReader_InvalidType(t *testing.T) {
 
 	firstEvent, err := eventReader.Read()
 	require.Empty(t, firstEvent)
-	require.EqualError(t, err, "Unexpected event type: invaliddata")
+	require.EqualError(t, err, "unexpected event type: invaliddata")
 }
 
 type badReader struct{}
@@ -35,8 +35,23 @@ func (br badReader) Read(p []byte) (n int, err error) {
 
 func TestEventReader_BadReader(t *testing.T) {
 	eventReader := newEventReader[ChatCompletions](io.NopCloser(badReader{}))
+	defer eventReader.Close()
 
 	firstEvent, err := eventReader.Read()
 	require.Empty(t, firstEvent)
 	require.ErrorIs(t, io.ErrClosedPipe, err)
+}
+
+func TestEventReader_StreamIsClosedBeforeDone(t *testing.T) {
+	buff := strings.NewReader("data: {}")
+
+	eventReader := newEventReader[ChatCompletions](io.NopCloser(buff))
+
+	evt, err := eventReader.Read()
+	require.Empty(t, evt)
+	require.NoError(t, err)
+
+	evt, err = eventReader.Read()
+	require.Empty(t, evt)
+	require.EqualError(t, err, "incomplete stream")
 }

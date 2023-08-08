@@ -2423,6 +2423,57 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
 	_require.Error(err, bloberror.UnsupportedChecksum)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// set up source blob
+	const contentSize = 4 * 1024 * 1024 // 4 MB
+	contentReader, _ := testcommon.GetDataAndReader(testName, contentSize)
+
+	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(contentReader), nil)
+	_require.Nil(err)
+
+	// Get source blob url with SAS for StageFromURL.
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	destBlobName := testcommon.GenerateBlobName(testName)
+	destBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(destBlobName))
+
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+	cpk := blob.CPKScopeInfo{
+		EncryptionScope: to.Ptr(encryptionScope),
+	}
+	copyBlockBlobFromURLOptions := blob.CopyFromURLOptions{
+		CPKScopeInfo: &cpk,
+	}
+	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
+	_require.Nil(err)
+	_require.Equal(*resp.CopyStatus, "success")
+	_require.Equal(*resp.EncryptionScope, encryptionScope)
+}
+
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

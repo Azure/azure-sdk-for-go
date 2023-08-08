@@ -229,7 +229,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.NoError(err)
@@ -515,4 +516,65 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
 
 	_, err = dirClient.Delete(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestAccountSASEncryptionScope() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	//encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	//_require.NoError(err)
+
+	encryptionScope := "blobgokeytestscope"
+
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		List:   true,
+		Create: true,
+	}
+	expiry := time.Now().Add(1 * time.Hour)
+
+	qps, err := sas.AccountSignatureValues{
+		Permissions:     permissions.String(),
+		ResourceTypes:   resources.String(),
+		ExpiryTime:      expiry.UTC(),
+		EncryptionScope: encryptionScope,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	svcSAS := fmt.Sprintf("https://%s.file.core.windows.net/?%s", cred.AccountName(), qps.Encode())
+	svcClient, err := service.NewClientWithNoCredential(svcSAS, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	_, err = svcClient.CreateShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 1)
+		_require.NotNil(resp.Shares[0].Name)
+		_require.Equal(*resp.Shares[0].Name, shareName)
+	}
 }

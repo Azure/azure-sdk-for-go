@@ -524,10 +524,8 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountSASEncryptionScope() {
 	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.NoError(err)
 
-	//encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
-	//_require.NoError(err)
-
-	encryptionScope := "blobgokeytestscope"
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.NoError(err)
 
 	resources := sas.AccountResourceTypes{
 		Object:    true,
@@ -577,4 +575,13 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountSASEncryptionScope() {
 		_require.NotNil(resp.Shares[0].Name)
 		_require.Equal(*resp.Shares[0].Name, shareName)
 	}
+
+	shareClient := svcClient.NewShareClient(shareName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+
+	_, err = fileClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }

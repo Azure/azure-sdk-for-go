@@ -358,8 +358,14 @@ func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekC
 	if err != nil {
 		return AppendDataResponse{}, err
 	}
-
 	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, httpsHeaders, leaseAccessConditions, cpkInfo)
+	// TODO: check and uncomment this
+	//if err != nil {
+	//	_, err1 := body.Seek(0, io.SeekStart)
+	//	if err1 != nil {
+	//		return AppendDataResponse{}, err1
+	//	}
+	//}
 	return resp, exported.ConvertToDFSError(err)
 }
 

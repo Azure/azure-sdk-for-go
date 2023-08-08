@@ -79,6 +79,9 @@ func FormatGetPropertiesOptions(o *GetPropertiesOptions) *blob.GetPropertiesOpti
 		return nil
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	if o.CPKInfo == nil {
+		o.CPKInfo = &CPKInfo{}
+	}
 	return &blob.GetPropertiesOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{

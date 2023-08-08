@@ -76,6 +76,33 @@ func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) 
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
+func (s *UnrecordedTestSuite) TestCreateFileAndDeleteWithConnectionString() {
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDatalake)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateDirName(testName)
+	fileClient, err := file.NewClientFromConnectionString(*connectionString, fileName, filesystemName, nil)
+
+	_require.NoError(err)
+
+	defer testcommon.DeleteFile(context.Background(), _require, fileClient)
+
+	resp, err := fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+}
+
 func (s *RecordedTestSuite) TestCreateFileAndDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -435,34 +462,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithHTTPHeaders() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-
-	createFileOpts := &file.CreateOptions{
-		HTTPHeaders: &testcommon.BasicHeaders,
-	}
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-
-	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
-	_require.NotNil(resp)
-}
-
-func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
+func (s *RecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2759,7 +2759,7 @@ func (s *UnrecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestFileAppendAndFlushData() {
+func (s *RecordedTestSuite) TestFileAppendAndFlushData() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2837,6 +2837,532 @@ func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 }
+
+func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{}
+	opts1 := &file.FlushDataOptions{}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.NoError(err)
+
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts1)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+	resp, err := srcFClient.Create(context.Background(), createFileOpts)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{LeaseAccessConditions: &file.LeaseAccessConditions{
+		LeaseID: proposedLeaseIDs[0],
+	}}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NotNil(err)
+
+	_, err = rsc.Seek(0, io.SeekStart)
+	_require.NoError(err)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.Nil(err)
+
+	opts1 := &file.FlushDataOptions{AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
+		LeaseID: proposedLeaseIDs[0],
+	}}}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts1)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), &file.GetPropertiesOptions{
+		AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		}}})
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		ProposedLeaseID: proposedLeaseIDs[0],
+		LeaseDuration:   to.Ptr(int64(15)),
+	}
+	resp, err := srcFClient.Create(context.Background(), createFileOpts)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.AppendDataOptions{LeaseAccessConditions: &file.LeaseAccessConditions{
+		LeaseID: proposedLeaseIDs[0],
+	}}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
+	_require.Nil(err)
+
+	_, err = rsc.Seek(0, io.SeekStart)
+
+	_, err = srcFClient.AppendData(context.Background(), int64(contentSize), rsc, opts)
+	_require.Nil(err)
+
+	opts1 := &file.FlushDataOptions{AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
+		LeaseID: proposedLeaseIDs[0],
+	}}}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize)*2, opts1)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), &file.GetPropertiesOptions{
+		AccessConditions: &file.AccessConditions{LeaseAccessConditions: &file.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		}}})
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize)*2)
+
+	destBuffer := make([]byte, contentSize*2)
+	cnt, err := srcFClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   8 * 1024,
+		Concurrency: 5,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, int64(contentSize*2))
+}
+
+func (s *RecordedTestSuite) TestAppendAndFlushFileWithHTTPHeaders() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	opts := &file.FlushDataOptions{HTTPHeaders: &testcommon.BasicHeaders}
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+	validatePropertiesSet(_require, srcFClient, *testcommon.BasicHeaders.ContentDisposition)
+}
+
+func (s *RecordedTestSuite) TestFlushWithNilAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: nil,
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFlushWithEmptyAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+// ==========================================
+
+func (s *RecordedTestSuite) TestFlushIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFlushIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NotNil(err)
+}
+
+func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, 10)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFlushIfUnmodifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	_, err = srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NotNil(err)
+}
+
+func (s *RecordedTestSuite) TestFlushIfEtagMatch() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	resp1, err := srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+	etag := resp1.ETag
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfMatch: etag,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+func (s *RecordedTestSuite) TestFlushIfEtagMatchFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+
+	srcFClient, err := testcommon.GetFileClient(filesystemName, srcFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := srcFClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, _ := testcommon.GenerateData(contentSize)
+
+	resp1, err := srcFClient.AppendData(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+	etag := resp1.ETag
+
+	opts := &file.FlushDataOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfNoneMatch: etag,
+			},
+		},
+	}
+	_, err = srcFClient.FlushData(context.Background(), int64(contentSize), opts)
+	_require.NoError(err)
+
+	gResp2, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, int64(contentSize))
+}
+
+// TODO: test retain uncommitted data
 
 func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require := require.New(s.T())

@@ -206,7 +206,7 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 		}
 		leaseAccessConditions, modifiedAccessConditions = exported.FormatPathAccessConditions(o.AccessConditions)
 		if o.HTTPHeaders != nil {
-			httpHeaderOpts := generated.PathHTTPHeaders{}
+			httpHeaderOpts = &generated.PathHTTPHeaders{}
 			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
 			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
 			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
@@ -214,7 +214,7 @@ func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataO
 			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
 		}
 		if o.CPKInfo != nil {
-			cpkInfoOpts := generated.CPKInfo{}
+			cpkInfoOpts = &generated.CPKInfo{}
 			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
 			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
@@ -267,7 +267,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions
 		if o.HTTPHeaders != nil {
-			httpHeaderOpts := generated.PathHTTPHeaders{}
+			httpHeaderOpts = &generated.PathHTTPHeaders{}
 			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
 			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
 			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
@@ -275,7 +275,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
 		}
 		if o.CPKInfo != nil {
-			cpkInfoOpts := generated.CPKInfo{}
+			cpkInfoOpts = &generated.CPKInfo{}
 			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
 			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm

@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -576,6 +577,87 @@ func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := "null"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	opts := &filesystem.GetAccessPolicyOptions{}
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), opts)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+
+	fsLeaseClient, err := lease.NewFilesystemClient(fsClient, &lease.FilesystemClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.Nil(err)
+
+	id := "null"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	_, err = fsLeaseClient.AcquireLease(context.Background(), int32(15), nil)
+	_require.Nil(err)
+
+	opts1 := &filesystem.GetAccessPolicyOptions{
+		LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		},
+	}
+
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), opts1)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+
+	_, err = fsClient.Delete(context.Background(), &filesystem.DeleteOptions{AccessConditions: &filesystem.AccessConditions{
+		LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		},
+	}})
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {

@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -90,6 +91,30 @@ func TestEnvironmentCredential_ClientSecretSet(t *testing.T) {
 	}
 	if _, ok := cred.cred.(*ClientSecretCredential); !ok {
 		t.Fatalf("Did not receive the right credential type. Expected *azidentity.ClientSecretCredential, Received: %t", cred)
+	}
+}
+
+func TestEnvironmentCredential_CertificateErrors(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	for _, test := range []struct {
+		name, path string
+	}{
+		{"file doesn't exist", filepath.Join(t.TempDir(), t.Name())},
+		{"invalid file", "testdata/certificate-wrong-key.pem"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			for k, v := range map[string]string{
+				azureClientID:              fakeClientID,
+				azureClientCertificatePath: test.path,
+				azureTenantID:              fakeTenantID,
+			} {
+				t.Setenv(k, v)
+				_, err := NewEnvironmentCredential(nil)
+				if err == nil {
+					t.Fatal("expected an error")
+				}
+			}
+		})
 	}
 }
 

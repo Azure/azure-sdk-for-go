@@ -79,9 +79,6 @@ func NewAzureDeveloperCLICredential(options *AzureDeveloperCLICredentialOptions)
 // GetToken requests a token from the Azure Developer CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
 func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if len(opts.Scopes) != 1 {
-		return azcore.AccessToken{}, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires exactly one scope")
-	}
 	return c.s.GetToken(ctx, opts)
 }
 

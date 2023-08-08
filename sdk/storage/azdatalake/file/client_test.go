@@ -462,7 +462,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
+func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

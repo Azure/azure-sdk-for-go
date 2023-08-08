@@ -66,7 +66,7 @@ func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 	if at.Token != "mocktoken" {
 		t.Fatalf("unexpected access token %q", at.Token)
 	}
-	expected := time.Date(2001, 2, 3, 4, 5, 6, 000, time.UTC).UTC()
+	expected := time.Date(2001, 2, 3, 4, 5, 6, 000, time.UTC)
 	if actual := at.ExpiresOn; !actual.Equal(expected) || actual.Location() != time.UTC {
 		t.Fatalf("expected %q, got %q", expected, actual)
 	}

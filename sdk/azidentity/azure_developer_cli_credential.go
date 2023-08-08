@@ -50,7 +50,9 @@ func (o *AzureDeveloperCLICredentialOptions) init() {
 	}
 }
 
-// AzureDeveloperCLICredential authenticates as the identity logged in to the Azure Developer CLI.
+// AzureDeveloperCLICredential authenticates as the identity logged in to the [Azure Developer CLI].
+//
+// [Azure Developer CLI]: https://learn.microsoft.com/azure/developer/azure-developer-cli/overview
 type AzureDeveloperCLICredential struct {
 	s             *syncer
 	tokenProvider azureDeveloperCLITokenProvider
@@ -74,7 +76,7 @@ func NewAzureDeveloperCLICredential(options *AzureDeveloperCLICredentialOptions)
 	return &c, nil
 }
 
-// GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
+// GetToken requests a token from the Azure Developer CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
 func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
@@ -154,7 +156,6 @@ func (c *AzureDeveloperCLICredential) createAccessToken(tk []byte) (azcore.Acces
 		return azcore.AccessToken{}, err
 	}
 
-	// the Azure CLI's "expiresOn" is local time
 	exp, err := time.ParseInLocation("2006-01-02T15:04:05Z", t.ExpiresOn, time.Local)
 	if err != nil {
 		return azcore.AccessToken{}, fmt.Errorf("Error parsing token expiration time %q: %v", t.ExpiresOn, err)

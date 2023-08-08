@@ -396,6 +396,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 
 	creationTime := time.Now().Add(-time.Hour)
 	lastWriteTime := time.Now().Add(-time.Minute * 15)
+	changeTime := time.Now().Add(-time.Minute * 30)
 
 	options := &file.SetHTTPHeadersOptions{
 		Permissions: &file.Permissions{Permission: &testcommon.SampleSDDL},
@@ -403,6 +404,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 			Attributes:    &file.NTFSFileAttributes{Hidden: true},
 			CreationTime:  &creationTime,
 			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
 		},
 		HTTPHeaders: &file.HTTPHeaders{
 			ContentType:        to.Ptr("text/html"),
@@ -451,6 +453,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 
 	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
 	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues((*getResp.FileChangeTime).Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)
@@ -535,6 +538,7 @@ func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	pKey := getResp.FilePermissionKey
 	cTime := getResp.FileCreationTime
 	lwTime := getResp.FileLastWriteTime
+	changeTime := getResp.FileChangeTime
 	attribs := getResp.FileAttributes
 
 	md5Str := "MDAwMDAwMDA="
@@ -579,6 +583,7 @@ func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	_require.EqualValues(getResp.FilePermissionKey, pKey)
 	_require.EqualValues(cTime, getResp.FileCreationTime)
 	_require.EqualValues(lwTime, getResp.FileLastWriteTime)
+	_require.NotEqualValues(changeTime, getResp.FileChangeTime) // default value is "now" for file change time
 	_require.EqualValues(attribs, getResp.FileAttributes)
 
 	_require.NotNil(getResp.ETag)
@@ -1037,11 +1042,13 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 			Attributes:    &file.NTFSFileAttributes{ReadOnly: true, Hidden: true},
 			CreationTime:  to.Ptr(currTime.Add(5 * time.Minute)),
 			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+			ChangeTime:    to.Ptr(currTime.Add(8 * time.Minute)),
 		},
 	})
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1064,6 +1071,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceCreationTime() {
 	_require.NoError(err)
 	_require.EqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 	_require.NotEqualValues(resp2.FileAttributes, cResp.FileAttributes)
 }
 
@@ -1088,11 +1096,13 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 			Attributes:    &file.NTFSFileAttributes{System: true},
 			CreationTime:  to.Ptr(currTime.Add(1 * time.Minute)),
 			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+			ChangeTime:    to.Ptr(currTime.Add(5 * time.Minute)),
 		},
 	})
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1105,6 +1115,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 		CopyFileSMBInfo: &file.CopyFileSMBInfo{
 			CreationTime:       file.SourceCopyFileCreationTime{},
 			LastWriteTime:      file.SourceCopyFileLastWriteTime{},
+			ChangeTime:         file.SourceCopyFileChangeTime{},
 			Attributes:         file.SourceCopyFileAttributes{},
 			PermissionCopyMode: to.Ptr(file.PermissionCopyModeTypeSource),
 		},
@@ -1117,6 +1128,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySourceProperties() {
 	_require.NoError(err)
 	_require.EqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.EqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.EqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 	_require.EqualValues(resp2.FileAttributes, cResp.FileAttributes)
 	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 
@@ -1148,20 +1160,24 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 			Attributes:    &file.NTFSFileAttributes{System: true},
 			CreationTime:  to.Ptr(currTime.Add(1 * time.Minute)),
 			LastWriteTime: to.Ptr(currTime.Add(2 * time.Minute)),
+			ChangeTime:    to.Ptr(currTime.Add(3 * time.Minute)),
 		},
 	})
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
 	destCreationTime := currTime.Add(5 * time.Minute)
 	destLastWriteTIme := currTime.Add(6 * time.Minute)
+	destChangeTime := currTime.Add(7 * time.Minute)
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
 		CopyFileSMBInfo: &file.CopyFileSMBInfo{
 			CreationTime:  file.DestinationCopyFileCreationTime(destCreationTime),
 			LastWriteTime: file.DestinationCopyFileLastWriteTime(destLastWriteTIme),
+			ChangeTime:    file.DestinationCopyFileChangeTime(destChangeTime),
 			Attributes:    file.DestinationCopyFileAttributes{ReadOnly: true},
 		},
 	})
@@ -1175,6 +1191,8 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDifferentProperties() {
 	_require.EqualValues(*resp2.FileCreationTime, destCreationTime.UTC())
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
 	_require.EqualValues(*resp2.FileLastWriteTime, destLastWriteTIme.UTC())
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
+	_require.EqualValues(*resp2.FileChangeTime, destChangeTime.UTC())
 	_require.NotEqualValues(resp2.FileAttributes, cResp.FileAttributes)
 	_require.EqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 }
@@ -1196,6 +1214,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyOverrideMode() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1215,6 +1234,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyOverrideMode() {
 	_require.NoError(err)
 	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 	_require.NotEqualValues(resp2.FilePermissionKey, cResp.FilePermissionKey)
 }
 
@@ -1235,6 +1255,7 @@ func (f *FileRecordedTestsSuite) TestNegativeFileStartCopyOverrideMode() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1269,6 +1290,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1286,6 +1308,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeTrue() {
 	_require.NoError(err)
 	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 	_require.Contains(*resp2.FileAttributes, "Archive")
 }
 
@@ -1310,6 +1333,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1327,6 +1351,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopySetArchiveAttributeFalse() {
 	_require.NoError(err)
 	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 	_require.NotContains(*resp2.FileAttributes, "Archive")
 }
 
@@ -1347,6 +1372,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDestReadOnly() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -1370,6 +1396,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDestReadOnly() {
 	_require.NoError(err)
 	_require.NotEqualValues(resp2.FileCreationTime, cResp.FileCreationTime)
 	_require.NotEqualValues(resp2.FileLastWriteTime, cResp.FileLastWriteTime)
+	_require.NotEqualValues(resp2.FileChangeTime, cResp.FileChangeTime)
 }
 
 func (f *FileRecordedTestsSuite) TestNegativeFileStartCopyDestReadOnly() {
@@ -1389,6 +1416,7 @@ func (f *FileRecordedTestsSuite) TestNegativeFileStartCopyDestReadOnly() {
 	_require.NoError(err)
 	_require.NotNil(cResp.FileCreationTime)
 	_require.NotNil(cResp.FileLastWriteTime)
+	_require.NotNil(cResp.FileChangeTime)
 	_require.NotNil(cResp.FileAttributes)
 	_require.NotNil(cResp.FilePermissionKey)
 
@@ -2535,6 +2563,58 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() 
 	})
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadRangeLastWrittenModePreserve() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := fClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	contentR, _ := testcommon.GenerateData(2048)
+
+	// Upload range with correct transactional MD5
+	pResp, err := fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		LastWrittenMode: to.Ptr(file.LastWrittenModePreserve),
+	})
+	_require.NoError(err)
+	_require.NotNil(pResp.FileLastWriteTime)
+	_require.EqualValues(*pResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadRangeLastWrittenModeNow() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := fClient.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	contentR, _ := testcommon.GenerateData(2048)
+
+	// Upload range with correct transactional MD5
+	pResp, err := fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		LastWrittenMode: to.Ptr(file.LastWrittenModeNow),
+	})
+	_require.NoError(err)
+	_require.NotNil(pResp.FileLastWriteTime)
+	_require.NotEqualValues(*pResp.FileLastWriteTime, *cResp.FileLastWriteTime)
 }
 
 // Testings for GetRangeList and ClearRange

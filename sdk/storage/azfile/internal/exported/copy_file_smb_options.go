@@ -68,6 +68,34 @@ func (d DestinationCopyFileLastWriteTime) notPubliclyImplementable() {}
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// CopyFileChangeTime specifies either the option to copy file change time from a source file(source) to a target file or
+// a time value in ISO 8601 format to set as change time on a target file.
+type CopyFileChangeTime interface {
+	FormatChangeTime() *string
+	notPubliclyImplementable()
+}
+
+// SourceCopyFileChangeTime specifies to copy file change time from a source file(source) to a target file.
+type SourceCopyFileChangeTime struct {
+}
+
+func (s SourceCopyFileChangeTime) FormatChangeTime() *string {
+	return to.Ptr("source")
+}
+
+func (s SourceCopyFileChangeTime) notPubliclyImplementable() {}
+
+// DestinationCopyFileChangeTime specifies a time value in ISO 8601 format to set as change time on a target file.
+type DestinationCopyFileChangeTime time.Time
+
+func (d DestinationCopyFileChangeTime) FormatChangeTime() *string {
+	return to.Ptr(time.Time(d).UTC().Format(generated.ISO8601))
+}
+
+func (d DestinationCopyFileChangeTime) notPubliclyImplementable() {}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CopyFileAttributes specifies either the option to copy file attributes from a source file(source) to a target file or
 // a list of attributes to set on a target file.
 type CopyFileAttributes interface {

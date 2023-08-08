@@ -516,3 +516,38 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
 	_, err = dirClient.Delete(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	mySharePrefix := testcommon.GenerateEntityName(testName)
+	shareClients := map[string]*share.Client{}
+	for i := 0; i < 4; i++ {
+		shareName := mySharePrefix + "share" + strconv.Itoa(i)
+		shareClients[shareName] = testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+		defer testcommon.DeleteShare(context.Background(), _require, shareClients[shareName])
+	}
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: to.Ptr(mySharePrefix),
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 4)
+		for _, shareItem := range resp.Shares {
+			_require.NotNil(shareItem.Properties)
+			_require.NotNil(shareItem.Properties.ProvisionedBandwidthMiBps)
+			_require.NotNil(shareItem.Properties.ProvisionedIngressMBps)
+			_require.NotNil(shareItem.Properties.ProvisionedEgressMBps)
+			_require.NotNil(shareItem.Properties.ProvisionedIops)
+			_require.NotNil(shareItem.Properties.NextAllowedQuotaDowngradeTime)
+			_require.Greater(*shareItem.Properties.ProvisionedBandwidthMiBps, (int32)(0))
+		}
+	}
+}

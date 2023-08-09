@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c71a66dab813061f1d09982c2748a09317fe0860/specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptPackages_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptPackages_List.json
 func ExampleScriptPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleScriptPackagesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewScriptPackagesClient().NewListPager("group1", "{privateCloudName}", nil)
+	pager := clientFactory.NewScriptPackagesClient().NewListPager("group1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleScriptPackagesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.AVS.Management@3.0.48"),
 		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/scriptPackages"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/{scriptPackageName}"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/Microsoft.AVS.Management@3.0.48"),
 		// 			Properties: &armavs.ScriptPackageProperties{
 		// 				Description: to.Ptr("Various cmdlets for elevated access to Private Cloud administrative functions"),
 		// 				Company: to.Ptr("Microsoft"),
@@ -67,7 +67,7 @@ func ExampleScriptPackagesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c71a66dab813061f1d09982c2748a09317fe0860/specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptPackages_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptPackages_Get.json
 func ExampleScriptPackagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleScriptPackagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScriptPackagesClient().Get(ctx, "group1", "{privateCloudName}", "{scriptPackageName}", nil)
+	res, err := clientFactory.NewScriptPackagesClient().Get(ctx, "group1", "cloud1", "Microsoft.AVS.Management@3.0.48", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +88,7 @@ func ExampleScriptPackagesClient_Get() {
 	// res.ScriptPackage = armavs.ScriptPackage{
 	// 	Name: to.Ptr("Microsoft.AVS.Management@3.0.48"),
 	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/scriptPackages"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/{scriptPackageName}"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/Microsoft.AVS.Management@3.0.48"),
 	// 	Properties: &armavs.ScriptPackageProperties{
 	// 		Description: to.Ptr("Various cmdlets for elevated access to Private Cloud administrative functions"),
 	// 		Company: to.Ptr("Microsoft"),

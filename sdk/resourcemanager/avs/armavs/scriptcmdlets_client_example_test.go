@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c71a66dab813061f1d09982c2748a09317fe0860/specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_List.json
 func ExampleScriptCmdletsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleScriptCmdletsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewScriptCmdletsClient().NewListPager("group1", "{privateCloudName}", "{scriptPackageName}", nil)
+	pager := clientFactory.NewScriptCmdletsClient().NewListPager("group1", "cloud1", "package@1.0.2", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleScriptCmdletsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("Set-AvsStoragePolicy"),
 		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/{scriptPackageName}/scriptCmdlets/Set-AvsStoragePolicy"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/package@1.0.2/scriptCmdlets/Set-AvsStoragePolicy"),
 		// 			Properties: &armavs.ScriptCmdletProperties{
 		// 				Description: to.Ptr("Allow user to set the storage policy of the specified VM"),
 		// 				Parameters: []*armavs.ScriptParameter{
@@ -68,7 +68,7 @@ func ExampleScriptCmdletsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("New-ExternalSsoDomain"),
 		// 			Type: to.Ptr("Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/{scriptPackageName}/scriptCmdlets/New-ExternalSsoDomain"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/package@1.0.2/scriptCmdlets/New-ExternalSsoDomain"),
 		// 			Properties: &armavs.ScriptCmdletProperties{
 		// 				Description: to.Ptr("Add an external Sso domain to their vCenter"),
 		// 				Parameters: []*armavs.ScriptParameter{
@@ -100,7 +100,7 @@ func ExampleScriptCmdletsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c71a66dab813061f1d09982c2748a09317fe0860/specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a5e7ff51c8af3781e7f6dd3b82a3fc922e2f6f93/specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_Get.json
 func ExampleScriptCmdletsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleScriptCmdletsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScriptCmdletsClient().Get(ctx, "group1", "{privateCloudName}", "{scriptPackageName}", "New-ExternalSsoDomain", nil)
+	res, err := clientFactory.NewScriptCmdletsClient().Get(ctx, "group1", "cloud1", "package@1.0.2", "New-ExternalSsoDomain", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,7 +121,7 @@ func ExampleScriptCmdletsClient_Get() {
 	// res.ScriptCmdlet = armavs.ScriptCmdlet{
 	// 	Name: to.Ptr("New-ExternalSsoDomain"),
 	// 	Type: to.Ptr("Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets/New-ExternalSsoDomain"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/package@1.0.2/scriptCmdlets/New-ExternalSsoDomain"),
 	// 	Properties: &armavs.ScriptCmdletProperties{
 	// 		Description: to.Ptr("Add an external Sso domain to their vCenter"),
 	// 		Parameters: []*armavs.ScriptParameter{

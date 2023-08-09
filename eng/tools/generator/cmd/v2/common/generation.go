@@ -173,7 +173,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	// add tag set
-	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" && !onBoard {
 		log.Printf("Add tag in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := AddTagSet(autorestMdPath, generateParam.NamespaceConfig); err != nil {

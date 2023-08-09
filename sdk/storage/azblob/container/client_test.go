@@ -788,7 +788,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsDelimiterPrefixVersi
 	}
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidPrefix() {
+func (s *ContainerRecordedTestsSuite) TestContainerListFlatBlobsInvalidBlobName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -811,7 +811,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsInvalidPrefix() {
 	}
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerListHierarchyBlobsInvalidPrefix() {
+func (s *ContainerRecordedTestsSuite) TestContainerListHierarchyBlobsInvalidBlobName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

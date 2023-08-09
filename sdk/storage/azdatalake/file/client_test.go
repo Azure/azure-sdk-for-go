@@ -594,7 +594,7 @@ func (s *RecordedTestSuite) TestCreateFileWithLease() {
 	_require.NotNil(resp)
 }
 
-func (s *UnrecordedTestSuite) TestCreateFileWithPermissions() {
+func (s *RecordedTestSuite) TestCreateFileWithPermissions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2362,7 +2362,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallStream() {
+func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2411,7 +2411,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadTinyStream() {
+func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2528,7 +2528,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestSmallFileUploadFile() {
+func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2596,7 +2596,7 @@ func (s *UnrecordedTestSuite) TestSmallFileUploadFile() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestTinyFileUploadFile() {
+func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2711,7 +2711,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBuffer() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadSmallBuffer() {
+func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3428,7 +3428,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallFile() {
+func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3507,7 +3507,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
-func (s *UnrecordedTestSuite) TestFileUploadDownloadWithProgress() {
+func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3581,6 +3581,57 @@ func (s *UnrecordedTestSuite) TestFileDownloadBuffer() {
 	_require.Nil(err)
 
 	var fileSize int64 = 100 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	destBuffer := make([]byte, fileSize)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   10 * 1024 * 1024,
+		Concurrency: 5,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+
+	downloadedMD5Value := md5.Sum(destBuffer)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileDownloadSmallBuffer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var fileSize int64 = 10 * 1024 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)

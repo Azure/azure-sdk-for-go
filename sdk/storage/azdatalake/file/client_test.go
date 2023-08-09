@@ -2383,9 +2383,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
-	_require.NoError(err)
+	_, content := testcommon.GenerateData(int(fileSize))
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
 
@@ -2394,10 +2392,6 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 		ChunkSize:   2 * 1024,
 	})
 	_require.NoError(err)
-
-	gResp2, err := fClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*gResp2.ContentLength, fileSize)
 
 	dResp, err := fClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
@@ -2409,6 +2403,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	downloadedContentMD5 := downloadedMD5Value[:]
 
 	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
 func (s *RecordedTestSuite) TestFileUploadTinyStream() {
@@ -2432,9 +2430,7 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
-	_require.NoError(err)
+	_, content := testcommon.GenerateData(int(fileSize))
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
 
@@ -2550,8 +2546,7 @@ func (s *RecordedTestSuite) TestSmallFileUploadFile() {
 	_require.NotNil(resp)
 
 	// create local file
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, content := testcommon.GenerateData(int(fileSize))
 	_require.NoError(err)
 	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
@@ -2618,8 +2613,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	_require.NotNil(resp)
 
 	// create local file
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, content := testcommon.GenerateData(int(fileSize))
 	_require.NoError(err)
 	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
@@ -2732,9 +2726,7 @@ func (s *RecordedTestSuite) TestFileUploadSmallBuffer() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
-	_require.NoError(err)
+	_, content := testcommon.GenerateData(int(fileSize))
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
 
@@ -3631,7 +3623,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBuffer() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	var fileSize int64 = 10 * 1024 * 1024
+	var fileSize int64 = 10 * 1024
 	fileName := testcommon.GenerateFileName(testName)
 	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -3640,9 +3632,7 @@ func (s *RecordedTestSuite) TestFileDownloadSmallBuffer() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
-	_require.NoError(err)
+	_, content := testcommon.GenerateData(int(fileSize))
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
 

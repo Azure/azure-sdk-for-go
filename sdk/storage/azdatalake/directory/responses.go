@@ -7,30 +7,30 @@
 package directory
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 )
 
-// CreateResponse contains the response fields for the Create operation.
-type CreateResponse = generated.PathClientCreateResponse
-
-// DeleteResponse contains the response fields for the Delete operation.
-type DeleteResponse = generated.PathClientDeleteResponse
-
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse struct {
-	Response           generated.PathClientCreateResponse
+	Response           CreateResponse
 	NewDirectoryClient *Client
 }
 
+type setAccessControlRecursiveResponse struct {
+	DirectoriesSuccessful *int32
+	FailureCount          *int32
+	FilesSuccessful       *int32
+	FailedEntries         []*ACLFailedEntry
+}
+
 // SetAccessControlRecursiveResponse contains the response fields for the SetAccessControlRecursive operation.
-type SetAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+type SetAccessControlRecursiveResponse = setAccessControlRecursiveResponse
 
 // UpdateAccessControlRecursiveResponse contains the response fields for the UpdateAccessControlRecursive operation.
-type UpdateAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+type UpdateAccessControlRecursiveResponse = setAccessControlRecursiveResponse
 
 // RemoveAccessControlRecursiveResponse contains the response fields for the RemoveAccessControlRecursive operation.
-type RemoveAccessControlRecursiveResponse = generated.PathClientSetAccessControlRecursiveResponse
+type RemoveAccessControlRecursiveResponse = setAccessControlRecursiveResponse
 
 // ========================================== path imports ===========================================================
 
@@ -48,3 +48,9 @@ type GetPropertiesResponse = path.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse
+
+// CreateResponse contains the response fields for the Create operation.
+type CreateResponse = path.CreateResponse
+
+// DeleteResponse contains the response fields for the Delete operation.
+type DeleteResponse = path.DeleteResponse

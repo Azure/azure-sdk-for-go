@@ -97,22 +97,22 @@ func TestFilesystemPermissions_ParseNegative(t *testing.T) {
 	require.Contains(t, err.Error(), "122")
 }
 
-func TestPathPermissions_String(t *testing.T) {
+func TestFilePermissions_String(t *testing.T) {
 	testdata := []struct {
-		input    PathPermissions
+		input    FilePermissions
 		expected string
 	}{
-		{input: PathPermissions{Read: true}, expected: "r"},
-		{input: PathPermissions{Add: true}, expected: "a"},
-		{input: PathPermissions{Create: true}, expected: "c"},
-		{input: PathPermissions{Write: true}, expected: "w"},
-		{input: PathPermissions{Delete: true}, expected: "d"},
-		{input: PathPermissions{List: true}, expected: "l"},
-		{input: PathPermissions{Move: true}, expected: "m"},
-		{input: PathPermissions{Execute: true}, expected: "e"},
-		{input: PathPermissions{Ownership: true}, expected: "o"},
-		{input: PathPermissions{Permissions: true}, expected: "p"},
-		{input: PathPermissions{
+		{input: FilePermissions{Read: true}, expected: "r"},
+		{input: FilePermissions{Add: true}, expected: "a"},
+		{input: FilePermissions{Create: true}, expected: "c"},
+		{input: FilePermissions{Write: true}, expected: "w"},
+		{input: FilePermissions{Delete: true}, expected: "d"},
+		{input: FilePermissions{List: true}, expected: "l"},
+		{input: FilePermissions{Move: true}, expected: "m"},
+		{input: FilePermissions{Execute: true}, expected: "e"},
+		{input: FilePermissions{Ownership: true}, expected: "o"},
+		{input: FilePermissions{Permissions: true}, expected: "p"},
+		{input: FilePermissions{
 			Read:        true,
 			Add:         true,
 			Create:      true,
@@ -130,22 +130,22 @@ func TestPathPermissions_String(t *testing.T) {
 	}
 }
 
-func TestPathPermissions_Parse(t *testing.T) {
+func TestFilePermissions_Parse(t *testing.T) {
 	testdata := []struct {
-		expected PathPermissions
+		expected FilePermissions
 		input    string
 	}{
-		{expected: PathPermissions{Read: true}, input: "r"},
-		{expected: PathPermissions{Add: true}, input: "a"},
-		{expected: PathPermissions{Create: true}, input: "c"},
-		{expected: PathPermissions{Write: true}, input: "w"},
-		{expected: PathPermissions{Delete: true}, input: "d"},
-		{expected: PathPermissions{List: true}, input: "l"},
-		{expected: PathPermissions{Move: true}, input: "m"},
-		{expected: PathPermissions{Execute: true}, input: "e"},
-		{expected: PathPermissions{Ownership: true}, input: "o"},
-		{expected: PathPermissions{Permissions: true}, input: "p"},
-		{expected: PathPermissions{
+		{expected: FilePermissions{Read: true}, input: "r"},
+		{expected: FilePermissions{Add: true}, input: "a"},
+		{expected: FilePermissions{Create: true}, input: "c"},
+		{expected: FilePermissions{Write: true}, input: "w"},
+		{expected: FilePermissions{Delete: true}, input: "d"},
+		{expected: FilePermissions{List: true}, input: "l"},
+		{expected: FilePermissions{Move: true}, input: "m"},
+		{expected: FilePermissions{Execute: true}, input: "e"},
+		{expected: FilePermissions{Ownership: true}, input: "o"},
+		{expected: FilePermissions{Permissions: true}, input: "p"},
+		{expected: FilePermissions{
 			Read:        true,
 			Add:         true,
 			Create:      true,
@@ -157,7 +157,7 @@ func TestPathPermissions_Parse(t *testing.T) {
 			Ownership:   true,
 			Permissions: true,
 		}, input: "racwdlmeop"},
-		{expected: PathPermissions{
+		{expected: FilePermissions{
 			Read:        true,
 			Add:         true,
 			Create:      true,

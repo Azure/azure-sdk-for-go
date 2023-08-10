@@ -10,7 +10,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 )
 
 // NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's Name and a user delegation Key from it
@@ -22,7 +22,7 @@ func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *Use
 }
 
 // UserDelegationKey contains UserDelegationKey.
-type UserDelegationKey = generated.UserDelegationKey
+type UserDelegationKey = generated_blob.UserDelegationKey
 
 // UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential struct {

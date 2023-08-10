@@ -59,6 +59,59 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
+func (s *UnrecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDatalake)
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := directory.NewClientFromConnectionString(*connectionString, dirName, filesystemName, nil)
+
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+}
+
+func (s *RecordedTestSuite) TestBlobURLAndDFSURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	_require.Contains(dirClient.DFSURL(), ".dfs.core.windows.net/"+filesystemName+"/"+dirName)
+	_require.Contains(dirClient.BlobURL(), ".blob.core.windows.net/"+filesystemName+"/"+dirName)
+}
+
 func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -80,6 +133,36 @@ func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	resp, err := dirClient.Create(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotNil(resp)
+}
+
+func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {
@@ -224,7 +307,7 @@ func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceTrue() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestCreateDirIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -262,7 +345,7 @@ func (s *RecordedTestSuite) TestCreateFileIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
+func (s *RecordedTestSuite) TestCreateDirIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -299,7 +382,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatch() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -337,7 +420,7 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithMetadataNotNil() {
+func (s *RecordedTestSuite) TestCreateDirWithMetadataNotNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -364,7 +447,7 @@ func (s *RecordedTestSuite) TestCreateFileWithMetadataNotNil() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithEmptyMetadata() {
+func (s *RecordedTestSuite) TestCreateDirWithEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -391,7 +474,7 @@ func (s *RecordedTestSuite) TestCreateFileWithEmptyMetadata() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
+func (s *RecordedTestSuite) TestCreateDirWithNilHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -418,7 +501,7 @@ func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	_require.NotNil(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithHTTPHeaders() {
+func (s *RecordedTestSuite) TestCreateDirWithHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -785,7 +868,7 @@ func (s *RecordedTestSuite) TestDeleteDirIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlNil() {
+func (s *RecordedTestSuite) TestDirSetAccessControlNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -812,7 +895,7 @@ func (s *RecordedTestSuite) TestSetAccessControlNil() {
 }
 
 // TODO: write test that fails if you provide permissions and acls
-func (s *RecordedTestSuite) TestSetAccessControl() {
+func (s *RecordedTestSuite) TestDirSetAccessControl() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -845,7 +928,7 @@ func (s *RecordedTestSuite) TestSetAccessControl() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetAccessControlWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -879,7 +962,7 @@ func (s *RecordedTestSuite) TestSetAccessControlWithNilAccessConditions() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -918,7 +1001,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceTrue() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -958,7 +1041,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -996,7 +1079,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceTrue() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1038,7 +1121,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfETagMatch() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1077,7 +1160,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfETagMatch() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessControlIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1116,7 +1199,7 @@ func (s *RecordedTestSuite) TestSetAccessControlIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControl() {
+func (s *RecordedTestSuite) TestDirGetAccessControl() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1145,7 +1228,7 @@ func (s *RecordedTestSuite) TestGetAccessControl() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
+func (s *UnrecordedTestSuite) TestDirGetAccessControlWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1189,7 +1272,7 @@ func (s *RecordedTestSuite) TestGetAccessControlWithSAS() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestDeleteWithSAS() {
+func (s *UnrecordedTestSuite) TestDeleteWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1228,7 +1311,7 @@ func (s *RecordedTestSuite) TestDeleteWithSAS() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirGetAccessControlWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1261,7 +1344,7 @@ func (s *RecordedTestSuite) TestGetAccessControlWithNilAccessConditions() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1299,7 +1382,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceTrue() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1337,7 +1420,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1374,7 +1457,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceTrue() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1414,7 +1497,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfETagMatch() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1452,7 +1535,7 @@ func (s *RecordedTestSuite) TestGetAccessControlIfETagMatch() {
 	_require.Equal(acl, *getACLResp.ACL)
 }
 
-func (s *RecordedTestSuite) TestGetAccessControlIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1491,7 +1574,263 @@ func (s *RecordedTestSuite) TestGetAccessControlIfETagMatchFalse() {
 
 ///=====================================================================
 
-func (s *RecordedTestSuite) TestUpdateAccessControlRecursive() {
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.SetAccessControlRecursive(acl, nil)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithBadContinuation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetAccessControlRecursiveOptions{Marker: to.Ptr("garbage")}
+	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetAccessControlRecursiveOptions{}
+	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp1.FilesSuccessful, to.Ptr(int32(0)))
+	_require.Equal(resp1.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(2)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	acl := "user::rwx,group::r-x,other::rwx"
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	resp1, err := dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp1)
+
+	fileClient, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_require.Nil(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileClient1, err := dirClient.NewFileClient(testcommon.GenerateFileName(testName + "1"))
+	_require.Nil(err)
+	_require.NotNil(fileClient1)
+
+	_, err = fileClient1.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
+	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
+
+	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
+	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
+	_require.Equal(resp2.FilesSuccessful, to.Ptr(int32(2)))
+	_require.Equal(resp2.FailureCount, to.Ptr(int32(0)))
+
+	getACLResp, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl, *getACLResp.ACL)
+}
+
+func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1516,19 +1855,17 @@ func (s *RecordedTestSuite) TestUpdateAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	pager := dirClient.NewUpdateAccessControlRecursivePager(acl1, nil)
+	resp1, err := dirClient.UpdateAccessControlRecursive(acl1, nil)
+	_require.Nil(err)
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 
-	for pager.More() {
-		resp1, err := pager.NextPage(context.Background())
-		_require.Nil(err)
-		_require.Equal(*resp1.SetAccessControlRecursiveResponse.DirectoriesSuccessful, int32(1))
-		if err != nil {
-			break
-		}
-	}
+	resp2, err := dirClient.GetAccessControl(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(acl1, *resp2.ACL)
+
 }
 
-func (s *RecordedTestSuite) TestRemoveAccessControlRecursive() {
+func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1551,19 +1888,12 @@ func (s *RecordedTestSuite) TestRemoveAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	pager := dirClient.NewRemoveAccessControlRecursivePager(acl, nil)
-
-	for pager.More() {
-		resp1, err := pager.NextPage(context.Background())
-		_require.Nil(err)
-		_require.Equal(*resp1.SetAccessControlRecursiveResponse.DirectoriesSuccessful, int32(1))
-		if err != nil {
-			break
-		}
-	}
+	resp1, err := dirClient.RemoveAccessControlRecursive(acl, nil)
+	_require.Nil(err)
+	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 }
 
-func (s *RecordedTestSuite) TestSetMetadataNil() {
+func (s *RecordedTestSuite) TestDirSetMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1589,7 +1919,7 @@ func (s *RecordedTestSuite) TestSetMetadataNil() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithEmptyOpts() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithEmptyOpts() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1618,7 +1948,7 @@ func (s *RecordedTestSuite) TestSetMetadataWithEmptyOpts() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithBasicMetadata() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1647,7 +1977,7 @@ func (s *RecordedTestSuite) TestSetMetadataWithBasicMetadata() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMetadataWithAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1689,7 +2019,7 @@ func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Cl
 	_require.Equal(*resp.ContentDisposition, disposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeaders() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1714,7 +2044,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeaders() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1743,7 +2073,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersWithNilAccessConditions() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1777,7 +2107,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceTrue() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1811,7 +2141,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1845,7 +2175,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceTrue() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1879,7 +2209,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatch() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1912,7 +2242,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatch() {
 	validatePropertiesSet(_require, dirClient, *testcommon.BasicHeaders.ContentDisposition)
 }
 
-func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1946,7 +2276,7 @@ func (s *RecordedTestSuite) TestSetHTTPHeadersIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameNoOptions() {
+func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1972,7 +2302,7 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
+func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2002,7 +2332,7 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2037,7 +2367,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2072,7 +2402,7 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
+func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2103,11 +2433,12 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 	}
 
 	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2142,7 +2473,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
+func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2173,11 +2504,12 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 	}
 
 	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
-func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
+func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

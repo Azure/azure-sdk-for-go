@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -65,10 +66,10 @@ func NewFilesystemClient(fsURL string, fsURLWithBlobEndpoint string, client *con
 	}
 }
 
-func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, client *service.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client] {
-	return &CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]{
+func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, client *service.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client] {
+	return &CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client]{
 		innerT:       generated.NewServiceClient(serviceURL, azClient),
-		innerK:       generated.NewServiceClient(serviceURLWithBlobEndpoint, azClient),
+		innerK:       generated_blob.NewServiceClient(serviceURLWithBlobEndpoint, azClient),
 		sharedKey:    sharedKey,
 		identityCred: identityCred,
 		innerU:       client,
@@ -76,10 +77,10 @@ func NewServiceClient(serviceURL string, serviceURLWithBlobEndpoint string, clie
 	}
 }
 
-func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client] {
-	return &CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]{
+func NewPathClient(pathURL string, pathURLWithBlobEndpoint string, client *blockblob.Client, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, identityCred *azcore.TokenCredential, options *ClientOptions) *CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client] {
+	return &CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client]{
 		innerT:       generated.NewPathClient(pathURL, azClient),
-		innerK:       generated.NewPathClient(pathURLWithBlobEndpoint, azClient),
+		innerK:       generated_blob.NewBlobClient(pathURLWithBlobEndpoint, azClient),
 		sharedKey:    sharedKey,
 		identityCred: identityCred,
 		innerU:       client,

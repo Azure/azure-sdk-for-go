@@ -243,3 +243,36 @@ directive:
       replace (/req\.Raw\(\)\.Header\[\"x-ms-immutability-policy-until-date\"\]\s+=\s+\[\]string\{options\.ImmutabilityPolicyExpiry\.Format\(time\.RFC1123\)\}/g, 
       `req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{(*options.ImmutabilityPolicyExpiry).In(gmt).Format(time.RFC1123)}`);
       
+```
+
+### Change container prefix to filesystem
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/PublicAccessTypeBlob/g, 'PublicAccessTypeFile').
+        replace(/PublicAccessTypeContainer/g, 'PublicAccessTypeFilesystem').
+        replace(/FileSystemClientListBlobHierarchySegmentResponse/g, 'FileSystemClientListPathHierarchySegmentResponse').
+        replace(/ListBlobsHierarchySegmentResponse/g, 'ListPathsHierarchySegmentResponse').
+        replace(/ContainerName\s*\*string/g, 'FileSystemName *string').
+        replace(/BlobHierarchyListSegment/g, 'PathHierarchyListSegment').
+        replace(/BlobItems/g, 'PathItems').
+        replace(/BlobItem/g, 'PathItem').
+        replace(/BlobPrefix/g, 'PathPrefix').
+        replace(/BlobPrefixes/g, 'PathPrefixes').
+        replace(/BlobProperties/g, 'PathProperties').
+        replace(/ContainerProperties/g, 'FileSystemProperties');
+```
+
+### TODO: FIX THE BELOW IN UNMARSHALASJSON
+### Change path props to string
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path.properties
+  transform: >
+    $.isDirectory.type = "string";
+    $.contentLength.type = "string";
+```

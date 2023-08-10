@@ -9,22 +9,9 @@ package filesystem
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"time"
 )
-
-// CreateResponse contains the response from method FilesystemClient.Create.
-type CreateResponse = container.CreateResponse
-
-// DeleteResponse contains the response from method FilesystemClient.Delete.
-type DeleteResponse = container.DeleteResponse
-
-// SetMetadataResponse contains the response from method FilesystemClient.SetMetadata.
-type SetMetadataResponse = container.SetMetadataResponse
-
-// SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
-type SetAccessPolicyResponse = container.SetAccessPolicyResponse
 
 // GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
 type GetAccessPolicyResponse struct {
@@ -99,13 +86,13 @@ type GetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *azdatalake.DurationType
+	LeaseDuration *DurationType
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *azdatalake.StateType
+	LeaseState *StateType
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *azdatalake.StatusType
+	LeaseStatus *StatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
@@ -137,11 +124,29 @@ func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.Ge
 	r.Version = contResp.Version
 }
 
+// CreateResponse contains the response from method FilesystemClient.Create.
+type CreateResponse = container.CreateResponse
+
+// DeleteResponse contains the response from method FilesystemClient.Delete.
+type DeleteResponse = container.DeleteResponse
+
+// SetMetadataResponse contains the response from method FilesystemClient.SetMetadata.
+type SetMetadataResponse = container.SetMetadataResponse
+
+// SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
+type SetAccessPolicyResponse = container.SetAccessPolicyResponse
+
 // ListPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
 type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
 
-// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
-type ListDeletedPathsSegmentResponse = generated.FileSystemClientListBlobHierarchySegmentResponse
+// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+type UndeletePathResponse = generated.PathClientUndeleteResponse
 
-// ListBlobsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
-type ListBlobsHierarchySegmentResponse = generated.ListBlobsHierarchySegmentResponse
+// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+type ListDeletedPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
+
+// ListPathsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResponse
+
+// PathHierarchyListSegment contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathHierarchyListSegment = generated.PathHierarchyListSegment

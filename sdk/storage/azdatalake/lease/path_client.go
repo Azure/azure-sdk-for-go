@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 )
 
 // PathClient provides lease functionality for the underlying path client.
@@ -34,9 +35,9 @@ func NewPathClient[T directory.Client | file.Client](client *T, options *PathCli
 	var blobClient *blockblob.Client
 	switch t := any(client).(type) {
 	case *directory.Client:
-		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(t))
+		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(t))
 	case *file.Client:
-		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(t))
+		_, _, blobClient = base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(t))
 	default:
 		return nil, fmt.Errorf("unhandled client type %T", client)
 	}

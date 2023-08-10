@@ -7,9 +7,9 @@
 package generated
 
 import (
-	"encoding/base64"
 	"encoding/xml"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/url"
 )
 
 type TransactionalContentSetter interface {
@@ -94,7 +94,9 @@ func (b *BlobPrefix) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) erro
 	}
 	if aux.BlobName != nil {
 		if aux.BlobName.Encoded != nil && *aux.BlobName.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.BlobName.Content)
+			name, err := url.QueryUnescape(*aux.BlobName.Content)
+
+			// name, err := base64.StdEncoding.DecodeString(*aux.BlobName.Content)
 			if err != nil {
 				return err
 			}
@@ -124,7 +126,9 @@ func (b *BlobItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error 
 	b.OrMetadata = (map[string]*string)(aux.OrMetadata)
 	if aux.BlobName != nil {
 		if aux.BlobName.Encoded != nil && *aux.BlobName.Encoded {
-			name, err := base64.StdEncoding.DecodeString(*aux.BlobName.Content)
+			name, err := url.QueryUnescape(*aux.BlobName.Content)
+
+			// name, err := base64.StdEncoding.DecodeString(*aux.BlobName.Content)
 			if err != nil {
 				return err
 			}

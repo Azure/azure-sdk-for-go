@@ -788,6 +788,63 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsDelimiterPrefixVersi
 	}
 }
 
+func (s *ContainerRecordedTestsSuite) TestContainerListFlatBlobsInvalidBlobName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "dir1/dir2/file\uFFFF.blob"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.Equal(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListHierarchyBlobsInvalidBlobName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := "dir1/dir2/file\uFFFF.blob"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	pager := containerClient.NewListBlobsHierarchyPager(".b", nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 0)
+		_require.Equal(len(resp.Segment.BlobPrefixes), 1)
+		_require.Equal(*resp.Segment.BlobPrefixes[0].Name, "dir1/dir2/file\uFFFF.b")
+	}
+
+	// empty delimiter
+	pager1 := containerClient.NewListBlobsHierarchyPager("", nil)
+	for pager1.More() {
+		resp, err := pager1.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Equal(len(resp.Segment.BlobItems), 1)
+		_require.Equal(*resp.Segment.BlobItems[0].Name, blobName)
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

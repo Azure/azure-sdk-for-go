@@ -1,5 +1,11 @@
 # Release History
 
+## 0.1.2 (2023-08-10)
+
+### Breaking Changes
+
+* Retracting this module to delist it from pkg.go.dev. Use `github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai` instead.
+
 ## 0.1.1 (2023-07-26)
 
 ### Breaking Changes

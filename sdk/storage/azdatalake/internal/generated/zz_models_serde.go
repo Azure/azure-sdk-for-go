@@ -54,28 +54,28 @@ func (a *ACLFailedEntry) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type BlobHierarchyListSegment.
-func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias BlobHierarchyListSegment
+// MarshalXML implements the xml.Marshaller interface for type PathHierarchyListSegment.
+func (b PathHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias PathHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobItems    *[]*BlobItemInternal `xml:"Blob"`
-		BlobPrefixes *[]*BlobPrefix       `xml:"BlobPrefix"`
+		PathItems    *[]*PathItemInternal `xml:"Blob"`
+		PathPrefixes *[]*PathPrefix       `xml:"PathPrefix"`
 	}{
 		alias: (*alias)(&b),
 	}
-	if b.BlobItems != nil {
-		aux.BlobItems = &b.BlobItems
+	if b.PathItems != nil {
+		aux.PathItems = &b.PathItems
 	}
-	if b.BlobPrefixes != nil {
-		aux.BlobPrefixes = &b.BlobPrefixes
+	if b.PathPrefixes != nil {
+		aux.PathPrefixes = &b.PathPrefixes
 	}
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type BlobPropertiesInternal.
-func (b BlobPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias BlobPropertiesInternal
+// MarshalXML implements the xml.Marshaller interface for type PathPropertiesInternal.
+func (b PathPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
@@ -105,9 +105,9 @@ func (b BlobPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	return enc.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type BlobPropertiesInternal.
-func (b *BlobPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias BlobPropertiesInternal
+// UnmarshalXML implements the xml.Unmarshaller interface for type PathPropertiesInternal.
+func (b *PathPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`

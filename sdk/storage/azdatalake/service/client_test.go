@@ -62,7 +62,7 @@ type ServiceUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -323,7 +323,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
@@ -464,7 +464,7 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetFilesystemClient() {
+func (s *ServiceUnrecordedTestsSuite) TestGetFilesystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -486,7 +486,7 @@ func (s *ServiceRecordedTestsSuite) TestGetFilesystemClient() {
 	_require.Nil(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASFilesystemClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASFilesystemClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -519,7 +519,7 @@ func (s *ServiceRecordedTestsSuite) TestSASFilesystemClient() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASFilesystem2() {
+func (s *ServiceUnrecordedTestsSuite) TestSASFilesystem2() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -592,15 +592,15 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 
 			if *ctnr.Name == fsName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, azdatalake.StatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, azdatalake.StateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, service.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, service.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -653,15 +653,15 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 
 			if *ctnr.Name == fsName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, azdatalake.StatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, azdatalake.StateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, service.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, service.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -718,7 +718,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, ctnr := range resp.Filesystems {
+		for _, ctnr := range resp.FileSystemItems {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
 			count += 1
@@ -760,7 +760,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
-		for _, container := range resp.Filesystems {
+		for _, container := range resp.FileSystemItems {
 			count++
 			_require.NotNil(container.Name)
 		}

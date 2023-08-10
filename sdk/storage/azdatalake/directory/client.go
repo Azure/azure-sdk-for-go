@@ -11,11 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -29,7 +32,7 @@ import (
 type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service.
-type Client base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client]
+type Client base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client]
 
 // NewClient creates an instance of Client with the specified values.
 //   - directoryURL - the URL of the directory e.g. https://<account>.dfs.core.windows.net/fs/dir
@@ -128,11 +131,14 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, dirPath, fsName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
+
+	dirPath = strings.ReplaceAll(dirPath, "\\", "/")
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName, dirPath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {
 		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)
@@ -146,31 +152,30 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 }
 
 func (d *Client) generatedDirClientWithDFS() *generated.PathClient {
-	//base.SharedKeyComposite((*base.CompositeClient[generated.BlobClient, generated.BlockBlobClient])(bb))
-	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	dirClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return dirClientWithDFS
 }
 
-func (d *Client) generatedDirClientWithBlob() *generated.PathClient {
-	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+func (d *Client) generatedDirClientWithBlob() *generated_blob.BlobClient {
+	_, dirClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return dirClientWithBlob
 }
 
 func (d *Client) blobClient() *blockblob.Client {
-	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	_, _, blobClient := base.InnerClients((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 	return blobClient
 }
 
 func (d *Client) getClientOptions() *base.ClientOptions {
-	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 func (d *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 func (d *Client) identityCredential() *azcore.TokenCredential {
-	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated.PathClient, blockblob.Client])(d))
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.PathClient, generated_blob.BlobClient, blockblob.Client])(d))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.
@@ -183,7 +188,27 @@ func (d *Client) BlobURL() string {
 	return d.generatedDirClientWithBlob().Endpoint()
 }
 
-//TODO: create method to get file client - this will require block blob to have a method to get another block blob
+// NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
+// The new file.Client uses the same request policy pipeline as the Client.
+func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
+	fileName = url.PathEscape(fileName)
+	fileURL := runtime.JoinPaths(d.DFSURL(), fileName)
+	newBlobURL, fileURL := shared.GetURLs(fileURL)
+	var newBlobClient *blockblob.Client
+	var err error
+	if d.identityCredential() != nil {
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
+	} else if d.sharedKey() != nil {
+		blobSharedKey, _ := d.sharedKey().ConvertToBlobSharedKey()
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, nil)
+	} else {
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
+	}
+	if err != nil {
+		return nil, exported.ConvertToDFSError(err)
+	}
+	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
+}
 
 // Create creates a new directory (dfs1).
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
@@ -260,12 +285,12 @@ func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	return resp, err
 }
 
-func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SetAccessControlRecursiveResponse]{
-		More: func(page SetAccessControlRecursiveResponse) bool {
+func (d *Client) setAccessControlPager(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions) *runtime.Pager[generated.PathClientSetAccessControlRecursiveResponse] {
+	return runtime.NewPager(runtime.PagingHandler[generated.PathClientSetAccessControlRecursiveResponse]{
+		More: func(page generated.PathClientSetAccessControlRecursiveResponse) bool {
 			return page.Continuation != nil && len(*page.Continuation) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SetAccessControlRecursiveResponse) (SetAccessControlRecursiveResponse, error) {
+		Fetcher: func(ctx context.Context, page *generated.PathClientSetAccessControlRecursiveResponse) (generated.PathClientSetAccessControlRecursiveResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -277,15 +302,15 @@ func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecur
 				err = exported.ConvertToDFSError(err)
 			}
 			if err != nil {
-				return SetAccessControlRecursiveResponse{}, err
+				return generated.PathClientSetAccessControlRecursiveResponse{}, err
 			}
 			resp, err := d.generatedDirClientWithDFS().InternalClient().Pipeline().Do(req)
 			err = exported.ConvertToDFSError(err)
 			if err != nil {
-				return SetAccessControlRecursiveResponse{}, err
+				return generated.PathClientSetAccessControlRecursiveResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
+				return generated.PathClientSetAccessControlRecursiveResponse{}, runtime.NewResponseError(resp)
 			}
 			newResp, err := d.generatedDirClientWithDFS().SetAccessControlRecursiveHandleResponse(resp)
 			return newResp, exported.ConvertToDFSError(err)
@@ -294,22 +319,61 @@ func (d *Client) setAccessControlHelper(mode generated.PathSetAccessControlRecur
 
 }
 
-// NewSetAccessControlRecursivePager sets the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewSetAccessControlRecursivePager(ACL string, options *SetAccessControlRecursiveOptions) *runtime.Pager[SetAccessControlRecursiveResponse] {
+func (d *Client) setAccessControlRecursiveHelper(mode generated.PathSetAccessControlRecursiveMode, listOptions *generated.PathClientSetAccessControlRecursiveOptions, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	pager := d.setAccessControlPager(mode, listOptions)
+	counter := *options.MaxBatches
+	continueOnFailure := listOptions.ForceFlag
+	totalSuccessfulDirs := int32(0)
+	totalSuccessfulFiles := int32(0)
+	totalFailureCount := int32(0)
+	finalResponse := SetAccessControlRecursiveResponse{
+		DirectoriesSuccessful: &totalSuccessfulDirs,
+		FilesSuccessful:       &totalSuccessfulFiles,
+		FailureCount:          &totalFailureCount,
+		FailedEntries:         []*ACLFailedEntry{},
+	}
+	for pager.More() && counter != 0 {
+		resp, err := pager.NextPage(context.Background())
+		if err != nil {
+			return finalResponse, exported.ConvertToDFSError(err)
+		}
+		finalResponse.DirectoriesSuccessful = to.Ptr(*finalResponse.DirectoriesSuccessful + *resp.DirectoriesSuccessful)
+		finalResponse.FilesSuccessful = to.Ptr(*finalResponse.FilesSuccessful + *resp.FilesSuccessful)
+		finalResponse.FailureCount = to.Ptr(*finalResponse.FailureCount + *resp.FailureCount)
+		finalResponse.FailedEntries = append(finalResponse.FailedEntries, resp.FailedEntries...)
+		counter = counter - 1
+		if !*continueOnFailure && *resp.FailureCount > 0 {
+			return finalResponse, exported.ConvertToDFSError(err)
+		}
+	}
+	return finalResponse, nil
+}
+
+// SetAccessControlRecursive sets the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) SetAccessControlRecursive(ACL string, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &SetAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "set")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// NewUpdateAccessControlRecursivePager updates the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewUpdateAccessControlRecursivePager(ACL string, options *UpdateAccessControlRecursiveOptions) *runtime.Pager[UpdateAccessControlRecursiveResponse] {
+// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) UpdateAccessControlRecursive(ACL string, options *UpdateAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &UpdateAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "modify")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// NewRemoveAccessControlRecursivePager removes the owner, owning group, and permissions for a directory (dfs1).
-func (d *Client) NewRemoveAccessControlRecursivePager(ACL string, options *RemoveAccessControlRecursiveOptions) *runtime.Pager[RemoveAccessControlRecursiveResponse] {
+// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a directory (dfs1).
+func (d *Client) RemoveAccessControlRecursive(ACL string, options *RemoveAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
+	if options == nil {
+		options = &RemoveAccessControlRecursiveOptions{}
+	}
 	mode, listOptions := options.format(ACL, "remove")
-	return d.setAccessControlHelper(mode, listOptions)
+	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
 // GetAccessControl gets the owner, owning group, and permissions for a directory (dfs1).
@@ -340,12 +404,12 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (f *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
-	if f.sharedKey() == nil {
+func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if d.sharedKey() == nil {
 		return "", datalakeerror.MissingSharedKeyCredential
 	}
 
-	urlParts, err := sas.ParseURL(f.BlobURL())
+	urlParts, err := sas.ParseURL(d.BlobURL())
 	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
@@ -360,14 +424,14 @@ func (f *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Tim
 		Permissions:    permissions.String(),
 		StartTime:      st,
 		ExpiryTime:     expiry.UTC(),
-	}.SignWithSharedKey(f.sharedKey())
+	}.SignWithSharedKey(d.sharedKey())
 
 	err = exported.ConvertToDFSError(err)
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := f.BlobURL() + "?" + qps.Encode()
+	endpoint := d.BlobURL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }

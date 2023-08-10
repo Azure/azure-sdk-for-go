@@ -79,6 +79,9 @@ func FormatGetPropertiesOptions(o *GetPropertiesOptions) *blob.GetPropertiesOpti
 		return nil
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	if o.CPKInfo == nil {
+		o.CPKInfo = &CPKInfo{}
+	}
 	return &blob.GetPropertiesOptions{
 		AccessConditions: accessConditions,
 		CPKInfo: &blob.CPKInfo{
@@ -265,7 +268,7 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, 
 		}
 	}
 	if o.CPKScopeInfo != nil {
-		opts.CPKScopeInfo = (*blob.CPKScopeInfo)(o.CPKScopeInfo)
+		opts.CPKScopeInfo = o.CPKScopeInfo
 	}
 	return opts, o.Metadata
 }
@@ -292,3 +295,6 @@ type SourceModifiedAccessConditions = exported.SourceModifiedAccessConditions
 
 // CPKScopeInfo contains a group of parameters for the Client.SetMetadata() method.
 type CPKScopeInfo = blob.CPKScopeInfo
+
+// ACLFailedEntry contains the failed ACL entry (response model).
+type ACLFailedEntry = generated.ACLFailedEntry

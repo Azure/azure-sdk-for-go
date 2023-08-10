@@ -1,3 +1,9 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package testcommon
 
 import (
@@ -209,6 +215,7 @@ func CreateNewFilesystem(ctx context.Context, _require *require.Assertions, file
 	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return fsClient
 }
+
 func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {
 		options = &service.ClientOptions{}

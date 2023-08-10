@@ -126,19 +126,6 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	}
 }
 
-// CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
-type CPKScopeInfo = container.CPKScopeInfo
-
-// AccessPolicy - An Access policy.
-type AccessPolicy = container.AccessPolicy
-
-// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
-// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
-type AccessPolicyPermission = exported.AccessPolicyPermission
-
-// SignedIdentifier - signed identifier.
-type SignedIdentifier = container.SignedIdentifier
-
 // ListPathsOptions contains the optional parameters for the Filesystem.ListPaths operation.
 type ListPathsOptions struct {
 	Marker     *string
@@ -199,17 +186,30 @@ func (o *GetSASURLOptions) format() time.Time {
 	return st
 }
 
-// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
-type UndeletePathOptions struct {
-	// placeholder
-}
+//// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
+//type UndeletePathOptions struct {
+//	// placeholder
+//}
+//
+//func (o *UndeletePathOptions) format() *UndeletePathOptions {
+//	if o == nil {
+//		return nil
+//	}
+//	return &UndeletePathOptions{}
+//}
 
-func (o *UndeletePathOptions) format() *UndeletePathOptions {
-	if o == nil {
-		return nil
-	}
-	return &UndeletePathOptions{}
-}
+// CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
+type CPKScopeInfo = container.CPKScopeInfo
+
+// AccessPolicy - An Access policy.
+type AccessPolicy = container.AccessPolicy
+
+// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
+type AccessPolicyPermission = exported.AccessPolicyPermission
+
+// SignedIdentifier - signed identifier.
+type SignedIdentifier = container.SignedIdentifier
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
@@ -223,11 +223,17 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// PathList contains the path list
+// PathList contains the path list from the ListPaths operation
 type PathList = generated.PathList
 
-// Path contains the path properties
+// Path contains the path properties from the ListPaths operation
 type Path = generated.Path
 
-// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
-type UndeletePathResponse = generated.PathClientUndeleteResponse
+// PathItem contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathItem = generated.PathItemInternal
+
+// PathProperties contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathProperties = generated.PathPropertiesInternal
+
+// PathPrefix contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+type PathPrefix = generated.PathPrefix

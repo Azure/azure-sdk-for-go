@@ -17,17 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"net/http"
 	"strings"
 	"time"
 )
+
+// FOR SERVICE CLIENT WE STORE THE GENERATED BLOB LAYER IN ORDER TO USE FS LISTING AND THE TRANSFORMS IT HAS
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Datalake Storage service.
-type Client base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client]
+type Client base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client]
 
 // NewClient creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the blob e.g. https://<account>.dfs.core.windows.net/
@@ -140,7 +144,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 }
 
 func (s *Client) getClientOptions() *base.ClientOptions {
-	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return base.GetCompositeClientOptions((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 }
 
 // NewFilesystemClient creates a new filesystem.Client object by concatenating filesystemName to the end of this Client's URL.
@@ -169,26 +173,26 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 }
 
 func (s *Client) generatedServiceClientWithDFS() *generated.ServiceClient {
-	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	svcClientWithDFS, _, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 	return svcClientWithDFS
 }
 
-func (s *Client) generatedServiceClientWithBlob() *generated.ServiceClient {
-	_, svcClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+func (s *Client) generatedServiceClientWithBlob() *generated_blob.ServiceClient {
+	_, svcClientWithBlob, _ := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 	return svcClientWithBlob
 }
 
 func (s *Client) serviceClient() *service.Client {
-	_, _, serviceClient := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	_, _, serviceClient := base.InnerClients((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 	return serviceClient
 }
 
 func (s *Client) sharedKey() *exported.SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 }
 
 func (s *Client) identityCredential() *azcore.TokenCredential {
-	return base.IdentityCredentialComposite((*base.CompositeClient[generated.ServiceClient, generated.ServiceClient, service.Client])(s))
+	return base.IdentityCredentialComposite((*base.CompositeClient[generated.ServiceClient, generated_blob.ServiceClient, service.Client])(s))
 }
 
 // DFSURL returns the URL endpoint used by the Client object.
@@ -236,32 +240,47 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 
 // NewListFilesystemsPager operation returns a pager of the shares under the specified account. (blob3)
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
-func (s *Client) NewListFilesystemsPager(options *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
+func (s *Client) NewListFilesystemsPager(o *ListFilesystemsOptions) *runtime.Pager[ListFilesystemsResponse] {
+	listOptions := generated_blob.ServiceClientListContainersSegmentOptions{}
+	if o != nil {
+		if o.Include.Deleted {
+			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeDeleted)
+		}
+		if o.Include.Metadata {
+			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeMetadata)
+		}
+		if o.Include.System {
+			listOptions.Include = append(listOptions.Include, generated_blob.ListContainersIncludeTypeSystem)
+		}
+		listOptions.Marker = o.Marker
+		listOptions.Maxresults = o.MaxResults
+		listOptions.Prefix = o.Prefix
+	}
 	return runtime.NewPager(runtime.PagingHandler[ListFilesystemsResponse]{
 		More: func(page ListFilesystemsResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListFilesystemsResponse) (ListFilesystemsResponse, error) {
+			var req *policy.Request
+			var err error
 			if page == nil {
-				page = &ListFilesystemsResponse{}
-				opts := options.format()
-				page.blobPager = s.serviceClient().NewListContainersPager(opts)
+				req, err = s.generatedServiceClientWithBlob().ListContainersSegmentCreateRequest(ctx, &listOptions)
+			} else {
+				listOptions.Marker = page.NextMarker
+				req, err = s.generatedServiceClientWithBlob().ListContainersSegmentCreateRequest(ctx, &listOptions)
 			}
-			newPage := ListFilesystemsResponse{}
-			currPage, err := page.blobPager.NextPage(context.TODO())
-			err = exported.ConvertToDFSError(err)
 			if err != nil {
-				return newPage, err
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
 			}
-			newPage.Prefix = currPage.Prefix
-			newPage.Marker = currPage.Marker
-			newPage.MaxResults = currPage.MaxResults
-			newPage.NextMarker = currPage.NextMarker
-			newPage.Filesystems = convertContainerItemsToFSItems(currPage.ContainerItems)
-			newPage.ServiceEndpoint = currPage.ServiceEndpoint
-			newPage.blobPager = page.blobPager
-
-			return newPage, err
+			resp, err := s.generatedServiceClientWithBlob().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(err)
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListFilesystemsResponse{}, exported.ConvertToDFSError(runtime.NewResponseError(resp))
+			}
+			resp1, err := s.generatedServiceClientWithBlob().ListContainersSegmentHandleResponse(resp)
+			return resp1, exported.ConvertToDFSError(err)
 		},
 	})
 }

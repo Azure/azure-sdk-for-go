@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -435,7 +436,7 @@ func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FilesystemNotFound)
 }
 
-func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -451,7 +452,7 @@ func (s *RecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetNilAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNilAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -467,7 +468,7 @@ func (s *RecordedTestSuite) TestSetNilAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -499,7 +500,7 @@ func (s *RecordedTestSuite) TestSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestSetMultipleAccessPolicies() {
+func (s *RecordedTestSuite) TestFilesystemSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -551,7 +552,7 @@ func (s *RecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-func (s *RecordedTestSuite) TestSetNullAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -576,6 +577,87 @@ func (s *RecordedTestSuite) TestSetNullAccessPolicy() {
 	resp, err := fsClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	id := "null"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	opts := &filesystem.GetAccessPolicyOptions{}
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), opts)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+
+	fsLeaseClient, err := lease.NewFilesystemClient(fsClient, &lease.FilesystemClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.Nil(err)
+
+	id := "null"
+
+	signedIdentifiers := make([]*filesystem.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &filesystem.SignedIdentifier{
+		ID: &id,
+	})
+	options := filesystem.SetAccessPolicyOptions{FilesystemACL: signedIdentifiers}
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	_, err = fsLeaseClient.AcquireLease(context.Background(), int32(15), nil)
+	_require.Nil(err)
+
+	opts1 := &filesystem.GetAccessPolicyOptions{
+		LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		},
+	}
+
+	_, err = fsClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	resp, err := fsClient.GetAccessPolicy(context.Background(), opts1)
+	_require.Nil(err)
+	_require.Equal(len(resp.SignedIdentifiers), 1)
+
+	_, err = fsClient.Delete(context.Background(), &filesystem.DeleteOptions{AccessConditions: &filesystem.AccessConditions{
+		LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+			LeaseID: proposedLeaseIDs[0],
+		},
+	}})
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
@@ -1047,7 +1129,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse()
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
+func (s *UnrecordedTestSuite) TestFilesystemSetAccessPoliciesInDifferentTimeFormats() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1112,7 +1194,7 @@ func (s *RecordedTestSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
 	_require.EqualValues(resp1.SignedIdentifiers, signedIdentifiers)
 }
 
-func (s *RecordedTestSuite) TestSetAccessPolicyWithNullId() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1172,34 +1254,464 @@ func (s *UnrecordedTestSuite) TestSASFilesystemClient() {
 	_require.Nil(err)
 }
 
-// TODO: test sas on files
+func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
 
-//func (s *RecordedTestSuite) TestFilesystemListPaths() {
-//	_require := require.New(s.T())
-//	//testName := s.T().Name()
-//
-//	//filesystemName := testcommon.GenerateFilesystemName(testName)
-//	fsClient, err := testcommon.GetFilesystemClient("cont1", s.T(), testcommon.TestAccountDatalake, nil)
-//	_require.NoError(err)
-//	//defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
-//
-//	//_, err = fsClient.Create(context.Background(), nil)
-//	//_require.Nil(err)
-//
-//	resp, err := fsClient.GetProperties(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp.ETag)
-//	_require.Nil(resp.Metadata)
-//
-//	pager := fsClient.NewListPathsPager(true, nil)
-//
-//	for pager.More() {
-//		_, err := pager.NextPage(context.Background())
-//		_require.NotNil(err)
-//		if err != nil {
-//			break
-//		}
-//	}
-//}
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
 
-// TODO: Lease tests
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	pager := fsClient.NewListPathsPager(true, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(5, len(resp.Paths))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	pager := fsClient.NewListPathsPager(false, nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(1, len(resp.Paths))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListPathsOptions{
+		MaxResults: to.Ptr(int32(2)),
+	}
+	pages := 3
+	count := 0
+	pager := fsClient.NewListPathsPager(true, &opts)
+	for pager.More() {
+		_, err = pager.NextPage(context.Background())
+		_require.Nil(err)
+		count += 1
+		if err != nil {
+			break
+		}
+	}
+	_require.Equal(pages, count)
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListPathsOptions{
+		Prefix: to.Ptr("Test"),
+	}
+	pager := fsClient.NewListPathsPager(true, &opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(4, len(resp.Paths))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListPathsOptions{
+		MaxResults: to.Ptr(int32(3)),
+	}
+	pager := fsClient.NewListPathsPager(true, &opts)
+
+	resp, err := pager.NextPage(context.Background())
+	_require.Nil(err)
+	_require.Equal(3, len(resp.Paths))
+	_require.NotNil(resp.Continuation)
+
+	token := resp.Continuation
+	pager = fsClient.NewListPathsPager(true, &filesystem.ListPathsOptions{
+		Marker: token,
+	})
+	resp, err = pager.NextPage(context.Background())
+	_require.Nil(err)
+	_require.Equal(2, len(resp.Paths))
+	_require.Nil(resp.Continuation)
+}
+
+func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	pager := fsClient.NewListDeletedPathsPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListDeletedPathsOptions{
+		MaxResults: to.Ptr(int32(2)),
+	}
+	pages := 2
+	count := 0
+	pager := fsClient.NewListDeletedPathsPager(&opts)
+	for pager.More() {
+		_, err = pager.NextPage(context.Background())
+		_require.Nil(err)
+		count += 1
+		if err != nil {
+			break
+		}
+	}
+	_require.Equal(pages, count)
+}
+
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListDeletedPathsOptions{
+		Prefix: to.Ptr("Test"),
+	}
+	pager := fsClient.NewListDeletedPathsPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		_require.Equal(4, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	client := fsClient.NewFileClient(testName + "file1")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	client = fsClient.NewFileClient(testName + "file2")
+	_, err = client.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = client.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = dirClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := filesystem.ListDeletedPathsOptions{
+		MaxResults: to.Ptr(int32(3)),
+	}
+	pager := fsClient.NewListDeletedPathsPager(&opts)
+
+	resp, err := pager.NextPage(context.Background())
+	_require.Nil(err)
+	_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.NotNil(resp.NextMarker)
+
+	token := resp.NextMarker
+	pager = fsClient.NewListDeletedPathsPager(&filesystem.ListDeletedPathsOptions{
+		Marker: token,
+	})
+	resp, err = pager.NextPage(context.Background())
+	_require.Nil(err)
+	_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal("", *resp.NextMarker)
+}
+
+func (s *UnrecordedTestSuite) TestSASFilesystemCreateAndDeleteFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	// Adding SAS and options
+	permissions := sas.FilesystemPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create filesystem client with sasUrl
+	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	fClient := client.NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = fClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *UnrecordedTestSuite) TestSASFilesystemCreateAndDeleteDirectory() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFilesystemName(testName)
+	fsClient, err := testcommon.GetFilesystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+
+	// Adding SAS and options
+	permissions := sas.FilesystemPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create filesystem client with sasUrl
+	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	dClient := client.NewDirectoryClient(testcommon.GenerateDirName(testName))
+	_, err = dClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = dClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}

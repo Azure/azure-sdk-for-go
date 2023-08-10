@@ -10,27 +10,15 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"io"
 	"time"
 )
 
 // SetExpiryResponse contains the response fields for the SetExpiry operation.
-type SetExpiryResponse = generated.PathClientSetExpiryResponse
-
-// CreateResponse contains the response fields for the Create operation.
-type CreateResponse = generated.PathClientCreateResponse
-
-// DeleteResponse contains the response fields for the Delete operation.
-type DeleteResponse = generated.PathClientDeleteResponse
-
-// UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
-type UpdateAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
-
-// RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
-type RemoveAccessControlResponse = generated.PathClientSetAccessControlRecursiveResponse
+type SetExpiryResponse = generated_blob.BlobClientSetExpiryResponse
 
 // AppendDataResponse contains the response from method Client.AppendData.
 type AppendDataResponse = generated.PathClientAppendDataResponse
@@ -40,7 +28,7 @@ type FlushDataResponse = generated.PathClientFlushDataResponse
 
 // RenameResponse contains the response fields for the Create operation.
 type RenameResponse struct {
-	Response      generated.PathClientCreateResponse
+	Response      CreateResponse
 	NewFileClient *Client
 }
 
@@ -174,13 +162,13 @@ type DownloadResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *azdatalake.DurationType
+	LeaseDuration *DurationType
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *azdatalake.StateType
+	LeaseState *StateType
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *azdatalake.StatusType
+	LeaseStatus *StatusType
 
 	// LegalHold contains the information returned from the x-ms-legal-hold header response.
 	LegalHold *bool
@@ -271,3 +259,15 @@ type GetPropertiesResponse = path.GetPropertiesResponse
 
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse
+
+// CreateResponse contains the response fields for the Create operation.
+type CreateResponse = path.CreateResponse
+
+// DeleteResponse contains the response fields for the Delete operation.
+type DeleteResponse = path.DeleteResponse
+
+// UpdateAccessControlResponse contains the response fields for the UpdateAccessControlRecursive operation.
+type UpdateAccessControlResponse = path.UpdateAccessControlResponse
+
+// RemoveAccessControlResponse contains the response fields for the RemoveAccessControlRecursive operation.
+type RemoveAccessControlResponse = path.RemoveAccessControlResponse

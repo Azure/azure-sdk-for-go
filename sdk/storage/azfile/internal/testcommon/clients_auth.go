@@ -42,6 +42,7 @@ const (
 	AccountNameEnvVar           = "AZURE_STORAGE_ACCOUNT_NAME"
 	AccountKeyEnvVar            = "AZURE_STORAGE_ACCOUNT_KEY"
 	DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
+	EncryptionScopeEnvVar       = "AZURE_STORAGE_ENCRYPTION_SCOPE"
 	PremiumAccountNameEnvVar    = "FILE_STORAGE_ACCOUNT_NAME"
 	PremiumAccountKeyEnvVar     = "FILE_STORAGE_ACCOUNT_KEY"
 )

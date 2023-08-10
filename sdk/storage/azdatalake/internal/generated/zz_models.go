@@ -260,7 +260,7 @@ type ModifiedAccessConditions struct {
 }
 
 type Path struct {
-	ContentLength *int64
+	ContentLength *string
 	CreationTime  *string
 	ETag          *string
 
@@ -268,7 +268,7 @@ type Path struct {
 	EncryptionScope *string
 	ExpiryTime      *string
 	Group           *string
-	IsDirectory     *bool
+	IsDirectory     *string
 	LastModified    *string
 	Name            *string
 	Owner           *string

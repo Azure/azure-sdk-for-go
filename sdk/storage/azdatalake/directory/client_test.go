@@ -1712,6 +1712,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1764,6 +1765,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
 
 	opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1816,6 +1818,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
 	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
 	_require.Equal(resp2.DirectoriesSuccessful, to.Ptr(int32(1)))

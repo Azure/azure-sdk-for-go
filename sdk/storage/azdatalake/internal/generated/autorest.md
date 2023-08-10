@@ -265,3 +265,14 @@ directive:
         replace(/BlobProperties/g, 'PathProperties').
         replace(/ContainerProperties/g, 'FileSystemProperties');
 ```
+
+### TODO: FIX THE BELOW IN UNMARSHALASJSON
+### Change path props to string
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path.properties
+  transform: >
+    $.isDirectory.type = "string";
+    $.contentLength.type = "string";
+```

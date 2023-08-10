@@ -354,11 +354,11 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 }
 
 func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
-	appendDataOptions, leaseAccessConditions, httpsHeaders, cpkInfo, err := options.format(offset, body)
+	appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
 	if err != nil {
 		return AppendDataResponse{}, err
 	}
-	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, httpsHeaders, leaseAccessConditions, cpkInfo)
+	resp, err := f.generatedFileClientWithDFS().AppendData(ctx, body, appendDataOptions, nil, leaseAccessConditions, cpkInfo)
 	// TODO: check and uncomment this
 	//if err != nil {
 	//	_, err1 := body.Seek(0, io.SeekStart)

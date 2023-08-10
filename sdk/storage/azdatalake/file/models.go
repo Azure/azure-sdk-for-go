@@ -230,24 +230,22 @@ type AppendDataOptions struct {
 	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
-	// HTTPHeaders contains the optional path HTTP headers to set when the file is created.
-	HTTPHeaders *HTTPHeaders
 	// CPKInfo contains optional parameters to perform encryption using customer-provided key.
 	CPKInfo *CPKInfo
 }
 
-func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions, *generated.LeaseAccessConditions, *generated.PathHTTPHeaders, *generated.CPKInfo, error) {
+func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, error) {
 	if offset < 0 || body == nil {
-		return nil, nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+		return nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	if count == 0 {
-		return nil, nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+		return nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
 	}
 
 	appendDataOptions := &generated.PathClientAppendDataOptions{}
@@ -261,19 +259,10 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 	}
 
 	var leaseAccessConditions *LeaseAccessConditions
-	var httpHeaderOpts *generated.PathHTTPHeaders
 	var cpkInfoOpts *generated.CPKInfo
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions
-		if o.HTTPHeaders != nil {
-			httpHeaderOpts = &generated.PathHTTPHeaders{}
-			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
-			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
-			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
-			httpHeaderOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
-			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
-		}
 		if o.CPKInfo != nil {
 			cpkInfoOpts = &generated.CPKInfo{}
 			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
@@ -284,11 +273,11 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 	if o != nil && o.TransactionalValidation != nil {
 		_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
 		if err != nil {
-			return nil, nil, nil, nil, err
+			return nil, nil, nil, err
 		}
 	}
 
-	return appendDataOptions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
+	return appendDataOptions, leaseAccessConditions, cpkInfoOpts, nil
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -308,7 +297,6 @@ func (u *uploadFromReaderOptions) getAppendDataOptions() *AppendDataOptions {
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
 		LeaseAccessConditions: leaseAccessConditions,
-		HTTPHeaders:           u.HTTPHeaders,
 		CPKInfo:               u.CPKInfo,
 	}
 }
@@ -331,7 +319,6 @@ func (u *UploadStreamOptions) getAppendDataOptions() *AppendDataOptions {
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
 		LeaseAccessConditions: leaseAccessConditions,
-		HTTPHeaders:           u.HTTPHeaders,
 		CPKInfo:               u.CPKInfo,
 	}
 }

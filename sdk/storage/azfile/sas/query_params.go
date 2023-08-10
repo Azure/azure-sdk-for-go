@@ -22,7 +22,7 @@ const (
 
 var (
 	// Version is the default version encoded in the SAS token.
-	Version = "2020-02-10"
+	Version = "2022-11-02"
 )
 
 // TimeFormats ISO 8601 format.
@@ -127,6 +127,7 @@ type QueryParameters struct {
 	resource           string    `param:"sr"`
 	permissions        string    `param:"sp"`
 	signature          string    `param:"sig"`
+	encryptionScope    string    `param:"ses"`
 	cacheControl       string    `param:"rscc"`
 	contentDisposition string    `param:"rscd"`
 	contentEncoding    string    `param:"rsce"`
@@ -197,6 +198,11 @@ func (p *QueryParameters) Signature() string {
 	return p.signature
 }
 
+// EncryptionScope returns encryption scope.
+func (p *QueryParameters) EncryptionScope() string {
+	return p.encryptionScope
+}
+
 // CacheControl returns cacheControl.
 func (p *QueryParameters) CacheControl() string {
 	return p.cacheControl
@@ -259,6 +265,9 @@ func (p *QueryParameters) Encode() string {
 	if p.signature != "" {
 		v.Add("sig", p.signature)
 	}
+	if p.encryptionScope != "" {
+		v.Add("ses", p.encryptionScope)
+	}
 	if p.cacheControl != "" {
 		v.Add("rscc", p.cacheControl)
 	}
@@ -318,6 +327,8 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.permissions = val
 		case "sig":
 			p.signature = val
+		case "ses":
+			p.encryptionScope = val
 		case "rscc":
 			p.cacheControl = val
 		case "rscd":

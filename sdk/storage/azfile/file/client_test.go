@@ -2930,7 +2930,8 @@ func (f *FileRecordedTestsSuite) TestFileGetRangeListSnapshot() {
 	fileSize := int64(512)
 	fClient := setupGetRangeListTest(_require, testName, fileSize, shareClient)
 
-	resp, _ := shareClient.CreateSnapshot(context.Background(), nil)
+	resp, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
 	_require.NotNil(resp.Snapshot)
 
 	resp2, err := fClient.GetRangeList(context.Background(), &file.GetRangeListOptions{

@@ -2433,6 +2433,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 	}
 
 	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
@@ -2503,6 +2504,7 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 	}
 
 	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }

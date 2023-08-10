@@ -2203,6 +2203,7 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 	}
 
 	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
@@ -2273,6 +2274,7 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 	}
 
 	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.Nil(err)
 	_require.NotNil(resp1)
 	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }

@@ -271,7 +271,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	const MiB = 1024 * 1024
 	testUploadDownload := func(contentSize int) {
 		content := make([]byte, contentSize)
-		rand.Read(content)
+		_, _ = rand.Read(content)
 		contentMD5 := md5.Sum(content)
 		body := streaming.NopCloser(bytes.NewReader(content))
 
@@ -292,7 +292,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		_require.Equal(int64(contentSize), n)
 
 		// Compute md5 of file, and verify it against stored value.
-		tmp.Seek(0, io.SeekStart)
+		_, _ = tmp.Seek(0, io.SeekStart)
 		buff := make([]byte, contentSize)
 		_, err = io.ReadFull(tmp, buff)
 		_require.Nil(err)

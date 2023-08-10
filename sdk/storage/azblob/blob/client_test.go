@@ -12,7 +12,6 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
 	"os"
@@ -20,6 +19,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -250,6 +251,109 @@ func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
 		SourceContentMD5: badMD5,
 	})
 	_require.NotNil(err)
+}
+
+// This test simulates DownloadFile/Buffer methods,
+// and verifies length and content of file
+func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	
+	testUploadDownload := func (contentSize int) {
+		content := make([]byte, contentSize)
+		contentMD5 := md5.Sum(content)
+		body := streaming.NopCloser(bytes.NewReader(content))
+
+		srcBlob := containerClient.NewBlockBlobClient("srcblob")
+
+		// Prepare source bbClient for copy.
+		_, err = srcBlob.Upload(context.Background(), body, nil)
+		_require.Nil(err)
+
+		// downlod to a temp file and verify contents
+		tmp, err := os.CreateTemp("", "")
+		_require.Nil(err)
+		defer tmp.Close()
+
+		n, err := srcBlob.BlobClient().DownloadFile(context.Background(), tmp, nil)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+
+		// Compute md5 of file, and verify it against stored value.
+		tmp.Seek(0, io.SeekStart)
+		buff := make([]byte, contentSize)
+		_, err = io.ReadFull(tmp, buff)
+		_require.Nil(err)
+		_require.Equal(contentMD5, md5.Sum(buff))
+
+		// Download to a buffer and verify contents
+		buff = make([]byte, contentSize)
+		n, err = srcBlob.DownloadBuffer(context.Background(), buff, nil)
+		_require.Nil(err)
+		_require.Equal(int64(contentSize), n)
+		_require.Equal(contentMD5, md5.Sum(buff[:]))
+	}
+
+	testUploadDownload(0) // zero byte blob.
+	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
+	testUploadDownload(16 * 1024 * 1024) // 16MiB file to simulate multichunk upload-download
+	testUploadDownload(20 * 1024 * 1024) // Occupies all threads on default concurrency setting
+}
+
+// This test simulates DownloadFile/Buffer methods on a blob which fits in single chunk
+func (s *BlobUnrecordedTestsSuite) TestUploadDownloadSingleChunkBlockBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const contentSize = 16 * 1024 // 16 kb
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), body, nil)
+	_require.Nil(err)
+
+	// downlod to a temp file and verify contents
+	tmp, err := os.CreateTemp("", "")
+	_require.Nil(err)
+	defer tmp.Close()
+
+	n, err := srcBlob.BlobClient().DownloadFile(context.Background(), tmp, nil)
+	_require.Nil(err)
+	_require.Equal(contentSize, n)
+
+	// Compute md5 of file, and verify it against stored value.
+	tmp.Seek(0, io.SeekStart)
+	hash := md5.New()
+	_, err = io.Copy(hash, tmp)
+	_require.Nil(err)
+	_require.Equal(contentMD5, hash.Sum(nil))
+
+	// Download to a buffer and verify contents
+	var buff [contentSize]byte
+	n, err = srcBlob.DownloadBuffer(context.Background(), buff[:], nil)
+	_require.Nil(err)
+	_require.Equal(contentSize, n)
+	_require.Equal(contentMD5, md5.Sum(buff[:]))
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {

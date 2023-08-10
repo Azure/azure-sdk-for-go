@@ -381,60 +381,6 @@ func (s *RecordedTestSuite) TestCreateFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateFileWithMetadataNotNil() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	createFileOpts := &file.CreateOptions{
-		Metadata: testcommon.BasicMetadata,
-	}
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-
-	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
-	_require.NotNil(resp)
-}
-
-func (s *RecordedTestSuite) TestCreateFileWithEmptyMetadata() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	createFileOpts := &file.CreateOptions{
-		Metadata: nil,
-	}
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	fileName := testcommon.GenerateFileName(testName)
-	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteFile(context.Background(), _require, fClient)
-
-	resp, err := fClient.Create(context.Background(), createFileOpts)
-	_require.Nil(err)
-	_require.NotNil(resp)
-}
-
 func (s *RecordedTestSuite) TestCreateFileWithNilHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

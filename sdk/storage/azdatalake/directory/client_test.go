@@ -420,60 +420,6 @@ func (s *RecordedTestSuite) TestCreateDirIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestCreateDirWithMetadataNotNil() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	createDirOpts := &directory.CreateOptions{
-		Metadata: testcommon.BasicMetadata,
-	}
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
-
-	resp, err := dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
-	_require.NotNil(resp)
-}
-
-func (s *RecordedTestSuite) TestCreateDirWithEmptyMetadata() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	createDirOpts := &directory.CreateOptions{
-		Metadata: nil,
-	}
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
-
-	resp, err := dirClient.Create(context.Background(), createDirOpts)
-	_require.Nil(err)
-	_require.NotNil(resp)
-}
-
 func (s *RecordedTestSuite) TestCreateDirWithNilHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

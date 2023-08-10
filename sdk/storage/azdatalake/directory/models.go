@@ -17,8 +17,6 @@ import (
 type CreateOptions struct {
 	// AccessConditions contains parameters for accessing the file.
 	AccessConditions *AccessConditions
-	// Metadata is a map of name-value pairs to associate with the file storage object.
-	Metadata map[string]*string
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
 	// HTTPHeaders contains the HTTP headers for path operations.

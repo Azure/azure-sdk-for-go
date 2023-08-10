@@ -10,10 +10,10 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	"io"
-	"crypto/rand"
 	"net/url"
 	"os"
 	"strconv"
@@ -307,7 +307,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		_require.Equal(contentMD5, md5.Sum(buff[:]))
 	}
 
-	testUploadDownload(0)          // zero byte blob.
+	testUploadDownload(0)         // zero byte blob.
 	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
 
 	// Downloading with default concurrency of 5, and blocksize = 2MiB

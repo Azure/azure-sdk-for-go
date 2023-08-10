@@ -1595,3 +1595,26 @@ func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
 	_, err = fileClient.Delete(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *ShareRecordedTestsSuite) TestPremiumShareBandwidth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+
+	response, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response.ProvisionedBandwidthMibps)
+	_require.NotNil(response.ProvisionedIngressMBps)
+	_require.NotNil(response.ProvisionedEgressMBps)
+	_require.NotNil(response.ProvisionedIops)
+	_require.NotNil(response.NextAllowedQuotaDowngradeTime)
+	_require.Greater(*response.ProvisionedBandwidthMibps, (int32)(0))
+}

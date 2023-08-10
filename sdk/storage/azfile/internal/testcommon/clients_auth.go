@@ -43,6 +43,8 @@ const (
 	AccountKeyEnvVar            = "AZURE_STORAGE_ACCOUNT_KEY"
 	DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 	EncryptionScopeEnvVar       = "AZURE_STORAGE_ENCRYPTION_SCOPE"
+	PremiumAccountNameEnvVar    = "FILE_STORAGE_ACCOUNT_NAME"
+	PremiumAccountKeyEnvVar     = "FILE_STORAGE_ACCOUNT_KEY"
 )
 
 const (
@@ -107,6 +109,10 @@ func GetGenericAccountInfo(accountType TestAccountType) (string, string) {
 	}
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
+	if accountType == TestAccountPremium {
+		accountNameEnvVar = string(accountType) + PremiumAccountNameEnvVar
+		accountKeyEnvVar = string(accountType) + PremiumAccountKeyEnvVar
+	}
 	accountName, _ := GetRequiredEnv(accountNameEnvVar)
 	accountKey, _ := GetRequiredEnv(accountKeyEnvVar)
 	return accountName, accountKey
@@ -115,7 +121,11 @@ func GetGenericAccountInfo(accountType TestAccountType) (string, string) {
 func GetGenericSharedKeyCredential(accountType TestAccountType) (*service.SharedKeyCredential, error) {
 	accountName, accountKey := GetGenericAccountInfo(accountType)
 	if accountName == "" || accountKey == "" {
-		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+		if accountType == TestAccountPremium {
+			return nil, errors.New(string(accountType) + PremiumAccountNameEnvVar + " and/or " + string(accountType) + PremiumAccountKeyEnvVar + " environment variables not specified.")
+		} else {
+			return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+		}
 	}
 	return service.NewSharedKeyCredential(accountName, accountKey)
 }
@@ -123,7 +133,11 @@ func GetGenericSharedKeyCredential(accountType TestAccountType) (*service.Shared
 func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
 	accountName, accountKey := GetGenericAccountInfo(accountType)
 	if accountName == "" || accountKey == "" {
-		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+		if accountType == TestAccountPremium {
+			return nil, errors.New(string(accountType) + PremiumAccountNameEnvVar + " and/or " + string(accountType) + PremiumAccountKeyEnvVar + " environment variables not specified.")
+		} else {
+			return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+		}
 	}
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
 		accountName, accountKey)

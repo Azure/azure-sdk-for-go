@@ -268,7 +268,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 	
 	const MiB = 1024 * 1024
-	testUploadDownload := func (contentSize int) {
+	testUploadDownload := func(contentSize int) {
 		content := make([]byte, contentSize)
 		contentMD5 := md5.Sum(content)
 		body := streaming.NopCloser(bytes.NewReader(content))
@@ -285,7 +285,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		defer tmp.Close()
 
 		f := blob.DownloadFileOptions{BlockSize: 2 * MiB}
-		n, err := srcBlob.BlobClient().DownloadFile(context.Background(), tmp, &f)
+		n, err := srcBlob.DownloadFile(context.Background(), tmp, &f)
 		_require.Nil(err)
 		_require.Equal(int64(contentSize), n)
 
@@ -306,7 +306,6 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	}
 
 	testUploadDownload(0) // zero byte blob.
-	
 	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
 
 	// Downloading with default concurrency of 5, and blocksize = 2MiB
@@ -314,7 +313,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	testUploadDownload(6 * MiB)
 
 	// 10MB file, same blocks as number of threads
-	testUploadDownload(10 * MiB )
+	testUploadDownload(10 * MiB)
 
 	// 14 MB file, more blocks than threads
 	testUploadDownload(14 * MiB)

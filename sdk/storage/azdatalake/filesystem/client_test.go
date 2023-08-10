@@ -100,6 +100,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
 }
@@ -123,6 +124,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.Nil(err)
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.File)
 }
@@ -146,6 +148,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require.Nil(err)
 
 	props, err := fsClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
 	_require.Nil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.Filesystem)
 

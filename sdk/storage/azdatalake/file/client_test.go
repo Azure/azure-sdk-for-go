@@ -2961,6 +2961,7 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushAndDownloadDataWithLeasedFile(
 	_require.Nil(err)
 
 	_, err = rsc.Seek(0, io.SeekStart)
+	_require.NoError(err)
 
 	_, err = srcFClient.AppendData(context.Background(), int64(contentSize), rsc, opts)
 	_require.Nil(err)

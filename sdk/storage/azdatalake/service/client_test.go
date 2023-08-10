@@ -182,6 +182,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 
 	_require.Nil(err)
 	resp, err := svcClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	for i := 0; i < len(resp.CORS); i++ {
 		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
 			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods1)
@@ -196,7 +197,6 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
-	_require.Nil(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {

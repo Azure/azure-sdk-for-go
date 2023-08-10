@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"crypto/rand"
 	"net/url"
 	"os"
 	"strconv"
@@ -266,10 +267,11 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-	
+
 	const MiB = 1024 * 1024
 	testUploadDownload := func(contentSize int) {
 		content := make([]byte, contentSize)
+		rand.Read(content)
 		contentMD5 := md5.Sum(content)
 		body := streaming.NopCloser(bytes.NewReader(content))
 
@@ -305,18 +307,18 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		_require.Equal(contentMD5, md5.Sum(buff[:]))
 	}
 
-	testUploadDownload(0) // zero byte blob.
+	testUploadDownload(0)          // zero byte blob.
 	testUploadDownload(16 * 1024) // 16Kb file will be downloaded in a single chunk
 
 	// Downloading with default concurrency of 5, and blocksize = 2MiB
 	// 6MB file has fewer blocks than number of threads.
-	testUploadDownload(6 * MiB)
+	testUploadDownload(5 * MiB)
 
 	// 10MB file, same blocks as number of threads
 	testUploadDownload(10 * MiB)
 
 	// 14 MB file, more blocks than threads
-	testUploadDownload(14 * MiB)
+	testUploadDownload(199 * MiB)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {

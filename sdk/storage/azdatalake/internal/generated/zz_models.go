@@ -221,7 +221,7 @@ type FileSystemClientSetPropertiesOptions struct {
 }
 
 type FileSystemList struct {
-	Filesystems []*FileSystem
+	FileSystems []*FileSystem
 }
 
 // LeaseAccessConditions contains a group of parameters for the PathClient.Create method.

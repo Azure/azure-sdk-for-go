@@ -16,11 +16,11 @@ import (
 )
 import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
-// CreateFilesystemOptions contains the optional parameters for the Filesystem Create method.
-type CreateFilesystemOptions = filesystem.CreateOptions
+// CreateFileSystemOptions contains the optional parameters for the FileSystem Create method.
+type CreateFileSystemOptions = filesystem.CreateOptions
 
-// DeleteFilesystemOptions contains the optional parameters for the Filesystem Delete method.
-type DeleteFilesystemOptions = filesystem.DeleteOptions
+// DeleteFileSystemOptions contains the optional parameters for the FileSystem Delete method.
+type DeleteFileSystemOptions = filesystem.DeleteOptions
 
 // GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
@@ -86,8 +86,8 @@ func (o *SetPropertiesOptions) format() *service.SetPropertiesOptions {
 	}
 }
 
-// ListFilesystemsInclude indicates what additional information the service should return with each filesystem.
-type ListFilesystemsInclude struct {
+// ListFileSystemsInclude indicates what additional information the service should return with each filesystem.
+type ListFileSystemsInclude struct {
 	// Tells the service whether to return metadata for each filesystem.
 	Metadata bool
 
@@ -97,9 +97,9 @@ type ListFilesystemsInclude struct {
 	System bool
 }
 
-// ListFilesystemsOptions contains the optional parameters for the Client.List method.
-type ListFilesystemsOptions struct {
-	Include    ListFilesystemsInclude
+// ListFileSystemsOptions contains the optional parameters for the Client.List method.
+type ListFileSystemsOptions struct {
+	Include    ListFileSystemsInclude
 	Marker     *string
 	MaxResults *int32
 	Prefix     *string
@@ -174,17 +174,17 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
+// CPKScopeInfo contains a group of parameters for the FileSystemClient.Create method.
 type CPKScopeInfo = filesystem.CPKScopeInfo
 
 // StorageServiceProperties - Storage Service Properties. Returned in GetServiceProperties call.
 type StorageServiceProperties = service.StorageServiceProperties
 
-// ListFilesystemsSegmentResponse contains fields from the ListFilesystems operation
-type ListFilesystemsSegmentResponse = generated_blob.ListFileSystemsSegmentResponse
+// ListFileSystemsSegmentResponse contains fields from the ListFileSystems operation
+type ListFileSystemsSegmentResponse = generated_blob.ListFileSystemsSegmentResponse
 
-// FilesystemItem contains fields from the ListFilesystems operation
-type FilesystemItem = generated_blob.FileSystemItem
+// FileSystemItem contains fields from the ListFileSystems operation
+type FileSystemItem = generated_blob.FileSystemItem
 
-// FilesystemProperties contains fields from the ListFilesystems operation
-type FilesystemProperties = generated_blob.FileSystemProperties
+// FileSystemProperties contains fields from the ListFileSystems operation
+type FileSystemProperties = generated_blob.FileSystemProperties

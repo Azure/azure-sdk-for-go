@@ -25,7 +25,7 @@ type URLParts struct {
 	Scheme              string // Ex: "https://"
 	Host                string // Ex: "account.blob.core.windows.net", "10.132.141.33", "10.132.141.33:80"
 	IPEndpointStyleInfo IPEndpointStyleInfo
-	FilesystemName      string // "" if no container
+	FileSystemName      string // "" if no container
 	PathName            string // "" if no blob
 	SAS                 QueryParameters
 	UnparsedParams      string
@@ -62,9 +62,9 @@ func ParseURL(u string) (URLParts, error) {
 
 		filesystemEndIndex := strings.Index(path, "/") // Find the next slash (if it exists)
 		if filesystemEndIndex == -1 {                  // Slash not found; path has container name & no blob name
-			up.FilesystemName = path
+			up.FileSystemName = path
 		} else {
-			up.FilesystemName = path[:filesystemEndIndex] // The container name is the part between the slashes
+			up.FileSystemName = path[:filesystemEndIndex] // The container name is the part between the slashes
 			up.PathName = path[filesystemEndIndex+1:]     // The blob name is after the container slash
 		}
 	}
@@ -84,8 +84,8 @@ func (up URLParts) String() string {
 		path += "/" + up.IPEndpointStyleInfo.AccountName
 	}
 	// Concatenate container & blob names (if they exist)
-	if up.FilesystemName != "" {
-		path += "/" + up.FilesystemName
+	if up.FileSystemName != "" {
+		path += "/" + up.FileSystemName
 		if up.PathName != "" {
 			path += "/" + up.PathName
 		}

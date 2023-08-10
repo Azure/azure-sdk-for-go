@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// GetAccessPolicyResponse contains the response from method FilesystemClient.GetAccessPolicy.
+// GetAccessPolicyResponse contains the response from method FileSystemClient.GetAccessPolicy.
 type GetAccessPolicyResponse struct {
 	// PublicAccess contains the information returned from the x-ms-blob-public-access header response.
 	PublicAccess *PublicAccessType
@@ -52,7 +52,7 @@ func formatGetAccessPolicyResponse(r *GetAccessPolicyResponse, contResp *contain
 	r.Version = contResp.Version
 }
 
-// GetPropertiesResponse contains the response from method FilesystemClient.GetProperties.
+// GetPropertiesResponse contains the response from method FileSystemClient.GetProperties.
 type GetPropertiesResponse struct {
 	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
 	PublicAccess *PublicAccessType
@@ -105,7 +105,7 @@ type GetPropertiesResponse struct {
 }
 
 // removes the blob prefix in access type
-func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.GetPropertiesResponse) {
+func formatFileSystemProperties(r *GetPropertiesResponse, contResp *container.GetPropertiesResponse) {
 	r.PublicAccess = contResp.BlobPublicAccess
 	r.ClientRequestID = contResp.ClientRequestID
 	r.Date = contResp.Date
@@ -124,29 +124,29 @@ func formatFilesystemProperties(r *GetPropertiesResponse, contResp *container.Ge
 	r.Version = contResp.Version
 }
 
-// CreateResponse contains the response from method FilesystemClient.Create.
+// CreateResponse contains the response from method FileSystemClient.Create.
 type CreateResponse = container.CreateResponse
 
-// DeleteResponse contains the response from method FilesystemClient.Delete.
+// DeleteResponse contains the response from method FileSystemClient.Delete.
 type DeleteResponse = container.DeleteResponse
 
-// SetMetadataResponse contains the response from method FilesystemClient.SetMetadata.
+// SetMetadataResponse contains the response from method FileSystemClient.SetMetadata.
 type SetMetadataResponse = container.SetMetadataResponse
 
-// SetAccessPolicyResponse contains the response from method FilesystemClient.SetAccessPolicy.
+// SetAccessPolicyResponse contains the response from method FileSystemClient.SetAccessPolicy.
 type SetAccessPolicyResponse = container.SetAccessPolicyResponse
 
-// ListPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+// ListPathsSegmentResponse contains the response from method FileSystemClient.ListPathsSegment.
 type ListPathsSegmentResponse = generated.FileSystemClientListPathsResponse
 
-// UndeletePathResponse contains the response from method FilesystemClient.UndeletePath.
+// UndeletePathResponse contains the response from method FileSystemClient.UndeletePath.
 type UndeletePathResponse = generated.PathClientUndeleteResponse
 
-// ListDeletedPathsSegmentResponse contains the response from method FilesystemClient.ListPathsSegment.
+// ListDeletedPathsSegmentResponse contains the response from method FileSystemClient.ListPathsSegment.
 type ListDeletedPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
 
-// ListPathsHierarchySegmentResponse contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+// ListPathsHierarchySegmentResponse contains the response from method FileSystemClient.ListBlobsHierarchySegment.
 type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResponse
 
-// PathHierarchyListSegment contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+// PathHierarchyListSegment contains the response from method FileSystemClient.ListBlobsHierarchySegment.
 type PathHierarchyListSegment = generated.PathHierarchyListSegment

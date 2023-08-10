@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.49"
 ```
 
-### Remove Filesystem and PathName from parameter list since they are not needed
+### Remove FileSystem and PathName from parameter list since they are not needed
 ``` yaml
 directive:
 - from: swagger-document
@@ -253,7 +253,7 @@ directive:
     transform: >-
       return $.
         replace(/PublicAccessTypeBlob/g, 'PublicAccessTypeFile').
-        replace(/PublicAccessTypeContainer/g, 'PublicAccessTypeFilesystem').
+        replace(/PublicAccessTypeContainer/g, 'PublicAccessTypeFileSystem').
         replace(/FileSystemClientListBlobHierarchySegmentResponse/g, 'FileSystemClientListPathHierarchySegmentResponse').
         replace(/ListBlobsHierarchySegmentResponse/g, 'ListPathsHierarchySegmentResponse').
         replace(/ContainerName\s*\*string/g, 'FileSystemName *string').

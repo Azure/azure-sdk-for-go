@@ -11,22 +11,22 @@ import (
 	"testing"
 )
 
-func TestFilesystemPermissions_String(t *testing.T) {
+func TestFileSystemPermissions_String(t *testing.T) {
 	testdata := []struct {
-		input    FilesystemPermissions
+		input    FileSystemPermissions
 		expected string
 	}{
-		{input: FilesystemPermissions{Read: true}, expected: "r"},
-		{input: FilesystemPermissions{Add: true}, expected: "a"},
-		{input: FilesystemPermissions{Create: true}, expected: "c"},
-		{input: FilesystemPermissions{Write: true}, expected: "w"},
-		{input: FilesystemPermissions{Delete: true}, expected: "d"},
-		{input: FilesystemPermissions{List: true}, expected: "l"},
-		{input: FilesystemPermissions{Move: true}, expected: "m"},
-		{input: FilesystemPermissions{Execute: true}, expected: "e"},
-		{input: FilesystemPermissions{ModifyOwnership: true}, expected: "o"},
-		{input: FilesystemPermissions{ModifyPermissions: true}, expected: "p"},
-		{input: FilesystemPermissions{
+		{input: FileSystemPermissions{Read: true}, expected: "r"},
+		{input: FileSystemPermissions{Add: true}, expected: "a"},
+		{input: FileSystemPermissions{Create: true}, expected: "c"},
+		{input: FileSystemPermissions{Write: true}, expected: "w"},
+		{input: FileSystemPermissions{Delete: true}, expected: "d"},
+		{input: FileSystemPermissions{List: true}, expected: "l"},
+		{input: FileSystemPermissions{Move: true}, expected: "m"},
+		{input: FileSystemPermissions{Execute: true}, expected: "e"},
+		{input: FileSystemPermissions{ModifyOwnership: true}, expected: "o"},
+		{input: FileSystemPermissions{ModifyPermissions: true}, expected: "p"},
+		{input: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
 			Create:            true,
@@ -44,22 +44,22 @@ func TestFilesystemPermissions_String(t *testing.T) {
 	}
 }
 
-func TestFilesystemPermissions_Parse(t *testing.T) {
+func TestFileSystemPermissions_Parse(t *testing.T) {
 	testdata := []struct {
 		input    string
-		expected FilesystemPermissions
+		expected FileSystemPermissions
 	}{
-		{expected: FilesystemPermissions{Read: true}, input: "r"},
-		{expected: FilesystemPermissions{Add: true}, input: "a"},
-		{expected: FilesystemPermissions{Create: true}, input: "c"},
-		{expected: FilesystemPermissions{Write: true}, input: "w"},
-		{expected: FilesystemPermissions{Delete: true}, input: "d"},
-		{expected: FilesystemPermissions{List: true}, input: "l"},
-		{expected: FilesystemPermissions{Move: true}, input: "m"},
-		{expected: FilesystemPermissions{Execute: true}, input: "e"},
-		{expected: FilesystemPermissions{ModifyOwnership: true}, input: "o"},
-		{expected: FilesystemPermissions{ModifyPermissions: true}, input: "p"},
-		{expected: FilesystemPermissions{
+		{expected: FileSystemPermissions{Read: true}, input: "r"},
+		{expected: FileSystemPermissions{Add: true}, input: "a"},
+		{expected: FileSystemPermissions{Create: true}, input: "c"},
+		{expected: FileSystemPermissions{Write: true}, input: "w"},
+		{expected: FileSystemPermissions{Delete: true}, input: "d"},
+		{expected: FileSystemPermissions{List: true}, input: "l"},
+		{expected: FileSystemPermissions{Move: true}, input: "m"},
+		{expected: FileSystemPermissions{Execute: true}, input: "e"},
+		{expected: FileSystemPermissions{ModifyOwnership: true}, input: "o"},
+		{expected: FileSystemPermissions{ModifyPermissions: true}, input: "p"},
+		{expected: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
 			Create:            true,
@@ -71,7 +71,7 @@ func TestFilesystemPermissions_Parse(t *testing.T) {
 			ModifyOwnership:   true,
 			ModifyPermissions: true,
 		}, input: "racwdlmeop"},
-		{expected: FilesystemPermissions{
+		{expected: FileSystemPermissions{
 			Read:              true,
 			Add:               true,
 			Create:            true,
@@ -85,14 +85,14 @@ func TestFilesystemPermissions_Parse(t *testing.T) {
 		}, input: "cpwmreodal"}, // Wrong order parses correctly
 	}
 	for _, c := range testdata {
-		permissions, err := parseFilesystemPermissions(c.input)
+		permissions, err := parseFileSystemPermissions(c.input)
 		require.Nil(t, err)
 		require.Equal(t, c.expected, permissions)
 	}
 }
 
-func TestFilesystemPermissions_ParseNegative(t *testing.T) {
-	_, err := parseFilesystemPermissions("cpwmreodalz") // Here 'z' is invalid
+func TestFileSystemPermissions_ParseNegative(t *testing.T) {
+	_, err := parseFileSystemPermissions("cpwmreodalz") // Here 'z' is invalid
 	require.NotNil(t, err)
 	require.Contains(t, err.Error(), "122")
 }

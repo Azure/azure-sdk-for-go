@@ -60,7 +60,7 @@ type LeaseUnrecordedTestsSuite struct {
 // var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
+func (s *LeaseRecordedTestsSuite) TestFileSystemAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
@@ -68,11 +68,11 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
-	filesystemLeaseClient, _ := lease.NewFilesystemClient(filesystemClient, &lease.FilesystemClientOptions{
+	filesystemLeaseClient, _ := lease.NewFileSystemClient(filesystemClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -86,18 +86,18 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId() {
+func (s *LeaseRecordedTestsSuite) TestFileSystemDeleteFileSystemWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
-	filesystemLeaseClient, _ := lease.NewFilesystemClient(filesystemClient, &lease.FilesystemClientOptions{
+	filesystemLeaseClient, _ := lease.NewFileSystemClient(filesystemClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -121,7 +121,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId()
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
+func (s *LeaseRecordedTestsSuite) TestFileSystemReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -130,11 +130,11 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
-	filesystemLeaseClient, _ := lease.NewFilesystemClient(filesystemClient, &lease.FilesystemClientOptions{
+	filesystemLeaseClient, _ := lease.NewFileSystemClient(filesystemClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -154,7 +154,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
+func (s *LeaseRecordedTestsSuite) TestFileSystemRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -163,11 +163,11 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
-	filesystemLeaseClient, _ := lease.NewFilesystemClient(filesystemClient, &lease.FilesystemClientOptions{
+	filesystemLeaseClient, _ := lease.NewFileSystemClient(filesystemClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -184,7 +184,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
+func (s *LeaseRecordedTestsSuite) TestFileSystemChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -193,11 +193,11 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	fsName := testcommon.GenerateFilesystemName(testName)
-	fsClient := testcommon.CreateNewFilesystem(context.Background(), _require, fsName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, fsClient)
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
-	fsLeaseClient, _ := lease.NewFilesystemClient(fsClient, &lease.FilesystemClientOptions{
+	fsLeaseClient, _ := lease.NewFileSystemClient(fsClient, &lease.FileSystemClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -228,9 +228,9 @@ func (s *LeaseRecordedTestsSuite) TestFileAcquireLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, filesystemClient)
@@ -258,9 +258,9 @@ func (s *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, filesystemClient)
@@ -298,9 +298,9 @@ func (s *LeaseRecordedTestsSuite) TestFileReleaseLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, filesystemClient)
@@ -330,9 +330,9 @@ func (s *LeaseRecordedTestsSuite) TestFileRenewLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, filesystemClient)
@@ -362,9 +362,9 @@ func (s *LeaseRecordedTestsSuite) TestFileChangeLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	fileName := testcommon.GenerateFileName(testName)
 	fileClient := testcommon.CreateNewFile(context.Background(), _require, fileName, filesystemClient)
@@ -398,9 +398,9 @@ func (s *LeaseRecordedTestsSuite) TestDirAcquireLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
@@ -428,9 +428,9 @@ func (s *LeaseRecordedTestsSuite) TestDeleteDirWithoutLeaseId() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
@@ -468,9 +468,9 @@ func (s *LeaseRecordedTestsSuite) TestDirReleaseLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	DirName := testcommon.GenerateDirName(testName)
 	DirClient := testcommon.CreateNewDir(context.Background(), _require, DirName, filesystemClient)
@@ -500,9 +500,9 @@ func (s *LeaseRecordedTestsSuite) TestDirRenewLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)
@@ -532,9 +532,9 @@ func (s *LeaseRecordedTestsSuite) TestDirChangeLease() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
-	filesystemName := testcommon.GenerateFilesystemName(testName)
-	filesystemClient := testcommon.CreateNewFilesystem(context.Background(), _require, filesystemName, svcClient)
-	defer testcommon.DeleteFilesystem(context.Background(), _require, filesystemClient)
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	filesystemClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, filesystemClient)
 
 	dirName := testcommon.GenerateDirName(testName)
 	dirClient := testcommon.CreateNewDir(context.Background(), _require, dirName, filesystemClient)

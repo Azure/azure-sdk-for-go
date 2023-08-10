@@ -47,7 +47,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -74,7 +74,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 		ClientOptions: options.ClientOptions,
 	}
 	blobContainerClient, _ := container.NewClientWithNoCredential(containerURL, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -104,7 +104,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FilesystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 		return nil, err
 	}
 	blobContainerClient, _ := container.NewClientWithSharedKeyCredential(containerURL, blobSharedKey, &containerClientOpts)
-	fsClient := base.NewFilesystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
+	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, cred, nil, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil
 }
@@ -222,7 +222,7 @@ func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptio
 	opts := options.format()
 	newResp := GetPropertiesResponse{}
 	resp, err := fs.containerClient().GetProperties(ctx, opts)
-	formatFilesystemProperties(&newResp, &resp)
+	formatFileSystemProperties(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
@@ -329,7 +329,7 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if fs.sharedKey() == nil {
 		return "", datalakeerror.MissingSharedKeyCredential
 	}
@@ -342,7 +342,7 @@ func (fs *Client) GetSASURL(permissions sas.FilesystemPermissions, expiry time.T
 	qps, err := sas.DatalakeSignatureValues{
 		Version:        sas.Version,
 		Protocol:       sas.ProtocolHTTPS,
-		FilesystemName: urlParts.FilesystemName,
+		FileSystemName: urlParts.FileSystemName,
 		Permissions:    permissions.String(),
 		StartTime:      st,
 		ExpiryTime:     expiry.UTC(),

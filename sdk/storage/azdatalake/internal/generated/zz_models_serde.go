@@ -179,7 +179,7 @@ func (f *FileSystem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileSystemList.
 func (f FileSystemList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "filesystems", f.Filesystems)
+	populate(objectMap, "filesystems", f.FileSystems)
 	return json.Marshal(objectMap)
 }
 
@@ -193,7 +193,7 @@ func (f *FileSystemList) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filesystems":
-			err = unpopulate(val, "Filesystems", &f.Filesystems)
+			err = unpopulate(val, "FileSystems", &f.FileSystems)
 			delete(rawMsg, key)
 		}
 		if err != nil {

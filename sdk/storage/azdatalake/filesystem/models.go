@@ -13,13 +13,13 @@ import (
 	"time"
 )
 
-// SetAccessPolicyOptions provides set of configurations for Filesystem.SetAccessPolicy operation.
+// SetAccessPolicyOptions provides set of configurations for FileSystem.SetAccessPolicy operation.
 type SetAccessPolicyOptions struct {
 	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
 	// If this header is not included in the request, filesystem data is private to the account owner.
 	Access           *PublicAccessType
 	AccessConditions *AccessConditions
-	FilesystemACL    []*SignedIdentifier
+	FileSystemACL    []*SignedIdentifier
 }
 
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
@@ -29,7 +29,7 @@ func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 	return &container.SetAccessPolicyOptions{
 		Access:           o.Access,
 		AccessConditions: exported.FormatContainerAccessConditions(o.AccessConditions),
-		ContainerACL:     o.FilesystemACL,
+		ContainerACL:     o.FileSystemACL,
 	}
 }
 
@@ -70,7 +70,7 @@ func (o *DeleteOptions) format() *container.DeleteOptions {
 	}
 }
 
-// GetPropertiesOptions contains the optional parameters for the FilesystemClient.GetProperties method.
+// GetPropertiesOptions contains the optional parameters for the FileSystemClient.GetProperties method.
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -126,7 +126,7 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 	}
 }
 
-// ListPathsOptions contains the optional parameters for the Filesystem.ListPaths operation.
+// ListPathsOptions contains the optional parameters for the FileSystem.ListPaths operation.
 type ListPathsOptions struct {
 	Marker     *string
 	MaxResults *int32
@@ -147,7 +147,7 @@ func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
 	}
 }
 
-// ListDeletedPathsOptions contains the optional parameters for the Filesystem.ListDeletedPaths operation. PLACEHOLDER
+// ListDeletedPathsOptions contains the optional parameters for the FileSystem.ListDeletedPaths operation. PLACEHOLDER
 type ListDeletedPathsOptions struct {
 	Marker     *string
 	MaxResults *int32
@@ -186,7 +186,7 @@ func (o *GetSASURLOptions) format() time.Time {
 	return st
 }
 
-//// UndeletePathOptions contains the optional parameters for the Filesystem.UndeletePath operation.
+//// UndeletePathOptions contains the optional parameters for the FileSystem.UndeletePath operation.
 //type UndeletePathOptions struct {
 //	// placeholder
 //}
@@ -198,7 +198,7 @@ func (o *GetSASURLOptions) format() time.Time {
 //	return &UndeletePathOptions{}
 //}
 
-// CPKScopeInfo contains a group of parameters for the FilesystemClient.Create method.
+// CPKScopeInfo contains a group of parameters for the FileSystemClient.Create method.
 type CPKScopeInfo = container.CPKScopeInfo
 
 // AccessPolicy - An Access policy.
@@ -229,11 +229,11 @@ type PathList = generated.PathList
 // Path contains the path properties from the ListPaths operation
 type Path = generated.Path
 
-// PathItem contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+// PathItem contains the response from method FileSystemClient.ListBlobsHierarchySegment.
 type PathItem = generated.PathItemInternal
 
-// PathProperties contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+// PathProperties contains the response from method FileSystemClient.ListBlobsHierarchySegment.
 type PathProperties = generated.PathPropertiesInternal
 
-// PathPrefix contains the response from method FilesystemClient.ListBlobsHierarchySegment.
+// PathPrefix contains the response from method FileSystemClient.ListBlobsHierarchySegment.
 type PathPrefix = generated.PathPrefix

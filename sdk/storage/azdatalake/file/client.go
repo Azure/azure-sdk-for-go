@@ -336,7 +336,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 	qps, err := sas.DatalakeSignatureValues{
 		FilePath:       urlParts.PathName,
-		FilesystemName: urlParts.FilesystemName,
+		FileSystemName: urlParts.FileSystemName,
 		Version:        sas.Version,
 		Permissions:    permissions.String(),
 		StartTime:      st,

@@ -33,7 +33,7 @@ type ModifiedAccessConditions = generated.ModifiedAccessConditions
 // SourceModifiedAccessConditions contains a group of parameters for specifying access conditions of a source.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// FormatContainerAccessConditions formats FilesystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
+// FormatContainerAccessConditions formats FileSystemAccessConditions into container's LeaseAccessConditions and ModifiedAccessConditions.
 func FormatContainerAccessConditions(b *AccessConditions) *container.AccessConditions {
 	if b == nil {
 		return &container.AccessConditions{

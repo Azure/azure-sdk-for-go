@@ -12,12 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 )
 
-// FilesystemAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
-type FilesystemAcquireOptions struct {
+// FileSystemAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
+type FileSystemAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *FilesystemAcquireOptions) format() *lease.ContainerAcquireOptions {
+func (o *FileSystemAcquireOptions) format() *lease.ContainerAcquireOptions {
 	if o == nil || o.ModifiedAccessConditions == nil {
 		return nil
 	}
@@ -31,13 +31,13 @@ func (o *FilesystemAcquireOptions) format() *lease.ContainerAcquireOptions {
 	}
 }
 
-// FilesystemBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
-type FilesystemBreakOptions struct {
+// FileSystemBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
+type FileSystemBreakOptions struct {
 	BreakPeriod              *int32
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
+func (o *FileSystemBreakOptions) format() *lease.ContainerBreakOptions {
 	opts := &lease.ContainerBreakOptions{}
 	if o == nil {
 		return opts
@@ -57,12 +57,12 @@ func (o *FilesystemBreakOptions) format() *lease.ContainerBreakOptions {
 	}
 }
 
-// FilesystemChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
-type FilesystemChangeOptions struct {
+// FileSystemChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
+type FileSystemChangeOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *FilesystemChangeOptions) format() *lease.ContainerChangeOptions {
+func (o *FileSystemChangeOptions) format() *lease.ContainerChangeOptions {
 	if o == nil || o.ModifiedAccessConditions == nil {
 		return nil
 	}
@@ -76,11 +76,11 @@ func (o *FilesystemChangeOptions) format() *lease.ContainerChangeOptions {
 	}
 }
 
-type FilesystemReleaseOptions struct {
+type FileSystemReleaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *FilesystemReleaseOptions) format() *lease.ContainerReleaseOptions {
+func (o *FileSystemReleaseOptions) format() *lease.ContainerReleaseOptions {
 	if o == nil || o.ModifiedAccessConditions == nil {
 		return nil
 	}
@@ -94,11 +94,11 @@ func (o *FilesystemReleaseOptions) format() *lease.ContainerReleaseOptions {
 	}
 }
 
-type FilesystemRenewOptions struct {
+type FileSystemRenewOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *FilesystemRenewOptions) format() *lease.ContainerRenewOptions {
+func (o *FileSystemRenewOptions) format() *lease.ContainerRenewOptions {
 	if o == nil || o.ModifiedAccessConditions == nil {
 		return nil
 	}

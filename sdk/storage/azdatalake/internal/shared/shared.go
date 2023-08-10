@@ -26,7 +26,7 @@ const (
 
 const (
 	ServiceClient    = "azdatalake/service.Client"
-	FilesystemClient = "azdatalake/share.Client"
+	FileSystemClient = "azdatalake/share.Client"
 	DirectoryClient  = "azdatalake/directory.Client"
 	FileClient       = "azdatalake/file.Client"
 )

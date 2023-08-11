@@ -201,7 +201,7 @@ func (fs *Client) NewFileClient(filePath string) *file.Client {
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
-// Create creates a new filesystem under the specified account. (blob3).
+// Create creates a new filesystem under the specified account.
 func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().Create(ctx, opts)
@@ -209,7 +209,7 @@ func (fs *Client) Create(ctx context.Context, options *CreateOptions) (CreateRes
 	return resp, err
 }
 
-// Delete deletes the specified filesystem and any files or directories it contains. (blob3).
+// Delete deletes the specified filesystem and any files or directories it contains.
 func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().Delete(ctx, opts)
@@ -217,7 +217,7 @@ func (fs *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteRes
 	return resp, err
 }
 
-// GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem. (blob3).
+// GetProperties returns all user-defined metadata, standard HTTP properties, and system properties for the filesystem.
 func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
 	newResp := GetPropertiesResponse{}
@@ -227,7 +227,7 @@ func (fs *Client) GetProperties(ctx context.Context, options *GetPropertiesOptio
 	return newResp, err
 }
 
-// SetMetadata sets one or more user-defined name-value pairs for the specified filesystem. (blob3).
+// SetMetadata sets one or more user-defined name-value pairs for the specified filesystem.
 func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().SetMetadata(ctx, opts)
@@ -235,7 +235,7 @@ func (fs *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) 
 	return resp, err
 }
 
-// SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it. (blob3).
+// SetAccessPolicy sets the permissions for the specified filesystem or the files and directories under it.
 func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	opts := options.format()
 	resp, err := fs.containerClient().SetAccessPolicy(ctx, opts)
@@ -243,7 +243,7 @@ func (fs *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyO
 	return resp, err
 }
 
-// GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it. (blob3).
+// GetAccessPolicy returns the permissions for the specified filesystem or the files and directories under it.
 func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	opts := options.format()
 	newResp := GetAccessPolicyResponse{}
@@ -255,7 +255,7 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 
 // TODO: implement undelete path in fs client as well
 
-// NewListPathsPager operation returns a pager of the shares under the specified account. (dfs1)
+// NewListPathsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
 	listOptions := options.format()
@@ -291,7 +291,7 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 	})
 }
 
-// NewListDeletedPathsPager operation returns a pager of the shares under the specified account. (dfs op/blob2).
+// NewListDeletedPathsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *runtime.Pager[ListDeletedPathsSegmentResponse] {
 	listOptions := options.format()
@@ -327,7 +327,7 @@ func (fs *Client) NewListDeletedPathsPager(options *ListDeletedPathsOptions) *ru
 	})
 }
 
-// GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at filesystem.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (fs *Client) GetSASURL(permissions sas.FileSystemPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if fs.sharedKey() == nil {

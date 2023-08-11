@@ -15,11 +15,13 @@ import (
 
 // SetAccessPolicyOptions provides set of configurations for FileSystem.SetAccessPolicy operation.
 type SetAccessPolicyOptions struct {
-	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
+	// Access Specifies whether data in the filesystem may be accessed publicly and the level of access.
 	// If this header is not included in the request, filesystem data is private to the account owner.
-	Access           *PublicAccessType
+	Access *PublicAccessType
+	// AccessConditions identifies filesystem-specific access conditions which you optionally set.
 	AccessConditions *AccessConditions
-	FileSystemACL    []*SignedIdentifier
+	// FileSystemACL sets the access policy for the filesystem.
+	FileSystemACL []*SignedIdentifier
 }
 
 func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
@@ -35,13 +37,11 @@ func (o *SetAccessPolicyOptions) format() *container.SetAccessPolicyOptions {
 
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
-	// Specifies whether data in the filesystem may be accessed publicly and the level of access.
+	// Access specifies whether data in the filesystem may be accessed publicly and the level of access.
 	Access *PublicAccessType
-
-	// Optional. Specifies a user-defined name-value pair associated with the filesystem.
+	// Metadata specifies a user-defined name-value pair associated with the filesystem.
 	Metadata map[string]*string
-
-	// Optional. Specifies the encryption scope settings to set on the filesystem.
+	// CPKScopeInfo specifies the encryption scope settings to set on the filesystem.
 	CPKScopeInfo *CPKScopeInfo
 }
 
@@ -58,6 +58,7 @@ func (o *CreateOptions) format() *container.CreateOptions {
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
+	// AccessConditions identifies filesystem-specific access conditions which you optionally set.
 	AccessConditions *AccessConditions
 }
 
@@ -72,6 +73,7 @@ func (o *DeleteOptions) format() *container.DeleteOptions {
 
 // GetPropertiesOptions contains the optional parameters for the FileSystemClient.GetProperties method.
 type GetPropertiesOptions struct {
+	// LeaseAccessConditions contains parameters to access leased filesystem.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
@@ -91,7 +93,9 @@ func (o *GetPropertiesOptions) format() *container.GetPropertiesOptions {
 
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
-	Metadata         map[string]*string
+	// Metadata sets the metadata key-value pairs to set on the filesystem.
+	Metadata map[string]*string
+	// AccessConditions identifies filesystem-specific access conditions which you optionally set.
 	AccessConditions *AccessConditions
 }
 
@@ -109,6 +113,7 @@ func (o *SetMetadataOptions) format() *container.SetMetadataOptions {
 
 // GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
 type GetAccessPolicyOptions struct {
+	// LeaseAccessConditions contains parameters to access leased filesystem.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
@@ -128,10 +133,14 @@ func (o *GetAccessPolicyOptions) format() *container.GetAccessPolicyOptions {
 
 // ListPathsOptions contains the optional parameters for the FileSystem.ListPaths operation.
 type ListPathsOptions struct {
-	Marker     *string
+	// Marker contains last continuation token returned from the service for listing.
+	Marker *string
+	// MaxResults sets the maximum number of paths that will be returned per page.
 	MaxResults *int32
-	Prefix     *string
-	Upn        *bool
+	// Prefix filters the results to return only paths whose names begin with the specified prefix path.
+	Prefix *string
+	// UPN is the user principal name.
+	UPN *bool
 }
 
 func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
@@ -143,15 +152,18 @@ func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
 		Continuation: o.Marker,
 		MaxResults:   o.MaxResults,
 		Path:         o.Prefix,
-		Upn:          o.Upn,
+		Upn:          o.UPN,
 	}
 }
 
 // ListDeletedPathsOptions contains the optional parameters for the FileSystem.ListDeletedPaths operation. PLACEHOLDER
 type ListDeletedPathsOptions struct {
-	Marker     *string
+	// Marker contains last continuation token returned from the service for listing.
+	Marker *string
+	// MaxResults sets the maximum number of paths that will be returned per page.
 	MaxResults *int32
-	Prefix     *string
+	// Prefix filters the results to return only paths whose names begin with the specified prefix path.
+	Prefix *string
 }
 
 func (o *ListDeletedPathsOptions) format() generated.FileSystemClientListBlobHierarchySegmentOptions {
@@ -169,6 +181,7 @@ func (o *ListDeletedPathsOptions) format() generated.FileSystemClientListBlobHie
 
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
+	// StartTime is the time after which the SAS will become valid.
 	StartTime *time.Time
 }
 
@@ -214,7 +227,7 @@ type SignedIdentifier = container.SignedIdentifier
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
-// AccessConditions identifies blob-specific access conditions which you optionally set.
+// AccessConditions identifies filesystem-specific access conditions which you optionally set.
 type AccessConditions = exported.AccessConditions
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
@@ -229,11 +242,11 @@ type PathList = generated.PathList
 // Path contains the path properties from the ListPaths operation
 type Path = generated.Path
 
-// PathItem contains the response from method FileSystemClient.ListBlobsHierarchySegment.
+// PathItem contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathItem = generated.PathItemInternal
 
-// PathProperties contains the response from method FileSystemClient.ListBlobsHierarchySegment.
+// PathProperties contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathProperties = generated.PathPropertiesInternal
 
-// PathPrefix contains the response from method FileSystemClient.ListBlobsHierarchySegment.
+// PathPrefix contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathPrefix = generated.PathPrefix

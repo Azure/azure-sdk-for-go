@@ -188,8 +188,8 @@ func (d *Client) BlobURL() string {
 	return d.generatedDirClientWithBlob().Endpoint()
 }
 
-// NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
-// The new file.Client uses the same request policy pipeline as the Client.
+// NewFileClient creates a new directory.Client object by concatenating directoryName to the end of this Client's URL.
+// The new directory.Client uses the same request policy pipeline as the Client.
 func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.DFSURL(), fileName)
@@ -210,7 +210,7 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
-// Create creates a new directory (dfs1).
+// Create creates a new directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
 	resp, err := d.generatedDirClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
@@ -218,7 +218,7 @@ func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 	return resp, err
 }
 
-// Delete deletes directory and any path under it (dfs1).
+// Delete deletes directory and any path under it.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, true)
 	resp, err := d.generatedDirClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
@@ -226,7 +226,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	return resp, err
 }
 
-// GetProperties gets the properties of a directory (blob3)
+// GetProperties gets the properties of a directory.
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -249,7 +249,7 @@ func (d *Client) renamePathInURL(newName string) (string, string, string) {
 	return parsedNewURL.Path, newPathURL, newBlobURL
 }
 
-// Rename renames a directory (dfs1)
+// Rename renames a directory.
 func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
 	newPathWithoutURL, newPathURL, newBlobURL := d.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
@@ -274,7 +274,7 @@ func (d *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	}, exported.ConvertToDFSError(err)
 }
 
-// SetAccessControl sets the owner, owning group, and permissions for a directory (dfs1).
+// SetAccessControl sets the owner, owning group, and permissions for a directory.
 func (d *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
 	if err != nil {
@@ -349,7 +349,7 @@ func (d *Client) setAccessControlRecursiveHelper(mode generated.PathSetAccessCon
 	return finalResponse, nil
 }
 
-// SetAccessControlRecursive sets the owner, owning group, and permissions for a directory (dfs1).
+// SetAccessControlRecursive sets the owner, owning group, and permissions for a directory.
 func (d *Client) SetAccessControlRecursive(ACL string, options *SetAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	if options == nil {
 		options = &SetAccessControlRecursiveOptions{}
@@ -358,7 +358,7 @@ func (d *Client) SetAccessControlRecursive(ACL string, options *SetAccessControl
 	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a directory (dfs1).
+// UpdateAccessControlRecursive updates the owner, owning group, and permissions for a directory.
 func (d *Client) UpdateAccessControlRecursive(ACL string, options *UpdateAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	if options == nil {
 		options = &UpdateAccessControlRecursiveOptions{}
@@ -367,7 +367,7 @@ func (d *Client) UpdateAccessControlRecursive(ACL string, options *UpdateAccessC
 	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a directory (dfs1).
+// RemoveAccessControlRecursive removes the owner, owning group, and permissions for a directory.
 func (d *Client) RemoveAccessControlRecursive(ACL string, options *RemoveAccessControlRecursiveOptions) (SetAccessControlRecursiveResponse, error) {
 	if options == nil {
 		options = &RemoveAccessControlRecursiveOptions{}
@@ -376,7 +376,7 @@ func (d *Client) RemoveAccessControlRecursive(ACL string, options *RemoveAccessC
 	return d.setAccessControlRecursiveHelper(mode, listOptions, options)
 }
 
-// GetAccessControl gets the owner, owning group, and permissions for a directory (dfs1).
+// GetAccessControl gets the owner, owning group, and permissions for a directory.
 func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
 	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
@@ -384,7 +384,7 @@ func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
-// SetMetadata sets the metadata for a directory (blob3).
+// SetMetadata sets the metadata for a directory.
 func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts, metadata := path.FormatSetMetadataOptions(options)
 	resp, err := d.blobClient().SetMetadata(ctx, metadata, opts)
@@ -392,7 +392,7 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 	return resp, err
 }
 
-// SetHTTPHeaders sets the HTTP headers for a directory (blob3).
+// SetHTTPHeaders sets the HTTP headers for a directory.
 func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	opts, blobHTTPHeaders := path.FormatSetHTTPHeadersOptions(options, httpHeaders)
 	resp, err := d.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
@@ -402,7 +402,7 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	return newResp, err
 }
 
-// GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at directory.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if d.sharedKey() == nil {

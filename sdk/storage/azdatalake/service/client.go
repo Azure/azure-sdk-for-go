@@ -205,7 +205,7 @@ func (s *Client) BlobURL() string {
 	return s.generatedServiceClientWithBlob().Endpoint()
 }
 
-// CreateFileSystem creates a new filesystem under the specified account. (blob3)
+// CreateFileSystem creates a new filesystem under the specified account.
 func (s *Client) CreateFileSystem(ctx context.Context, filesystem string, options *CreateFileSystemOptions) (CreateFileSystemResponse, error) {
 	filesystemClient := s.NewFileSystemClient(filesystem)
 	resp, err := filesystemClient.Create(ctx, options)
@@ -213,7 +213,7 @@ func (s *Client) CreateFileSystem(ctx context.Context, filesystem string, option
 	return resp, err
 }
 
-// DeleteFileSystem deletes the specified filesystem. (blob3)
+// DeleteFileSystem deletes the specified filesystem.
 func (s *Client) DeleteFileSystem(ctx context.Context, filesystem string, options *DeleteFileSystemOptions) (DeleteFileSystemResponse, error) {
 	filesystemClient := s.NewFileSystemClient(filesystem)
 	resp, err := filesystemClient.Delete(ctx, options)
@@ -221,7 +221,7 @@ func (s *Client) DeleteFileSystem(ctx context.Context, filesystem string, option
 	return resp, err
 }
 
-// SetProperties sets properties for a storage account's File service endpoint. (blob3)
+// SetProperties sets properties for a storage account's Datalake service endpoint.
 func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	opts := options.format()
 	resp, err := s.serviceClient().SetProperties(ctx, opts)
@@ -229,7 +229,7 @@ func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOption
 	return resp, err
 }
 
-// GetProperties gets properties for a storage account's File service endpoint. (blob3)
+// GetProperties gets properties for a storage account's Datalake service endpoint.
 func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := options.format()
 	resp, err := s.serviceClient().GetProperties(ctx, opts)
@@ -238,7 +238,7 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 
 }
 
-// NewListFileSystemsPager operation returns a pager of the shares under the specified account. (blob3)
+// NewListFileSystemsPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListFileSystemsPager(o *ListFileSystemsOptions) *runtime.Pager[ListFileSystemsResponse] {
 	listOptions := generated_blob.ServiceClientListContainersSegmentOptions{}

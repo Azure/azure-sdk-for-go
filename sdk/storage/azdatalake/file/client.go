@@ -194,7 +194,7 @@ func (f *Client) BlobURL() string {
 	return f.generatedFileClientWithBlob().Endpoint()
 }
 
-// Create creates a new file (dfs1).
+// Create creates a new file.
 func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
 	resp, err := f.generatedFileClientWithDFS().Create(ctx, createOpts, httpHeaders, lac, mac, nil, cpkOpts)
@@ -202,7 +202,7 @@ func (f *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 	return resp, err
 }
 
-// Delete deletes a file (dfs1).
+// Delete deletes a file.
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	lac, mac, deleteOpts := path.FormatDeleteOptions(options, false)
 	resp, err := f.generatedFileClientWithDFS().Delete(ctx, deleteOpts, lac, mac)
@@ -210,7 +210,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	return resp, err
 }
 
-// GetProperties gets the properties of a file (blob3)
+// GetProperties gets the properties of a file.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -233,7 +233,7 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 	return parsedNewURL.Path, newPathURL, newBlobURL
 }
 
-// Rename renames a file (dfs1)
+// Rename renames a file.
 func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
 	newPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
@@ -258,7 +258,7 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	}, exported.ConvertToDFSError(err)
 }
 
-// SetExpiry operation sets an expiry time on an existing file (blob2).
+// SetExpiry operation sets an expiry time on an existing file.
 func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	expMode, opts := expiryType.Format(o)
 	resp, err := f.generatedFileClientWithBlob().SetExpiry(ctx, expMode, opts)
@@ -266,7 +266,7 @@ func (f *Client) SetExpiry(ctx context.Context, expiryType SetExpiryType, o *Set
 	return resp, err
 }
 
-// SetAccessControl sets the owner, owning group, and permissions for a file or directory (dfs1).
+// SetAccessControl sets the owner, owning group, and permissions for a file.
 func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControlOptions) (SetAccessControlResponse, error) {
 	opts, lac, mac, err := path.FormatSetAccessControlOptions(options)
 	if err != nil {
@@ -277,7 +277,7 @@ func (f *Client) SetAccessControl(ctx context.Context, options *SetAccessControl
 	return resp, err
 }
 
-// UpdateAccessControl updates the owner, owning group, and permissions for a file or directory (dfs1).
+// UpdateAccessControl updates the owner, owning group, and permissions for a file.
 func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *UpdateAccessControlOptions) (UpdateAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
@@ -285,7 +285,7 @@ func (f *Client) UpdateAccessControl(ctx context.Context, ACL string, options *U
 	return resp, err
 }
 
-// GetAccessControl gets the owner, owning group, and permissions for a file or directory (dfs1).
+// GetAccessControl gets the owner, owning group, and permissions for a file.
 func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControlOptions) (GetAccessControlResponse, error) {
 	opts, lac, mac := path.FormatGetAccessControlOptions(options)
 	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
@@ -293,7 +293,7 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
-// RemoveAccessControl removes the owner, owning group, and permissions for a file or directory (dfs1).
+// RemoveAccessControl removes the owner, owning group, and permissions for a file.
 func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
 	opts, mode := options.format(ACL)
 	resp, err := f.generatedFileClientWithDFS().SetAccessControlRecursive(ctx, mode, opts)
@@ -301,7 +301,7 @@ func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *R
 	return resp, err
 }
 
-// SetMetadata sets the metadata for a file or directory (blob3).
+// SetMetadata sets the metadata for a file.
 func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts, metadata := path.FormatSetMetadataOptions(options)
 	resp, err := f.blobClient().SetMetadata(ctx, metadata, opts)
@@ -309,7 +309,7 @@ func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 	return resp, err
 }
 
-// SetHTTPHeaders sets the HTTP headers for a file or directory (blob3).
+// SetHTTPHeaders sets the HTTP headers for a file.
 func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
 	opts, blobHTTPHeaders := path.FormatSetHTTPHeadersOptions(options, httpHeaders)
 	resp, err := f.blobClient().SetHTTPHeaders(ctx, blobHTTPHeaders, opts)
@@ -319,7 +319,7 @@ func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	return newResp, err
 }
 
-// GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if f.sharedKey() == nil {
@@ -353,6 +353,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	return endpoint, nil
 }
 
+// AppendData appends data to existing file with a given offset.
 func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
 	appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
 	if err != nil {
@@ -369,6 +370,7 @@ func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekC
 	return resp, exported.ConvertToDFSError(err)
 }
 
+// FlushData commits appended data to file
 func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushDataOptions) (FlushDataResponse, error) {
 	flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, err := options.format(offset)
 	if err != nil {
@@ -445,7 +447,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	return exported.ConvertToDFSError(err)
 }
 
-// UploadBuffer uploads a buffer in chunks to an Azure file.
+// UploadBuffer uploads a buffer in chunks to a file.
 func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *UploadBufferOptions) error {
 	uploadOptions := uploadFromReaderOptions{}
 	if options != nil {
@@ -454,7 +456,7 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	return exported.ConvertToDFSError(f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions))
 }
 
-// UploadFile uploads a file in chunks to an Azure file.
+// UploadFile uploads a file in chunks to a file.
 func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
 	stat, err := file.Stat()
 	if err != nil {
@@ -478,7 +480,7 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	return exported.ConvertToDFSError(err)
 }
 
-// DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// DownloadStream reads a range of bytes from a file. The response also includes the file's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
 	if o == nil {
@@ -498,14 +500,14 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	return fullResp, exported.ConvertToDFSError(err)
 }
 
-// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+// DownloadBuffer downloads an Azure file to a buffer with parallel.
 func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
 	opts := o.format()
 	val, err := f.blobClient().DownloadBuffer(ctx, shared.NewBytesWriter(buffer), opts)
 	return val, exported.ConvertToDFSError(err)
 }
 
-// DownloadFile downloads an Azure blob to a local file.
+// DownloadFile downloads a datalake file to a local file.
 // The file would be truncated if the size doesn't match.
 func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
 	opts := o.format()
@@ -513,4 +515,4 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	return val, exported.ConvertToDFSError(err)
 }
 
-// TODO: add undelete
+// TODO: add Undelete()

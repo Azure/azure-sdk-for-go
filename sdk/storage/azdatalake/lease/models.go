@@ -14,6 +14,7 @@ import (
 
 // FileSystemAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type FileSystemAcquireOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -33,7 +34,9 @@ func (o *FileSystemAcquireOptions) format() *lease.ContainerAcquireOptions {
 
 // FileSystemBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
 type FileSystemBreakOptions struct {
-	BreakPeriod              *int32
+	// BreakPeriod is the proposed duration of seconds that the lease should continue before it is broken.
+	BreakPeriod *int32
+	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -59,6 +62,7 @@ func (o *FileSystemBreakOptions) format() *lease.ContainerBreakOptions {
 
 // FileSystemChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type FileSystemChangeOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -77,6 +81,7 @@ func (o *FileSystemChangeOptions) format() *lease.ContainerChangeOptions {
 }
 
 type FileSystemReleaseOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -95,6 +100,7 @@ func (o *FileSystemReleaseOptions) format() *lease.ContainerReleaseOptions {
 }
 
 type FileSystemRenewOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -114,6 +120,7 @@ func (o *FileSystemRenewOptions) format() *lease.ContainerRenewOptions {
 
 // PathAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type PathAcquireOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -133,7 +140,9 @@ func (o *PathAcquireOptions) format() *lease.BlobAcquireOptions {
 
 // PathBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
 type PathBreakOptions struct {
-	BreakPeriod              *int32
+	// BreakPeriod is the proposed duration of seconds that the lease should continue before it is broken.
+	BreakPeriod *int32
+	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -159,6 +168,7 @@ func (o *PathBreakOptions) format() *lease.BlobBreakOptions {
 
 // PathChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type PathChangeOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -177,6 +187,7 @@ func (o *PathChangeOptions) format() *lease.BlobChangeOptions {
 }
 
 type PathReleaseOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -195,6 +206,7 @@ func (o *PathReleaseOptions) format() *lease.BlobReleaseOptions {
 }
 
 type PathRenewOptions struct {
+	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 

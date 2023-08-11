@@ -145,8 +145,8 @@ type UndeletePathResponse = generated.PathClientUndeleteResponse
 // ListDeletedPathsSegmentResponse contains the response from method FileSystemClient.ListPathsSegment.
 type ListDeletedPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
 
-// ListPathsHierarchySegmentResponse contains the response from method FileSystemClient.ListBlobsHierarchySegment.
+// ListPathsHierarchySegmentResponse contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResponse
 
-// PathHierarchyListSegment contains the response from method FileSystemClient.ListBlobsHierarchySegment.
+// PathHierarchyListSegment contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type PathHierarchyListSegment = generated.PathHierarchyListSegment

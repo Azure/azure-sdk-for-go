@@ -21,6 +21,7 @@ type httpGetter func(ctx context.Context, i httpGetterInfo) (io.ReadCloser, erro
 // HTTPGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
 type httpGetterInfo struct {
+	// HTTPRange contains range
 	Range *HTTPRange
 
 	// ETag specifies the resource's etag that should be used when creating

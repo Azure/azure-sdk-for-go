@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 type userAgentValidatingPolicy struct {
@@ -72,6 +73,26 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
 	if err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestManagedIdentityClient_IMDS400(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	body := `{"error":"invalid_request","error_description":"Identity not found"}`
+	srv.SetResponse(mock.WithBody([]byte(body)), mock.WithStatusCode(http.StatusBadRequest))
+	client, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if actual := err.Error(); !strings.Contains(err.Error(), body) {
+		t.Fatalf("expected response body in error, got %q", actual)
 	}
 }
 

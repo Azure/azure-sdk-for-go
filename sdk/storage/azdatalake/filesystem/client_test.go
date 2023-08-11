@@ -67,7 +67,7 @@ func validateFileSystemDeleted(_require *require.Assertions, filesystemClient *f
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
-func (s *RecordedTestSuite) TestCreateFileSystem() {
+func (s *RecordedTestSuite) TestCreateFilesystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -80,7 +80,7 @@ func (s *RecordedTestSuite) TestCreateFileSystem() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestCreateFileSystemWithOptions() {
+func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -105,7 +105,7 @@ func (s *RecordedTestSuite) TestCreateFileSystemWithOptions() {
 	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 }
 
-func (s *RecordedTestSuite) TestCreateFileSystemWithFileAccess() {
+func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -129,7 +129,7 @@ func (s *RecordedTestSuite) TestCreateFileSystemWithFileAccess() {
 	_require.Equal(*props.PublicAccess, filesystem.File)
 }
 
-func (s *RecordedTestSuite) TestCreateFileSystemEmptyMetadata() {
+func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -154,7 +154,7 @@ func (s *RecordedTestSuite) TestCreateFileSystemEmptyMetadata() {
 
 }
 
-func (s *RecordedTestSuite) TestFileSystemCreateInvalidName() {
+func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {
 	_require := require.New(s.T())
 
 	fsClient, err := testcommon.GetFileSystemClient("foo bar", s.T(), testcommon.TestAccountDatalake, nil)
@@ -165,7 +165,7 @@ func (s *RecordedTestSuite) TestFileSystemCreateInvalidName() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidResourceName)
 }
 
-func (s *RecordedTestSuite) TestFileSystemCreateNameCollision() {
+func (s *RecordedTestSuite) TestFilesystemCreateNameCollision() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -182,7 +182,7 @@ func (s *RecordedTestSuite) TestFileSystemCreateNameCollision() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemAlreadyExists)
 }
 
-func (s *RecordedTestSuite) TestFileSystemGetProperties() {
+func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -200,7 +200,7 @@ func (s *RecordedTestSuite) TestFileSystemGetProperties() {
 	_require.Nil(resp.Metadata)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDelete() {
+func (s *RecordedTestSuite) TestFilesystemDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -217,7 +217,7 @@ func (s *RecordedTestSuite) TestFileSystemDelete() {
 	validateFileSystemDeleted(_require, fsClient)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDeleteNonExistent() {
+func (s *RecordedTestSuite) TestFilesystemDeleteNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -231,7 +231,7 @@ func (s *RecordedTestSuite) TestFileSystemDeleteNonExistent() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDeleteIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -256,7 +256,7 @@ func (s *RecordedTestSuite) TestFileSystemDeleteIfModifiedSinceTrue() {
 	validateFileSystemDeleted(_require, fsClient)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDeleteIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestFilesystemDeleteIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -282,7 +282,7 @@ func (s *RecordedTestSuite) TestFileSystemDeleteIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDeleteIfUnModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -308,7 +308,7 @@ func (s *RecordedTestSuite) TestFileSystemDeleteIfUnModifiedSinceTrue() {
 	validateFileSystemDeleted(_require, fsClient)
 }
 
-func (s *RecordedTestSuite) TestFileSystemDeleteIfUnModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestFilesystemDeleteIfUnModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -335,7 +335,7 @@ func (s *RecordedTestSuite) TestFileSystemDeleteIfUnModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMetadataNonEmpty() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNonEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -361,7 +361,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMetadataNonEmpty() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMetadataEmpty() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -385,7 +385,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMetadataEmpty() {
 	_require.Nil(resp1.Metadata)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMetadataNil() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -405,7 +405,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMetadataNil() {
 	_require.Nil(resp1.Metadata)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMetadataInvalidField() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataInvalidField() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -425,7 +425,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMetadataInvalidField() {
 	_require.Equal(strings.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring), true)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMetadataNonExistent() {
+func (s *RecordedTestSuite) TestFilesystemSetMetadataNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -439,7 +439,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMetadataNonExistent() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.FileSystemNotFound)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetEmptyAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -455,7 +455,7 @@ func (s *RecordedTestSuite) TestFileSystemSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetNilAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNilAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -471,7 +471,7 @@ func (s *RecordedTestSuite) TestFileSystemSetNilAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -503,7 +503,7 @@ func (s *RecordedTestSuite) TestFileSystemSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetMultipleAccessPolicies() {
+func (s *RecordedTestSuite) TestFilesystemSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -555,7 +555,7 @@ func (s *RecordedTestSuite) TestFileSystemSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetNullAccessPolicy() {
+func (s *RecordedTestSuite) TestFilesystemSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -582,7 +582,7 @@ func (s *RecordedTestSuite) TestFileSystemSetNullAccessPolicy() {
 	_require.Equal(len(resp.SignedIdentifiers), 1)
 }
 
-func (s *RecordedTestSuite) TestFileSystemGetAccessPolicyWithEmptyOpts() {
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -611,7 +611,7 @@ func (s *RecordedTestSuite) TestFileSystemGetAccessPolicyWithEmptyOpts() {
 	_require.Equal(len(resp.SignedIdentifiers), 1)
 }
 
-func (s *RecordedTestSuite) TestFileSystemGetAccessPolicyOnLeasedFileSystem() {
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFileSystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -663,7 +663,7 @@ func (s *RecordedTestSuite) TestFileSystemGetAccessPolicyOnLeasedFileSystem() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemGetSetPermissionsMultiplePolicies() {
+func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -709,7 +709,7 @@ func (s *RecordedTestSuite) TestFileSystemGetSetPermissionsMultiplePolicies() {
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func (s *RecordedTestSuite) TestFileSystemGetPermissionsPublicAccessNotNone() {
+func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -731,9 +731,9 @@ func (s *RecordedTestSuite) TestFileSystemGetPermissionsPublicAccessNotNone() {
 	_require.Equal(*resp.PublicAccess, filesystem.File)
 }
 
-// TODO: TestFileSystemSetPermissionsPublicAccessNone()
+// TODO: TestFilesystemSetPermissionsPublicAccessNone()
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsPublicAccessTypeFile() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -755,7 +755,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsPublicAccessTypeFile() {
 	_require.Equal(*resp.PublicAccess, filesystem.File)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsPublicAccessFileSystem() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFileSystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -778,7 +778,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsPublicAccessFileSystem()
 	_require.Equal(*resp.PublicAccess, filesystem.FileSystem)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsACLMoreThanFive() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -819,7 +819,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsACLMoreThanFive() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsDeleteAndModifyACL() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -877,7 +877,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsDeleteAndModifyACL() {
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsDeleteAllPolicies() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -931,7 +931,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsDeleteAllPolicies() {
 	_require.Nil(resp.SignedIdentifiers)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsInvalidPolicyTimes() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsInvalidPolicyTimes() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -970,7 +970,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsInvalidPolicyTimes() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsNilPolicySlice() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsNilPolicySlice() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -986,7 +986,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsNilPolicySlice() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsSignedIdentifierTooLong() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1028,7 +1028,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsSignedIdentifierTooLong(
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.InvalidXMLDocument)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1055,7 +1055,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfModifiedSinceTrue() {
 	_require.Nil(resp1.PublicAccess)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1080,7 +1080,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfModifiedSinceFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfUnModifiedSinceTrue() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1107,7 +1107,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfUnModifiedSinceTrue() 
 	_require.Nil(resp1.PublicAccess)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfUnModifiedSinceFalse() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsIfUnModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1132,7 +1132,7 @@ func (s *RecordedTestSuite) TestFileSystemSetPermissionsIfUnModifiedSinceFalse()
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *UnrecordedTestSuite) TestFileSystemSetAccessPoliciesInDifferentTimeFormats() {
+func (s *UnrecordedTestSuite) TestFilesystemSetAccessPoliciesInDifferentTimeFormats() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1197,7 +1197,7 @@ func (s *UnrecordedTestSuite) TestFileSystemSetAccessPoliciesInDifferentTimeForm
 	_require.EqualValues(resp1.SignedIdentifiers, signedIdentifiers)
 }
 
-func (s *RecordedTestSuite) TestFileSystemSetAccessPolicyWithNullId() {
+func (s *RecordedTestSuite) TestFilesystemSetAccessPolicyWithNullId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1257,7 +1257,7 @@ func (s *UnrecordedTestSuite) TestSASFileSystemClient() {
 	_require.Nil(err)
 }
 
-func (s *RecordedTestSuite) TestFileSystemListPathsWithRecursive() {
+func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1293,7 +1293,7 @@ func (s *RecordedTestSuite) TestFileSystemListPathsWithRecursive() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemListPathsWithoutRecursive() {
+func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1329,7 +1329,7 @@ func (s *RecordedTestSuite) TestFileSystemListPathsWithoutRecursive() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemListPathsWithMaxResults() {
+func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1371,7 +1371,7 @@ func (s *RecordedTestSuite) TestFileSystemListPathsWithMaxResults() {
 	_require.Equal(pages, count)
 }
 
-func (s *RecordedTestSuite) TestFileSystemListPathsWithPrefix() {
+func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1410,7 +1410,7 @@ func (s *RecordedTestSuite) TestFileSystemListPathsWithPrefix() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemListPathsWithContinuation() {
+func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1455,7 +1455,7 @@ func (s *RecordedTestSuite) TestFileSystemListPathsWithContinuation() {
 	_require.Nil(resp.Continuation)
 }
 
-func (s *RecordedTestSuite) TestFileSystemListDeletedPaths() {
+func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1493,7 +1493,7 @@ func (s *RecordedTestSuite) TestFileSystemListDeletedPaths() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemListDeletedPathsWithMaxResults() {
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithMaxResults() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1543,7 +1543,7 @@ func (s *RecordedTestSuite) TestFileSystemListDeletedPathsWithMaxResults() {
 	_require.Equal(pages, count)
 }
 
-func (s *RecordedTestSuite) TestFileSystemListDeletedPathsWithPrefix() {
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1590,7 +1590,7 @@ func (s *RecordedTestSuite) TestFileSystemListDeletedPathsWithPrefix() {
 	}
 }
 
-func (s *RecordedTestSuite) TestFileSystemListDeletedPathsWithContinuation() {
+func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

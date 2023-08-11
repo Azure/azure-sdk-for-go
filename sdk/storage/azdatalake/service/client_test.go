@@ -564,7 +564,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASFileSystem2() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthorizationFailure)
 }
 
-func (s *ServiceRecordedTestsSuite) TestListFileSystemsBasic() {
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -624,7 +624,7 @@ func (s *ServiceRecordedTestsSuite) TestListFileSystemsBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-func (s *ServiceRecordedTestsSuite) TestListFileSystemsBasicUsingConnectionString() {
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
@@ -685,7 +685,7 @@ func (s *ServiceRecordedTestsSuite) TestListFileSystemsBasicUsingConnectionStrin
 	_require.GreaterOrEqual(count, 0)
 }
 
-func (s *ServiceRecordedTestsSuite) TestListFileSystemsPaged() {
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -742,7 +742,7 @@ func (s *ServiceRecordedTestsSuite) TestListFileSystemsPaged() {
 
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountListFileSystemsEmptyPrefix() {
+func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

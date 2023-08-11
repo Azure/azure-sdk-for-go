@@ -80,6 +80,7 @@ func (o *FileSystemChangeOptions) format() *lease.ContainerChangeOptions {
 	}
 }
 
+// FileSystemReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
 type FileSystemReleaseOptions struct {
 	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -99,6 +100,7 @@ func (o *FileSystemReleaseOptions) format() *lease.ContainerReleaseOptions {
 	}
 }
 
+// FileSystemRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
 type FileSystemRenewOptions struct {
 	// ModifiedAccessConditions contains optional parameters to access filesystem.
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -186,6 +188,7 @@ func (o *PathChangeOptions) format() *lease.BlobChangeOptions {
 	}
 }
 
+// PathReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
 type PathReleaseOptions struct {
 	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions
@@ -205,6 +208,7 @@ func (o *PathReleaseOptions) format() *lease.BlobReleaseOptions {
 	}
 }
 
+// PathRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
 type PathRenewOptions struct {
 	// ModifiedAccessConditions contains optional parameters to access path.
 	ModifiedAccessConditions *ModifiedAccessConditions

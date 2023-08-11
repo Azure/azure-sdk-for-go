@@ -483,23 +483,24 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 	return downloadFileOptions
 }
 
-// CreationExpiryType defines values for Create() ExpiryType
+// CreationExpiryType defines values for Create() ExpiryType.
 type CreationExpiryType interface {
 	Format() (generated.ExpiryOptions, *string)
 	notPubliclyImplementable()
 }
 
-// CreationExpiryTypeAbsolute defines the absolute time for the file expiry
+// CreationExpiryTypeAbsolute defines the absolute time for the file expiry.
 type CreationExpiryTypeAbsolute time.Time
 
-// CreationExpiryTypeRelativeToNow defines the duration relative to now for the file expiry
+// CreationExpiryTypeRelativeToNow defines the duration relative to now for the file expiry.
 type CreationExpiryTypeRelativeToNow time.Duration
 
-// CreationExpiryTypeNever defines that the file will be set to never expire
+// CreationExpiryTypeNever defines that the file will be set to never expire.
 type CreationExpiryTypeNever struct {
 	// empty struct since NeverExpire expiry type does not require expiry time
 }
 
+// Format formats CreationExpiryTypeAbsolute to the generated.ExpiryOptionsAbsolute.
 func (e CreationExpiryTypeAbsolute) Format() (generated.ExpiryOptions, *string) {
 	return generated.ExpiryOptionsAbsolute, to.Ptr(time.Time(e).UTC().Format(http.TimeFormat))
 
@@ -507,12 +508,14 @@ func (e CreationExpiryTypeAbsolute) Format() (generated.ExpiryOptions, *string) 
 
 func (e CreationExpiryTypeAbsolute) notPubliclyImplementable() {}
 
+// Format formats CreationExpiryTypeRelativeToCreation to the generated.ExpiryOptionsRelativeToNow.
 func (e CreationExpiryTypeRelativeToNow) Format() (generated.ExpiryOptions, *string) {
 	return generated.ExpiryOptionsRelativeToNow, to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10))
 }
 
 func (e CreationExpiryTypeRelativeToNow) notPubliclyImplementable() {}
 
+// Format formats CreationExpiryTypeNever to the generated.ExpiryOptionsNeverExpire.
 func (e CreationExpiryTypeNever) Format() (generated.ExpiryOptions, *string) {
 	return generated.ExpiryOptionsNeverExpire, nil
 }

@@ -611,7 +611,7 @@ func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyWithEmptyOpts() {
 	_require.Equal(len(resp.SignedIdentifiers), 1)
 }
 
-func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFileSystem() {
+func (s *RecordedTestSuite) TestFilesystemGetAccessPolicyOnLeasedFilesystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -755,7 +755,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
 	_require.Equal(*resp.PublicAccess, filesystem.File)
 }
 
-func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFileSystem() {
+func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFilesystem() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -60,7 +60,7 @@ type LeaseUnrecordedTestsSuite struct {
 // var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-func (s *LeaseRecordedTestsSuite) TestFileSystemAcquireLease() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
@@ -86,7 +86,7 @@ func (s *LeaseRecordedTestsSuite) TestFileSystemAcquireLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFileSystemDeleteFileSystemWithoutLeaseId() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFileSystemWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -121,7 +121,7 @@ func (s *LeaseRecordedTestsSuite) TestFileSystemDeleteFileSystemWithoutLeaseId()
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFileSystemReleaseLease() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemReleaseLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -154,7 +154,7 @@ func (s *LeaseRecordedTestsSuite) TestFileSystemReleaseLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFileSystemRenewLease() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemRenewLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -184,7 +184,7 @@ func (s *LeaseRecordedTestsSuite) TestFileSystemRenewLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFileSystemChangeLease() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemChangeLease() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

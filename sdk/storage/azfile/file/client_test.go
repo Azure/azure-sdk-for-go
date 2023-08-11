@@ -4216,4 +4216,114 @@ func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 	_require.NotNil(fileAttributes)
 }
 
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLPreserve() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		ExpiryTime:  time.Now().UTC().Add(1 * time.Hour),
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := testcommon.GetFileClientFromShare("dest"+testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+		LastWrittenMode:    to.Ptr(file.LastWrittenModePreserve),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+	_require.NotNil(uResp.FileLastWriteTime)
+	_require.EqualValues(*uResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLNow() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		ExpiryTime:  time.Now().UTC().Add(1 * time.Hour),
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := testcommon.GetFileClientFromShare("dest"+testcommon.GenerateFileName(testName), shareClient)
+	cResp, err := destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FileLastWriteTime)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+		LastWrittenMode:    to.Ptr(file.LastWrittenModeNow),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+	_require.NotNil(uResp.FileLastWriteTime)
+	_require.NotEqualValues(*uResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
 // TODO: Add tests for retry header options

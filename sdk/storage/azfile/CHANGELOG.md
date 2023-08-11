@@ -14,6 +14,7 @@
   * Copy File
 * Added `x-ms-file-last-write-time` request header in Put Range and Put Range from URL.
 * Updated the SAS Version to `2022-11-02` and added `Encryption Scope` to Account SAS.
+* Trailing dot support for files and directories.
 
 ### Breaking Changes
 

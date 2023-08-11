@@ -234,6 +234,7 @@ func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithLease() {
 	_require.Nil(err)
 
 	fsLeaseClient, err := lease.NewFileSystemClient(fsClient, &lease.FileSystemClientOptions{LeaseID: proposedLeaseIDs[0]})
+	_require.Nil(err)
 	_, err = fsLeaseClient.AcquireLease(context.Background(), int32(60), nil)
 	_require.Nil(err)
 

@@ -30,6 +30,7 @@ func HasCode(err error, codes ...StorageErrorCode) bool {
 	return false
 }
 
+// StorageErrorCode - Error codes returned by the service
 type StorageErrorCode string
 
 // dfs errors

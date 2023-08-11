@@ -177,6 +177,39 @@ func TestFilePermissions_Parse(t *testing.T) {
 	}
 }
 
+func TestDirectoryPermissions_String(t *testing.T) {
+	testdata := []struct {
+		input    DirectoryPermissions
+		expected string
+	}{
+		{input: DirectoryPermissions{Read: true}, expected: "r"},
+		{input: DirectoryPermissions{Add: true}, expected: "a"},
+		{input: DirectoryPermissions{Create: true}, expected: "c"},
+		{input: DirectoryPermissions{Write: true}, expected: "w"},
+		{input: DirectoryPermissions{Delete: true}, expected: "d"},
+		{input: DirectoryPermissions{List: true}, expected: "l"},
+		{input: DirectoryPermissions{Move: true}, expected: "m"},
+		{input: DirectoryPermissions{Execute: true}, expected: "e"},
+		{input: DirectoryPermissions{Ownership: true}, expected: "o"},
+		{input: DirectoryPermissions{Permissions: true}, expected: "p"},
+		{input: DirectoryPermissions{
+			Read:        true,
+			Add:         true,
+			Create:      true,
+			Write:       true,
+			Delete:      true,
+			List:        true,
+			Move:        true,
+			Execute:     true,
+			Ownership:   true,
+			Permissions: true,
+		}, expected: "racwdlmeop"},
+	}
+	for _, c := range testdata {
+		require.Equal(t, c.expected, c.input.String())
+	}
+}
+
 func TestParsePermissionsNegative(t *testing.T) {
 	_, err := parsePathPermissions("awecrdlfmo") // Here 'f' is invalid
 	require.NotNil(t, err)

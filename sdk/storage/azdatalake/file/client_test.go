@@ -442,6 +442,36 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp1.ExpiresOn).UTC().Format(http.TimeFormat))
 }
 
+func (s *RecordedTestSuite) TestCreateFileWithExpiryNever() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	expiry := file.CreationExpiryTypeNever{}
+	createFileOpts := &file.CreateOptions{
+		Expiry: expiry,
+	}
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.Nil(err)
+	_require.NotNil(resp)
+
+	_, err = fClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}
+
 func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

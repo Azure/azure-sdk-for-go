@@ -23,6 +23,8 @@ import (
 	"time"
 )
 
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
+
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
@@ -198,6 +200,54 @@ func (s *RecordedTestSuite) TestFilesystemGetProperties() {
 	_require.Nil(err)
 	_require.NotNil(resp.ETag)
 	_require.Nil(resp.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithEmptyOpts() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := &filesystem.GetPropertiesOptions{}
+	resp, err := fsClient.GetProperties(context.Background(), opts)
+	_require.Nil(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.Metadata)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithLease() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	fsLeaseClient, err := lease.NewFileSystemClient(fsClient, &lease.FileSystemClientOptions{LeaseID: proposedLeaseIDs[0]})
+	_, err = fsLeaseClient.AcquireLease(context.Background(), int32(60), nil)
+	_require.Nil(err)
+
+	opts := &filesystem.GetPropertiesOptions{LeaseAccessConditions: &filesystem.LeaseAccessConditions{
+		LeaseID: fsLeaseClient.LeaseID(),
+	}}
+
+	resp, err := fsClient.GetProperties(context.Background(), opts)
+	_require.Nil(err)
+	_require.NotNil(resp.ETag)
+	_require.Nil(resp.Metadata)
+
+	_, err = fsLeaseClient.ReleaseLease(context.Background(), nil)
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestFilesystemDelete() {

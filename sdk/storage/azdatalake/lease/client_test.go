@@ -86,7 +86,7 @@ func (s *LeaseRecordedTestsSuite) TestFilesystemAcquireLease() {
 	_require.Nil(err)
 }
 
-func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFileSystemWithoutLeaseId() {
+func (s *LeaseRecordedTestsSuite) TestFilesystemDeleteFilesystemWithoutLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

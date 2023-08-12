@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -181,10 +180,9 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp, nil)
 		}
 		msg := "failed to authenticate a system assigned identity"
-		if body, err := io.ReadAll(resp.Body); err == nil && len(body) > 0 {
+		if body, err := runtime.Payload(resp); err == nil && len(body) > 0 {
 			msg += fmt.Sprintf(". The endpoint responded with %s", body)
 		}
-		resp.Body.Close()
 		return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 	}
 

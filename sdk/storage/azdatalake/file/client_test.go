@@ -2042,10 +2042,11 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	resp1, err := fClient.Rename(context.Background(), "newName", nil)
+	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", nil)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
@@ -2072,10 +2073,11 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
@@ -2107,10 +2109,11 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 			},
 		},
 	}
-	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
@@ -2143,7 +2146,9 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 		},
 	}
 
-	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2178,10 +2183,11 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
@@ -2214,7 +2220,9 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2249,10 +2257,11 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 		},
 	}
 
-	resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
@@ -2285,7 +2294,9 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 		},
 	}
 
-	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = fClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }

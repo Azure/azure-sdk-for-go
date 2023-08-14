@@ -234,7 +234,7 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 }
 
 // Rename renames a file.
-func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
 	newPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
 	var newBlobClient *blockblob.Client
@@ -248,14 +248,15 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
 	}
 	if err != nil {
-		return RenameResponse{}, err
+		return exported.ConvertToDFSError(err)
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
-	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
-	return RenameResponse{
-		Response:      resp,
-		NewFileClient: newFileClient,
-	}, exported.ConvertToDFSError(err)
+	_, err = newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	//return RenameResponse{
+	//	Response:      resp,
+	//	NewFileClient: newFileClient,
+	//}, exported.ConvertToDFSError(err)
+	return exported.ConvertToDFSError(err)
 }
 
 // SetExpiry operation sets an expiry time on an existing file.

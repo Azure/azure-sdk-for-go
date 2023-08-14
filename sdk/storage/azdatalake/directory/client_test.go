@@ -2242,10 +2242,11 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	resp1, err := dirClient.Rename(context.Background(), "newName", nil)
+	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", nil)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
@@ -2272,10 +2273,11 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
@@ -2307,10 +2309,11 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 			},
 		},
 	}
-	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
@@ -2343,7 +2346,9 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 		},
 	}
 
-	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2378,10 +2383,11 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
@@ -2414,7 +2420,9 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2449,10 +2457,11 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 		},
 	}
 
-	resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
-	_require.NotNil(resp1)
-	_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
+	//_require.NotNil(resp1)
+	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
@@ -2485,7 +2494,9 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 		},
 	}
 
-	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }

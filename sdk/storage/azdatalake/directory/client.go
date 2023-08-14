@@ -250,7 +250,7 @@ func (d *Client) renamePathInURL(newName string) (string, string, string) {
 }
 
 // Rename renames a directory.
-func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
+func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
 	newPathWithoutURL, newPathURL, newBlobURL := d.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
 	var newBlobClient *blockblob.Client
@@ -264,14 +264,15 @@ func (d *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
 	}
 	if err != nil {
-		return RenameResponse{}, err
+		return exported.ConvertToDFSError(err)
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
-	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
-	return RenameResponse{
-		Response:           resp,
-		NewDirectoryClient: newDirClient,
-	}, exported.ConvertToDFSError(err)
+	_, err = newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	//return RenameResponse{
+	//	Response:           resp,
+	//	NewDirectoryClient: newDirClient,
+	//}, exported.ConvertToDFSError(err)
+	return exported.ConvertToDFSError(err)
 }
 
 // SetAccessControl sets the owner, owning group, and permissions for a directory.

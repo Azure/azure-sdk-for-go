@@ -234,7 +234,7 @@ func (f *Client) renamePathInURL(newName string) (string, string, string) {
 }
 
 // Rename renames a file.
-func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) error {
+func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
 	newPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
 	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newPathWithoutURL)
 	var newBlobClient *blockblob.Client
@@ -248,15 +248,15 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
 	}
 	if err != nil {
-		return exported.ConvertToDFSError(err)
+		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
-	_, err = newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
 	//return RenameResponse{
 	//	Response:      resp,
 	//	NewFileClient: newFileClient,
 	//}, exported.ConvertToDFSError(err)
-	return exported.ConvertToDFSError(err)
+	return resp, exported.ConvertToDFSError(err)
 }
 
 // SetExpiry operation sets an expiry time on an existing file.
@@ -303,8 +303,8 @@ func (f *Client) RemoveAccessControl(ctx context.Context, ACL string, options *R
 }
 
 // SetMetadata sets the metadata for a file.
-func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts, metadata := path.FormatSetMetadataOptions(options)
+func (f *Client) SetMetadata(ctx context.Context, metadata map[string]*string, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	opts := path.FormatSetMetadataOptions(options)
 	resp, err := f.blobClient().SetMetadata(ctx, metadata, opts)
 	err = exported.ConvertToDFSError(err)
 	return resp, err

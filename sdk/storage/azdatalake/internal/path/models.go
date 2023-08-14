@@ -251,8 +251,6 @@ func FormatPathHTTPHeaders(o *HTTPHeaders) *generated.PathHTTPHeaders {
 
 // SetMetadataOptions provides set of configurations for Set Metadata on path operation
 type SetMetadataOptions struct {
-	// Metadata is the metadata to be set on the path.
-	Metadata map[string]*string
 	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
 	// CPKInfo contains CPK related information.
@@ -261,9 +259,9 @@ type SetMetadataOptions struct {
 	CPKScopeInfo *CPKScopeInfo
 }
 
-func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, map[string]*string) {
+func FormatSetMetadataOptions(o *SetMetadataOptions) *blob.SetMetadataOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 	accessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	opts := &blob.SetMetadataOptions{
@@ -279,7 +277,7 @@ func FormatSetMetadataOptions(o *SetMetadataOptions) (*blob.SetMetadataOptions, 
 	if o.CPKScopeInfo != nil {
 		opts.CPKScopeInfo = o.CPKScopeInfo
 	}
-	return opts, o.Metadata
+	return opts
 }
 
 // ========================================= constants =========================================

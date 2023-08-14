@@ -16,6 +16,9 @@ import (
 //	NewDirectoryClient *Client
 //}
 
+// RenameResponse contains the response fields for the Rename operation.
+type RenameResponse = CreateResponse
+
 type setAccessControlRecursiveResponse struct {
 	DirectoriesSuccessful *int32
 	FailureCount          *int32

@@ -26,6 +26,9 @@ type AppendDataResponse = generated.PathClientAppendDataResponse
 // FlushDataResponse contains the response from method Client.FlushData.
 type FlushDataResponse = generated.PathClientFlushDataResponse
 
+// RenameResponse contains the response fields for the Rename operation.
+type RenameResponse = CreateResponse
+
 //// RenameResponse contains the response fields for the Create operation.
 //type RenameResponse struct {
 //	// Response of the operation.

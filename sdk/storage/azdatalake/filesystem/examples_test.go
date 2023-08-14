@@ -181,6 +181,33 @@ func Example_fs_ClientListPaths() {
 	}
 }
 
+func Example_fs_ClientListDeletedPaths() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	fsName := "testfs"
+	fsURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s", accountName, fsName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	fsClient, err := filesystem.NewClient(fsURL, cred, nil)
+	handleError(err)
+
+	pager := fsClient.NewListDeletedPathsPager(nil)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, path := range resp.Segment.PathItems {
+			fmt.Println(*path.Name)
+		}
+	}
+}
+
 func Example_fs_ClientGetSASURL() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {

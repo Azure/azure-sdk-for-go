@@ -1541,7 +1541,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	resp1, err := dirClient.SetAccessControlRecursive(acl, nil)
+	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, nil)
 	_require.Nil(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1575,7 +1575,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithBadContinuation(
 	_require.NotNil(resp)
 
 	opts := &directory.SetAccessControlRecursiveOptions{Marker: to.Ptr("garbage")}
-	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
 	_require.Nil(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(0)))
@@ -1605,7 +1605,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithEmptyOpts() {
 	_require.NotNil(resp)
 
 	opts := &directory.SetAccessControlRecursiveOptions{}
-	resp1, err := dirClient.SetAccessControlRecursive(acl, opts)
+	resp1, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
 	_require.Nil(err)
 
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
@@ -1657,7 +1657,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults() {
 	_require.Nil(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(2)), MaxBatches: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
-	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
 	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
@@ -1710,7 +1710,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults2() {
 	_require.Nil(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(true), Marker: nil}
-	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
 	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
@@ -1763,7 +1763,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlRecursiveWithMaxResults3() {
 	_require.Nil(err)
 
 	opts := &directory.SetAccessControlRecursiveOptions{BatchSize: to.Ptr(int32(1)), ContinueOnFailure: to.Ptr(true), Marker: nil}
-	resp2, err := dirClient.SetAccessControlRecursive(acl, opts)
+	resp2, err := dirClient.SetAccessControlRecursive(context.Background(), acl, opts)
 	_require.Nil(err)
 
 	// we expect only one file to have been updated not both since our batch size is 2 and max batches is 1
@@ -1801,7 +1801,7 @@ func (s *RecordedTestSuite) TestDirUpdateAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	resp1, err := dirClient.UpdateAccessControlRecursive(acl1, nil)
+	resp1, err := dirClient.UpdateAccessControlRecursive(context.Background(), acl1, nil)
 	_require.Nil(err)
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
 
@@ -1834,64 +1834,9 @@ func (s *RecordedTestSuite) TestDirRemoveAccessControlRecursive() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	resp1, err := dirClient.RemoveAccessControlRecursive(acl, nil)
+	resp1, err := dirClient.RemoveAccessControlRecursive(context.Background(), acl, nil)
 	_require.Nil(err)
 	_require.Equal(resp1.DirectoriesSuccessful, to.Ptr(int32(1)))
-}
-
-func (s *RecordedTestSuite) TestDirSetMetadataNil() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
-
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
-	_require.NotNil(resp)
-
-	_, err = dirClient.SetMetadata(context.Background(), nil)
-	_require.Nil(err)
-}
-
-func (s *RecordedTestSuite) TestDirSetMetadataWithEmptyOpts() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.Nil(err)
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
-
-	resp, err := dirClient.Create(context.Background(), nil)
-	_require.Nil(err)
-	_require.NotNil(resp)
-
-	opts := &directory.SetMetadataOptions{
-		Metadata: nil,
-	}
-	_, err = dirClient.SetMetadata(context.Background(), opts)
-	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
@@ -1916,10 +1861,7 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithBasicMetadata() {
 	_require.Nil(err)
 	_require.NotNil(resp)
 
-	opts := &directory.SetMetadataOptions{
-		Metadata: testcommon.BasicMetadata,
-	}
-	_, err = dirClient.SetMetadata(context.Background(), opts)
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.Nil(err)
 }
 
@@ -1948,14 +1890,13 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(resp.Date, -10)
 
 	opts := &directory.SetMetadataOptions{
-		Metadata: testcommon.BasicMetadata,
 		AccessConditions: &directory.AccessConditions{
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
 			},
 		},
 	}
-	_, err = dirClient.SetMetadata(context.Background(), opts)
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.Nil(err)
 }
 
@@ -2243,7 +2184,7 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require.NotNil(resp)
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", nil)
+	_, err = dirClient.Rename(context.Background(), "newName", nil)
 	_require.Nil(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
@@ -2274,7 +2215,7 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 	}
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
@@ -2310,7 +2251,7 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 		},
 	}
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
@@ -2347,7 +2288,7 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 	}
 
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
@@ -2384,7 +2325,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 	}
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
@@ -2421,7 +2362,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 	}
 
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
@@ -2458,7 +2399,7 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 	}
 
 	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.Nil(err)
 	//_require.NotNil(resp1)
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
@@ -2495,7 +2436,7 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 	}
 
 	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-	err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.NotNil(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)

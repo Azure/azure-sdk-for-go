@@ -4174,7 +4174,9 @@ func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 
 	srcFileName, destFileName := "srcFile..", "destFile.."
 	srcFileClient, err := file.NewClient(fmt.Sprintf("https://%s.file.core.windows.net/%s/%s", accountName, shareName, srcFileName), cred, clOptions)
+	_require.NoError(err)
 	destFileClient, err := file.NewClient(fmt.Sprintf("https://%s.file.core.windows.net/%s/%s", accountName, shareName, destFileName), cred, clOptions)
+	_require.NoError(err)
 
 	fileSize := int64(2048)
 	_, err = srcFileClient.Create(context.Background(), fileSize, nil)

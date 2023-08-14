@@ -19,8 +19,6 @@
 
 * Propagate any query parameters when constructing a fake poller and/or injecting next links.
 
-### Other Changes
-
 ## 1.7.1 (2023-08-14)
 
 ## Bugs Fixed

@@ -17,56 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetAccountCredentials_MaximumSet_Gen.json
-func ExampleMonitorsClient_GetAccountCredentials_monitorsGetAccountCredentialsMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMonitorsClient().GetAccountCredentials(ctx, "myResourceGroup", "myMonitor", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AccountInfoSecure = armdynatrace.AccountInfoSecure{
-	// 	AccountID: to.Ptr("1234567890"),
-	// 	RegionID: to.Ptr("wus2"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetAccountCredentials_MinimumSet_Gen.json
-func ExampleMonitorsClient_GetAccountCredentials_monitorsGetAccountCredentialsMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMonitorsClient().GetAccountCredentials(ctx, "myResourceGroup", "myMonitor", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AccountInfoSecure = armdynatrace.AccountInfoSecure{
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +55,7 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredResourcesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +82,7 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetVMHostPayload_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetVMHostPayload_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVmHostPayloadMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +106,7 @@ func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVmHostPayloadMaximumSetGe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetVMHostPayload_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetVMHostPayload_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVmHostPayloadMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +128,7 @@ func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVmHostPayloadMinimumSetGe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Get_MaximumSet_Gen.json
 func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +210,7 @@ func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Get_MinimumSet_Gen.json
 func ExampleMonitorsClient_Get_monitorsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,13 +229,14 @@ func ExampleMonitorsClient_Get_monitorsGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MonitorResource = armdynatrace.MonitorResource{
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),
 	// 	Location: to.Ptr("West US 2"),
 	// 	Properties: &armdynatrace.MonitorProperties{
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +353,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetG
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,13 +379,14 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMinimumSetG
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MonitorResource = armdynatrace.MonitorResource{
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),
 	// 	Location: to.Ptr("West US 2"),
 	// 	Properties: &armdynatrace.MonitorProperties{
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Update_MaximumSet_Gen.json
 func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,28 +398,8 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMonitorsClient().Update(ctx, "myResourceGroup", "myMonitor", armdynatrace.MonitorResourceUpdate{
-		DynatraceEnvironmentProperties: &armdynatrace.EnvironmentProperties{
-			AccountInfo:            &armdynatrace.AccountInfo{},
-			EnvironmentInfo:        &armdynatrace.EnvironmentInfo{},
-			SingleSignOnProperties: &armdynatrace.SingleSignOnProperties{},
-		},
-		MarketplaceSubscriptionStatus: to.Ptr(armdynatrace.MarketplaceSubscriptionStatusActive),
-		MonitoringStatus:              to.Ptr(armdynatrace.MonitoringStatusEnabled),
-		PlanData: &armdynatrace.PlanData{
-			BillingCycle:  to.Ptr("Monthly"),
-			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t }()),
-			PlanDetails:   to.Ptr("dynatraceapitestplan"),
-			UsageType:     to.Ptr("Committed"),
-		},
 		Tags: map[string]*string{
 			"Environment": to.Ptr("Dev"),
-		},
-		UserInfo: &armdynatrace.UserInfo{
-			Country:      to.Ptr("westus2"),
-			EmailAddress: to.Ptr("alice@microsoft.com"),
-			FirstName:    to.Ptr("Alice"),
-			LastName:     to.Ptr("Bobab"),
-			PhoneNumber:  to.Ptr("123456"),
 		},
 	}, nil)
 	if err != nil {
@@ -536,7 +472,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Update_MinimumSet_Gen.json
 func ExampleMonitorsClient_Update_monitorsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,7 +497,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Delete_MaximumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -582,7 +518,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_Delete_MinimumSet_Gen.json
 func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -603,7 +539,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListBySubscriptionId_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListBySubscriptionId_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscriptionIdMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,7 +629,7 @@ func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscripti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListBySubscriptionId_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListBySubscriptionId_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscriptionIdMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -718,6 +654,7 @@ func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscripti
 		// page.MonitorResourceListResult = armdynatrace.MonitorResourceListResult{
 		// 	Value: []*armdynatrace.MonitorResource{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor/tagRules/default"),
 		// 			Location: to.Ptr("West US 2"),
 		// 			Properties: &armdynatrace.MonitorProperties{
 		// 			},
@@ -726,7 +663,7 @@ func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscripti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -816,7 +753,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGro
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,6 +778,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGro
 		// page.MonitorResourceListResult = armdynatrace.MonitorResourceListResult{
 		// 	Value: []*armdynatrace.MonitorResource{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor/tagRules/default"),
 		// 			Location: to.Ptr("West US 2"),
 		// 			Properties: &armdynatrace.MonitorProperties{
 		// 			},
@@ -849,7 +787,58 @@ func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGro
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListHosts_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMarketplaceSaaSResourceDetails_MaximumSet_Gen.json
+func ExampleMonitorsClient_GetMarketplaceSaaSResourceDetails_monitorsGetMarketplaceSaaSResourceDetailsMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMonitorsClient().GetMarketplaceSaaSResourceDetails(ctx, armdynatrace.MarketplaceSaaSResourceDetailsRequest{
+		TenantID: to.Ptr("urnmattojzhktcfw"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MarketplaceSaaSResourceDetailsResponse = armdynatrace.MarketplaceSaaSResourceDetailsResponse{
+	// 	MarketplaceSaaSResourceID: to.Ptr("owpmulwohq"),
+	// 	MarketplaceSubscriptionStatus: to.Ptr(armdynatrace.MarketplaceSubscriptionStatusActive),
+	// 	PlanID: to.Ptr("dsfefsaf"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMarketplaceSaaSResourceDetails_MinimumSet_Gen.json
+func ExampleMonitorsClient_GetMarketplaceSaaSResourceDetails_monitorsGetMarketplaceSaaSResourceDetailsMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMonitorsClient().GetMarketplaceSaaSResourceDetails(ctx, armdynatrace.MarketplaceSaaSResourceDetailsRequest{
+		TenantID: to.Ptr("urnmattojzhktcfw"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MarketplaceSaaSResourceDetailsResponse = armdynatrace.MarketplaceSaaSResourceDetailsResponse{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListHosts_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,7 +877,7 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListHosts_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListHosts_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,7 +904,53 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgDynatrace", "fhcjxnxumkdlgpwanewtkdnyuz", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricsStatusResponse = armdynatrace.MetricsStatusResponse{
+	// 	AzureResourceIDs: []*string{
+	// 		to.Ptr("/subscriptions/69b51384-146c-4685-9dab-5ae01877d78/resourceGroups/szytr-liftr/providers/Dynatrace.Observability/monitors/szytrz-prod-23-05-23")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMonitorsClient().GetMetricStatus(ctx, "rgDynatrace", "fhcjxnxumkdlgpwanewtkdnyuz", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricsStatusResponse = armdynatrace.MetricsStatusResponse{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListAppServices_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -954,7 +989,7 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListAppServices_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,7 +1016,7 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
 func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1013,7 +1048,7 @@ func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMaximumSetGen() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
 func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1024,7 +1059,10 @@ func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMinimumSetGen() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMonitorsClient().GetSSODetails(ctx, "myResourceGroup", "myMonitor", &armdynatrace.MonitorsClientGetSSODetailsOptions{Request: &armdynatrace.SSODetailsRequest{}})
+	res, err := clientFactory.NewMonitorsClient().GetSSODetails(ctx, "myResourceGroup", "myMonitor", &armdynatrace.MonitorsClientGetSSODetailsOptions{Request: &armdynatrace.SSODetailsRequest{
+		UserPrincipal: to.Ptr("alice@microsoft.com"),
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1035,7 +1073,7 @@ func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListLinkableEnvironments_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListLinkableEnvironments_MaximumSet_Gen.json
 func ExampleMonitorsClient_NewListLinkableEnvironmentsPager_monitorsListLinkableEnvironmentsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1077,7 +1115,7 @@ func ExampleMonitorsClient_NewListLinkableEnvironmentsPager_monitorsListLinkable
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751f321654db00858e70649291af5c81e94611e/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListLinkableEnvironments_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListLinkableEnvironments_MinimumSet_Gen.json
 func ExampleMonitorsClient_NewListLinkableEnvironmentsPager_monitorsListLinkableEnvironmentsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1088,7 +1126,11 @@ func ExampleMonitorsClient_NewListLinkableEnvironmentsPager_monitorsListLinkable
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMonitorsClient().NewListLinkableEnvironmentsPager("myResourceGroup", "myMonitor", armdynatrace.LinkableEnvironmentRequest{}, nil)
+	pager := clientFactory.NewMonitorsClient().NewListLinkableEnvironmentsPager("myResourceGroup", "myMonitor", armdynatrace.LinkableEnvironmentRequest{
+		Region:        to.Ptr("East US"),
+		TenantID:      to.Ptr("00000000-0000-0000-0000-000000000000"),
+		UserPrincipal: to.Ptr("alice@microsoft.com"),
+	}, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

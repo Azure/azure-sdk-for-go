@@ -1338,6 +1338,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 		_require.Equal(5, len(resp.Paths))
+		_require.NotNil(resp.PathList.Paths[0].IsDirectory)
+
 		if err != nil {
 			break
 		}

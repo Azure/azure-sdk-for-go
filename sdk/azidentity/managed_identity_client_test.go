@@ -87,11 +87,11 @@ func TestManagedIdentityClient_IMDS400(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
+	_, err = client.authenticate(context.Background(), nil, testTRO.Scopes)
 	if err == nil {
 		t.Fatal("expected an error")
 	}
-	if actual := err.Error(); !strings.Contains(err.Error(), body) {
+	if actual := err.Error(); !strings.Contains(actual, body) {
 		t.Fatalf("expected response body in error, got %q", actual)
 	}
 }

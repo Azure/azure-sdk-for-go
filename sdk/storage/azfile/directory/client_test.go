@@ -1893,3 +1893,99 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingSAS() {
 	_, err = destDirCl.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (d *DirectoryRecordedTestsSuite) TestListFileDirEncoded() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := "directory\uFFFF"
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	fileName := "file\uFFFE"
+	fileClient := testcommon.CreateNewFileFromShare(context.Background(), _require, fileName, 2048, shareClient)
+
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := shareClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Segment.Directories, 1)
+		_require.NotNil(resp.Segment.Directories[0])
+		_require.Equal(*resp.Segment.Directories[0].Name, dirName)
+		_require.Len(resp.Segment.Files, 1)
+		_require.NotNil(resp.Segment.Files[0])
+		_require.Equal(*resp.Segment.Files[0].Name, fileName)
+	}
+}
+
+func (d *DirectoryRecordedTestsSuite) TestListFileDirEncodedContinuationToken() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName0 := "file0\uFFFE"
+	_ = testcommon.CreateNewFileFromShare(context.Background(), _require, fileName0, 2048, shareClient)
+
+	fileName1 := "file1\uFFFE"
+	_ = testcommon.CreateNewFileFromShare(context.Background(), _require, fileName1, 2048, shareClient)
+
+	var files []string
+	pager := shareClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(&directory.ListFilesAndDirectoriesOptions{
+		MaxResults: to.Ptr(int32(1)),
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Segment.Files, 1)
+		_require.NotNil(resp.Segment.Files[0].Name)
+		files = append(files, *resp.Segment.Files[0].Name)
+	}
+
+	_require.Len(files, 2)
+	_require.Equal(files[0], fileName0)
+	_require.Equal(files[1], fileName1)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestListFileDirEncodedPrefix() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := "directory\uFFFF"
+	_ = testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	pager := shareClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(&directory.ListFilesAndDirectoriesOptions{
+		Prefix: &dirName,
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Segment.Directories, 1)
+		_require.Len(resp.Segment.Files, 0)
+		_require.NotNil(resp.Segment.Directories[0])
+		_require.Equal(*resp.Segment.Directories[0].Name, dirName)
+		_require.NotNil(resp.Prefix)
+		_require.Equal(*resp.Prefix, dirName)
+	}
+}

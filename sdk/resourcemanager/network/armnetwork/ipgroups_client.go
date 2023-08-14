@@ -47,7 +47,7 @@ func NewIPGroupsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - ipGroupsName - The name of the ipGroups.
 //   - parameters - Parameters supplied to the create or update IpGroups operation.
@@ -71,13 +71,9 @@ func (client *IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 func (client *IPGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "IPGroupsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -113,7 +109,7 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +121,7 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Deletes the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - ipGroupsName - The name of the ipGroups.
 //   - options - IPGroupsClientBeginDeleteOptions contains the optional parameters for the IPGroupsClient.BeginDelete method.
@@ -147,13 +143,9 @@ func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 func (client *IPGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "IPGroupsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return nil, err
@@ -189,7 +181,7 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,16 +190,12 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - ipGroupsName - The name of the ipGroups.
 //   - options - IPGroupsClientGetOptions contains the optional parameters for the IPGroupsClient.Get method.
 func (client *IPGroupsClient) Get(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientGetOptions) (IPGroupsClientGetResponse, error) {
 	var err error
-	const operationName = "IPGroupsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return IPGroupsClientGetResponse{}, err
@@ -244,7 +232,7 @@ func (client *IPGroupsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -264,7 +252,7 @@ func (client *IPGroupsClient) getHandleResponse(resp *http.Response) (IPGroupsCl
 
 // NewListPager - Gets all IpGroups in a subscription.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - options - IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.NewListPager method.
 func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IPGroupsClientListResponse]{
@@ -272,7 +260,6 @@ func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPGroupsClientListResponse) (IPGroupsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPGroupsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -292,7 +279,6 @@ func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -308,7 +294,7 @@ func (client *IPGroupsClient) listCreateRequest(ctx context.Context, options *IP
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -325,7 +311,7 @@ func (client *IPGroupsClient) listHandleResponse(resp *http.Response) (IPGroupsC
 
 // NewListByResourceGroupPager - Gets all IpGroups in a resource group.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -335,7 +321,6 @@ func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPGroupsClientListByResourceGroupResponse) (IPGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -355,7 +340,6 @@ func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName stri
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -375,7 +359,7 @@ func (client *IPGroupsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,17 +377,13 @@ func (client *IPGroupsClient) listByResourceGroupHandleResponse(resp *http.Respo
 // UpdateGroups - Updates tags of an IpGroups resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - ipGroupsName - The name of the ipGroups.
 //   - parameters - Parameters supplied to the update ipGroups operation.
 //   - options - IPGroupsClientUpdateGroupsOptions contains the optional parameters for the IPGroupsClient.UpdateGroups method.
 func (client *IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters TagsObject, options *IPGroupsClientUpdateGroupsOptions) (IPGroupsClientUpdateGroupsResponse, error) {
 	var err error
-	const operationName = "IPGroupsClient.UpdateGroups"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateGroupsCreateRequest(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return IPGroupsClientUpdateGroupsResponse{}, err
@@ -440,7 +420,7 @@ func (client *IPGroupsClient) updateGroupsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

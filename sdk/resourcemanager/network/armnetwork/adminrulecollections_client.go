@@ -48,7 +48,7 @@ func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.Toke
 // CreateOrUpdate - Creates or updates an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -58,10 +58,6 @@ func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *AdminRuleCollectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleCollection AdminRuleCollection, options *AdminRuleCollectionsClientCreateOrUpdateOptions) (AdminRuleCollectionsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "AdminRuleCollectionsClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleCollection, options)
 	if err != nil {
 		return AdminRuleCollectionsClientCreateOrUpdateResponse{}, err
@@ -106,7 +102,7 @@ func (client *AdminRuleCollectionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, ruleCollection); err != nil {
@@ -127,7 +123,7 @@ func (client *AdminRuleCollectionsClient) createOrUpdateHandleResponse(resp *htt
 // BeginDelete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -152,13 +148,9 @@ func (client *AdminRuleCollectionsClient) BeginDelete(ctx context.Context, resou
 // Delete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 func (client *AdminRuleCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AdminRuleCollectionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -202,7 +194,7 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -214,7 +206,7 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets a network manager security admin configuration rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -223,10 +215,6 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 //     method.
 func (client *AdminRuleCollectionsClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientGetOptions) (AdminRuleCollectionsClientGetResponse, error) {
 	var err error
-	const operationName = "AdminRuleCollectionsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 	if err != nil {
 		return AdminRuleCollectionsClientGetResponse{}, err
@@ -271,7 +259,7 @@ func (client *AdminRuleCollectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +276,7 @@ func (client *AdminRuleCollectionsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Lists all the rule collections in a security admin configuration, in a paginated format.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -300,7 +288,6 @@ func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AdminRuleCollectionsClientListResponse) (AdminRuleCollectionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AdminRuleCollectionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -320,7 +307,6 @@ func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string,
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -348,7 +334,7 @@ func (client *AdminRuleCollectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

@@ -48,7 +48,7 @@ func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string, credential az
 // nat rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -74,13 +74,9 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx conte
 // nat rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -120,7 +116,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, natRuleParameters); err != nil {
@@ -132,7 +128,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 // BeginDelete - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -156,13 +152,9 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Conte
 // Delete - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
 		return nil, err
@@ -202,7 +194,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +203,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 // Get - Retrieves the details of a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -219,10 +211,6 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 //     method.
 func (client *VirtualNetworkGatewayNatRulesClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientGetOptions) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
 	var err error
-	const operationName = "VirtualNetworkGatewayNatRulesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
 		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
@@ -263,7 +251,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +268,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.
 
 // NewListByVirtualNetworkGatewayPager - Retrieves all nat rules for a particular virtual network gateway.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The resource group name of the virtual network gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - options - VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the
@@ -291,7 +279,6 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -311,7 +298,6 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 			}
 			return client.listByVirtualNetworkGatewayHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -335,7 +321,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

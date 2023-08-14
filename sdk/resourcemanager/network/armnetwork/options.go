@@ -1615,6 +1615,13 @@ type LoadBalancersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LoadBalancersClientMigrateToIPBasedOptions contains the optional parameters for the LoadBalancersClient.MigrateToIPBased
+// method.
+type LoadBalancersClientMigrateToIPBasedOptions struct {
+	// Parameters supplied to the migrateToIpBased Api.
+	Parameters *MigrateLoadBalancerToIPBasedRequest
+}
+
 // LoadBalancersClientUpdateTagsOptions contains the optional parameters for the LoadBalancersClient.UpdateTags method.
 type LoadBalancersClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters

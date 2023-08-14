@@ -46,7 +46,7 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 
 // NewListPager - Gets all of the available subnet delegations for this resource group in this region.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - location - The location of the domain name.
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.NewListPager
@@ -57,7 +57,6 @@ func (client *AvailableResourceGroupDelegationsClient) NewListPager(location str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableResourceGroupDelegationsClientListResponse) (AvailableResourceGroupDelegationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableResourceGroupDelegationsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -77,7 +76,6 @@ func (client *AvailableResourceGroupDelegationsClient) NewListPager(location str
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -101,7 +99,7 @@ func (client *AvailableResourceGroupDelegationsClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

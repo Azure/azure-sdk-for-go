@@ -47,7 +47,7 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credenti
 // Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the express route circuit.
 //   - peeringName - The name of the peering.
@@ -56,10 +56,6 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credenti
 //     method.
 func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsClientGetOptions) (PeerExpressRouteCircuitConnectionsClientGetResponse, error) {
 	var err error
-	const operationName = "PeerExpressRouteCircuitConnectionsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
 		return PeerExpressRouteCircuitConnectionsClientGetResponse{}, err
@@ -104,7 +100,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,7 +117,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *
 
 // NewListPager - Gets all global reach peer connections associated with a private peering in an express route circuit.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group.
 //   - circuitName - The name of the circuit.
 //   - peeringName - The name of the peering.
@@ -133,7 +129,6 @@ func (client *PeerExpressRouteCircuitConnectionsClient) NewListPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PeerExpressRouteCircuitConnectionsClientListResponse) (PeerExpressRouteCircuitConnectionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PeerExpressRouteCircuitConnectionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -153,7 +148,6 @@ func (client *PeerExpressRouteCircuitConnectionsClient) NewListPager(resourceGro
 			}
 			return client.listHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -181,7 +175,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

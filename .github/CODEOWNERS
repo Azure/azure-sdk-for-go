@@ -16,7 +16,7 @@
 /sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter
+/sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
 
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter

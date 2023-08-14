@@ -266,13 +266,14 @@ directive:
         replace(/ContainerProperties/g, 'FileSystemProperties');
 ```
 
-### TODO: FIX THE BELOW IN UNMARSHALASJSON
-### Change path props to string
+### 
 ``` yaml
 directive:
-- from: swagger-document
-  where: $.definitions.Path.properties
-  transform: >
-    $.isDirectory.type = "string";
-    $.contentLength.type = "string";
+- from: 
+  - zz_models_serde.go
+  where: $
+  transform: >-
+    return $.
+        replace(/err = unpopulate\((.*), "ContentLength", &p\.ContentLength\)/g, 'var rawVal string\nerr = unpopulate(val, "ContentLength", &rawVal)\nintVal, _ := strconv.ParseInt(rawVal, 10, 64)\np.ContentLength = &intVal').
+        replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```

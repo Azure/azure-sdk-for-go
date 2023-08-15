@@ -7,7 +7,7 @@ storage is optimized for storing massive amounts of unstructured data.
 Unstructured data is data that does not adhere to a particular data model or
 definition, such as text or binary data.
 
-[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs]
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs]
 
 ## Getting started
 
@@ -222,7 +222,6 @@ additional questions or comments.
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azdatalake
 [docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake
 [rest_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/data-lake-storage-gen2
-[product_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/data-lake-storage-gen2
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
 [storage_account_docs]: https://docs.microsoft.com/azure/storage/common/storage-account-overview
